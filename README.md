@@ -89,6 +89,32 @@ nohup env DISPLAY=:0 ./rknn_yolov8_seg_demo \
   > /tmp/demo_run.log 2>&1 < /dev/null &
 ```
 
+### 3.1 板端编译体系（改代码后重新构建的完整路径）
+
+**全部编译在板端本机进行（板端即编译机，aarch64 本地 gcc，无交叉编译）：**
+
+| 项 | 板端路径 |
+|---|---|
+| 仓库根 | `/home/admin/rknn_model_zoo/`（rknn_model_zoo V2.3.2 官方树） |
+| demo 源码 | `~/rknn_model_zoo/examples/yolov8_seg/cpp/`（main.cc 等，与 handover/code/ 一致） |
+| **构建脚本（推荐入口）** | `~/rknn_model_zoo/build-linux.sh` |
+| 3rdparty（librknnrt/librga 头+lib） | `~/rknn_model_zoo/3rdparty/`（`rknpu2/Linux/aarch64/`=NPU runtime；`librga/Linux/`=RGA；还有 jpeg_turbo、stb_image、timer 等） |
+| OpenCV | 走系统 deb 包 **libopencv-dev 4.5.4**（`/usr/lib/aarch64-linux-gnu/`，apt 安装），非 3rdparty 内 |
+| 工具链 | `aarch64-linux-gnu-gcc` (apt gcc 11.4，板端本地编译即此，GCCC_COMPILER 默认 aarch64-linux-gnu)；cmake 3.22.1 |
+| 构建中间产物 | `~/rknn_model_zoo/build/build_rknn_yolov8_seg_demo_rk3588_linux_aarch64_Release/` |
+| **安装产物（运行目录）** | `~/rknn_model_zoo/install/rk3588_linux_aarch64/rknn_yolov8_seg_demo/` |
+
+**标准重编译流程（板端）：**
+```bash
+cd ~/rknn_model_zoo
+./build-linux.sh -t rk3588 -a aarch64 -d yolov8_seg -b Release
+# 安装到 install/rk3588_linux_aarch64/yolov8_seg_demo/... 然后将
+# install/... 的 rknn_yolov8_seg_demo/lib/model 覆盖到运行目录即可
+```
+- 注意 demo 名：`-d yolov8_seg`（build-linux.sh 映射到 examples/yolov8_seg）；中间 build/ 目录名自动为 `build_<demo>_<soc>_<arch>_<type>`
+- 模型转换（onnx→rknn）在板端 conda env：`~/miniconda3/envs/rknn/bin/python`（Python 3.8.20，**rknn-toolkit2 2.3.2** + onnx 1.16.1/torch 2.3.1），与板上 librknnrt 2.3.2 版本匹配。更多模型导出手册见 `E:\work\rail_seg_train\`（rail_seg_train 云端工作流）或 rknn_model_zoo/docs
+- 若改动只涉及 cpp/*.cc 且不想全量重建：可直接在 `examples/yolov8_seg/cpp/build/`（已存在的 CMake build tree）里 `make -j4` + 复制产物到 install 目录
+
 ## 4. 已知的坑（监控系统开发必读）
 
 1. **板端 OpenCV 4.5.4 不能拉 NV12 的相机流**——用原生 GStreamer（现有架构）或独立 ffmpeg 子进程（PC 路数）
@@ -133,9 +159,9 @@ rk3588_handover/
 ├── README               ← 本文档
 ├── PROJECT_GUIDE.md             （项目总纲，历史）
 ├── troubleshooting_cameras_demo.md （相机故障排查手册，历史，返厂前状态）
-├── code/                板端核心源码 + aarch64 编译产物
+├── code/                板端核心源码 + aarch64 编译产物 + librknnrt.so/librga.so
 ├── models/              yolov8s-seg.rknn / yolov5s.rknn / rail_labels.txt
 └── tools/               PC 端 cam_viewer.py / _rk3588.py / onvif_test.py / ptz_control.py
 ```
 
-板上还有 NPU 推理运行时库 `librknnrt.so 2.3.2` 与 `librga.so 1.10.1`（库文件未复制，板上 lib/ 均有，体积可从板端随时取）。
+板上还有 NPU 推理运行时库 `librknnrt.so 2.3.2` 与 `librga.so 1.10.1`（库文件已复制入 code/）。
