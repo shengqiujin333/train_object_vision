@@ -17,7 +17,8 @@
 | ITEM-002 | 渲染路径选型 spike（qmlglsink 主 / RGA+纹理回退） | **已在板端实测并选定路径**：`cpu`（SELECTED）；`gl` 因缺 `qmlglsink`/Qt QML 包不可用（保留可开启候选）；数据与证据见 `docs/hmi/build_env_check.md` §14 与 `spikes/render_path/spike_core.c` |
 | ITEM-003 | 分层 CMake 工程骨架与三档构建入口（`build.sh`） | **已交付**：`railhmi_core`（纯 stdlib）/`railhmi_platform`（日志/文件存储+可选 SQLite）/`railhmi_media`（target GStreamer+librga）/`railhmi`（Qt/QML）；板端 `CoreTests` 构建成功且 **9/9 测试通过**、`MediaCheck` 媒体层编译成功；`Release`/`Preview` 缺 Qt5 Quick/Qml 开发包时**明确报错**。证据：`docs/hmi/test_evidence/ITEM-003-build/README.md` |
 | ITEM-004 | `railhmi-core` 配置与状态契约层（cameras/app/thresholds/roi） | **已交付**：无依赖 YAML 解析 + 配置模型/枚举 + 校验器（报具体字段，不静默默认）；`app/config/*.yaml` 基线；启动校验入口 `railhmi-config-check`；板端 CoreTests **40/40 通过**，坏配置报 `thresholds.confirm_frames` 并非零退出。证据：`docs/hmi/test_evidence/ITEM-004-config/README.md` |
-| ITEM-005.. | 主题、导航、注册表运行时、取流、页面、推理、报警、录像、回放、权限、恢复、打包 | 未实现 |
+| ITEM-005 | `railhmi-core` 流状态机与质量判定 | **已交付**：六态（CONNECTING/LIVE/FROZEN/OFFLINE/RECONNECTING/DEGRADED）+ 首帧/冻结/重连退避/阈值升级设备事件；质量标志（过暗/过曝/遮挡/模糊）与 `classify_quality`；非 LIVE 禁止旧帧接口 `may_present_as_live`。板端 CoreTests **79/79 通过**。证据：`docs/hmi/test_evidence/ITEM-005-stream/README.md` |
+| ITEM-006.. | 主题、导航、注册表运行时、取流、页面、推理、报警、录像、回放、权限、恢复、打包 | 未实现 |
 
 > 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 

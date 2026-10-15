@@ -2,6 +2,7 @@ add_library(railhmi_core STATIC
     src/version.cpp
     src/yaml.cpp
     src/config.cpp
+    src/stream_state.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include

@@ -129,6 +129,9 @@ void test_baseline_ok(const Baseline& b) {
     railhmi_test::check(r.settings.thresholds.confirm_frames == 3 &&
                             r.settings.thresholds.clip_post_seconds == 60,
                         "thresholds values parsed");
+    railhmi_test::check(r.settings.thresholds.first_frame_timeout_ms == 5000 &&
+                            r.settings.thresholds.reconnect_backoff_ms == 1000,
+                        "stream timing thresholds parsed");
 
     railhmi_test::check(r.settings.roi.size() == 4, "baseline has 4 roi entries",
                         std::to_string(r.settings.roi.size()));

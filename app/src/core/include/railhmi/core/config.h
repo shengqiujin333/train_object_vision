@@ -97,8 +97,10 @@ struct ThresholdsConfig {
     double danger_proximity_m = 0.0;
     double confidence_min = 0.0;
     int suppress_window_ms = 0;
+    int first_frame_timeout_ms = 0;
     int freeze_timeout_ms = 0;
     int reconnect_threshold = 0;
+    int reconnect_backoff_ms = 0;
     double storage_low_pct = 0.0;
     int clip_pre_seconds = 0;
     int clip_post_seconds = 0;

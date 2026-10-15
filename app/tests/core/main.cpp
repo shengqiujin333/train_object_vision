@@ -8,12 +8,14 @@
 
 void run_platform_tests();
 void run_config_tests();
+void run_stream_tests();
 
 int main() {
     std::printf("== railhmi-core tests (%s) ==\n",
                 railhmi::core::build_description().c_str());
     run_platform_tests();
     run_config_tests();
+    run_stream_tests();
     std::printf("== %d passed, %d failed ==\n", railhmi_test::g_pass, railhmi_test::g_fail);
     return railhmi_test::g_fail == 0 ? 0 : 1;
 }

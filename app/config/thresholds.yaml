@@ -5,8 +5,10 @@ thresholds:
   danger_proximity_m: 5.0
   confidence_min: 0.5
   suppress_window_ms: 3000
+  first_frame_timeout_ms: 5000
   freeze_timeout_ms: 2000
   reconnect_threshold: 3
+  reconnect_backoff_ms: 1000
   storage_low_pct: 10
   clip_pre_seconds: 30
   clip_post_seconds: 60

@@ -353,11 +353,17 @@ void load_thresholds(const Node& root, AppSettings* s, Errors& e) {
     if (req_int(*th, "suppress_window_ms", "thresholds", &v, e)) {
         if (v < 0) err(e, "thresholds.suppress_window_ms", "must be >= 0"); else t.suppress_window_ms = static_cast<int>(v);
     }
+    if (req_int(*th, "first_frame_timeout_ms", "thresholds", &v, e)) {
+        if (v < 1) err(e, "thresholds.first_frame_timeout_ms", "must be >= 1"); else t.first_frame_timeout_ms = static_cast<int>(v);
+    }
     if (req_int(*th, "freeze_timeout_ms", "thresholds", &v, e)) {
         if (v < 1) err(e, "thresholds.freeze_timeout_ms", "must be >= 1"); else t.freeze_timeout_ms = static_cast<int>(v);
     }
     if (req_int(*th, "reconnect_threshold", "thresholds", &v, e)) {
         if (v < 1) err(e, "thresholds.reconnect_threshold", "must be >= 1"); else t.reconnect_threshold = static_cast<int>(v);
+    }
+    if (req_int(*th, "reconnect_backoff_ms", "thresholds", &v, e)) {
+        if (v < 0) err(e, "thresholds.reconnect_backoff_ms", "must be >= 0"); else t.reconnect_backoff_ms = static_cast<int>(v);
     }
     req_double(*th, "storage_low_pct", "thresholds", &t.storage_low_pct, e);
     if (req_int(*th, "clip_pre_seconds", "thresholds", &v, e)) {
