@@ -1,0 +1,14 @@
+[
+  {"t_ms": 0, "state": "live", "fps": 0.5, "last_frame_ms": 217954502, "reconnect_count": 0, "presentable": true},
+  {"t_ms": 538, "state": "live", "fps": 7.5, "last_frame_ms": 217955040, "reconnect_count": 0, "presentable": true},
+  {"t_ms": 1018, "state": "live", "fps": 13.5, "last_frame_ms": 217955520, "reconnect_count": 0, "presentable": true},
+  {"t_ms": 1538, "state": "live", "fps": 20, "last_frame_ms": 217956040, "reconnect_count": 0, "presentable": true},
+  {"t_ms": 2018, "state": "live", "fps": 25.5, "last_frame_ms": 217956520, "reconnect_count": 0, "presentable": true},
+  {"t_ms": 2538, "state": "live", "fps": 25.5, "last_frame_ms": 217957040, "reconnect_count": 0, "presentable": true},
+  {"t_ms": 3018, "state": "reconnecting", "fps": 24.5, "last_frame_ms": 217957480, "reconnect_count": 1, "presentable": false},
+  {"t_ms": 3500, "state": "reconnecting", "fps": 18.5, "last_frame_ms": 217957480, "reconnect_count": 1, "presentable": false},
+  {"t_ms": 4000, "state": "reconnecting", "fps": 12.5, "last_frame_ms": 217957480, "reconnect_count": 1, "presentable": false},
+  {"t_ms": 4500, "state": "connecting", "fps": 6, "last_frame_ms": 217957480, "reconnect_count": 1, "presentable": false},
+  {"t_ms": 5000, "state": "connecting", "fps": 0, "last_frame_ms": 217957480, "reconnect_count": 1, "presentable": false},
+  {"t_ms": 5500, "state": "connecting", "fps": 0, "last_frame_ms": 217957480, "reconnect_count": 1, "presentable": false}
+]

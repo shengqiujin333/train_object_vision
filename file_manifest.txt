@@ -410,10 +410,37 @@ docs/hmi/test_evidence/ITEM-012-registry/run_verify_round.sh | active | ITEM-012
 docs/hmi/test_evidence/ITEM-012-registry/verify_registry_ext.cpp | active | 验证自有扩展夹具源码（54 断言：徽标五值全值身份/仅改 ai_profile 徽标同步/六页可见性全真值表/改名删首位删中间插入全倒序注册响应矩阵/派生确定性/NVR 配置语义矩阵/换槽位换字段必填缺失逐字路径）
 docs/hmi/test_evidence/ITEM-012-registry/verify_registry_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立目录 + 交付入口 + 与实现者归档日志程序化逐行比对 + 扩展夹具 + tokens/scan/sim 复现；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/test_evidence/ITEM-013-stream/README.md | active | ITEM-013 单路取流与状态机接入证据（CameraStream/探针/断流实测/边界/复现）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_stream-probe-VERIFY-20261016-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_stream-probe-VERIFY-20261016-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v1.log | active | 验证夹具 v1 过程留痕（验证侧 t=t_ms 键解析错误/下载漏 /app 前缀导致断言失败，板面探针输出与实现者一致；不作判据）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v1.transcript.json | active | 验证夹具 v1 transcript（留痕）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_stream-probe-VERIFY-20261016-v2.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_stream-probe-VERIFY-20261016-v2.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v2.log | active | 验证夹具 v2 过程留痕（解析修正后 ext 夹具 23/25 + cut-effect last_frame 时机断言失败，验证侧自查更正；不作判据）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v2.transcript.json | active | 验证夹具 v2 transcript（留痕）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v3.core-evidence_stream-probe-VERIFY-20261016-v3.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v3.core-evidence_stream-probe-VERIFY-20261016-v3.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v3.log | active | 验证夹具 v3 过程留痕（cut-effect 断言修正后 ext 24/26：fps 采样过早，验证侧自查更正；不作判据）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v3.transcript.json | active | 验证夹具 v3 transcript（留痕）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v4.core-evidence_stream-probe-VERIFY-20261016-v4.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v4.core-evidence_stream-probe-VERIFY-20261016-v4.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v4.log | active | 验证夹具 v4 过程留痕（fps 修正后 ext 25/26：last_frame_ms 推进断言未随 pump，验证侧自查更正；不作判据）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v4.transcript.json | active | 验证夹具 v4 transcript（留痕）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v5.core-evidence_stream-probe-VERIFY-20261016-v5.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v5.core-evidence_stream-probe-VERIFY-20261016-v5.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v5.log | active | 验证夹具 v5 过程留痕（ext 26/26 全绿；安全留痕，被 v6 取代为判据）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v5.transcript.json | active | 验证夹具 v5 transcript（留痕）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v6.core-evidence_stream-probe-VERIFY-20261016-v6.json | active | 验证轮板上交付探针复现结构化 JSON（与实现者 r2 逐字段一致）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v6.core-evidence_stream-probe-VERIFY-20261016-v6.log | active | 验证轮板上交付探针复现结构化状态原文（live→断流→reconnecting→connecting）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v6.log | active | 验证夹具权威轮 v6 日志（BUILD_EXIT=0 + 交付探针复现断言组 4/4 + cutonly 空态 + ext 26/26 + 实现/验证头部一致性 + 清理确认）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-FIXTURES-VERIFY-20261016-v6.transcript.json | active | 验证夹具权威轮 v6 transcript（指纹一致/逐条命令/退出码/清理确认）
+docs/hmi/test_evidence/ITEM-013-stream/VERIFY-ITEM-013.md | active | ITEM-013 软件验证 TestEvidence（VERIFY-20261016-v6 判定，TEST_PASS：板端独立复现探针权威轮与实现者 r2 逐字段一致、断流语义断言组 4/4、0 秒断流空态轮、验证自有扩展夹具 26/26 覆盖在线管线/presentable/统计/无相机路径；真机 RTSP 与 QML 占位层按边界如实标注）
 docs/hmi/test_evidence/ITEM-013-stream/build-MediaCheck-192_168_0_103-20261015-ITEM013-r2.core-evidence_stream-probe-20261015-ITEM013-r2.json | active | ITEM-013 探针结构化 JSON
 docs/hmi/test_evidence/ITEM-013-stream/build-MediaCheck-192_168_0_103-20261015-ITEM013-r2.core-evidence_stream-probe-20261015-ITEM013-r2.log | active | ITEM-013 探针结构化状态原文（live→断流→reconnecting→connecting）
 docs/hmi/test_evidence/ITEM-013-stream/build-MediaCheck-192_168_0_103-20261015-ITEM013-r2.log | active | ITEM-013 MediaCheck+探针运行日志
 docs/hmi/test_evidence/ITEM-013-stream/build-MediaCheck-192_168_0_103-20261015-ITEM013-r2.transcript.json | active | ITEM-013 MediaCheck+探针 transcript
+docs/hmi/test_evidence/ITEM-013-stream/verify_stream13_ext.cpp | active | 验证自有扩展夹具源码（26 断言：真实帧→LIVE/last_frame fresh 与推进/fps 滑窗/camera_id 透传/cut 后 reconnect+presentable+pump 无帧/时间线镜像/无 live 复活/计数单调/无相机不崩溃）
+docs/hmi/test_evidence/ITEM-013-stream/verify_stream13_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立目录 + 交付入口 MediaCheck 构建 + 探针权威轮程序化断言 + 头部一致性比对 + cutonly 轮 + 扩展夹具编译链 media/core/platform；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

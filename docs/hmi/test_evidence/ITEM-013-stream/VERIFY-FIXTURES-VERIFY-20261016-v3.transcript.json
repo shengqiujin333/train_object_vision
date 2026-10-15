@@ -1,0 +1,143 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify013",
+    "cpp": "docs/hmi/test_evidence/ITEM-013-stream/verify_stream13_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-013-stream",
+    "stamp": "VERIFY-20261016-v3",
+    "impl_probe_log": "None",
+    "connect_timeout": "10",
+    "timeout_sec": "900",
+    "app_root": "None"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "fingerprint mismatch aborts; no credentials logged; every step finite-wait"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "rm -rf /tmp/railhmi_verify013 /tmp/railhmi_verify013_board && mkdir -p /tmp/railhmi_verify013_board/app /tmp/railhmi_verify013",
+      "exit": 0,
+      "elapsed_s": 0.19,
+      "output": ""
+    },
+    {
+      "step": "upload-app",
+      "exit": 0,
+      "output": "uploaded app tree (125042 bytes compressed)"
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "verify_stream13_ext.cpp"
+    },
+    {
+      "step": "extract",
+      "cmd": "cd /tmp/railhmi_verify013_board && tar xzf /tmp/railhmi_verify013/app.tgz -C /tmp/railhmi_verify013_board/app && echo APP_FILES=$(cd /tmp/railhmi_verify013_board/app && find . -type f | wc -l)",
+      "exit": 0,
+      "elapsed_s": 0.15,
+      "output": "APP_FILES=95\n"
+    },
+    {
+      "step": "build-media",
+      "cmd": "cd /tmp/railhmi_verify013_board/app && bash build.sh MediaCheck 2>&1; echo BUILD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 11.77,
+      "output": "[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1\n[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no\n[build.sh] configuring: cmake -S '/tmp/railhmi_verify013_board/app' -B '/tmp/railhmi_verify013_board/app/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- railhmi: build mode = MediaCheck\n-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled\n-- Found PkgConfig: /usr/bin/pkg-config (found version \"0.29.2\") \n-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'\n--   Found gstreamer-1.0, version 1.20.3\n--   Found gstreamer-app-1.0, version 1.20.1\n--   Found gstreamer-video-1.0, version 1.20.1\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/railhmi_verify013_board/app/build-media\n[build.sh] building: cmake --build '/tmp/railhmi_verify013_board/app/build-media' -j8\n[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o\n[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o\n[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o\n[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o\n[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o\n[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o\n[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o\n[ 30%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o\n[ 34%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o\n[ 38%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o\n[ 42%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o\n[ 46%] Linking CXX static library librailhmi_core.a\n[ 46%] Built target railhmi_core\n[ 50%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o\n[ 57%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o\n[ 57%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o\n[ 61%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o\n[ 69%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o\n[ 69%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o\n[ 73%] Linking CXX executable ../../tools/railhmi-config-check\n[ 76%] Linking CXX executable ../../tools/railhmi-sim-inject\n[ 76%] Built target railhmi-config-check\n[ 76%] Built target railhmi-sim-inject\n[ 80%] Linking CXX static library librailhmi_platform.a\n[ 80%] Built target railhmi_platform\n[ 88%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o\n[ 88%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o\n[ 92%] Linking CXX static library librailhmi_media.a\n[ 92%] Built target railhmi_media\n[ 96%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o\n[100%] Linking CXX executable ../../tools/railhmi-stream-probe\n[100%] Built target railhmi-stream-probe\n[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_verify013_board/app/build-media\n[build.sh] media layer: /tmp/railhmi_verify013_board/app/build-media/src/media/librailhmi_media.a\nBUILD_EXIT=0\n"
+    },
+    {
+      "step": "probe-bin",
+      "cmd": "test -x /tmp/railhmi_verify013_board/app/build-media/tools/railhmi-stream-probe; echo PROBE_BIN=$?",
+      "exit": 0,
+      "elapsed_s": 0.06,
+      "output": "PROBE_BIN=0\n"
+    },
+    {
+      "step": "run-probe-replay",
+      "cmd": "cd /tmp/railhmi_verify013_board/app && mkdir -p core-evidence && ./build-media/tools/railhmi-stream-probe --source test --duration 6 --cut-after 3 --out core-evidence/stream-probe-VERIFY-20261016-v3.log --json core-evidence/stream-probe-VERIFY-20261016-v3.json 2>&1; echo RUN_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 6.22,
+      "output": "type=injection source=test camera=CAM-01 duration_s=6 cut_after_s=3 transport=n/a\nt=0 type=stream_state state=live fps=0.5 last_frame_ms=217769186 reconnect_count=0 presentable=true\nt=526 type=stream_state state=live fps=7.5 last_frame_ms=217769712 reconnect_count=0 presentable=true\nt=1006 type=stream_state state=live fps=13.5 last_frame_ms=217770192 reconnect_count=0 presentable=true\nt=1526 type=stream_state state=live fps=20.0 last_frame_ms=217770712 reconnect_count=0 presentable=true\nt=2006 type=stream_state state=live fps=25.5 last_frame_ms=217771192 reconnect_count=0 presentable=true\nt=2526 type=stream_state state=live fps=25.5 last_frame_ms=217771712 reconnect_count=0 presentable=true\nt=3008 type=injection cut=FI-01 (simulated stream cut)\nt=3008 type=stream_state state=reconnecting fps=24.5 last_frame_ms=217772152 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=3500 type=stream_state state=reconnecting fps=18.5 last_frame_ms=217772152 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=4000 type=stream_state state=reconnecting fps=12.5 last_frame_ms=217772152 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=4500 type=stream_state state=connecting fps=6.0 last_frame_ms=217772152 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=5000 type=stream_state state=connecting fps=0.0 last_frame_ms=217772152 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=5500 type=stream_state state=connecting fps=0.0 last_frame_ms=217772152 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\ntype=summary final_state=connecting reconnect_count=1 last_frame_ms=217772152 presentable=false\nRUN_EXIT=0\n"
+    },
+    {
+      "step": "assert-live-before-cut",
+      "exit": 0,
+      "output": "live_nodes=6"
+    },
+    {
+      "step": "assert-cut-effect",
+      "exit": 0,
+      "output": "post_nodes=6 first_state=reconnecting first_reconnect=1 cutnode_last_frame_ms=217772152 frame_frozen_onward=True"
+    },
+    {
+      "step": "assert-no-revival",
+      "exit": 0,
+      "output": "any_state_back_to_live_after_cut=False"
+    },
+    {
+      "step": "assert-recount-monotonic",
+      "exit": 0,
+      "output": "reconnect_count monotonically nondecreasing across post-cut nodes"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "core-evidence_stream-probe-VERIFY-20261016-v3.log"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "core-evidence_stream-probe-VERIFY-20261016-v3.json"
+    },
+    {
+      "step": "run-probe-cutonly",
+      "cmd": "cd /tmp/railhmi_verify013_board/app && ./build-media/tools/railhmi-stream-probe --source test --duration 3 --cut-after 0 --step 200 --out core-evidence/cutonly-VERIFY-20261016-v3.log --json core-evidence/cutonly-VERIFY-20261016-v3.json 2>&1; echo RUN_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 3.07,
+      "output": "type=injection source=test camera=CAM-01 duration_s=3 cut_after_s=0 transport=n/a\nt=0 type=injection cut=FI-01 (simulated stream cut)\nt=0 type=stream_state state=reconnecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=200 type=stream_state state=reconnecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=400 type=stream_state state=reconnecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=600 type=stream_state state=reconnecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=800 type=stream_state state=reconnecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=1000 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=1200 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=1400 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=1600 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=1800 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=2000 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=2200 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=2400 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=2600 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\nt=2800 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)\ntype=summary final_state=connecting reconnect_count=1 last_frame_ms=0 presentable=false\nRUN_EXIT=0\n"
+    },
+    {
+      "step": "assert-cutonly",
+      "exit": 0,
+      "output": "live_nodes=0 first_500ms_state=reconnecting"
+    },
+    {
+      "step": "probe-libs",
+      "cmd": "cd /tmp/railhmi_verify013_board/app && ls build-media/src/core/librailhmi_core.a build-media/src/media/librailhmi_media.a; echo LIB_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "build-media/src/core/librailhmi_core.a\nbuild-media/src/media/librailhmi_media.a\nLIB_EXIT=0\n"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_verify013_board/app && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include -Isrc/media/include -Isrc/platform/include /tmp/railhmi_verify013/verify_stream13_ext.cpp /tmp/railhmi_verify013_board/app/build-media/src/media/librailhmi_media.a /tmp/railhmi_verify013_board/app/build-media/src/core/librailhmi_core.a /tmp/railhmi_verify013_board/app/build-media/src/platform/librailhmi_platform.a $(pkg-config --cflags --libs gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0) -lrga -lpthread -o /tmp/railhmi_verify013/verify_stream13_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.02,
+      "output": "/tmp/railhmi_verify013/verify_stream13_ext.cpp:66:6: warning: ‘bool {anonymous}::wait_count(railhmi::media::CameraStream&, int, int)’ defined but not used [-Wunused-function]\n   66 | bool wait_count(CameraStream& s, int n, int ceiling_ms) {\n      |      ^~~~~~~~~~\n/tmp/railhmi_verify013/verify_stream13_ext.cpp:58:6: warning: ‘bool {anonymous}::wait_frame(railhmi::media::CameraStream&, int)’ defined but not used [-Wunused-function]\n   58 | bool wait_frame(CameraStream& s, int ceiling_ms) {\n      |      ^~~~~~~~~~\nGXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_verify013_board/app && /tmp/railhmi_verify013/verify_stream13_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 13.57,
+      "output": "[PASS] TC-V13-01 | start(test source) returns true\n[PASS] TC-V13-01 | start error string empty\n[PASS] TC-V13-01 | reaches LIVE from real frames\n[PASS] TC-V13-01 | last_frame_ms>0 (mono ms present)\n[PASS] TC-V13-01 | last frame is fresh (<=2s old)\n[PASS] TC-V13-01 | presentable=true in LIVE\n[PASS] TC-V13-01 | reconnect_count=0 before any cut\n[FAIL] TC-V13-01 | fps from 2s sliding window > 5 (test src 25fps)\n[FAIL] TC-V13-01 | fps still >=5 after sampling interval (window semantics)\n[PASS] TC-V13-01 | last_frame_ms nondecreasing across interval (frame arrival updates)\n[PASS] TC-V13-02 | start with custom camera_id ok\n[PASS] TC-V13-03 | LIVE before cut\n[PASS] TC-V13-03 | reconnect_count>=1 immediately after cut\n[PASS] TC-V13-03 | presentable=false immediately after cut\n[PASS] TC-V13-03 | pump returns false after cut (no more frames)\n[PASS] TC-V13-03 | last_frame_ms frozen-in preserved after cut\n[PASS] TC-V13-04 | timeline rows collected\n[PASS] TC-V13-04 | live samples before 3s cut\n[PASS] TC-V13-04 | first post-cut sample is reconnecting\n[PASS] TC-V13-04 | no live state after the cut\n[PASS] TC-V13-04 | presentable tracks state!=live at end of round\n[PASS] TC-V13-05 | timeline rows collected\n[PASS] TC-V13-05 | reconnect_count monotonic across timeline\n[PASS] TC-V13-05 | iterative cut semantics land (count>=2 by 7s)\n[PASS] TC-V13-06 | file start call observed (return value recorded)\n[PASS] TC-V13-06 | stopped after file start\nRESULT: FAIL passed=24 failed=2\nEXT_EXIT=1\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify013 /tmp/railhmi_verify013_board && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify013 /tmp/railhmi_verify013_board 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.11,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify013': No such file or directory\nls: cannot access '/tmp/railhmi_verify013_board': No such file or directory\n"
+    }
+  ]
+}
