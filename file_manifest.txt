@@ -322,6 +322,7 @@ docs/hmi/ui_review/REVIEW-ITEM-005.md | active | UI 实现评审证据（UIImple
 docs/hmi/ui_review/REVIEW-ITEM-006.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit e79e2ae 的 ITEM-006 检测职责与报警规则/事件层做级别/枚举/事件字段/ack/抑制契约对照与源码/证据审阅（含历史轮 TEST_FAIL 性质核实）；偏差 D-01..D-06（事件仅单调毫秒、description 机器串、record_available 三态、其它设备级别 L2 未列举、级别对照表）与修复要求（TEST_PASS，范围限 ITEM-006，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-007.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 7f517b8 的 ITEM-007 持久化与保留策略层做 schema/时间基准/保留淘汰/缺口合并契约对照与源码/证据审阅（含历史轮 TEST_FAIL 的 add_gap 缺陷修复核实）；偏差 D-01..D-06（无事件列表/筛选查询与 ack 写接口、片段无过滤查询、record_available 二态、时间基准注入入口、reason 顺序注释）与修复要求（TEST_PASS，范围限 ITEM-007，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-008.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit cd1d888 的 ITEM-008 单测与可复现验证入口做入口/退出码/JUnit/最小工具链/覆盖域核对与源码/证据审阅；偏差 D-01..D-05（默认输出目录在源码树且无 .gitignore、JUnit 重名 testcase、UI 契约 token 无自动身份断言、最小工具链口径、无 UI）与修复要求（TEST_PASS，范围限 ITEM-008，无 UI 结论）
+docs/hmi/ui_review/REVIEW-ITEM-009.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 2a0215b 的 ITEM-009 模拟输入与故障注入做 FI 目录/状态可达性/观测字段契约对照与源码/证据审阅；偏差 D-01..D-06（DEGRADED 不可驱动、PTZ 注入 target==actual 且缺 Pan/Tilt/AI NOT_READY、--profile 静默默认、弱断言 alarms=1、FI-06..09 交接、无 UI）与修复要求（TEST_PASS，范围限 ITEM-009 模型层，无 UI 结论）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
 models/yolov5s.rknn | existing | 人形检测模型（RKNN）
