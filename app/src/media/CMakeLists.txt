@@ -18,6 +18,7 @@ add_library(railhmi_media STATIC
     src/pipeline_factory.cpp
     src/camera_stream.cpp
     src/multi_stream.cpp
+    src/ai_worker.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -42,5 +43,12 @@ set_target_properties(railhmi-stream-probe PROPERTIES
 add_executable(railhmi-multi-probe tools/multi_probe.cpp)
 target_link_libraries(railhmi-multi-probe PRIVATE railhmi_media)
 set_target_properties(railhmi-multi-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 推理工作线程运行器（ITEM-017；有界队列/降频/遥测 + 停止后 AI 不可用）
+add_executable(railhmi-ai-runner tools/ai_runner.cpp)
+target_link_libraries(railhmi-ai-runner PRIVATE railhmi_media)
+set_target_properties(railhmi-ai-runner PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

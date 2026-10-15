@@ -77,6 +77,21 @@ struct StorageConfig {
     double low_threshold_pct = 0.0;
 };
 
+// 推理调度配置（DESKTOP §8.2）：帧间隔、有界丢旧帧队列深度、NPU 预算、温度守卫。
+// 模型版本按 ai_profile 登记（应用只消费模型名/版本，不定义精度）。
+struct AiModelConfig {
+    AiProfile profile = AiProfile::None;
+    std::string name;
+    std::string version;
+};
+struct AiConfig {
+    int inference_interval = 5;   // 每 N 帧推理一次
+    int queue_depth = 2;          // 有界丢旧帧队列深度（1..8）
+    int npu_budget = 4;           // 并发推理路数预算
+    double temp_limit_c = 85.0;   // 温度守卫阈值（超过则降载，不静默停）
+    std::vector<AiModelConfig> models;
+};
+
 struct AppConfig {
     std::string language;
     Role default_role = Role::Driver;
@@ -88,6 +103,7 @@ struct AppConfig {
     LogLevel log_level = LogLevel::Info;
     bool simulation = false;
     StorageConfig storage;
+    AiConfig ai;
     std::vector<IntegrationConfig> integrations;
 };
 

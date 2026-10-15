@@ -14,6 +14,7 @@
 #include "railhmi/core/channel_view.h"
 #include "railhmi/core/config.h"
 #include "railhmi/core/grid.h"
+#include "railhmi/core/inference.h"
 #include "railhmi/core/layout.h"
 #include "railhmi/core/navigation.h"
 #include "railhmi/core/status.h"
@@ -192,6 +193,55 @@ int main(int argc, char** argv) {
     view.rootContext()->setContextProperty("railhmiGrid", gridMap);
     view.rootContext()->setContextProperty("railhmiKeyStatus", keyList);
     view.rootContext()->setContextProperty("railhmiTopBar", topList);
+
+    // AI 调试页（ITEM-017）：仅 ai_enabled 相机；应用尚未启动推理线程时每路显式“AI 不可用”。
+    railhmi::core::AiRuntime aiRt;
+    aiRt.worker_alive = false;
+    for (const auto& c : registry) {
+        railhmi::core::AiChannelRuntime ch;
+        ch.camera_id = c.id;
+        ch.profile = c.ai_profile;
+        for (const auto& m : cfg.settings.app.ai.models)
+            if (m.profile == c.ai_profile) ch.model_version = m.version;
+        aiRt.channels.push_back(ch);
+    }
+    QVariantList aiList;
+    for (const auto& d : railhmi::core::build_ai_debug(registry, aiRt, {}, 0)) {
+        QVariantMap m;
+        m["cameraId"] = QString::fromStdString(d.camera_id);
+        m["name"] = QString::fromUtf8(d.name.c_str());
+        m["profile"] = QString::fromLatin1(railhmi::core::to_string(d.profile));
+        m["profileLabel"] = QString::fromUtf8(d.profile_label.c_str());
+        m["modelVersion"] = QString::fromStdString(d.model_version);
+        m["available"] = d.available;
+        m["unavailableReason"] = QString::fromUtf8(d.unavailable_reason.c_str());
+        char fpsbuf[32];
+        std::snprintf(fpsbuf, sizeof(fpsbuf), "%.1f", d.fps);
+        m["fpsText"] = QString::fromLatin1(fpsbuf);
+        m["latencyMs"] = d.latency_ms;
+        m["lastResultText"] = QString::fromUtf8(d.last_result_text.c_str());
+        m["confidenceText"] = d.boxes.empty() ? QString::fromUtf8("—")
+                                               : QString::number(d.max_confidence * 100, 'f', 0) + "%";
+        QVariantList boxes;
+        for (const auto& b : d.boxes) {
+            QVariantMap bm;
+            bm["x"] = b.x; bm["y"] = b.y; bm["w"] = b.w; bm["h"] = b.h;
+            bm["confidence"] = b.confidence; bm["label"] = QString::fromStdString(b.label);
+            boxes.append(bm);
+        }
+        m["boxes"] = boxes;
+        QVariantList roi;
+        for (const auto& r : cfg.settings.roi) {
+            if (r.camera != d.camera_id) continue;
+            QVariantMap rm;
+            rm["name"] = QString::fromUtf8(r.name.c_str());
+            rm["x"] = r.x; rm["y"] = r.y; rm["w"] = r.w; rm["h"] = r.h;
+            roi.append(rm);
+        }
+        m["roi"] = roi;
+        aiList.append(m);
+    }
+    view.rootContext()->setContextProperty("railhmiAiDebug", aiList);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
     view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
     view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);

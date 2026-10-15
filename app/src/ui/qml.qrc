@@ -16,6 +16,7 @@
         <file>qml/pages/DeniedView.qml</file>
         <file>qml/pages/P1Realtime.qml</file>
         <file>qml/pages/P4AllCameras.qml</file>
+        <file>qml/pages/P5AiDebug.qml</file>
         <file>qml/pages/P6Maintenance.qml</file>
     </qresource>
 </RCC>

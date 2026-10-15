@@ -1,0 +1,13 @@
+type=error config invalid
+  app.ai.models[0].profile: required field missing
+  app.ai.models[0].name: required field missing
+  app.ai.models[0].version: required field missing
+  app.ai.models[1].profile: required field missing
+  app.ai.models[1].name: required field missing
+  app.ai.models[1].version: required field missing
+  app.ai.models[2].profile: required field missing
+  app.ai.models[2].name: required field missing
+  app.ai.models[2].version: required field missing
+  app.ai.models[3].profile: required field missing
+  app.ai.models[3].name: required field missing
+  app.ai.models[3].version: required field missing

@@ -1,0 +1,121 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "local_dir": "E:\\work\\rail_issue\\rk3588_handover\\app",
+    "remote_dir": "/tmp/railhmi_build",
+    "mode": "TestRun",
+    "outdir": "docs/hmi/test_evidence/ITEM-017-inference",
+    "stamp": "20261016-ITEM017-r1",
+    "connect_timeout": 10,
+    "build_timeout": 900,
+    "run_tests": false,
+    "keep_remote": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_build",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": ""
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 121 files from E:\\work\\rail_issue\\rk3588_handover\\app"
+    },
+    {
+      "step": "upload-tokens",
+      "exit": 0,
+      "output": "design_tokens.yaml"
+    },
+    {
+      "step": "testrun",
+      "cmd": "cd /tmp/railhmi_build && bash tests/run_core_tests.sh --outdir core-evidence --stamp 20261016-ITEM017-r1; echo TESTRUN_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 6.55,
+      "output": "[run_core_tests] app=/tmp/railhmi_build outdir=core-evidence stamp=20261016-ITEM017-r1\n[run_core_tests] building (build.sh CoreTests) ...\n[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1\n[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no\n[build.sh] configuring: cmake -S '/tmp/railhmi_build' -B '/tmp/railhmi_build/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- railhmi: build mode = CoreTests\n-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/railhmi_build/build-core\n[build.sh] building: cmake --build '/tmp/railhmi_build/build-core' -j8\n[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o\n[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o\n[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o\n[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o\n[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o\n[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o\n[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o\n[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o\n[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o\n[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o\n[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o\n[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o\n[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o\n[ 31%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o\n[ 33%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o\n[ 35%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o\nTESTRUN_EXIT=3\n/tmp/railhmi_build/src/core/src/inference.cpp: In function ‘railhmi::core::StatusLevel railhmi::core::ai_status_level(const railhmi::core::AiRuntime&, long long int, int)’:\n/tmp/railhmi_build/src/core/src/inference.cpp:57:52: error: ‘Degraded’ is not a member of ‘railhmi::core::StatusLevel’\n   57 |     return any_ok ? StatusLevel::Ok : StatusLevel::Degraded;\n      |                                                    ^~~~~~~~\n/tmp/railhmi_build/src/core/src/inference.cpp: In function ‘std::string railhmi::core::ai_status_text(const railhmi::core::AiRuntime&, long long int, int)’:\n/tmp/railhmi_build/src/core/src/inference.cpp:63:27: error: ‘Degraded’ is not a member of ‘railhmi::core::StatusLevel’\n   63 |     if (l == StatusLevel::Degraded) return \"推理陈旧\";\n      |                           ^~~~~~~~\ngmake[2]: *** [src/core/CMakeFiles/railhmi_core.dir/build.make:286: src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o] Error 1\ngmake[2]: *** Waiting for unfinished jobs....\ngmake[1]: *** [CMakeFiles/Makefile2:142: src/core/CMakeFiles/railhmi_core.dir/all] Error 2\ngmake: *** [Makefile:101: all] Error 2\n[build.sh] build failed (mode=core-tests)\n[run_core_tests] build FAILED\n"
+    },
+    {
+      "step": "tokens-selftest",
+      "cmd": "cd /tmp/railhmi_build && python3 tools/gen_tokens.py --selftest --yaml design_tokens.yaml; echo TOKENS_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.25,
+      "output": "[PASS] required token groups present (10)\n[PASS] deterministic generation\n[PASS] tokens.json parseable\n[PASS] Theme.qml contains 'property color bg_base'\n[PASS] Theme.qml contains 'QtObject L1'\n[PASS] Theme.qml contains 'property QtObject stream_state'\n[PASS] Theme.qml contains 'property QtObject integration_state'\n[PASS] Theme.qml contains 'property QtObject detection_badge'\n[PASS] token change propagates to outputs\nselftest: PASS\nTOKENS_EXIT=0\n"
+    },
+    {
+      "step": "ui-scan",
+      "cmd": "cd /tmp/railhmi_build && python3 tools/check_no_hardcoded_ui.py --root src/ui; echo SCAN_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.13,
+      "output": "[check_no_hardcoded_ui] scanned 16 files under src/ui\n[check_no_hardcoded_ui] PASS (no hardcoded hex color / font size in UI sources)\nSCAN_EXIT=0\n"
+    },
+    {
+      "step": "sim-inject",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-sim-inject --fi 01,02,03,04,05,10 --duration 6000 --out core-evidence/sim-inject-20261016-ITEM017-r1.log --json core-evidence/sim-inject-20261016-ITEM017-r1.json; echo SIM_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "SIM_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory\n"
+    },
+    {
+      "step": "status-probe",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-status-probe --scenario mixed --role maintainer --out core-evidence/status-probe-20261016-ITEM017-r1.log; echo STATUS_EXIT=$?; ./build-core/tools/railhmi-status-probe --scenario mixed --role driver --out core-evidence/status-probe-driver-20261016-ITEM017-r1.log; echo STATUS_EXIT=$?; ./build-core/tools/railhmi-ai-probe --config ./config --out core-evidence/ai-probe-20261016-ITEM017-r1.log; echo AI_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "STATUS_EXIT=127\nSTATUS_EXIT=127\nAI_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-status-probe: No such file or directory\nbash: line 1: ./build-core/tools/railhmi-status-probe: No such file or directory\nbash: line 1: ./build-core/tools/railhmi-ai-probe: No such file or directory\n"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/core-tests-20261016-ITEM017-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/core-tests-20261016-ITEM017-r1.xml: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/sim-inject-20261016-ITEM017-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/sim-inject-20261016-ITEM017-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/status-probe-20261016-ITEM017-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/status-probe-driver-20261016-ITEM017-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/ai-probe-20261016-ITEM017-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "artifacts",
+      "cmd": "cd /tmp/railhmi_build; echo '(check mode: no artifacts)'; true",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "(check mode: no artifacts)\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_build && echo cleaned",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "cleaned\n"
+    }
+  ]
+}

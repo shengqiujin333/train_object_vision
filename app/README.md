@@ -29,7 +29,8 @@
 | ITEM-014 | 视频渲染与实时监控页三联布局 | **已交付**：`railhmi-core` `compute_layout`（三联 0.26/0.48/0.26、前方最大 ≥0.34、P0 一屏内可见、一级横幅不遮挡前方中央、缩放比例保持）+ QML 接入：`main.cpp` 注入 `railhmiLayout` 与配置选定渲染路径 `railhmiRenderPath`（默认 cpu，gl 可开关）；`VideoSurface.qml`（按路径选渲染实现 + 非 LIVE 占位层）、`P1Realtime.qml`（左-前-右三联 + 关键状态区 + 当前报警条）。板端 TestRun **377/377 通过**（两档分辨率用例齐全），扫描 PASS。证据：`docs/hmi/test_evidence/ITEM-014-layout/README.md` |
 | ITEM-015 | 六路并发与全摄像头页 | **已交付**：`railhmi-core` 网格模型（3x2/2x3 形状、稳定槽位、单元格不重叠）+ 每格视图（名/状态中文标签/fps/最近帧/重连/徽标；顺序=注册表，断流不重排不丢格）；`railhmi-media` `MultiStreamManager`（多路并发 + 单路断流注入，不互相影响）+ `railhmi-multi-probe`；`P4AllCameras.qml` 3x2/2x3 网格消费 `railhmiChannels`。板端 MediaCheck 实测：6 路 test 源同时 live，断开第 4 路后该格 presentable=false、最近帧冻结、重连计数，其余五路继续 presentable；core 单测网格稳定性。 |
 | ITEM-016 | 关键状态区与顶部模式信息条 | **已交付**：`railhmi-core` 状态模型（`StatusLevel` 五级，颜色+形状字形+文字三重编码互不相同）+ 七类关键状态（受电弓/轮轨/车门/摄像头/AI/录像/存储，正常简洁/异常突出、异常可点击按角色）+ 顶部条（时间/模式·红外未接入/录像/AI/系统健康/车速·门磁未接入）+ 点击权限解析 + `railhmi-status-probe`；QML `StatusItem`/`KeyStatusStrip`/`TopStatusBar` 接入。板端 TestRun **443/443 通过**；探针三重编码 distinct=5/5/5/5，维护角色 allowed=true、司机 allowed=false，扫描 PASS。证据：`docs/hmi/test_evidence/ITEM-016-status/README.md` |
-| ITEM-017.. | 推理、报警中心、录像、回放、权限、恢复、打包 | 未实现 |
+| ITEM-017 | 推理服务接入与双模型复用 | **已交付**：`railhmi-core` 推理模型（有界丢旧帧/帧间隔降频/优先级 front>wheel_rail>pantograph>cab_door/NPU 预算/温度守卫降载不停/两侧广角不入队/AI 不可用语义与报警标注/AI 调试视图）+ `railhmi-media` `AiWorker` 工作线程（可插拔 `Detector`；`SimDetector` 替代输入）+ 配置 `app.yaml ai:`（帧间隔/队列深度/预算/温度/模型版本）+ QML `P5AiDebug.qml`（框/ROI/置信度/耗时/模型版本，叠加层默认关）+ `railhmi-ai-probe`/`railhmi-ai-runner`。板端 TestRun **480/480 通过** + ai-probe PASS；MediaCheck ai-runner `eligible=4 with_result=4`、停止后 `AI 不可用`。证据：`docs/hmi/test_evidence/ITEM-017-inference/README.md` |
+| ITEM-018.. | 报警中心、录像、回放、权限、恢复、打包 | 未实现 |
 
 > 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 

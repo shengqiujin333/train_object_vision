@@ -19,3 +19,22 @@ app:
       name: 网络录像机
       address: 192.168.1.4
       registered: true
+  # 推理调度（DESKTOP §8.2）：降频、有界丢旧帧队列、NPU 预算、温度守卫；模型版本按职责登记。
+  ai:
+    inference_interval: 5
+    queue_depth: 2
+    npu_budget: 4
+    temp_limit_c: 85.0
+    models:
+      - profile: front
+        name: yolov5s
+        version: "rknn-2.3.2/yolov5s"
+      - profile: wheel_rail
+        name: yolov8s-seg
+        version: "rknn-2.3.2/yolov8s-seg"
+      - profile: pantograph
+        name: yolov5s
+        version: "rknn-2.3.2/yolov5s"
+      - profile: cab_door
+        name: yolov5s
+        version: "rknn-2.3.2/yolov5s"

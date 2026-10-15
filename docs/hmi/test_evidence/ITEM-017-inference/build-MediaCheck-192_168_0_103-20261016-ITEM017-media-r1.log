@@ -1,0 +1,261 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 121 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [build] exit=0 =====
+[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_build' -B '/tmp/railhmi_build/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = MediaCheck
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'
+--   Found gstreamer-1.0, version 1.20.3
+--   Found gstreamer-app-1.0, version 1.20.1
+--   Found gstreamer-video-1.0, version 1.20.1
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_build/build-media
+[build.sh] building: cmake --build '/tmp/railhmi_build/build-media' -j8
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 31%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 34%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 36%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 41%] Linking CXX static library librailhmi_core.a
+[ 41%] Built target railhmi_core
+[ 43%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 48%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 48%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 51%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
+[ 53%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 56%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 60%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 60%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 63%] Linking CXX executable ../../tools/railhmi-config-check
+[ 63%] Built target railhmi-config-check
+[ 65%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 65%] Built target railhmi-sim-inject
+[ 68%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 68%] Built target railhmi-status-probe
+[ 70%] Linking CXX static library librailhmi_platform.a
+[ 70%] Built target railhmi_platform
+[ 73%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o
+[ 78%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o
+[ 80%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o
+[ 80%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o
+[ 82%] Linking CXX executable ../../tools/railhmi-ai-probe
+[ 82%] Built target railhmi-ai-probe
+[ 85%] Linking CXX static library librailhmi_media.a
+[ 85%] Built target railhmi_media
+[ 87%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o
+[ 92%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o
+[ 92%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o
+[ 95%] Linking CXX executable ../../tools/railhmi-stream-probe
+[ 95%] Built target railhmi-stream-probe
+[ 97%] Linking CXX executable ../../tools/railhmi-ai-runner
+[ 97%] Built target railhmi-ai-runner
+[100%] Linking CXX executable ../../tools/railhmi-multi-probe
+[100%] Built target railhmi-multi-probe
+[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_build/build-media
+[build.sh] media layer: /tmp/railhmi_build/build-media/src/media/librailhmi_media.a
+BUILD_EXIT=0
+
+
+===== [stream-probe] exit=0 =====
+type=injection source=test camera=CAM-01 duration_s=6 cut_after_s=3 transport=n/a
+t=0 type=stream_state state=live fps=0.5 last_frame_ms=224581070 reconnect_count=0 presentable=true
+t=526 type=stream_state state=live fps=7.5 last_frame_ms=224581597 reconnect_count=0 presentable=true
+t=1007 type=stream_state state=live fps=13.5 last_frame_ms=224582078 reconnect_count=0 presentable=true
+t=1526 type=stream_state state=live fps=20.0 last_frame_ms=224582597 reconnect_count=0 presentable=true
+t=2006 type=stream_state state=live fps=25.5 last_frame_ms=224583077 reconnect_count=0 presentable=true
+t=2526 type=stream_state state=live fps=25.5 last_frame_ms=224583597 reconnect_count=0 presentable=true
+t=3006 type=injection cut=FI-01 (simulated stream cut)
+t=3006 type=stream_state state=reconnecting fps=24.5 last_frame_ms=224584037 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=3500 type=stream_state state=reconnecting fps=18.5 last_frame_ms=224584037 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=4000 type=stream_state state=reconnecting fps=12.5 last_frame_ms=224584037 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=4500 type=stream_state state=connecting fps=6.0 last_frame_ms=224584037 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=5000 type=stream_state state=connecting fps=0.0 last_frame_ms=224584037 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=5500 type=stream_state state=connecting fps=0.0 last_frame_ms=224584037 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+type=summary final_state=connecting reconnect_count=1 last_frame_ms=224584037 presentable=false
+PROBE_EXIT=0
+
+
+===== [multi-probe] exit=0 =====
+type=multi source=test channels=6 started=6 cut_index=3 cut_after_s=4
+t=0 type=cell idx=0 id=CAM-01 state=live fps=0.5 last_frame_ms=224587235 reconnect=0 presentable=true
+t=0 type=cell idx=1 id=CAM-02 state=live fps=0.5 last_frame_ms=224587241 reconnect=0 presentable=true
+t=0 type=cell idx=2 id=CAM-03 state=live fps=0.5 last_frame_ms=224587242 reconnect=0 presentable=true
+t=0 type=cell idx=3 id=CAM-04 state=live fps=0.5 last_frame_ms=224587245 reconnect=0 presentable=true
+t=0 type=cell idx=4 id=CAM-05 state=live fps=0.5 last_frame_ms=224587246 reconnect=0 presentable=true
+t=0 type=cell idx=5 id=CAM-06 state=live fps=0.5 last_frame_ms=224587246 reconnect=0 presentable=true
+t=0 type=grid cells=6 live=6 presentable=6
+t=531 type=cell idx=0 id=CAM-01 state=live fps=7.5 last_frame_ms=224587766 reconnect=0 presentable=true
+t=531 type=cell idx=1 id=CAM-02 state=live fps=7.5 last_frame_ms=224587801 reconnect=0 presentable=true
+t=531 type=cell idx=2 id=CAM-03 state=live fps=7.5 last_frame_ms=224587801 reconnect=0 presentable=true
+t=531 type=cell idx=3 id=CAM-04 state=live fps=7.5 last_frame_ms=224587805 reconnect=0 presentable=true
+t=531 type=cell idx=4 id=CAM-05 state=live fps=7.5 last_frame_ms=224587806 reconnect=0 presentable=true
+t=531 type=cell idx=5 id=CAM-06 state=live fps=7.5 last_frame_ms=224587807 reconnect=0 presentable=true
+t=531 type=grid cells=6 live=6 presentable=6
+t=1012 type=cell idx=0 id=CAM-01 state=live fps=13.5 last_frame_ms=224588247 reconnect=0 presentable=true
+t=1012 type=cell idx=1 id=CAM-02 state=live fps=13.5 last_frame_ms=224588280 reconnect=0 presentable=true
+t=1012 type=cell idx=2 id=CAM-03 state=live fps=13.5 last_frame_ms=224588281 reconnect=0 presentable=true
+t=1012 type=cell idx=3 id=CAM-04 state=live fps=13.5 last_frame_ms=224588284 reconnect=0 presentable=true
+t=1012 type=cell idx=4 id=CAM-05 state=live fps=13.5 last_frame_ms=224588286 reconnect=0 presentable=true
+t=1012 type=cell idx=5 id=CAM-06 state=live fps=13.5 last_frame_ms=224588286 reconnect=0 presentable=true
+t=1012 type=grid cells=6 live=6 presentable=6
+t=1531 type=cell idx=0 id=CAM-01 state=live fps=20.0 last_frame_ms=224588766 reconnect=0 presentable=true
+t=1531 type=cell idx=1 id=CAM-02 state=live fps=20.0 last_frame_ms=224588800 reconnect=0 presentable=true
+t=1531 type=cell idx=2 id=CAM-03 state=live fps=20.0 last_frame_ms=224588801 reconnect=0 presentable=true
+t=1531 type=cell idx=3 id=CAM-04 state=live fps=20.0 last_frame_ms=224588804 reconnect=0 presentable=true
+t=1531 type=cell idx=4 id=CAM-05 state=live fps=20.0 last_frame_ms=224588806 reconnect=0 presentable=true
+t=1531 type=cell idx=5 id=CAM-06 state=live fps=20.0 last_frame_ms=224588806 reconnect=0 presentable=true
+t=1531 type=grid cells=6 live=6 presentable=6
+t=2011 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=224589246 reconnect=0 presentable=true
+t=2011 type=cell idx=1 id=CAM-02 state=live fps=25.0 last_frame_ms=224589281 reconnect=0 presentable=true
+t=2011 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224589281 reconnect=0 presentable=true
+t=2011 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=224589284 reconnect=0 presentable=true
+t=2011 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224589286 reconnect=0 presentable=true
+t=2011 type=cell idx=5 id=CAM-06 state=live fps=25.0 last_frame_ms=224589287 reconnect=0 presentable=true
+t=2011 type=grid cells=6 live=6 presentable=6
+t=2531 type=cell idx=0 id=CAM-01 state=live fps=25.0 last_frame_ms=224589767 reconnect=0 presentable=true
+t=2531 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=224589800 reconnect=0 presentable=true
+t=2531 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224589801 reconnect=0 presentable=true
+t=2531 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=224589804 reconnect=0 presentable=true
+t=2531 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224589806 reconnect=0 presentable=true
+t=2531 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=224589806 reconnect=0 presentable=true
+t=2531 type=grid cells=6 live=6 presentable=6
+t=3012 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=224590247 reconnect=0 presentable=true
+t=3012 type=cell idx=1 id=CAM-02 state=live fps=25.0 last_frame_ms=224590281 reconnect=0 presentable=true
+t=3012 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224590281 reconnect=0 presentable=true
+t=3012 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=224590284 reconnect=0 presentable=true
+t=3012 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224590286 reconnect=0 presentable=true
+t=3012 type=cell idx=5 id=CAM-06 state=live fps=25.0 last_frame_ms=224590287 reconnect=0 presentable=true
+t=3012 type=grid cells=6 live=6 presentable=6
+t=3531 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=224590766 reconnect=0 presentable=true
+t=3531 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=224590800 reconnect=0 presentable=true
+t=3531 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224590801 reconnect=0 presentable=true
+t=3531 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=224590804 reconnect=0 presentable=true
+t=3531 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224590806 reconnect=0 presentable=true
+t=3531 type=cell idx=5 id=CAM-06 state=live fps=25.0 last_frame_ms=224590807 reconnect=0 presentable=true
+t=3531 type=grid cells=6 live=6 presentable=6
+t=4011 type=injection cut=FI-01 index=3
+t=4011 type=cell idx=0 id=CAM-01 state=live fps=25.0 last_frame_ms=224591258 reconnect=0 presentable=true
+t=4011 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=224591281 reconnect=0 presentable=true
+t=4011 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224591281 reconnect=0 presentable=true
+t=4011 type=cell idx=3 id=CAM-04 state=reconnecting fps=25.0 last_frame_ms=224591244 reconnect=1 presentable=false
+t=4011 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224591284 reconnect=0 presentable=true
+t=4011 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=224591284 reconnect=0 presentable=true
+t=4011 type=grid cells=6 live=5 presentable=5
+t=4529 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=224591764 reconnect=0 presentable=true
+t=4529 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=224591800 reconnect=0 presentable=true
+t=4529 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224591801 reconnect=0 presentable=true
+t=4529 type=cell idx=3 id=CAM-04 state=reconnecting fps=18.5 last_frame_ms=224591244 reconnect=1 presentable=false
+t=4529 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224591804 reconnect=0 presentable=true
+t=4529 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=224591804 reconnect=0 presentable=true
+t=4529 type=grid cells=6 live=5 presentable=5
+t=5010 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=224592245 reconnect=0 presentable=true
+t=5010 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=224592281 reconnect=0 presentable=true
+t=5010 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224592281 reconnect=0 presentable=true
+t=5010 type=cell idx=3 id=CAM-04 state=connecting fps=12.5 last_frame_ms=224591244 reconnect=1 presentable=false
+t=5010 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224592284 reconnect=0 presentable=true
+t=5010 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=224592284 reconnect=0 presentable=true
+t=5010 type=grid cells=6 live=5 presentable=5
+t=5529 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=224592764 reconnect=0 presentable=true
+t=5529 type=cell idx=1 id=CAM-02 state=live fps=25.0 last_frame_ms=224592801 reconnect=0 presentable=true
+t=5529 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224592801 reconnect=0 presentable=true
+t=5529 type=cell idx=3 id=CAM-04 state=connecting fps=6.0 last_frame_ms=224591244 reconnect=1 presentable=false
+t=5529 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224592804 reconnect=0 presentable=true
+t=5529 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=224592804 reconnect=0 presentable=true
+t=5529 type=grid cells=6 live=5 presentable=5
+t=6009 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=224593244 reconnect=0 presentable=true
+t=6009 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=224593280 reconnect=0 presentable=true
+t=6009 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224593281 reconnect=0 presentable=true
+t=6009 type=cell idx=3 id=CAM-04 state=connecting fps=0.0 last_frame_ms=224591244 reconnect=1 presentable=false
+t=6009 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224593284 reconnect=0 presentable=true
+t=6009 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=224593284 reconnect=0 presentable=true
+t=6009 type=grid cells=6 live=5 presentable=5
+t=6529 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=224593764 reconnect=0 presentable=true
+t=6529 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=224593800 reconnect=0 presentable=true
+t=6529 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224593801 reconnect=0 presentable=true
+t=6529 type=cell idx=3 id=CAM-04 state=connecting fps=0.0 last_frame_ms=224591244 reconnect=1 presentable=false
+t=6529 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224593804 reconnect=0 presentable=true
+t=6529 type=cell idx=5 id=CAM-06 state=live fps=25.0 last_frame_ms=224593805 reconnect=0 presentable=true
+t=6529 type=grid cells=6 live=5 presentable=5
+t=7010 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=224594245 reconnect=0 presentable=true
+t=7010 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=224594281 reconnect=0 presentable=true
+t=7010 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=224594281 reconnect=0 presentable=true
+t=7010 type=cell idx=3 id=CAM-04 state=connecting fps=0.0 last_frame_ms=224591244 reconnect=1 presentable=false
+t=7010 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224594284 reconnect=0 presentable=true
+t=7010 type=cell idx=5 id=CAM-06 state=live fps=25.0 last_frame_ms=224594285 reconnect=0 presentable=true
+t=7010 type=grid cells=6 live=5 presentable=5
+t=7529 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=224594764 reconnect=0 presentable=true
+t=7529 type=cell idx=1 id=CAM-02 state=live fps=25.0 last_frame_ms=224594802 reconnect=0 presentable=true
+t=7529 type=cell idx=2 id=CAM-03 state=live fps=25.0 last_frame_ms=224594802 reconnect=0 presentable=true
+t=7529 type=cell idx=3 id=CAM-04 state=connecting fps=0.0 last_frame_ms=224591244 reconnect=1 presentable=false
+t=7529 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=224594804 reconnect=0 presentable=true
+t=7529 type=cell idx=5 id=CAM-06 state=live fps=25.0 last_frame_ms=224594805 reconnect=0 presentable=true
+t=7529 type=grid cells=6 live=5 presentable=5
+type=summary channels=6 final_live=5 final_presentable=5
+type=acceptance all_presentable_before_cut=true cut_not_presentable=true others_still_presentable=true cut_last_frame_frozen=true result=PASS
+MULTI_EXIT=0
+
+
+===== [ai-runner] exit=0 =====
+type=worker start interval=5 depth=2 cameras=6 detector=sim(substitute,not-rknn)
+type=channel camera=CAM-01 profile=front fps=5 latency=33 dropped=79 model=rknn-2.3.2/yolov5s
+type=channel camera=CAM-04 profile=pantograph fps=5 latency=39 dropped=79 model=rknn-2.3.2/yolov5s
+type=channel camera=CAM-05 profile=wheel_rail fps=5 latency=36 dropped=79 model=rknn-2.3.2/yolov8s-seg
+type=channel camera=CAM-06 profile=cab_door fps=5 latency=42 dropped=79 model=rknn-2.3.2/yolov5s
+type=ai-status running=运行 eligible=4 with_result=4
+type=ai-status stopped=AI 不可用
+type=acceptance worker_stopped=true ai_unavailable=true channels_ran=4/4 result=PASS
+AIRUN_EXIT=0
+
+
+===== [download] exit=0 =====
+build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.core-evidence_stream-probe-20261016-ITEM017-media-r1.log
+
+===== [download] exit=0 =====
+build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.core-evidence_stream-probe-20261016-ITEM017-media-r1.json
+
+===== [download] exit=0 =====
+build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.core-evidence_multi-probe-20261016-ITEM017-media-r1.log
+
+===== [download] exit=0 =====
+build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.core-evidence_multi-probe-20261016-ITEM017-media-r1.json
+
+===== [download] exit=0 =====
+build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.core-evidence_ai-runner-20261016-ITEM017-media-r1.log
+
+===== [artifacts] exit=0 =====
+-rw-rw-r-- 1 admin admin 104818 Oct 16 04:21 build-media/src/media/librailhmi_media.a
+-rwxrwxr-x 1 admin admin 59176 Oct 16 04:21 build-media/tools/railhmi-stream-probe
+-rwxrwxr-x 1 admin admin 82088 Oct 16 04:21 build-media/tools/railhmi-multi-probe
+-rwxrwxr-x 1 admin admin 263416 Oct 16 04:21 build-media/tools/railhmi-ai-runner
+
+
+===== [cleanup] exit=0 =====
+cleaned
+

@@ -1,0 +1,124 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 121 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [upload-tokens] exit=0 =====
+design_tokens.yaml
+
+===== [testrun] exit=0 =====
+[run_core_tests] app=/tmp/railhmi_build outdir=core-evidence stamp=20261016-ITEM017-r1
+[run_core_tests] building (build.sh CoreTests) ...
+[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_build' -B '/tmp/railhmi_build/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = CoreTests
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_build/build-core
+[build.sh] building: cmake --build '/tmp/railhmi_build/build-core' -j8
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 31%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+TESTRUN_EXIT=3
+/tmp/railhmi_build/src/core/src/inference.cpp: In function ‘railhmi::core::StatusLevel railhmi::core::ai_status_level(const railhmi::core::AiRuntime&, long long int, int)’:
+/tmp/railhmi_build/src/core/src/inference.cpp:57:52: error: ‘Degraded’ is not a member of ‘railhmi::core::StatusLevel’
+   57 |     return any_ok ? StatusLevel::Ok : StatusLevel::Degraded;
+      |                                                    ^~~~~~~~
+/tmp/railhmi_build/src/core/src/inference.cpp: In function ‘std::string railhmi::core::ai_status_text(const railhmi::core::AiRuntime&, long long int, int)’:
+/tmp/railhmi_build/src/core/src/inference.cpp:63:27: error: ‘Degraded’ is not a member of ‘railhmi::core::StatusLevel’
+   63 |     if (l == StatusLevel::Degraded) return "推理陈旧";
+      |                           ^~~~~~~~
+gmake[2]: *** [src/core/CMakeFiles/railhmi_core.dir/build.make:286: src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:142: src/core/CMakeFiles/railhmi_core.dir/all] Error 2
+gmake: *** [Makefile:101: all] Error 2
+[build.sh] build failed (mode=core-tests)
+[run_core_tests] build FAILED
+
+
+===== [tokens-selftest] exit=0 =====
+[PASS] required token groups present (10)
+[PASS] deterministic generation
+[PASS] tokens.json parseable
+[PASS] Theme.qml contains 'property color bg_base'
+[PASS] Theme.qml contains 'QtObject L1'
+[PASS] Theme.qml contains 'property QtObject stream_state'
+[PASS] Theme.qml contains 'property QtObject integration_state'
+[PASS] Theme.qml contains 'property QtObject detection_badge'
+[PASS] token change propagates to outputs
+selftest: PASS
+TOKENS_EXIT=0
+
+
+===== [ui-scan] exit=0 =====
+[check_no_hardcoded_ui] scanned 16 files under src/ui
+[check_no_hardcoded_ui] PASS (no hardcoded hex color / font size in UI sources)
+SCAN_EXIT=0
+
+
+===== [sim-inject] exit=0 =====
+SIM_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory
+
+
+===== [status-probe] exit=0 =====
+STATUS_EXIT=127
+STATUS_EXIT=127
+AI_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-status-probe: No such file or directory
+bash: line 1: ./build-core/tools/railhmi-status-probe: No such file or directory
+bash: line 1: ./build-core/tools/railhmi-ai-probe: No such file or directory
+
+
+===== [download] exit=None =====
+core-evidence/core-tests-20261016-ITEM017-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+core-evidence/core-tests-20261016-ITEM017-r1.xml: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+core-evidence/sim-inject-20261016-ITEM017-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+core-evidence/sim-inject-20261016-ITEM017-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+core-evidence/status-probe-20261016-ITEM017-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+core-evidence/status-probe-driver-20261016-ITEM017-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+core-evidence/ai-probe-20261016-ITEM017-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [artifacts] exit=0 =====
+(check mode: no artifacts)
+
+
+===== [cleanup] exit=0 =====
+cleaned
+

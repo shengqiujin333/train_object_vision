@@ -310,6 +310,46 @@ void load_app(const Node& root, AppSettings* s, Errors& e) {
         if (a.storage.low_threshold_pct <= 0 || a.storage.low_threshold_pct >= 100)
             err(e, "app.storage.low_threshold_pct", "must be in (0,100)");
     }
+    // ai（可选）：推理调度配置；缺省时记录默认值，不静默。
+    const Node* ai = app->get("ai");
+    if (ai && !ai->is_null()) {
+        if (require_map(*ai, "app.ai", e)) {
+            long long iv = 0, qd = 0, budget = 0;
+            if (req_int(*ai, "inference_interval", "app.ai", &iv, e)) {
+                if (iv < 1) err(e, "app.ai.inference_interval", "must be >= 1");
+                else a.ai.inference_interval = static_cast<int>(iv);
+            }
+            if (req_int(*ai, "queue_depth", "app.ai", &qd, e)) {
+                if (qd < 1 || qd > 8) err(e, "app.ai.queue_depth", "must be in [1,8]");
+                else a.ai.queue_depth = static_cast<int>(qd);
+            }
+            if (req_int(*ai, "npu_budget", "app.ai", &budget, e)) {
+                if (budget < 1) err(e, "app.ai.npu_budget", "must be >= 1");
+                else a.ai.npu_budget = static_cast<int>(budget);
+            }
+            req_double(*ai, "temp_limit_c", "app.ai", &a.ai.temp_limit_c, e);
+            if (a.ai.temp_limit_c <= 0) err(e, "app.ai.temp_limit_c", "must be > 0");
+            const Node* models = ai->get("models");
+            if (models && !models->is_null()) {
+                if (!models->is_seq()) {
+                    err(e, "app.ai.models", "expected sequence");
+                } else {
+                    for (std::size_t i = 0; i < models->seq.size(); ++i) {
+                        const Node& mnode = models->seq[i];
+                        const std::string mbase = "app.ai.models[" + std::to_string(i) + "]";
+                        if (!require_map(mnode, mbase, e)) continue;
+                        AiModelConfig mc;
+                        req_enum<AiProfile>(mnode, "profile", mbase, parse_ai_profile, &mc.profile, e);
+                        req_string(mnode, "name", mbase, &mc.name, e);
+                        req_string(mnode, "version", mbase, &mc.version, e);
+                        a.ai.models.push_back(mc);
+                    }
+                }
+            }
+        }
+    } else {
+        s->applied_defaults.push_back("app.ai");
+    }
     // integrations（可选）
     const Node* ints = app->get("integrations");
     if (ints && !ints->is_null()) {

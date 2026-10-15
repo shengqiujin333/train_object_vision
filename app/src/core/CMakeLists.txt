@@ -14,6 +14,7 @@ add_library(railhmi_core STATIC
     src/grid.cpp
     src/channel_view.cpp
     src/status.cpp
+    src/inference.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -38,5 +39,12 @@ set_target_properties(railhmi-sim-inject PROPERTIES
 add_executable(railhmi-status-probe tools/status_probe.cpp)
 target_link_libraries(railhmi-status-probe PRIVATE railhmi_core)
 set_target_properties(railhmi-status-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 推理调度/队列/遥测探针（ITEM-017；无 Qt/RKNN）
+add_executable(railhmi-ai-probe tools/ai_probe.cpp)
+target_link_libraries(railhmi-ai-probe PRIVATE railhmi_core)
+set_target_properties(railhmi-ai-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

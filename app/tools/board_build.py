@@ -185,7 +185,9 @@ def main() -> int:
                 client, "cd %s && ./build-core/tools/railhmi-status-probe --scenario mixed --role maintainer "
                         "--out core-evidence/status-probe-%s.log; echo STATUS_EXIT=$?; "
                         "./build-core/tools/railhmi-status-probe --scenario mixed --role driver "
-                        "--out core-evidence/status-probe-driver-%s.log; echo STATUS_EXIT=$?" % (remote, args.stamp, args.stamp), 60))
+                        "--out core-evidence/status-probe-driver-%s.log; echo STATUS_EXIT=$?; "
+                        "./build-core/tools/railhmi-ai-probe --config ./config "
+                        "--out core-evidence/ai-probe-%s.log; echo AI_EXIT=$?" % (remote, args.stamp, args.stamp, args.stamp), 60))
             sftp = client.open_sftp()
             try:
                 sftp.get_channel().settimeout(args.connect_timeout * 6)
@@ -194,7 +196,8 @@ def main() -> int:
                             "core-evidence/sim-inject-%s.log" % args.stamp,
                             "core-evidence/sim-inject-%s.json" % args.stamp,
                             "core-evidence/status-probe-%s.log" % args.stamp,
-                            "core-evidence/status-probe-driver-%s.log" % args.stamp):
+                            "core-evidence/status-probe-driver-%s.log" % args.stamp,
+                            "core-evidence/ai-probe-%s.log" % args.stamp):
                     local_out = outdir / ("%s.%s" % (tag, rel.replace("/", "_")))
                     try:
                         sftp.get("%s/%s" % (remote, rel), str(local_out))
@@ -232,13 +235,18 @@ def main() -> int:
                             "--count 6 --source test --duration 8 --cut-index 3 --cut-after 4 "
                             "--out core-evidence/multi-probe-%s.log --json core-evidence/multi-probe-%s.json; "
                             "echo MULTI_EXIT=$?" % (remote, args.stamp, args.stamp), args.build_timeout))
+                note("ai-runner", rrun(
+                    client, "cd %s && ./build-media/tools/railhmi-ai-runner --config ./config "
+                            "--duration 4 --out core-evidence/ai-runner-%s.log; echo AIRUN_EXIT=$?" % (remote, args.stamp),
+                    args.build_timeout))
                 sftp = client.open_sftp()
                 try:
                     sftp.get_channel().settimeout(args.connect_timeout * 6)
                     for rel in ("core-evidence/stream-probe-%s.log" % args.stamp,
                                 "core-evidence/stream-probe-%s.json" % args.stamp,
                                 "core-evidence/multi-probe-%s.log" % args.stamp,
-                                "core-evidence/multi-probe-%s.json" % args.stamp):
+                                "core-evidence/multi-probe-%s.json" % args.stamp,
+                                "core-evidence/ai-runner-%s.log" % args.stamp):
                         local_out = outdir / ("%s.%s" % (tag, rel.replace("/", "_")))
                         try:
                             sftp.get("%s/%s" % (remote, rel), str(local_out))
@@ -250,7 +258,7 @@ def main() -> int:
 
         art_targets = {
             "CoreTests": ["build-core/tests/railhmi-core-tests"],
-            "MediaCheck": ["build-media/src/media/librailhmi_media.a", "build-media/tools/railhmi-stream-probe", "build-media/tools/railhmi-multi-probe"],
+            "MediaCheck": ["build-media/src/media/librailhmi_media.a", "build-media/tools/railhmi-stream-probe", "build-media/tools/railhmi-multi-probe", "build-media/tools/railhmi-ai-runner"],
             "Release": ["build-target/railhmi", "build-target/src/media/librailhmi_media.a"],
             "Preview": ["build-preview/railhmi"],
             "check": [],
