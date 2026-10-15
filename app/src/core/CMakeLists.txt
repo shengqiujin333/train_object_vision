@@ -8,6 +8,7 @@ add_library(railhmi_core STATIC
     src/persistence_model.cpp
     src/retention.cpp
     src/simulation.cpp
+    src/navigation.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include

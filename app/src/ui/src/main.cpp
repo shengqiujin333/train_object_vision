@@ -6,8 +6,11 @@
 #include <QQuickView>
 #include <QUrl>
 #include <QString>
+#include <QVariantList>
+#include <QVariantMap>
 
 #include "railhmi/core/config.h"
+#include "railhmi/core/navigation.h"
 #include "railhmi/core/version.h"
 #include "railhmi/platform/log.h"
 
@@ -35,11 +38,33 @@ int main(int argc, char** argv) {
     railhmi::platform::Logger::instance().info(
         "configuration OK: " + std::to_string(cfg.settings.cameras.size()) + " cameras");
 
+    // 角色化导航（ITEM-011）：按角色过滤可见页入口，注入 QML 外壳（受限页由 QML 显示无权限+返回）。
+    const railhmi::core::Role role = cfg.settings.app.default_role;
+    QVariantList navList;
+    QVariantList allList;
+    for (railhmi::core::Page p : railhmi::core::all_pages()) {
+        QVariantMap m;
+        m["id"] = QString::fromLatin1(railhmi::core::to_string(p));
+        m["title"] = QString::fromUtf8(railhmi::core::page_title(p));
+        allList.append(m);
+        if (railhmi::core::role_can_access(role, p)) navList.append(m);
+    }
+    const railhmi::core::ModeDisplay mode = railhmi::core::mode_display();
+    const QString roleId = QString::fromLatin1(railhmi::core::to_string(role));
+    const QString defaultPage = QString::fromLatin1(railhmi::core::to_string(railhmi::core::default_page(role)));
+
     QQuickView view;
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.rootContext()->setContextProperty("railhmiBuildDescription", build_desc);
     view.rootContext()->setContextProperty("railhmiSimulation",
                                            railhmi::core::simulation_enabled());
+    view.rootContext()->setContextProperty("railhmiNav", navList);
+    view.rootContext()->setContextProperty("railhmiAllPages", allList);
+    view.rootContext()->setContextProperty("railhmiRole", roleId);
+    view.rootContext()->setContextProperty("railhmiDefaultPage", defaultPage);
+    view.rootContext()->setContextProperty("railhmiModePrimary", QString::fromUtf8(mode.primary.c_str()));
+    view.rootContext()->setContextProperty("railhmiModeSecondary", QString::fromUtf8(mode.secondary.c_str()));
+    view.rootContext()->setContextProperty("railhmiModeInteractive", mode.interactive);
     view.setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (view.status() != QQuickView::Ready) {
         railhmi::platform::Logger::instance().error("QML load failed (qrc:/qml/main.qml)");

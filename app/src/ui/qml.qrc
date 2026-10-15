@@ -4,5 +4,9 @@
         <file>qml/Theme.qml</file>
         <file>qml/Tokens.qml</file>
         <file>qml/qmldir</file>
+        <file>qml/components/TopStatusBar.qml</file>
+        <file>qml/components/NavBar.qml</file>
+        <file>qml/pages/PageView.qml</file>
+        <file>qml/pages/DeniedView.qml</file>
     </qresource>
 </RCC>
