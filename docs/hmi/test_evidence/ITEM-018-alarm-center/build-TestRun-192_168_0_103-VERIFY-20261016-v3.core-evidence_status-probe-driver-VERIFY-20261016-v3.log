@@ -1,0 +1,18 @@
+type=status scenario=mixed role=driver items=7
+item key=pantograph label=受电弓 level=ok shape=dot glyph=● color=ok value=正常接触 abnormal=false clickable=false target=all_cameras allowed=false
+item key=wheel_rail label=轮轨 level=ok shape=dot glyph=● color=ok value=正常 abnormal=false clickable=false target=all_cameras allowed=false
+item key=door label=车门 level=warning shape=triangle glyph=▲ color=degraded value=车门未关严 abnormal=true clickable=true target=all_cameras allowed=false
+item key=camera label=摄像头 level=warning shape=triangle glyph=▲ color=degraded value=CAM-04 离线 abnormal=true clickable=true target=maintenance allowed=false
+item key=ai label=AI level=alarm shape=square glyph=■ color=error value=前方 AI 不可用 abnormal=true clickable=true target=ai_debug allowed=false
+item key=recording label=录像 level=ok shape=dot glyph=● color=ok value=录像中 abnormal=false clickable=false target=replay allowed=false
+item key=storage label=存储 level=warning shape=triangle glyph=▲ color=degraded value=剩余不足 abnormal=true clickable=true target=maintenance allowed=false
+type=topbar scenario=mixed role=driver items=7
+item key=time label=时间 level=unavailable shape=none glyph= color=neutral value=12:34:56 unavailable=false clickable=false target=realtime allowed=false
+item key=mode label=模式 level=unavailable shape=dot glyph=● color=neutral value=可见光 secondary=红外未接入 unavailable=false clickable=false target=realtime allowed=false
+item key=recording label=录像 level=ok shape=dot glyph=● color=ok value=录像中 unavailable=false clickable=false target=replay allowed=false
+item key=ai label=AI level=alarm shape=square glyph=■ color=error value=前方 AI 不可用 unavailable=false clickable=true target=ai_debug allowed=false
+item key=health label=系统健康 level=warning shape=triangle glyph=▲ color=degraded value=温度偏高 unavailable=false clickable=true target=maintenance allowed=false
+item key=vehicle_speed label=车速 level=unavailable shape=minus-circle glyph=⊖ color=neutral value=未接入 unavailable=true clickable=false target=realtime allowed=false
+item key=door_sensor label=门磁 level=unavailable shape=minus-circle glyph=⊖ color=neutral value=未接入 unavailable=true clickable=false target=realtime allowed=false
+type=triple-encoding distinct_shapes=5 distinct_glyphs=5 distinct_labels=5 distinct_colors=5
+type=acceptance items=7 top_items=7 triple_encoding_distinct=true mode_bit_ok=true unconnected_shown=true result=PASS

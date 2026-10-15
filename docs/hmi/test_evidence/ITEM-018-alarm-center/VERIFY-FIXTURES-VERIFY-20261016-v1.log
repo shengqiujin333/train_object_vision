@@ -1,0 +1,94 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 129 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 SCAN_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 ALARM_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_alarm-probe-VERIFY-20261016-v1.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-018-alarm-center\build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json
+log: docs\hmi\test_evidence\ITEM-018-alarm-center\build-TestRun-192_168_0_103-VERIFY-20261016-v1.log
+
+
+===== [fresh-artifacts] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_alarm-probe-VERIFY-20261016-v1.log
+
+===== [log-compare] exit=0 =====
+impl=build-TestRun-192_168_0_103-20261016-ITEM018-r1.core-evidence_core-tests-20261016-ITEM018-r1.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log impl_pass=512 verify_pass=512 identical=True verify_fails=0 result=RESULT: PASS passed=512 failed=0
+
+===== [junit-parse] exit=0 =====
+junit build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml tests=512 failures=0 alarm_cases=83
+
+===== [alarm-probe-assert] exit=1 =====
+{"fails": ["maint log"]}
+
+===== [alarm-probe-compare] exit=0 =====
+deterministic reproduction identical=True
+
+===== [mkdir-workdir] exit=0 =====
+
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-018-alarm-center/verify_ai18_ext.cpp
+
+===== [compile-ext] exit=0 =====
+/tmp/railhmi_verify018/verify_ai18_ext.cpp: In function ‘void {anonymous}::t_row_derive()’:
+/tmp/railhmi_verify018/verify_ai18_ext.cpp:130:69: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’
+  130 |     check(record_availability_label(RecordAvailability::Incomplete) == std::string("录像不完整"),
+      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify018/verify_ai18_ext.cpp:31:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’
+   31 | void check(const std::string& name, bool ok) {
+      |            ~~~~~~~~~~~~~~~~~~~^~~~
+/tmp/railhmi_verify018/verify_ai18_ext.cpp:132:70: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’
+  132 |     check(record_availability_label(RecordAvailability::Unavailable) == std::string("录像不可用"),
+      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify018/verify_ai18_ext.cpp:31:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’
+   31 | void check(const std::string& name, bool ok) {
+      |            ~~~~~~~~~~~~~~~~~~~^~~~
+/tmp/railhmi_verify018/verify_ai18_ext.cpp:134:66: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’
+  134 |     check(std::string(to_string(RecordAvailability::Incomplete)) == "incomplete",
+      |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+/tmp/railhmi_verify018/verify_ai18_ext.cpp:31:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’
+   31 | void check(const std::string& name, bool ok) {
+      |            ~~~~~~~~~~~~~~~~~~~^~~~
+/tmp/railhmi_verify018/verify_ai18_ext.cpp: In function ‘void {anonymous}::t_filters_options()’:
+/tmp/railhmi_verify018/verify_ai18_ext.cpp:184:54: error: ‘find’ is not a member of ‘std’
+  184 |     check("no Device in options of these rows", std::find(o.types.begin(), o.types.end(),
+      |                                                      ^~~~
+GXX_EXIT=1
+
+
+===== [alarm-probe-negative-arg] exit=0 =====
+NARG_EXIT=2
+unknown arg: --nope
+
+
+===== [alarm-probe-determinism] exit=0 =====
+IDENTICAL
+
+
+===== [regression-artifacts] exit=0 =====
+ai-probe-VERIFY-20261016-v1.log sim-inject-VERIFY-20261016-v1.json sim-inject-VERIFY-20261016-v1.log status-probe-driver-VERIFY-20261016-v1.log status-probe-VERIFY-20261016-v1.log 
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify018': No such file or directory
+ls: cannot access '/tmp/railhmi_build': No such file or directory
+

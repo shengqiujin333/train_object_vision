@@ -1,0 +1,115 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify018",
+    "cpp": "docs/hmi/test_evidence/ITEM-018-alarm-center/verify_ai18_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-018-alarm-center",
+    "stamp": "VERIFY-20261016-v2",
+    "impl_testrun_log": "docs/hmi/test_evidence/ITEM-018-alarm-center/build-TestRun-192_168_0_103-20261016-ITEM018-r1.core-evidence_core-tests-20261016-ITEM018-r1.log",
+    "impl_alarmprobe_log": "docs/hmi/test_evidence/ITEM-018-alarm-center/build-TestRun-192_168_0_103-20261016-ITEM018-r1.core-evidence_alarm-probe-20261016-ITEM018-r1.log",
+    "connect_timeout": "10",
+    "timeout_sec": "1200",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts logic on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir docs\\hmi\\test_evidence\\ITEM-018-alarm-center --stamp VERIFY-20261016-v2 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 33.12,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 129 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 SCAN_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 ALARM_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-driver-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_ai-probe-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_alarm-probe-VERIFY-20261016-v2.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: docs\\hmi\\test_evidence\\ITEM-018-alarm-center\\build-TestRun-192_168_0_103-VERIFY-20261016-v2.transcript.json\nlog: docs\\hmi\\test_evidence\\ITEM-018-alarm-center\\build-TestRun-192_168_0_103-VERIFY-20261016-v2.log\n"
+    },
+    {
+      "step": "fresh-artifacts",
+      "exit": 0,
+      "output": "build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_alarm-probe-VERIFY-20261016-v2.log"
+    },
+    {
+      "step": "log-compare",
+      "exit": 0,
+      "output": "impl=build-TestRun-192_168_0_103-20261016-ITEM018-r1.core-evidence_core-tests-20261016-ITEM018-r1.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log impl_pass=512 verify_pass=512 identical=True verify_fails=0 result=RESULT: PASS passed=512 failed=0"
+    },
+    {
+      "step": "junit-parse",
+      "exit": 0,
+      "output": "junit build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml tests=512 failures=0 alarm_cases=83"
+    },
+    {
+      "step": "alarm-probe-assert",
+      "exit": 0,
+      "output": "{\"fails\": []}"
+    },
+    {
+      "step": "alarm-probe-compare",
+      "exit": 0,
+      "output": "deterministic reproduction identical=True"
+    },
+    {
+      "step": "mkdir-workdir",
+      "cmd": "mkdir -p /tmp/railhmi_verify018",
+      "exit": 0,
+      "elapsed_s": 0.03,
+      "output": ""
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "docs/hmi/test_evidence/ITEM-018-alarm-center/verify_ai18_ext.cpp"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include -Itests/core /tmp/railhmi_verify018/verify_ai18_ext.cpp build-core/src/core/librailhmi_core.a -o /tmp/railhmi_verify018/verify_ai18_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.33,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify018/verify_ai18_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "== verify ITEM-018 ext (alarm-center acceptance fixtures) ==\nRESULT: FAIL passed=51 failed=2\n  FAIL: non-leap 2-29 rejected\n  FAIL: default result empty\nEXT_EXIT=1\n"
+    },
+    {
+      "step": "alarm-probe-negative-arg",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-alarm-probe --nope; echo NARG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "NARG_EXIT=2\nunknown arg: --nope\n"
+    },
+    {
+      "step": "alarm-probe-determinism",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-alarm-probe | diff - /tmp/railhmi_build/core-evidence/alarm-probe-VERIFY-20261016-v2.log && echo IDENTICAL",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "IDENTICAL\n"
+    },
+    {
+      "step": "regression-artifacts",
+      "cmd": "cd /tmp/railhmi_build && ls core-evidence/ | grep -E '^(sim-inject|status-probe|ai-probe)' | tr '\n' ' '",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "ai-probe-VERIFY-20261016-v2.log sim-inject-VERIFY-20261016-v2.json sim-inject-VERIFY-20261016-v2.log status-probe-driver-VERIFY-20261016-v2.log status-probe-VERIFY-20261016-v2.log "
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify018 /tmp/railhmi_build && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify018 /tmp/railhmi_build 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.09,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify018': No such file or directory\nls: cannot access '/tmp/railhmi_build': No such file or directory\n"
+    }
+  ]
+}
