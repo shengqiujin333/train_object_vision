@@ -1,0 +1,21 @@
+# railhmi 应用配置（角色/模式/录像来源/存储/NVR 登记）
+# 本期 mode=visible（红外未接入）；render_path 依 ITEM-002 板端实测选定 cpu。
+app:
+  language: "zh-CN"
+  default_role: driver
+  resolution: [1920, 1080]
+  render_path: cpu
+  mode: visible
+  recording_source: both
+  log_level: info
+  simulation: false
+  storage:
+    retention_days: 7
+    max_gb: 20
+    low_threshold_pct: 10
+  # NVR 已登记；protocol/channel_mapping 未提供 -> 界面按“未配置”呈现，不虚构通道号
+  integrations:
+    - id: NVR
+      name: 网络录像机
+      address: 192.168.1.4
+      registered: true

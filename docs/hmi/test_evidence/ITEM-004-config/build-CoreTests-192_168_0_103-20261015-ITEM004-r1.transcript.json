@@ -1,0 +1,60 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "local_dir": "E:\\work\\rail_issue\\rk3588_handover\\app",
+    "remote_dir": "/tmp/railhmi_build",
+    "mode": "CoreTests",
+    "outdir": "docs/hmi/test_evidence/ITEM-004-config",
+    "stamp": "20261015-ITEM004-r1",
+    "connect_timeout": 10,
+    "build_timeout": 600,
+    "run_tests": true,
+    "keep_remote": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_build",
+      "exit": 0,
+      "elapsed_s": 0.22,
+      "output": ""
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 48 files from E:\\work\\rail_issue\\rk3588_handover\\app"
+    },
+    {
+      "step": "build",
+      "cmd": "cd /tmp/railhmi_build && bash build.sh CoreTests; echo BUILD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 7.28,
+      "output": "[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1\n[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no\n[build.sh] configuring: cmake -S '/tmp/railhmi_build' -B '/tmp/railhmi_build/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- railhmi: build mode = CoreTests\n-- railhmi: SQLite3 dev not found -> SqliteStore disabled (install libsqlite3-dev to enable)\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/railhmi_build/build-core\n[build.sh] building: cmake --build '/tmp/railhmi_build/build-core' -j8\n[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o\n[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o\n[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o\n[ 33%] Linking CXX static library librailhmi_core.a\n[ 33%] Built target railhmi_core\n[ 41%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o\n[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o\n[ 58%] Linking CXX static library librailhmi_platform.a\n[ 58%] Built target railhmi_platform\n[ 75%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o\n[ 75%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o\n[ 91%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_config.cpp.o\n[ 91%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o\n[100%] Linking CXX executable ../railhmi-core-tests\n[100%] Built target railhmi-core-tests\n[build.sh] build OK (mode=core-tests); artifacts under /tmp/railhmi_build/build-core\n[build.sh] run: /tmp/railhmi_build/build-core/tests/railhmi-core-tests\nBUILD_EXIT=0\n"
+    },
+    {
+      "step": "tests",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tests/railhmi-core-tests; echo TEST_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "== railhmi-core tests (railhmi 0.1.0 [mode=CoreTests, simulation=off]) ==\n[PASS] version_string == 0.1.0\n[PASS] build_mode is a known mode\n[PASS] build_description contains railhmi\n[PASS] redact_url hides credentials\n[PASS] redact_url leaves credential-free url unchanged\n[PASS] FileStore::write_atomic\n[PASS] FileStore::read_all round-trip\n[PASS] FileStore::exists after write\n[PASS] FileStore::exists false for missing\n[SKIP] sqlite tests (RAILHMI_HAVE_SQLITE not defined)\n[PASS] baseline config loads without errors\n[PASS] baseline has 6 cameras\n[PASS] CAM-01 id/position=primary\n[PASS] CAM-01 ai_enabled=true, ai_profile=front\n[PASS] CAM-02 ai_enabled=false, ai_profile=none\n[PASS] CAM-03 ai_enabled=false, ai_profile=none\n[PASS] CAM-04 ai_profile=pantograph\n[PASS] CAM-05 ai_profile=wheel_rail\n[PASS] CAM-06 ai_profile=cab_door\n[PASS] app.render_path=cpu\n[PASS] app.mode=visible\n[PASS] IR is not connected this phase\n[PASS] app.recording_source=both\n[PASS] app.resolution=1920x1080\n[PASS] thresholds values parsed\n[PASS] baseline has 4 roi entries\n[PASS] one integration (NVR)\n[PASS] NVR registered\n[PASS] NVR initial integration_state=unconfigured\n[PASS] integration_state string is 'unconfigured'\n[PASS] missing optional tile_aspect recorded in applied_defaults\n[PASS] missing required field reports cameras[0].username\n[PASS] invalid transport reports cameras[0].transport\n[PASS] invalid ai_profile reports cameras[0].ai_profile\n[PASS] ai_enabled/profile mismatch reports cameras[0].ai_profile\n[PASS] missing thresholds field reports thresholds.confirm_frames\n[PASS] invalid render_path reports app.render_path\n[PASS] invalid mode reports app.mode\n[PASS] unknown roi camera reports roi[0].camera\n[PASS] out-of-range roi w reports roi[0].w\n[PASS] missing config file reports file name\n== 40 passed, 0 failed ==\nTEST_EXIT=0\n"
+    },
+    {
+      "step": "artifacts",
+      "cmd": "cd /tmp/railhmi_build; ls -l build-core/tests/railhmi-core-tests 2>&1; true",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "-rwxrwxr-x 1 admin admin 173848 Oct 15 22:24 build-core/tests/railhmi-core-tests\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_build && echo cleaned",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "cleaned\n"
+    }
+  ]
+}

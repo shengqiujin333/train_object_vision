@@ -7,8 +7,13 @@
 #include <QUrl>
 #include <QString>
 
+#include "railhmi/core/config.h"
 #include "railhmi/core/version.h"
 #include "railhmi/platform/log.h"
+
+#ifndef RAILHMI_CONFIG_DIR
+#define RAILHMI_CONFIG_DIR "config"
+#endif
 
 int main(int argc, char** argv) {
     QGuiApplication app(argc, argv);
@@ -17,6 +22,18 @@ int main(int argc, char** argv) {
 
     const QString build_desc = QString::fromStdString(railhmi::core::build_description());
     railhmi::platform::Logger::instance().info(build_desc.toStdString());
+
+    // 启动即校验配置；非法配置报出具体字段并非零退出（绝不静默使用默认值）。
+    railhmi::core::ConfigLoadResult cfg = railhmi::core::load_config_dir(RAILHMI_CONFIG_DIR);
+    if (!cfg.ok) {
+        railhmi::platform::Logger::instance().error("configuration invalid; refusing to start");
+        for (const auto& e : cfg.errors) {
+            railhmi::platform::Logger::instance().error("  " + e.str());
+        }
+        return 4;
+    }
+    railhmi::platform::Logger::instance().info(
+        "configuration OK: " + std::to_string(cfg.settings.cameras.size()) + " cameras");
 
     QQuickView view;
     view.setResizeMode(QQuickView::SizeRootObjectToView);

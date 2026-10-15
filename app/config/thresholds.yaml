@@ -1,0 +1,12 @@
+# railhmi 阈值配置（多帧确认/危险区/抑制/冻结重连/录像片段）
+thresholds:
+  confirm_frames: 3
+  confirm_window_ms: 500
+  danger_proximity_m: 5.0
+  confidence_min: 0.5
+  suppress_window_ms: 3000
+  freeze_timeout_ms: 2000
+  reconnect_threshold: 3
+  storage_low_pct: 10
+  clip_pre_seconds: 30
+  clip_post_seconds: 60

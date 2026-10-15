@@ -1,0 +1,70 @@
+# railhmi 摄像头注册表（配置基线；IP/编码未现场核验，UI 一律从配置读取）
+# 本期仅接入 6 路可见光，不含红外。检测职责由 ai_enabled/ai_profile 驱动。
+cameras:
+  - id: CAM-01
+    name: 车头前方
+    position: primary
+    rtsp_url: "rtsp://192.168.1.65:554/cam/realmonitor?channel=1&subtype=0"
+    transport: udp
+    username: admin
+    credential_env: TRAIN_FRONT_RTSP_CREDENTIAL
+    spectrum: visible
+    ai_enabled: true
+    ai_profile: front
+    display_fps: 25
+    tile_aspect: "16:9"
+  - id: CAM-02
+    name: 车辆左侧
+    position: left
+    rtsp_url: "rtsp://192.168.1.160:554/h264/ch1/main/av_stream"
+    transport: udp
+    username: admin
+    credential_env: TRAIN_SIDE_RTSP_CREDENTIAL
+    spectrum: visible
+    ai_enabled: false
+    ai_profile: none
+    display_fps: 15
+  - id: CAM-03
+    name: 车辆右侧
+    position: right
+    rtsp_url: "rtsp://192.168.1.162:554/h264/ch1/main/av_stream"
+    transport: udp
+    username: admin
+    credential_env: TRAIN_SIDE_RTSP_CREDENTIAL
+    spectrum: visible
+    ai_enabled: false
+    ai_profile: none
+    display_fps: 15
+  - id: CAM-04
+    name: 车顶受电弓
+    position: roof
+    rtsp_url: "rtsp://192.168.1.163:554/h264/ch1/main/av_stream"
+    transport: udp
+    username: admin
+    credential_env: TRAIN_SIDE_RTSP_CREDENTIAL
+    spectrum: visible
+    ai_enabled: true
+    ai_profile: pantograph
+    display_fps: 15
+  - id: CAM-05
+    name: 车底轮轨
+    position: underfloor
+    rtsp_url: "rtsp://192.168.1.165:554/h264/ch1/main/av_stream"
+    transport: udp
+    username: admin
+    credential_env: TRAIN_SIDE_RTSP_CREDENTIAL
+    spectrum: visible
+    ai_enabled: true
+    ai_profile: wheel_rail
+    display_fps: 15
+  - id: CAM-06
+    name: 司机室车门
+    position: cab
+    rtsp_url: "rtsp://192.168.1.167:554/h264/ch1/main/av_stream"
+    transport: udp
+    username: admin
+    credential_env: TRAIN_SIDE_RTSP_CREDENTIAL
+    spectrum: visible
+    ai_enabled: true
+    ai_profile: cab_door
+    display_fps: 15

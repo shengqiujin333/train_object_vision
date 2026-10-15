@@ -1,0 +1,113 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 49 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [build] exit=0 =====
+[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_build' -B '/tmp/railhmi_build/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = CoreTests
+-- railhmi: SQLite3 dev not found -> SqliteStore disabled (install libsqlite3-dev to enable)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_build/build-core
+[build.sh] building: cmake --build '/tmp/railhmi_build/build-core' -j8
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[ 28%] Linking CXX static library librailhmi_core.a
+[ 28%] Built target railhmi_core
+[ 35%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 42%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 50%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 57%] Linking CXX executable ../../tools/railhmi-config-check
+[ 57%] Built target railhmi-config-check
+[ 64%] Linking CXX static library librailhmi_platform.a
+[ 64%] Built target railhmi_platform
+[ 71%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o
+[ 78%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_config.cpp.o
+[ 92%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o
+[ 92%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o
+[100%] Linking CXX executable ../railhmi-core-tests
+[100%] Built target railhmi-core-tests
+[build.sh] build OK (mode=core-tests); artifacts under /tmp/railhmi_build/build-core
+[build.sh] run: /tmp/railhmi_build/build-core/tests/railhmi-core-tests
+BUILD_EXIT=0
+
+
+===== [tests] exit=0 =====
+== railhmi-core tests (railhmi 0.1.0 [mode=CoreTests, simulation=off]) ==
+[PASS] version_string == 0.1.0
+[PASS] build_mode is a known mode
+[PASS] build_description contains railhmi
+[PASS] redact_url hides credentials
+[PASS] redact_url leaves credential-free url unchanged
+[PASS] FileStore::write_atomic
+[PASS] FileStore::read_all round-trip
+[PASS] FileStore::exists after write
+[PASS] FileStore::exists false for missing
+[SKIP] sqlite tests (RAILHMI_HAVE_SQLITE not defined)
+[PASS] baseline config loads without errors
+[PASS] baseline has 6 cameras
+[PASS] CAM-01 id/position=primary
+[PASS] CAM-01 ai_enabled=true, ai_profile=front
+[PASS] CAM-02 ai_enabled=false, ai_profile=none
+[PASS] CAM-03 ai_enabled=false, ai_profile=none
+[PASS] CAM-04 ai_profile=pantograph
+[PASS] CAM-05 ai_profile=wheel_rail
+[PASS] CAM-06 ai_profile=cab_door
+[PASS] app.render_path=cpu
+[PASS] app.mode=visible
+[PASS] IR is not connected this phase
+[PASS] app.recording_source=both
+[PASS] app.resolution=1920x1080
+[PASS] thresholds values parsed
+[PASS] baseline has 4 roi entries
+[PASS] one integration (NVR)
+[PASS] NVR registered
+[PASS] NVR initial integration_state=unconfigured
+[PASS] integration_state string is 'unconfigured'
+[PASS] missing optional tile_aspect recorded in applied_defaults
+[PASS] missing required field reports cameras[0].username
+[PASS] invalid transport reports cameras[0].transport
+[PASS] invalid ai_profile reports cameras[0].ai_profile
+[PASS] ai_enabled/profile mismatch reports cameras[0].ai_profile
+[PASS] missing thresholds field reports thresholds.confirm_frames
+[PASS] invalid render_path reports app.render_path
+[PASS] invalid mode reports app.mode
+[PASS] unknown roi camera reports roi[0].camera
+[PASS] out-of-range roi w reports roi[0].w
+[PASS] missing config file reports file name
+== 40 passed, 0 failed ==
+TEST_EXIT=0
+
+
+===== [config-check-good] exit=0 =====
+config OK: 6 cameras, 4 roi, 1 integrations (dir=./config)
+  mode=visible render_path=cpu recording_source=both
+CFG_EXIT=0
+
+
+===== [config-check-bad] exit=0 =====
+config INVALID (1 error(s)) dir=/tmp/railhmi_cfg_bad:
+  thresholds.confirm_frames: required field missing
+CFG_EXIT=1
+
+
+===== [artifacts] exit=0 =====
+-rwxrwxr-x 1 admin admin 173848 Oct 15 22:26 build-core/tests/railhmi-core-tests
+
+
+===== [cleanup] exit=0 =====
+cleaned
+

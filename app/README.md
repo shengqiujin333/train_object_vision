@@ -16,7 +16,8 @@
 | ITEM-001 | 目标构建/运行依赖基线与授权缺口登记 | **源码 + 板端实测已交付**：`tools/env_probe.py`、`tools/board_env_probe.py`；板端 E-00..E-13 已实际采集（六路相机/NVR 端口可达），三态缺口与替代结论见 `docs/hmi/build_env_check.md` |
 | ITEM-002 | 渲染路径选型 spike（qmlglsink 主 / RGA+纹理回退） | **已在板端实测并选定路径**：`cpu`（SELECTED）；`gl` 因缺 `qmlglsink`/Qt QML 包不可用（保留可开启候选）；数据与证据见 `docs/hmi/build_env_check.md` §14 与 `spikes/render_path/spike_core.c` |
 | ITEM-003 | 分层 CMake 工程骨架与三档构建入口（`build.sh`） | **已交付**：`railhmi_core`（纯 stdlib）/`railhmi_platform`（日志/文件存储+可选 SQLite）/`railhmi_media`（target GStreamer+librga）/`railhmi`（Qt/QML）；板端 `CoreTests` 构建成功且 **9/9 测试通过**、`MediaCheck` 媒体层编译成功；`Release`/`Preview` 缺 Qt5 Quick/Qml 开发包时**明确报错**。证据：`docs/hmi/test_evidence/ITEM-003-build/README.md` |
-| ITEM-004.. | 主题、导航、注册表、取流、页面、推理、报警、录像、回放、权限、恢复、打包 | 未实现 |
+| ITEM-004 | `railhmi-core` 配置与状态契约层（cameras/app/thresholds/roi） | **已交付**：无依赖 YAML 解析 + 配置模型/枚举 + 校验器（报具体字段，不静默默认）；`app/config/*.yaml` 基线；启动校验入口 `railhmi-config-check`；板端 CoreTests **40/40 通过**，坏配置报 `thresholds.confirm_frames` 并非零退出。证据：`docs/hmi/test_evidence/ITEM-004-config/README.md` |
+| ITEM-005.. | 主题、导航、注册表运行时、取流、页面、推理、报警、录像、回放、权限、恢复、打包 | 未实现 |
 
 > 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 
@@ -30,11 +31,14 @@ app/
   CMakeLists.txt          # 分层工程（core/platform/media/ui 子目录）
   build.sh                # 构建入口: Release | Preview | CoreTests | MediaCheck | check
   src/
-    core/                 # railhmi_core: 纯业务逻辑，仅 C++ 标准库（无 Qt/GStreamer/相机/SQLite）
+    core/                 # railhmi_core: 纯业务逻辑（无 Qt/GStreamer/相机/SQLite）
+      include/railhmi/core/{version,yaml,config}.h
+      tools/config_check.cpp   # 启动配置校验入口（railhmi-config-check）
     platform/             # railhmi_platform: 日志/文件存储 + 可选 SQLite(SqliteStore)
     media/                # railhmi_media: target 专用 GStreamer + librga
-    ui/                   # railhmi: Qt/QML 应用（qml/main.qml）
-  tests/core/             # railhmi-core-tests（最小工具链可跑）
+    ui/                   # railhmi: Qt/QML 应用（qml/main.qml；启动即校验配置）
+  config/                 # 运行配置: cameras.yaml / app.yaml / thresholds.yaml / roi.yaml
+  tests/core/             # railhmi-core-tests（最小工具链可跑；含配置域 TC-CORE-01）
   tools/
     env_probe.py          # 依赖/环境只读探针（标准库；目标板与主机均可运行）
     run_env_check.sh      # 探针运行入口（输出 md/raw/json 到 test_evidence）

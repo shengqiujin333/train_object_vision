@@ -1,0 +1,26 @@
+# railhmi ROI 配置（归一化矩形 [0,1]）；camera 必须引用 cameras.yaml 中的 id
+roi:
+  - camera: CAM-01
+    name: danger_zone
+    x: 0.08
+    y: 0.82
+    w: 0.84
+    h: 0.16
+  - camera: CAM-04
+    name: pantograph_roi
+    x: 0.30
+    y: 0.05
+    w: 0.40
+    h: 0.35
+  - camera: CAM-05
+    name: wheel_rail_roi
+    x: 0.05
+    y: 0.40
+    w: 0.90
+    h: 0.50
+  - camera: CAM-06
+    name: cab_door_roi
+    x: 0.10
+    y: 0.20
+    w: 0.80
+    h: 0.60

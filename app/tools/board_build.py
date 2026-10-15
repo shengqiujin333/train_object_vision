@@ -167,6 +167,14 @@ def main() -> int:
             run = rrun(client, "cd %s && ./build-core/tests/railhmi-core-tests; echo TEST_EXIT=$?" % remote,
                        args.build_timeout)
             note("tests", run)
+            note("config-check-good", rrun(
+                client, "cd %s && ./build-core/tools/railhmi-config-check ./config; echo CFG_EXIT=$?" % remote, 60))
+            bad = ("cd %s && rm -rf /tmp/railhmi_cfg_bad && mkdir -p /tmp/railhmi_cfg_bad "
+                   "&& cp config/*.yaml /tmp/railhmi_cfg_bad/ "
+                   "&& sed -i '/confirm_frames/d' /tmp/railhmi_cfg_bad/thresholds.yaml "
+                   "&& ./build-core/tools/railhmi-config-check /tmp/railhmi_cfg_bad; echo CFG_EXIT=$?; "
+                   "rm -rf /tmp/railhmi_cfg_bad" % remote)
+            note("config-check-bad", rrun(client, bad, 60))
 
         art_targets = {
             "CoreTests": ["build-core/tests/railhmi-core-tests"],

@@ -1,7 +1,15 @@
 add_executable(railhmi-core-tests
     main.cpp
+    test_util.cpp
+    test_platform.cpp
+    test_config.cpp
 )
 target_link_libraries(railhmi-core-tests PRIVATE railhmi_core railhmi_platform)
+
+# 基线配置目录（供测试加载真实 config/*.yaml；随工程上传/构建路径解析）
+target_compile_definitions(railhmi-core-tests PRIVATE
+    RAILHMI_CONFIG_DIR="${CMAKE_SOURCE_DIR}/config"
+)
 
 # 固定输出到 <build>/tests/，与构建入口约定一致（build-core/tests/railhmi-core-tests）
 set_target_properties(railhmi-core-tests PROPERTIES

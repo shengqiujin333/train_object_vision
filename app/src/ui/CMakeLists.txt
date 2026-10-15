@@ -19,6 +19,7 @@ add_executable(railhmi
     qml.qrc
 )
 target_include_directories(railhmi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_compile_definitions(railhmi PRIVATE RAILHMI_CONFIG_DIR="${CMAKE_SOURCE_DIR}/config")
 target_link_libraries(railhmi PRIVATE
     Qt5::Core Qt5::Gui Qt5::Quick Qt5::Qml
     railhmi_core railhmi_platform
