@@ -187,7 +187,9 @@ def main() -> int:
                         "./build-core/tools/railhmi-status-probe --scenario mixed --role driver "
                         "--out core-evidence/status-probe-driver-%s.log; echo STATUS_EXIT=$?; "
                         "./build-core/tools/railhmi-ai-probe --config ./config "
-                        "--out core-evidence/ai-probe-%s.log; echo AI_EXIT=$?" % (remote, args.stamp, args.stamp, args.stamp), 60))
+                        "--out core-evidence/ai-probe-%s.log; echo AI_EXIT=$?; "
+                        "./build-core/tools/railhmi-alarm-probe "
+                        "--out core-evidence/alarm-probe-%s.log; echo ALARM_EXIT=$?" % (remote, args.stamp, args.stamp, args.stamp, args.stamp), 60))
             sftp = client.open_sftp()
             try:
                 sftp.get_channel().settimeout(args.connect_timeout * 6)
@@ -197,7 +199,8 @@ def main() -> int:
                             "core-evidence/sim-inject-%s.json" % args.stamp,
                             "core-evidence/status-probe-%s.log" % args.stamp,
                             "core-evidence/status-probe-driver-%s.log" % args.stamp,
-                            "core-evidence/ai-probe-%s.log" % args.stamp):
+                            "core-evidence/ai-probe-%s.log" % args.stamp,
+                            "core-evidence/alarm-probe-%s.log" % args.stamp):
                     local_out = outdir / ("%s.%s" % (tag, rel.replace("/", "_")))
                     try:
                         sftp.get("%s/%s" % (remote, rel), str(local_out))

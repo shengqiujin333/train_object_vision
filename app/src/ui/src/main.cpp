@@ -8,6 +8,7 @@
 #include <QString>
 #include <QVariantList>
 #include <QVariantMap>
+#include <map>
 #include <vector>
 
 #include "railhmi/core/camera_registry.h"
@@ -20,6 +21,8 @@
 #include "railhmi/core/status.h"
 #include "railhmi/core/version.h"
 #include "railhmi/platform/log.h"
+
+#include "alarm_model.h"
 
 #ifndef RAILHMI_CONFIG_DIR
 #define RAILHMI_CONFIG_DIR "config"
@@ -242,6 +245,32 @@ int main(int argc, char** argv) {
         aiList.append(m);
     }
     view.rootContext()->setContextProperty("railhmiAiDebug", aiList);
+
+    // 报警中心（ITEM-018）：桥接对象（过滤/排序/确认委托 core）。持久化事件接入前，
+    // 仅模拟开启时灌入样例用于页面自检；否则为空 -> 页面显示空态。
+    RailhmiAlarmModel alarmModel;
+    if (cfg.settings.app.simulation) {
+        std::map<std::string, std::string> names;
+        std::map<std::string, railhmi::core::RecordAvailability> rec;
+        for (const auto& c : registry) names[c.id] = c.name;
+        const long long t0 = 1760000000000LL;   // 固定基准（模拟）
+        auto mk = [&](long long id, int level, const char* type, const char* cam, long long off,
+                      const char* ack, const char* desc, const char* snap) {
+            railhmi::core::EventRow e;
+            e.id = id; e.level = level; e.type = type; e.source_cam = cam; e.ts_wall_ms = t0 + off;
+            e.ack_state = ack; e.description = desc; e.snapshot_ref = snap;
+            return e;
+        };
+        std::vector<railhmi::core::EventRow> evs;
+        evs.push_back(mk(1, 1, "person_on_rail", "CAM-01", 5000, "unacked", "轨道人员", "s1"));
+        evs.push_back(mk(2, 3, "side_camera_device", "CAM-02", 3000, "unacked", "侧视离线", ""));
+        evs.push_back(mk(3, 2, "pantograph_abnormal", "CAM-04", 9000, "unacked", "受电弓异常", "s3"));
+        evs.push_back(mk(4, 1, "wheel_derail", "CAM-05", 1000, "acked", "轮轨异常", "s4"));
+        rec["CAM-01"] = railhmi::core::RecordAvailability::Available;
+        rec["CAM-04"] = railhmi::core::RecordAvailability::Incomplete;
+        alarmModel.seedEvents(evs, names, rec);
+    }
+    view.rootContext()->setContextProperty("railhmiAlarms", &alarmModel);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
     view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
     view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);

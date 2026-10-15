@@ -20,6 +20,7 @@ void run_layout_tests();
 void run_grid_tests();
 void run_status_tests();
 void run_inference_tests();
+void run_alarm_center_tests();
 
 int main(int argc, char** argv) {
     std::string junit;
@@ -45,6 +46,7 @@ int main(int argc, char** argv) {
     run_grid_tests();
     run_status_tests();
     run_inference_tests();
+    run_alarm_center_tests();
 
     const bool ok = railhmi_test::g_fail == 0;
     std::printf("== %d passed, %d failed ==\n", railhmi_test::g_pass, railhmi_test::g_fail);

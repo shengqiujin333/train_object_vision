@@ -32,6 +32,8 @@ endif()
 # 版本信息注入 UI 上下文
 add_executable(railhmi
     src/main.cpp
+    src/alarm_model.cpp
+    src/alarm_model.h
     qml.qrc
 )
 target_include_directories(railhmi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)

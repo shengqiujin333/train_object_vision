@@ -8,6 +8,7 @@
         <file>qml/components/NavBar.qml</file>
         <file>qml/components/StatusItem.qml</file>
         <file>qml/components/KeyStatusStrip.qml</file>
+        <file>qml/components/FilterChip.qml</file>
         <file>qml/components/DetectionBadge.qml</file>
         <file>qml/components/CameraTile.qml</file>
         <file>qml/components/VideoSurface.qml</file>
@@ -15,6 +16,7 @@
         <file>qml/pages/PageView.qml</file>
         <file>qml/pages/DeniedView.qml</file>
         <file>qml/pages/P1Realtime.qml</file>
+        <file>qml/pages/P2AlarmCenter.qml</file>
         <file>qml/pages/P4AllCameras.qml</file>
         <file>qml/pages/P5AiDebug.qml</file>
         <file>qml/pages/P6Maintenance.qml</file>

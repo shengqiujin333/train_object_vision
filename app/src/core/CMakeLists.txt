@@ -15,6 +15,7 @@ add_library(railhmi_core STATIC
     src/channel_view.cpp
     src/status.cpp
     src/inference.cpp
+    src/alarm_center.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -46,5 +47,12 @@ set_target_properties(railhmi-status-probe PROPERTIES
 add_executable(railhmi-ai-probe tools/ai_probe.cpp)
 target_link_libraries(railhmi-ai-probe PRIVATE railhmi_core)
 set_target_properties(railhmi-ai-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 报警中心模型探针（ITEM-018；无 Qt/SQLite）
+add_executable(railhmi-alarm-probe tools/alarm_probe.cpp)
+target_link_libraries(railhmi-alarm-probe PRIVATE railhmi_core)
+set_target_properties(railhmi-alarm-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

@@ -28,10 +28,16 @@ Rectangle {
     }
     function pageSource(id) {
         if (id === "realtime") return "pages/P1Realtime.qml"
+        if (id === "alarm_center") return "pages/P2AlarmCenter.qml"
         if (id === "all_cameras") return "pages/P4AllCameras.qml"
         if (id === "ai_debug") return "pages/P5AiDebug.qml"
         if (id === "maintenance") return "pages/P6Maintenance.qml"
         return "pages/PageView.qml"
+    }
+    // 报警中心“查看录像” -> 跳转历史回放（ITEM-018）。
+    function onReplayRequest(cameraId, tsWallMs) {
+        shell.currentPageId = "replay"
+        shell.denied = !shell.allowed("replay")
     }
     // 关键状态区/顶部条异常项点击（ITEM-016）：允许则跳详情，不允许则显示无权限+返回。
     function onStatusNavigate(pageId, allowed) {
@@ -82,6 +88,8 @@ Rectangle {
                         }
                         if (item && item.statusNavigate)
                             item.statusNavigate.connect(shell.onStatusNavigate)
+                        if (item && item.replayRequested)
+                            item.replayRequested.connect(shell.onReplayRequest)
                     }
                 }
                 DeniedView {

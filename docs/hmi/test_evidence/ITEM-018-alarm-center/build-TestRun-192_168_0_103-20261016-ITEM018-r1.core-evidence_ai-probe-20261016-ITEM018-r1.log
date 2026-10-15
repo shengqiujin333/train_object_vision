@@ -1,0 +1,15 @@
+type=config interval=5 depth=2 budget=4 temp_limit=85 models=4
+type=queue camera=CAM-01 profile=front depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s
+type=queue camera=CAM-04 profile=pantograph depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s
+type=queue camera=CAM-05 profile=wheel_rail depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov8s-seg
+type=queue camera=CAM-06 profile=cab_door depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s
+type=schedule temp=60 run=CAM-01,CAM-05,CAM-04,CAM-06 skipped= guard=false
+type=schedule temp=90 run=CAM-01,CAM-05 skipped=CAM-04,CAM-06 guard=true
+type=ai-status online=运行
+type=debug camera=CAM-01 profile=front available=true model=rknn-2.3.2/yolov5s latency=33 boxes=1 conf=80 last=<1 秒前
+type=debug camera=CAM-04 profile=pantograph available=true model=rknn-2.3.2/yolov5s latency=39 boxes=1 conf=80 last=<1 秒前
+type=debug camera=CAM-05 profile=wheel_rail available=true model=rknn-2.3.2/yolov8s-seg latency=36 boxes=1 conf=80 last=<1 秒前
+type=debug camera=CAM-06 profile=cab_door available=true model=rknn-2.3.2/yolov5s latency=42 boxes=1 conf=80 last=<1 秒前
+type=ai-status stopped=AI 不可用
+type=acceptance worker_down_status=AI 不可用 alarm_annotation=AI 不可用 debug_all_unavailable=true temp_guard_degrades=true wide_angle_excluded=true
+type=result PASS
