@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import "."
+import ".."
 
 // 顶部全局状态条（ITEM-011）。模式位固定显示可见光/红外未接入，无切换控件。
 Rectangle {

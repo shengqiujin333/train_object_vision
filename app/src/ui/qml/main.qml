@@ -1,11 +1,10 @@
 import QtQuick 2.15
 import "."
 import "components"
-import "pages"
 
-// 应用外壳（ITEM-011）：单窗口 + 顶部全局状态条 + 角色化固定导航 + 页面宿主。
+// 应用外壳（ITEM-011/012）：单窗口 + 顶部全局状态条 + 角色化固定导航 + 页面宿主。
 // 可见导航项（railhmiNav）由 C++ 按角色过滤；受限直达页由 DeniedView 显示“无权限 + 返回”。
-// 所有颜色/字号来自生成的 Theme 单例（ITEM-010），不硬编码。
+// 页面内容按 id 选择；司机 P1 不显示检测职责徽标（P4/P6 才显示）。颜色/字号均来自 Theme。
 Rectangle {
     id: shell
     width: 1920
@@ -26,6 +25,12 @@ Rectangle {
     }
     function allowed(id) {
         return entryFor(id, railhmiNav) !== null
+    }
+    function pageSource(id) {
+        if (id === "realtime") return "pages/P1Realtime.qml"
+        if (id === "all_cameras") return "pages/P4AllCameras.qml"
+        if (id === "maintenance") return "pages/P6Maintenance.qml"
+        return "pages/PageView.qml"
     }
 
     Column {
@@ -58,13 +63,19 @@ Rectangle {
                 width: parent.width - Theme.size.nav_width
                 height: parent.height
 
-                PageView {
+                Loader {
+                    id: pageLoader
                     anchors.fill: parent
                     visible: !shell.denied
-                    pageTitle: shell.titleFor(shell.currentPageId)
-                    roleName: railhmiRole
-                    modePrimary: railhmiModePrimary
-                    modeSecondary: railhmiModeSecondary
+                    source: shell.pageSource(shell.currentPageId)
+                    onLoaded: {
+                        if (item && item.hasOwnProperty("pageTitle")) {
+                            item.pageTitle = shell.titleFor(shell.currentPageId)
+                            item.roleName = railhmiRole
+                            item.modePrimary = railhmiModePrimary
+                            item.modeSecondary = railhmiModeSecondary
+                        }
+                    }
                 }
                 DeniedView {
                     anchors.fill: parent

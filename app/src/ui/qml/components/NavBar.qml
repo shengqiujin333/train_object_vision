@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import "."
+import ".."
 
 // 固定导航（ITEM-011）。只渲染当前角色可见的页面（entries 由 C++ 按角色过滤后注入）。
 Item {

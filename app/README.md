@@ -24,7 +24,8 @@
 | ITEM-009 | 模拟输入与故障注入系统 | **已交付**：`SimulationRunner`（模拟时钟确定性；按 ai_profile 注入可重置检测序列；FI-01..05/FI-10 软件开关；故障后自动恢复）+ `railhmi-sim-inject` CLI（结构化日志/JSON）；无相机即可驱动模型层全部状态。板端 **274/274 通过**，sim-inject `SIM_EXIT=0`。证据：`docs/hmi/test_evidence/ITEM-009-simulation/README.md` |
 | ITEM-010 | 设计令牌主题层（生成 + Theme 单例 + 无硬编码） | **已交付**：`gen_tokens.py` 由 `design_tokens.yaml` 生成 `tokens.json`/`Theme.qml`/`Tokens.qml`/`qmldir`（含 color/alarm L1-L3/stream_state/mode/integration_state/detection_badge/typography/spacing/radius/z_index）；`main.qml` 改用 `Theme.*`；`check_no_hardcoded_ui.py` 静态扫描。主机与板端 selftest 8/8、扫描 PASS，CoreTests 274/274。证据：`docs/hmi/test_evidence/ITEM-010-tokens/README.md` |
 | ITEM-011 | 应用外壳与角色化导航 | **已交付**：`railhmi-core` 导航/权限模型（六页固定顺序、司机仅见实时/报警/回放、维护/研发/管理员全部、受限直达 denied、模式位固定可见光/红外未接入无切换）+ QML 外壳（main.qml/TopStatusBar/NavBar/PageView/DeniedView，消费 Theme，无硬编码）。板端 **319/319 通过**、扫描 PASS。证据：`docs/hmi/test_evidence/ITEM-011-shell/README.md` |
-| ITEM-012.. | 注册表运行时、取流、页面、推理、报警中心、录像、回放、权限、恢复、打包 | 未实现 |
+| ITEM-012 | 配置驱动摄像头注册表与 UI 接入 | **已交付**：`railhmi-core` 注册表模型（六路按 cameras.yaml 顺序、位置/职责徽标/`DetectionBadge` 仅 P4/P6、NVR 集成项通道映射=未配置）+ QML 组件（DetectionBadge/CameraTile/DeviceCard）与 P1/P4/P6 页面接入。板端 **348/348 通过**，扫描 PASS。证据：`docs/hmi/test_evidence/ITEM-012-registry/README.md` |
+| ITEM-013.. | 取流状态机接入、页面、推理、报警中心、录像、回放、权限、恢复、打包 | 未实现 |
 
 > 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 
