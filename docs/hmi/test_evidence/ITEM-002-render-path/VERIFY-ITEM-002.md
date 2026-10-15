@@ -2,98 +2,105 @@
 
 - Capability: `software_tester.software_verification`
 - 被检对象: `n005_embedded_linux_engineer.desktop_app_implementation.implementation`
-  （artifact_implementation.yaml → `app/spikes/render_path/README.md`；对应仓库 commit `5494dde` 之工作树）
-- 历史尝试对比: CALL-813a68cc（WORK_FAILED）→ CALL-bef9cdd6（WORK_FAILED）→ CALL-eb4ab17c（IMPLEMENTED，本轮被检对象）
-- 被检工作项: `TL-…-tasks-ITEM-002`（完成渲染路径选型 spike：板端单路 RTSP 实测两管线，回填 build_env_check.md §14）
-- 验证日期: 2026-10-15（验证人本机执行，Windows 10 / MINGW64，仓库 `E:\work\rail_issue\rk3588_handover`）
-- 结论: **TEST_FAIL**（口径见 §0；未满足点与根因见 §3）
+  （artifact_implementation.yaml → `app/spikes/render_path/README.md`；对应仓库 commit `ca5373c` 之工作树）
+- 历史尝试对比: 本验证 ITER1（commit `5494dde`，TEST_FAIL，根因=板端授权缺口，证据见 §0）→
+  commit `06b6f9f`（板端授权解锁，ENV-B 探针实测）→ commit `ca5373c`（本轮被检对象：板端 spike 实测 + §14 回填）
+- 被检工作项: `TL-…-tasks-ITEM-002`（完成渲染路径选型 spike：板端真机 RTSP/UDP 或 file/test 替代源实测双路径，
+  fps/CPU/GPU/色彩记录，selection 写回 build_env_check.md §14；未实测保持 UNMEASURED、默认 cpu、gl 候选、源码双路径开关存在）
+- 验证日期: 2026-10-15（验证人本机 Windows 10 / MINGW64 执行，paramiko 5.0.0，凭据经登记环境变量进程内读取）
+- 结论: **TEST_PASS**（范围与限制见 §0；逐条核对见 §3；限制与方法依赖见 §4）
+- 更正记录: 本文件 ITER1 曾交付 TEST_FAIL（当时 `build_env_check.md` §14 为空占位）。本轮按 ITER1 §5 交接命令
+  （`board_render_spike.py`，替代源 test/file）独立复跑并核对回填，所有 ITER1 未满足点均已消除（§3）。ITER1 结论到此为止，
+  **不构成对本轮的预判**——本轮每一行判定均以 §1–§2 的实际执行与新观察为准。
 
 ---
 
 ## 0. 结论口径（防止跨层外推）
 
-1. 本 FAIL 的判定对象是**工作项声明的用户可观察点**："build_env_check.md 追加实测数据与选定的主/回退路径"。
-   该点在本轮交付物中**未产出**——`build_env_check.md` §14.1/§14.2 与 `render_path_spike.md` §5 均如实标注
-   "板端实测未执行 / UNMEASURED"，§14.4 显式声明"待授权后执行"。按当前能力契约，
-   "缺失真实执行结果的目标评价不能算通过"，故返回 TEST_FAIL。
-2. 本 FAIL **不判定** spike 源码/判据为缺陷：实现侧工具链（`main.cpp`、QML、CMake、
-   `run_render_spike.sh`、`analyze.py`）本轮独立复现全部通过（§1 S1–S4），判据自检 6/6，入口脚本贯通，
-   文档与代码一致。未满足部分是**板端执行与实测数据回填**，其根因为项目设备工具禁用（无 RK3588 板、
-   无相机授权），属环境/授权缺口。
-3. 按 `E2E_PLAN.md` §3（项目自有规则）："板端档失败若根因属板端资源/驱动/BSP/设备授权 → 记录为依赖缺口，
-   不算软件功能失败"。本验证依据 **TEST_DESIGN** §0.1（"板上的任何均未实测，不得写成已通过"）与
-   §1 环境分层（ENV-C/D 均为"待实现 + 设备授权"），将缺口如实写入失败记录（§4 交接），
-   **不由验证循环反复重试解决**——重试上限由 Runtime 控制。
-4. 本验证未改动任何被检实现文件（capability 边界：不改产品源码）；本轮新增文件仅
-   本 TestEvidence 与 §5 列出的验证产物。
+1. **TEST_PASS 判定对象**：工作项声明的用户可观察点——
+   a) 板端（真实 RK3588，经登记 SSH 入口）以替代源实测 "RGA NV12→BGR" 路径并记录 fps/CPU/GPU/色彩；
+   b) `gl` 路径元素的不可用经实测探究（构造探测 + 开发包缺失证据），非预判；
+   c) selection 结果（SELECTED cpu）已写回 `build_env_check.md` §14（§14.0–14.5）；
+   d) 双路径配置开关在源码中存在（`main.cpp --path gl|cpu`，§2 DC-4）；
+   e) 未实测处（`gl` 无测量、真机 RTSP、六路并发、Qt 出图代价）保持 UNMEASURED/标记，不预设（§4）。
+2. **不跨越的边界**（本验证未判定、不得由本文件外推）：
+   - 画面内容/视觉正确性由用户目视确认；数值判据只覆盖中性灰色彩与帧率/负载。
+   - `cpu` 选定的测量是**无 Qt 核心管线**（`spike_core.c`：解码/源 → NV12 → appsink → librga → BGR 判据），
+     **不含 Qt 纹理上传/QQuickPaintedItem 出图代价**；交付文档（§14.4.1、`render_path_spike.md` §5）已如实标注，
+     Qt 就绪后需由原 QML spike 复测——该后续归实现/后续工作项，不属于本项验收。
+   - 单路测量不覆盖六路并发（TEST_DESIGN ENV-C/D 范围）。
+   - "板端可复现"结论仅对 **RK3588（192.168.0.103，Ubuntu 22.04，GStreamer 1.20）** 成立。
+3. 实机（RTSP）与替代源（test/file）证据区分记录：SAT（真机）未执行，SUT 替代源两项独立复现——与 ITER1 §0.1 口径一致。
 
----
+## 1. 独立板端复现（本轮实际执行，2026-10-15 21:47–21:48）
 
-## 1. 独立复现（实际执行记录）
+使用与实现者相同的登记入口（`access.rk3588_inspect` → `board_render_spike.py`，受信任 known_hosts、全超时），
+独立传参复跑两组测量（`--only run --keep-remote`）：
 
-| # | 动作 | 命令（本机实际执行） | 结果 |
+| =编号 | 动作/参数 | 实际结果 | 归档 |
 |---|---|---|---|
-| S1 | 入口自检 | `bash app/spikes/render_path/run_render_spike.sh --dry-run` | 退出码 0；输出构建→gl 测量→cpu 测量→判据选择四步计划，未构建、未访问板端，路径与产物命名与 README §运行 一致 |
-| S2 | 判据自检 | `python app/spikes/render_path/analyze.py --selftest` | **6/6 通过**：gl 可用选 gl / gl 失败回退 cpu / 双失败 none / 色彩不通过否决 / 帧率不足否决 / 无数据 UNMEASURED |
-| S3 | 无输入行为 | `python app/spikes/render_path/analyze.py`（无测量数据） | 输出 UNMEASURED、退出码 2——忠实遵守"未实测前不假定主路径成立"，且不修改 build_env_check.md §14 空表 |
-| S4 | 原始输出归档 | 同上 S1/S2 输出重定向至 `verify-*.txt` | 归档至 `docs/hmi/test_evidence/ITEM-002-render-path/verify-selftest-20261015.txt`、`verify-dryrun-20261015.txt` |
+| SUT-1 | `--source test --duration 8 --stamp verify-20261015-v1`（核心管线，test 中性源 0x808080） | fps_source=24.98, fps_display=24.98, cpu 58.71%, GPU avg 6.94（16 样本）, BGR 均值 126.00/126.00/126.00, spread 0.00 **pass**；`playing=true`；errors=[] | `spike-…-verify-20261015-v1.core_….json`（JSON 根 ↓） |
+| SUT-2 | `--source file --duration 8 --gen-clip --stamp verify-20261015-v2`（板上 mppvideodec 解码 + RGA） | 板上生成 clip.mp4（14KB, H.264）；**突发** fps_source=1484.85, fps_display=303.03, cpu 96.97%, spread 0 **pass** | `spike-…-verify-20261015-v2.core_….json` |
+| SUT-3 | `gl` 构造探测（两次运行各一次） | 两次均复现 `WARNING: erroneous pipeline: no element "qmlglsink"` | `…-v1.gl_construct.log`、`…-v2.gl_construct.log` |
+| SUT-4 | 快照二进制独立解析（v1 BMP） | 1280×720 24bpp；画面为单一像素值 (126,126,126)——与 JSON BGR 均值逐值一致 | `…-v1.core_verify-...bmp`（解析命令与结果见验证 transcript） |
+| RET-1 | `analyze.py --selftest`（本机） | **6/6 通过**（gl 优先/gl 失败回退 cpu/双失败/色彩否决/帧率否决/无数据 UNMEASURED） | `verify-selftest-20261015-r2.txt` |
+| RET-2 | `analyze.py --cpu <r2b JSON>` 独立重算选择 | SELECTED cpu、gl=no measurement（与归档 selection r2b 一致） | `selection-…-verify-20261015-v1.{json,md}` |
+| RET-3 | `analyze.py --cpu <v1 JSON>` 以复现数据重算选择 | SELECTED cpu（用验证人自己的测量同样得出选定 cpu） | `selection-…-verify-20261015-v1.json` |
+| CLN-1 | 板端 /tmp 工件清理（v1/v2 两轮新产物 + spike_core 二进制 + build 目录） | `ls /tmp/railhmi_render_spike` 仅剩上传源码，无遗留产物 | `verify-tmp-cleanup-20261015-r2.log` |
 
-（包内执行注意事项，非工具问题：Windows Git Bash 下 `python3` shim 对 `analyze.py` 报错退出 49；
-以 `python` 运行正常。板端脚本按 README 使用 `python3`，属目标板环境默认命名，不受影响。）
+- SSH 主机指纹（全部 6 份 transcript）一致：`SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU`，
+  与实现者 r1/r2b/r3 及 ENV-B r2 相同——确认是同一目标板，不是别的盒。
+- 复现偏差（均为预期内随机量，不改变结论）：CPU 58.2→58.7% (test)；突发 fps 1449→1484、303/325 fps（file，无时钟同步源）、
+  GPU avg 6.75→6.94。结构性量（frames=200@8s→25fps 实时、spread=0、qmlglsink 缺失、decoding+RGA 链路可用）**全部重现**。
 
 ## 2. 核对当前交付（不只看包装文件）
 
-- `app/spikes/render_path/README.md`：三条命令为其各自声明用途（板端运行/替代源/无板校验），未把主机校验表述为板端通过；状态为其声称状态。
-- `docs/hmi/render_path_spike.md` §1–§7 与 `DESKTOP_APP_DESIGN` §4.3/§6 口径一致；§7 下游强制约束（未选定前保留双路径、默认不预设 gl、待实测后冻结）已逐字核对，该约束保护"不得在未实测前假定主路径成立"的工作项红线。
-- `docs/hmi/build_env_check.md` §14.1/§14.3/§14.4 三处交叉读取一致：实测表全空、选定为 UNMEASURED、板端待授权命令已就绪；无"未实测但写为已选/已通过"的表述（即未回填伪造数据）。
-- `analyze.py` 判据（playing/fps_source/fps_display/色彩/无 fatal error → gl→cpu→none→UNMEASURED）与 README §判据、render_path_spike.md §3 三处一致。
-- 上游反馈闭环：TEST_DESIGN TC-STREAM-08 明示依赖"ITEM-001/002 结论"，spike 完成后该用例的 C/D 档才能跑——本缺口影响范围见 §4。
+- DC-1 `docs/hmi/build_env_check.md` §14.0–14.5：状态=SELECTED cpu；实测表逐值与归档 JSON **一致**
+  （r2b 行 = `…-r2b.core_….json`；r3 行 = `…-r3.core_….json`）；14.3 gl 不可用列的是实测证据（构造探测/Qt 包缺失）非推断。
+- DC-2 `docs/hmi/render_path_spike.md` → 状态行、§5 实测表、§7 双路径保留约束与 §14 一致；变更记录含本轮事实——**未见 UNMEASURED 残留**。
+- DC-3 `app/spikes/render_path/README.md` 状态段与 §14 一致；`spike_core.c`（判据函数 `check_color`、BGR spread 阈值 12、
+  JSON 字段名与归档数据一一对应）与 README §判据声明一致。
+- DC-4 **双路径开关存在性（独立复核源码）**：`main.cpp:319, 344, 354` `--path gl|cpu`（默认 gl，仅 spike 入口首测优先，
+  非产品配置）；`CpuView.qml`/`GlView.qml` QML 场景齐备；产品侧语义（默认 cpu、gl 待实测冻结）由 `docs/hmi/render_path_spike.md` §7 与 §14.2 说明一致。
+- DC-5 ITER1 判据逐条复核 → §3 全部翻绿；未回填伪造数据——被检文档只写实测数值，且把"不含 Qt 出图代价/单路/色彩判据局限"
+  三条限制显式写入 §14.4。
 
-## 3. 判据逐条核对 + 实际观察
+## 3. 判据逐条核对（对照 ITER1 TEST_FAIL 未满足点）
 
-| 判据（来自当前调用） | 实际观察 | 判定 |
+| 工作项/ITER1 判据 | 本轮实际观察（§1 证据） | 判定 |
 |---|---|---|
-| 板端跑通 `mppvideodec→glupload→glcolorconvert→qmlglsink` 并显示 | 无执行记录；板端未连接、未 SSH、未访问相机；项目设备工具禁用（capability 环境声明） | **未满足** |
-| 探测失败时实测回退路径 `RGA NV12→BGR + Qt 纹理上传` | 同上，无板端执行数据 | **未满足** |
-| 记录 fps、CPU/GPU 占用、色彩正确性 | 实测表（build_env_check.md §14.1 / render_path_spike.md §5）无任何数字 | **未满足** |
-| build_env_check.md **追加实测数据** | §14 表仍为空占位（仅注明"待板端填写"）；本轮未追加任何实测值 | **未满足** |
-| 给出选定的主/回退路径 | 选定值 = UNMEASURED（未选定） | **未满足** |
-| 实现侧工具具备（"产生测量工具与判据"前提） | S1–S4 独立复现全部通过（见 §1） | 满足 |
-| 未实测前不假定主路径成立 | 交付物三处文档一致保持 UNMEASURED，且把该约束写入下游强制说明 | 满足 |
+| 板端以 RTSP/UDP 或 file/test 替代源实测 RGA 路径 | SUT-1（test）、SUT-2（file，mppvideodec 解码）两源实测成功；**真机 RTSP 未测**（授权/凭据归 ITEM-004 观察），不据此外推 | **满足**（替代源口径；真机缺口如实标注） |
+| 探测失败时实测回退路径 NV12→BGR + Qt 纹理上传 | 核心管线（appsink→librga→BGR）实测通过；**Qt 纹理上传未包含**（板端缺 Qt QML 开发包，§14.3），已被文档如实记为限制 | **就 RGA 链路满足**（不含 Qt 代价的限制已在交付文档标注，非本轮隐藏） |
+| 记录 fps/CPU/GPU/色彩 | §14.1 表两行数值逐项与归档 JSON 一致；BMP 快照独立解析与色彩均值一致 | **满足** |
+| selection 结果写回 build_env_check.md §14 | §14.1–14.2 含 SELECTED cpu 与判据依据；recursive compare 通过 | **满足** |
+| 未实测不预设、gl 保持候选 | `gl` 全程 "no measurement"，未写入任何伪造数值；文档显式"不得把未实测的 gl 当主路径" | **满足** |
+| 双路径配置开关在源码中存在 | `main.cpp --path gl|cpu` + 两个 QML 场景（DC-4） | **满足** |
+| (ITER1 附带) 判据自检 6/6、无输入 UNMEASURED | RET-1/2/3 复现通过 | 满足 |
 
-**未满足点复现条件**：任何具备板端授权的执行者按 §5 即可消除全部前 5 行缺口；除设备授权外无其他缺口
-（源码、判据、入口、文档均已可执行）。
+## 4. 方法限制与本验证的缺口（不改变结论；交后续能力）
 
-## 4. 依赖与交接（记录给 Runtime / 后续能力）
+1. **Qt 出图代价未测**——`cpu` 选定基于核心管线。`gl` 元素与 Qt QML 开发包在板端恢复后，
+   全 QML spike（`run_render_spike.sh`）复测两路径 → 交实现/平台（属于 ITEM-002 的"gl 候选复测"条款，非本轮验收缺口）。
+2. **真机 RTSP/UDP 未执行**——read_camera_stream 授权与相机凭据按当前调用未在此运行；ENV-D 档归后续取流工作项（TEST_DESIGN TC-STREAM-08/09）。
+3. **r3 突发吞吐口径**——filesrc 无时钟同步，1449/303 fps 只证明解码+RGA 链路能力与余量，不是实时指标（交付文档 §14.4.3 已标注）。
+4. **TEST_DESIGN §0.1/§1 有引用"ITEM-002 UNMEASURED"的句子**（行 31/57 等）现已过时——按能力边界不代改；
+   建议测试设计师在下一轮按 §14 当前状态刷新（`gl` 已实测不可用、默认 cpu 已有板端证据支撑）。
+5. 验证人未改动任何被检实现文件；本轮新增文件仅 §6 列出的验证产物。
 
-1. **设备授权缺口（根因）**：ENV-C/D 板端执行权被禁用（build_env_check.md §13 同类缺口；
-   `TEST_DESIGN` ENV-B/C/D 亦标"待实现/待授权"）。属环境/授权事实，非 spike 源码缺陷。
-   需 Runtime/授权方解锁 RK3588 访问后，由具备板上执行职责的能力按 §5 命令补测并回填数据。
-2. **交接命令（已就绪、待授权后一次执行）**：
-   ```sh
-   cd app/spikes/render_path
-   ./run_render_spike.sh --url 'rtsp://<user>:<pass>@<cam>/...' --duration 20 --snapshot
-   # 或无相机时（ENV-C 替代源，仍能测两管协商/换算，色彩判据同样适用）
-   ./run_render_spike.sh --source test --duration 10
-   # 产物 gl/cpu/selection-<stamp>.json(+.png) 与 selection-<stamp>.md 自动生成，
-   # 内容可直接追加 build_env_check.md §14.1 表
-   ```
-3. **下游受阻范围**：README §状态、render_path_spike.md §7、TC-STREAM-08（依赖 ITEM-001/002 结论）。
-   在 selection 落定前，渲染实现必须保留双路径配置开关（实现者已写为强制约束，本验证确认其存在且语义正确）。
-4. **NEXT 建议（供实现循环重试 / 授权后推进）**：
-   - 若 Runtime 决定给本轮重试机会：重试的价值在于补板端实测，而非改 spike 源码——建议先解锁设备授权再重试，
-     避免再次"无板可跑"。
-   - 主机无 Qt/GStreamer/librga 工具链（独立复核未检出），spike 无法在编译器可见前进入主机编译档；
-     编译与运行仍属目标板范围（与 render_path_spike.md §7.2 一致）。
+## 6. 本验证生成的新文件（全部在本目录，未改产品源码）
 
-## 5. 本验证生成的新文件
+- `VERIFY-ITEM-002.md`（本文件，ITER2 重写）
+- `spike-192_168_0_103-verify-20261015-v1.*`（test 源复现：transcript/core.log/json/bmp/cmake.log/gl_construct.log）
+- `spike-192_168_0_103-verify-20261015-v2.*`（file 源复现：transcript/core.log/json/bmp/cmake.log/gl_construct.log）
+- `selection-spike-192_168_0_103-verify-20261015-v1.{json,md}`、`…-v2.{json,md}`（判据独立重算结果）
+- `verify-selftest-20261015-r2.txt`（analyze.py --selftest 6/6）
+- `verify-tmp-cleanup-20261015-r2.log`（板端 /tmp 工件清理 + 终态列表）
 
-- `docs/hmi/test_evidence/ITEM-002-render-path/VERIFY-ITEM-002.md`（本文件）
-- `docs/hmi/test_evidence/ITEM-002-render-path/verify-selftest-20261015.txt`（S2 原始输出）
-- `docs/hmi/test_evidence/ITEM-002-render-path/verify-dryrun-20261015.txt`（S1 原始输出）
+## 7. 结论
 
-## 6. 结论
-
-**TEST_FAIL** — 工作项 ITEM-002 的核心可观察点（board 端实测数据 + build_env_check.md 追加实测值与选定路径）
-未产出；实现侧工具与判据独立复现通过、文档诚实未伪造数据。根因为 **ENV-C/D 设备授权缺失**（环境/授权缺口，
-非 spike 源码缺陷），记录依赖与交接于 §3–§4，交 Runtime 作后续调度（解锁设备授权后执行板上实测）。
+**TEST_PASS** — 工作项 ITEM-002（本轮 commit `ca5373c` 交付）在已登记授权与真实板上：
+替代源实测 RGA 核心路径（fps/CPU/GPU/色彩全项），`gl` 不可用为实测结论、保持候选；
+selection=cpu 已写回 `docs/hmi/build_env_check.md` §14 并与归档证据一致；
+双路径开关在源码中存在；未实测处全部如实标注、无伪造。
+ITER1 之 TEST_FAIL（板端授权缺口）由 Runtime 解锁 + 实现方板端实测整改后，本轮以独立复现消除全部未满足点。
+限制（Qt 出图代价、真机 RTSP、六路并发、BMP 内容目视）已按 §0/§4 区分记录。

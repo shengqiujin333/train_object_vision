@@ -1,0 +1,28 @@
+{
+  "status": "SELECTED",
+  "selected": "cpu",
+  "min_fps": 20.0,
+  "max_spread": 12.0,
+  "gl": {
+    "usable": false,
+    "reasons": [
+      "no measurement"
+    ],
+    "playing": null,
+    "fps_source": null,
+    "fps_display": null,
+    "cpu_pct_one_core": null,
+    "gpu_load_avg": null,
+    "color_spread": null
+  },
+  "cpu": {
+    "usable": true,
+    "reasons": [],
+    "playing": true,
+    "fps_source": 24.98,
+    "fps_display": 24.98,
+    "cpu_pct_one_core": 58.71,
+    "gpu_load_avg": 6.94,
+    "color_spread": 0.0
+  }
+}

@@ -1,0 +1,7 @@
+[PASS] gl 可用 -> 选 gl -> status=SELECTED selected=gl
+[PASS] gl 协商失败 -> 回退 cpu -> status=SELECTED selected=cpu
+[PASS] 两条都失败 -> none -> status=NONE_USABLE selected=None
+[PASS] 色彩不通过 -> 不可用 -> status=NONE_USABLE selected=None
+[PASS] 帧率不足 -> 不可用 -> status=NONE_USABLE selected=None
+[PASS] 无数据 -> UNMEASURED -> status=UNMEASURED selected=None
+selftest: 6/6 passed

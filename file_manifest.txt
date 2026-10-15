@@ -73,7 +73,7 @@ docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-verify-20261015.json | ac
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-verify-20261015.md | active | 软件验证独立复跑主机探针报告（ITER2 复现证据；比实现者 21:08 归档多 E-01 两命令，根因实现期脚本迭代，与板端最终版一致）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-verify-20261015.raw.txt | active | 软件验证独立复跑主机探针原始输出
 docs/hmi/test_evidence/ENV-B-dependency/verify-tmp-cleanup-20261015-v1.log | active | 验证人板端 /tmp 四个探针文件按名清理的原始控制台记录（对应 VERIFY-ITEM-001 R-4）
-docs/hmi/test_evidence/ITEM-002-render-path/VERIFY-ITEM-002.md | active | ITEM-002 渲染路径 spike 软件验证 TestEvidence（TEST_FAIL：板端实测未产出，设备授权缺口；实现侧工具独立复现通过）
+docs/hmi/test_evidence/ITEM-002-render-path/VERIFY-ITEM-002.md | active | ITEM-002 渲染路径 spike 软件验证 TestEvidence（ITER2 重写，TEST_PASS：对 commit ca5373c 板端实测独立复现 test/file 两源与 gl 构造探测、判据逐条核对一致；限制 Qt 出图代价/真机 RTSP/六路并发如实标注）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015-r2.txt | active | ITEM-002 重试主机自检（source=file/test 与 --md-out synthetic fixture 表格，未执行板端）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015.txt | active | ITEM-002 主机自检证据（analyze.py --selftest 6/6 与 run_render_spike.sh --dry-run）
 docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-20261015-board-r1.json | active | 首次选择结果 JSON（cpu SELECTED）
@@ -82,8 +82,12 @@ docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-202610
 docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-20261015-board-r2b.md | active | 选择结果 Markdown（可贴入 build_env_check §14）
 docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-20261015-board-r3.json | active | 选择结果 JSON（cpu SELECTED）
 docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-20261015-board-r3.md | active | 选择结果 Markdown
+docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-verify-20261015-v1.json | active | 软件验证 ITER2 独立板端复跑（test 源）选择结果 JSON（cpu SELECTED）
+docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-verify-20261015-v1.md | active | 软件验证 ITER2 独立板端复跑（test 源）选择结果 Markdown
+docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-verify-20261015-v2.json | active | 软件验证 ITER2 独立板端复跑（file 源）选择结果 JSON（cpu SELECTED）
+docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-verify-20261015-v2.md | active | 软件验证 ITER2 独立板端复跑（file 源）选择结果 Markdown
 docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-deps.transcript.json | active | ITEM-002 板端依赖核对 transcript（Qt5Quick/Qt5Qml 缺失、qmlglsink 缺失、gstreamer/librga 可用）
-docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.cmake.log | active | QML spike 构建失败实测（Could not find Qt5QuickConfig.cmake）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.cmake.log | existing | QML spike 构建失败实测（Could not find Qt5QuickConfig.cmake）
 docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.core.log | active | 首次测量原始日志
 docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.core_20261015-board-r1.bmp | active | 首次测量快照（BMP）
 docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.core_20261015-board-r1.json | active | 首次核心管线测量（SMPTE 彩色源，色彩判据失败，方法修正依据）
@@ -101,8 +105,22 @@ docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r
 docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r3.core_20261015-board-r3.json | active | 权威解码路径测量（file/mppvideodec：突发 fps、色彩 pass，证明解码+RGA 链路可用）
 docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r3.gl_construct.log | active | 解码路径运行 gl 构造探测（no element qmlglsink）
 docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r3.transcript.json | active | 解码路径运行 transcript
-docs/hmi/test_evidence/ITEM-002-render-path/verify-dryrun-20261015.txt | active | ITEM-002 验证人独立复现 run_render_spike.sh --dry-run 原始输出（退出码 0）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v1.cmake.log | active | 软件验证复跑构建失败证据（Qt5Quick 缺失，与实现者 r2b 一致）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v1.core.log | active | 软件验证复跑（test 源）原始日志
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v1.core_verify-20261015-v1.bmp | active | 软件验证复跑（test 源）快照 BMP（独立解析单值 126/126/126）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v1.core_verify-20261015-v1.json | active | 软件验证复跑（test 源）测量 JSON（fps 24.98/24.98、CPU 58.71%、GPU avg 6.94、spread 0、pass）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v1.gl_construct.log | active | 软件验证复跑 gl 构造探测（no element qmlglsink，与实现者一致）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v1.transcript.json | active | 软件验证复跑（test 源）transcript（SSH 指纹与实现者一致）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v2.cmake.log | active | 软件验证复跑构建失败证据（Qt5Quick 缺失）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v2.core.log | active | 软件验证复跑（file 源）原始日志
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v2.core_verify-20261015-v2.bmp | active | 软件验证复跑（file 源）快照 BMP
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v2.core_verify-20261015-v2.json | active | 软件验证复跑（file 源）测量 JSON（突发 fps 1484/303、spread 0、pass；解码+RGA 链路复现）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v2.gl_construct.log | active | 软件验证复跑 gl 构造探测（no element qmlglsink）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-verify-20261015-v2.transcript.json | active | 软件验证复跑（file 源）transcript（SSH 指纹与实现者一致）
+docs/hmi/test_evidence/ITEM-002-render-path/verify-dryrun-20261015.txt | existing | ITEM-002 验证人独立复现 run_render_spike.sh --dry-run 原始输出（退出码 0）
+docs/hmi/test_evidence/ITEM-002-render-path/verify-selftest-20261015-r2.txt | active | 软件验证 ITER2 独立复跑 analyze.py --selftest 原始输出（6/6 通过）
 docs/hmi/test_evidence/ITEM-002-render-path/verify-selftest-20261015.txt | active | ITEM-002 验证人独立复现 analyze.py --selftest 原始输出（6/6 通过）
+docs/hmi/test_evidence/ITEM-002-render-path/verify-tmp-cleanup-20261015-r2.log | active | 软件验证板端 /tmp 验证工件清理与终态列表（仅剩上传源码）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

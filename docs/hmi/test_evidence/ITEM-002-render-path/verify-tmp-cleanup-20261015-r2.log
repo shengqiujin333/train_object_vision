@@ -1,0 +1,45 @@
+$ ls -la /tmp/railhmi_render_spike | wc -l -> exit 0
+23
+
+$ rm -f /tmp/railhmi_render_spike/core_verify-20261015-v1.json /tmp/railhmi_render_spike/core_verify-20261015-v1.bmp /tmp/railhmi_render_spike/core_verify-20261015-v1.gl.log /tmp/railhmi_render_spike/core_verify-20261015-v2.json /tmp/railhmi_render_spike/core_verify-20261015-v2.bmp /tmp/railhmi_render_spike/core_verify-20261015-v2.gl.log -> exit 0
+
+$ rm -rf /tmp/railhmi_render_spike/build /tmp/railhmi_render_spike/spike_core -> exit 0
+
+$ ls -la /tmp/railhmi_render_spike -> exit 0
+total 104
+drwxrwxr-x  2 admin admin  4096 Oct 15 21:47 .
+drwxrwxrwt 16 root  root   4096 Oct 15 21:45 ..
+-rw-rw-r--  1 admin admin  7795 Oct 15 21:45 analyze.py
+-rw-rw-r--  1 admin admin 14179 Oct 15 21:45 clip.mp4
+-rw-rw-r--  1 admin admin  1548 Oct 15 21:45 CMakeLists.txt
+-rw-rw-r--  1 admin admin   929 Oct 15 21:45 cmake.log
+-rw-rw-r--  1 admin admin     0 Oct 15 21:45 core_build.log
+-rw-rw-r--  1 admin admin   611 Oct 15 21:45 core.log
+-rw-rw-r--  1 admin admin   541 Oct 15 21:45 CpuView.qml
+-rw-rw-r--  1 admin admin     0 Oct 15 21:45 genclip.log
+-rw-rw-r--  1 admin admin    52 Oct 15 21:45 gl_construct.log
+-rw-rw-r--  1 admin admin   605 Oct 15 21:45 GlView.qml
+-rw-rw-r--  1 admin admin 21366 Oct 15 21:45 main.cpp
+-rw-rw-r--  1 admin admin   122 Oct 15 21:45 qml.qrc
+-rw-rw-r--  1 admin admin  3401 Oct 15 21:45 README.md
+-rw-rw-r--  1 admin admin 12609 Oct 15 21:45 spike_core.c
+
+$ rm -f /tmp/railhmi_render_spike/core_verify-20261015-v1* /tmp/railhmi_render_spike/core_verify-20261015-v2* /tmp/railhmi_render_spike/clip.mp4 /tmp/railhmi_render_spike/build -r -> exit 0
+
+$ rm -rf /tmp/railhmi_render_spike/build /tmp/railhmi_render_spike/spike_core -> exit 0
+
+$ ls /tmp/railhmi_render_spike -> exit 0
+analyze.py
+CMakeLists.txt
+cmake.log
+core_build.log
+core.log
+CpuView.qml
+genclip.log
+gl_construct.log
+GlView.qml
+main.cpp
+qml.qrc
+README.md
+spike_core.c
+

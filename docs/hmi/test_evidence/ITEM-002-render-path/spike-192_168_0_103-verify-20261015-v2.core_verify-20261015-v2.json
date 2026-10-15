@@ -1,0 +1,22 @@
+{
+  "variant": "cpu_headless_noqt",
+  "path": "cpu",
+  "source": "file",
+  "url": "",
+  "file": "/tmp/railhmi_render_spike/clip.mp4",
+  "duration_s": 0.17,
+  "playing": true,
+  "frames_source": 245,
+  "fps_source": 1484.85,
+  "frames_display": 50,
+  "fps_display": 303.03,
+  "cpu_pct_one_core": 96.97,
+  "rss_mb": 19.3,
+  "gpu_load_max": 3.00,
+  "gpu_load_avg": 3.00,
+  "gpu_samples": 1,
+  "color": {"valid": true, "b_mean": 126.00, "g_mean": 126.00, "r_mean": 126.00, "spread": 0.00, "pass": true},
+  "snapshot": "core_verify-20261015-v2.bmp",
+  "negotiated": true,
+  "errors": []
+}
