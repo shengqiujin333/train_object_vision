@@ -2,45 +2,140 @@ import QtQuick 2.15
 import ".."
 import "../components"
 
-// P1 实时监控（ITEM-011/012）：左-前-右三联；司机页不显示检测职责徽标。
+// P1 实时监控（ITEM-011/012；ITEM-014 三联布局 + P0 元素）。
+// 布局比例与高度来自 railhmi-core compute_layout（单一来源）：左-前-右、前方最大。
+// P0 元素：顶部状态条（外壳）、三联、关键状态区、当前报警条 —— 一屏内不滚动即可见。
+// 司机页不显示检测职责徽标。
 Rectangle {
     id: page
     color: Theme.color.bg_base
+
+    readonly property var L: (typeof railhmiLayout !== "undefined") ? railhmiLayout : ({
+            leftRatio: 0.26, frontRatio: 0.48, rightRatio: 0.26,
+            statusStripHeight: 64, alarmBarHeight: 64, marginNarrow: 16, marginWide: 24
+        })
+    readonly property int gap: Theme.spacing.s3
+    readonly property int margin: (page.height >= 1080) ? page.L.marginWide : page.L.marginNarrow
 
     function camByPosition(pos) {
         for (var i = 0; i < railhmiCameras.length; ++i)
             if (railhmiCameras[i].position === pos) return railhmiCameras[i]
         return null
     }
+    function camName(pos, fallback) {
+        var c = page.camByPosition(pos)
+        return c ? c.name : fallback
+    }
+    function camState(pos) {
+        var c = page.camByPosition(pos)
+        return c ? c.state : "连接中"
+    }
 
-    Row {
-        anchors.fill: parent
-        anchors.margins: Theme.spacing.s4
-        spacing: Theme.spacing.s3
+    // ---- 当前报警条（P0，底部固定） ----
+    Rectangle {
+        id: alarmBar
+        objectName: "alarmBar"
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: page.L.alarmBarHeight
+        color: Theme.color.bg_sunken
+        border.color: Theme.color.border
+        border.width: Theme.border.width
 
-        CameraTile {
-            objectName: "tileLeft"
-            width: (parent.width - 2 * Theme.spacing.s3) * 0.26
-            height: parent.height
-            title: page.camByPosition("left") ? page.camByPosition("left").name : "左侧"
-            state: page.camByPosition("left") ? page.camByPosition("left").state : "连接中"
-            showBadge: false
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: Theme.spacing.s3
+            color: Theme.color.text_secondary
+            font.pixelSize: Theme.typography.scale.body.size
+            text: "当前报警：无"
         }
-        CameraTile {
-            objectName: "tileFront"
-            width: (parent.width - 2 * Theme.spacing.s3) * 0.48
-            height: parent.height
-            title: page.camByPosition("primary") ? page.camByPosition("primary").name : "前方"
-            state: page.camByPosition("primary") ? page.camByPosition("primary").state : "连接中"
-            showBadge: false
+    }
+
+    // ---- 关键状态区（P0，报警条之上） ----
+    Rectangle {
+        id: statusStrip
+        objectName: "statusStrip"
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: alarmBar.top
+        anchors.margins: page.margin
+        height: page.L.statusStripHeight
+        color: Theme.color.bg_sunken
+        border.color: Theme.color.border
+        border.width: Theme.border.width
+
+        Row {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: Theme.spacing.s3
+            spacing: Theme.spacing.s5
+            Text {
+                color: Theme.color.text_secondary
+                font.pixelSize: Theme.typography.scale.label.size
+                text: "前方 " + page.camState("primary")
+            }
+            Text {
+                color: Theme.color.text_secondary
+                font.pixelSize: Theme.typography.scale.label.size
+                text: "左侧 " + page.camState("left")
+            }
+            Text {
+                color: Theme.color.text_secondary
+                font.pixelSize: Theme.typography.scale.label.size
+                text: "右侧 " + page.camState("right")
+            }
+            Text {
+                color: Theme.color.text_muted
+                font.pixelSize: Theme.typography.scale.caption.size
+                text: "模式：" + railhmiModePrimary + " / " + railhmiModeSecondary
+            }
         }
-        CameraTile {
-            objectName: "tileRight"
-            width: (parent.width - 2 * Theme.spacing.s3) * 0.26
-            height: parent.height
-            title: page.camByPosition("right") ? page.camByPosition("right").name : "右侧"
-            state: page.camByPosition("right") ? page.camByPosition("right").state : "连接中"
-            showBadge: false
+    }
+
+    // ---- 三联行（P0，左-前-右，前方最大） ----
+    Item {
+        id: row
+        objectName: "threePanelRow"
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.topMargin: page.margin
+        anchors.bottom: statusStrip.top
+        anchors.bottomMargin: page.margin
+
+        Row {
+            anchors.fill: parent
+            spacing: page.gap
+
+            CameraTile {
+                objectName: "tileLeft"
+                width: (row.width - 2 * page.gap) * page.L.leftRatio
+                height: row.height
+                title: page.camName("left", "左侧")
+                state: page.camState("left")
+                live: false
+                showBadge: false
+            }
+            CameraTile {
+                objectName: "tileFront"
+                width: (row.width - 2 * page.gap) * page.L.frontRatio
+                height: row.height
+                title: page.camName("primary", "前方")
+                state: page.camState("primary")
+                live: false
+                showBadge: false
+            }
+            CameraTile {
+                objectName: "tileRight"
+                width: (row.width - 2 * page.gap) * page.L.rightRatio
+                height: row.height
+                title: page.camName("right", "右侧")
+                state: page.camState("right")
+                live: false
+                showBadge: false
+            }
         }
     }
 }

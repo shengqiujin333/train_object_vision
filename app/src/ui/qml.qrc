@@ -8,6 +8,7 @@
         <file>qml/components/NavBar.qml</file>
         <file>qml/components/DetectionBadge.qml</file>
         <file>qml/components/CameraTile.qml</file>
+        <file>qml/components/VideoSurface.qml</file>
         <file>qml/components/DeviceCard.qml</file>
         <file>qml/pages/PageView.qml</file>
         <file>qml/pages/DeniedView.qml</file>

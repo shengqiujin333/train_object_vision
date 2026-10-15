@@ -12,6 +12,7 @@
 
 #include "railhmi/core/camera_registry.h"
 #include "railhmi/core/config.h"
+#include "railhmi/core/layout.h"
 #include "railhmi/core/navigation.h"
 #include "railhmi/core/version.h"
 #include "railhmi/platform/log.h"
@@ -52,6 +53,25 @@ int main(int argc, char** argv) {
         if (railhmi::core::role_can_access(role, p)) navList.append(m);
     }
     const railhmi::core::ModeDisplay mode = railhmi::core::mode_display();
+
+    // 三联布局比例与高度来自 core compute_layout（单一来源，ITEM-014）。
+    // QML 只消费比例/高度，窗口尺寸变化时比例保持。
+    const railhmi::core::LayoutMetrics lm = railhmi::core::compute_layout(1920, 1080);
+    QVariantMap layoutMap;
+    layoutMap["leftRatio"] = lm.left_ratio;
+    layoutMap["frontRatio"] = lm.front_ratio;
+    layoutMap["rightRatio"] = lm.right_ratio;
+    layoutMap["frontMinAreaRatio"] = 0.34;
+    layoutMap["topBarHeight"] = lm.top_bar_h;
+    layoutMap["statusStripHeight"] = lm.status_strip_h;
+    layoutMap["alarmBarHeight"] = lm.alarm_bar_h;
+    layoutMap["marginNarrow"] = 16;
+    layoutMap["marginWide"] = 24;
+
+    // 渲染路径由配置选定（默认 cpu；gl 可开关），接入 QML 渲染面。
+    const QString renderPath = QString::fromLatin1(
+        railhmi::core::to_string(cfg.settings.app.render_path));
+    railhmi::platform::Logger::instance().info("render path: " + renderPath.toStdString());
     const QString roleId = QString::fromLatin1(railhmi::core::to_string(role));
     const QString defaultPage = QString::fromLatin1(railhmi::core::to_string(railhmi::core::default_page(role)));
 
@@ -94,6 +114,8 @@ int main(int argc, char** argv) {
     view.rootContext()->setContextProperty("railhmiModeInteractive", mode.interactive);
     view.rootContext()->setContextProperty("railhmiCameras", camList);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
+    view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
+    view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);
     view.setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     if (view.status() != QQuickView::Ready) {
         railhmi::platform::Logger::instance().error("QML load failed (qrc:/qml/main.qml)");

@@ -3,7 +3,7 @@
 PROJECT_GUIDE.md | existing | 铁轨异物检测项目总纲（历史，数据集/训练/转换/部署流程）
 README.md | existing | RK3588 交接文档，记录硬件/网络/摄像头/程序现状与已知坑（2026-10-13）
 app/CMakeLists.txt | active | 分层 CMake 工程（ITEM-003）：RAILHMI_BUILD_{TARGET,PREVIEW,CORE_TESTS,MEDIA} 开关；core/platform/media/ui 子目录
-app/README.md | active | 桌面应用工程构建/运行入口说明：ITEM-001 依赖探针 + 板端探测、ITEM-002 渲染选型 spike、ITEM-003 分层 CMake 三档构建（Release/Preview/CoreTests/MediaCheck）
+app/README.md | active | 桌面应用工程构建/运行入口说明：ITEM-001 依赖探针 + 板端探测、ITEM-002 渲染选型 spike、ITEM-003 分层 CMake 三档构建（Release/Preview/CoreTests/MediaCheck）、ITEM-013 取流探针、ITEM-014 三联布局/渲染路径
 app/build.sh | active | 构建入口（ITEM-003）：Release|Preview|CoreTests|MediaCheck|check；依赖缺失时逐项报错退出 1，不静默失败
 app/config/app.yaml | active | 应用配置基线（mode=visible、render_path=cpu、recording_source=both、storage、NVR 登记未配置）
 app/config/cameras.yaml | active | 摄像头注册表基线（6 路可见光；ai_enabled/ai_profile 驱动职责；凭据经 credential_env）
@@ -19,9 +19,10 @@ app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
 app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
-app/src/core/CMakeLists.txt | active | railhmi_core 静态库（version/yaml/config/stream_state/rules/timebase/persistence_model/retention/simulation/navigation/camera_registry）+ railhmi-config-check + railhmi-sim-inject
+app/src/core/CMakeLists.txt | active | railhmi_core 静态库（version/yaml/config/stream_state/rules/timebase/persistence_model/retention/simulation/navigation/camera_registry/layout）+ railhmi-config-check + railhmi-sim-inject
 app/src/core/include/railhmi/core/camera_registry.h | active | 配置驱动摄像头注册表/检测职责徽标/NVR 集成项接口
 app/src/core/include/railhmi/core/config.h | active | 配置与状态契约模型/枚举（含 ai_profile/integration_state/mode/recording_source）+ 流时序阈值字段（first_frame_timeout_ms/reconnect_backoff_ms）与校验入口
+app/src/core/include/railhmi/core/layout.h | active | 三联布局计算接口（compute_layout 像素 rect + 比例；顺序/前方最大/P0 可见/横幅遮挡/比例保持判据；ITEM-014）
 app/src/core/include/railhmi/core/navigation.h | active | 导航与角色权限接口（六页固定顺序/权限矩阵/可见页/默认页/受限返回/模式位）
 app/src/core/include/railhmi/core/persistence_model.h | active | 持久化数据模型（9 表行结构）+ schema DDL（ITEM-007）
 app/src/core/include/railhmi/core/retention.h | active | 保留策略与录像缺口模型接口
@@ -33,6 +34,7 @@ app/src/core/include/railhmi/core/version.h | active | 版本/构建档位/模�
 app/src/core/include/railhmi/core/yaml.h | active | 无依赖 YAML 子集解析器接口（块映射/序列/流序列/标量，含行号错误）
 app/src/core/src/camera_registry.cpp | active | 注册表/徽标/集成项实现（槽位按配置顺序；徽标仅 P4/P6；NVR 通道映射=未配置）
 app/src/core/src/config.cpp | active | 配置加载与校验实现（报具体字段路径，不静默默认；applied_defaults 记录可选默认；含流时序阈值校验）
+app/src/core/src/layout.cpp | active | 三联布局几何实现（margin/顶部条/三联行/状态区/报警条/前方中央；判据函数；ITEM-014）
 app/src/core/src/navigation.cpp | active | 导航与角色权限实现
 app/src/core/src/persistence_model.cpp | active | 数据模型与 schema DDL 实现
 app/src/core/src/retention.cpp | active | 保留淘汰顺序与缺口合并实现
@@ -60,25 +62,27 @@ app/src/platform/src/log.cpp | active | 日志与 redact_url 实现
 app/src/platform/src/repository.cpp | active | SqliteRepository 实现（预编译语句插入/查询/保留删除）
 app/src/platform/src/sqlite_store.cpp | active | SqliteStore WAL/执行/查询实现（经 sqlite3_min.h）
 app/src/ui/CMakeLists.txt | active | railhmi Qt/QML 可执行（Qt5 Quick/Qml；缺失时明确 FATAL；注入 RAILHMI_CONFIG_DIR；构建期 railhmi_tokens 生成令牌）
-app/src/ui/qml.qrc | active | QML 资源清单（main.qml + 生成 Theme/Tokens.qml + qmldir + components(NavBar/TopStatusBar/DetectionBadge/CameraTile/DeviceCard) + pages(PageView/DeniedView/P1/P4/P6)）
+app/src/ui/qml.qrc | active | QML 资源清单（main.qml + 生成 Theme/Tokens.qml + qmldir + components(NavBar/TopStatusBar/DetectionBadge/CameraTile/VideoSurface/DeviceCard) + pages(PageView/DeniedView/P1/P4/P6)）
 app/src/ui/qml/Theme.qml | active | 生成的 Theme QML 单例（运行时主题外观；由 gen_tokens.py 生成，勿手改）
 app/src/ui/qml/Tokens.qml | active | 生成的令牌 QML 单例（令牌数据；由 gen_tokens.py 生成）
-app/src/ui/qml/components/CameraTile.qml | active | 摄像头格（位置名/连接状态/可选检测职责徽标）
+app/src/ui/qml/components/CameraTile.qml | active | 摄像头格（位置名/连接状态/可选检测职责徽标；内嵌 VideoSurface 渲染面，消费 live/state）
 app/src/ui/qml/components/DetectionBadge.qml | active | 检测职责徽标（取值来自注册表 ai_profile；作用域由承载页决定）
 app/src/ui/qml/components/DeviceCard.qml | active | 设备卡片（NVR 等集成项：地址/已登记/状态/通道映射）
 app/src/ui/qml/components/NavBar.qml | active | 固定导航（仅渲染角色可见页 entries）
 app/src/ui/qml/components/TopStatusBar.qml | active | 顶部全局状态条（模式位固定可见光/红外未接入，无切换控件）
+app/src/ui/qml/components/VideoSurface.qml | active | 视频渲染面（按配置渲染路径 cpu/gl 选择实现；非 LIVE 占位层，旧帧不当实时；右下显示 render 路径）
 app/src/ui/qml/main.qml | active | 应用外壳（ITEM-011/012）：顶部状态条 + 角色化固定导航 + 按 id 选择页面 + 受限页；颜色/字号均来自 Theme，无硬编码
 app/src/ui/qml/pages/DeniedView.qml | active | 受限页视图（无权限说明 + 返回）
-app/src/ui/qml/pages/P1Realtime.qml | active | P1 实时监控三联（司机页不显示检测职责徽标）
+app/src/ui/qml/pages/P1Realtime.qml | active | P1 实时监控三联（比例来自 railhmiLayout；左-前-右，前方最大；关键状态区 + 当前报警条；司机页不显示徽标）
 app/src/ui/qml/pages/P4AllCameras.qml | active | P4 全摄像头（配置驱动槽位/顺序 + 徽标）
 app/src/ui/qml/pages/P6Maintenance.qml | active | P6 设备维护（摄像头徽标 + NVR DeviceCard）
 app/src/ui/qml/pages/PageView.qml | active | 通用页面骨架（标题/角色/模式）
 app/src/ui/qml/qmldir | active | QML 模块清单（singleton Theme/Tokens；由 gen_tokens.py 生成）
-app/src/ui/src/main.cpp | active | Qt 应用入口（启动即校验配置；按角色注入导航/模式位，配置派生摄像头与 NVR 集成项上下文；加载 qrc:/qml/main.qml）
-app/tests/core/CMakeLists.txt | active | railhmi-core-tests 可执行（多源：harness/平台/配置/流/规则/持久化/模拟/导航/注册表；注入 RAILHMI_CONFIG_DIR；固定输出到 build/tests/）
-app/tests/core/main.cpp | active | railhmi-core 单元测试入口（平台/配置/流/规则/持久化/模拟/导航/注册表八组；支持 --junit 可归档 XML）
+app/src/ui/src/main.cpp | active | Qt 应用入口（启动即校验配置；按角色注入导航/模式位、摄像头与 NVR 集成项上下文、三联布局 railhmiLayout 与配置渲染路径 railhmiRenderPath；加载 qrc:/qml/main.qml）
+app/tests/core/CMakeLists.txt | active | railhmi-core-tests 可执行（多源：harness/平台/配置/流/规则/持久化/模拟/导航/注册表/布局；注入 RAILHMI_CONFIG_DIR；固定输出到 build/tests/）
+app/tests/core/main.cpp | active | railhmi-core 单元测试入口（平台/配置/流/规则/持久化/模拟/导航/注册表/布局九组；支持 --junit 可归档 XML）
 app/tests/core/test_config.cpp | active | 配置与状态契约测试（TC-CORE-01：合法逐项 + 非法报具体字段 + 流时序阈值断言）
+app/tests/core/test_layout.cpp | active | 三联布局测试（ITEM-014：两档分辨率顺序/前方最大/P0 可见/横幅不遮前中央/缩放比例保持）
 app/tests/core/test_navigation.cpp | active | 导航/角色权限测试（TC-SMOKE-07：司机仅见实时/报警/回放、维护/研发/管理员全部、受限 denied、模式位）
 app/tests/core/test_persistence.cpp | active | 持久化与保留策略测试（TC-CORE-06：时间基准/9 表读写/WAL 重放/写入-重启-读取/淘汰顺序/缺口）
 app/tests/core/test_platform.cpp | active | 平台基础测试（版本/脱敏/原子文件/SQLite 条件）
@@ -441,6 +445,13 @@ docs/hmi/test_evidence/ITEM-013-stream/build-MediaCheck-192_168_0_103-20261015-I
 docs/hmi/test_evidence/ITEM-013-stream/build-MediaCheck-192_168_0_103-20261015-ITEM013-r2.transcript.json | active | ITEM-013 MediaCheck+探针 transcript
 docs/hmi/test_evidence/ITEM-013-stream/verify_stream13_ext.cpp | active | 验证自有扩展夹具源码（26 断言：真实帧→LIVE/last_frame fresh 与推进/fps 滑窗/camera_id 透传/cut 后 reconnect+presentable+pump 无帧/时间线镜像/无 live 复活/计数单调/无相机不崩溃）
 docs/hmi/test_evidence/ITEM-013-stream/verify_stream13_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立目录 + 交付入口 MediaCheck 构建 + 探针权威轮程序化断言 + 头部一致性比对 + cutonly 轮 + 扩展夹具编译链 media/core/platform；指纹校验中止/全超时/凭据仅环境变量/按名清理）
+docs/hmi/test_evidence/ITEM-014-layout/README.md | active | ITEM-014 三联布局与渲染路径接入证据（compute_layout/QML 接入/板端 TestRun 377/377/两档几何/边界/复现）
+docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.core-evidence_core-tests-20261016-ITEM014-r1.log | active | ITEM-014 core 单测逐项通过原文（377 passed / 0 failed）
+docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.core-evidence_core-tests-20261016-ITEM014-r1.xml | active | ITEM-014 JUnit XML（377 用例）
+docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.core-evidence_sim-inject-20261016-ITEM014-r1.json | active | ITEM-014 板端 TestRun sim-inject 回归 JSON
+docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.core-evidence_sim-inject-20261016-ITEM014-r1.log | active | ITEM-014 板端 TestRun sim-inject 回归日志
+docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.log | active | ITEM-014 板端 TestRun 运行日志（构建 + 单测 + 令牌自检 + UI 扫描）
+docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.transcript.json | active | ITEM-014 板端 TestRun transcript（主机指纹/逐命令退出码/取回）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

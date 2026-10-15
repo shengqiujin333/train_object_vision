@@ -10,6 +10,7 @@ add_library(railhmi_core STATIC
     src/simulation.cpp
     src/navigation.cpp
     src/camera_registry.cpp
+    src/layout.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
