@@ -163,11 +163,18 @@ def main() -> int:
             trun = rrun(client, "cd %s && bash tests/run_core_tests.sh --outdir core-evidence --stamp %s; "
                                 "echo TESTRUN_EXIT=$?" % (remote, args.stamp), args.build_timeout)
             note("testrun", trun)
+            sim = rrun(client, "cd %s && ./build-core/tools/railhmi-sim-inject "
+                              "--fi 01,02,03,04,05,10 --duration 6000 "
+                              "--out core-evidence/sim-inject-%s.log --json core-evidence/sim-inject-%s.json; "
+                              "echo SIM_EXIT=$?" % (remote, args.stamp, args.stamp), args.build_timeout)
+            note("sim-inject", sim)
             sftp = client.open_sftp()
             try:
                 sftp.get_channel().settimeout(args.connect_timeout * 6)
                 for rel in ("core-evidence/core-tests-%s.log" % args.stamp,
-                            "core-evidence/core-tests-%s.xml" % args.stamp):
+                            "core-evidence/core-tests-%s.xml" % args.stamp,
+                            "core-evidence/sim-inject-%s.log" % args.stamp,
+                            "core-evidence/sim-inject-%s.json" % args.stamp):
                     local_out = outdir / ("%s.%s" % (tag, rel.replace("/", "_")))
                     try:
                         sftp.get("%s/%s" % (remote, rel), str(local_out))

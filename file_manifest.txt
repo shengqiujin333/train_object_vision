@@ -18,11 +18,12 @@ app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
 app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
-app/src/core/CMakeLists.txt | active | railhmi_core 静态库（version/yaml/config/stream_state/rules/timebase/persistence_model/retention）+ railhmi-config-check 启动校验工具
+app/src/core/CMakeLists.txt | active | railhmi_core 静态库（version/yaml/config/stream_state/rules/timebase/persistence_model/retention/simulation）+ railhmi-config-check + railhmi-sim-inject
 app/src/core/include/railhmi/core/config.h | active | 配置与状态契约模型/枚举（含 ai_profile/integration_state/mode/recording_source）+ 流时序阈值字段（first_frame_timeout_ms/reconnect_backoff_ms）与校验入口
 app/src/core/include/railhmi/core/persistence_model.h | active | 持久化数据模型（9 表行结构）+ schema DDL（ITEM-007）
 app/src/core/include/railhmi/core/retention.h | active | 保留策略与录像缺口模型接口
 app/src/core/include/railhmi/core/rules.h | active | 检测职责与报警规则/事件层接口（ai_profile 分派/多帧确认/抑制/级别映射/ack/ROI/设备类别映射）
+app/src/core/include/railhmi/core/simulation.h | active | 模拟输入/故障注入接口（FI-01..05/FI-10、模拟检测、结构化 Observation）
 app/src/core/include/railhmi/core/stream_state.h | active | 流状态机与质量判定接口（六态/质量标志/classify_quality/事件/非 LIVE 禁止旧帧接口）
 app/src/core/include/railhmi/core/timebase.h | active | 统一时间基准接口（UTC 毫秒 ↔ 单调微秒）
 app/src/core/include/railhmi/core/version.h | active | 版本/构建档位/模拟开关接口（core 无 Qt/GStreamer/相机/SQLite 依赖）
@@ -31,11 +32,13 @@ app/src/core/src/config.cpp | active | 配置加载与校验实现（报具体�
 app/src/core/src/persistence_model.cpp | active | 数据模型与 schema DDL 实现
 app/src/core/src/retention.cpp | active | 保留淘汰顺序与缺口合并实现
 app/src/core/src/rules.cpp | active | 规则/事件层实现（PRD §8.2 级别、跟踪 ID 与抑制窗口、ack 不删事件、device_category_from_position）
+app/src/core/src/simulation.cpp | active | 模拟运行器实现（确定性节拍、按 ai_profile 注入、故障/恢复、结构化日志）
 app/src/core/src/stream_state.cpp | active | 流状态机实现（首帧超时/冻结/重连退避/阈值升级/降级/恢复）
 app/src/core/src/timebase.cpp | active | 时间基准实现
 app/src/core/src/version.cpp | active | 版本与构建描述实现
 app/src/core/src/yaml.cpp | active | YAML 子集解析器实现
 app/src/core/tools/config_check.cpp | active | 启动配置校验入口 main（railhmi-config-check；合法摘要/非法逐条字段并非零退出）
+app/src/core/tools/sim_inject.cpp | active | 模拟/故障注入 CLI（railhmi-sim-inject；无 Qt；输出 log/JSON）
 app/src/media/CMakeLists.txt | active | railhmi_media 静态库（target 专用；pkg-config gstreamer + librga）
 app/src/media/include/railhmi/media/pipeline_factory.h | active | 渲染路径枚举与管线描述接口
 app/src/media/src/pipeline_factory.cpp | active | 管线描述/渲染路径解析/GStreamer 版本实现
@@ -52,18 +55,19 @@ app/src/ui/CMakeLists.txt | active | railhmi Qt/QML 可执行（Qt5 Quick/Qml；
 app/src/ui/qml.qrc | active | QML 资源清单
 app/src/ui/qml/main.qml | active | 骨架窗口（仅 QtQuick 基础模块，避免硬依赖 Controls2）
 app/src/ui/src/main.cpp | active | Qt 应用入口（启动即校验配置，非法报具体字段并非零退出；加载 qrc:/qml/main.qml）
-app/tests/core/CMakeLists.txt | active | railhmi-core-tests 可执行（多源：harness/平台/配置/流/规则/持久化；注入 RAILHMI_CONFIG_DIR；固定输出到 build/tests/）
-app/tests/core/main.cpp | active | railhmi-core 单元测试入口（平台/配置/流/规则/持久化五组；支持 --junit 可归档 XML）
+app/tests/core/CMakeLists.txt | active | railhmi-core-tests 可执行（多源：harness/平台/配置/流/规则/持久化/模拟；注入 RAILHMI_CONFIG_DIR；固定输出到 build/tests/）
+app/tests/core/main.cpp | active | railhmi-core 单元测试入口（平台/配置/流/规则/持久化/模拟六组；支持 --junit 可归档 XML）
 app/tests/core/test_config.cpp | active | 配置与状态契约测试（TC-CORE-01：合法逐项 + 非法报具体字段 + 流时序阈值断言）
 app/tests/core/test_persistence.cpp | active | 持久化与保留策略测试（TC-CORE-06：时间基准/9 表读写/WAL 重放/写入-重启-读取/淘汰顺序/缺口）
 app/tests/core/test_platform.cpp | active | 平台基础测试（版本/脱敏/原子文件/SQLite 条件）
 app/tests/core/test_rules.cpp | active | 检测职责与规则/事件测试（TC-CORE-04/05：级别映射/多帧确认/抑制/track/ack/ROI）
+app/tests/core/test_simulation.cpp | active | 模拟输入/故障注入测试（TC-SIM-01：FI-01..05、FI-10 状态与恢复、结构化日志、确定性）
 app/tests/core/test_stream.cpp | active | 流状态机与质量判定测试（TC-CORE-02/03：六态/升级序列/非 LIVE 接口/classify_quality）
 app/tests/core/test_util.cpp | active | 测试 harness 实现（pass/fail 计数、断言记录、JUnit XML 写出）
 app/tests/core/test_util.h | active | 测试 harness 声明（断言记录与 write_junit）
 app/tests/run_core_tests.sh | active | core 单命令测试入口（构建+运行+归档日志/JUnit XML+退出码；ITEM-008 交付，验证轮独立复现 243/243）
 app/third_party/sqlite/sqlite3_min.h | active | 最小 SQLite C API 声明（无系统 sqlite3.h 时使用；存在系统头则优先系统头）
-app/tools/board_build.py | active | 板端构建/测试运行器（上传 app/ + build.sh；CoreTests 额外运行 core-tests 与 railhmi-config-check；TestRun 运行 run_core_tests.sh 并取回日志/JUnit XML；全超时 + known_hosts；ITEM-008 交付）
+app/tools/board_build.py | active | 板端构建/测试运行器（上传 app/ + build.sh；CoreTests 额外运行 core-tests 与 railhmi-config-check；TestRun 运行 run_core_tests.sh + railhmi-sim-inject 并取回日志/JUnit XML；全超时 + known_hosts）
 app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
 app/tools/board_render_spike.py | active | ITEM-002 板端渲染 spike 运行器（上传/构建 QML spike、无 Qt 核心测量编译运行、gl 构造探测、取回日志/JSON、判据选择；全超时 + known_hosts）
 app/tools/env_probe.py | active | 桌面应用依赖/环境只读探针（标准库；目标板与主机均可跑，生成 md/raw/json；支持 --skip-slow 与 QML/Quick 库、qml 目录核验）
@@ -281,6 +285,13 @@ docs/hmi/test_evidence/ITEM-008-coretests/build-TestRun-192_168_0_103-20261015-I
 docs/hmi/test_evidence/ITEM-008-coretests/run_verify_round.sh | active | 本验证轮启动脚本（凭据经用户环境导入当前进程并导出给子进程；默认 stamp=VERIFY-20261016-v3，VERIFY_STAMP 可覆盖）
 docs/hmi/test_evidence/ITEM-008-coretests/verify_coretests_ext.cpp | active | 验证自有扩展夹具源码 v3（14 断言：harness records API/计数器/字段保真/XML 实体转义逐字节/独立解析计数/声明行结构/套件名回写/失败记录位相确定性）
 docs/hmi/test_evidence/ITEM-008-coretests/verify_coretests_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立目录 + 直接执行交付入口 + 退出码负例 + 扩展夹具 + config 守门；指纹校验中止/全超时/凭据仅环境变量/按名清理）
+docs/hmi/test_evidence/ITEM-009-simulation/README.md | active | ITEM-009 模拟输入/故障注入证据（FI 映射/结构化日志/板端实测/边界/复现）
+docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.core-evidence_core-tests-20261015-ITEM009-r2.log | active | ITEM-009 归档测试 stdout（274/274 + RESULT PASS）
+docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.core-evidence_core-tests-20261015-ITEM009-r2.xml | active | ITEM-009 归档 JUnit XML（274 tests, 0 failures）
+docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.core-evidence_sim-inject-20261015-ITEM009-r2.json | active | ITEM-009 故障注入 JSON
+docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.core-evidence_sim-inject-20261015-ITEM009-r2.log | active | ITEM-009 故障注入结构化日志（FI-01..05,10）
+docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.log | active | ITEM-009 TestRun+sim-inject 运行日志
+docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.transcript.json | active | ITEM-009 TestRun+sim-inject transcript
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

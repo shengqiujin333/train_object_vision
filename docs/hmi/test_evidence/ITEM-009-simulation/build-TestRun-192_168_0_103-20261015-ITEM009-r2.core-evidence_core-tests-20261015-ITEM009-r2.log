@@ -1,0 +1,278 @@
+== railhmi-core tests (railhmi 0.1.0 [mode=CoreTests, simulation=off]) ==
+[PASS] version_string == 0.1.0
+[PASS] build_mode is a known mode
+[PASS] build_description contains railhmi
+[PASS] redact_url hides credentials
+[PASS] redact_url leaves credential-free url unchanged
+[PASS] FileStore::write_atomic
+[PASS] FileStore::read_all round-trip
+[PASS] FileStore::exists after write
+[PASS] FileStore::exists false for missing
+[PASS] SqliteStore::open
+[PASS] SqliteStore::exec create table
+[PASS] SqliteStore::exec insert
+[PASS] SqliteStore::query_int
+[PASS] SqliteStore row count == 1
+[PASS] SqliteStore::open (reopen)
+[PASS] SqliteStore persistence across reopen
+[PASS] baseline config loads without errors
+[PASS] baseline has 6 cameras
+[PASS] CAM-01 id/position=primary
+[PASS] CAM-01 ai_enabled=true, ai_profile=front
+[PASS] CAM-02 ai_enabled=false, ai_profile=none
+[PASS] CAM-03 ai_enabled=false, ai_profile=none
+[PASS] CAM-04 ai_profile=pantograph
+[PASS] CAM-05 ai_profile=wheel_rail
+[PASS] CAM-06 ai_profile=cab_door
+[PASS] app.render_path=cpu
+[PASS] app.mode=visible
+[PASS] IR is not connected this phase
+[PASS] app.recording_source=both
+[PASS] app.resolution=1920x1080
+[PASS] thresholds values parsed
+[PASS] stream timing thresholds parsed
+[PASS] baseline has 4 roi entries
+[PASS] one integration (NVR)
+[PASS] NVR registered
+[PASS] NVR initial integration_state=unconfigured
+[PASS] integration_state string is 'unconfigured'
+[PASS] missing optional tile_aspect recorded in applied_defaults
+[PASS] missing required field reports cameras[0].username
+[PASS] invalid transport reports cameras[0].transport
+[PASS] invalid ai_profile reports cameras[0].ai_profile
+[PASS] ai_enabled/profile mismatch reports cameras[0].ai_profile
+[PASS] missing thresholds field reports thresholds.confirm_frames
+[PASS] invalid render_path reports app.render_path
+[PASS] invalid mode reports app.mode
+[PASS] unknown roi camera reports roi[0].camera
+[PASS] out-of-range roi w reports roi[0].w
+[PASS] missing config file reports file name
+[PASS] initial state = offline
+[PASS] offline cannot present as live
+[PASS] start -> connecting
+[PASS] connecting cannot present as live
+[PASS] first frame -> live
+[PASS] Started event emitted
+[PASS] FirstFrame event emitted
+[PASS] live presents fresh frame as live
+[PASS] no new frame -> frozen
+[PASS] frozen cannot present old frame as live
+[PASS] Freeze event emitted
+[PASS] frozen -> reconnecting
+[PASS] reconnect count = 1
+[PASS] reconnecting -> connecting (retry)
+[PASS] retry timeout -> reconnecting count 2
+[PASS] retry again -> connecting
+[PASS] threshold reached -> offline
+[PASS] reconnect count = 3 (threshold)
+[PASS] Escalated device event emitted at threshold
+[PASS] offline cannot present as live
+[PASS] recover from offline -> live
+[PASS] reconnect count reset on recovery
+[PASS] Recovered event emitted
+[PASS] source-error test live
+[PASS] source error -> reconnecting count 1
+[PASS] second source error -> offline (threshold 2)
+[PASS] source-error escalation event emitted
+[PASS] SourceError event emitted
+[PASS] quality flag -> degraded
+[PASS] degraded counts as streaming (degraded available)
+[PASS] degraded may present fresh frame
+[PASS] QualityDegraded event emitted
+[PASS] classify: low mean -> too_dark
+[PASS] classify: high mean -> too_bright
+[PASS] classify: near-uniform -> occluded
+[PASS] classify: low lapvar -> blurred
+[PASS] classify: normal frame -> no flags
+[PASS] classify: invalid stats -> no flags
+[PASS] person_on_rail=L1
+[PASS] front_obstacle=L1
+[PASS] wheel_derail=L1
+[PASS] pantograph_abnormal=L2
+[PASS] door_ajar=L2
+[PASS] front_camera_device=L2
+[PASS] side_camera_device=L3
+[PASS] device front primary=L2
+[PASS] device side=L3
+[PASS] front person: event after confirm_frames
+[PASS] front person level = L1
+[PASS] front person type
+[PASS] new event unacked
+[PASS] front obstacle -> L1 FrontObstacle
+[PASS] front outside ROI -> no event
+[PASS] front low confidence -> no event
+[PASS] front frames beyond confirm window -> no event
+[PASS] suppression: first event created
+[PASS] same track within suppress window -> no new event
+[PASS] events size still 1 under suppression
+[PASS] suppressed event distance updated
+[PASS] different track -> new event
+[PASS] events size 2 after second track
+[PASS] same track after suppress window -> new event
+[PASS] events size 3 after suppress window
+[PASS] pantograph normal -> no event
+[PASS] pantograph abnormal -> L2
+[PASS] wheel_rail abnormal -> L1
+[PASS] cab_door ajar -> L2
+[PASS] ai_profile=none -> no event
+[PASS] front primary device event -> L2
+[PASS] side device event -> L3
+[PASS] duplicate device event suppressed
+[PASS] single-frame confirm event created
+[PASS] unacked count 1
+[PASS] ack returns true for existing event
+[PASS] ack does NOT delete event
+[PASS] ack_state becomes acked
+[PASS] unacked count 0 after ack
+[PASS] ack unknown id returns false
+[PASS] roi contains center point
+[PASS] roi rejects outside point
+[PASS] roi rejects beyond x+w
+[PASS] find_roi finds entry
+[PASS] find_roi miss
+[PASS] to_string(Device)
+[PASS] to_string(SideCameraDevice)
+[PASS] to_string(Acked)
+[PASS] to_string(Unacked)
+[PASS] to_string(PantographState::Abnormal)
+[PASS] to_string(DoorState::Ajar)
+[PASS] to_string(DeviceCategory::Side)
+[PASS] map_level(Device)=L2
+[PASS] position primary -> FrontPrimary
+[PASS] position left/right -> Side
+[PASS] position roof/underfloor/cab -> Other
+[PASS] device other -> L2 (explicit)
+[PASS] roi includes top-left corner
+[PASS] roi includes bottom-right corner
+[PASS] roi rejects x-epsilon
+[PASS] roi rejects y+h+epsilon
+[PASS] wheel event independent
+[PASS] front key isolated from wheel (same cam/track, different type)
+[PASS] cross-type events independent
+[PASS] device channel event 1
+[PASS] detection channel independent of device suppression
+[PASS] device event after window
+[PASS] device event after second window
+[PASS] device(3)+detection(1)=4
+[PASS] no event with two single-frame counts
+[PASS] non-candidate frame resets all camera confirms
+[PASS] reset cleared cross-type confirms (need full cycle)
+[PASS] full cycle after reset emits
+[PASS] emit resets cycle: first event
+[PASS] suppressed updates do not emit
+[PASS] boundary frame alone not enough
+[PASS] second frame not enough
+[PASS] full new cycle emits
+[PASS] emit resets cycle: second event
+[PASS] boundary: first event
+[PASS] 999ms still suppressed
+[PASS] exactly suppress_window not suppressed (new event)
+[PASS] 1999ms still suppressed
+[PASS] 2000ms not suppressed
+[PASS] boundary events count 3
+[PASS] update test: first event
+[PASS] update within window no new event
+[PASS] update refreshes last_update_ms
+[PASS] update refreshes distance
+[PASS] new event after window from original emit
+[PASS] update test: two events
+[PASS] two tracks -> two events
+[PASS] ack id1
+[PASS] ack id1 is idempotent
+[PASS] id1 acked
+[PASS] id2 unaffected
+[PASS] ack isolation: unacked 1
+[PASS] timebase starts uncalibrated
+[PASS] timebase calibrated
+[PASS] to_wall_ms at reference
+[PASS] to_wall_ms +2s
+[PASS] to_mono_us round-trip
+[PASS] to_wall_ms truncates to ms
+[PASS] wall/mono round-trip identity (ms-aligned)
+[PASS] system_now_ms is UTC epoch ms
+[PASS] steady_now_us positive
+[PASS] age: only expired continuous evicted
+[PASS] age: retained bytes 20
+[PASS] age: critical not evicted
+[PASS] age: one continuous evicted
+[PASS] capacity: oldest continuous evicted first
+[PASS] capacity: keep critical, retained 30
+[PASS] capacity: continuous(11,12) then oldest critical(13)
+[PASS] capacity: eviction counts
+[PASS] capacity: retained 10
+[PASS] gap merge: adjacent/overlap merged to one
+[PASS] gap merge bounds 100..300
+[PASS] gap merge: keeps first existing reason
+[PASS] gap merge: different camera separate
+[PASS] bridge merge: single gap, no residual overlap
+[PASS] bridge merge bounds 0..30
+[PASS] bridge merge: first existing reason 'a'
+[PASS] verify sequence: single merged gap
+[PASS] verify sequence bounds 50..300
+[PASS] verify sequence reason drop (first existing)
+[PASS] separate gaps (1ms apart) stay distinct
+[PASS] contiguous gaps merge
+[PASS] repo.open
+[PASS] repo.init_schema
+[PASS] repo journal_mode == wal
+[PASS] insert_event returns id
+[PASS] insert_event_target
+[PASS] insert_maintenance
+[PASS] insert_health
+[PASS] insert_stream_event
+[PASS] upsert_integration
+[PASS] set_config
+[PASS] get_config round-trip
+[PASS] insert_segment x2
+[PASS] insert_gap
+[PASS] 9 tables populated (segments=2)
+[PASS] copy db for WAL replay
+[PASS] open WAL copy
+[PASS] WAL replay: event recovered from -wal
+[PASS] WAL replay: gap recovered
+[PASS] reopen after restart
+[PASS] write-restart-read consistent
+[PASS] gap persisted across restart
+[PASS] gaps queryable by camera
+[PASS] segments read back with kind
+[PASS] repo retention evicts continuous first
+[PASS] repo retention: one segment left
+[PASS] repo retention keeps critical segment
+[PASS] crash: reopen after SIGKILL
+[PASS] crash: journal_mode still wal
+[PASS] crash: uncommitted transaction discarded
+[PASS] crash: committed row intact
+[PASS] FI-01 id
+[PASS] FI-10 id
+[PASS] fault to_string
+[PASS] parse '01'
+[PASS] parse 'fi-10'
+[PASS] parse 'freeze'
+[PASS] parse invalid fault rejected
+[PASS] injection params logged
+[PASS] injection camera logged
+[PASS] format_observation non-empty
+[PASS] FI-01 -> reconnecting
+[PASS] FI-01 -> offline escalation
+[PASS] FI-01 recovers to live
+[PASS] FI-01 final state live
+[PASS] FI-02 -> frozen
+[PASS] FI-02 recovers to live
+[PASS] FI-03 -> ai unavailable
+[PASS] FI-03 no detections -> no alarms
+[PASS] FI-03 summary alarms=0
+[PASS] FI-04 -> storage low
+[PASS] FI-04 record_available=false
+[PASS] FI-04 recovers (low=false after)
+[PASS] FI-05 -> ptz tolerance fail
+[PASS] FI-05 recovers tolerance
+[PASS] FI-10 -> recording gap logged
+[PASS] FI-10 summary has gaps
+[PASS] no fault -> front alarm produced
+[PASS] no fault summary alarms=1
+[PASS] simulation is deterministic/resettable
+[PASS] pantograph injection -> L2 alarm
+[PASS] none profile -> no alarms
+== 274 passed, 0 failed ==
+RESULT: PASS passed=274 failed=0
+[junit] wrote core-evidence/core-tests-20261015-ITEM009-r2.xml
