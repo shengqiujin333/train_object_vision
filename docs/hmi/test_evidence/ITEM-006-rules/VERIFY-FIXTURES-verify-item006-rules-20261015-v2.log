@@ -1,0 +1,133 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload-app] exit=0 =====
+uploaded app tree (74520 bytes compressed)
+
+===== [upload-fixture] exit=0 =====
+uploaded docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp -> /tmp/railhmi_verify006/verify_rules_ext.cpp
+
+===== [extract] exit=0 =====
+APP_FILES=55
+
+
+===== [build-coretests] exit=0 =====
+build.sh: unknown mode 'core-tests' (expected Release|Preview|CoreTests|check)
+# railhmi 构建入口（ITEM-003）
+#
+# 用法:
+#   ./build.sh Release     # target: aarch64 板端本机构建（Qt + GStreamer + librga + SQLite）
+#   ./build.sh Preview     # preview: 主机 x86_64 预览（Qt + 模拟输入；需宿主 Qt 工具链）
+#   ./build.sh CoreTests   # core: 仅 railhmi-core/platform 单元测试（最小工具链: C++ 编译器 + CMake）
+#   ./build.sh MediaCheck  # media: 仅 railhmi_media target 层（GStreamer + librga，无 Qt）编译检查
+#   ./build.sh check       # 只做依赖自检，不构建
+#
+# 退出码:
+#   0  成功
+#   1  缺少构建依赖（会逐项打印缺什么，不静默失败）
+#   2  参数错误
+#   3  CMake 配置或编译失败
+#
+# 说明:
+#   - 不在产品源码里写死开发机路径；构建目录为 app/build-<mode>/。
+BUILDEXIT=2
+
+
+===== [run-coretests] exit=0 =====
+TESTEXIT=1
+bash: line 1: cd: /tmp/railhmi_verify006_board/app/build-core/tests: No such file or directory
+
+
+===== [config-good] exit=0 =====
+CFG_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-config-check: No such file or directory
+
+
+===== [config-bad] exit=0 =====
+bash: line 1: /tmp/railhmi_verify006_board/app/build-core/tools/railhmi-config-check: No such file or directory
+CFG_EXIT=127
+
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+[PASS] to_string Device='device'
+[PASS] to_string SideCameraDevice
+[PASS] to_string unacked
+[PASS] to_string acked
+[PASS] map_level generic Device=L2
+[PASS] roi boundary (x,y) corner inside
+[PASS] roi boundary (x+w,y+h) corner inside
+[PASS] roi rejects x beyond x+w
+[PASS] roi rejects y beyond y+h
+[PASS] roi rejects x < x
+[PASS] find_roi hit
+[PASS] find_roi name miss
+[PASS] find_roi camera miss
+[PASS] device empty detail falls back to type string
+[PASS] side empty detail falls back to type string
+[PASS] device custom detail preserved
+[PASS] device event ts fields set
+[PASS] device events counted in unacked_count
+[PASS] find device event by id
+[PASS] ack device event keeps it
+[PASS] unacked after ack device = 2
+[PASS] cross-type keys count independently (no event yet)
+[PASS] wheel event after 3 wheel frames
+[PASS] front confirm unaffected by wheel emit
+[PASS] wheel suppress window holds right after emit
+[PASS] only one event so far
+[PASS] front emits unaffected by wheel suppression
+[PASS] device event 1 emitted
+[PASS] detection confirm unaffected by device event
+[PASS] front detection emits despite device suppression
+[PASS] device repeat suppressed (within 1000ms of emit 10)
+[PASS] device repeat after window emits
+[PASS] device repeat suppressed again (within window)
+[PASS] detection suppress still holds near device emits
+[PASS] device channel unaffected by detection state
+[FAIL] events total = device x3 + detection x1 + device x1 -- count=4
+[PASS] low-conf frame emits nothing
+[PASS] whole-camera confirm reset by non-candidate frame
+[PASS] out-of-ROI frame also resets confirm
+[PASS] 1 more frame after reset does not confirm
+[PASS] 3 consecutive candidate frames confirm
+[PASS] first emit after 3 frames
+[PASS] no new event within suppress window
+[PASS] inside suppress window still no new event
+[FAIL] new event needs full confirm_frames after window
+[PASS] boundary test first event
+[PASS] t_emit + suppress_ms exactly -> no longer suppressed
+[PASS] (t_emit + suppress_ms) - 1 -> still suppressed
+[PASS] boundary yields exactly 2 events
+[PASS] emit at t=10
+[PASS] updates inside window never emit
+[PASS] last_update_ms reflects last update
+[PASS] new emit after window
+[PASS] new event metadata from fresh frame
+[PASS] new event has new id
+[PASS] two events for idempotence test
+[PASS] ack first
+[PASS] ack first twice (idempotent)
+[PASS] first stays acked
+[PASS] second stays unacked
+[PASS] unacked count = 1
+[PASS] second event suppressed by window
+[PASS] ack state unchanged by update
+== 61 passed, 2 failed ==
+EXT_EXIT=1
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify006': No such file or directory
+ls: cannot access '/tmp/railhmi_verify006_board': No such file or directory
+

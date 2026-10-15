@@ -1,0 +1,62 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload-app] exit=0 =====
+uploaded app tree (74520 bytes compressed)
+
+===== [upload-fixture] exit=0 =====
+uploaded docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp -> /tmp/railhmi_verify006/verify_rules_ext.cpp
+
+===== [extract] exit=2 =====
+
+gzip: stdin: unexpected end of file
+tar: Child returned status 1
+tar: Error is not recoverable: exiting now
+
+
+===== [build-coretests] exit=0 =====
+bash: build.sh: No such file or directory
+BUILDEXIT=127
+
+
+===== [run-coretests] exit=0 =====
+TESTEXIT=1
+bash: line 1: cd: /tmp/railhmi_verify006_board/app/build-core/tests: No such file or directory
+
+
+===== [config-good] exit=0 =====
+CFG_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-config-check: No such file or directory
+
+
+===== [config-bad] exit=0 =====
+CFG_EXIT=1
+cp: cannot stat '/tmp/railhmi_verify006_board/app/config/*.yaml': No such file or directory
+
+
+===== [compile-ext] exit=0 =====
+/tmp/railhmi_verify006/verify_rules_ext.cpp:13:10: fatal error: railhmi/core/rules.h: No such file or directory
+   13 | #include "railhmi/core/rules.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+cc1plus: fatal error: src/core/src/rules.cpp: No such file or directory
+compilation terminated.
+GXX_EXIT=1
+
+
+===== [run-ext] exit=0 =====
+EXT_EXIT=127
+bash: line 1: /tmp/railhmi_verify006/verify_rules_ext: No such file or directory
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify006': No such file or directory
+ls: cannot access '/tmp/railhmi_verify006_board': No such file or directory
+

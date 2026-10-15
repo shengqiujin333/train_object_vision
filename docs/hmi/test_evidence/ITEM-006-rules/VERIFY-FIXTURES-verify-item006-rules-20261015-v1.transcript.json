@@ -1,0 +1,100 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify006",
+    "cpp": "docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-006-rules",
+    "stamp": "verify-item006-rules-20261015-v1",
+    "connect_timeout": 10,
+    "app_root": "app",
+    "timeout_sec": 1200
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "rm -rf /tmp/railhmi_verify006 /tmp/railhmi_verify006_board && mkdir -p /tmp/railhmi_verify006_board/app/app /tmp/railhmi_verify006",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": ""
+    },
+    {
+      "step": "upload-app",
+      "exit": 0,
+      "output": "uploaded app tree (74520 bytes compressed)"
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "uploaded docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp -> /tmp/railhmi_verify006/verify_rules_ext.cpp"
+    },
+    {
+      "step": "extract",
+      "cmd": "cd /tmp/railhmi_verify006_board && tar xzf /tmp/railhmi_verify006/app.tgz -C /tmp/railhmi_verify006_board/app && echo APP_FILES=$(find /tmp/railhmi_verify006_board/app -type f | wc -l)",
+      "exit": 2,
+      "elapsed_s": 0.04,
+      "output": "\ngzip: stdin: unexpected end of file\ntar: Child returned status 1\ntar: Error is not recoverable: exiting now\n"
+    },
+    {
+      "step": "build-coretests",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && bash build.sh core-tests 2>&1; echo BUILDEXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "bash: build.sh: No such file or directory\nBUILDEXIT=127\n"
+    },
+    {
+      "step": "run-coretests",
+      "cmd": "cd /tmp/railhmi_verify006_board/app/build-core/tests && ./railhmi-core-tests; echo TESTEXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "TESTEXIT=1\nbash: line 1: cd: /tmp/railhmi_verify006_board/app/build-core/tests: No such file or directory\n"
+    },
+    {
+      "step": "config-good",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && ./build-core/tools/railhmi-config-check ./config; echo CFG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "CFG_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-config-check: No such file or directory\n"
+    },
+    {
+      "step": "config-bad",
+      "cmd": "rm -rf /tmp/railhmi_cfg_bad && mkdir -p /tmp/railhmi_cfg_bad && cp /tmp/railhmi_verify006_board/app/config/*.yaml /tmp/railhmi_cfg_bad/ && sed -i '/confirm_frames:/d' /tmp/railhmi_cfg_bad/thresholds.yaml && /tmp/railhmi_verify006_board/app/build-core/tools/railhmi-config-check /tmp/railhmi_cfg_bad 2>&1; echo CFG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "CFG_EXIT=1\ncp: cannot stat '/tmp/railhmi_verify006_board/app/config/*.yaml': No such file or directory\n"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && g++ -std=c++17 -O0 -Wall -Wextra -Isrc/core/include /tmp/railhmi_verify006/verify_rules_ext.cpp src/core/src/rules.cpp -o /tmp/railhmi_verify006/verify_rules_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.13,
+      "output": "/tmp/railhmi_verify006/verify_rules_ext.cpp:13:10: fatal error: railhmi/core/rules.h: No such file or directory\n   13 | #include \"railhmi/core/rules.h\"\n      |          ^~~~~~~~~~~~~~~~~~~~~~\ncompilation terminated.\ncc1plus: fatal error: src/core/src/rules.cpp: No such file or directory\ncompilation terminated.\nGXX_EXIT=1\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && /tmp/railhmi_verify006/verify_rules_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "EXT_EXIT=127\nbash: line 1: /tmp/railhmi_verify006/verify_rules_ext: No such file or directory\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify006 /tmp/railhmi_verify006_board /tmp/railhmi_cfg_bad && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify006 /tmp/railhmi_verify006_board 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.08,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify006': No such file or directory\nls: cannot access '/tmp/railhmi_verify006_board': No such file or directory\n"
+    }
+  ]
+}

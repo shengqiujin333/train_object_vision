@@ -1,0 +1,100 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify006",
+    "cpp": "docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-006-rules",
+    "stamp": "verify-item006-rules-20261015-v2",
+    "connect_timeout": 10,
+    "app_root": "app",
+    "timeout_sec": 1200
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "rm -rf /tmp/railhmi_verify006 /tmp/railhmi_verify006_board && mkdir -p /tmp/railhmi_verify006_board/app/app /tmp/railhmi_verify006",
+      "exit": 0,
+      "elapsed_s": 0.23,
+      "output": ""
+    },
+    {
+      "step": "upload-app",
+      "exit": 0,
+      "output": "uploaded app tree (74520 bytes compressed)"
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "uploaded docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp -> /tmp/railhmi_verify006/verify_rules_ext.cpp"
+    },
+    {
+      "step": "extract",
+      "cmd": "cd /tmp/railhmi_verify006_board && tar xzf /tmp/railhmi_verify006/app.tgz -C /tmp/railhmi_verify006_board/app && echo APP_FILES=$(find /tmp/railhmi_verify006_board/app -type f | wc -l)",
+      "exit": 0,
+      "elapsed_s": 0.04,
+      "output": "APP_FILES=55\n"
+    },
+    {
+      "step": "build-coretests",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && bash build.sh core-tests 2>&1; echo BUILDEXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.16,
+      "output": "build.sh: unknown mode 'core-tests' (expected Release|Preview|CoreTests|check)\n# railhmi 构建入口（ITEM-003）\n#\n# 用法:\n#   ./build.sh Release     # target: aarch64 板端本机构建（Qt + GStreamer + librga + SQLite）\n#   ./build.sh Preview     # preview: 主机 x86_64 预览（Qt + 模拟输入；需宿主 Qt 工具链）\n#   ./build.sh CoreTests   # core: 仅 railhmi-core/platform 单元测试（最小工具链: C++ 编译器 + CMake）\n#   ./build.sh MediaCheck  # media: 仅 railhmi_media target 层（GStreamer + librga，无 Qt）编译检查\n#   ./build.sh check       # 只做依赖自检，不构建\n#\n# 退出码:\n#   0  成功\n#   1  缺少构建依赖（会逐项打印缺什么，不静默失败）\n#   2  参数错误\n#   3  CMake 配置或编译失败\n#\n# 说明:\n#   - 不在产品源码里写死开发机路径；构建目录为 app/build-<mode>/。\nBUILDEXIT=2\n"
+    },
+    {
+      "step": "run-coretests",
+      "cmd": "cd /tmp/railhmi_verify006_board/app/build-core/tests && ./railhmi-core-tests; echo TESTEXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "TESTEXIT=1\nbash: line 1: cd: /tmp/railhmi_verify006_board/app/build-core/tests: No such file or directory\n"
+    },
+    {
+      "step": "config-good",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && ./build-core/tools/railhmi-config-check ./config; echo CFG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.15,
+      "output": "CFG_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-config-check: No such file or directory\n"
+    },
+    {
+      "step": "config-bad",
+      "cmd": "rm -rf /tmp/railhmi_cfg_bad && mkdir -p /tmp/railhmi_cfg_bad && cp /tmp/railhmi_verify006_board/app/config/*.yaml /tmp/railhmi_cfg_bad/ && sed -i '/confirm_frames:/d' /tmp/railhmi_cfg_bad/thresholds.yaml && /tmp/railhmi_verify006_board/app/build-core/tools/railhmi-config-check /tmp/railhmi_cfg_bad 2>&1; echo CFG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "bash: line 1: /tmp/railhmi_verify006_board/app/build-core/tools/railhmi-config-check: No such file or directory\nCFG_EXIT=127\n"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && g++ -std=c++17 -O0 -Wall -Wextra -Isrc/core/include /tmp/railhmi_verify006/verify_rules_ext.cpp src/core/src/rules.cpp -o /tmp/railhmi_verify006/verify_rules_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.71,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && /tmp/railhmi_verify006/verify_rules_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "[PASS] to_string Device='device'\n[PASS] to_string SideCameraDevice\n[PASS] to_string unacked\n[PASS] to_string acked\n[PASS] map_level generic Device=L2\n[PASS] roi boundary (x,y) corner inside\n[PASS] roi boundary (x+w,y+h) corner inside\n[PASS] roi rejects x beyond x+w\n[PASS] roi rejects y beyond y+h\n[PASS] roi rejects x < x\n[PASS] find_roi hit\n[PASS] find_roi name miss\n[PASS] find_roi camera miss\n[PASS] device empty detail falls back to type string\n[PASS] side empty detail falls back to type string\n[PASS] device custom detail preserved\n[PASS] device event ts fields set\n[PASS] device events counted in unacked_count\n[PASS] find device event by id\n[PASS] ack device event keeps it\n[PASS] unacked after ack device = 2\n[PASS] cross-type keys count independently (no event yet)\n[PASS] wheel event after 3 wheel frames\n[PASS] front confirm unaffected by wheel emit\n[PASS] wheel suppress window holds right after emit\n[PASS] only one event so far\n[PASS] front emits unaffected by wheel suppression\n[PASS] device event 1 emitted\n[PASS] detection confirm unaffected by device event\n[PASS] front detection emits despite device suppression\n[PASS] device repeat suppressed (within 1000ms of emit 10)\n[PASS] device repeat after window emits\n[PASS] device repeat suppressed again (within window)\n[PASS] detection suppress still holds near device emits\n[PASS] device channel unaffected by detection state\n[FAIL] events total = device x3 + detection x1 + device x1 -- count=4\n[PASS] low-conf frame emits nothing\n[PASS] whole-camera confirm reset by non-candidate frame\n[PASS] out-of-ROI frame also resets confirm\n[PASS] 1 more frame after reset does not confirm\n[PASS] 3 consecutive candidate frames confirm\n[PASS] first emit after 3 frames\n[PASS] no new event within suppress window\n[PASS] inside suppress window still no new event\n[FAIL] new event needs full confirm_frames after window\n[PASS] boundary test first event\n[PASS] t_emit + suppress_ms exactly -> no longer suppressed\n[PASS] (t_emit + suppress_ms) - 1 -> still suppressed\n[PASS] boundary yields exactly 2 events\n[PASS] emit at t=10\n[PASS] updates inside window never emit\n[PASS] last_update_ms reflects last update\n[PASS] new emit after window\n[PASS] new event metadata from fresh frame\n[PASS] new event has new id\n[PASS] two events for idempotence test\n[PASS] ack first\n[PASS] ack first twice (idempotent)\n[PASS] first stays acked\n[PASS] second stays unacked\n[PASS] unacked count = 1\n[PASS] second event suppressed by window\n[PASS] ack state unchanged by update\n== 61 passed, 2 failed ==\nEXT_EXIT=1\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify006 /tmp/railhmi_verify006_board /tmp/railhmi_cfg_bad && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify006 /tmp/railhmi_verify006_board 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.09,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify006': No such file or directory\nls: cannot access '/tmp/railhmi_verify006_board': No such file or directory\n"
+    }
+  ]
+}
