@@ -1,0 +1,146 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify019",
+    "cpp": "docs/hmi/test_evidence/ITEM-019-clips/verify_clip19_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-019-clips",
+    "stamp": "VERIFY-20261016-v2",
+    "impl_testrun_log": "docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-20261016-ITEM019-r2.core-evidence_core-tests-20261016-ITEM019-r2.log",
+    "impl_clipprobe_log": "docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-20261016-ITEM019-r2.core-evidence_clip-probe-20261016-ITEM019-r2.log",
+    "connect_timeout": "10",
+    "timeout_sec": "1200",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts logic on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir docs\\hmi\\test_evidence\\ITEM-019-clips --stamp VERIFY-20261016-v2 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 31.68,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 133 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 SCAN_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 CLIP_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-driver-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_ai-probe-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_alarm-probe-VERIFY-20261016-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_clip-probe-VERIFY-20261016-v2.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: docs\\hmi\\test_evidence\\ITEM-019-clips\\build-TestRun-192_168_0_103-VERIFY-20261016-v2.transcript.json\nlog: docs\\hmi\\test_evidence\\ITEM-019-clips\\build-TestRun-192_168_0_103-VERIFY-20261016-v2.log\n"
+    },
+    {
+      "step": "fresh-artifacts",
+      "exit": 0,
+      "output": "build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_clip-probe-VERIFY-20261016-v2.log"
+    },
+    {
+      "step": "log-compare",
+      "exit": 0,
+      "output": "impl=build-TestRun-192_168_0_103-20261016-ITEM019-r2.core-evidence_core-tests-20261016-ITEM019-r2.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log impl_pass=537 verify_pass=537 identical=True verify_fails=0 result=RESULT: PASS passed=537 failed=0"
+    },
+    {
+      "step": "junit-parse",
+      "exit": 0,
+      "output": "junit build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml tests=537 failures=0 clip_cases=56"
+    },
+    {
+      "step": "clip-probe-assert",
+      "exit": 1,
+      "output": "{\"fails\": [\"atomic store wrote/exists\"]}"
+    },
+    {
+      "step": "clip-probe-compare",
+      "exit": 0,
+      "output": "deterministic reproduction identical=True"
+    },
+    {
+      "step": "mkdir-verify",
+      "cmd": "mkdir -p /tmp/railhmi_build/verify",
+      "exit": 0,
+      "elapsed_s": 0.03,
+      "output": ""
+    },
+    {
+      "step": "mkdir-workdir",
+      "cmd": "rm -rf /tmp/railhmi_verify019 && mkdir -p /tmp/railhmi_verify019",
+      "exit": 0,
+      "elapsed_s": 0.06,
+      "output": ""
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "docs/hmi/test_evidence/ITEM-019-clips/verify_clip19_ext.cpp"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include -Isrc/platform/include /tmp/railhmi_verify019/verify_clip19_ext.cpp build-core/src/core/librailhmi_core.a build-core/src/platform/librailhmi_platform.a -o /tmp/railhmi_verify019/verify_clip19_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.07,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify019/verify_clip19_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "== 57 passed, 0 failed ==\nRESULT: PASS passed=57 failed=0\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-summary",
+      "exit": 0,
+      "output": "ext passed=57 failed=0"
+    },
+    {
+      "step": "clip-probe-negative-arg",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-clip-probe --nope; echo NARG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "NARG_EXIT=2\nunknown arg: --nope\n"
+    },
+    {
+      "step": "clip-probe-help",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-clip-probe --help; echo HELP_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "usage: railhmi-clip-probe [--dir DIR] [--out log]\nHELP_EXIT=0\n"
+    },
+    {
+      "step": "clip-probe-rep-run",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-clip-probe --dir /tmp/railhmi_clips --out verify/clip-probe-rep.log >/dev/null 2>&1; echo REPL_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "REPL_EXIT=0\n"
+    },
+    {
+      "step": "clip-probe-determinism",
+      "cmd": "cd /tmp/railhmi_build && diff /tmp/railhmi_build/verify/clip-probe-rep.log /tmp/railhmi_build/core-evidence/clip-probe-VERIFY-20261016-v2.log && echo IDENTICAL",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "IDENTICAL\n"
+    },
+    {
+      "step": "regression-artifacts",
+      "cmd": "cd /tmp/railhmi_build && ls core-evidence/",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "ai-probe-VERIFY-20261016-v2.log\nalarm-probe-VERIFY-20261016-v2.log\nclip-probe-VERIFY-20261016-v2.log\ncore-tests-VERIFY-20261016-v2.log\ncore-tests-VERIFY-20261016-v2.xml\nsim-inject-VERIFY-20261016-v2.json\nsim-inject-VERIFY-20261016-v2.log\nstatus-probe-driver-VERIFY-20261016-v2.log\nstatus-probe-VERIFY-20261016-v2.log\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify019 /tmp/railhmi_build /tmp/railhmi_clips /tmp/railhmi_clip_unit /tmp/railhmi_clip_ext && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify019 /tmp/railhmi_build /tmp/railhmi_clips /tmp/railhmi_clip_unit /tmp/railhmi_clip_ext 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.12,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify019': No such file or directory\nls: cannot access '/tmp/railhmi_build': No such file or directory\nls: cannot access '/tmp/railhmi_clips': No such file or directory\nls: cannot access '/tmp/railhmi_clip_unit': No such file or directory\nls: cannot access '/tmp/railhmi_clip_ext': No such file or directory\n"
+    },
+    {
+      "step": "cleanup-verify",
+      "exit": 1,
+      "output": "cleanup_ok=False"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 133 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 SCAN_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 CLIP_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-driver-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_ai-probe-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_alarm-probe-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_clip-probe-VERIFY-20261016-v3.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-019-clips\build-TestRun-192_168_0_103-VERIFY-20261016-v3.transcript.json
+log: docs\hmi\test_evidence\ITEM-019-clips\build-TestRun-192_168_0_103-VERIFY-20261016-v3.log
+
+
+===== [fresh-artifacts] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_clip-probe-VERIFY-20261016-v3.log
+
+===== [log-compare] exit=0 =====
+impl=build-TestRun-192_168_0_103-20261016-ITEM019-r2.core-evidence_core-tests-20261016-ITEM019-r2.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log impl_pass=537 verify_pass=537 identical=True verify_fails=0 result=RESULT: PASS passed=537 failed=0
+
+===== [junit-parse] exit=0 =====
+junit build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml tests=537 failures=0 clip_cases=56
+
+===== [clip-probe-assert] exit=0 =====
+{"fails": []}
+
+===== [clip-probe-compare] exit=0 =====
+deterministic reproduction identical=True
+
+===== [mkdir-verify] exit=0 =====
+
+
+===== [mkdir-workdir] exit=0 =====
+
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-019-clips/verify_clip19_ext.cpp
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+== 57 passed, 0 failed ==
+RESULT: PASS passed=57 failed=0
+EXT_EXIT=0
+
+
+===== [ext-summary] exit=0 =====
+ext passed=57 failed=0
+
+===== [clip-probe-negative-arg] exit=0 =====
+NARG_EXIT=2
+unknown arg: --nope
+
+
+===== [clip-probe-help] exit=0 =====
+usage: railhmi-clip-probe [--dir DIR] [--out log]
+HELP_EXIT=0
+
+
+===== [clip-probe-rep-run] exit=0 =====
+REPL_EXIT=0
+
+
+===== [clip-probe-determinism] exit=0 =====
+IDENTICAL
+
+
+===== [regression-artifacts] exit=0 =====
+ai-probe-VERIFY-20261016-v3.log
+alarm-probe-VERIFY-20261016-v3.log
+clip-probe-VERIFY-20261016-v3.log
+core-tests-VERIFY-20261016-v3.log
+core-tests-VERIFY-20261016-v3.xml
+sim-inject-VERIFY-20261016-v3.json
+sim-inject-VERIFY-20261016-v3.log
+status-probe-driver-VERIFY-20261016-v3.log
+status-probe-VERIFY-20261016-v3.log
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify019': No such file or directory
+ls: cannot access '/tmp/railhmi_build': No such file or directory
+ls: cannot access '/tmp/railhmi_clips': No such file or directory
+ls: cannot access '/tmp/railhmi_clip_unit': No such file or directory
+ls: cannot access '/tmp/railhmi_clip_ext': No such file or directory
+
+
+===== [cleanup-verify] exit=0 =====
+cleanup_ok=True

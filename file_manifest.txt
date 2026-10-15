@@ -712,7 +712,14 @@ docs/hmi/test_evidence/ITEM-018-alarm-center/run_verify_round.sh | active | ITEM
 docs/hmi/test_evidence/ITEM-018-alarm-center/verify_ai18_ext.cpp | active | ITEM-018 验证自有扩展夹具（半开时间窗/day_start 负值取整/日期解析边界/排序稳定性/重复 id 与回退确认/级别收敛与三态标签/未知 type 回退/组合筛选/options 去重/query 纯度/ack 日志边界 53 断言；链接交付 librailhmi_core.a）
 docs/hmi/test_evidence/ITEM-018-alarm-center/verify_ai18_fixtures.py | active | ITEM-018 验证夹具运行器（Paramiko 指纹校验；TestRun 交付入口复跑 + 512 行逐行比对 + JUnit 独立解析 + alarm-probe 独立断言与确定性比对 + ext 编译运行 + 负例 exit2 + 回归留痕 + 按名清理/有限等待全程）
 docs/hmi/test_evidence/ITEM-018-alarm-center/verify_local_checks.py | active | ITEM-018 主机静态归档核对（JUnit 512/0/报警域 83 用例计数 + 探针行独立解析 + 交付源 7 字段/空态/委托关系断言）
-docs/hmi/test_evidence/ITEM-019-clips/README.md | active | ITEM-019 保护片段与缺口记录证据（滚动缓冲/片段固化/原子写盘/保留优先/缺口；板端 537/537 单测 + clip-probe PASS；边界/复现）
+docs/hmi/test_evidence/ITEM-019-clips/README.md | active | ITEM-019 保护片段与缺口记录实现者证据（滚动缓冲/片段固化/原子写盘/保留优先/缺口；板端 537/537 单测 + clip-probe PASS；边界/复现）
+docs/hmi/test_evidence/ITEM-019-clips/VERIFY-FIXTURES-VERIFY-20261016-v1.log | active | ITEM-019 验证轮 v1 过程留痕（验证侧探针解析首 token 键丢失/cleanup 删除确认误报；板端 ext 57/57 已实测；不作判据）
+docs/hmi/test_evidence/ITEM-019-clips/VERIFY-FIXTURES-VERIFY-20261016-v1.transcript.json | active | ITEM-019 验证轮 v1 transcript
+docs/hmi/test_evidence/ITEM-019-clips/VERIFY-FIXTURES-VERIFY-20261016-v2.log | active | ITEM-019 验证轮 v2 过程留痕（验证侧 clip-store→store 键映射与 cleanup 核对目录名自查修正；不作判据）
+docs/hmi/test_evidence/ITEM-019-clips/VERIFY-FIXTURES-VERIFY-20261016-v2.transcript.json | active | ITEM-019 验证轮 v2 transcript
+docs/hmi/test_evidence/ITEM-019-clips/VERIFY-FIXTURES-VERIFY-20261016-v3.log | active | ITEM-019 验证轮 v3 权威轮日志（全部业务步骤 exit=0；cleanup-verify=0）
+docs/hmi/test_evidence/ITEM-019-clips/VERIFY-FIXTURES-VERIFY-20261016-v3.transcript.json | active | ITEM-019 验证轮 v3 权威轮 transcript（指纹/逐 step/退出码）
+docs/hmi/test_evidence/ITEM-019-clips/VERIFY-ITEM-019.md | active | ITEM-019 验证报告（software_verification 权威轮 v3 TEST_PASS：板端 TestRun 独立复跑 537/537 逐行一致 + clip-probe 独立断言/确定性复现 + ext 57/57 + 负例 + O-1 帧统计口径观察项）
 docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-20261016-ITEM019-r1.core-evidence_ai-probe-20261016-ITEM019-r1.log | active | ITEM-019 推理探针回归（r1）留痕
 docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-20261016-ITEM019-r1.core-evidence_alarm-probe-20261016-ITEM019-r1.log | active | ITEM-019 报警中心探针回归（r1）留痕
 docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-20261016-ITEM019-r1.core-evidence_clip-probe-20261016-ITEM019-r1.log | active | ITEM-019 clip-probe 输出（留痕；时长 90000ms/原子写盘/保护优先/缺口合并）
@@ -735,6 +742,42 @@ docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-20261016-ITEM0
 docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-20261016-ITEM019-r2.core-evidence_status-probe-driver-20261016-ITEM019-r2.log | active | ITEM-019 状态探针回归（r2）留痕
 docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-20261016-ITEM019-r2.log | active | ITEM-019 TestRun(r2) 运行日志
 docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-20261016-ITEM019-r2.transcript.json | active | ITEM-019 TestRun(r2) transcript（主机指纹/退出码/取回）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log | active | ITEM-019 验证轮 v1 ai-probe 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_alarm-probe-VERIFY-20261016-v1.log | active | ITEM-019 验证轮 v1 alarm-probe 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_clip-probe-VERIFY-20261016-v1.log | active | ITEM-019 验证轮 v1 fresh clip-probe 输出（与实现者 r2 逐行一致；解析修正前）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log | active | ITEM-019 验证轮 v1 fresh core 单测逐项输出（537 passed / 0 failed）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml | active | ITEM-019 验证轮 v1 fresh JUnit XML（tests=537 failures=0）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json | active | ITEM-019 验证轮 v1 sim-inject JSON 留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log | active | ITEM-019 验证轮 v1 sim-inject 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log | active | ITEM-019 验证轮 v1 status-probe 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log | active | ITEM-019 验证轮 v1 status-probe driver 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.log | active | ITEM-019 验证轮 v1 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json | active | ITEM-019 验证轮 v1 TestRun transcript
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_ai-probe-VERIFY-20261016-v2.log | active | ITEM-019 验证轮 v2 ai-probe 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_alarm-probe-VERIFY-20261016-v2.log | active | ITEM-019 验证轮 v2 alarm-probe 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_clip-probe-VERIFY-20261016-v2.log | active | ITEM-019 验证轮 v2 fresh clip-probe 输出（与实现者 r2 逐行一致）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log | active | ITEM-019 验证轮 v2 fresh core 单测逐项输出（537 passed / 0 failed）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml | active | ITEM-019 验证轮 v2 fresh JUnit XML（tests=537 failures=0）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.json | active | ITEM-019 验证轮 v2 sim-inject JSON 留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.log | active | ITEM-019 验证轮 v2 sim-inject 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-VERIFY-20261016-v2.log | active | ITEM-019 验证轮 v2 status-probe 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-driver-VERIFY-20261016-v2.log | active | ITEM-019 验证轮 v2 status-probe driver 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.log | active | ITEM-019 验证轮 v2 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v2.transcript.json | active | ITEM-019 验证轮 v2 TestRun transcript
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_ai-probe-VERIFY-20261016-v3.log | active | ITEM-019 验证轮 v3 ai-probe 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_alarm-probe-VERIFY-20261016-v3.log | active | ITEM-019 验证轮 v3 alarm-probe 回归留痕（行内 [录像不可用]/[录像不完整] 标注留痕）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_clip-probe-VERIFY-20261016-v3.log | active | ITEM-019 验证轮 v3 fresh clip-probe 输出（与实现者 r2 逐行 byte-identical；独立断言全 true）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log | active | ITEM-019 验证轮 v3 fresh core 单测逐项输出（537 passed / 0 failed）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml | active | ITEM-019 验证轮 v3 fresh JUnit XML（tests=537 failures=0）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.json | active | ITEM-019 验证轮 v3 sim-inject JSON 留痕（FI-10 gap 字段在档）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.log | active | ITEM-019 验证轮 v3 sim-inject 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-VERIFY-20261016-v3.log | active | ITEM-019 验证轮 v3 status-probe 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-driver-VERIFY-20261016-v3.log | active | ITEM-019 验证轮 v3 status-probe driver 回归留痕
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.log | active | ITEM-019 验证轮 v3 TestRun 运行日志（537/537 + 探针全 PASS）
+docs/hmi/test_evidence/ITEM-019-clips/build-TestRun-192_168_0_103-VERIFY-20261016-v3.transcript.json | active | ITEM-019 验证轮 v3 TestRun transcript
+docs/hmi/test_evidence/ITEM-019-clips/run_verify_round.sh | active | ITEM-019 验证轮驱动（PowerShell User env 凭据导入/指纹核验/默认 stamp/有限等待全程）
+docs/hmi/test_evidence/ITEM-019-clips/verify_clip19_ext.cpp | active | ITEM-019 验证自有扩展夹具（配置化 pre/post/RollingBuffer 语义/帧计数口径/保留经 ClipRecorder 状态联动/缺口交换-相邻-桥接-reason-排序/manifest 键集合/原子写覆盖-残留-失败路径 57 断言；链接交付 librailhmi_core.a + librailhmi_platform.a）
+docs/hmi/test_evidence/ITEM-019-clips/verify_clip19_fixtures.py | active | ITEM-019 验证夹具运行器（Paramiko 指纹校验；TestRun 交付入口复跑 + 537 行逐行比对 + JUnit 独立解析 + clip-probe 独立断言与确定性比对 + ext 编译运行 + 负例/二次运行 + 回归留痕 + 按名清理/有限等待全程）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

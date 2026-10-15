@@ -1,0 +1,844 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 133 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [upload-tokens] exit=0 =====
+design_tokens.yaml
+
+===== [testrun] exit=0 =====
+[run_core_tests] app=/tmp/railhmi_build outdir=core-evidence stamp=VERIFY-20261016-v1
+[run_core_tests] building (build.sh CoreTests) ...
+[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_build' -B '/tmp/railhmi_build/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = CoreTests
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_build/build-core
+[build.sh] building: cmake --build '/tmp/railhmi_build/build-core' -j8
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 30%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 32%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o
+[ 35%] Linking CXX static library librailhmi_core.a
+[ 35%] Built target railhmi_core
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 41%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 43%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 47%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
+[ 45%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 49%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 50%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
+[ 52%] Linking CXX executable ../../tools/railhmi-config-check
+[ 54%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 54%] Built target railhmi-config-check
+[ 56%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 56%] Built target railhmi-sim-inject
+[ 58%] Linking CXX executable ../../tools/railhmi-alarm-probe
+[ 58%] Built target railhmi-alarm-probe
+[ 60%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 60%] Built target railhmi-status-probe
+[ 62%] Linking CXX static library librailhmi_platform.a
+[ 62%] Built target railhmi_platform
+[ 64%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o
+[ 66%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_stream.cpp.o
+[ 67%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_config.cpp.o
+[ 69%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o
+[ 71%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+[ 73%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o
+[ 75%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_rules.cpp.o
+[ 77%] Linking CXX executable ../../tools/railhmi-ai-probe
+[ 79%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_persistence.cpp.o
+[ 79%] Built target railhmi-ai-probe
+[ 81%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_simulation.cpp.o
+[ 83%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_navigation.cpp.o
+[ 84%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_registry.cpp.o
+[ 86%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_layout.cpp.o
+[ 88%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_grid.cpp.o
+[ 90%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_status.cpp.o
+[ 92%] Linking CXX executable ../../tools/railhmi-clip-probe
+[ 94%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_inference.cpp.o
+[ 94%] Built target railhmi-clip-probe
+[ 96%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_alarm_center.cpp.o
+[ 98%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_clip.cpp.o
+[100%] Linking CXX executable ../railhmi-core-tests
+[100%] Built target railhmi-core-tests
+[build.sh] build OK (mode=core-tests); artifacts under /tmp/railhmi_build/build-core
+[build.sh] run: /tmp/railhmi_build/build-core/tests/railhmi-core-tests
+[run_core_tests] running /tmp/railhmi_build/build-core/tests/railhmi-core-tests --junit core-evidence/core-tests-VERIFY-20261016-v1.xml
+== railhmi-core tests (railhmi 0.1.0 [mode=CoreTests, simulation=off]) ==
+[PASS] version_string == 0.1.0
+[PASS] build_mode is a known mode
+[PASS] build_description contains railhmi
+[PASS] redact_url hides credentials
+[PASS] redact_url leaves credential-free url unchanged
+[PASS] FileStore::write_atomic
+[PASS] FileStore::read_all round-trip
+[PASS] FileStore::exists after write
+[PASS] FileStore::exists false for missing
+[PASS] SqliteStore::open
+[PASS] SqliteStore::exec create table
+[PASS] SqliteStore::exec insert
+[PASS] SqliteStore::query_int
+[PASS] SqliteStore row count == 1
+[PASS] SqliteStore::open (reopen)
+[PASS] SqliteStore persistence across reopen
+[PASS] baseline config loads without errors
+[PASS] baseline has 6 cameras
+[PASS] CAM-01 id/position=primary
+[PASS] CAM-01 ai_enabled=true, ai_profile=front
+[PASS] CAM-02 ai_enabled=false, ai_profile=none
+[PASS] CAM-03 ai_enabled=false, ai_profile=none
+[PASS] CAM-04 ai_profile=pantograph
+[PASS] CAM-05 ai_profile=wheel_rail
+[PASS] CAM-06 ai_profile=cab_door
+[PASS] app.render_path=cpu
+[PASS] app.mode=visible
+[PASS] IR is not connected this phase
+[PASS] app.recording_source=both
+[PASS] app.resolution=1920x1080
+[PASS] thresholds values parsed
+[PASS] stream timing thresholds parsed
+[PASS] baseline has 4 roi entries
+[PASS] one integration (NVR)
+[PASS] NVR registered
+[PASS] NVR initial integration_state=unconfigured
+[PASS] integration_state string is 'unconfigured'
+[PASS] missing optional tile_aspect recorded in applied_defaults
+[PASS] missing required field reports cameras[0].username
+[PASS] invalid transport reports cameras[0].transport
+[PASS] invalid ai_profile reports cameras[0].ai_profile
+[PASS] ai_enabled/profile mismatch reports cameras[0].ai_profile
+[PASS] missing thresholds field reports thresholds.confirm_frames
+[PASS] invalid render_path reports app.render_path
+[PASS] invalid mode reports app.mode
+[PASS] unknown roi camera reports roi[0].camera
+[PASS] out-of-range roi w reports roi[0].w
+[PASS] missing config file reports file name
+[PASS] initial state = offline
+[PASS] offline cannot present as live
+[PASS] start -> connecting
+[PASS] connecting cannot present as live
+[PASS] first frame -> live
+[PASS] Started event emitted
+[PASS] FirstFrame event emitted
+[PASS] live presents fresh frame as live
+[PASS] no new frame -> frozen
+[PASS] frozen cannot present old frame as live
+[PASS] Freeze event emitted
+[PASS] frozen -> reconnecting
+[PASS] reconnect count = 1
+[PASS] reconnecting -> connecting (retry)
+[PASS] retry timeout -> reconnecting count 2
+[PASS] retry again -> connecting
+[PASS] threshold reached -> offline
+[PASS] reconnect count = 3 (threshold)
+[PASS] Escalated device event emitted at threshold
+[PASS] offline cannot present as live
+[PASS] recover from offline -> live
+[PASS] reconnect count reset on recovery
+[PASS] Recovered event emitted
+[PASS] source-error test live
+[PASS] source error -> reconnecting count 1
+[PASS] second source error -> offline (threshold 2)
+[PASS] source-error escalation event emitted
+[PASS] SourceError event emitted
+[PASS] quality flag -> degraded
+[PASS] degraded counts as streaming (degraded available)
+[PASS] degraded may present fresh frame
+[PASS] QualityDegraded event emitted
+[PASS] classify: low mean -> too_dark
+[PASS] classify: high mean -> too_bright
+[PASS] classify: near-uniform -> occluded
+[PASS] classify: low lapvar -> blurred
+[PASS] classify: normal frame -> no flags
+[PASS] classify: invalid stats -> no flags
+[PASS] person_on_rail=L1
+[PASS] front_obstacle=L1
+[PASS] wheel_derail=L1
+[PASS] pantograph_abnormal=L2
+[PASS] door_ajar=L2
+[PASS] front_camera_device=L2
+[PASS] side_camera_device=L3
+[PASS] device front primary=L2
+[PASS] device side=L3
+[PASS] front person: event after confirm_frames
+[PASS] front person level = L1
+[PASS] front person type
+[PASS] new event unacked
+[PASS] front obstacle -> L1 FrontObstacle
+[PASS] front outside ROI -> no event
+[PASS] front low confidence -> no event
+[PASS] front frames beyond confirm window -> no event
+[PASS] suppression: first event created
+[PASS] same track within suppress window -> no new event
+[PASS] events size still 1 under suppression
+[PASS] suppressed event distance updated
+[PASS] different track -> new event
+[PASS] events size 2 after second track
+[PASS] same track after suppress window -> new event
+[PASS] events size 3 after suppress window
+[PASS] pantograph normal -> no event
+[PASS] pantograph abnormal -> L2
+[PASS] wheel_rail abnormal -> L1
+[PASS] cab_door ajar -> L2
+[PASS] ai_profile=none -> no event
+[PASS] front primary device event -> L2
+[PASS] side device event -> L3
+[PASS] duplicate device event suppressed
+[PASS] single-frame confirm event created
+[PASS] unacked count 1
+[PASS] ack returns true for existing event
+[PASS] ack does NOT delete event
+[PASS] ack_state becomes acked
+[PASS] unacked count 0 after ack
+[PASS] ack unknown id returns false
+[PASS] roi contains center point
+[PASS] roi rejects outside point
+[PASS] roi rejects beyond x+w
+[PASS] find_roi finds entry
+[PASS] find_roi miss
+[PASS] to_string(Device)
+[PASS] to_string(SideCameraDevice)
+[PASS] to_string(Acked)
+[PASS] to_string(Unacked)
+[PASS] to_string(PantographState::Abnormal)
+[PASS] to_string(DoorState::Ajar)
+[PASS] to_string(DeviceCategory::Side)
+[PASS] map_level(Device)=L2
+[PASS] position primary -> FrontPrimary
+[PASS] position left/right -> Side
+[PASS] position roof/underfloor/cab -> Other
+[PASS] device other -> L2 (explicit)
+[PASS] roi includes top-left corner
+[PASS] roi includes bottom-right corner
+[PASS] roi rejects x-epsilon
+[PASS] roi rejects y+h+epsilon
+[PASS] wheel event independent
+[PASS] front key isolated from wheel (same cam/track, different type)
+[PASS] cross-type events independent
+[PASS] device channel event 1
+[PASS] detection channel independent of device suppression
+[PASS] device event after window
+[PASS] device event after second window
+[PASS] device(3)+detection(1)=4
+[PASS] no event with two single-frame counts
+[PASS] non-candidate frame resets all camera confirms
+[PASS] reset cleared cross-type confirms (need full cycle)
+[PASS] full cycle after reset emits
+[PASS] emit resets cycle: first event
+[PASS] suppressed updates do not emit
+[PASS] boundary frame alone not enough
+[PASS] second frame not enough
+[PASS] full new cycle emits
+[PASS] emit resets cycle: second event
+[PASS] boundary: first event
+[PASS] 999ms still suppressed
+[PASS] exactly suppress_window not suppressed (new event)
+[PASS] 1999ms still suppressed
+[PASS] 2000ms not suppressed
+[PASS] boundary events count 3
+[PASS] update test: first event
+[PASS] update within window no new event
+[PASS] update refreshes last_update_ms
+[PASS] update refreshes distance
+[PASS] new event after window from original emit
+[PASS] update test: two events
+[PASS] two tracks -> two events
+[PASS] ack id1
+[PASS] ack id1 is idempotent
+[PASS] id1 acked
+[PASS] id2 unaffected
+[PASS] ack isolation: unacked 1
+[PASS] timebase starts uncalibrated
+[PASS] timebase calibrated
+[PASS] to_wall_ms at reference
+[PASS] to_wall_ms +2s
+[PASS] to_mono_us round-trip
+[PASS] to_wall_ms truncates to ms
+[PASS] wall/mono round-trip identity (ms-aligned)
+[PASS] system_now_ms is UTC epoch ms
+[PASS] steady_now_us positive
+[PASS] age: only expired continuous evicted
+[PASS] age: retained bytes 20
+[PASS] age: critical not evicted
+[PASS] age: one continuous evicted
+[PASS] capacity: oldest continuous evicted first
+[PASS] capacity: keep critical, retained 30
+[PASS] capacity: continuous(11,12) then oldest critical(13)
+[PASS] capacity: eviction counts
+[PASS] capacity: retained 10
+[PASS] gap merge: adjacent/overlap merged to one
+[PASS] gap merge bounds 100..300
+[PASS] gap merge: keeps first existing reason
+[PASS] gap merge: different camera separate
+[PASS] bridge merge: single gap, no residual overlap
+[PASS] bridge merge bounds 0..30
+[PASS] bridge merge: first existing reason 'a'
+[PASS] verify sequence: single merged gap
+[PASS] verify sequence bounds 50..300
+[PASS] verify sequence reason drop (first existing)
+[PASS] separate gaps (1ms apart) stay distinct
+[PASS] contiguous gaps merge
+[PASS] repo.open
+[PASS] repo.init_schema
+[PASS] repo journal_mode == wal
+[PASS] insert_event returns id
+[PASS] insert_event_target
+[PASS] insert_maintenance
+[PASS] insert_health
+[PASS] insert_stream_event
+[PASS] upsert_integration
+[PASS] set_config
+[PASS] get_config round-trip
+[PASS] insert_segment x2
+[PASS] insert_gap
+[PASS] 9 tables populated (segments=2)
+[PASS] copy db for WAL replay
+[PASS] open WAL copy
+[PASS] WAL replay: event recovered from -wal
+[PASS] WAL replay: gap recovered
+[PASS] reopen after restart
+[PASS] write-restart-read consistent
+[PASS] gap persisted across restart
+[PASS] gaps queryable by camera
+[PASS] segments read back with kind
+[PASS] repo retention evicts continuous first
+[PASS] repo retention: one segment left
+[PASS] repo retention keeps critical segment
+[PASS] crash: reopen after SIGKILL
+[PASS] crash: journal_mode still wal
+[PASS] crash: uncommitted transaction discarded
+[PASS] crash: committed row intact
+[PASS] FI-01 id
+[PASS] FI-10 id
+[PASS] fault to_string
+[PASS] parse '01'
+[PASS] parse 'fi-10'
+[PASS] parse 'freeze'
+[PASS] parse invalid fault rejected
+[PASS] injection params logged
+[PASS] injection camera logged
+[PASS] format_observation non-empty
+[PASS] FI-01 -> reconnecting
+[PASS] FI-01 -> offline escalation
+[PASS] FI-01 recovers to live
+[PASS] FI-01 final state live
+[PASS] FI-02 -> frozen
+[PASS] FI-02 recovers to live
+[PASS] FI-03 -> ai unavailable
+[PASS] FI-03 no detections -> no alarms
+[PASS] FI-03 summary alarms=0
+[PASS] FI-04 -> storage low
+[PASS] FI-04 record_available=false
+[PASS] FI-04 recovers (low=false after)
+[PASS] FI-05 -> ptz tolerance fail
+[PASS] FI-05 recovers tolerance
+[PASS] FI-10 -> recording gap logged
+[PASS] FI-10 summary has gaps
+[PASS] no fault -> front alarm produced
+[PASS] no fault summary alarms=1
+[PASS] simulation is deterministic/resettable
+[PASS] pantograph injection -> L2 alarm
+[PASS] none profile -> no alarms
+[PASS] to_string(AiDebug)
+[PASS] page_title(Maintenance)
+[PASS] parse_page(all_cameras)
+[PASS] parse_page rejects unknown
+[PASS] six fixed pages
+[PASS] fixed page order
+[PASS] driver can realtime
+[PASS] driver can alarm center
+[PASS] driver can replay
+[PASS] driver cannot all cameras
+[PASS] driver cannot AI debug
+[PASS] driver cannot maintenance
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] driver sees 3 nav entries
+[PASS] driver nav = realtime/alarm/replay
+[PASS] driver nav excludes AI debug/maintenance/all cameras
+[PASS] maintainer sees all 6 nav entries
+[PASS] developer/admin see all 6 nav entries
+[PASS] driver lands on realtime
+[PASS] maintainer lands on all cameras
+[PASS] developer lands on AI debug
+[PASS] admin lands on maintenance
+[PASS] driver realtime allowed
+[PASS] driver direct AI debug -> denied (show no-permission + return)
+[PASS] maintainer maintenance allowed
+[PASS] mode primary = visible
+[PASS] mode secondary = IR not connected
+[PASS] mode has no interactive toggle
+[PASS] baseline config loads
+[PASS] registry has 6 slots
+[PASS] registry order = CAM-01..06
+[PASS] registry order field
+[PASS] registry positions
+[PASS] CAM-01 ai front
+[PASS] CAM-02 no ai
+[PASS] badge front
+[PASS] badge none (side)
+[PASS] badge pantograph
+[PASS] badge wheel rail
+[PASS] badge cab door
+[PASS] badge hidden on P1 (driver realtime)
+[PASS] badge visible on P4
+[PASS] badge visible on P6
+[PASS] badge hidden on P2/P3/P5
+[PASS] one integration (NVR)
+[PASS] NVR id/address
+[PASS] NVR registered
+[PASS] NVR state = unconfigured
+[PASS] NVR channel mapping = 未配置
+[PASS] NVR protocol placeholder —
+[PASS] rename reflected in registry
+[PASS] remove camera -> 5 slots
+[PASS] removed camera absent
+[PASS] add camera -> 7 slots
+[PASS] two-camera config loads
+[PASS] registry order follows config order
+[PASS] missing required field reports cameras[0].rtsp_url
+[PASS] 1920x1080 three-panel order left-front-right
+[PASS] 1920x1080 front largest (>=0.34 width)
+[PASS] 1920x1080 front wider than both sides
+[PASS] 1920x1080 P0 elements fit without scroll
+[PASS] 1920x1080 L1 alarm banner does not cover front center
+[PASS] 1920x1080 left/front adjacent
+[PASS] 1920x1080 front/right adjacent
+[PASS] 1920x1080 right flush to row edge
+[PASS] 1920x1080 front center inside front panel
+[PASS] 1920x1080 top bar at top
+[PASS] 1920x1080 status strip below row
+[PASS] 1920x1080 alarm bar flush bottom
+[PASS] 1280x720 three-panel order left-front-right
+[PASS] 1280x720 front largest (>=0.34 width)
+[PASS] 1280x720 front wider than both sides
+[PASS] 1280x720 P0 elements fit without scroll
+[PASS] 1280x720 L1 alarm banner does not cover front center
+[PASS] 1280x720 left/front adjacent
+[PASS] 1280x720 front/right adjacent
+[PASS] 1280x720 right flush to row edge
+[PASS] 1280x720 front center inside front panel
+[PASS] 1280x720 top bar at top
+[PASS] 1280x720 status strip below row
+[PASS] 1280x720 alarm bar flush bottom
+[PASS] 16:9 1920x1080 vs 1280x720 ratios preserved
+[PASS] 16:9 1920x1080 vs 960x540 ratios preserved
+[PASS] resized layouts keep left-front-right order
+[PASS] front area ratio >= 0.34
+[PASS] side ratio within [0.22,0.30]
+[PASS] landsacpe -> 3x2
+[PASS] 1280x720 -> 3x2
+[PASS] portrait -> 2x3
+[PASS] 3x2 dims
+[PASS] 2x3 dims
+[PASS] 6 slots
+[PASS] slots identical across calls (state-independent)
+[PASS] 3x2 slot mapping (row = i/3, col = i%3)
+[PASS] 2x3 slot mapping (row = i/2, col = i%2)
+[PASS] 3x2 cells do not overlap
+[PASS] 3x2 cells within area
+[PASS] unstarted: still 6 cells (no cell dropped)
+[PASS] unstarted: order equals registry order
+[PASS] unstarted token/label
+[PASS] unstarted: fps/last = —
+[PASS] unstarted: placeholder
+[PASS] badge carried from registry
+[PASS] live label
+[PASS] live fps text
+[PASS] live last-frame text
+[PASS] live presentable, no placeholder
+[PASS] live no reconnect text
+[PASS] cut: grid size unchanged
+[PASS] cut: slots do not reorder (grid does not jump)
+[PASS] cut: channel 4 reconnecting
+[PASS] cut: channel 4 placeholder
+[PASS] cut: reconnect count text
+[PASS] cut: frozen last-frame time shown
+[PASS] cut: the other five cells keep refreshing
+[PASS] frozen label
+[PASS] unknown token passthrough
+[PASS] fps 0 -> —
+[PASS] no-frame text set
+[PASS] minutes format
+[PASS] 5 levels have 5 distinct shapes
+[PASS] 5 levels have 5 distinct glyphs (B&W distinguishable)
+[PASS] 5 levels have 5 distinct labels
+[PASS] 5 levels have 5 distinct color tokens
+[PASS] warning/alarm are abnormal
+[PASS] ok/unavailable are not abnormal
+[PASS] key status has 7 items
+[PASS] 7 items in fixed order
+[PASS] default snapshot -> all 未接入, not abnormal, not clickable
+[PASS] item labels
+[PASS] all-ok strip: nothing abnormal/clickable
+[PASS] all-ok uses ok color + dot shape (简单)
+[PASS] camera warning prominent (triangle/degraded)
+[PASS] ai alarm prominent (square/error)
+[PASS] pantograph stays simple
+[PASS] pantograph -> P4
+[PASS] wheel_rail -> P4
+[PASS] door -> P4
+[PASS] camera -> P6
+[PASS] ai -> P5
+[PASS] recording -> P3
+[PASS] driver clicking AI alarm -> no permission (提示无权限)
+[PASS] maintainer clicking AI alarm -> allowed to P5
+[PASS] normal item is not clickable
+[PASS] top bar has 7 items
+[PASS] top bar fixed order
+[PASS] top bar shows time
+[PASS] mode bit: visible + IR not connected, neutral, no alarm color
+[PASS] mode bit has no toggle/click
+[PASS] vehicle speed / door sensor shown as 未接入
+[PASS] AI warning in top bar clickable
+[PASS] driver clicking AI warning -> no permission
+[PASS] first push no drop
+[PASS] second push no drop
+[PASS] third push drops oldest
+[PASS] queue depth 2, dropped 1
+[PASS] oldest kept is seq 1
+[PASS] newest is seq 2
+[PASS] queue drained
+[PASS] front > wheel_rail
+[PASS] wheel_rail > pantograph
+[PASS] pantograph > cab_door
+[PASS] none not eligible (两侧广角不入队)
+[PASS] frame interval gating
+[PASS] budget 4 -> 4 cameras run
+[PASS] priority order front>wheel_rail>pantograph>cab_door
+[PASS] no skip under budget
+[PASS] wide-angle cameras not queued
+[PASS] budget 2 -> top 2 priority
+[PASS] rest skipped
+[PASS] over-temp triggers guard
+[PASS] over-temp degrades but does not silently stop
+[PASS] budget halved to 2
+[PASS] worker stopped -> nothing scheduled
+[PASS] worker down -> AI Unavailable
+[PASS] AI text = AI 不可用
+[PASS] detection alarms annotated AI 不可用
+[PASS] alive but no result -> warning(降级)
+[PASS] fresh results -> ok
+[PASS] no annotation when AI available
+[PASS] AI debug shows only ai_enabled cameras (4)
+[PASS] CAM-01 available
+[PASS] CAM-01 shows box in ROI
+[PASS] CAM-01 confidence
+[PASS] model version reported
+[PASS] latency from latest result
+[PASS] last result age
+[PASS] profile label
+[PASS] worker stopped -> every AI channel marked unavailable (not silent)
+[PASS] level/type derived
+[PASS] type label
+[PASS] ack label
+[PASS] record label available
+[PASS] snapshot available flag
+[PASS] time text date
+[PASS] recording unavailable labeled (PLY-008)
+[PASS] L1 first, time desc within level
+[PASS] then L2
+[PASS] then L3
+[PASS] filter by level L1 -> 2
+[PASS] filter by camera
+[PASS] filter unacked -> 3
+[PASS] filter by type
+[PASS] filter by time window
+[PASS] combined filter with no match -> empty state
+[PASS] combined filter hit
+[PASS] batch ack changed 3
+[PASS] acked ids returned
+[PASS] 3 newly acked + 1 pre-acked = 4 (events not deleted)
+[PASS] ack does not delete rows
+[PASS] already-acked not recounted
+[PASS] log action
+[PASS] log target ids
+[PASS] log detail count
+[PASS] log user
+[PASS] 4 cameras in options
+[PASS] 4 types in options
+[PASS] 3 levels sorted L1 first
+[PASS] date round trip
+[PASS] day start
+[PASS] bad date rejected
+[PASS] buffer bounded to capacity
+[PASS] oldest dropped
+[PASS] drop_before trims
+[PASS] count_in window
+[PASS] clip range = trigger-pre .. trigger+post
+[PASS] clip duration = (pre+post) seconds
+[PASS] clip pending before post window
+[PASS] not finalized before t1
+[PASS] finalized at t1
+[PASS] clip complete after post window
+[PASS] frame_count from rolling buffer
+[PASS] manifest has duration
+[PASS] manifest has camera
+[PASS] manifest complete
+[PASS] overlapping gaps merged
+[PASS] merged range
+[PASS] gap reason kept
+[PASS] different camera separate gap
+[PASS] normal evicted first, protected retained
+[PASS] protected clip id not evicted
+[PASS] protected evicted only when still over capacity
+[PASS] ensure clip dir
+[PASS] atomic write clip
+[PASS] clip content round trip
+[PASS] clip file exists
+== 537 passed, 0 failed ==
+RESULT: PASS passed=537 failed=0
+[junit] wrote core-evidence/core-tests-VERIFY-20261016-v1.xml
+[run_core_tests] log=core-evidence/core-tests-VERIFY-20261016-v1.log
+[run_core_tests] junit=core-evidence/core-tests-VERIFY-20261016-v1.xml
+[run_core_tests] exit=0
+TESTRUN_EXIT=0
+
+
+===== [tokens-selftest] exit=0 =====
+[PASS] required token groups present (10)
+[PASS] deterministic generation
+[PASS] tokens.json parseable
+[PASS] Theme.qml contains 'property color bg_base'
+[PASS] Theme.qml contains 'QtObject L1'
+[PASS] Theme.qml contains 'property QtObject stream_state'
+[PASS] Theme.qml contains 'property QtObject integration_state'
+[PASS] Theme.qml contains 'property QtObject detection_badge'
+[PASS] token change propagates to outputs
+selftest: PASS
+TOKENS_EXIT=0
+
+
+===== [ui-scan] exit=0 =====
+[check_no_hardcoded_ui] scanned 20 files under src/ui
+[check_no_hardcoded_ui] PASS (no hardcoded hex color / font size in UI sources)
+SCAN_EXIT=0
+
+
+===== [sim-inject] exit=0 =====
+t=0 type=injection camera=CAM-01 profile=front faults=FI-01,FI-02,FI-03,FI-04,FI-05,FI-10 onset_ms=1500 recovery_ms=5000 duration_ms=6000 step_ms=500
+t=0 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=0 type=ai status=ok cam=CAM-01
+t=0 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=0 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=500 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=500 type=ai status=ok cam=CAM-01
+t=500 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=500 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=1000 type=alarm type=person_on_rail level=L1 cam=CAM-01 track_id=1
+t=1000 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=1000 type=ai status=ok cam=CAM-01
+t=1000 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=1000 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=1500 type=stream_state state=reconnecting reconnect_count=1 presentable=false cam=CAM-01
+t=1500 type=ai status=unavailable cam=CAM-01
+t=1500 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=1500 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=1500 type=gap cam=CAM-01 t0_ms=1500 t1_ms=2000 gap_count=1
+t=2000 type=stream_state state=reconnecting reconnect_count=2 presentable=false cam=CAM-01
+t=2000 type=ai status=unavailable cam=CAM-01
+t=2000 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=2000 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=2000 type=gap cam=CAM-01 t0_ms=2000 t1_ms=2500 gap_count=1
+t=2500 type=stream_state state=offline reconnect_count=3 presentable=false cam=CAM-01
+t=2500 type=ai status=unavailable cam=CAM-01
+t=2500 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=2500 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=2500 type=gap cam=CAM-01 t0_ms=2500 t1_ms=3000 gap_count=1
+t=3000 type=stream_state state=offline reconnect_count=4 presentable=false cam=CAM-01
+t=3000 type=ai status=unavailable cam=CAM-01
+t=3000 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=3000 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=3000 type=gap cam=CAM-01 t0_ms=3000 t1_ms=3500 gap_count=1
+t=3500 type=stream_state state=offline reconnect_count=5 presentable=false cam=CAM-01
+t=3500 type=ai status=unavailable cam=CAM-01
+t=3500 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=3500 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=3500 type=gap cam=CAM-01 t0_ms=3500 t1_ms=4000 gap_count=1
+t=4000 type=stream_state state=offline reconnect_count=6 presentable=false cam=CAM-01
+t=4000 type=ai status=unavailable cam=CAM-01
+t=4000 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=4000 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=4000 type=gap cam=CAM-01 t0_ms=4000 t1_ms=4500 gap_count=1
+t=4500 type=stream_state state=offline reconnect_count=7 presentable=false cam=CAM-01
+t=4500 type=ai status=unavailable cam=CAM-01
+t=4500 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=4500 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=4500 type=gap cam=CAM-01 t0_ms=4500 t1_ms=5000 gap_count=1
+t=5000 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=5000 type=ai status=ok cam=CAM-01
+t=5000 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=5000 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=5500 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=5500 type=ai status=ok cam=CAM-01
+t=5500 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=5500 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=6000 type=alarm type=person_on_rail level=L1 cam=CAM-01 track_id=1
+t=6000 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=6000 type=ai status=ok cam=CAM-01
+t=6000 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=6000 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=6000 type=summary final_state=live reconnect_count=0 alarms=2 gaps=1 events_recorded=2
+SIM_EXIT=0
+
+
+===== [status-probe] exit=0 =====
+type=status scenario=mixed role=maintainer items=7
+item key=pantograph label=受电弓 level=ok shape=dot glyph=● color=ok value=正常接触 abnormal=false clickable=false target=all_cameras allowed=false
+item key=wheel_rail label=轮轨 level=ok shape=dot glyph=● color=ok value=正常 abnormal=false clickable=false target=all_cameras allowed=false
+item key=door label=车门 level=warning shape=triangle glyph=▲ color=degraded value=车门未关严 abnormal=true clickable=true target=all_cameras allowed=true
+item key=camera label=摄像头 level=warning shape=triangle glyph=▲ color=degraded value=CAM-04 离线 abnormal=true clickable=true target=maintenance allowed=true
+item key=ai label=AI level=alarm shape=square glyph=■ color=error value=前方 AI 不可用 abnormal=true clickable=true target=ai_debug allowed=true
+item key=recording label=录像 level=ok shape=dot glyph=● color=ok value=录像中 abnormal=false clickable=false target=replay allowed=false
+item key=storage label=存储 level=warning shape=triangle glyph=▲ color=degraded value=剩余不足 abnormal=true clickable=true target=maintenance allowed=true
+type=topbar scenario=mixed role=maintainer items=7
+item key=time label=时间 level=unavailable shape=none glyph= color=neutral value=12:34:56 unavailable=false clickable=false target=realtime allowed=false
+item key=mode label=模式 level=unavailable shape=dot glyph=● color=neutral value=可见光 secondary=红外未接入 unavailable=false clickable=false target=realtime allowed=false
+item key=recording label=录像 level=ok shape=dot glyph=● color=ok value=录像中 unavailable=false clickable=false target=replay allowed=false
+item key=ai label=AI level=alarm shape=square glyph=■ color=error value=前方 AI 不可用 unavailable=false clickable=true target=ai_debug allowed=true
+item key=health label=系统健康 level=warning shape=triangle glyph=▲ color=degraded value=温度偏高 unavailable=false clickable=true target=maintenance allowed=true
+item key=vehicle_speed label=车速 level=unavailable shape=minus-circle glyph=⊖ color=neutral value=未接入 unavailable=true clickable=false target=realtime allowed=false
+item key=door_sensor label=门磁 level=unavailable shape=minus-circle glyph=⊖ color=neutral value=未接入 unavailable=true clickable=false target=realtime allowed=false
+type=triple-encoding distinct_shapes=5 distinct_glyphs=5 distinct_labels=5 distinct_colors=5
+type=acceptance items=7 top_items=7 triple_encoding_distinct=true mode_bit_ok=true unconnected_shown=true result=PASS
+STATUS_EXIT=0
+type=status scenario=mixed role=driver items=7
+item key=pantograph label=受电弓 level=ok shape=dot glyph=● color=ok value=正常接触 abnormal=false clickable=false target=all_cameras allowed=false
+item key=wheel_rail label=轮轨 level=ok shape=dot glyph=● color=ok value=正常 abnormal=false clickable=false target=all_cameras allowed=false
+item key=door label=车门 level=warning shape=triangle glyph=▲ color=degraded value=车门未关严 abnormal=true clickable=true target=all_cameras allowed=false
+item key=camera label=摄像头 level=warning shape=triangle glyph=▲ color=degraded value=CAM-04 离线 abnormal=true clickable=true target=maintenance allowed=false
+item key=ai label=AI level=alarm shape=square glyph=■ color=error value=前方 AI 不可用 abnormal=true clickable=true target=ai_debug allowed=false
+item key=recording label=录像 level=ok shape=dot glyph=● color=ok value=录像中 abnormal=false clickable=false target=replay allowed=false
+item key=storage label=存储 level=warning shape=triangle glyph=▲ color=degraded value=剩余不足 abnormal=true clickable=true target=maintenance allowed=false
+type=topbar scenario=mixed role=driver items=7
+item key=time label=时间 level=unavailable shape=none glyph= color=neutral value=12:34:56 unavailable=false clickable=false target=realtime allowed=false
+item key=mode label=模式 level=unavailable shape=dot glyph=● color=neutral value=可见光 secondary=红外未接入 unavailable=false clickable=false target=realtime allowed=false
+item key=recording label=录像 level=ok shape=dot glyph=● color=ok value=录像中 unavailable=false clickable=false target=replay allowed=false
+item key=ai label=AI level=alarm shape=square glyph=■ color=error value=前方 AI 不可用 unavailable=false clickable=true target=ai_debug allowed=false
+item key=health label=系统健康 level=warning shape=triangle glyph=▲ color=degraded value=温度偏高 unavailable=false clickable=true target=maintenance allowed=false
+item key=vehicle_speed label=车速 level=unavailable shape=minus-circle glyph=⊖ color=neutral value=未接入 unavailable=true clickable=false target=realtime allowed=false
+item key=door_sensor label=门磁 level=unavailable shape=minus-circle glyph=⊖ color=neutral value=未接入 unavailable=true clickable=false target=realtime allowed=false
+type=triple-encoding distinct_shapes=5 distinct_glyphs=5 distinct_labels=5 distinct_colors=5
+type=acceptance items=7 top_items=7 triple_encoding_distinct=true mode_bit_ok=true unconnected_shown=true result=PASS
+STATUS_EXIT=0
+type=config interval=5 depth=2 budget=4 temp_limit=85 models=4
+type=queue camera=CAM-01 profile=front depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s
+type=queue camera=CAM-04 profile=pantograph depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s
+type=queue camera=CAM-05 profile=wheel_rail depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov8s-seg
+type=queue camera=CAM-06 profile=cab_door depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s
+type=schedule temp=60 run=CAM-01,CAM-05,CAM-04,CAM-06 skipped= guard=false
+type=schedule temp=90 run=CAM-01,CAM-05 skipped=CAM-04,CAM-06 guard=true
+type=ai-status online=运行
+type=debug camera=CAM-01 profile=front available=true model=rknn-2.3.2/yolov5s latency=33 boxes=1 conf=80 last=<1 秒前
+type=debug camera=CAM-04 profile=pantograph available=true model=rknn-2.3.2/yolov5s latency=39 boxes=1 conf=80 last=<1 秒前
+type=debug camera=CAM-05 profile=wheel_rail available=true model=rknn-2.3.2/yolov8s-seg latency=36 boxes=1 conf=80 last=<1 秒前
+type=debug camera=CAM-06 profile=cab_door available=true model=rknn-2.3.2/yolov5s latency=42 boxes=1 conf=80 last=<1 秒前
+type=ai-status stopped=AI 不可用
+type=acceptance worker_down_status=AI 不可用 alarm_annotation=AI 不可用 debug_all_unavailable=true temp_guard_degrades=true wide_angle_excluded=true
+type=result PASS
+AI_EXIT=0
+type=list rows=4 order=level_desc,time_desc
+row id=1 level=L1 type=person_on_rail time=2026-10-16 00:00:05 cam=CAM-01(前方) ack=unacked record=available snapshot=yes desc=轨道人员
+row id=4 level=L1 type=wheel_derail time=2026-10-16 00:00:01 cam=CAM-05(车底) ack=acked record=available snapshot=yes desc=轮轨异常
+row id=3 level=L2 type=pantograph_abnormal time=2026-10-16 00:00:09 cam=CAM-04(车顶) ack=unacked record=incomplete snapshot=yes desc=受电弓异常 [录像不完整]
+row id=2 level=L3 type=side_camera_device time=2026-10-16 00:00:03 cam=CAM-02(左侧) ack=unacked record=unavailable snapshot=no desc=侧视离线 [录像不可用]
+type=filter name=level_L1 count=2
+type=filter name=unacked count=3
+type=filter name=window count=2
+type=filter name=combo_empty count=0 empty=true
+type=ack changed=3
+row id=1 ack=acked ack_label=已确认
+row id=2 ack=acked ack_label=已确认
+row id=3 ack=acked ack_label=已确认
+row id=4 ack=acked ack_label=已确认
+type=maint-log action=ack_alarm target=1,2,3 user=maintainer detail=count=3
+type=options cameras=4 types=4 levels=3
+type=acceptance batch_ack_changed=3 events_preserved=true empty_state_ok=true maint_log=1,2,3 result=PASS
+ALARM_EXIT=0
+type=config pre_s=30 post_s=60 buffer=2275 capacity_gb=12
+type=buffer cam=CAM-01 frames=2251 capacity=2275
+type=clip id=1 cam=CAM-01 trigger_ms=60000 t0_ms=30000 t1_ms=120000 duration_ms=90000 state=recording
+type=finalize before=0 at=1
+type=clip id=1 state=finalized complete=true frames=2001 duration_ms=90000
+type=clip-store dir_ok=true wrote=true exists=true path=/tmp/railhmi_clips/clip-1.json
+type=clip-manifest {"id":1,"cam":"CAM-01","level":"L1","trigger_ms":60000,"t0_ms":30000,"t1_ms":120000,"duration_ms":90000,"state":"finalized","complete":true,"frame_count":2001}
+type=retention evicted=1 continuous=1 critical=0 protected_remaining=1
+type=gap cam=CAM-01 count=1 t0=200000 t1=210000 reason=recording_interrupted
+type=acceptance duration_ms=90000 clip_complete=true clip_file_exists=true protected_priority=true gap_merged=true result=PASS
+CLIP_EXIT=0
+
+
+===== [download] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log
+
+===== [download] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml
+
+===== [download] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log
+
+===== [download] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json
+
+===== [download] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log
+
+===== [download] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log
+
+===== [download] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log
+
+===== [download] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_alarm-probe-VERIFY-20261016-v1.log
+
+===== [download] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_clip-probe-VERIFY-20261016-v1.log
+
+===== [artifacts] exit=0 =====
+(check mode: no artifacts)
+
