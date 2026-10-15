@@ -321,12 +321,23 @@ docs/hmi/test_evidence/ITEM-009-simulation/run_verify_round.sh | active | 本验
 docs/hmi/test_evidence/ITEM-009-simulation/verify_sim_ext.cpp | active | 验证自有扩展夹具源码（49 断言：parse 全别名/负例矩阵/FI-01 窗口收敛与恢复/FI-01+FI-02 cut 优先/FI-02 五态逐时序/FI-10 相邻合并包络/FI-04/FI-05 逐 tick on-off 划分/FI-03 recovery<=onset 不解除/第二配置确定性/格式契约）
 docs/hmi/test_evidence/ITEM-009-simulation/verify_sim_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立目录 + 交付入口 + sim-inject 权威参数复现 + CLI 负例/确定性/自定义 + 链接入口构建产物编译扩展夹具；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/test_evidence/ITEM-010-tokens/README.md | active | ITEM-010 设计令牌主题层证据（生成/Theme 单例/无硬编码扫描/主机+板端实测/边界/复现）
+docs/hmi/test_evidence/ITEM-010-tokens/VERIFY-ITEM-010.md | active | 本验证轮权威判定文档 VERIFY-20261016-v1（TEST_PASS；判据总表/板端独立复跑/扩展夹具/边界确认/观察项 O-1 O-2）
 docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261015-ITEM010-r2.core-evidence_core-tests-20261015-ITEM010-r2.log | active | ITEM-010 归档测试 stdout（274/274）
 docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261015-ITEM010-r2.core-evidence_core-tests-20261015-ITEM010-r2.xml | active | ITEM-010 归档 JUnit XML（274 tests, 0 failures）
 docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261015-ITEM010-r2.core-evidence_sim-inject-20261015-ITEM010-r2.json | active | ITEM-010 同轮 sim-inject JSON
 docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261015-ITEM010-r2.core-evidence_sim-inject-20261015-ITEM010-r2.log | active | ITEM-010 同轮 sim-inject 结构化日志
 docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261015-ITEM010-r2.log | active | ITEM-010 TestRun 运行日志
 docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261015-ITEM010-r2.transcript.json | active | ITEM-010 TestRun（tokens-selftest + ui-scan + 测试 + sim-inject）transcript
+docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261016-VERIFY-ITEM010-v1.core-evidence_core-tests-20261016-VERIFY-ITEM010-v1.log | active | 验证轮板端测试 stdout（274/274，stamp=VERIFY-ITEM010-v1）
+docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261016-VERIFY-ITEM010-v1.core-evidence_core-tests-20261016-VERIFY-ITEM010-v1.xml | active | 验证轮板端 JUnit XML（274 tests, 0 failures；与实现者归档逐条一致）
+docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261016-VERIFY-ITEM010-v1.core-evidence_sim-inject-20261016-VERIFY-ITEM010-v1.json | active | 验证轮同轮 sim-inject JSON
+docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261016-VERIFY-ITEM010-v1.core-evidence_sim-inject-20261016-VERIFY-ITEM010-v1.log | active | 验证轮同轮 sim-inject 结构化日志
+docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261016-VERIFY-ITEM010-v1.log | active | 验证轮 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-010-tokens/build-TestRun-192_168_0_103-20261016-VERIFY-ITEM010-v1.transcript.json | active | 验证轮 TestRun transcript（独立 SSH 复跑全过程与指纹）
+docs/hmi/test_evidence/ITEM-010-tokens/verify_board_compare.py | active | 验证自有夹具：实现者 vs 验证者板端归档 junit 与日志逐行比对
+docs/hmi/test_evidence/ITEM-010-tokens/verify_board_qt_check.py | active | 验证自有夹具：板端 Qt Quick/Qml 开发包边界 SSH 直查（qtdeclarative5-dev 缺失证据）
+docs/hmi/test_evidence/ITEM-010-tokens/verify_tokens_consistency.py | active | 验证自有夹具：tokens.json/Theme.qml 与 design_tokens.yaml 内容级深度一致性 + 关键令牌探针 + rgba 解码 + main.qml 绑定
+docs/hmi/test_evidence/ITEM-010-tokens/verify_tokens_ext.py | active | 验证自有扩展夹具（16 项：字号传播/qmldir/异常路径 exit 2,3/rgba 数值往返/扫描器力度与豁免/负例）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）
