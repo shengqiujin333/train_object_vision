@@ -166,7 +166,7 @@ Rectangle {
                     border.color: Theme.color.border; border.width: Theme.border.width; radius: Theme.radius.card
                     Text { anchors.top: parent.top; anchors.left: parent.left; anchors.margins: Theme.spacing.s2
                            color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
-                           text: modelData + " " }
+                           text: page.chipName(modelData) + " (" + modelData + ")" }
                     Text { anchors.centerIn: parent; color: Theme.color.text_muted
                            font.pixelSize: Theme.typography.scale.caption.size
                            text: "回放画面（媒体层提供）" }
@@ -184,16 +184,16 @@ Rectangle {
             width: parent.width
             height: parent.height - videoRow.height - Theme.spacing.s4
 
-            // D-09：游标顶部等宽时间
+            // D-09 / v2 D-02：游标顶部等宽时间，随游标 x 移动
             Text {
                 id: cursorTime
                 objectName: "cursorTime"
-                anchors.left: parent.left
+                x: Math.max(0, Math.min(parent.width - width, page.xOf(page.cursor) - width / 2))
                 anchors.top: parent.top
                 color: Theme.color.text_primary
                 font.family: Theme.typography.family.mono
                 font.pixelSize: Theme.typography.scale.caption.size
-                text: page.R ? page.R.formatTime(page.cursor) : ""
+                text: "当前 " + (page.R ? page.R.formatTime(page.cursor) : "")
             }
             Rectangle {
                 id: track

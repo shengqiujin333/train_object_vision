@@ -89,6 +89,16 @@ ReplayTimeline build_timeline(const std::string& camera_id, long long day_start_
     return build_timeline(camera_id, day_start_ms, segments, gaps, marks, keyframe_interval_ms);
 }
 
+std::vector<AlarmMark> alarm_marks_from_rows(const std::vector<AlarmRow>& rows,
+                                             const std::string& camera_id) {
+    std::vector<AlarmMark> marks;
+    for (const auto& r : rows) {
+        if (!camera_id.empty() && r.camera_id != camera_id) continue;
+        marks.push_back(AlarmMark{r.ts_wall_ms, r.level});
+    }
+    return marks;
+}
+
 JumpTargets jump_targets(long long alarm_ts) {
     JumpTargets j;
     j.alarm_ms = alarm_ts;

@@ -70,6 +70,10 @@ ReplayTimeline build_timeline(const std::string& camera_id, long long day_start_
                               const std::vector<long long>& alarm_ts,
                               int keyframe_interval_ms);
 
+// 由报警行（含真实级别）推导某相机的报警标记（桥接也用此保证级别不丢失）。
+std::vector<AlarmMark> alarm_marks_from_rows(const std::vector<AlarmRow>& rows,
+                                             const std::string& camera_id);
+
 // 四个跳转点（基于报警时刻）。
 struct JumpTargets {
     long long minus30_ms = 0;

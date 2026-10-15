@@ -102,17 +102,31 @@ int main(int argc, char** argv) {
          " distance=" + d.distance_text + " confidence=" + d.confidence_text + " ack=" + d.ack_label +
          " record=" + d.record_label + " record_ok=" + std::string(d.record_ok ? "true" : "false"));
 
+    // v2 D-01：报警行（真实级别）-> 标记 -> 时间轴段/标记级别（桥接同路径）
+    std::vector<AlarmRow> arows;
+    EventRow le; le.id = 9; le.level = 1; le.type = "person_on_rail"; le.source_cam = "CAM-01";
+    le.ts_wall_ms = alarm; le.ack_state = "unacked";
+    arows.push_back(make_alarm_row(le, "前方", RecordAvailability::Available));
+    const std::vector<AlarmMark> marks = alarm_marks_from_rows(arows, "CAM-01");
+    const ReplayTimeline t2 = build_timeline("CAM-01", day, segs, gaps, marks, 60000);
+    const int seg_level = t2.segments.empty() ? 0 : t2.segments[1].level;
+    const int marker_level = t2.alarms.empty() ? 0 : t2.alarms[0].level;
+    emit("type=level-e2e alarm_level=1 segment_level=" + std::to_string(seg_level) +
+         " marker_level=" + std::to_string(marker_level));
+
     const bool okall = (t.segments.size() == 3) && t.has_alarm_segment() && t.has_gap() &&
                        (t.alarms.size() == 1) && !t.keyframes.empty() &&
                        (j.minus30_ms == alarm - 30000) && (j.plus60_ms == alarm + 60000) && ok.in_sync &&
                        bad.has_prompt && (st.source == ReplaySource::LocalClips) && st.usable &&
                        (d.confidence_text == "87%") && (locked.size() == 3) && s_ok.available && s_ok.in_sync &&
                        !s_bad.in_sync && (s_bad.prompt.find("同步偏差") != std::string::npos) &&
-                       !s_none.available && (s_none.prompt == "同步状态不可用");
+                       !s_none.available && (s_none.prompt == "同步状态不可用") &&
+                       (seg_level == 1) && (marker_level == 1);
     emit(std::string("type=acceptance alarm_segment=true gap=true jumps_ok=true sync_prompt_on_deviation=") +
          (s_bad.prompt.find("同步偏差") != std::string::npos ? "true" : "false") +
          " lock_related_cameras=" + (locked.size() == 3 ? "true" : "false") +
          " sync_unavailable_without_clock=" + (!s_none.available ? "true" : "false") +
+         " level_e2e=" + (seg_level == 1 && marker_level == 1 ? "true" : "false") +
          " nvr_fallback_local=" + (st.source == ReplaySource::LocalClips ? "true" : "false") +
          " result=" + (okall ? "PASS" : "FAIL"));
     return okall ? 0 : 1;

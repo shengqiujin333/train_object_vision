@@ -72,6 +72,8 @@ def main() -> int:
     # D-01 keyframes / D-04 levels exported by bridge
     if '"keyframes"' not in bridge:
         fails.append("replay_model.cpp timeline() does not export keyframes (D-01)")
+    if "alarm_marks_from_rows" not in bridge:
+        fails.append("replay_model.cpp does not derive real-level marks from rows (v2 D-01)")
     if 'sm["level"]' not in bridge:
         fails.append("replay_model.cpp does not export segment level (D-04)")
     if 'am["level"]' not in bridge:
@@ -87,6 +89,8 @@ def main() -> int:
         "dateError": "invalid-date feedback (D-08)",
         "syncState": "dynamic sync (v1 D-02)",
         "同步状态不可用": "sync unavailable state (v1 D-02)",
+        "chipName(modelData)": "panel Chinese label (v2 D-03)",
+        "当前 ": "cursor-following top time (v2 D-02)",
     }
     for token, what in checks.items():
         if token not in p3:

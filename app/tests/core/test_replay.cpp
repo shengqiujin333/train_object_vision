@@ -149,6 +149,33 @@ void test_event_detail() {
     railhmi_test::check(!d.time_text.empty(), "detail time");
 }
 
+void test_alarm_marks_from_rows() {
+    // v2 D-01：桥接必须传真实级别；本断言覆盖 core 的标记推导 + 端到端段级别。
+    std::vector<AlarmRow> rows;
+    EventRow e1;
+    e1.id = 1; e1.level = 1; e1.type = "person_on_rail"; e1.source_cam = "CAM-01";
+    e1.ts_wall_ms = kDayStart + 70000; e1.ack_state = "unacked";
+    rows.push_back(make_alarm_row(e1, "前方", RecordAvailability::Available));
+    EventRow e2;
+    e2.id = 2; e2.level = 2; e2.type = "pantograph_abnormal"; e2.source_cam = "CAM-04";
+    e2.ts_wall_ms = kDayStart + 80000; e2.ack_state = "unacked";
+    rows.push_back(make_alarm_row(e2, "车顶", RecordAvailability::Available));
+
+    const std::vector<AlarmMark> marks = alarm_marks_from_rows(rows, "CAM-01");
+    railhmi_test::check(marks.size() == 1 && marks[0].level == AlarmLevel::L1,
+                        "marks from rows carry real level (v2 D-01)");
+    railhmi_test::check(alarm_marks_from_rows(rows, "CAM-04")[0].level == AlarmLevel::L2, "camera filter + level");
+
+    std::vector<RecordingSegmentRow> segs;
+    RecordingSegmentRow s; s.id = 1; s.cam = "CAM-01"; s.t0_ms = kDayStart + 60000; s.t1_ms = kDayStart + 90000;
+    s.kind = SegmentKind::Critical;
+    segs.push_back(s);
+    const ReplayTimeline t = build_timeline("CAM-01", kDayStart, segs, {}, marks, 60000);
+    railhmi_test::check(!t.segments.empty() && t.segments[0].level == 1,
+                        "critical segment level == real alarm level (v2 D-01)");
+    railhmi_test::check(!t.alarms.empty() && t.alarms[0].level == 1, "alarm marker level == real alarm level");
+}
+
 }  // namespace
 
 void run_replay_tests() {
@@ -158,4 +185,5 @@ void run_replay_tests() {
     test_selection_and_sync_snapshot();
     test_source();
     test_event_detail();
+    test_alarm_marks_from_rows();
 }

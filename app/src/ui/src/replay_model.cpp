@@ -136,8 +136,14 @@ QVariantMap RailhmiReplayModel::timeline(const QString& camera_id, const QString
         m["valid"] = false;
         return m;
     }
+    // 使用真实级别的报警标记（由已灌入的报警行推导），避免恒为 L3（v2 D-01）。
+    std::vector<railhmi::core::AlarmMark> marks =
+        railhmi::core::alarm_marks_from_rows(alarm_rows_, camera_id.toStdString());
+    if (marks.empty())
+        for (long long ts : alarm_ts_)
+            marks.push_back(railhmi::core::AlarmMark{ts, railhmi::core::AlarmLevel::L3});
     const ReplayTimeline t = railhmi::core::build_timeline(camera_id.toStdString(), day, segments_, gaps_,
-                                                           alarm_ts_, keyframe_interval_ms);
+                                                           marks, keyframe_interval_ms);
     m["valid"] = true;
     m["cameraId"] = camera_id;
     m["dayStartMs"] = static_cast<qlonglong>(t.day_start_ms);

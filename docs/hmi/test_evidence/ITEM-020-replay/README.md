@@ -100,6 +100,24 @@ type=detail ... record=可回放 record_ok=true
 [check_replay_wiring] PASS (D-01..D-09 + v1 D-01/D-02 wired)
 ```
 
+## 2.7 UI 评审 v2 修复轮（D-01/D-02/D-03 残留）
+
+v2 复核（`REVIEW-ITEM-020-v2.md`）：D-01/02/03/05/06/07/08/09 已修复；**v2 D-01（上轮 D-04 未闭环）**——桥接 `timeline()` 仍用仅时间戳重载，core 固定填 `AlarmLevel::L3`，真实报警级别从不流经 UI（样例一级报警显示三级黄）。两项轻残留：游标顶部时间为固定左端读数；三联面板标签丢失中文名。
+
+修复：
+1. **core** 新增 `alarm_marks_from_rows(rows, camera_id)`（由带真实级别的报警行推导标记）；桥接 `timeline()` 改用 `build_timeline` 的 `AlarmMark` 重载（仅当无行时回退 ts-only）。
+2. **P3Replay**：游标顶部时间随游标 x 移动并标注“当前”；三联面板标题恢复 `chipName()`（前方/左侧/右侧）。
+3. **静态取证** `check_replay_wiring.py` 新增断言：桥接使用 `alarm_marks_from_rows`、P3 含 `chipName(modelData)` 与游标跟随时间。
+
+修复轮板端实测（stamp `20261016-ITEM020-uifix-r2`）→ `TESTRUN_EXIT=0` `SCAN_EXIT=0` `REPLAY_WIRE_EXIT=0`：
+```
+== 583 passed, 0 failed ==   （新增 alarm_marks_from_rows + 端到端段/标记级别断言）
+type=level-e2e alarm_level=1 segment_level=1 marker_level=1
+type=acceptance ... level_e2e=true ... result=PASS
+[check_replay_wiring] PASS (D-01..D-09 + v1 D-01/D-02 wired)
+```
+真实级别 L1 现已端到端流经桥接至 UI（一级红），不再恒为 L3。
+
 ## 3. 边界
 
 - **真实回放取流/解码**复用媒体层（GStreamer 播放链，属媒体/视频职责）；本项交付回放**模型/时间轴/同步/来源/详情**与 QML 页面骨架。
