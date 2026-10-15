@@ -574,6 +574,11 @@ docs/hmi/test_evidence/ITEM-016-status/run_verify_round.sh | active | ITEM-016 �
 docs/hmi/test_evidence/ITEM-016-status/verify_status16_ext.cpp | active | ITEM-016 验证自有扩展夹具（五级三重编码逐级显式十对互异/异常精确性+Info 传递/混合矩阵隔离/顶部条身份与未接入/权限矩阵 28 组合/确定性 79 断言；链接交付 librailhmi_core.a）
 docs/hmi/test_evidence/ITEM-016-status/verify_status16_fixtures.py | active | ITEM-016 验证夹具运行器（Paramiko 指纹校验；TestRun 交付入口复跑+443 行逐行比对+JUnit 独立解析、探针两角色独立解析、负例 exit2、ext 编译运行、按名清理/有限等待全程）
 docs/hmi/test_evidence/ITEM-017-inference/README.md | active | ITEM-017 推理服务接入与双模型复用证据（核心推理模型/工作线程/配置/QML 调试页；板端 480/480 单测 + ai-probe PASS + ai-runner 线程 PASS；边界/复现）
+docs/hmi/test_evidence/ITEM-017-inference/VERIFY-FIXTURES-VERIFY-20261016-v1.log | active | ITEM-017 验证夹具 transcript（指纹/步骤/退出码过程轮）
+docs/hmi/test_evidence/ITEM-017-inference/VERIFY-FIXTURES-VERIFY-20261016-v1.transcript.json | active | ITEM-017 验证夹具 transcript（指纹/步骤/退出码过程轮）
+docs/hmi/test_evidence/ITEM-017-inference/VERIFY-FIXTURES-VERIFY-20261016-v2.log | active | ITEM-017 验证夹具 transcript（指纹/步骤/退出码权威轮）
+docs/hmi/test_evidence/ITEM-017-inference/VERIFY-FIXTURES-VERIFY-20261016-v2.transcript.json | active | ITEM-017 验证夹具 transcript（指纹/步骤/退出码权威轮）
+docs/hmi/test_evidence/ITEM-017-inference/VERIFY-ITEM-017.md | active | ITEM-017 软件验证 TestEvidence（VERIFY-20261016-v2 权威轮：TEST_PASS；板端独立复跑 480/480 逐行一致 identical、JUnit 独立解析 480/0 推理域 40 用例、ai-probe/ai-runner 独立断言 fails=[] 且与实现者存档逐字节一致、验证自有 ext 夹具 125/125、负例 exit2/1、温度守卫与陈旧边界矩阵、边界确认与 v1 过程轮留痕）
 docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.core-evidence_ai-runner-20261016-ITEM017-media-r1.log | active | ITEM-017 推理工作线程运行/停止原始输出（eligible=4 with_result=4；停止后 AI 不可用；acceptance PASS）
 docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.core-evidence_multi-probe-20261016-ITEM017-media-r1.json | active | ITEM-017 取流探针回归（六路并发）留痕
 docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.core-evidence_multi-probe-20261016-ITEM017-media-r1.log | active | ITEM-017 取流探针回归（六路并发）留痕
@@ -581,6 +586,20 @@ docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-2026101
 docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.core-evidence_stream-probe-20261016-ITEM017-media-r1.log | active | ITEM-017 取流探针回归（单路）留痕
 docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.log | active | ITEM-017 MediaCheck 运行日志（media 构建 + 探针 + ai-runner）
 docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-20261016-ITEM017-media-r1.transcript.json | active | ITEM-017 MediaCheck transcript（主机指纹/退出码/取回）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v1-media.core-evidence_ai-runner-VERIFY-20261016-v1-media.log | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v1-media.core-evidence_multi-probe-VERIFY-20261016-v1-media.json | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v1-media.core-evidence_multi-probe-VERIFY-20261016-v1-media.log | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v1-media.core-evidence_stream-probe-VERIFY-20261016-v1-media.json | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v1-media.core-evidence_stream-probe-VERIFY-20261016-v1-media.log | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v1-media.log | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v1-media.transcript.json | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.core-evidence_ai-runner-VERIFY-20261016-v2-media.log | active | ITEM-017 验证轮 ai-runner 输出（权威轮 4/4 路线程 PASS；与实现者 media-r1 存档逐字节一致）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.core-evidence_multi-probe-VERIFY-20261016-v2-media.json | active | ITEM-017 验证轮取流探针回归（权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.core-evidence_multi-probe-VERIFY-20261016-v2-media.log | active | ITEM-017 验证轮取流探针回归（权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.core-evidence_stream-probe-VERIFY-20261016-v2-media.json | active | ITEM-017 验证轮取流探针回归（权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.core-evidence_stream-probe-VERIFY-20261016-v2-media.log | active | ITEM-017 验证轮取流探针回归（权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.log | active | ITEM-017 验证轮（v2-media 权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.transcript.json | active | ITEM-017 验证轮（v2-media 权威轮留痕）
 docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-20261016-ITEM017-r1.core-evidence_ai-probe-20261016-ITEM017-r1.log | active | ITEM-017 ai-probe 输出（留痕）
 docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-20261016-ITEM017-r1.core-evidence_core-tests-20261016-ITEM017-r1.log | active | ITEM-017 core 单测逐项输出（失败轮留痕）
 docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-20261016-ITEM017-r1.core-evidence_core-tests-20261016-ITEM017-r1.xml | active | ITEM-017 JUnit XML（r1）
@@ -608,6 +627,27 @@ docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-20261016-I
 docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-20261016-ITEM017-r3.core-evidence_status-probe-driver-20261016-ITEM017-r3.log | active | ITEM-017 状态探针回归（r3）留痕
 docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-20261016-ITEM017-r3.log | active | ITEM-017 TestRun(r3) 运行日志留痕
 docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-20261016-ITEM017-r3.transcript.json | active | ITEM-017 TestRun(r3) transcript 留痕
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml | active | ITEM-017 验证轮留痕
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v1.log | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json | active | ITEM-017 验证轮（v1 过程轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_ai-probe-VERIFY-20261016-v2.log | active | ITEM-017 验证轮 ai-probe 输出（权威轮 PASS；与实现者 r3 存档逐字节一致，确定性复现）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log | active | ITEM-017 验证轮 core 单测逐项输出（权威轮 480/480，与实现者 r3 [PASS] 行逐行一致）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml | active | ITEM-017 验证轮 JUnit XML（权威轮独立解析 tests=480 failures=0，推理域 40 用例）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.json | active | ITEM-017 验证轮（v2 权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.log | active | ITEM-017 验证轮（v2 权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-VERIFY-20261016-v2.log | active | ITEM-017 验证轮（v2 权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-driver-VERIFY-20261016-v2.log | active | ITEM-017 验证轮（v2 权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v2.log | active | ITEM-017 验证轮（v2 权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/build-TestRun-192_168_0_103-VERIFY-20261016-v2.transcript.json | active | ITEM-017 验证轮（v2 权威轮留痕）
+docs/hmi/test_evidence/ITEM-017-inference/run_verify_round.sh | active | ITEM-017 验证轮驱动（PowerShell User env 凭据导入/指纹核验/默认 stamp VERIFY-20261016-v2/有限等待全程）
+docs/hmi/test_evidence/ITEM-017-inference/verify_ai17_ext.cpp | active | ITEM-017 验证自有扩展夹具（队列微观边界/丢帧多变量采样预言+守恒/requested 恒等/优先级总序/调度分区不变量/温度守卫边界含 floor/状态 stale==边界/调试视图时间文本矩阵 125 断言；链接交付 librailhmi_core.a）
+docs/hmi/test_evidence/ITEM-017-inference/verify_ai17_fixtures.py | active | ITEM-017 验证夹具运行器（Paramiko 指纹校验；TestRun+MediaCheck 交付入口复跑+480 行逐行比对+JUnit 独立解析、ai-probe/ai-runner 独立解析断言、ext 编译运行、负例 exit2/exit1、按名清理/有限等待全程）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

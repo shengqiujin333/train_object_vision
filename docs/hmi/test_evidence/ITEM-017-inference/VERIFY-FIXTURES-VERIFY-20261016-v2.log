@@ -1,0 +1,102 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 121 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 SCAN_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 AI_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-VERIFY-20261016-v2.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-driver-VERIFY-20261016-v2.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_ai-probe-VERIFY-20261016-v2.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-017-inference\build-TestRun-192_168_0_103-VERIFY-20261016-v2.transcript.json
+log: docs\hmi\test_evidence\ITEM-017-inference\build-TestRun-192_168_0_103-VERIFY-20261016-v2.log
+
+
+===== [fresh-artifacts] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_ai-probe-VERIFY-20261016-v2.log
+
+===== [log-compare] exit=0 =====
+impl=build-TestRun-192_168_0_103-20261016-ITEM017-r3.core-evidence_core-tests-20261016-ITEM017-r3.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log impl_pass=480 verify_pass=480 identical=True verify_fails=0 result=RESULT: PASS passed=480 failed=0
+
+===== [junit-parse] exit=0 =====
+junit build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml tests=480 failures=0 inference_cases=40
+
+===== [ai-probe-assert] exit=0 =====
+{"fails": []}
+
+===== [ai-probe-compare] exit=0 =====
+deterministic reproduction identical=True
+
+===== [mkdir-workdir] exit=0 =====
+
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-017-inference/verify_ai17_ext.cpp
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+== verify ITEM-017 ext (inference acceptance fixtures) ==
+RESULT: PASS passed=125 failed=0
+EXT_EXIT=0
+
+
+===== [ext-summary] exit=0 =====
+ext passed=125 failed=0
+
+===== [run-mediacheck-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 121 files from E:\work\rail_issue\rk3588_handover\app
+[build] exit=0 BUILD_EXIT=0
+[stream-probe] exit=0 PROBE_EXIT=0
+[multi-probe] exit=0 MULTI_EXIT=0
+[ai-runner] exit=0 AIRUN_EXIT=0
+[download] exit=0 build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.core-evidence_stream-probe-VERIFY-20261016-v2-media.log
+[download] exit=0 build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.core-evidence_stream-probe-VERIFY-20261016-v2-media.json
+[download] exit=0 build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.core-evidence_multi-probe-VERIFY-20261016-v2-media.log
+[download] exit=0 build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.core-evidence_multi-probe-VERIFY-20261016-v2-media.json
+[download] exit=0 build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.core-evidence_ai-runner-VERIFY-20261016-v2-media.log
+[artifacts] exit=0 -rwxrwxr-x 1 admin admin 263416 Oct 16 04:55 build-media/tools/railhmi-ai-runner
+transcript: docs\hmi\test_evidence\ITEM-017-inference\build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.transcript.json
+log: docs\hmi\test_evidence\ITEM-017-inference\build-MediaCheck-192_168_0_103-VERIFY-20261016-v2-media.log
+
+
+===== [ai-runner-assert] exit=0 =====
+{"fails": []}
+
+===== [ai-runner-compare] exit=0 =====
+note: timings vary between runs; identity check informational identical=True
+
+===== [probe-negative-arg] exit=0 =====
+NARG_EXIT=2
+unknown arg: --nope
+
+
+===== [probe-negative-config] exit=0 =====
+type=error config invalid
+  app.ai.temp_limit_c: expected number
+CFG_EXIT=1
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify017': No such file or directory
+ls: cannot access '/tmp/railhmi_build': No such file or directory
+

@@ -1,0 +1,15 @@
+type=injection source=test camera=CAM-01 duration_s=6 cut_after_s=3 transport=n/a
+t=0 type=stream_state state=live fps=0.5 last_frame_ms=226467800 reconnect_count=0 presentable=true
+t=538 type=stream_state state=live fps=7.5 last_frame_ms=226468338 reconnect_count=0 presentable=true
+t=1018 type=stream_state state=live fps=13.5 last_frame_ms=226468818 reconnect_count=0 presentable=true
+t=1538 type=stream_state state=live fps=20.0 last_frame_ms=226469338 reconnect_count=0 presentable=true
+t=2018 type=stream_state state=live fps=25.5 last_frame_ms=226469818 reconnect_count=0 presentable=true
+t=2537 type=stream_state state=live fps=25.5 last_frame_ms=226470338 reconnect_count=0 presentable=true
+t=3018 type=injection cut=FI-01 (simulated stream cut)
+t=3018 type=stream_state state=reconnecting fps=24.5 last_frame_ms=226470778 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=3500 type=stream_state state=reconnecting fps=18.5 last_frame_ms=226470778 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=4000 type=stream_state state=reconnecting fps=12.5 last_frame_ms=226470778 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=4500 type=stream_state state=connecting fps=6.0 last_frame_ms=226470778 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=5000 type=stream_state state=connecting fps=0.0 last_frame_ms=226470778 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=5500 type=stream_state state=connecting fps=0.0 last_frame_ms=226470778 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+type=summary final_state=connecting reconnect_count=1 last_frame_ms=226470778 presentable=false
