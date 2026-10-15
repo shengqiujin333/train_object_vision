@@ -1,0 +1,22 @@
+{
+  "variant": "cpu_headless_noqt",
+  "path": "cpu",
+  "source": "test",
+  "url": "",
+  "file": "",
+  "duration_s": 8.01,
+  "playing": true,
+  "frames_source": 201,
+  "fps_source": 25.08,
+  "frames_display": 201,
+  "fps_display": 25.08,
+  "cpu_pct_one_core": 19.09,
+  "rss_mb": 19.2,
+  "gpu_load_max": 48.00,
+  "gpu_load_avg": 8.29,
+  "gpu_samples": 201,
+  "color": {"valid": true, "b_mean": 138.45, "g_mean": 122.61, "r_mean": 124.01, "spread": 15.84, "pass": false},
+  "snapshot": "core_20261015-board-r1.bmp",
+  "negotiated": true,
+  "errors": []
+}

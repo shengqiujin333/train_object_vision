@@ -137,3 +137,77 @@ python app/tools/board_env_probe.py \
 
 工具源码：
 - `app/tools/env_probe.py`、`app/tools/run_env_check.sh`、`app/tools/board_env_probe.py`
+
+---
+
+## 14. 渲染路径选型 spike（ITEM-002）结果
+
+> 本节沿用历史锚点 §14。工作项要求：在板端真机（RTSP/UDP）或无相机时用 file/test 替代源实测
+> `mppvideodec→glupload→glcolorconvert→qmlglsink` 与 `RGA NV12→BGR + Qt 纹理` 两条路径，
+> 记录 fps/CPU/GPU/色彩，并把 selection 写回本节。
+
+### 14.0 本轮实际执行状态
+
+- **已在目标板（RK3588）实测**，经登记 SSH 入口（`rk3588_inspect`，受信任 known_hosts，全超时）执行；主机指纹 `SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU`。
+- **选定路径: `cpu`**（status=`SELECTED`，min_fps=20），依据为板端真实测量；**`gl` 当前不可用**（元素与开发包缺失，见 14.3），保留为可开启候选。
+- 由于板端缺 Qt Quick/QML 开发包，原 QML spike（`app/spikes/render_path`）**无法在板端构建**（`Qt5QuickConfig.cmake` 缺失，见 14.3）；本轮用新增的**无 Qt 核心管线测量** `spike_core.c`（仅 GStreamer + librga）取得解码+RGA 的真实 fps/CPU/GPU/色彩数据。
+- 主机侧判据自检：`analyze.py --selftest` = **6/6 通过**。
+
+### 14.1 实测数据（板端，本轮）
+
+| run | 源 | 时长 | playing | fps_source | fps_converted | CPU%(单核) | GPU load avg/max | B/G/R 均值 | spread | 色彩 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| r2b | `test`（合成，**中性灰** solid-color 0x808080） | 8.01s | true | 24.98 | 24.98 | 58.2 | 6.75 / 10.0 | 126.00 / 126.00 / 126.00 | 0.00 | **pass** |
+| r3 | `file`（板上生成的 H.264 mp4，解码路径） | 0.17s（突发） | true | 1449.7 | 325.44 | 106.5 | 8.0 / 8.0 | 126.00 / 126.00 / 126.00 | 0.00 | **pass** |
+
+- r2b 为实时合成源：`mppvideodec`未被使用（test 源直接 NV12）；fps 稳定在源帧率 25。
+- r3 为解码路径：`filesrc ! decodebin(mppvideodec) → NV12 → appsink → librga NV12→BGR`，管线以最快速度跑完 250 帧（非实时），证明**解码+RGA 转换链路可用且色彩中性正确**；325 converted fps @ 720p 表明实时 25fps 有充足余量。
+- GPU 数据来自 `/sys/class/devfreq/*gpu*/load`；r2b 采样 16 次（500ms 周期）。RGA 为独立 IP，CPU 侧数据以 `cpu_pct_one_core` 为准。
+- 快照：`...core_20261015-board-r2b.bmp`、`...core_20261015-board-r3.bmp`（1280×720×3，各约 2.76MB，BMP 规避板端 OpenCV/JPEG 历史冲突）。**画面内容与视觉正确性需由用户/现场目视确认**，数值不代替人工确认。
+
+### 14.2 选择
+
+依据 `analyze.py`（判据：playing 且 fps≥min 且色彩 pass 且无 fatal error；顺序 gl→cpu→none）：
+
+```
+| path | playing | fps_source | fps_display | CPU%(单核) | GPU load avg | spread | 结论 |
+| cpu  | True    | 24.98      | 24.98       | 58.2       | 6.75         | 0      | 可用 |
+| gl   | -       | -          | -           | -          | -            | -      | 无测量（元素/开发包缺失） |
+选定路径: cpu（SELECTED）
+```
+
+- **主路径 = `cpu`**：`mppvideodec` NV12 → librga `NV12→BGR`(BT601_FULL) → Qt 纹理上传。
+- **`gl`（qmlglsink）保留为可开启候选**：待平台安装 `gstreamer1.0-qt5` 与 Qt QML 开发/模块包后，用 `run_render_spike.sh` 复测再冻结。**不得**把未实测的 `gl` 当唯一/默认路径。
+- 实现必须保留 `render.path=gl|cpu` 双路径配置开关（spike 中已由 `--path gl|cpu` 体现）。
+
+### 14.3 `gl` 当前不可用的实测证据（非预判）
+
+| 证据 | 命令/文件 | 实际结果 |
+|---|---|---|
+| qmlglsink 元素 | `gst-inspect-1.0 qmlglsink`（见 ENV-B §2 E-02） | `No such element or plugin 'qmlglsink'`（exit 255） |
+| GL 管线构造 | `gst-launch-1.0 ... ! glupload ! glcolorconvert ! qmlglsink`（`gl_construct.log`） | `WARNING: erroneous pipeline: no element "qmlglsink"` |
+| QML spike 构建 | `cmake -S . -B build`（`cmake.log`） | `Could not find Qt5QuickConfig.cmake`（qtdeclarative5-dev 缺失） |
+| GL 元素/库 | ENV-B §2 E-03/E-04 | `glupload`/`glcolorconvert`/`glimagesink` 与 libEGL/libGLESv2/libmali 存在；缺 `gstreamer1.0-qt5` |
+
+### 14.4 方法与限制（不得外推）
+
+1. `spike_core.c` 是**替代测量**：只覆盖“解码 + RGA 转换”核心，**不含 Qt 绘制/纹理上传**；QML 端出图代价未包含，需在 Qt 开发包就绪后由原 QML spike 复测。
+2. 色彩判据“BGR 三通道均值近似相等”只对**中性灰场景**成立；`test` 源已改为中性灰（solid-color 0x808080），故 spread=0。真实相机彩色场景的色彩判据与画面质量属 ENV-D，需用户目视。
+3. r3 为**突发吞吐**（`filesrc` 无时钟同步），fps 高于实时；其意义是证明解码+RGA 链路可用与余量，**不是**实时帧率指标。
+4. 单路测量**不覆盖 6 路并发合成**性能，归后续页面/取流任务的 ENV-C/D 验证。
+5. 六路相机凭据/编码协商未在本项执行（端口可达已在 ENV-B §2 E-10 记录），真机 RTSP 实测归 `run_render_spike.sh --source rtsp`（`read_camera_stream` 授权下）。
+
+### 14.5 本轮证据（ITEM-002）
+
+板端（RK3588，本轮）：
+- `docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r2b.core_20261015-board-r2b.json`（合成源测量）
+- `.../spike-192_168_0_103-20261015-board-r3.core_20261015-board-r3.json`（解码路径测量）
+- `.../selection-spike-192_168_0_103-20261015-board-r2b.{json,md}`、`...-r3.{json,md}`
+- `.../spike-...-r2b.core.log`、`...-r3.core.log`、`...*.core_*.bmp`（快照）
+- `.../spike-...-r2b.cmake.log`（Qt5Quick 缺失证据）、`...gl_construct.log`（qmlglsink 缺失证据）
+- `.../spike-...-r2b.transcript.json`、`...-r3.transcript.json`（SSH 主机指纹 + 逐条命令与时延）
+- 首次运行 `...-board-r1.*`（含 SMPTE 彩色源导致色彩判据失败的记录，作为方法修正依据保留）
+
+工具源码：
+- `app/spikes/render_path/spike_core.c`（无 Qt 核心管线测量）、`app/spikes/render_path/analyze.py`（判据）
+- `app/tools/board_render_spike.py`（板端构建/测量运行器）、`app/spikes/render_path/run_render_spike.sh`（QML spike 驱动，待 Qt 包就绪）

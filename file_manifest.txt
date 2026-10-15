@@ -6,12 +6,14 @@ app/README.md | active | 桌面应用工程构建/运行入口说明（ITEM-001 
 app/spikes/render_path/CMakeLists.txt | active | spike 板端本机构建（Qt5 + GStreamer + librga）
 app/spikes/render_path/CpuView.qml | active | CPU 回退路径 QML 场景（FrameItem）
 app/spikes/render_path/GlView.qml | active | GL 路径 QML 场景（GstGLVideoItem）
-app/spikes/render_path/README.md | active | 渲染路径选型 spike 说明（ITEM-002）：路径定义/运行/判据/未实测状态
+app/spikes/render_path/README.md | active | 渲染路径选型 spike 说明（ITEM-002）：路径定义/运行/判据；状态=板端实测后选定 cpu，gl 不可用（qmlglsink/Qt 包缺失）
 app/spikes/render_path/analyze.py | active | 渲染路径选择判据（--selftest/--md-out；无实测输入返回 UNMEASURED）
 app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu；源 rtsp|file|test；fps/CPU/GPU/色彩测量；写 JSON）（未在主机编译）
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
+app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
 app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
+app/tools/board_render_spike.py | active | ITEM-002 板端渲染 spike 运行器（上传/构建 QML spike、无 Qt 核心测量编译运行、gl 构造探测、取回日志/JSON、判据选择；全超时 + known_hosts）
 app/tools/env_probe.py | active | 桌面应用依赖/环境只读探针（标准库；目标板与主机均可跑，生成 md/raw/json；支持 --skip-slow 与 QML/Quick 库、qml 目录核验）
 app/tools/run_env_check.sh | active | 依赖探针运行入口脚本（输出到 docs/hmi/test_evidence/ENV-B-dependency）
 code/librga.so | existing | 板端 RGA 库备份
@@ -31,7 +33,7 @@ docs/hmi/E2E_PLAN.md | active | 桌面应用端到端测试计划（E2EPlan）v2
 docs/hmi/INTERACTION_DESIGN.md | active | 交互设计方案 v2（FrontendDesignArtifact）：信息架构/页面状态/报警与回放交互/状态模型/可访问性/可检验结果；含本期 6 路可见光范围、无红外口径、各摄像头检测职责与 NVR 登记未配置态
 docs/hmi/TEST_DESIGN.md | active | 软件测试设计（TestDesignArtifact）v2：六档环境分层（含 ENV-A0 railhmi-core 单测域 TC-CORE-01..07）/度量定义/故障注入目录 FI-01..10/P0 冒烟集 15 条/功能域 G1..G9（含 v2 契约域 integration_state、NVR 未配置、模式位、DetectionBadge、ai_profile）/需求覆盖矩阵/回归集 REG-01..06/证据规范
 docs/hmi/VISUAL_DESIGN.md | active | 视觉设计规范 v2（UIVisualDesignArtifact）：色彩/字体/间距/图标/组件/页面状态/资源清单/实现规则；含仅可见光模式位、设备集成状态、NVR 卡片、检测职责徽标
-docs/hmi/build_env_check.md | active | 目标构建/运行依赖基线核验（ITEM-001）：E-00..E-13 板端实测（本轮实际执行 SSH 只读探测，含六路相机/NVR 端口可达）/主机结果分列/三态登记（已核实可用·未核验·有证据的缺口）/缺口替代结论与责任（Qt QML 包、qmlglsink、rgavideoconvert、rknpu 权限、主机工具链）/证据清单
+docs/hmi/build_env_check.md | active | 目标构建/运行依赖基线核验（ITEM-001）+ §14 渲染路径选型结果（ITEM-002）：E-00..E-13 板端实测/三态登记/缺口替代结论；§14 cpu 选定、gl 不可用实测证据与测量方法限制
 docs/hmi/design_tokens.yaml | active | 视觉设计令牌 v2（颜色/报警级别/流状态/模式与集成状态/检测职责徽标/字体/间距/圆角/层级/对比度校验）
 docs/hmi/desktop_app_tasks.yaml | active | 桌面应用实现任务清单 v2（TaskListArtifact，25 项有序）：依赖/授权缺口、渲染双路径选型、分层骨架、core 配置/状态机/profile规则/持久化/单测、模拟注入、令牌、导航、注册表+检测徽标、取流、三联、六路、状态条、推理、报警中心、保护片段、回放、AI调试、维护+NVR卡、权限、健康恢复、打包自检
 docs/hmi/interaction_tasks.yaml | active | 交互设计任务清单 v2（TaskListArtifact）：含摄像头检测职责与本期无红外范围、NVR 设备与录像来源交互任务
@@ -44,7 +46,7 @@ docs/hmi/mockups/p3_replay.svg | active | P3 历史录像与回放页面示意
 docs/hmi/mockups/p4_all_cameras.svg | active | P4 全摄像头页面示意
 docs/hmi/mockups/p5_ai_debug.svg | active | P5 AI 调试页面示意
 docs/hmi/mockups/p6_maintenance.svg | active | P6 设备维护页面示意
-docs/hmi/render_path_spike.md | active | 渲染路径选型 spike 程序与判据（ITEM-002）：路径定义/判据/运行/未实测状态
+docs/hmi/render_path_spike.md | active | 渲染路径选型 spike 程序与判据（ITEM-002）：路径定义/判据/运行；状态=板端实测选定 cpu，gl 不可用（Qt5Quick/qmlglsink 缺失）
 docs/hmi/test_evidence/ENV-B-dependency/VERIFY-ITEM-001.md | active | ITEM-001 交付物 TestEvidence（ITER2 重写，TEST_PASS：commit 06b6f9f 板端实测证据独立复现一致、判据逐条满足；偏差 R-1..R-7 记录在案）
 docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r1.commands.json | active | 板端探针首次运行命令日志（SSH 主机指纹/逐条命令退出码与时延）
 docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r1.json | active | 板端探针首次运行结构化结果
@@ -74,6 +76,31 @@ docs/hmi/test_evidence/ENV-B-dependency/verify-tmp-cleanup-20261015-v1.log | act
 docs/hmi/test_evidence/ITEM-002-render-path/VERIFY-ITEM-002.md | active | ITEM-002 渲染路径 spike 软件验证 TestEvidence（TEST_FAIL：板端实测未产出，设备授权缺口；实现侧工具独立复现通过）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015-r2.txt | active | ITEM-002 重试主机自检（source=file/test 与 --md-out synthetic fixture 表格，未执行板端）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015.txt | active | ITEM-002 主机自检证据（analyze.py --selftest 6/6 与 run_render_spike.sh --dry-run）
+docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-20261015-board-r1.json | active | 首次选择结果 JSON（cpu SELECTED）
+docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-20261015-board-r1.md | active | 首次选择结果 Markdown
+docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-20261015-board-r2b.json | active | 选择结果 JSON（cpu SELECTED）
+docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-20261015-board-r2b.md | active | 选择结果 Markdown（可贴入 build_env_check §14）
+docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-20261015-board-r3.json | active | 选择结果 JSON（cpu SELECTED）
+docs/hmi/test_evidence/ITEM-002-render-path/selection-spike-192_168_0_103-20261015-board-r3.md | active | 选择结果 Markdown
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-deps.transcript.json | active | ITEM-002 板端依赖核对 transcript（Qt5Quick/Qt5Qml 缺失、qmlglsink 缺失、gstreamer/librga 可用）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.cmake.log | active | QML spike 构建失败实测（Could not find Qt5QuickConfig.cmake）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.core.log | active | 首次测量原始日志
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.core_20261015-board-r1.bmp | active | 首次测量快照（BMP）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.core_20261015-board-r1.json | active | 首次核心管线测量（SMPTE 彩色源，色彩判据失败，方法修正依据）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.gl_construct.log | active | gl 构造探测实测（no element qmlglsink）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r1.transcript.json | active | 首次板端运行 transcript（SSH 指纹 + 逐条命令）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r2b.cmake.log | active | 中性源运行构建失败证据（Qt5Quick 缺失）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r2b.core.log | active | 权威中性源原始日志
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r2b.core_20261015-board-r2b.bmp | active | 权威中性源快照（BMP）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r2b.core_20261015-board-r2b.json | active | 权威核心管线测量（test 中性源：fps 24.98/24.98、CPU 58.2%、GPU avg 6.75、BGR spread 0、pass）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r2b.gl_construct.log | active | 中性源运行 gl 构造探测（no element qmlglsink）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r2b.transcript.json | active | 中性源运行 transcript
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r3.cmake.log | active | 解码路径运行构建失败证据（Qt5Quick 缺失）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r3.core.log | active | 解码路径原始日志
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r3.core_20261015-board-r3.bmp | active | 解码路径快照（BMP）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r3.core_20261015-board-r3.json | active | 权威解码路径测量（file/mppvideodec：突发 fps、色彩 pass，证明解码+RGA 链路可用）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r3.gl_construct.log | active | 解码路径运行 gl 构造探测（no element qmlglsink）
+docs/hmi/test_evidence/ITEM-002-render-path/spike-192_168_0_103-20261015-board-r3.transcript.json | active | 解码路径运行 transcript
 docs/hmi/test_evidence/ITEM-002-render-path/verify-dryrun-20261015.txt | active | ITEM-002 验证人独立复现 run_render_spike.sh --dry-run 原始输出（退出码 0）
 docs/hmi/test_evidence/ITEM-002-render-path/verify-selftest-20261015.txt | active | ITEM-002 验证人独立复现 analyze.py --selftest 原始输出（6/6 通过）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）

@@ -1,0 +1,31 @@
+{
+  "status": "NONE_USABLE",
+  "selected": null,
+  "min_fps": 20.0,
+  "max_spread": 12.0,
+  "gl": {
+    "usable": false,
+    "reasons": [
+      "no measurement"
+    ],
+    "playing": null,
+    "fps_source": null,
+    "fps_display": null,
+    "cpu_pct_one_core": null,
+    "gpu_load_avg": null,
+    "color_spread": null
+  },
+  "cpu": {
+    "usable": false,
+    "reasons": [
+      "color check failed",
+      "color spread 15.8 > 12.0"
+    ],
+    "playing": true,
+    "fps_source": 25.08,
+    "fps_display": 25.08,
+    "cpu_pct_one_core": 19.09,
+    "gpu_load_avg": 8.29,
+    "color_spread": 15.84
+  }
+}

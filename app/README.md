@@ -14,7 +14,7 @@
 | 工作项 | 内容 | 状态 |
 |---|---|---|
 | ITEM-001 | 目标构建/运行依赖基线与授权缺口登记 | **源码 + 板端实测已交付**：`tools/env_probe.py`、`tools/board_env_probe.py`；板端 E-00..E-13 已实际采集（六路相机/NVR 端口可达），三态缺口与替代结论见 `docs/hmi/build_env_check.md` |
-| ITEM-002 | 渲染路径选型 spike（qmlglsink 主 / RGA+纹理回退） | 源码与判据已交付（`spikes/render_path/`）；**板端 path 实测未执行 → 路径未选定（UNMEASURED）**；依赖基线已确认 `qmlglsink` 缺失、`rgavideoconvert` 缺失（默认 `cpu`/librga） |
+| ITEM-002 | 渲染路径选型 spike（qmlglsink 主 / RGA+纹理回退） | **已在板端实测并选定路径**：`cpu`（SELECTED）；`gl` 因缺 `qmlglsink`/Qt QML 包不可用（保留可开启候选）；数据与证据见 `docs/hmi/build_env_check.md` §14 与 `spikes/render_path/spike_core.c` |
 | ITEM-003 | 工程骨架与板端本机构建脚本（Qt QML 目标 + 预览开关） | 未实现 |
 | ITEM-004.. | 主题、导航、注册表、取流、页面、推理、报警、录像、回放、权限、恢复、打包 | 未实现 |
 

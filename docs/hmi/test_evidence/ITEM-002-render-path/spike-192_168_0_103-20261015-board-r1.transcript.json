@@ -1,0 +1,145 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "local_dir": "E:\\work\\rail_issue\\rk3588_handover\\app\\spikes\\render_path",
+    "remote_dir": "/tmp/railhmi_render_spike",
+    "outdir": "docs/hmi/test_evidence/ITEM-002-render-path",
+    "stamp": "20261015-board-r1",
+    "connect_timeout": 10,
+    "build_timeout": 600,
+    "run_timeout": 90,
+    "source": "test",
+    "file": "",
+    "url": "",
+    "duration": 8,
+    "min_fps": 20.0,
+    "qpa": "offscreen",
+    "only": "all",
+    "keep_remote": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_render_spike && rm -rf /tmp/railhmi_render_spike/build",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": ""
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 8 files"
+    },
+    {
+      "step": "deps",
+      "cmd": "for d in /usr/lib/aarch64-linux-gnu/cmake/Qt5Quick /usr/lib/aarch64-linux-gnu/cmake/Qt5Qml /usr/lib/aarch64-linux-gnu/cmake/Qt5Gui; do if [ -d $d ]; then echo \"$d yes\"; else echo \"$d no\"; fi; done; pkg-config --exists gstreamer-1.0 && echo 'pc gstreamer-1.0 yes' || echo 'pc gstreamer-1.0 no'; pkg-config --exists librga && echo 'pc librga yes' || echo 'pc librga no'; ls /usr/include/rga/im2d.h 2>/dev/null || echo 'no /usr/include/rga/im2d.h'; ls /usr/include/gstreamer-1.0/gst/gst.h 2>/dev/null || echo 'no gst headers'; ls -d /usr/lib/aarch64-linux-gnu/qt5/qml/QtQuick 2>/dev/null || echo 'no QtQuick qml module'",
+      "exit": 0,
+      "elapsed_s": 0.03,
+      "output": "/usr/lib/aarch64-linux-gnu/cmake/Qt5Quick no\n/usr/lib/aarch64-linux-gnu/cmake/Qt5Qml no\n/usr/lib/aarch64-linux-gnu/cmake/Qt5Gui yes\npc gstreamer-1.0 yes\npc librga yes\n/usr/include/rga/im2d.h\n/usr/include/gstreamer-1.0/gst/gst.h\nno QtQuick qml module\n"
+    },
+    {
+      "step": "cmake-configure",
+      "cmd": "cd /tmp/railhmi_render_spike && cmake -S . -B build -DCMAKE_BUILD_TYPE=Release > cmake.log 2>&1; echo CMAKE_EXIT=$?; tail -n 80 cmake.log",
+      "exit": 0,
+      "elapsed_s": 0.78,
+      "output": "CMAKE_EXIT=1\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\nCMake Error at /usr/lib/aarch64-linux-gnu/cmake/Qt5/Qt5Config.cmake:28 (find_package):\n  Could not find a package configuration file provided by \"Qt5Quick\" with any\n  of the following names:\n\n    Qt5QuickConfig.cmake\n    qt5quick-config.cmake\n\n  Add the installation prefix of \"Qt5Quick\" to CMAKE_PREFIX_PATH or set\n  \"Qt5Quick_DIR\" to a directory containing one of the above files.  If\n  \"Qt5Quick\" provides a separate development package or SDK, be sure it has\n  been installed.\nCall Stack (most recent call first):\n  CMakeLists.txt:17 (find_package)\n\n\n-- Configuring incomplete, errors occurred!\nSee also \"/tmp/railhmi_render_spike/build/CMakeFiles/CMakeOutput.log\".\n"
+    },
+    {
+      "step": "run-skipped",
+      "exit": null,
+      "output": "Qt spike build not successful; QML runs not attempted"
+    },
+    {
+      "step": "core-build",
+      "cmd": "cd /tmp/railhmi_render_spike && gcc -O2 -o spike_core spike_core.c $(pkg-config --cflags --libs gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0) -lrga > core_build.log 2>&1; echo CC_EXIT=$?; tail -n 40 core_build.log",
+      "exit": 0,
+      "elapsed_s": 0.83,
+      "output": "CC_EXIT=0\n"
+    },
+    {
+      "step": "core-run",
+      "cmd": "cd /tmp/railhmi_render_spike && ./spike_core --source test --duration 8 --out core_20261015-board-r1.json --snapshot core_20261015-board-r1.bmp > core.log 2>&1; echo RUN_EXIT=$?; tail -n 60 core.log",
+      "exit": 0,
+      "elapsed_s": 8.14,
+      "output": "RUN_EXIT=0\nrga_api version 1.10.1_[0]\n{\n  \"variant\": \"cpu_headless_noqt\",\n  \"path\": \"cpu\",\n  \"source\": \"test\",\n  \"url\": \"\",\n  \"file\": \"\",\n  \"duration_s\": 8.01,\n  \"playing\": true,\n  \"frames_source\": 201,\n  \"fps_source\": 25.08,\n  \"frames_display\": 201,\n  \"fps_display\": 25.08,\n  \"cpu_pct_one_core\": 19.09,\n  \"rss_mb\": 19.2,\n  \"gpu_load_max\": 48.00,\n  \"gpu_load_avg\": 8.29,\n  \"gpu_samples\": 201,\n  \"color\": {\"valid\": true, \"b_mean\": 138.45, \"g_mean\": 122.61, \"r_mean\": 124.01, \"spread\": 15.84, \"pass\": false},\n  \"snapshot\": \"core_20261015-board-r1.bmp\",\n  \"negotiated\": true,\n  \"errors\": []\n}\n"
+    },
+    {
+      "step": "gl-construct",
+      "cmd": "cd /tmp/railhmi_render_spike && gst-launch-1.0 -q videotestsrc num-buffers=20 ! video/x-raw,format=NV12,width=1280,height=720,framerate=25/1 ! glupload ! glcolorconvert ! qmlglsink > gl_construct.log 2>&1; echo GL_EXIT=$?; tail -n 30 gl_construct.log",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "GL_EXIT=1\nWARNING: erroneous pipeline: no element \"qmlglsink\"\n"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "spike-192_168_0_103-20261015-board-r1.cmake.log"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "make.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "gl.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "cpu.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "gl_20261015-board-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "cpu_20261015-board-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core_build.log: empty/missing"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "spike-192_168_0_103-20261015-board-r1.core.log"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "spike-192_168_0_103-20261015-board-r1.core_20261015-board-r1.json"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "spike-192_168_0_103-20261015-board-r1.core_20261015-board-r1.bmp"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "spike-192_168_0_103-20261015-board-r1.gl_construct.log"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_render_spike && echo cleaned",
+      "exit": 0,
+      "elapsed_s": 0.03,
+      "output": "cleaned\n"
+    },
+    {
+      "step": "analyze",
+      "exit": 3,
+      "output": "{\n  \"status\": \"NONE_USABLE\",\n  \"selected\": null,\n  \"min_fps\": 20.0,\n  \"max_spread\": 12.0,\n  \"gl\": {\n    \"usable\": false,\n    \"reasons\": [\n      \"no measurement\"\n    ],\n    \"playing\": null,\n    \"fps_source\": null,\n    \"fps_display\": null,\n    \"cpu_pct_one_core\": null,\n    \"gpu_load_avg\": null,\n    \"color_spread\": null\n  },\n  \"cpu\": {\n    \"usable\": false,\n    \"reasons\": [\n      \"color check failed\",\n      \"color spread 15.8 > 12.0\"\n    ],\n    \"playing\": true,\n    \"fps_source\": 25.08,\n    \"fps_display\": 25.08,\n    \"cpu_pct_one_core\": 19.09,\n    \"gpu_load_avg\": 8.29,\n    \"color_spread\": 15.84\n  }\n}\n"
+    }
+  ]
+}

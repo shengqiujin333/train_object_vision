@@ -3,8 +3,8 @@
 - 工作项: `TL-…-tasks-ITEM-002`（完成渲染路径选型 spike）
 - 依据: `docs/hmi/DESKTOP_APP_DESIGN.md` §4.3（主/回退路径决策门）、§6（渲染管线）
 - 源码: `app/spikes/render_path/`
-- 状态: **未在目标板实测 → 未选定路径（UNMEASURED）**；主/回退路径以实测为准，当前不预设
-- 上游环境: `docs/hmi/build_env_check.md`（E-01..E-13 板端全部未核验）
+- 状态: **已在目标板实测 → 选定路径 `cpu`**（status=SELECTED，min_fps=20）；`gl`(qmlglsink) 当前不可用，保留为可开启候选。数据与证据见 `docs/hmi/build_env_check.md` §14
+- 上游环境: `docs/hmi/build_env_check.md`（板端 E-00..E-13 已实测，见 §2；缺口见 §3）；本轮 QML spike 因缺 Qt QML 开发包无法构建，改用无 Qt 核心管线测量（`spike_core.c`）
 
 ---
 
@@ -80,20 +80,24 @@ cd app/spikes/render_path
 
 ---
 
-## 5. 实测结果（待板端填写）
+## 5. 实测结果（目标板，2026-10-15）
 
-| 字段 | path=gl | path=cpu |
+QML spike 因缺 `Qt5QuickConfig.cmake`（qtdeclarative5-dev）无法构建；以下为无 Qt 核心管线测量
+（`spike_core.c`：decode/RGA 核心，不含 Qt 绘制）与 gl 构造探测的真实结果。
+
+| 字段 | path=gl（qmlglsink） | path=cpu（核心管线，无 Qt） |
 |---|---|---|
-| playing | 未实测 | 未实测 |
-| fps_source | 未实测 | 未实测 |
-| fps_display | 未实测 | 未实测 |
-| cpu_pct_one_core | 未实测 | 未实测 |
-| gpu_load_avg | 未实测 | 未实测 |
-| color.spread / pass | 未实测 | 未实测 |
-| errors | 未实测 | 未实测 |
-| 结论 (usable) | 未实测 | 未实测 |
+| playing | 无法构建（Qt5Quick 缺失）；构造探测报 `no element "qmlglsink"` | true |
+| fps_source | 未测 | 24.98（test 中性源）/ 1449.7（file 突发） |
+| fps_display | 未测 | 24.98 / 325.44 |
+| cpu_pct_one_core | 未测 | 58.2 / 106.5 |
+| gpu_load_avg | 未测 | 6.75 / 8.0 |
+| color.spread / pass | 未测 | 0.00 / **pass**（B=G=R=126） |
+| errors | qmlglsink missing; Qt5Quick missing | 无 |
+| 结论 (usable) | **不可用（当前包）** | **可用** |
 
-**选定路径: 未选定（UNMEASURED）** — 待板端执行并回填。
+**选定路径: `cpu`（SELECTED）** — 依据板端真实测量；`gl` 待安装 `gstreamer1.0-qt5` + Qt QML 开发包后复测。
+详细数据、方法与证据路径见 `docs/hmi/build_env_check.md` §14。
 
 ---
 
@@ -119,7 +123,7 @@ cd app/spikes/render_path
 属依赖/授权缺口，不是本 spike 源码或判据的软件缺陷。因此本项交付物（源码 + 构建/运行入口 + 判据 + 主机可验证路径）
 在实现侧已完成；仅“在目标板运行并回填测量数据”因缺授权而未完成。
 
-1. **板端实测未执行**（设备工具禁用）——本项核心可观察点“追加实测数据与选定路径”**未产出**，属设备授权/环境缺口，非实现缺陷；交设备授权与平台/嵌入式职责推进（`E2E_PLAN` §3 升降级准则）。
+1. **QML spike 未在板端构建**（缺 `qtdeclarative5-dev`/`Qt5QuickConfig.cmake`）——原设计路径不可直接跑；本轮改用**无 Qt 核心管线测量**（`spike_core.c`）取得解码+RGA 真实数据；Qt 绘制代价未含，待平台补齐 Qt 包后由 QML spike 复测。该缺项属平台/rootfs 职责（`build_env_check.md` §3.1）。
 2. **spike 未在主机编译**（主机无 Qt/GStreamer/librga/编译器）——C++ 源码与 CMake 的编译验证属板端范围。
 3. 依赖 E-02（`qmlglsink`）、E-03（Mali GL）、E-04（`glupload/glcolorconvert`）、E-05（librga）；任一缺失会影响对应路径，结果以实测记录为准。
 4. 6 路并发与多页面合成性能不在本 spike。
@@ -147,3 +151,4 @@ cd app/spikes/render_path
 | 2026-10-15（重试） | 新增 `--source rtsp|file|test` 输入源（ENV-C 无相机替代源）；`analyze.py --md-out` 自动生成可贴入 `build_env_check.md` §14 的表格；驱动与文档同步 | `analyze.py --selftest` 6/6；`--md-out` fixture 验证；`run_render_spike.sh --dry-run`（含 source）通过；板端仍未执行 |
 | 2026-10-15（重试2） | 按 `E2E_PLAN` §3 / `TEST_DESIGN` §1 明确缺口分类（设备授权缺口≠软件功能失败）；补充“未选定前不得假定 GL 主路径、默认取 cpu”的下游强制约束；说明实现侧无可再推进项 | 复跑 `analyze.py --selftest` 6/6 与 `run_render_spike.sh --dry-run`；缺口分类与项目规则逐字对齐核对 |
 | 2026-10-15（重试3） | 响应 `software_verification` TEST_FAIL（`VERIFY-ITEM-002.md`）：确认未满足点=板端实测与选定路径，根因=ENV-C/D 设备授权；修复验证者指出的 Windows `python3` shim 不可用时的解释器回退 | `bash -n run_render_spike.sh` 通过；`--dry-run` 在解释器回退下通过；复跑 `analyze.py --selftest` 6/6 |
+| 2026-10-15（本轮 ITEM-002） | 经登记 SSH 入口在 RK3588 实测：QML spike 因缺 Qt5Quick 无法构建 → 新增 `spike_core.c` 无 Qt 核心管线测量 + `app/tools/board_render_spike.py` 板端运行器；gl 构造探测确证 `no element qmlglsink`；测得 cpu 路径 fps/CPU/GPU/色彩并**选定 cpu**；结果写入 `build_env_check.md` §14 | 板端 `cmake` 失败日志、`gst-launch` 构造探测、core JSON/bmp、`analyze.py --selftest` 6/6；选定 `cpu`（SELECTED） |

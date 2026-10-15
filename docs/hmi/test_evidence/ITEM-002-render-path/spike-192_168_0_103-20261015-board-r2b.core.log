@@ -1,0 +1,23 @@
+rga_api version 1.10.1_[0]
+{
+  "variant": "cpu_headless_noqt",
+  "path": "cpu",
+  "source": "test",
+  "url": "",
+  "file": "",
+  "duration_s": 8.01,
+  "playing": true,
+  "frames_source": 200,
+  "fps_source": 24.98,
+  "frames_display": 200,
+  "fps_display": 24.98,
+  "cpu_pct_one_core": 58.20,
+  "rss_mb": 17.9,
+  "gpu_load_max": 10.00,
+  "gpu_load_avg": 6.75,
+  "gpu_samples": 16,
+  "color": {"valid": true, "b_mean": 126.00, "g_mean": 126.00, "r_mean": 126.00, "spread": 0.00, "pass": true},
+  "snapshot": "core_20261015-board-r2b.bmp",
+  "negotiated": true,
+  "errors": []
+}

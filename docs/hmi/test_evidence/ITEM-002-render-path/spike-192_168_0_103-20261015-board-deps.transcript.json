@@ -1,0 +1,87 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "local_dir": "E:\\work\\rail_issue\\rk3588_handover\\app\\spikes\\render_path",
+    "remote_dir": "/tmp/railhmi_render_spike",
+    "outdir": "docs/hmi/test_evidence/ITEM-002-render-path",
+    "stamp": "20261015-board-deps",
+    "connect_timeout": 10,
+    "build_timeout": 600,
+    "run_timeout": 90,
+    "source": "test",
+    "file": "",
+    "url": "",
+    "duration": 8,
+    "min_fps": 20.0,
+    "qpa": "offscreen",
+    "only": "deps",
+    "keep_remote": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_render_spike && rm -rf /tmp/railhmi_render_spike/build",
+      "exit": 0,
+      "elapsed_s": 0.21,
+      "output": ""
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 7 files"
+    },
+    {
+      "step": "deps",
+      "cmd": "for d in /usr/lib/aarch64-linux-gnu/cmake/Qt5Quick /usr/lib/aarch64-linux-gnu/cmake/Qt5Qml /usr/lib/aarch64-linux-gnu/cmake/Qt5Gui; do if [ -d $d ]; then echo \"$d yes\"; else echo \"$d no\"; fi; done; pkg-config --exists gstreamer-1.0 && echo 'pc gstreamer-1.0 yes' || echo 'pc gstreamer-1.0 no'; pkg-config --exists librga && echo 'pc librga yes' || echo 'pc librga no'; ls /usr/include/rga/im2d.h 2>/dev/null || echo 'no /usr/include/rga/im2d.h'; ls /usr/include/gstreamer-1.0/gst/gst.h 2>/dev/null || echo 'no gst headers'; ls -d /usr/lib/aarch64-linux-gnu/qt5/qml/QtQuick 2>/dev/null || echo 'no QtQuick qml module'",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "/usr/lib/aarch64-linux-gnu/cmake/Qt5Quick no\n/usr/lib/aarch64-linux-gnu/cmake/Qt5Qml no\n/usr/lib/aarch64-linux-gnu/cmake/Qt5Gui yes\npc gstreamer-1.0 yes\npc librga yes\n/usr/include/rga/im2d.h\n/usr/include/gstreamer-1.0/gst/gst.h\nno QtQuick qml module\n"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "cmake.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "make.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "gl.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "cpu.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "gl_20261015-board-deps.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "cpu_20261015-board-deps.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_render_spike && echo cleaned",
+      "exit": 0,
+      "elapsed_s": 0.06,
+      "output": "cleaned\n"
+    },
+    {
+      "step": "analyze",
+      "exit": 2,
+      "output": "{\n  \"status\": \"UNMEASURED\",\n  \"selected\": null,\n  \"note\": \"no board measurement provided; no path assumed (ITEM-002 requires real run)\"\n}\ncannot read docs\\hmi\\test_evidence\\ITEM-002-render-path\\spike-192_168_0_103-20261015-board-deps.gl_20261015-board-deps.json: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')\ncannot read docs\\hmi\\test_evidence\\ITEM-002-render-path\\spike-192_168_0_103-20261015-board-deps.cpu_20261015-board-deps.json: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')\n"
+    }
+  ]
+}

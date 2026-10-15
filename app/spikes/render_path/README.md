@@ -26,6 +26,7 @@ app/spikes/render_path/
   CMakeLists.txt      # 板端本机构建（Qt5 + GStreamer + librga）
   analyze.py          # 选择判据（含 --selftest；无实测输入返回 UNMEASURED）
   run_render_spike.sh # 驱动: 构建 + 跑两条路径 + 选择 + 输出
+  spike_core.c        # 无 Qt 核心管线测量（GStreamer + librga；Qt 开发包缺失时仍可测解码+RGA）
 ```
 
 ## 运行（目标板）
@@ -55,6 +56,9 @@ python3 analyze.py --selftest
 
 ## 状态
 
-**未在目标板运行**（项目设备工具禁用）。本目录交付的是可立即执行的测量工具与判据；
-实测数据与最终选定路径待设备授权后补入 `docs/hmi/build_env_check.md` §14 与
-`docs/hmi/render_path_spike.md`。
+**已在目标板（RK3588）实测 → 选定路径 `cpu`**（status=SELECTED）。板端缺 `qtdeclarative5-dev`
+（`Qt5QuickConfig.cmake`）与 `gstreamer1.0-qt5`（`qmlglsink`），故原 QML spike 本轮无法构建；
+改用 `spike_core.c`（无 Qt 核心管线测量，仅 GStreamer + librga）取得解码+RGA 的真实
+fps/CPU/GPU/色彩数据；`gl` 路径经 `gst-launch` 构造探测确证 `no element "qmlglsink"`，保留为可开启候选。
+详细数据、方法与证据见 `docs/hmi/build_env_check.md` §14 与 `docs/hmi/render_path_spike.md` §5。
+盘端运行器：`app/tools/board_render_spike.py`（经登记 SSH 入口构建/测量）。
