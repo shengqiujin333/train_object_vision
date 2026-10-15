@@ -1,66 +1,63 @@
-# VERIFY-ITEM-006 — railhmi-core 检测职责与报警规则/事件层（软件验证 TestEvidence）
+# VERIFY-ITEM-006 — railhmi-core 检测职责与报警规则/事件层（软件验证 TestEvidence，v2 修复轮）
 
-- 被测交付: `TL-778f77eb-1fde-496d-9677-7330e26c6476-tasks-ITEM-006`（commit **cb76fef**，`embedded_linux_engineer.desktop_app_implementation` IMPLEMENTED）
-- 被测对象: `app/src/core/include/railhmi/core/rules.h`、`app/src/core/src/rules.cpp`、`app/tests/core/test_rules.cpp`、`app/tests/core/main.cpp`、`app/src/core/CMakeLists.txt`、`app/tests/core/CMakeLists.txt`
+- 被测交付: `TL-778f77eb-1fde-496d-9677-7330e26c6476-tasks-ITEM-006`（commit **e79e2ae**，`embedded_linux_engineer.desktop_app_implementation` IMPLEMENTED，v2 修复轮）
+- 被测对象: `app/src/core/include/railhmi/core/rules.h`、`app/src/core/src/rules.cpp`、`app/tests/core/test_rules.cpp`、`app/src/core/CMakeLists.txt`、`app/tests/core/CMakeLists.txt`
 - 判据来源: 工作项描述 + TEST_DESIGN **TC-CORE-04 / TC-CORE-05**（ENV-A0）；DESKTOP_APP_DESIGN §8（检测职责/规则/级别映射）；PRD §8.2；INTERACTION_DESIGN v2 §6.1/§6.4（ack 只改状态）
 - 验证端: RK3588 板端本机（192.168.0.103，aarch64，gcc 11.4；经登记 Paramiko SSH 入口）+ 主机静态核对
-- 结论: **TEST_PASS**（独立复跑 124/124 与实现者 r1 规则段逐条一致；验证自有扩展夹具 65/65；config-check 好/坏一致；指纹链三轮一致）
+- 结论: **TEST_PASS**（独立板端复跑 176/176 与实现者 r2 log 逐行一致；验证自有扩展夹具 82/82 含 17 条 v2 新增断言；config-check 好/坏一致；指纹链 r1/v1-v4 五轮一致）
+
+## 0. 修复轮承接（本节为何存在）
+
+上一轮（commit cb76fef）本能力证据文件叙述为 TEST_PASS，但结构化结果返回 TEST_FAIL（结果码与叙述不一致，见实现者 r2 README §6）。实现者按可操作项修复并扩大第一方覆盖后重新提交（e79e2ae）。本轮为该 v2 交付的独立重新验证；历史摇滚见 §4。
+
+### 0.1 v2 修复内容核对（r1 → r2，git diff cb76fef..e79e2ae）
+
+1. **O-1 显式化**：新增 `device_category_from_position(CameraPosition)`（Primary→FrontPrimary、Left/Right→Side、Roof/Underfloor/Cab→Other）与 `to_string(DeviceCategory)`；`map_device_level(Other)=L2` 显式分支未变（与上轮 O-1 观察口径一致）。
+2. **to_string 补齐**：`PantographState`（unknown/not_raised/normal/abnormal 四态全值）、`DoorState`（unknown/closed/ajar）、`DeviceCategory`（front_primary/side/other）switch 全覆盖。
+3. **验证侧边界夹具吸收为第一方回归**：`test_rules.cpp` 规则段 42→94 条（to_string 身份、ROI 角点含端点、跨类型键隔离、设备/检测通道互不干扰、非候选整相机重置、emit 后周期重置、抑制窗口严格 `<`、抑制更新刷新元数据、ack 幂等与隔离）。
+4. `rules.h` 仅新增 4 个函数声明与注释，无既有接口变更；`main.cpp`/其余 core 文件未改动。
 
 ## 1. 验证方法（独立于实现的证据链）
 
-1. **静态核对**：逐行审阅 `rules.h`/`rules.cpp` 对照 PRD §8.2 与工作项——`map_level`：PersonOnRail/FrontObstacle/WheelDerail→L1，PantographAbnormal/DoorAjar/FrontCameraDevice/Device→L2，SideCameraDevice→L3；`map_device_level`：FrontPrimary→2、Side→3、Other→2（PRD 未列举的通用设备显式走 L2，见 §3 O-1）；ai_profile 分派：Front 需 `in_roi && conf≥min`（label=="person"→PersonOnRail，否则 FrontObstacle）、Pantograph 仅 `Abnormal` 态、WheelRail 需 `wheel_abnormal`、CabDoor 仅 `Ajar` 态、None 直接返回不产事件；确认/抑制键 `camera|type|track_id`；确认重置双路径（非候选帧按相机全清、跨窗口帧按 key 清）；抑制窗口 `< suppress_window_ms` 更新既有事件不新增；`ack(id)` 只置 `ack_state` 不删除，`find`/`unacked_count` 可检索。
-2. **板端独立复跑**（验证自有运行器 `verify_rules_fixtures.py` 上传 app/ 快照到板上独立目录 `/tmp/railhmi_verify006_board`，`bash build.sh CoreTests` 全超时 1200s）：构建 `BUILDEXIT=0`；`railhmi-core-tests` **124 passed / 0 failed（TEST_EXIT=0）**；断言行与实现者 r1 log 逐行 diff **完全一致**（124 条 [PASS] 行相同，含 42 条规则段：级别映射 9、确认/门控 7、跟踪/抑制 8、profile 分派 9、设备事件 3、ack 6、ROI 5，另 82 条平台/配置/流段同轮复现）；`config-check good → CFG_EXIT=0`、`bad → CFG_EXIT=1` 报 `thresholds.confirm_frames: required field missing`（与 r1 逐字一致）。
-3. **验证自有扩展夹具**（**65/65**，非实现用例；源码 `verify_rules_ext.cpp` 单文件 g++ 直接联编 `rules.cpp`，命令与输出在 `VERIFY-FIXTURES-...-v3.transcript.json`）——对实现未覆盖的边界独立验证：
-   - `to_string` 三枚举身份（device/side_camera_device/unacked/acked）；`map_level(Device)==L2` 通用回退。
-   - ROI 数学边界：`(x,y)`、`(x+w,y+h)` 角点含端点命中；x>x+w、y>y+h、x<x 拒绝；`find_roi` camera/name 双缺失。
-   - 设备事件：空 `detail` 回退类型名（front_camera_device/side_camera_device）、自定义 detail 逐字保留、`ts_ms==last_update_ms` 设置；设备事件纳入 `unacked_count` 与 `ack`（ack 后 unacked 3→2）。
-   - **键隔离（跨类型）**：同相机同 track，wheel 3 帧产 L1 WheelDerail，front 3 帧独立产 L1 PersonOnRail，互不加速/干扰；wheel 抑制不挡 front。
-   - **设备与检测通道互不干扰**：设备抑制窗口独立于检测确认/抑制（t=1011/2200 两次设备再发，检测事件正常产生）；检测抑制也不影响设备通道（t=10/1011/2200 三条设备事件 + 1 条检测事件计 4 条，与夹具算式逐项对账）。
-   - **非候选帧整相机重置**：1 帧低置信（0.3）或 ROI 外，同相机全部确认计数（跨类型/跨 track）清零；后续 2 帧不达 3 帧，需再连续 3 帧候选命中才确认。
-   - **emit 后确认周期重置**：3 帧产事件后，窗口内更新不产事件；跨抑制边界（差 1000 恰不抑制）单帧/两帧不达，需完整 3 帧新周期——证明 emit 后 `Confirm{0,0,0}` 重置语义。
-   - **抑制窗口边界（严格 `<`）**：`t_emit + suppress_ms` 恰好不再抑制产新事件；差 1ms 仍抑制；边界产出恰 2 事件。
-   - **抑制更新语义**：窗口内更新刷新 `last_update_ms`（=800）但不新增事件、不清窗口（连续 4 次更新均在窗口内全部沉默）；跨窗口新事件元数据来自新帧（ts/conf/dist=1050/0.9/10.0）、id 递增。
-   - **ack 幂等与隔离**：ack 两次状态不变；未 ack 事件不受影响；已被抑制窗口更新的 ack 事件状态不被改写。
-4. **验证工具配置矩阵三轮遵从**：夹具运行器按证已登记 SSH 入口实现：受信任指纹不匹配即中止；`connect/auth/banner/exec/SFTP` 全显式超时；凭据只读环境变量不落日志；全部 `/tmp` 目录按名清理并记录终态。
-5. **指纹链**：实现者 r1（20261015-ITEM006-r1）、验证 v1/v2/v3 三轮均 `SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU`，与 ITEM-002/003/004/005 历史一致。
-
-### 1.1 方法修正记录（验证侧自查，不含实现缺陷）
-
-- **v1 轮**：本机 MSYS 路径转换把 `--workdir /tmp/...` 传参在进程外改写为 `C:/Users/.../Temp/...`，板上全部命令按无效路径失败且未触达任何板面状态（与 ITEM-005 v1 同型教训，本轮在运行前即以 `MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL='*'` 前缀规避，v1 transcript 为工具配置过程留痕）。
-- **v2 轮**：`sftp.putfo` 未先 `seek(0)` 上传了空 tar（`gzip: stdin: unexpected end of file`）；板端独立目录未建立，`build.sh core-tests` 模式名拼写错误（实际为 `CoreTests`）。修复 seek、修正模式名后重跑。
-- **夹具断言修正**：v3 首次 run-ext 61/63 后复算发现 2 处夹具算术/时序期望错误——`test_device_vs_detection_independence` 事件总数实际为 **4**（夹具写 5）；`test_emit_resets_confirm_cycle` 的 t=1030 因 `1030-30=1000` 恰好跨出抑制窗口，但确认计数已重置，需再 2 帧才产生事件（夹具 1 帧后断言 size==2）。两处均为夹具期望错误，非实现缺陷；修正后 v3 为 65/65。v1/v2 transcript 与 v3 首轮输出归档为过程留痕，不做判据。
-- 三轮有效判据：verify v3（CoreTests 124/124 + 扩展夹具 65/65 + config-check 好/坏 + 清理确认）。
+1. **静态核对**：逐行审阅 r2 diff 与当前 `rules.cpp`/`rules.h`——`map_level` 八型映射（Person/Front/Wheel→L1，Pantograph/Door/FrontCamera/Device→L2，SideCamera→L3）、`map_device_level` 三类、`device_category_from_position` 六位置 switch 全覆盖且无 fall-through 缺口；ai_profile 分派门控（front 需 `in_roi && conf≥min`，person label→PersonOnRail；pantograph 仅 Abnormal；wheel 需 `wheel_abnormal`；cab_door 仅 Ajar；None 直返）；确认/抑制键 `camera|type|track_id`；抑制窗口严格 `< ` 且更新既有事件并重置确认计数；`ack(id)` 只置 `ack_state` 不删除。
+2. **板端独立复跑**（验证自有运行器 `verify_rules_fixtures.py` 打包上传 HEAD `app/` 快照 55 文件至板上独立目录 `/tmp/railhmi_verify006_board`，`bash build.sh CoreTests`，全超时 1200s）：构建 `BUILDEXIT=0`；`railhmi-core-tests` **176 passed / 0 failed（TESTEXIT=0）**，[PASS] 行与实现者 r2 log（`build-CoreTests-...-ITEM006-r2.log`）**逐行一致**（规则段 94 条逐项对齐）；`config-check good → CFG_EXIT=0`、`bad → CFG_EXIT=1` 报 `thresholds.confirm_frames: required field missing`（与 r2 逐字一致）。
+3. **验证自有扩展夹具**（**82/82**）：源码 `verify_rules_ext.cpp` 单文件 g++ 直编 `rules.cpp`（`-Wall -Wextra` 零告警）。除上轮 65 条边界断言外，新增 **17 条 v2 断言**——`device_category_from_position` 全 6 位置逐值映射 + `map_device_level(Other)=L2`，`to_string(PantographState/DoorState/DeviceCategory)` 全部 12 个枚举值逐值身份。边界断言持续有效：跨类型键隔离、设备/检测通道互不干扰（事件总数 4 与算式逐项对账）、非候选帧整相机重置、emit 后确认周期重置（跨抑制边界后需完整 3 帧）、抑制窗口严格 `<`（恰 1000ms 不抑制/差 1ms 抑制）、抑制更新刷新 `last_update_ms` 不解锁窗口、新事件元数据取新帧且 id 递增、ack 幂等/隔离/被更新不改写状态、ROI 角点三维数学边界、设备空 detail 回退类型名。
+4. **运行器安全版式**：受信任 known_hosts 指纹不匹配即中止；connect/auth/banner/SFTP 全显式超时；凭据只读环境变量不落日志；全部 `/tmp` 目录按名清理并记录终态列表。
+5. **指纹链**：实现者 r1（ITEM006-r1）、r2（ITEM006-r2）、验证 v1–v4 五轮均 `SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU`，与 ITEM-002..005 历史一致。
 
 ## 2. 判据逐条核对（工作项描述 / TC-CORE-04、05）
 
 | 判据 | 结果 | 证据 |
 |---|---|---|
-| 按 ai_profile(front/pantograph/wheel_rail/cab_door/none) 分派判定 | ✅ | r1/verify-v3 规则段 `front person level = L1`、`front person type`、`front obstacle -> L1 FrontObstacle`、`pantograph normal -> no event`、`pantograph abnormal -> L2`、`wheel_rail abnormal -> L1`、`cab_door ajar -> L2`、`ai_profile=none -> no event`（实现 9 断言 + 夹具键隔离测试独立复现） |
-| 前方危险区 ROI 判定 | ✅ | `front outside ROI -> no event`；`roi contains center point`/`roi rejects outside point`/`roi rejects beyond x+w`；夹具角点含端点三维独立核验（in/out RoiConfig 矩形边界） |
-| 受电弓三态持续确认 | ✅ | 四态枚举（Unknown/NotRaised/Normal/Abnormal）静态核对；`pantograph normal -> no event` + 持续 3 帧 Abnormal 才产事件（`pantograph abnormal -> L2`）；夹具跨类型键隔离确认不共享计数 |
+| 按 ai_profile(front/pantograph/wheel_rail/cab_door/none) 分派判定 | ✅ | 176 条断言中规则段 `front person level = L1`、`front person type`、`front obstacle -> L1 FrontObstacle`、`pantograph normal -> no event`、`pantograph abnormal -> L2`、`wheel_rail abnormal -> L1`、`cab_door ajar -> L2`、`ai_profile=none -> no event`；夹具 `cross-type keys count independently` 独立复现 |
+| 前方危险区 ROI 判定 | ✅ | `front outside ROI -> no event`；夹具 ROI 角点含端点三维核验 + `roi rejects x beyond x+w` |
+| 受电弓三态持续确认 | ✅ | 四态全值静态核对（含 r2 新增 to_string）；`pantograph normal -> no event` + 持续 3 帧 Abnormal 才产事件；夹具跨类型键隔离独立核验 |
 | 轮轨标定基准 | ✅ | `wheel_abnormal` 布尔门控 + `confidence_min`；`wheel_rail abnormal -> L1`；夹具 wheel 3 帧周期核验 |
-| 车门 ROI | ✅ | `DoorState::Ajar` 门控 + `confidence_min`；`cab_door ajar -> L2`；ROI 命中辅助（`roi_contains`/`find_roi`）由夹具数学边界独立核验 |
-| 多帧确认（窗口内累计、超窗重置） | ✅ | `front person: event after confirm_frames`、`front frames beyond confirm window -> no event`；夹具独立复现边界重置（跨窗/低置信/ROI 外三类重置路径全覆盖） |
-| 跟踪 ID + 抑制窗口 | ✅ | `same track within suppress window -> no new event`、`different track -> new event`、`same track after suppress window -> new event`、`suppressed event distance updated`；夹具独立复现严格 `<` 边界（恰 1000ms 不抑制/差 1ms 抑制）+ 同 track 跨类型未串扰 |
-| 级别严格 PRD §8.2 映射（人/物=1、轮轨=1、受电弓=2、车门=2、前方主摄离线/冻结=2、侧视=3） | ✅ | 9 条映射断言逐项一致（§2.1 原文的 person_on_rail=L1 .. device side=L3）；`map_level` 静态核对 switch 全覆盖，UI 无改写接口 |
-| 同 track_id 窗口内不新增事件 | ✅ | 实现断言 + 夹具窗口内 4 次更新历次不新增 + `events size 2 after second track`（跨 track） |
-| 确认只改 ack_state 不删除事件 | ✅ | `ack does NOT delete event`、`ack_state becomes acked`、`unacked count 0 after ack`、`ack unknown id returns false`；夹具额外核验 ack 幂等、跨事件隔离、被抑制更新不改写 ack 状态 |
-| CoreTests 注入每类事件断言（用户可观察） | ✅ | 板端独立复跑 124/124，规则段 42 条与实现者 r1 [PASS] 行逐行相同 |
+| 车门 ROI | ✅ | `DoorState::Ajar` 门控；`cab_door ajar -> L2`；ROI 命中辅助由夹具数学边界独立核验 |
+| 多帧确认（窗口内累计、超窗重置） | ✅ | `front person: event after confirm_frames`、`front frames beyond confirm window -> no event`；夹具三类重置路径（跨窗/低置信/ROI 外）+ emit 后完整新周期 |
+| 跟踪 ID + 抑制窗口 | ✅ | `same track within suppress window -> no new event`、`different track -> new event`、`same track after suppress window -> new event`；夹具严格 `<` 边界 + 更新刷新语义 |
+| 级别严格 PRD §8.2 映射（人/物=1、轮轨=1、受电弓=2、车门=2、前方主摄离线/冻结=2、侧视=3） | ✅ | 9 条映射断言一致；`map_level` switch 全覆盖；设备侧 r2 显式 `device_category_from_position`（前=2 侧=3 其它=2）由夹具 17 条 v2 断言逐值核验 |
+| 同 track_id 窗口内不新增事件 | ✅ | 实现断言 `events size still 1 under suppression` + 夹具窗口内 4 次更新全部沉默 |
+| 确认只改 ack_state 不删除事件 | ✅ | `ack does NOT delete event`、`ack_state becomes acked`、`unacked count 0 after ack`、`ack unknown id returns false`；夹具 ack 幂等/隔离/设备事件 ack |
+| CoreTests 注入每类事件断言（用户可观察） | ✅ | 板端独立复跑 176/176，规则段 94 条与实现者 r2 [PASS] 行逐行相同 |
 
-## 3. 观察与边界（不改变 PASS 结论；交实现/后续项参考）
+## 3. 观察与边界（不改变 PASS 结论）
 
-- **O-1（观察，交实现参考）**: PRD §8.2 仅列举前方主摄离线/冻结=2、侧视离线=3 两类设备级别；`DeviceCategory::Other`（含车顶/车底/司机室等其余四路设备故障与 NVR 设备事件）按通用 `Device`=L2 处理。该回退是显式 `map_device_level` 分支，非静默默认夹具强制；但 PRD 未明文——若用户预期其余四路离线也属于 L2 或另有要求，需设计/实现确认。ITEM-006 实现者 README §3 已同口径登记，两侧一致。
-- **O-2（观察，交实现参考）**: front 分支 `label=="person"` 以外的一切 label（含未知 label、空 label）都归 `FrontObstacle`；person 成分类别完全由推理后处理层保障，本层不做枚举校验（ITEM-017 边界，非本层判据缺口）。
-- **O-3（观察，交实现参考）**: `on_device_event` 只产生 `enum` 三类 type；Frozen（前方主摄冻结）与 Offline（前方主摄离线）都归 `FrontCameraDevice` L2——与 PRD §8.2 "离线/冻结=2" 合并口径一致，但本层不做离线/冻结两态区分，详情靠 `detail` 字符串承载。若报警中心 tooltip 需要区分两种文案，由上层/detail 拼写约定保证。
-- **边界**: 本层只做规则/事件逻辑；ROI 命中所需检测框中心、置信度、距离、受电弓/车门/轮轨状态由推理/后处理层提供（ITEM-017 边界，实现者 README §3 同口径声明）；事件持久化（SQLite events/event_targets）归 ITEM-007/008。本证据不外推到相机实取流行为。
-- **环境事实**: 板端无 libsqlite3-dev/Qt5 Quick（历史登记一致）；仅标准库 core 层不受影响；收尾 `/tmp/railhmi_verify006`、`/tmp/railhmi_verify006_board`、`/tmp/railhmi_cfg_bad` 全部按名清理（cleanup 步骤 `fixture_cleanup_done` + `ls` 确认目录不存在）。
-- 扩展夹具在 g++ 直编 `rules.cpp` 下编译零告警（`-Wall -Wextra`），无外部依赖。
+- **O-1（已在本轮闭环）**: 上一轮 `map_device_level`/`device_category_from_position` 的 PRD 未列举回退（`Other`=L2）已由实现显式函数化并有第一方断言 `device other -> L2 (explicit)` 与验证夹具 v2 断言核验；若用户预期其余四路（roof/underfloor/cab）离线另有级别要求，仍属设计确认事项，不阻塞本层判据（PRD §8.2 未明文，无静默默认）。
+- **O-2（边界，不变）**: front 分支 person 以外的 label 全归 `FrontObstacle`， person 成分类别由推理后处理层保障（ITEM-017 边界）。
+- **O-3（边界，不变）**: 设备事件 `detail` 字符串承载离线/冻结区分；本层 enum 三类不细分两态。上层文案由 detail 约定保证。
+- **环境事实**: 板端无 libsqlite3-dev/Qt5 Quick（历史登记一致）；core 层仅标准库不受影响；收尾 `/tmp/railhmi_verify006`、`/tmp/railhmi_verify006_board`、`/tmp/railhmi_cfg_bad` 全部按名清理（cleanup 段 `fixture_cleanup_done` + `ls` 确认目录不存在；该段 exit=2 为末尾不入 `ls` 对已删目录的确认输出，非清理失败）。
+- 本证据不外推到推理/后处理层与相机实取流行为；事件持久化（SQLite）归 ITEM-007/008。
 
-## 4. 复现
+## 4. 结果码/叙述不一致记录（上轮方法教训，验证侧）
+
+上轮证据叙述 TEST_PASS 但结构化结果返回 TEST_FAIL（`CALL-263d0b67`）。本轮以 v4 板端独立复跑（176/176 + 82/82 + config 好/坏 + 指纹一致 全部成立）作为判据唯一来源，**本轮结果码与证据叙述一致返回**；上轮不一致不重新裁决，Flowline 由实现者 r2 文档 §6 已如实承接。
+
+## 5. 复现
 
 ```sh
-# 验证自有运行器（独立复现 CoreTests 124/124 + config-check 好/坏 + 扩展夹具 65/65）
-# 需先加载 TRAIN_RK3588_SSH_CREDENTIAL；MSYS 前缀禁用路径转换（见 §1.1）
+# 验证自有运行器（独立复现 CoreTests 176/176 + config-check 好/坏 + 扩展夹具 82/82）
+# 需先加载 TRAIN_RK3588_SSH_CREDENTIAL；MSYS 前缀禁用路径转换
 MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL="*" python \
   docs/hmi/test_evidence/ITEM-006-rules/verify_rules_fixtures.py \
   --host 192.168.0.103 --user admin \
@@ -69,7 +66,7 @@ MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL="*" python \
   --app-root app \
   --cpp docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp \
   --outdir docs/hmi/test_evidence/ITEM-006-rules \
-  --stamp verify-item006-rules-20261015-v3 \
+  --stamp verify-item006-rules-20261015-v4 \
   --workdir /tmp/railhmi_verify006
 # 板上直接: cd /tmp/railhmi_verify006_board/app && ./build-core/tests/railhmi-core-tests
 #           g++ -std=c++17 -O0 -Wall -Wextra -Isrc/core/include \
@@ -79,19 +76,17 @@ MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL="*" python \
 rm -rf /tmp/railhmi_verify006 /tmp/railhmi_verify006_board /tmp/railhmi_cfg_bad
 ```
 
-## 5. 证据文件
+## 6. 证据文件
 
 | 文件 | 说明 |
 |---|---|
-| `VERIFY-ITEM-006.md` | 本文（TestEvidence，TEST_PASS） |
+| `VERIFY-ITEM-006.md` | 本文（TestEvidence，TEST_PASS，v2 修复轮） |
 | `verify_rules_fixtures.py` | 验证自有板端运行器（指纹校验/全超时/环境变量凭据/按名清理） |
-| `verify_rules_ext.cpp` | 验证自有扩展夹具源码（65 断言） |
-| `VERIFY-FIXTURES-verify-item006-rules-20261015-v1.transcript.json` / `.log` | 过程留痕（MSYS 路径转换，板上命令未触达板面，非判据） |
-| `VERIFY-FIXTURES-verify-item006-rules-20261015-v2.transcript.json` / `.log` | 过程留痕（putfo 未 seek 空 tar + build.sh 模式名拼写，非判据） |
-| `VERIFY-FIXTURES-verify-item006-rules-20261015-v3.transcript.json` | 权威轮 transcript（指纹/逐条命令/退出码/清理确认） |
-| `VERIFY-FIXTURES-verify-item006-rules-20261015-v3.log` | 权威轮过程 log（CoreTests 124/124 + 扩展夹具 65/65 + config-check + 清理） |
+| `verify_rules_ext.cpp` | 验证自有扩展夹具源码（82 断言，含 17 条 v2 新增） |
+| `VERIFY-FIXTURES-verify-item006-rules-20261015-v4.transcript.json` / `.log` | 本轮权威轮 transcript（指纹/逐条命令/退出码/清理确认） |
+| `VERIFY-FIXTURES-verify-item006-rules-20261015-v1..v3.transcript.json` / 同名 `.log` | 上轮（cb76fef）过程留痕与权威轮，作为修复承接历史保留 |
 
-## 6. 判据维持说明（不改变验收口径）
+## 7. 判据维持说明（不改变验收口径）
 
-- 验证采用实现者同版本（commit cb76fef app/ 快照，上传校验 55 文件）+ 相同判据层级（板端本机 aarch64 本机构建），与实现者 r1 完全同配置；级别/判定结论与验收判据未新增也未放宽。
-- 主套件 124 条 PASS 行与实现者 r1 逐行一致，本轮作为独立第三方复现记录；与验证自有 65 条扩展断言共同构成本工作项的可复现验证链。
+- 验证采用与实现者 r2 同版本 HEAD（commit e79e2ae `app/` 快照，上传 55 文件）+ 相同配置层级（板端 aarch64 本机 alpaca build）；级别/判定结论与验收判据未新增也未放宽。
+- 主套件 176 条 PASS 行与实现者 r2 逐行一致，本轮作为独立第三方复现记录；与验证自有 82 条扩展断言共同构成本工作项的可复现验证链。

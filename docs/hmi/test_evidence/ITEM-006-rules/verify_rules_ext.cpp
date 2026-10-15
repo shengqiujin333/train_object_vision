@@ -280,6 +280,35 @@ void test_ack_idempotent() {
     ok(e.find(f.v[1].id)->ack_state == AckState::Unacked, "ack state unchanged by update");
 }
 
+// v2 修复（r2, commit e79e2ae）独立核验：device_category_from_position 全 6 位置映射
+// 与 to_string(PantographState/DoorState/DeviceCategory) 逐值身份。
+void test_v2_position_mapping_and_strings() {
+    ok(device_category_from_position(CameraPosition::Primary) == DeviceCategory::FrontPrimary,
+       "v2 position primary -> FrontPrimary");
+    ok(device_category_from_position(CameraPosition::Left) == DeviceCategory::Side,
+       "v2 position left -> Side");
+    ok(device_category_from_position(CameraPosition::Right) == DeviceCategory::Side,
+       "v2 position right -> Side");
+    ok(device_category_from_position(CameraPosition::Roof) == DeviceCategory::Other,
+       "v2 position roof -> Other");
+    ok(device_category_from_position(CameraPosition::Underfloor) == DeviceCategory::Other,
+       "v2 position underfloor -> Other");
+    ok(device_category_from_position(CameraPosition::Cab) == DeviceCategory::Other,
+       "v2 position cab -> Other");
+    ok(map_device_level(DeviceCategory::Other) == AlarmLevel::L2, "v2 device other -> L2");
+
+    ok(std::string(to_string(PantographState::Unknown)) == "unknown", "v2 to_string pantograph unknown");
+    ok(std::string(to_string(PantographState::NotRaised)) == "not_raised", "v2 to_string pantograph not_raised");
+    ok(std::string(to_string(PantographState::Normal)) == "normal", "v2 to_string pantograph normal");
+    ok(std::string(to_string(PantographState::Abnormal)) == "abnormal", "v2 to_string pantograph abnormal");
+    ok(std::string(to_string(DoorState::Unknown)) == "unknown", "v2 to_string door unknown");
+    ok(std::string(to_string(DoorState::Closed)) == "closed", "v2 to_string door closed");
+    ok(std::string(to_string(DoorState::Ajar)) == "ajar", "v2 to_string door ajar");
+    ok(std::string(to_string(DeviceCategory::FrontPrimary)) == "front_primary", "v2 to_string devcat front_primary");
+    ok(std::string(to_string(DeviceCategory::Side)) == "side", "v2 to_string devcat side");
+    ok(std::string(to_string(DeviceCategory::Other)) == "other", "v2 to_string devcat other");
+}
+
 }  // namespace
 
 int main() {
@@ -293,6 +322,7 @@ int main() {
     test_suppress_boundary();
     test_updates_do_not_extend_or_unlock();
     test_ack_idempotent();
+    test_v2_position_mapping_and_strings();
     std::printf("== %d passed, %d failed ==\n", g_pass, g_fail);
     return g_fail == 0 ? 0 : 1;
 }

@@ -1,0 +1,100 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify006",
+    "cpp": "docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-006-rules",
+    "stamp": "verify-item006-rules-20261015-v4",
+    "connect_timeout": 10,
+    "app_root": "app",
+    "timeout_sec": 1200
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "rm -rf /tmp/railhmi_verify006 /tmp/railhmi_verify006_board && mkdir -p /tmp/railhmi_verify006_board/app/app /tmp/railhmi_verify006",
+      "exit": 0,
+      "elapsed_s": 0.23,
+      "output": ""
+    },
+    {
+      "step": "upload-app",
+      "exit": 0,
+      "output": "uploaded app tree (76670 bytes compressed)"
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "uploaded docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp -> /tmp/railhmi_verify006/verify_rules_ext.cpp"
+    },
+    {
+      "step": "extract",
+      "cmd": "cd /tmp/railhmi_verify006_board && tar xzf /tmp/railhmi_verify006/app.tgz -C /tmp/railhmi_verify006_board/app && echo APP_FILES=$(find /tmp/railhmi_verify006_board/app -type f | wc -l)",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "APP_FILES=55\n"
+    },
+    {
+      "step": "build-coretests",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && bash build.sh CoreTests 2>&1; echo BUILDEXIT=$?",
+      "exit": 0,
+      "elapsed_s": 8.37,
+      "output": "[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1\n[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no\n[build.sh] configuring: cmake -S '/tmp/railhmi_verify006_board/app' -B '/tmp/railhmi_verify006_board/app/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- railhmi: build mode = CoreTests\n-- railhmi: SQLite3 dev not found -> SqliteStore disabled (install libsqlite3-dev to enable)\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/railhmi_verify006_board/app/build-core\n[build.sh] building: cmake --build '/tmp/railhmi_verify006_board/app/build-core' -j8\n[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o\n[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o\n[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o\n[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o\n[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o\n[ 33%] Linking CXX static library librailhmi_core.a\n[ 33%] Built target railhmi_core\n[ 38%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o\n[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o\n[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o\n[ 55%] Linking CXX executable ../../tools/railhmi-config-check\n[ 55%] Built target railhmi-config-check\n[ 61%] Linking CXX static library librailhmi_platform.a\n[ 61%] Built target railhmi_platform\n[ 72%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_stream.cpp.o\n[ 72%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o\n[ 77%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_config.cpp.o\n[ 88%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o\n[ 88%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_rules.cpp.o\n[ 94%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o\n[100%] Linking CXX executable ../railhmi-core-tests\n[100%] Built target railhmi-core-tests\n[build.sh] build OK (mode=core-tests); artifacts under /tmp/railhmi_verify006_board/app/build-core\n[build.sh] run: /tmp/railhmi_verify006_board/app/build-core/tests/railhmi-core-tests\nBUILDEXIT=0\n"
+    },
+    {
+      "step": "run-coretests",
+      "cmd": "cd /tmp/railhmi_verify006_board/app/build-core/tests && ./railhmi-core-tests; echo TESTEXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "== railhmi-core tests (railhmi 0.1.0 [mode=CoreTests, simulation=off]) ==\n[PASS] version_string == 0.1.0\n[PASS] build_mode is a known mode\n[PASS] build_description contains railhmi\n[PASS] redact_url hides credentials\n[PASS] redact_url leaves credential-free url unchanged\n[PASS] FileStore::write_atomic\n[PASS] FileStore::read_all round-trip\n[PASS] FileStore::exists after write\n[PASS] FileStore::exists false for missing\n[SKIP] sqlite tests (RAILHMI_HAVE_SQLITE not defined)\n[PASS] baseline config loads without errors\n[PASS] baseline has 6 cameras\n[PASS] CAM-01 id/position=primary\n[PASS] CAM-01 ai_enabled=true, ai_profile=front\n[PASS] CAM-02 ai_enabled=false, ai_profile=none\n[PASS] CAM-03 ai_enabled=false, ai_profile=none\n[PASS] CAM-04 ai_profile=pantograph\n[PASS] CAM-05 ai_profile=wheel_rail\n[PASS] CAM-06 ai_profile=cab_door\n[PASS] app.render_path=cpu\n[PASS] app.mode=visible\n[PASS] IR is not connected this phase\n[PASS] app.recording_source=both\n[PASS] app.resolution=1920x1080\n[PASS] thresholds values parsed\n[PASS] stream timing thresholds parsed\n[PASS] baseline has 4 roi entries\n[PASS] one integration (NVR)\n[PASS] NVR registered\n[PASS] NVR initial integration_state=unconfigured\n[PASS] integration_state string is 'unconfigured'\n[PASS] missing optional tile_aspect recorded in applied_defaults\n[PASS] missing required field reports cameras[0].username\n[PASS] invalid transport reports cameras[0].transport\n[PASS] invalid ai_profile reports cameras[0].ai_profile\n[PASS] ai_enabled/profile mismatch reports cameras[0].ai_profile\n[PASS] missing thresholds field reports thresholds.confirm_frames\n[PASS] invalid render_path reports app.render_path\n[PASS] invalid mode reports app.mode\n[PASS] unknown roi camera reports roi[0].camera\n[PASS] out-of-range roi w reports roi[0].w\n[PASS] missing config file reports file name\n[PASS] initial state = offline\n[PASS] offline cannot present as live\n[PASS] start -> connecting\n[PASS] connecting cannot present as live\n[PASS] first frame -> live\n[PASS] Started event emitted\n[PASS] FirstFrame event emitted\n[PASS] live presents fresh frame as live\n[PASS] no new frame -> frozen\n[PASS] frozen cannot present old frame as live\n[PASS] Freeze event emitted\n[PASS] frozen -> reconnecting\n[PASS] reconnect count = 1\n[PASS] reconnecting -> connecting (retry)\n[PASS] retry timeout -> reconnecting count 2\n[PASS] retry again -> connecting\n[PASS] threshold reached -> offline\n[PASS] reconnect count = 3 (threshold)\n[PASS] Escalated device event emitted at threshold\n[PASS] offline cannot present as live\n[PASS] recover from offline -> live\n[PASS] reconnect count reset on recovery\n[PASS] Recovered event emitted\n[PASS] source-error test live\n[PASS] source error -> reconnecting count 1\n[PASS] second source error -> offline (threshold 2)\n[PASS] source-error escalation event emitted\n[PASS] SourceError event emitted\n[PASS] quality flag -> degraded\n[PASS] degraded counts as streaming (degraded available)\n[PASS] degraded may present fresh frame\n[PASS] QualityDegraded event emitted\n[PASS] classify: low mean -> too_dark\n[PASS] classify: high mean -> too_bright\n[PASS] classify: near-uniform -> occluded\n[PASS] classify: low lapvar -> blurred\n[PASS] classify: normal frame -> no flags\n[PASS] classify: invalid stats -> no flags\n[PASS] person_on_rail=L1\n[PASS] front_obstacle=L1\n[PASS] wheel_derail=L1\n[PASS] pantograph_abnormal=L2\n[PASS] door_ajar=L2\n[PASS] front_camera_device=L2\n[PASS] side_camera_device=L3\n[PASS] device front primary=L2\n[PASS] device side=L3\n[PASS] front person: event after confirm_frames\n[PASS] front person level = L1\n[PASS] front person type\n[PASS] new event unacked\n[PASS] front obstacle -> L1 FrontObstacle\n[PASS] front outside ROI -> no event\n[PASS] front low confidence -> no event\n[PASS] front frames beyond confirm window -> no event\n[PASS] suppression: first event created\n[PASS] same track within suppress window -> no new event\n[PASS] events size still 1 under suppression\n[PASS] suppressed event distance updated\n[PASS] different track -> new event\n[PASS] events size 2 after second track\n[PASS] same track after suppress window -> new event\n[PASS] events size 3 after suppress window\n[PASS] pantograph normal -> no event\n[PASS] pantograph abnormal -> L2\n[PASS] wheel_rail abnormal -> L1\n[PASS] cab_door ajar -> L2\n[PASS] ai_profile=none -> no event\n[PASS] front primary device event -> L2\n[PASS] side device event -> L3\n[PASS] duplicate device event suppressed\n[PASS] single-frame confirm event created\n[PASS] unacked count 1\n[PASS] ack returns true for existing event\n[PASS] ack does NOT delete event\n[PASS] ack_state becomes acked\n[PASS] unacked count 0 after ack\n[PASS] ack unknown id returns false\n[PASS] roi contains center point\n[PASS] roi rejects outside point\n[PASS] roi rejects beyond x+w\n[PASS] find_roi finds entry\n[PASS] find_roi miss\n[PASS] to_string(Device)\n[PASS] to_string(SideCameraDevice)\n[PASS] to_string(Acked)\n[PASS] to_string(Unacked)\n[PASS] to_string(PantographState::Abnormal)\n[PASS] to_string(DoorState::Ajar)\n[PASS] to_string(DeviceCategory::Side)\n[PASS] map_level(Device)=L2\n[PASS] position primary -> FrontPrimary\n[PASS] position left/right -> Side\n[PASS] position roof/underfloor/cab -> Other\n[PASS] device other -> L2 (explicit)\n[PASS] roi includes top-left corner\n[PASS] roi includes bottom-right corner\n[PASS] roi rejects x-epsilon\n[PASS] roi rejects y+h+epsilon\n[PASS] wheel event independent\n[PASS] front key isolated from wheel (same cam/track, different type)\n[PASS] cross-type events independent\n[PASS] device channel event 1\n[PASS] detection channel independent of device suppression\n[PASS] device event after window\n[PASS] device event after second window\n[PASS] device(3)+detection(1)=4\n[PASS] no event with two single-frame counts\n[PASS] non-candidate frame resets all camera confirms\n[PASS] reset cleared cross-type confirms (need full cycle)\n[PASS] full cycle after reset emits\n[PASS] emit resets cycle: first event\n[PASS] suppressed updates do not emit\n[PASS] boundary frame alone not enough\n[PASS] second frame not enough\n[PASS] full new cycle emits\n[PASS] emit resets cycle: second event\n[PASS] boundary: first event\n[PASS] 999ms still suppressed\n[PASS] exactly suppress_window not suppressed (new event)\n[PASS] 1999ms still suppressed\n[PASS] 2000ms not suppressed\n[PASS] boundary events count 3\n[PASS] update test: first event\n[PASS] update within window no new event\n[PASS] update refreshes last_update_ms\n[PASS] update refreshes distance\n[PASS] new event after window from original emit\n[PASS] update test: two events\n[PASS] two tracks -> two events\n[PASS] ack id1\n[PASS] ack id1 is idempotent\n[PASS] id1 acked\n[PASS] id2 unaffected\n[PASS] ack isolation: unacked 1\n== 176 passed, 0 failed ==\nTESTEXIT=0\n"
+    },
+    {
+      "step": "config-good",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && ./build-core/tools/railhmi-config-check ./config; echo CFG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.26,
+      "output": "config OK: 6 cameras, 4 roi, 1 integrations (dir=./config)\n  mode=visible render_path=cpu recording_source=both\nCFG_EXIT=0\n"
+    },
+    {
+      "step": "config-bad",
+      "cmd": "rm -rf /tmp/railhmi_cfg_bad && mkdir -p /tmp/railhmi_cfg_bad && cp /tmp/railhmi_verify006_board/app/config/*.yaml /tmp/railhmi_cfg_bad/ && sed -i '/confirm_frames:/d' /tmp/railhmi_cfg_bad/thresholds.yaml && /tmp/railhmi_verify006_board/app/build-core/tools/railhmi-config-check /tmp/railhmi_cfg_bad 2>&1; echo CFG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "config INVALID (1 error(s)) dir=/tmp/railhmi_cfg_bad:\n  thresholds.confirm_frames: required field missing\nCFG_EXIT=1\n"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && g++ -std=c++17 -O0 -Wall -Wextra -Isrc/core/include /tmp/railhmi_verify006/verify_rules_ext.cpp src/core/src/rules.cpp -o /tmp/railhmi_verify006/verify_rules_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.78,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_verify006_board/app && /tmp/railhmi_verify006/verify_rules_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "[PASS] to_string Device='device'\n[PASS] to_string SideCameraDevice\n[PASS] to_string unacked\n[PASS] to_string acked\n[PASS] map_level generic Device=L2\n[PASS] roi boundary (x,y) corner inside\n[PASS] roi boundary (x+w,y+h) corner inside\n[PASS] roi rejects x beyond x+w\n[PASS] roi rejects y beyond y+h\n[PASS] roi rejects x < x\n[PASS] find_roi hit\n[PASS] find_roi name miss\n[PASS] find_roi camera miss\n[PASS] device empty detail falls back to type string\n[PASS] side empty detail falls back to type string\n[PASS] device custom detail preserved\n[PASS] device event ts fields set\n[PASS] device events counted in unacked_count\n[PASS] find device event by id\n[PASS] ack device event keeps it\n[PASS] unacked after ack device = 2\n[PASS] cross-type keys count independently (no event yet)\n[PASS] wheel event after 3 wheel frames\n[PASS] front confirm unaffected by wheel emit\n[PASS] wheel suppress window holds right after emit\n[PASS] only one event so far\n[PASS] front emits unaffected by wheel suppression\n[PASS] device event 1 emitted\n[PASS] detection confirm unaffected by device event\n[PASS] front detection emits despite device suppression\n[PASS] device repeat suppressed (within 1000ms of emit 10)\n[PASS] device repeat after window emits\n[PASS] device repeat suppressed again (within window)\n[PASS] detection suppress still holds near device emits\n[PASS] device channel unaffected by detection state\n[PASS] events total = device d0 + detection + device d2 + device dv\n[PASS] low-conf frame emits nothing\n[PASS] whole-camera confirm reset by non-candidate frame\n[PASS] out-of-ROI frame also resets confirm\n[PASS] 1 more frame after reset does not confirm\n[PASS] 3 consecutive candidate frames confirm\n[PASS] first emit after 3 frames\n[PASS] no new event within suppress window\n[PASS] inside suppress window still no new event\n[PASS] post-window single frame does not emit (confirm reset)\n[PASS] second post-window frame still confirms\n[PASS] new event needs full confirm_frames after window\n[PASS] boundary test first event\n[PASS] t_emit + suppress_ms exactly -> no longer suppressed\n[PASS] (t_emit + suppress_ms) - 1 -> still suppressed\n[PASS] boundary yields exactly 2 events\n[PASS] emit at t=10\n[PASS] updates inside window never emit\n[PASS] last_update_ms reflects last update\n[PASS] new emit after window\n[PASS] new event metadata from fresh frame\n[PASS] new event has new id\n[PASS] two events for idempotence test\n[PASS] ack first\n[PASS] ack first twice (idempotent)\n[PASS] first stays acked\n[PASS] second stays unacked\n[PASS] unacked count = 1\n[PASS] second event suppressed by window\n[PASS] ack state unchanged by update\n[PASS] v2 position primary -> FrontPrimary\n[PASS] v2 position left -> Side\n[PASS] v2 position right -> Side\n[PASS] v2 position roof -> Other\n[PASS] v2 position underfloor -> Other\n[PASS] v2 position cab -> Other\n[PASS] v2 device other -> L2\n[PASS] v2 to_string pantograph unknown\n[PASS] v2 to_string pantograph not_raised\n[PASS] v2 to_string pantograph normal\n[PASS] v2 to_string pantograph abnormal\n[PASS] v2 to_string door unknown\n[PASS] v2 to_string door closed\n[PASS] v2 to_string door ajar\n[PASS] v2 to_string devcat front_primary\n[PASS] v2 to_string devcat side\n[PASS] v2 to_string devcat other\n== 82 passed, 0 failed ==\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify006 /tmp/railhmi_verify006_board /tmp/railhmi_cfg_bad && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify006 /tmp/railhmi_verify006_board 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.1,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify006': No such file or directory\nls: cannot access '/tmp/railhmi_verify006_board': No such file or directory\n"
+    }
+  ]
+}
