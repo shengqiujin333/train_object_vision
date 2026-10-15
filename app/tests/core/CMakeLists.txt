@@ -11,6 +11,7 @@ add_executable(railhmi-core-tests
     test_registry.cpp
     test_layout.cpp
     test_grid.cpp
+    test_status.cpp
 )
 target_link_libraries(railhmi-core-tests PRIVATE railhmi_core railhmi_platform)
 

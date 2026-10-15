@@ -10,6 +10,9 @@ Rectangle {
     id: page
     color: Theme.color.bg_base
 
+    // 关键状态区异常项点击：冒泡给外壳（允许则跳转详情，不允许则显示无权限）。
+    signal statusNavigate(string pageId, bool allowed)
+
     readonly property var L: (typeof railhmiLayout !== "undefined") ? railhmiLayout : ({
             leftRatio: 0.26, frontRatio: 0.48, rightRatio: 0.26,
             statusStripHeight: 64, alarmBarHeight: 64, marginNarrow: 16, marginWide: 24
@@ -66,31 +69,11 @@ Rectangle {
         border.color: Theme.color.border
         border.width: Theme.border.width
 
-        Row {
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: parent.left
-            anchors.leftMargin: Theme.spacing.s3
-            spacing: Theme.spacing.s5
-            Text {
-                color: Theme.color.text_secondary
-                font.pixelSize: Theme.typography.scale.label.size
-                text: "前方 " + page.camState("primary")
-            }
-            Text {
-                color: Theme.color.text_secondary
-                font.pixelSize: Theme.typography.scale.label.size
-                text: "左侧 " + page.camState("left")
-            }
-            Text {
-                color: Theme.color.text_secondary
-                font.pixelSize: Theme.typography.scale.label.size
-                text: "右侧 " + page.camState("right")
-            }
-            Text {
-                color: Theme.color.text_muted
-                font.pixelSize: Theme.typography.scale.caption.size
-                text: "模式：" + railhmiModePrimary + " / " + railhmiModeSecondary
-            }
+        KeyStatusStrip {
+            id: keyStrip
+            objectName: "keyStatusStrip"
+            anchors.fill: parent
+            onNavigateRequested: page.statusNavigate(pageId, allowed)
         }
     }
 

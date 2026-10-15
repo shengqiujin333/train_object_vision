@@ -16,6 +16,7 @@
 #include "railhmi/core/grid.h"
 #include "railhmi/core/layout.h"
 #include "railhmi/core/navigation.h"
+#include "railhmi/core/status.h"
 #include "railhmi/core/version.h"
 #include "railhmi/platform/log.h"
 
@@ -118,6 +119,49 @@ int main(int argc, char** argv) {
     gridMap["wideRows"] = railhmi::core::grid_rows(railhmi::core::GridShape::ThreeByTwo);
     gridMap["tallColumns"] = railhmi::core::grid_columns(railhmi::core::GridShape::TwoByThree);
     gridMap["tallRows"] = railhmi::core::grid_rows(railhmi::core::GridShape::TwoByThree);
+
+    // 关键状态区七项（ITEM-016）：颜色+形状字形+文字三重编码；应用未接入 AI/录像/存储采样时
+    // 按“未接入”呈现，异常时本色突出；点击异常项按角色解析 allowed。
+    QVariantList keyList;
+    for (const auto& it : railhmi::core::build_key_status(railhmi::core::KeyStatusSnapshot{}, role)) {
+        const railhmi::core::StatusClickResult r = railhmi::core::resolve_status_click(it, role);
+        QVariantMap m;
+        m["key"] = QString::fromStdString(it.key);
+        m["label"] = QString::fromUtf8(it.label.c_str());
+        m["level"] = QString::fromLatin1(railhmi::core::to_string(it.level));
+        m["shape"] = QString::fromStdString(it.shape);
+        m["glyph"] = QString::fromUtf8(it.glyph.c_str());
+        m["color"] = QString::fromStdString(it.color);
+        m["value"] = QString::fromUtf8(it.value.c_str());
+        m["abnormal"] = it.abnormal;
+        m["clickable"] = it.clickable;
+        m["allowed"] = r.allowed;
+        m["target"] = QString::fromLatin1(railhmi::core::to_string(it.target_page));
+        keyList.append(m);
+    }
+
+    // 顶部模式信息条（ITEM-016）：时间（QML 实时时钟）/模式(可见光·红外未接入)/录像/AI/系统健康/未接入项。
+    QVariantList topList;
+    railhmi::core::TopBarSnapshot topSnap;
+    topSnap.time_text = "--:--:--";
+    for (const auto& it : railhmi::core::build_top_bar(topSnap, role)) {
+        const railhmi::core::StatusClickResult r = railhmi::core::resolve_top_click(it, role);
+        QVariantMap m;
+        m["key"] = QString::fromStdString(it.key);
+        m["label"] = QString::fromUtf8(it.label.c_str());
+        m["level"] = QString::fromLatin1(railhmi::core::to_string(it.level));
+        m["shape"] = QString::fromStdString(it.shape);
+        m["glyph"] = QString::fromUtf8(it.glyph.c_str());
+        m["color"] = QString::fromStdString(it.color);
+        m["value"] = QString::fromUtf8(it.value.c_str());
+        m["secondary"] = QString::fromUtf8(it.secondary.c_str());
+        m["unavailable"] = it.unavailable;
+        m["abnormal"] = railhmi::core::status_abnormal(it.level);
+        m["clickable"] = it.clickable;
+        m["allowed"] = r.allowed;
+        m["target"] = QString::fromLatin1(railhmi::core::to_string(it.target_page));
+        topList.append(m);
+    }
     QVariantList intList;
     for (const auto& in : railhmi::core::build_integrations(cfg.settings)) {
         QVariantMap m;
@@ -146,6 +190,8 @@ int main(int argc, char** argv) {
     view.rootContext()->setContextProperty("railhmiCameras", camList);
     view.rootContext()->setContextProperty("railhmiChannels", chanList);
     view.rootContext()->setContextProperty("railhmiGrid", gridMap);
+    view.rootContext()->setContextProperty("railhmiKeyStatus", keyList);
+    view.rootContext()->setContextProperty("railhmiTopBar", topList);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
     view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
     view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);

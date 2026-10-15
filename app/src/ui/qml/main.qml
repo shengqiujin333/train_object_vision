@@ -32,6 +32,11 @@ Rectangle {
         if (id === "maintenance") return "pages/P6Maintenance.qml"
         return "pages/PageView.qml"
     }
+    // 关键状态区/顶部条异常项点击（ITEM-016）：允许则跳详情，不允许则显示无权限+返回。
+    function onStatusNavigate(pageId, allowed) {
+        shell.currentPageId = pageId
+        shell.denied = !allowed
+    }
 
     Column {
         anchors.fill: parent
@@ -39,9 +44,8 @@ Rectangle {
         TopStatusBar {
             width: parent.width
             height: Theme.size.top_bar_height
-            modePrimary: railhmiModePrimary
-            modeSecondary: railhmiModeSecondary
-            modeInteractive: railhmiModeInteractive
+            items: railhmiTopBar
+            onNavigateRequested: shell.onStatusNavigate(pageId, allowed)
         }
 
         Row {
@@ -75,6 +79,8 @@ Rectangle {
                             item.modePrimary = railhmiModePrimary
                             item.modeSecondary = railhmiModeSecondary
                         }
+                        if (item && item.statusNavigate)
+                            item.statusNavigate.connect(shell.onStatusNavigate)
                     }
                 }
                 DeniedView {

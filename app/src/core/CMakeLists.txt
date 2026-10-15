@@ -13,6 +13,7 @@ add_library(railhmi_core STATIC
     src/layout.cpp
     src/grid.cpp
     src/channel_view.cpp
+    src/status.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -30,5 +31,12 @@ set_target_properties(railhmi-config-check PROPERTIES
 add_executable(railhmi-sim-inject tools/sim_inject.cpp)
 target_link_libraries(railhmi-sim-inject PRIVATE railhmi_core)
 set_target_properties(railhmi-sim-inject PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 关键状态区/顶部条探针（ITEM-016；无 Qt/相机）
+add_executable(railhmi-status-probe tools/status_probe.cpp)
+target_link_libraries(railhmi-status-probe PRIVATE railhmi_core)
+set_target_properties(railhmi-status-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

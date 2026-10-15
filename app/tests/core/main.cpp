@@ -18,6 +18,7 @@ void run_navigation_tests();
 void run_registry_tests();
 void run_layout_tests();
 void run_grid_tests();
+void run_status_tests();
 
 int main(int argc, char** argv) {
     std::string junit;
@@ -41,6 +42,7 @@ int main(int argc, char** argv) {
     run_registry_tests();
     run_layout_tests();
     run_grid_tests();
+    run_status_tests();
 
     const bool ok = railhmi_test::g_fail == 0;
     std::printf("== %d passed, %d failed ==\n", railhmi_test::g_pass, railhmi_test::g_fail);
