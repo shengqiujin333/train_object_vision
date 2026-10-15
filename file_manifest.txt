@@ -236,10 +236,23 @@ docs/hmi/test_evidence/ITEM-006-rules/build-CoreTests-192_168_0_103-20261015-ITE
 docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp | active | 验证自有扩展夹具源码（82 断言：跨类型键隔离/设备与检测通道互不干扰/非候选整相机重置/emit 后周期重置/抑制边界/抑制更新/ack 幂等/ROI 角点/设备 detail 回退/v2 新增 17 断言：device_category_from_position 全 6 位置与 to_string 12 枚举值全值身份）
 docs/hmi/test_evidence/ITEM-006-rules/verify_rules_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立构建+测试+扩展夹具；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/test_evidence/ITEM-007-persistence/README.md | active | ITEM-007 持久化与保留策略证据（交付内容/板端实测/修复历史/边界/复现）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persist-20261015-v1.log | active | 验证夹具 v1 过程留痕（验证侧 std::raise 编译错误，非板面结论，不作判据）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persist-20261015-v1.transcript.json | active | 验证夹具 v1 transcript（留痕）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persist-20261015-v2.log | active | 验证夹具 v2 过程留痕（验证侧 using namespace 缺 core 编译错误，非板面结论，不作判据）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persist-20261015-v2.transcript.json | active | 验证夹具 v2 transcript（留痕）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persist-20261015-v3.log | active | 验证夹具 v3 过程留痕（验证侧 std::raise 残余编译错误，非板面结论，不作判据）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persist-20261015-v3.transcript.json | active | 验证夹具 v3 transcript（留痕）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persist-20261015-v4.log | active | 验证夹具 v4 过程留痕（48/51，2 项为验证侧断言期望错误登记在案；不作判据）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persist-20261015-v4.transcript.json | active | 验证夹具 v4 transcript（留痕）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persist-20261015-v5.log | active | 验证夹具权威轮 v5 日志（CoreTests 230/230 + 扩展夹具 49/51 + config-check 好/坏 + 清理确认；D-01/D-02 为权威判据）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persist-20261015-v5.transcript.json | active | 验证夹具权威轮 v5 transcript（指纹一致/逐条命令/退出码/清理确认）
+docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-ITEM-007.md | active | ITEM-007 持久化与保留策略软件验证 TestEvidence（TEST_FAIL：板端独立复跑 230/230 与实现者 r2 逐行一致、验证自有扩展夹具 49/51 含真实 SIGKILL WAL 恢复全绿；D-01 add_gap 桥接合并留重叠残对 / D-02 合并 reason 不连续复现缺陷交实现）
 docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r1.log | active | ITEM-007 首次构建/测试日志
 docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r1.transcript.json | active | ITEM-007 首次 CoreTests（229/230）transcript
 docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r2.log | active | ITEM-007 权威构建/测试日志
 docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r2.transcript.json | active | ITEM-007 权威 CoreTests（230/230 + config-check）transcript
+docs/hmi/test_evidence/ITEM-007-persistence/verify_persist_ext.cpp | active | 验证自有扩展夹具源码（51 断言：DDL 一致性/保留边界/tie/真实 SIGKILL WAL 写中恢复/缺口合并/empty 过滤器/repo upsert 与显式 id/重复 PK/DB 保留执行）
+docs/hmi/test_evidence/ITEM-007-persistence/verify_persist_fixtures.py | active | 软件验证自有板端运行器（上传 app 快照独立构建+测试+扩展夹具；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

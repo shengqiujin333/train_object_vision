@@ -1,0 +1,1163 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload-app] exit=0 =====
+uploaded app tree (89146 bytes compressed)
+
+===== [upload-fixture] exit=0 =====
+uploaded docs/hmi/test_evidence/ITEM-007-persistence/verify_persist_ext.cpp -> /tmp/railhmi_verify007/verify_persist_ext.cpp
+
+===== [extract] exit=0 =====
+APP_FILES=65
+
+
+===== [build-coretests] exit=0 =====
+[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_verify007_board/app' -B '/tmp/railhmi_verify007_board/app/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = CoreTests
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_verify007_board/app/build-core
+[build.sh] building: cmake --build '/tmp/railhmi_verify007_board/app/build-core' -j8
+[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[ 37%] Linking CXX static library librailhmi_core.a
+[ 37%] Built target railhmi_core
+[ 41%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 58%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 58%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 62%] Linking CXX executable ../../tools/railhmi-config-check
+[ 62%] Built target railhmi-config-check
+[ 66%] Linking CXX static library librailhmi_platform.a
+[ 66%] Built target railhmi_platform
+[ 83%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o
+[ 83%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_stream.cpp.o
+[ 83%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_config.cpp.o
+[ 83%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_persistence.cpp.o
+[ 87%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_rules.cpp.o
+[ 91%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o
+[ 95%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o
+[100%] Linking CXX executable ../railhmi-core-tests
+[100%] Built target railhmi-core-tests
+[build.sh] build OK (mode=core-tests); artifacts under /tmp/railhmi_verify007_board/app/build-core
+[build.sh] run: /tmp/railhmi_verify007_board/app/build-core/tests/railhmi-core-tests
+BUILDEXIT=0
+
+
+===== [run-coretests] exit=0 =====
+== railhmi-core tests (railhmi 0.1.0 [mode=CoreTests, simulation=off]) ==
+[PASS] version_string == 0.1.0
+[PASS] build_mode is a known mode
+[PASS] build_description contains railhmi
+[PASS] redact_url hides credentials
+[PASS] redact_url leaves credential-free url unchanged
+[PASS] FileStore::write_atomic
+[PASS] FileStore::read_all round-trip
+[PASS] FileStore::exists after write
+[PASS] FileStore::exists false for missing
+[PASS] SqliteStore::open
+[PASS] SqliteStore::exec create table
+[PASS] SqliteStore::exec insert
+[PASS] SqliteStore::query_int
+[PASS] SqliteStore row count == 1
+[PASS] SqliteStore::open (reopen)
+[PASS] SqliteStore persistence across reopen
+[PASS] baseline config loads without errors
+[PASS] baseline has 6 cameras
+[PASS] CAM-01 id/position=primary
+[PASS] CAM-01 ai_enabled=true, ai_profile=front
+[PASS] CAM-02 ai_enabled=false, ai_profile=none
+[PASS] CAM-03 ai_enabled=false, ai_profile=none
+[PASS] CAM-04 ai_profile=pantograph
+[PASS] CAM-05 ai_profile=wheel_rail
+[PASS] CAM-06 ai_profile=cab_door
+[PASS] app.render_path=cpu
+[PASS] app.mode=visible
+[PASS] IR is not connected this phase
+[PASS] app.recording_source=both
+[PASS] app.resolution=1920x1080
+[PASS] thresholds values parsed
+[PASS] stream timing thresholds parsed
+[PASS] baseline has 4 roi entries
+[PASS] one integration (NVR)
+[PASS] NVR registered
+[PASS] NVR initial integration_state=unconfigured
+[PASS] integration_state string is 'unconfigured'
+[PASS] missing optional tile_aspect recorded in applied_defaults
+[PASS] missing required field reports cameras[0].username
+[PASS] invalid transport reports cameras[0].transport
+[PASS] invalid ai_profile reports cameras[0].ai_profile
+[PASS] ai_enabled/profile mismatch reports cameras[0].ai_profile
+[PASS] missing thresholds field reports thresholds.confirm_frames
+[PASS] invalid render_path reports app.render_path
+[PASS] invalid mode reports app.mode
+[PASS] unknown roi camera reports roi[0].camera
+[PASS] out-of-range roi w reports roi[0].w
+[PASS] missing config file reports file name
+[PASS] initial state = offline
+[PASS] offline cannot present as live
+[PASS] start -> connecting
+[PASS] connecting cannot present as live
+[PASS] first frame -> live
+[PASS] Started event emitted
+[PASS] FirstFrame event emitted
+[PASS] live presents fresh frame as live
+[PASS] no new frame -> frozen
+[PASS] frozen cannot present old frame as live
+[PASS] Freeze event emitted
+[PASS] frozen -> reconnecting
+[PASS] reconnect count = 1
+[PASS] reconnecting -> connecting (retry)
+[PASS] retry timeout -> reconnecting count 2
+[PASS] retry again -> connecting
+[PASS] threshold reached -> offline
+[PASS] reconnect count = 3 (threshold)
+[PASS] Escalated device event emitted at threshold
+[PASS] offline cannot present as live
+[PASS] recover from offline -> live
+[PASS] reconnect count reset on recovery
+[PASS] Recovered event emitted
+[PASS] source-error test live
+[PASS] source error -> reconnecting count 1
+[PASS] second source error -> offline (threshold 2)
+[PASS] source-error escalation event emitted
+[PASS] SourceError event emitted
+[PASS] quality flag -> degraded
+[PASS] degraded counts as streaming (degraded available)
+[PASS] degraded may present fresh frame
+[PASS] QualityDegraded event emitted
+[PASS] classify: low mean -> too_dark
+[PASS] classify: high mean -> too_bright
+[PASS] classify: near-uniform -> occluded
+[PASS] classify: low lapvar -> blurred
+[PASS] classify: normal frame -> no flags
+[PASS] classify: invalid stats -> no flags
+[PASS] person_on_rail=L1
+[PASS] front_obstacle=L1
+[PASS] wheel_derail=L1
+[PASS] pantograph_abnormal=L2
+[PASS] door_ajar=L2
+[PASS] front_camera_device=L2
+[PASS] side_camera_device=L3
+[PASS] device front primary=L2
+[PASS] device side=L3
+[PASS] front person: event after confirm_frames
+[PASS] front person level = L1
+[PASS] front person type
+[PASS] new event unacked
+[PASS] front obstacle -> L1 FrontObstacle
+[PASS] front outside ROI -> no event
+[PASS] front low confidence -> no event
+[PASS] front frames beyond confirm window -> no event
+[PASS] suppression: first event created
+[PASS] same track within suppress window -> no new event
+[PASS] events size still 1 under suppression
+[PASS] suppressed event distance updated
+[PASS] different track -> new event
+[PASS] events size 2 after second track
+[PASS] same track after suppress window -> new event
+[PASS] events size 3 after suppress window
+[PASS] pantograph normal -> no event
+[PASS] pantograph abnormal -> L2
+[PASS] wheel_rail abnormal -> L1
+[PASS] cab_door ajar -> L2
+[PASS] ai_profile=none -> no event
+[PASS] front primary device event -> L2
+[PASS] side device event -> L3
+[PASS] duplicate device event suppressed
+[PASS] single-frame confirm event created
+[PASS] unacked count 1
+[PASS] ack returns true for existing event
+[PASS] ack does NOT delete event
+[PASS] ack_state becomes acked
+[PASS] unacked count 0 after ack
+[PASS] ack unknown id returns false
+[PASS] roi contains center point
+[PASS] roi rejects outside point
+[PASS] roi rejects beyond x+w
+[PASS] find_roi finds entry
+[PASS] find_roi miss
+[PASS] to_string(Device)
+[PASS] to_string(SideCameraDevice)
+[PASS] to_string(Acked)
+[PASS] to_string(Unacked)
+[PASS] to_string(PantographState::Abnormal)
+[PASS] to_string(DoorState::Ajar)
+[PASS] to_string(DeviceCategory::Side)
+[PASS] map_level(Device)=L2
+[PASS] position primary -> FrontPrimary
+[PASS] position left/right -> Side
+[PASS] position roof/underfloor/cab -> Other
+[PASS] device other -> L2 (explicit)
+[PASS] roi includes top-left corner
+[PASS] roi includes bottom-right corner
+[PASS] roi rejects x-epsilon
+[PASS] roi rejects y+h+epsilon
+[PASS] wheel event independent
+[PASS] front key isolated from wheel (same cam/track, different type)
+[PASS] cross-type events independent
+[PASS] device channel event 1
+[PASS] detection channel independent of device suppression
+[PASS] device event after window
+[PASS] device event after second window
+[PASS] device(3)+detection(1)=4
+[PASS] no event with two single-frame counts
+[PASS] non-candidate frame resets all camera confirms
+[PASS] reset cleared cross-type confirms (need full cycle)
+[PASS] full cycle after reset emits
+[PASS] emit resets cycle: first event
+[PASS] suppressed updates do not emit
+[PASS] boundary frame alone not enough
+[PASS] second frame not enough
+[PASS] full new cycle emits
+[PASS] emit resets cycle: second event
+[PASS] boundary: first event
+[PASS] 999ms still suppressed
+[PASS] exactly suppress_window not suppressed (new event)
+[PASS] 1999ms still suppressed
+[PASS] 2000ms not suppressed
+[PASS] boundary events count 3
+[PASS] update test: first event
+[PASS] update within window no new event
+[PASS] update refreshes last_update_ms
+[PASS] update refreshes distance
+[PASS] new event after window from original emit
+[PASS] update test: two events
+[PASS] two tracks -> two events
+[PASS] ack id1
+[PASS] ack id1 is idempotent
+[PASS] id1 acked
+[PASS] id2 unaffected
+[PASS] ack isolation: unacked 1
+[PASS] timebase starts uncalibrated
+[PASS] timebase calibrated
+[PASS] to_wall_ms at reference
+[PASS] to_wall_ms +2s
+[PASS] to_mono_us round-trip
+[PASS] to_wall_ms truncates to ms
+[PASS] wall/mono round-trip identity (ms-aligned)
+[PASS] system_now_ms is UTC epoch ms
+[PASS] steady_now_us positive
+[PASS] age: only expired continuous evicted
+[PASS] age: retained bytes 20
+[PASS] age: critical not evicted
+[PASS] age: one continuous evicted
+[PASS] capacity: oldest continuous evicted first
+[PASS] capacity: keep critical, retained 30
+[PASS] capacity: continuous(11,12) then oldest critical(13)
+[PASS] capacity: eviction counts
+[PASS] capacity: retained 10
+[PASS] gap merge: adjacent/overlap merged to one
+[PASS] gap merge bounds 100..300
+[PASS] gap merge: different camera separate
+[PASS] repo.open
+[PASS] repo.init_schema
+[PASS] repo journal_mode == wal
+[PASS] insert_event returns id
+[PASS] insert_event_target
+[PASS] insert_maintenance
+[PASS] insert_health
+[PASS] insert_stream_event
+[PASS] upsert_integration
+[PASS] set_config
+[PASS] get_config round-trip
+[PASS] insert_segment x2
+[PASS] insert_gap
+[PASS] 9 tables populated (segments=2)
+[PASS] copy db for WAL replay
+[PASS] open WAL copy
+[PASS] WAL replay: event recovered from -wal
+[PASS] WAL replay: gap recovered
+[PASS] reopen after restart
+[PASS] write-restart-read consistent
+[PASS] gap persisted across restart
+[PASS] gaps queryable by camera
+[PASS] segments read back with kind
+[PASS] repo retention evicts continuous first
+[PASS] repo retention: one segment left
+[PASS] repo retention keeps critical segment
+== 230 passed, 0 failed ==
+TESTEXIT=0
+
+
+===== [config-good] exit=0 =====
+config OK: 6 cameras, 4 roi, 1 integrations (dir=./config)
+  mode=visible render_path=cpu recording_source=both
+CFG_EXIT=0
+
+
+===== [config-bad] exit=0 =====
+config INVALID (1 error(s)) dir=/tmp/railhmi_cfg_bad:
+  thresholds.confirm_frames: required field missing
+CFG_EXIT=1
+
+
+===== [compile-ext] exit=0 =====
+/tmp/railhmi_verify007/verify_persist_ext.cpp:63:1: error: ‘EventRow’ does not name a type
+   63 | EventRow event_row(const char* type, long long id = -1) {
+      | ^~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:83:1: error: ‘RecordingSegmentRow’ does not name a type
+   83 | RecordingSegmentRow seg(long long id, SegmentKind kind, long long t0, long long t1, long long bytes) {
+      | ^~~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp: In function ‘void {anonymous}::test_ddl_conformity()’:
+/tmp/railhmi_verify007/verify_persist_ext.cpp:136:5: error: ‘SegmentKind’ was not declared in this scope; did you mean ‘railhmi::core::SegmentKind’?
+  136 |     SegmentKind kind = SegmentKind::Continuous;
+      |     ^~~~~~~~~~~
+      |     railhmi::core::SegmentKind
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:13:12: note: ‘railhmi::core::SegmentKind’ declared here
+   13 | enum class SegmentKind { Continuous, Critical };
+      |            ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:137:23: error: ‘to_string’ was not declared in this scope
+  137 |     CHECK(std::string(to_string(SegmentKind::Critical)) == "critical"
+      |                       ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:137:23: note: suggested alternatives:
+  137 |     CHECK(std::string(to_string(SegmentKind::Critical)) == "critical"
+      |                       ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+In file included from /usr/include/c++/11/string:55,
+                 from src/core/include/railhmi/core/persistence_model.h:7,
+                 from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+/usr/include/c++/11/bits/basic_string.h:6739:3: note:   ‘std::__cxx11::to_string’
+ 6739 |   to_string(long double __val)
+      |   ^~~~~~~~~
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:14:13: note:   ‘railhmi::core::to_string’
+   14 | const char* to_string(SegmentKind k);
+      |             ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:137:22: error: expected primary-expression before ‘(’ token
+  137 |     CHECK(std::string(to_string(SegmentKind::Critical)) == "critical"
+      |                      ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:137:33: error: ‘SegmentKind’ is not a class, namespace, or enumeration
+  137 |     CHECK(std::string(to_string(SegmentKind::Critical)) == "critical"
+      |                                 ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:138:50: error: ‘kind’ was not declared in this scope
+  138 |               && parse_segment_kind("critical", &kind) && kind == SegmentKind::Critical
+      |                                                  ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:138:18: error: ‘parse_segment_kind’ was not declared in this scope; did you mean ‘railhmi::core::parse_segment_kind’?
+  138 |               && parse_segment_kind("critical", &kind) && kind == SegmentKind::Critical
+      |                  ^~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:15:6: note: ‘railhmi::core::parse_segment_kind’ declared here
+   15 | bool parse_segment_kind(const std::string& s, SegmentKind* out);
+      |      ^~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:138:67: error: ‘SegmentKind’ is not a class, namespace, or enumeration
+  138 |               && parse_segment_kind("critical", &kind) && kind == SegmentKind::Critical
+      |                                                                   ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:139:69: error: ‘SegmentKind’ is not a class, namespace, or enumeration
+  139 |               && parse_segment_kind("continuous", &kind) && kind == SegmentKind::Continuous
+      |                                                                     ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp: In function ‘void {anonymous}::run_crash_child(const string&, bool)’:
+/tmp/railhmi_verify007/verify_persist_ext.cpp:157:10: error: ‘raise’ is not a member of ‘std’; did you mean ‘raise’?
+  157 |     std::raise(SIGKILL) == 1;  // C raise() — no close, no checkpoint, no further writes
+      |          ^~~~~
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:20:
+/usr/include/signal.h:123:12: note: ‘raise’ declared here
+  123 | extern int raise (int __sig) __THROW;
+      |            ^~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp: In function ‘void {anonymous}::test_crash_recovery()’:
+/tmp/railhmi_verify007/verify_persist_ext.cpp:229:9: error: ‘SqliteRepository’ was not declared in this scope; did you mean ‘railhmi::platform::SqliteRepository’?
+  229 |         SqliteRepository repo;
+      |         ^~~~~~~~~~~~~~~~
+      |         railhmi::platform::SqliteRepository
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:17:
+src/platform/include/railhmi/platform/repository.h:19:7: note: ‘railhmi::platform::SqliteRepository’ declared here
+   19 | class SqliteRepository {
+      |       ^~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:231:13: error: ‘repo’ was not declared in this scope
+  231 |         if (repo.open(path, &err)) {
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp: In function ‘void {anonymous}::test_retention_edges()’:
+/tmp/railhmi_verify007/verify_persist_ext.cpp:248:21: error: ‘RecordingSegmentRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingSegmentRow’?
+  248 |         std::vector<RecordingSegmentRow> segs;
+      |                     ^~~~~~~~~~~~~~~~~~~
+      |                     railhmi::core::RecordingSegmentRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:65:8: note: ‘railhmi::core::RecordingSegmentRow’ declared here
+   65 | struct RecordingSegmentRow {
+      |        ^~~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:248:40: error: template argument 1 is invalid
+  248 |         std::vector<RecordingSegmentRow> segs;
+      |                                        ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:248:40: error: template argument 2 is invalid
+/tmp/railhmi_verify007/verify_persist_ext.cpp:249:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  249 |         segs.push_back(seg(1, SegmentKind::Continuous, 0, now - 1 * day, 10));        // exactly limit
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:249:31: error: ‘SegmentKind’ has not been declared
+  249 |         segs.push_back(seg(1, SegmentKind::Continuous, 0, now - 1 * day, 10));        // exactly limit
+      |                               ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:249:24: error: ‘seg’ was not declared in this scope; did you mean ‘segs’?
+  249 |         segs.push_back(seg(1, SegmentKind::Continuous, 0, now - 1 * day, 10));        // exactly limit
+      |                        ^~~
+      |                        segs
+/tmp/railhmi_verify007/verify_persist_ext.cpp:250:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  250 |         segs.push_back(seg(2, SegmentKind::Continuous, 0, now - 1 * day - 1, 10));    // past limit
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:250:31: error: ‘SegmentKind’ has not been declared
+  250 |         segs.push_back(seg(2, SegmentKind::Continuous, 0, now - 1 * day - 1, 10));    // past limit
+      |                               ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:251:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  251 |         segs.push_back(seg(3, SegmentKind::Critical, 0, now - 10 * day, 10));         // never by age
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:251:31: error: ‘SegmentKind’ has not been declared
+  251 |         segs.push_back(seg(3, SegmentKind::Critical, 0, now - 10 * day, 10));         // never by age
+      |                               ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:252:9: error: ‘RetentionPolicy’ was not declared in this scope; did you mean ‘railhmi::core::RetentionPolicy’?
+  252 |         RetentionPolicy p;
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionPolicy
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:16:8: note: ‘railhmi::core::RetentionPolicy’ declared here
+   16 | struct RetentionPolicy {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:253:9: error: ‘p’ was not declared in this scope
+  253 |         p.retention_days = 1;
+      |         ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:255:9: error: ‘RetentionResult’ was not declared in this scope; did you mean ‘railhmi::core::RetentionResult’?
+  255 |         RetentionResult r = apply_retention(segs, now, p);
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionResult
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:21:8: note: ‘railhmi::core::RetentionResult’ declared here
+   21 | struct RetentionResult {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:256:15: error: ‘r’ was not declared in this scope
+  256 |         CHECK(r.evicted_ids.size() == 1 && r.evicted_ids[0] == 2,
+      |               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:258:15: error: ‘r’ was not declared in this scope
+  258 |         CHECK(r.evicted_critical == 0, "fx retention: critical exempt from age limit");
+      |               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:261:21: error: ‘RecordingSegmentRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingSegmentRow’?
+  261 |         std::vector<RecordingSegmentRow> segs;
+      |                     ^~~~~~~~~~~~~~~~~~~
+      |                     railhmi::core::RecordingSegmentRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:65:8: note: ‘railhmi::core::RecordingSegmentRow’ declared here
+   65 | struct RecordingSegmentRow {
+      |        ^~~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:261:40: error: template argument 1 is invalid
+  261 |         std::vector<RecordingSegmentRow> segs;
+      |                                        ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:261:40: error: template argument 2 is invalid
+/tmp/railhmi_verify007/verify_persist_ext.cpp:262:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  262 |         segs.push_back(seg(1, SegmentKind::Continuous, 0, 10, 10));
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:262:31: error: ‘SegmentKind’ has not been declared
+  262 |         segs.push_back(seg(1, SegmentKind::Continuous, 0, 10, 10));
+      |                               ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:262:24: error: ‘seg’ was not declared in this scope; did you mean ‘segs’?
+  262 |         segs.push_back(seg(1, SegmentKind::Continuous, 0, 10, 10));
+      |                        ^~~
+      |                        segs
+/tmp/railhmi_verify007/verify_persist_ext.cpp:263:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  263 |         segs.push_back(seg(2, SegmentKind::Continuous, 10, 20, 20));
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:263:31: error: ‘SegmentKind’ has not been declared
+  263 |         segs.push_back(seg(2, SegmentKind::Continuous, 10, 20, 20));
+      |                               ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:264:9: error: ‘RetentionPolicy’ was not declared in this scope; did you mean ‘railhmi::core::RetentionPolicy’?
+  264 |         RetentionPolicy p;
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionPolicy
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:16:8: note: ‘railhmi::core::RetentionPolicy’ declared here
+   16 | struct RetentionPolicy {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:265:9: error: ‘p’ was not declared in this scope
+  265 |         p.retention_days = 1000;
+      |         ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:267:9: error: ‘RetentionResult’ was not declared in this scope; did you mean ‘railhmi::core::RetentionResult’?
+  267 |         RetentionResult r = apply_retention(segs, now, p);
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionResult
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:21:8: note: ‘railhmi::core::RetentionResult’ declared here
+   21 | struct RetentionResult {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:268:15: error: ‘r’ was not declared in this scope
+  268 |         CHECK(r.evicted_ids.empty() && r.retained_bytes == 30,
+      |               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:271:9: error: ‘r’ was not declared in this scope
+  271 |         r = apply_retention(segs, now, p);
+      |         ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:271:13: error: ‘apply_retention’ was not declared in this scope; did you mean ‘railhmi::core::apply_retention’?
+  271 |         r = apply_retention(segs, now, p);
+      |             ^~~~~~~~~~~~~~~
+      |             railhmi::core::apply_retention
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:30:17: note: ‘railhmi::core::apply_retention’ declared here
+   30 | RetentionResult apply_retention(const std::vector<RecordingSegmentRow>& segments,
+      |                 ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:276:21: error: ‘RecordingSegmentRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingSegmentRow’?
+  276 |         std::vector<RecordingSegmentRow> segs;
+      |                     ^~~~~~~~~~~~~~~~~~~
+      |                     railhmi::core::RecordingSegmentRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:65:8: note: ‘railhmi::core::RecordingSegmentRow’ declared here
+   65 | struct RecordingSegmentRow {
+      |        ^~~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:276:40: error: template argument 1 is invalid
+  276 |         std::vector<RecordingSegmentRow> segs;
+      |                                        ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:276:40: error: template argument 2 is invalid
+/tmp/railhmi_verify007/verify_persist_ext.cpp:277:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  277 |         segs.push_back(seg(21, SegmentKind::Critical, 100, 200, 5));
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:277:32: error: ‘SegmentKind’ has not been declared
+  277 |         segs.push_back(seg(21, SegmentKind::Critical, 100, 200, 5));
+      |                                ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:277:24: error: ‘seg’ was not declared in this scope; did you mean ‘segs’?
+  277 |         segs.push_back(seg(21, SegmentKind::Critical, 100, 200, 5));
+      |                        ^~~
+      |                        segs
+/tmp/railhmi_verify007/verify_persist_ext.cpp:278:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  278 |         segs.push_back(seg(20, SegmentKind::Continuous, 100, 200, 5));
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:278:32: error: ‘SegmentKind’ has not been declared
+  278 |         segs.push_back(seg(20, SegmentKind::Continuous, 100, 200, 5));
+      |                                ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:279:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  279 |         segs.push_back(seg(22, SegmentKind::Critical, 100, 200, 5));
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:279:32: error: ‘SegmentKind’ has not been declared
+  279 |         segs.push_back(seg(22, SegmentKind::Critical, 100, 200, 5));
+      |                                ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:280:9: error: ‘RetentionPolicy’ was not declared in this scope; did you mean ‘railhmi::core::RetentionPolicy’?
+  280 |         RetentionPolicy p;
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionPolicy
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:16:8: note: ‘railhmi::core::RetentionPolicy’ declared here
+   16 | struct RetentionPolicy {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:281:9: error: ‘p’ was not declared in this scope
+  281 |         p.retention_days = 1000;
+      |         ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:283:9: error: ‘RetentionResult’ was not declared in this scope; did you mean ‘railhmi::core::RetentionResult’?
+  283 |         RetentionResult r = apply_retention(segs, now, p);
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionResult
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:21:8: note: ‘railhmi::core::RetentionResult’ declared here
+   21 | struct RetentionResult {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:284:15: error: ‘r’ was not declared in this scope
+  284 |         CHECK(r.evicted_ids.size() == 3 && r.evicted_ids[0] == 20 && r.evicted_ids[1] == 21
+      |               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:287:15: error: ‘r’ was not declared in this scope
+  287 |         CHECK(r.evicted_critical == 2 && r.evicted_continuous == 1, "fx retention: tie eviction counts");
+      |               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:290:21: error: ‘RecordingSegmentRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingSegmentRow’?
+  290 |         std::vector<RecordingSegmentRow> segs;
+      |                     ^~~~~~~~~~~~~~~~~~~
+      |                     railhmi::core::RecordingSegmentRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:65:8: note: ‘railhmi::core::RecordingSegmentRow’ declared here
+   65 | struct RecordingSegmentRow {
+      |        ^~~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:290:40: error: template argument 1 is invalid
+  290 |         std::vector<RecordingSegmentRow> segs;
+      |                                        ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:290:40: error: template argument 2 is invalid
+/tmp/railhmi_verify007/verify_persist_ext.cpp:291:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  291 |         segs.push_back(seg(1, SegmentKind::Continuous, 0, now - 1, 10));
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:291:31: error: ‘SegmentKind’ has not been declared
+  291 |         segs.push_back(seg(1, SegmentKind::Continuous, 0, now - 1, 10));
+      |                               ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:291:24: error: ‘seg’ was not declared in this scope; did you mean ‘segs’?
+  291 |         segs.push_back(seg(1, SegmentKind::Continuous, 0, now - 1, 10));
+      |                        ^~~
+      |                        segs
+/tmp/railhmi_verify007/verify_persist_ext.cpp:292:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  292 |         segs.push_back(seg(2, SegmentKind::Continuous, 0, now + day, 10));  // future-dated
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:292:31: error: ‘SegmentKind’ has not been declared
+  292 |         segs.push_back(seg(2, SegmentKind::Continuous, 0, now + day, 10));  // future-dated
+      |                               ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:293:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  293 |         segs.push_back(seg(3, SegmentKind::Critical, 0, now - 1, 10));
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:293:31: error: ‘SegmentKind’ has not been declared
+  293 |         segs.push_back(seg(3, SegmentKind::Critical, 0, now - 1, 10));
+      |                               ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:294:9: error: ‘RetentionPolicy’ was not declared in this scope; did you mean ‘railhmi::core::RetentionPolicy’?
+  294 |         RetentionPolicy p;
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionPolicy
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:16:8: note: ‘railhmi::core::RetentionPolicy’ declared here
+   16 | struct RetentionPolicy {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:295:9: error: ‘p’ was not declared in this scope
+  295 |         p.retention_days = 0;
+      |         ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:297:9: error: ‘RetentionResult’ was not declared in this scope; did you mean ‘railhmi::core::RetentionResult’?
+  297 |         RetentionResult r = apply_retention(segs, now, p);
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionResult
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:21:8: note: ‘railhmi::core::RetentionResult’ declared here
+   21 | struct RetentionResult {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:298:15: error: ‘r’ was not declared in this scope
+  298 |         CHECK(r.evicted_ids.size() == 1 && r.evicted_ids[0] == 1,
+      |               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:302:21: error: ‘RecordingSegmentRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingSegmentRow’?
+  302 |         std::vector<RecordingSegmentRow> empty;
+      |                     ^~~~~~~~~~~~~~~~~~~
+      |                     railhmi::core::RecordingSegmentRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:65:8: note: ‘railhmi::core::RecordingSegmentRow’ declared here
+   65 | struct RecordingSegmentRow {
+      |        ^~~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:302:40: error: template argument 1 is invalid
+  302 |         std::vector<RecordingSegmentRow> empty;
+      |                                        ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:302:40: error: template argument 2 is invalid
+/tmp/railhmi_verify007/verify_persist_ext.cpp:303:9: error: ‘RetentionPolicy’ was not declared in this scope; did you mean ‘railhmi::core::RetentionPolicy’?
+  303 |         RetentionPolicy p;
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionPolicy
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:16:8: note: ‘railhmi::core::RetentionPolicy’ declared here
+   16 | struct RetentionPolicy {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:304:9: error: ‘RetentionResult’ was not declared in this scope; did you mean ‘railhmi::core::RetentionResult’?
+  304 |         RetentionResult r = apply_retention(empty, now, p);
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionResult
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:21:8: note: ‘railhmi::core::RetentionResult’ declared here
+   21 | struct RetentionResult {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:305:15: error: ‘r’ was not declared in this scope
+  305 |         CHECK(r.evicted_ids.empty() && r.retained_bytes == 0, "fx retention: empty input safe");
+      |               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:302:42: warning: unused variable ‘empty’ [-Wunused-variable]
+  302 |         std::vector<RecordingSegmentRow> empty;
+      |                                          ^~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:308:21: error: ‘RecordingSegmentRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingSegmentRow’?
+  308 |         std::vector<RecordingSegmentRow> segs;
+      |                     ^~~~~~~~~~~~~~~~~~~
+      |                     railhmi::core::RecordingSegmentRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:65:8: note: ‘railhmi::core::RecordingSegmentRow’ declared here
+   65 | struct RecordingSegmentRow {
+      |        ^~~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:308:40: error: template argument 1 is invalid
+  308 |         std::vector<RecordingSegmentRow> segs;
+      |                                        ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:308:40: error: template argument 2 is invalid
+/tmp/railhmi_verify007/verify_persist_ext.cpp:309:28: error: expected ‘;’ before ‘s’
+  309 |         RecordingSegmentRow s = seg(9, SegmentKind::Continuous, 0, now - 10 * day, 10);
+      |                            ^~
+      |                            ;
+/tmp/railhmi_verify007/verify_persist_ext.cpp:310:9: error: ‘s’ was not declared in this scope
+  310 |         s.complete = false;
+      |         ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:311:14: error: request for member ‘push_back’ in ‘segs’, which is of non-class type ‘int’
+  311 |         segs.push_back(s);
+      |              ^~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:312:9: error: ‘RetentionPolicy’ was not declared in this scope; did you mean ‘railhmi::core::RetentionPolicy’?
+  312 |         RetentionPolicy p;
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionPolicy
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:16:8: note: ‘railhmi::core::RetentionPolicy’ declared here
+   16 | struct RetentionPolicy {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:313:9: error: ‘p’ was not declared in this scope
+  313 |         p.retention_days = 1;
+      |         ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:315:9: error: ‘RetentionResult’ was not declared in this scope; did you mean ‘railhmi::core::RetentionResult’?
+  315 |         RetentionResult r = apply_retention(segs, now, p);
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RetentionResult
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:21:8: note: ‘railhmi::core::RetentionResult’ declared here
+   21 | struct RetentionResult {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:316:15: error: ‘r’ was not declared in this scope
+  316 |         CHECK(r.evicted_ids.size() == 1 && r.evicted_ids[0] == 9 && r.evicted_continuous == 1,
+      |               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp: In function ‘void {anonymous}::test_gap_edges()’:
+/tmp/railhmi_verify007/verify_persist_ext.cpp:324:21: error: ‘RecordingGapRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingGapRow’?
+  324 |         std::vector<RecordingGapRow> gaps;
+      |                     ^~~~~~~~~~~~~~~
+      |                     railhmi::core::RecordingGapRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:76:8: note: ‘railhmi::core::RecordingGapRow’ declared here
+   76 | struct RecordingGapRow {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:324:36: error: template argument 1 is invalid
+  324 |         std::vector<RecordingGapRow> gaps;
+      |                                    ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:324:36: error: template argument 2 is invalid
+/tmp/railhmi_verify007/verify_persist_ext.cpp:325:9: error: ‘add_gap’ was not declared in this scope; did you mean ‘railhmi::core::add_gap’?
+  325 |         add_gap(gaps, "C1", 100, 300, "drop");
+      |         ^~~~~~~
+      |         railhmi::core::add_gap
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:34:6: note: ‘railhmi::core::add_gap’ declared here
+   34 | void add_gap(std::vector<RecordingGapRow>& gaps, const std::string& cam,
+      |      ^~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:327:20: error: request for member ‘size’ in ‘gaps’, which is of non-class type ‘int’
+  327 |         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 100 && gaps[0].t1_ms == 300,
+      |                    ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:327:39: error: invalid types ‘int[int]’ for array subscript
+  327 |         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 100 && gaps[0].t1_ms == 300,
+      |                                       ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:327:63: error: invalid types ‘int[int]’ for array subscript
+  327 |         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 100 && gaps[0].t1_ms == 300,
+      |                                                               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:330:20: error: request for member ‘size’ in ‘gaps’, which is of non-class type ‘int’
+  330 |         CHECK(gaps.size() == 2 && gaps[0].t0_ms == 50 && gaps[0].t1_ms == 99,
+      |                    ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:330:39: error: invalid types ‘int[int]’ for array subscript
+  330 |         CHECK(gaps.size() == 2 && gaps[0].t0_ms == 50 && gaps[0].t1_ms == 99,
+      |                                       ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:330:62: error: invalid types ‘int[int]’ for array subscript
+  330 |         CHECK(gaps.size() == 2 && gaps[0].t0_ms == 50 && gaps[0].t1_ms == 99,
+      |                                                              ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:333:20: error: request for member ‘size’ in ‘gaps’, which is of non-class type ‘int’
+  333 |         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 50 && gaps[0].t1_ms == 300,
+      |                    ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:333:39: error: invalid types ‘int[int]’ for array subscript
+  333 |         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 50 && gaps[0].t1_ms == 300,
+      |                                       ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:333:62: error: invalid types ‘int[int]’ for array subscript
+  333 |         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 50 && gaps[0].t1_ms == 300,
+      |                                                              ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:335:19: error: invalid types ‘int[int]’ for array subscript
+  335 |         CHECK(gaps[0].reason == "drop", "fx gaps: first non-empty reason kept on merge");
+      |                   ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:338:21: error: ‘RecordingGapRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingGapRow’?
+  338 |         std::vector<RecordingGapRow> gaps;
+      |                     ^~~~~~~~~~~~~~~
+      |                     railhmi::core::RecordingGapRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:76:8: note: ‘railhmi::core::RecordingGapRow’ declared here
+   76 | struct RecordingGapRow {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:338:36: error: template argument 1 is invalid
+  338 |         std::vector<RecordingGapRow> gaps;
+      |                                    ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:338:36: error: template argument 2 is invalid
+/tmp/railhmi_verify007/verify_persist_ext.cpp:339:9: error: ‘add_gap’ was not declared in this scope; did you mean ‘railhmi::core::add_gap’?
+  339 |         add_gap(gaps, "C2", 300, 100, "r");
+      |         ^~~~~~~
+      |         railhmi::core::add_gap
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:34:6: note: ‘railhmi::core::add_gap’ declared here
+   34 | void add_gap(std::vector<RecordingGapRow>& gaps, const std::string& cam,
+      |      ^~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:340:20: error: request for member ‘size’ in ‘gaps’, which is of non-class type ‘int’
+  340 |         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 100 && gaps[0].t1_ms == 300,
+      |                    ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:340:39: error: invalid types ‘int[int]’ for array subscript
+  340 |         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 100 && gaps[0].t1_ms == 300,
+      |                                       ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:340:63: error: invalid types ‘int[int]’ for array subscript
+  340 |         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 100 && gaps[0].t1_ms == 300,
+      |                                                               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:344:21: error: ‘RecordingGapRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingGapRow’?
+  344 |         std::vector<RecordingGapRow> gaps;
+      |                     ^~~~~~~~~~~~~~~
+      |                     railhmi::core::RecordingGapRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:76:8: note: ‘railhmi::core::RecordingGapRow’ declared here
+   76 | struct RecordingGapRow {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:344:36: error: template argument 1 is invalid
+  344 |         std::vector<RecordingGapRow> gaps;
+      |                                    ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:344:36: error: template argument 2 is invalid
+/tmp/railhmi_verify007/verify_persist_ext.cpp:345:9: error: ‘add_gap’ was not declared in this scope; did you mean ‘railhmi::core::add_gap’?
+  345 |         add_gap(gaps, "B", 200, 210, "r");
+      |         ^~~~~~~
+      |         railhmi::core::add_gap
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:34:6: note: ‘railhmi::core::add_gap’ declared here
+   34 | void add_gap(std::vector<RecordingGapRow>& gaps, const std::string& cam,
+      |      ^~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:348:20: error: request for member ‘size’ in ‘gaps’, which is of non-class type ‘int’
+  348 |         CHECK(gaps.size() == 3 && gaps[0].cam == "A" && gaps[1].cam == "B" &&
+      |                    ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:348:39: error: invalid types ‘int[int]’ for array subscript
+  348 |         CHECK(gaps.size() == 3 && gaps[0].cam == "A" && gaps[1].cam == "B" &&
+      |                                       ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:348:61: error: invalid types ‘int[int]’ for array subscript
+  348 |         CHECK(gaps.size() == 3 && gaps[0].cam == "A" && gaps[1].cam == "B" &&
+      |                                                             ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:349:23: error: invalid types ‘int[int]’ for array subscript
+  349 |                   gaps[1].t0_ms == 100 && gaps[2].t0_ms == 200,
+      |                       ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:349:47: error: invalid types ‘int[int]’ for array subscript
+  349 |                   gaps[1].t0_ms == 100 && gaps[2].t0_ms == 200,
+      |                                               ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:355:9: error: ‘SqliteRepository’ was not declared in this scope; did you mean ‘railhmi::platform::SqliteRepository’?
+  355 |         SqliteRepository repo;
+      |         ^~~~~~~~~~~~~~~~
+      |         railhmi::platform::SqliteRepository
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:17:
+src/platform/include/railhmi/platform/repository.h:19:7: note: ‘railhmi::platform::SqliteRepository’ declared here
+   19 | class SqliteRepository {
+      |       ^~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:357:29: error: ‘repo’ was not declared in this scope
+  357 |         const bool opened = repo.open(path, &err) && repo.init_schema(&err);
+      |                             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:359:9: error: ‘RecordingGapRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingGapRow’?
+  359 |         RecordingGapRow g1;
+      |         ^~~~~~~~~~~~~~~
+      |         railhmi::core::RecordingGapRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:76:8: note: ‘railhmi::core::RecordingGapRow’ declared here
+   76 | struct RecordingGapRow {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:360:9: error: ‘g1’ was not declared in this scope; did you mean ‘gb’?
+  360 |         g1.cam = "CAM-A";
+      |         ^~
+      |         gb
+/tmp/railhmi_verify007/verify_persist_ext.cpp:364:24: error: expected ‘;’ before ‘g2’
+  364 |         RecordingGapRow g2;
+      |                        ^~~
+      |                        ;
+/tmp/railhmi_verify007/verify_persist_ext.cpp:365:9: error: ‘g2’ was not declared in this scope; did you mean ‘gb’?
+  365 |         g2.cam = "CAM-B";
+      |         ^~
+      |         gb
+/tmp/railhmi_verify007/verify_persist_ext.cpp: In function ‘void {anonymous}::test_repo_semantics()’:
+/tmp/railhmi_verify007/verify_persist_ext.cpp:385:5: error: ‘SqliteRepository’ was not declared in this scope; did you mean ‘railhmi::platform::SqliteRepository’?
+  385 |     SqliteRepository repo;
+      |     ^~~~~~~~~~~~~~~~
+      |     railhmi::platform::SqliteRepository
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:17:
+src/platform/include/railhmi/platform/repository.h:19:7: note: ‘railhmi::platform::SqliteRepository’ declared here
+   19 | class SqliteRepository {
+      |       ^~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:387:11: error: ‘repo’ was not declared in this scope
+  387 |     CHECK(repo.open(path, &err), "fx repo: open");
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:388:11: error: ‘repo’ was not declared in this scope
+  388 |     CHECK(repo.init_schema(&err), "fx repo: init_schema");
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:390:5: error: ‘ConfigKvRow’ was not declared in this scope; did you mean ‘railhmi::core::ConfigKvRow’?
+  390 |     ConfigKvRow c;
+      |     ^~~~~~~~~~~
+      |     railhmi::core::ConfigKvRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:104:8: note: ‘railhmi::core::ConfigKvRow’ declared here
+  104 | struct ConfigKvRow {
+      |        ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:391:5: error: ‘c’ was not declared in this scope
+  391 |     c.key = "k";
+      |     ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:393:11: error: ‘repo’ was not declared in this scope
+  393 |     CHECK(repo.set_config(c, &err), "fx repo: set_config v1");
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:395:11: error: ‘repo’ was not declared in this scope
+  395 |     CHECK(repo.set_config(c, &err), "fx repo: set_config v2");
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:396:11: error: ‘repo’ was not declared in this scope
+  396 |     CHECK(repo.count("config_kv", &err) == 1 && repo.get_config("k", &err) == "v2",
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:399:5: error: ‘IntegrationRow’ was not declared in this scope; did you mean ‘railhmi::core::IntegrationRow’?
+  399 |     IntegrationRow in;
+      |     ^~~~~~~~~~~~~~
+      |     railhmi::core::IntegrationRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:93:8: note: ‘railhmi::core::IntegrationRow’ declared here
+   93 | struct IntegrationRow {
+      |        ^~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:400:5: error: ‘in’ was not declared in this scope; did you mean ‘int’?
+  400 |     in.id = "NVR";
+      |     ^~
+      |     int
+/tmp/railhmi_verify007/verify_persist_ext.cpp:402:11: error: ‘repo’ was not declared in this scope
+  402 |     CHECK(repo.upsert_integration(in, &err), "fx repo: upsert probing");
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:404:11: error: ‘repo’ was not declared in this scope
+  404 |     CHECK(repo.upsert_integration(in, &err), "fx repo: upsert unreachable");
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:405:11: error: ‘repo’ was not declared in this scope
+  405 |     CHECK(repo.count("integrations", &err) == 1, "fx repo: integrations upsert count==1");
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:409:5: error: ‘EventRow’ was not declared in this scope; did you mean ‘railhmi::core::EventRow’?
+  409 |     EventRow e = event_row("explicit_id", 777);
+      |     ^~~~~~~~
+      |     railhmi::core::EventRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:17:8: note: ‘railhmi::core::EventRow’ declared here
+   17 | struct EventRow {
+      |        ^~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:410:11: error: ‘repo’ was not declared in this scope
+  410 |     CHECK(repo.insert_event(e, &err) == 777, "fx repo: explicit event id preserved");
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:410:29: error: ‘e’ was not declared in this scope
+  410 |     CHECK(repo.insert_event(e, &err) == 777, "fx repo: explicit event id preserved");
+      |                             ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:411:11: error: ‘repo’ was not declared in this scope
+  411 |     CHECK(repo.get_event(777, &found, &err).type == "explicit_id" && found,
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:414:13: error: expected ‘;’ before ‘e2’
+  414 |     EventRow e2 = event_row("record_false", 778);
+      |             ^~~
+      |             ;
+/tmp/railhmi_verify007/verify_persist_ext.cpp:415:11: error: ‘repo’ was not declared in this scope
+  415 |     CHECK(repo.insert_event(e2, &err) == 778, "fx repo: second explicit id");
+      |           ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:415:29: error: ‘e2’ was not declared in this scope
+  415 |     CHECK(repo.insert_event(e2, &err) == 778, "fx repo: second explicit id");
+      |                             ^~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:416:12: error: ‘repo’ was not declared in this scope
+  416 |     CHECK(!repo.get_event(778, &found, &err).record_available,
+      |            ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:419:13: error: expected ‘;’ before ‘dupe’
+  419 |     EventRow dupe = event_row("dupe", 777);
+      |             ^~~~~
+      |             ;
+/tmp/railhmi_verify007/verify_persist_ext.cpp:421:31: error: ‘repo’ was not declared in this scope
+  421 |     const long long dupe_rc = repo.insert_event(dupe, &err);
+      |                               ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:421:49: error: ‘dupe’ was not declared in this scope; did you mean ‘dup3’?
+  421 |     const long long dupe_rc = repo.insert_event(dupe, &err);
+      |                                                 ^~~~
+      |                                                 dup3
+/tmp/railhmi_verify007/verify_persist_ext.cpp:426:5: error: ‘RecordingSegmentRow’ was not declared in this scope; did you mean ‘railhmi::core::RecordingSegmentRow’?
+  426 |     RecordingSegmentRow old_c;
+      |     ^~~~~~~~~~~~~~~~~~~
+      |     railhmi::core::RecordingSegmentRow
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:14:
+src/core/include/railhmi/core/persistence_model.h:65:8: note: ‘railhmi::core::RecordingSegmentRow’ declared here
+   65 | struct RecordingSegmentRow {
+      |        ^~~~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:427:5: error: ‘old_c’ was not declared in this scope
+  427 |     old_c.cam = "C";
+      |     ^~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:430:18: error: ‘SegmentKind’ has not been declared
+  430 |     old_c.kind = SegmentKind::Continuous;
+      |                  ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:432:24: error: expected ‘;’ before ‘old_k’
+  432 |     RecordingSegmentRow old_k = old_c;
+      |                        ^~~~~~
+      |                        ;
+/tmp/railhmi_verify007/verify_persist_ext.cpp:433:5: error: ‘old_k’ was not declared in this scope
+  433 |     old_k.kind = SegmentKind::Critical;
+      |     ^~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:433:18: error: ‘SegmentKind’ has not been declared
+  433 |     old_k.kind = SegmentKind::Critical;
+      |                  ^~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:434:24: error: expected ‘;’ before ‘fresh_c’
+  434 |     RecordingSegmentRow fresh_c = old_c;
+      |                        ^~~~~~~~
+      |                        ;
+/tmp/railhmi_verify007/verify_persist_ext.cpp:435:5: error: ‘fresh_c’ was not declared in this scope
+  435 |     fresh_c.t0_ms = now - 10;
+      |     ^~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:441:5: error: ‘RetentionPolicy’ was not declared in this scope; did you mean ‘railhmi::core::RetentionPolicy’?
+  441 |     RetentionPolicy p;
+      |     ^~~~~~~~~~~~~~~
+      |     railhmi::core::RetentionPolicy
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:16:8: note: ‘railhmi::core::RetentionPolicy’ declared here
+   16 | struct RetentionPolicy {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:442:5: error: ‘p’ was not declared in this scope
+  442 |     p.retention_days = 1;
+      |     ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:444:5: error: ‘RetentionResult’ was not declared in this scope; did you mean ‘railhmi::core::RetentionResult’?
+  444 |     RetentionResult r = repo.apply_retention(p, now, &err);
+      |     ^~~~~~~~~~~~~~~
+      |     railhmi::core::RetentionResult
+In file included from /tmp/railhmi_verify007/verify_persist_ext.cpp:15:
+src/core/include/railhmi/core/retention.h:21:8: note: ‘railhmi::core::RetentionResult’ declared here
+   21 | struct RetentionResult {
+      |        ^~~~~~~~~~~~~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:445:11: error: ‘r’ was not declared in this scope
+  445 |     CHECK(r.evicted_ids.size() == 1 && r.evicted_ids[0] == s1 && r.evicted_continuous == 1,
+      |           ^
+/tmp/railhmi_verify007/verify_persist_ext.cpp:33:13: note: in definition of macro ‘CHECK’
+   33 |         if (cond) { ++g_pass; std::printf("[PASS] %s\n", msg); }       \
+      |             ^~~~
+/tmp/railhmi_verify007/verify_persist_ext.cpp:452:37: error: ‘SegmentKind’ has not been declared
+  452 |         if (s.id == s2 && s.kind == SegmentKind::Critical) critical_kept = true;
+      |                                     ^~~~~~~~~~~
+GXX_EXIT=1
+
+
+===== [run-ext] exit=0 =====
+EXT_EXIT=127
+bash: line 1: /tmp/railhmi_verify007/verify_persist_ext: No such file or directory
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify007': No such file or directory
+ls: cannot access '/tmp/railhmi_verify007_board': No such file or directory
+
