@@ -104,7 +104,7 @@ def main() -> int:
     ap.add_argument("--credential-env", default="TRAIN_RK3588_SSH_CREDENTIAL")
     ap.add_argument("--local-dir", default=str(Path(__file__).resolve().parents[1]))
     ap.add_argument("--remote-dir", default="/tmp/railhmi_build")
-    ap.add_argument("--mode", default="CoreTests", choices=["CoreTests", "Release", "Preview", "MediaCheck", "check"])
+    ap.add_argument("--mode", default="CoreTests", choices=["CoreTests", "Release", "Preview", "MediaCheck", "TestRun", "check"])
     ap.add_argument("--outdir", required=True)
     ap.add_argument("--stamp", default=time.strftime("%Y%m%d-%H%M%S"))
     ap.add_argument("--connect-timeout", type=int, default=10)
@@ -159,22 +159,40 @@ def main() -> int:
         finally:
             sftp.close()
 
-        build = rrun(client, "cd %s && bash build.sh %s; echo BUILD_EXIT=$?" % (remote, args.mode),
-                     args.build_timeout)
-        note("build", build)
+        if args.mode == "TestRun":
+            trun = rrun(client, "cd %s && bash tests/run_core_tests.sh --outdir core-evidence --stamp %s; "
+                                "echo TESTRUN_EXIT=$?" % (remote, args.stamp), args.build_timeout)
+            note("testrun", trun)
+            sftp = client.open_sftp()
+            try:
+                sftp.get_channel().settimeout(args.connect_timeout * 6)
+                for rel in ("core-evidence/core-tests-%s.log" % args.stamp,
+                            "core-evidence/core-tests-%s.xml" % args.stamp):
+                    local_out = outdir / ("%s.%s" % (tag, rel.replace("/", "_")))
+                    try:
+                        sftp.get("%s/%s" % (remote, rel), str(local_out))
+                        note("download", {"exit": 0, "output": local_out.name})
+                    except OSError as exc:
+                        note("download", {"exit": None, "output": "%s: %r" % (rel, exc)})
+            finally:
+                sftp.close()
+        else:
+            build = rrun(client, "cd %s && bash build.sh %s; echo BUILD_EXIT=$?" % (remote, args.mode),
+                         args.build_timeout)
+            note("build", build)
 
-        if args.run_tests and args.mode == "CoreTests":
-            run = rrun(client, "cd %s && ./build-core/tests/railhmi-core-tests; echo TEST_EXIT=$?" % remote,
-                       args.build_timeout)
-            note("tests", run)
-            note("config-check-good", rrun(
-                client, "cd %s && ./build-core/tools/railhmi-config-check ./config; echo CFG_EXIT=$?" % remote, 60))
-            bad = ("cd %s && rm -rf /tmp/railhmi_cfg_bad && mkdir -p /tmp/railhmi_cfg_bad "
-                   "&& cp config/*.yaml /tmp/railhmi_cfg_bad/ "
-                   "&& sed -i '/confirm_frames/d' /tmp/railhmi_cfg_bad/thresholds.yaml "
-                   "&& ./build-core/tools/railhmi-config-check /tmp/railhmi_cfg_bad; echo CFG_EXIT=$?; "
-                   "rm -rf /tmp/railhmi_cfg_bad" % remote)
-            note("config-check-bad", rrun(client, bad, 60))
+            if args.run_tests and args.mode == "CoreTests":
+                run = rrun(client, "cd %s && ./build-core/tests/railhmi-core-tests; echo TEST_EXIT=$?" % remote,
+                           args.build_timeout)
+                note("tests", run)
+                note("config-check-good", rrun(
+                    client, "cd %s && ./build-core/tools/railhmi-config-check ./config; echo CFG_EXIT=$?" % remote, 60))
+                bad = ("cd %s && rm -rf /tmp/railhmi_cfg_bad && mkdir -p /tmp/railhmi_cfg_bad "
+                       "&& cp config/*.yaml /tmp/railhmi_cfg_bad/ "
+                       "&& sed -i '/confirm_frames/d' /tmp/railhmi_cfg_bad/thresholds.yaml "
+                       "&& ./build-core/tools/railhmi-config-check /tmp/railhmi_cfg_bad; echo CFG_EXIT=$?; "
+                       "rm -rf /tmp/railhmi_cfg_bad" % remote)
+                note("config-check-bad", rrun(client, bad, 60))
 
         art_targets = {
             "CoreTests": ["build-core/tests/railhmi-core-tests"],

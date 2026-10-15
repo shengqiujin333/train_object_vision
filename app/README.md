@@ -20,7 +20,8 @@
 | ITEM-005 | `railhmi-core` 流状态机与质量判定 | **已交付**：六态（CONNECTING/LIVE/FROZEN/OFFLINE/RECONNECTING/DEGRADED）+ 首帧/冻结/重连退避/阈值升级设备事件；质量标志（过暗/过曝/遮挡/模糊）与 `classify_quality`；非 LIVE 禁止旧帧接口 `may_present_as_live`。板端 CoreTests **79/79 通过**。证据：`docs/hmi/test_evidence/ITEM-005-stream/README.md` |
 | ITEM-006 | `railhmi-core` 检测职责与报警规则/事件层 | **已交付**：按 ai_profile 分派（front 危险区 / pantograph 三态 / wheel_rail / cab_door / none）；多帧确认、跟踪 ID 与抑制窗口；级别严格按 PRD §8.2；ack 只改状态不删除事件。板端 CoreTests **124/124 通过**。证据：`docs/hmi/test_evidence/ITEM-006-rules/README.md` |
 | ITEM-007 | `railhmi-core` 持久化与保留策略模型 | **已交付**：9 表 schema + 数据模型；UTC 毫秒 + 单调微秒时间基准；保护片段优先的保留淘汰；缺口模型；`SqliteStore`/`SqliteRepository`（WAL）。板端以运行时库 + 项目 shim 链接 SQLite（不改系统），CoreTests **230/230 通过**（含 WAL 重放/写入-重启-读取/淘汰顺序/缺口查询）。证据：`docs/hmi/test_evidence/ITEM-007-persistence/README.md` |
-| ITEM-008.. | 主题、导航、注册表运行时、取流、页面、推理、报警中心、录像、回放、权限、恢复、打包 | 未实现 |
+| ITEM-008 | `railhmi-core` 单元测试与可复现验证入口 | **已交付**：`app/tests/run_core_tests.sh` 单命令（构建+运行+归档日志+JUnit XML+退出码）；覆盖配置/六态状态机/规则级别映射/抑制/持久化/保留策略；最小工具链（C++ 编译器+SQLite，无 Qt/GStreamer/相机）。板端 **243/243 通过**，`RESULT: PASS`，JUnit 243/0。证据：`docs/hmi/test_evidence/ITEM-008-coretests/README.md` |
+| ITEM-009.. | 主题、导航、注册表运行时、取流、页面、推理、报警中心、录像、回放、权限、恢复、打包 | 未实现 |
 
 > 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 
