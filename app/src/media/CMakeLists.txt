@@ -16,6 +16,7 @@ endif()
 
 add_library(railhmi_media STATIC
     src/pipeline_factory.cpp
+    src/camera_stream.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -28,3 +29,10 @@ target_link_libraries(railhmi_media PUBLIC
     ${GST_LIBRARIES} ${RGA_LIBRARIES}
 )
 target_compile_options(railhmi_media PRIVATE ${GST_CFLAGS_OTHER})
+
+# 单路取流/状态机探针（ITEM-013；原生 GStreamer，支持 test/file/rtsp 源）
+add_executable(railhmi-stream-probe tools/stream_probe.cpp)
+target_link_libraries(railhmi-stream-probe PRIVATE railhmi_media)
+set_target_properties(railhmi-stream-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)

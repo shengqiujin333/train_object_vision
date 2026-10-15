@@ -214,9 +214,29 @@ def main() -> int:
                        "rm -rf /tmp/railhmi_cfg_bad" % remote)
                 note("config-check-bad", rrun(client, bad, 60))
 
+            if args.mode == "MediaCheck":
+                note("stream-probe", rrun(
+                    client, "cd %s && mkdir -p core-evidence && ./build-media/tools/railhmi-stream-probe "
+                            "--source test --duration 6 --cut-after 3 "
+                            "--out core-evidence/stream-probe-%s.log --json core-evidence/stream-probe-%s.json; "
+                            "echo PROBE_EXIT=$?" % (remote, args.stamp, args.stamp), args.build_timeout))
+                sftp = client.open_sftp()
+                try:
+                    sftp.get_channel().settimeout(args.connect_timeout * 6)
+                    for rel in ("core-evidence/stream-probe-%s.log" % args.stamp,
+                                "core-evidence/stream-probe-%s.json" % args.stamp):
+                        local_out = outdir / ("%s.%s" % (tag, rel.replace("/", "_")))
+                        try:
+                            sftp.get("%s/%s" % (remote, rel), str(local_out))
+                            note("download", {"exit": 0, "output": local_out.name})
+                        except OSError as exc:
+                            note("download", {"exit": None, "output": "%s: %r" % (rel, exc)})
+                finally:
+                    sftp.close()
+
         art_targets = {
             "CoreTests": ["build-core/tests/railhmi-core-tests"],
-            "MediaCheck": ["build-media/src/media/librailhmi_media.a"],
+            "MediaCheck": ["build-media/src/media/librailhmi_media.a", "build-media/tools/railhmi-stream-probe"],
             "Release": ["build-target/railhmi", "build-target/src/media/librailhmi_media.a"],
             "Preview": ["build-preview/railhmi"],
             "check": [],

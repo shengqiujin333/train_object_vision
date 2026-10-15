@@ -1,0 +1,99 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 95 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [build] exit=0 =====
+[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_build' -B '/tmp/railhmi_build/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = MediaCheck
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'
+--   Found gstreamer-1.0, version 1.20.3
+--   Found gstreamer-app-1.0, version 1.20.1
+--   Found gstreamer-video-1.0, version 1.20.1
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_build/build-media
+[build.sh] building: cmake --build '/tmp/railhmi_build/build-media' -j8
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[ 30%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 34%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 38%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 42%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 46%] Linking CXX static library librailhmi_core.a
+[ 46%] Built target railhmi_core
+[ 50%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 61%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 61%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 61%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 65%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 69%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 73%] Linking CXX executable ../../tools/railhmi-config-check
+[ 73%] Built target railhmi-config-check
+[ 76%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 76%] Built target railhmi-sim-inject
+[ 80%] Linking CXX static library librailhmi_platform.a
+[ 80%] Built target railhmi_platform
+[ 88%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o
+[ 88%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o
+[ 92%] Linking CXX static library librailhmi_media.a
+[ 92%] Built target railhmi_media
+[ 96%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o
+[100%] Linking CXX executable ../../tools/railhmi-stream-probe
+[100%] Built target railhmi-stream-probe
+[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_build/build-media
+[build.sh] media layer: /tmp/railhmi_build/build-media/src/media/librailhmi_media.a
+BUILD_EXIT=0
+
+
+===== [stream-probe] exit=0 =====
+type=injection source=test camera=CAM-01 duration_s=6 cut_after_s=3 transport=n/a
+t=0 type=stream_state state=live fps=0.5 last_frame_ms=217072048 reconnect_count=0 presentable=true
+t=538 type=stream_state state=live fps=7.5 last_frame_ms=217072586 reconnect_count=0 presentable=true
+t=1018 type=stream_state state=live fps=13.5 last_frame_ms=217073066 reconnect_count=0 presentable=true
+t=1538 type=stream_state state=live fps=20.0 last_frame_ms=217073586 reconnect_count=0 presentable=true
+t=2018 type=stream_state state=live fps=25.5 last_frame_ms=217074066 reconnect_count=0 presentable=true
+t=2538 type=stream_state state=live fps=25.5 last_frame_ms=217074586 reconnect_count=0 presentable=true
+t=3018 type=injection cut=FI-01 (simulated stream cut)
+t=3018 type=stream_state state=reconnecting fps=24.5 last_frame_ms=217075026 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=3500 type=stream_state state=reconnecting fps=18.5 last_frame_ms=217075026 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=4000 type=stream_state state=reconnecting fps=12.5 last_frame_ms=217075026 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=4500 type=stream_state state=connecting fps=6.0 last_frame_ms=217075026 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=5000 type=stream_state state=connecting fps=0.0 last_frame_ms=217075026 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+t=5500 type=stream_state state=connecting fps=0.0 last_frame_ms=217075026 reconnect_count=1 presentable=false error=simulated stream cut (FI-01)
+type=summary final_state=connecting reconnect_count=1 last_frame_ms=217075026 presentable=false
+PROBE_EXIT=0
+
+
+===== [download] exit=0 =====
+build-MediaCheck-192_168_0_103-20261015-ITEM013-r2.core-evidence_stream-probe-20261015-ITEM013-r2.log
+
+===== [download] exit=0 =====
+build-MediaCheck-192_168_0_103-20261015-ITEM013-r2.core-evidence_stream-probe-20261015-ITEM013-r2.json
+
+===== [artifacts] exit=0 =====
+-rw-rw-r-- 1 admin admin 33736 Oct 16 02:16 build-media/src/media/librailhmi_media.a
+-rwxrwxr-x 1 admin admin 59176 Oct 16 02:16 build-media/tools/railhmi-stream-probe
+
+
+===== [cleanup] exit=0 =====
+cleaned
+
