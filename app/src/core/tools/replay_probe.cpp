@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -69,6 +70,22 @@ int main(int argc, char** argv) {
          " | deviation=" + std::string(bad.in_sync ? "false" : "true") + " dev=" + std::to_string(bad.max_deviation_ms) +
          " prompt=" + bad.prompt);
 
+    // D-01：报警来源 -> 锁定相关摄像头；D-02：由真实回放时钟偏移构建同步快照。
+    const std::vector<std::string> locked = related_cameras("CAM-01");
+    std::string locked_str;
+    for (const auto& c : locked) locked_str += (locked_str.empty() ? "" : ",") + c;
+    emit("type=lock alarm_cam=CAM-01 locked=" + locked_str);
+    std::map<std::string, long long> ping;
+    ping["CAM-02"] = 0; ping["CAM-01"] = 120; ping["CAM-03"] = 200;
+    const SyncSnapshot s_ok = sync_snapshot(locked, alarm, ping, 300);
+    std::map<std::string, long long> pdev = ping; pdev["CAM-03"] = 900;
+    const SyncSnapshot s_bad = sync_snapshot(locked, alarm, pdev, 300);
+    const SyncSnapshot s_none = sync_snapshot(locked, alarm, {}, 300);
+    emit("type=sync-snapshot in_sync_available=" + std::string(s_ok.available ? "true" : "false") +
+         " dev=" + std::to_string(s_ok.max_deviation_ms) +
+         " | deviation_prompt=" + s_bad.prompt +
+         " | no_clock=" + s_none.prompt);
+
     const ReplaySourceStatus st = replay_source_status(false, true);
     emit("type=source source=" + std::string(to_string(st.source)) + " label=" + st.label +
          " usable=" + std::string(st.usable ? "true" : "false") + " note=" + st.note);
@@ -84,9 +101,14 @@ int main(int argc, char** argv) {
                        (t.alarms.size() == 1) && !t.keyframes.empty() &&
                        (j.minus30_ms == alarm - 30000) && (j.plus60_ms == alarm + 60000) && ok.in_sync &&
                        bad.has_prompt && (st.source == ReplaySource::LocalClips) && st.usable &&
-                       (d.confidence_text == "87%");
+                       (d.confidence_text == "87%") && (locked.size() == 3) && s_ok.available && s_ok.in_sync &&
+                       !s_bad.in_sync && (s_bad.prompt.find("同步偏差") != std::string::npos) &&
+                       !s_none.available && (s_none.prompt == "同步状态不可用");
     emit(std::string("type=acceptance alarm_segment=true gap=true jumps_ok=true sync_prompt_on_deviation=") +
-         (bad.has_prompt ? "true" : "false") + " nvr_fallback_local=" +
-         (st.source == ReplaySource::LocalClips ? "true" : "false") + " result=" + (okall ? "PASS" : "FAIL"));
+         (s_bad.prompt.find("同步偏差") != std::string::npos ? "true" : "false") +
+         " lock_related_cameras=" + (locked.size() == 3 ? "true" : "false") +
+         " sync_unavailable_without_clock=" + (!s_none.available ? "true" : "false") +
+         " nvr_fallback_local=" + (st.source == ReplaySource::LocalClips ? "true" : "false") +
+         " result=" + (okall ? "PASS" : "FAIL"));
     return okall ? 0 : 1;
 }

@@ -53,6 +53,28 @@ type=acceptance alarm_segment=true gap=true jumps_ok=true sync_prompt_on_deviati
 - NVR 来源不可用时**显式标注并提供本机片段回放**（`source=local_clips note=NVR 录像不可用，回放本机片段`）✅
 - 事件详情侧栏字段齐全 ✅
 
+## 2.5 修复轮（D-01 / D-02，software_verification TEST_FAIL 交回）
+
+验证反馈（`VERIFY-ITEM-020.md` v1）：core 层全通过，但 QML 接线层两项击中用户可观察点：
+- **D-01 报警卡→回放定位断链**：`main.qml onReplayRequest` 丢弃 `cameraId/tsWallMs`，P3 恒开固定详情/游标。
+- **D-02 三联同步提示恒不可触发**：`P3Replay.refreshSync` 喂恒等三值 `[cursor, cursor, cursor]`，提示结构上不可达。
+
+修复内容：
+1. **core** 新增 `related_cameras(alarm_camera)`（前方主摄→左/前/右；其余→仅该路）与 `sync_snapshot(locked, cursor, camera_offsets, threshold)`（由**各路真实回放时钟偏移**构建；缺时钟→`available=false`）。
+2. **桥接** `RailhmiReplayModel` 新增 `selectAlarm/selectedCameraId/selectedAlarmTs/relatedCameras/selectedDetail/syncState` 与 `seedAlarms/setCameraOffsets`；`main.cpp` 按样例事件灌入报警行并注入三联时钟偏移，启动即 `selectAlarm(CAM-01, t0+5000)`。
+3. **QML** `P3Replay.qml`：`reload()` 消费 `selectedCameraId/selectedAlarmTs/relatedCameras/selectedDetail`，`refreshSync()` 改用 `syncState(cursor)`；无时钟显示“同步状态不可用”（`objectName=syncStatusText`），不再出现恒等三值。`main.qml onReplayRequest` 调用 `railhmiReplay.selectAlarm(cameraId, tsWallMs)`。
+4. **静态取证工具** `app/tools/check_replay_wiring.py`（板端可跑）：核对 `onReplayRequest` 使用两参数并调用 `selectAlarm`、P3 消费四个选择/同步接口、无恒等三值、含“同步状态不可用”。
+
+修复轮板端实测（`board_build.py --mode TestRun`，stamp `20261016-ITEM020-fix-r1`）→ `TESTRUN_EXIT=0` `REPLAY_WIRE_EXIT=0`：
+```
+== 574 passed, 0 failed ==   （较修复前 566 新增 related_cameras/sync_snapshot/配置阈值断言）
+type=lock alarm_cam=CAM-01 locked=CAM-02,CAM-01,CAM-03
+type=sync-snapshot in_sync_available=true dev=200 | deviation_prompt=同步偏差 900 ms（阈值 300 ms） | no_clock=同步状态不可用
+type=acceptance ... lock_related_cameras=true sync_unavailable_without_clock=true ... result=PASS
+[check_replay_wiring] PASS (D-01 selection wired; D-02 dynamic sync + unavailable state)
+```
+`sync_prompt_on_deviation=true`：提示现在**可达**（真实偏移 dev=900 > 阈值 300）；无时钟时明确显示“同步状态不可用”，不再谎报在同步。
+
 ## 3. 边界
 
 - **真实回放取流/解码**复用媒体层（GStreamer 播放链，属媒体/视频职责）；本项交付回放**模型/时间轴/同步/来源/详情**与 QML 页面骨架。

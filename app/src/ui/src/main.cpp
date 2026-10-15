@@ -273,10 +273,10 @@ int main(int argc, char** argv) {
     }
     view.rootContext()->setContextProperty("railhmiAlarms", &alarmModel);
 
-    // 历史回放（ITEM-020）：桥接对象（时间轴/跳转/同步/来源委托 core）。模拟开启时灌入样例。
+    // 历史回放（ITEM-020）：桥接对象（时间轴/跳转/同步/来源/选择委托 core）。模拟开启时灌入样例。
+    // 修复 D-01：按选中报警动态生成详情；修复 D-02：同步状态由各路真实时钟偏移构建。
     RailhmiReplayModel replayModel;
     replayModel.setSyncThreshold(cfg.settings.thresholds.replay_sync_threshold_ms);
-    QVariantMap replayDetail;
     if (cfg.settings.app.simulation) {
         const long long t0 = 1760000000000LL;
         auto seg = [&](long long id, const char* cam, long long a, long long b, bool crit) {
@@ -287,35 +287,41 @@ int main(int argc, char** argv) {
             return r;
         };
         std::vector<railhmi::core::RecordingSegmentRow> segs = {
-            seg(1, "CAM-01", 10000, 80000, false), seg(2, "CAM-01", 90000, 200000, true),
-            seg(3, "CAM-01", 260000, 300000, false), seg(11, "CAM-02", 10000, 300000, false),
-            seg(12, "CAM-03", 10000, 300000, false)};
+            seg(1, "CAM-01", 0, 4000, false), seg(2, "CAM-01", 4000, 120000, true),
+            seg(3, "CAM-01", 130000, 300000, false), seg(11, "CAM-02", 0, 300000, false),
+            seg(12, "CAM-03", 0, 300000, false)};
         std::vector<railhmi::core::RecordingGapRow> gaps;
         railhmi::core::RecordingGapRow gp;
-        gp.cam = "CAM-01"; gp.t0_ms = t0 + 210000; gp.t1_ms = t0 + 250000; gp.reason = "recording_interrupted";
+        gp.cam = "CAM-01"; gp.t0_ms = t0 + 200000; gp.t1_ms = t0 + 250000; gp.reason = "recording_interrupted";
         gaps.push_back(gp);
-        std::vector<long long> alarms = {t0 + 120000};
+        std::vector<long long> alarms = {t0 + 5000};
         replayModel.seed(segs, gaps, alarms, false /*nvr 未核验/不可用*/, true /*本机片段可用*/);
 
-        railhmi::core::EventRow de;
-        de.id = 1; de.level = 1; de.type = "person_on_rail"; de.source_cam = "CAM-01";
-        de.ts_wall_ms = t0 + 120000; de.description = "轨道人员"; de.ack_state = "acked";
-        const railhmi::core::AlarmRow row = railhmi::core::make_alarm_row(
-            de, "前方", railhmi::core::RecordAvailability::Available);
-        const railhmi::core::ReplayEventDetail d = railhmi::core::build_event_detail(row, 12.34, 0.87);
-        replayDetail["timeText"] = QString::fromStdString(d.time_text);
-        replayDetail["typeLabel"] = QString::fromUtf8(d.type_label.c_str());
-        replayDetail["levelLabel"] = QString::fromUtf8(d.level_label.c_str());
-        replayDetail["distanceText"] = QString::fromUtf8(d.distance_text.c_str());
-        replayDetail["confidenceText"] = QString::fromUtf8(d.confidence_text.c_str());
-        replayDetail["ackLabel"] = QString::fromUtf8(d.ack_label.c_str());
-        replayDetail["note"] = QString::fromUtf8(d.note.c_str());
-        replayDetail["tsWallMs"] = static_cast<qlonglong>(de.ts_wall_ms);
+        // 与报警中心样例一致的事件行（选择哪个报警就动态生成哪个详情）
+        auto mkrow = [&](long long id, int lvl, const char* type, const char* cam, const char* name,
+                         long long off, const char* desc, const char* ack) {
+            railhmi::core::EventRow e;
+            e.id = id; e.level = lvl; e.type = type; e.source_cam = cam; e.ts_wall_ms = t0 + off;
+            e.description = desc; e.ack_state = ack;
+            return railhmi::core::make_alarm_row(e, name, railhmi::core::RecordAvailability::Available);
+        };
+        std::vector<railhmi::core::AlarmRow> rows;
+        rows.push_back(mkrow(1, 1, "person_on_rail", "CAM-01", "前方", 5000, "轨道人员", "acked"));
+        rows.push_back(mkrow(3, 2, "pantograph_abnormal", "CAM-04", "车顶", 9000, "受电弓异常", "unacked"));
+        rows.push_back(mkrow(4, 1, "wheel_derail", "CAM-05", "车底", 1000, "轮轨异常", "unacked"));
+        replayModel.seedAlarms(rows, {12.34, -1.0, 3.2}, {0.87, -1.0, 0.91});
+
+        // 各路回放时钟偏移（前方报警三联）；真实媒体源接入前由桥接注入，无时钟时页面显示“同步状态不可用”
+        std::map<std::string, long long> offs;
+        offs["CAM-02"] = 0;
+        offs["CAM-01"] = 120;
+        offs["CAM-03"] = 900;   // 超阈值 300 -> 同步偏差提示可达
+        replayModel.setCameraOffsets(offs);
+        replayModel.selectAlarm("CAM-01", t0 + 5000);
     } else {
         replayModel.seed({}, {}, {}, false, false);
     }
     view.rootContext()->setContextProperty("railhmiReplay", &replayModel);
-    view.rootContext()->setContextProperty("railhmiReplayDetail", replayDetail);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
     view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
     view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);

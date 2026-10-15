@@ -88,6 +88,13 @@ void jump_to(PlaybackState* s, long long target_ms) { s->pos_ms = target_ms; }
 
 std::vector<std::string> front_alarm_sync_group() { return {"CAM-02", "CAM-01", "CAM-03"}; }
 
+std::vector<std::string> related_cameras(const std::string& alarm_camera) {
+    // 前方主摄报警 -> 左/前/右三联；其他来源 -> 仅该路（锁定相关摄像头）。
+    if (alarm_camera == "CAM-01") return front_alarm_sync_group();
+    if (alarm_camera.empty()) return {};
+    return {alarm_camera};
+}
+
 SyncResult sync_status(const std::vector<long long>& positions_ms, int threshold_ms) {
     SyncResult r;
     if (positions_ms.empty()) return r;
@@ -103,6 +110,32 @@ SyncResult sync_status(const std::vector<long long>& positions_ms, int threshold
         r.prompt = "同步偏差 " + std::to_string(r.max_deviation_ms) + " ms（阈值 " +
                    std::to_string(threshold_ms) + " ms）";
     return r;
+}
+
+SyncSnapshot sync_snapshot(const std::vector<std::string>& locked_cameras, long long cursor_ms,
+                           const std::map<std::string, long long>& camera_offsets_ms, int threshold_ms) {
+    SyncSnapshot s;
+    if (locked_cameras.empty() || camera_offsets_ms.empty()) {
+        s.available = false;
+        s.prompt = "同步状态不可用";
+        return s;
+    }
+    std::vector<long long> positions;
+    for (const auto& cam : locked_cameras) {
+        auto it = camera_offsets_ms.find(cam);
+        if (it == camera_offsets_ms.end()) {
+            s.available = false;   // 缺少某路真实时钟 -> 不可用（不谎报在同步）
+            s.prompt = "同步状态不可用";
+            return s;
+        }
+        positions.push_back(cursor_ms + it->second);
+    }
+    const SyncResult r = sync_status(positions, threshold_ms);
+    s.available = true;
+    s.in_sync = r.in_sync;
+    s.max_deviation_ms = r.max_deviation_ms;
+    s.prompt = r.prompt;
+    return s;
 }
 
 const char* to_string(ReplaySource s) {

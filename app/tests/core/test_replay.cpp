@@ -4,6 +4,7 @@
 
 #include "test_util.h"
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -78,6 +79,44 @@ void test_sync() {
     railhmi_test::check(bad.prompt.find("同步偏差") != std::string::npos, "prompt text");
 }
 
+void test_selection_and_sync_snapshot() {
+    // 前方主摄报警 -> 锁定左/前/右；其他来源 -> 仅该路（D-01 修复）
+    const std::vector<std::string> front = related_cameras("CAM-01");
+    railhmi_test::check(front.size() == 3 && front[0] == "CAM-02" && front[2] == "CAM-03",
+                        "front alarm locks left/front/right");
+    const std::vector<std::string> wheel = related_cameras("CAM-05");
+    railhmi_test::check(wheel.size() == 1 && wheel[0] == "CAM-05", "non-front alarm locks only its camera");
+    railhmi_test::check(related_cameras("").empty(), "empty camera -> no lock");
+
+    // 无真实时钟偏移 -> 不可用（D-02 修复：不显示恒真在同步）
+    const SyncSnapshot none = sync_snapshot(related_cameras("CAM-01"), 50000, {}, 300);
+    railhmi_test::check(!none.available && none.prompt == "同步状态不可用", "no clocks -> sync unavailable");
+
+    // 锁定路缺偏移 -> 不可用
+    std::map<std::string, long long> partial;
+    partial["CAM-02"] = 0;
+    partial["CAM-01"] = 100;
+    const SyncSnapshot missing = sync_snapshot(related_cameras("CAM-01"), 50000, partial, 300);
+    railhmi_test::check(!missing.available, "missing a locked camera clock -> unavailable");
+
+    // 全部有偏移且在阈值内 -> 在同步
+    std::map<std::string, long long> ok;
+    ok["CAM-02"] = 0;
+    ok["CAM-01"] = 100;
+    ok["CAM-03"] = 200;
+    const SyncSnapshot in = sync_snapshot(related_cameras("CAM-01"), 50000, ok, 300);
+    railhmi_test::check(in.available && in.in_sync && in.max_deviation_ms == 200 && in.prompt.empty(),
+                        "all clocks within threshold -> in sync");
+
+    // 超阈值 -> 提示
+    std::map<std::string, long long> dev = ok;
+    dev["CAM-03"] = 900;
+    const SyncSnapshot over = sync_snapshot(related_cameras("CAM-01"), 50000, dev, 300);
+    railhmi_test::check(over.available && !over.in_sync && over.max_deviation_ms == 900 &&
+                            over.prompt.find("同步偏差") != std::string::npos,
+                        "deviation over threshold -> prompt (reachable)");
+}
+
 void test_source() {
     const ReplaySourceStatus nvr = replay_source_status(true, true);
     railhmi_test::check(nvr.source == ReplaySource::Nvr && nvr.usable, "nvr available");
@@ -109,6 +148,7 @@ void run_replay_tests() {
     test_timeline();
     test_jumps();
     test_sync();
+    test_selection_and_sync_snapshot();
     test_source();
     test_event_detail();
 }

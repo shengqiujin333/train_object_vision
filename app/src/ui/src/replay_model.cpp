@@ -23,6 +23,91 @@ void RailhmiReplayModel::seed(const std::vector<RecordingSegmentRow>& segments,
     local_available_ = local_available;
 }
 
+void RailhmiReplayModel::seedAlarms(const std::vector<railhmi::core::AlarmRow>& rows,
+                                   const std::vector<double>& distances,
+                                   const std::vector<double>& confidences) {
+    alarm_rows_ = rows;
+    distances_ = distances;
+    confidences_ = confidences;
+}
+
+void RailhmiReplayModel::setCameraOffsets(const std::map<std::string, long long>& offsets_ms) {
+    offsets_ = offsets_ms;
+}
+
+void RailhmiReplayModel::selectAlarm(const QString& camera_id, double ts_wall_ms) {
+    selected_cam_ = camera_id.toStdString();
+    selected_ts_ = static_cast<long long>(ts_wall_ms);
+    emit selectionChanged();
+}
+
+QVariantList RailhmiReplayModel::relatedCameras() const {
+    std::vector<std::string> locked;
+    if (!selected_cam_.empty()) locked = railhmi::core::related_cameras(selected_cam_);
+    else locked = railhmi::core::front_alarm_sync_group();
+    QVariantList out;
+    for (const auto& c : locked) out.append(QString::fromStdString(c));
+    return out;
+}
+
+const railhmi::core::AlarmRow* RailhmiReplayModel::find(const std::string& cam, long long ts) const {
+    const railhmi::core::AlarmRow* best = nullptr;
+    long long best_delta = 0;
+    for (const auto& r : alarm_rows_) {
+        if (!cam.empty() && r.camera_id != cam) continue;
+        const long long d = r.ts_wall_ms > ts ? r.ts_wall_ms - ts : ts - r.ts_wall_ms;
+        if (!best || d < best_delta) {
+            best = &r;
+            best_delta = d;
+        }
+    }
+    return best;
+}
+
+QVariantMap RailhmiReplayModel::selectedDetail() const {
+    QVariantMap m;
+    const railhmi::core::AlarmRow* row = find(selected_cam_, selected_ts_);
+    if (!row) {
+        m["cameraId"] = QString::fromStdString(selected_cam_);
+        m["tsWallMs"] = static_cast<qlonglong>(selected_ts_);
+        return m;
+    }
+    double dist = -1.0, conf = -1.0;
+    for (std::size_t i = 0; i < alarm_rows_.size(); ++i) {
+        if (&alarm_rows_[i] == row) {
+            if (i < distances_.size()) dist = distances_[i];
+            if (i < confidences_.size()) conf = confidences_[i];
+            break;
+        }
+    }
+    const railhmi::core::ReplayEventDetail d = railhmi::core::build_event_detail(*row, dist, conf);
+    m["cameraId"] = QString::fromStdString(row->camera_id);
+    m["cameraName"] = QString::fromUtf8(row->camera_name.c_str());
+    m["tsWallMs"] = static_cast<qlonglong>(row->ts_wall_ms);
+    m["timeText"] = QString::fromStdString(d.time_text);
+    m["typeLabel"] = QString::fromUtf8(d.type_label.c_str());
+    m["levelLabel"] = QString::fromUtf8(d.level_label.c_str());
+    m["distanceText"] = QString::fromUtf8(d.distance_text.c_str());
+    m["confidenceText"] = QString::fromUtf8(d.confidence_text.c_str());
+    m["ackLabel"] = QString::fromUtf8(d.ack_label.c_str());
+    m["note"] = QString::fromUtf8(d.note.c_str());
+    return m;
+}
+
+QVariantMap RailhmiReplayModel::syncState(double cursor_ms) const {
+    std::vector<std::string> locked;
+    if (!selected_cam_.empty()) locked = railhmi::core::related_cameras(selected_cam_);
+    else locked = railhmi::core::front_alarm_sync_group();
+    const railhmi::core::SyncSnapshot s = railhmi::core::sync_snapshot(
+        locked, static_cast<long long>(cursor_ms), offsets_, sync_threshold_ms_);
+    QVariantMap m;
+    m["available"] = s.available;
+    m["inSync"] = s.in_sync;
+    m["maxDeviationMs"] = static_cast<qlonglong>(s.max_deviation_ms);
+    m["prompt"] = QString::fromUtf8(s.prompt.c_str());
+    return m;
+}
+
 QVariantMap RailhmiReplayModel::timeline(const QString& camera_id, const QString& date,
                                          int keyframe_interval_ms) const {
     QVariantMap m;

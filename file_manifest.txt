@@ -99,11 +99,11 @@ app/src/ui/qml/components/NavBar.qml | active | 固定导航（仅渲染角色�
 app/src/ui/qml/components/StatusItem.qml | active | 状态项（颜色+形状字形+文字三重编码；正常简洁/异常突出；异常可点击；ITEM-016）
 app/src/ui/qml/components/TopStatusBar.qml | active | 顶部全局状态条（ITEM-016：时间/模式·红外未接入/录像/AI/系统健康/未接入项；三重编码；无切换控件）
 app/src/ui/qml/components/VideoSurface.qml | active | 视频渲染面（按配置渲染路径 cpu/gl 选择实现；非 LIVE 占位层，旧帧不当实时；右下显示 render 路径）
-app/src/ui/qml/main.qml | active | 应用外壳（ITEM-011/012/016/017/018/020）：顶部状态条（railhmiTopBar）+ 角色化固定导航 + 按 id 选择页面（含 P2 报警中心/P3 历史回放/P5 AI 调试）+ 受限页 + 状态项点击跳转/无权限 + 报警中心查看录像跳转；颜色/字号均来自 Theme
+app/src/ui/qml/main.qml | active | 应用外壳（ITEM-011/012/016/017/018/020）：顶部状态条 + 角色化固定导航 + 页面分发（P2/P3/P5）+ 受限页 + 状态项跳转/无权限 + 报警卡查看录像调 railhmiReplay.selectAlarm(cameraId, ts)；颜色/字号来自 Theme
 app/src/ui/qml/pages/DeniedView.qml | active | 受限页视图（无权限说明 + 返回）
 app/src/ui/qml/pages/P1Realtime.qml | active | P1 实时监控三联（比例来自 railhmiLayout；左-前-右，前方最大；关键状态区 KeyStatusStrip + 当前报警条；司机页不显示徽标；ITEM-016 状态点击冒泡）
 app/src/ui/qml/pages/P2AlarmCenter.qml | active | P2 报警中心（ITEM-018：筛选栏/列表字段/默认排序/行内录像标注/确认·批量确认·查看录像·查看快照/空态）
-app/src/ui/qml/pages/P3Replay.qml | active | P3 历史回放（ITEM-020：日期/摄像头/三联同步开关、时间轴连续-报警-缺口-游标、关键帧、四跳转、事件详情栏、NVR 不可用标注）
+app/src/ui/qml/pages/P3Replay.qml | active | P3 历史回放（ITEM-020：日期/摄像头/三联同步开关、时间轴连续-报警-缺口-游标、关键帧、四跳转、事件详情栏、NVR 不可用标注；D-01 选择锁定 + D-02 动态同步/不可用态）
 app/src/ui/qml/pages/P4AllCameras.qml | active | P4 全摄像头（ITEM-015：3x2/2x3 固定槽位网格；每格名/状态标签/fps/最近帧/重连/徽标；断流不重排不丢格）
 app/src/ui/qml/pages/P5AiDebug.qml | active | P5 AI 调试（ITEM-017：检测框/ROI/置信度/FPS/延迟/模型版本/最近结果；叠加层默认关闭；AI 不可用显式标注）
 app/src/ui/qml/pages/P6Maintenance.qml | active | P6 设备维护（摄像头徽标 + NVR DeviceCard）
@@ -112,8 +112,8 @@ app/src/ui/qml/qmldir | active | QML 模块清单（singleton Theme/Tokens；由
 app/src/ui/src/alarm_model.cpp | active | 报警中心桥接实现（事件灌入/筛选查询/批量确认/维护日志文本；ITEM-018）
 app/src/ui/src/alarm_model.h | active | 报警中心 QML 桥接接口（query/options/ack 委托 core；ITEM-018）
 app/src/ui/src/main.cpp | active | Qt 应用入口（启动即校验配置；按角色注入导航/模式位、摄像头与 NVR 集成项上下文、三联布局 railhmiLayout、渲染路径 railhmiRenderPath、全摄像头 railhmiChannels/railhmiGrid、关键状态区 railhmiKeyStatus 与顶部条 railhmiTopBar、AI 调试 railhmiAiDebug、报警中心 railhmiAlarms、历史回放 railhmiReplay/railhmiReplayDetail；加载 qrc:/qml/main.qml）
-app/src/ui/src/replay_model.cpp | active | 历史回放桥接实现（时间轴/跳转/同步/来源/时间格式；ITEM-020）
-app/src/ui/src/replay_model.h | active | 历史回放 QML 桥接接口（timeline/jumpTargets/syncStatus/sourceStatus 委托 core；ITEM-020）
+app/src/ui/src/replay_model.cpp | active | 历史回放桥接实现（时间轴/跳转/同步/来源/时间格式 + 报警选择动态详情 + 真实时钟偏移同步快照；ITEM-020）
+app/src/ui/src/replay_model.h | active | 历史回放 QML 桥接接口（timeline/jumpTargets/syncStatus/sourceStatus + D-01 selectAlarm/selectedDetail/relatedCameras + D-02 syncState 委托 core；ITEM-020）
 app/tests/core/CMakeLists.txt | active | railhmi-core-tests 可执行（多源：harness/平台/配置/流/规则/持久化/模拟/导航/注册表/布局/网格/状态/推理/报警中心/片段/回放；注入 RAILHMI_CONFIG_DIR；固定输出到 build/tests/）
 app/tests/core/main.cpp | active | railhmi-core 单元测试入口（平台/配置/流/规则/持久化/模拟/导航/注册表/布局/网格/状态/推理/报警中心/片段/回放十五组；支持 --junit 可归档 XML）
 app/tests/core/test_alarm_center.cpp | active | 报警中心测试（ITEM-018：字段派生/默认排序/六维筛选与空态/确认不删事件/维护日志）
@@ -135,10 +135,11 @@ app/tests/core/test_util.cpp | active | 测试 harness 实现（pass/fail 计数
 app/tests/core/test_util.h | active | 测试 harness 声明（断言记录与 write_junit）
 app/tests/run_core_tests.sh | active | core 单命令测试入口（构建+运行+归档日志/JUnit XML+退出码；ITEM-008 交付，验证轮独立复现 243/243）
 app/third_party/sqlite/sqlite3_min.h | active | 最小 SQLite C API 声明（无系统 sqlite3.h 时使用；存在系统头则优先系统头）
-app/tools/board_build.py | active | 板端构建/测试运行器（上传 app/ + build.sh；CoreTests 运行 core-tests/config-check；TestRun 运行 run_core_tests.sh + tokens-selftest + ui-scan + railhmi-sim-inject + railhmi-status-probe + railhmi-ai-probe + railhmi-alarm-probe + railhmi-clip-probe + railhmi-replay-probe；MediaCheck 构建 media + 运行 railhmi-stream-probe/multi-probe/ai-runner 并取回归档；全超时 + known_hosts）
+app/tools/board_build.py | active | 板端构建/测试运行器（上传 app/ + build.sh；CoreTests 运行 core-tests/config-check；TestRun 运行 run_core_tests.sh + tokens-selftest + ui-scan（硬编码扫描 + 回放接线核对）+ railhmi-sim-inject + status/ai/alarm/clip/replay 探针；MediaCheck 构建 media + 运行 railhmi-stream-probe/multi-probe/ai-runner 并取回归档；全超时 + known_hosts）
 app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
 app/tools/board_render_spike.py | active | ITEM-002 板端渲染 spike 运行器（上传/构建 QML spike、无 Qt 核心测量编译运行、gl 构造探测、取回日志/JSON、判据选择；全超时 + known_hosts）
 app/tools/check_no_hardcoded_ui.py | active | UI 硬编码静态扫描（禁止 hex 色值/字号）
+app/tools/check_replay_wiring.py | active | 回放接线静态核对（ITEM-020 修复取证：D-01 onReplayRequest 使用 cameraId/tsWallMs 并调 selectAlarm；D-02 P3 消费 syncState 且无恒等三值、含“同步状态不可用”）
 app/tools/env_probe.py | active | 桌面应用依赖/环境只读探针（标准库；目标板与主机均可跑，生成 md/raw/json；支持 --skip-slow 与 QML/Quick 库、qml 目录核验）
 app/tools/gen_tokens.py | active | 设计令牌生成器（design_tokens.yaml → tokens.json/Theme.qml/Tokens.qml/qmldir，含 --selftest）
 app/tools/run_env_check.sh | active | 依赖探针运行入口脚本（输出到 docs/hmi/test_evidence/ENV-B-dependency）
@@ -789,6 +790,18 @@ docs/hmi/test_evidence/ITEM-020-replay/README.md | active | ITEM-020 历史回�
 docs/hmi/test_evidence/ITEM-020-replay/VERIFY-FIXTURES-VERIFY-20261016-v1.log | active | ITEM-020 验证轮 v1 权威日志（全部业务步骤 exit=0；QML 接线扫描 D-01/D-02 确证）
 docs/hmi/test_evidence/ITEM-020-replay/VERIFY-FIXTURES-VERIFY-20261016-v1.transcript.json | active | ITEM-020 验证轮 v1 transcript（指纹/逐 step/退出码/findings）
 docs/hmi/test_evidence/ITEM-020-replay/VERIFY-ITEM-020.md | active | ITEM-020 验证报告（software_verification 权威轮 v1 TEST_FAIL：板端 TestRun 独立复跑 566/566 逐行一致 + replay-probe 独立断言/确定性复现 + ext 63/63 + 配置阈值接线；D-01 报警卡进入未定位报警时刻/未锁定摄像头（main.qml onReplayRequest 丢弃参数）、D-02 三联同步提示恒不可触发（[cursor,cursor,cursor] 喂 syncStatus）交实现）
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_ai-probe-20261016-ITEM020-fix-r1.log | active | ITEM-020 修复轮板端运行日志/回归留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_alarm-probe-20261016-ITEM020-fix-r1.log | active | ITEM-020 修复轮板端运行日志/回归留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_clip-probe-20261016-ITEM020-fix-r1.log | active | ITEM-020 修复轮板端运行日志/回归留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_core-tests-20261016-ITEM020-fix-r1.log | active | ITEM-020 修复轮 core 单测（574 passed / 0 failed）
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_core-tests-20261016-ITEM020-fix-r1.xml | active | ITEM-020 修复轮 JUnit XML
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_replay-probe-20261016-ITEM020-fix-r1.log | active | ITEM-020 修复轮 replay-probe（锁定相关摄像头 + 同步快照可用/偏差提示/无时钟不可用 PASS）
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_sim-inject-20261016-ITEM020-fix-r1.json | active | ITEM-020 修复轮板端运行日志/回归留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_sim-inject-20261016-ITEM020-fix-r1.log | active | ITEM-020 修复轮板端运行日志/回归留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_status-probe-20261016-ITEM020-fix-r1.log | active | ITEM-020 修复轮板端运行日志/回归留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_status-probe-driver-20261016-ITEM020-fix-r1.log | active | ITEM-020 修复轮板端运行日志/回归留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.log | active | ITEM-020 修复轮板端运行日志/回归留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.transcript.json | active | ITEM-020 验证/修复轮 transcript
 docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.core-evidence_ai-probe-20261016-ITEM020-r1.log | active | ITEM-020 推理探针回归留痕
 docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.core-evidence_alarm-probe-20261016-ITEM020-r1.log | active | ITEM-020 报警中心探针回归留痕
 docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.core-evidence_clip-probe-20261016-ITEM020-r1.log | active | ITEM-020 保护片段探针回归留痕

@@ -5,6 +5,7 @@
 // 前方报警默认左/前/右同时间轴同步与偏差阈值提示、事件详情侧栏、
 // NVR 来源不可用时显式标注并回退本机片段。纯逻辑，无 Qt/SQLite。
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -74,6 +75,9 @@ void jump_to(PlaybackState* s, long long target_ms);
 
 // 三联同步（左/前/右）。
 std::vector<std::string> front_alarm_sync_group();   // 顺序：左侧 CAM-02 / 前方 CAM-01 / 右侧 CAM-03
+// 报警来源相机 -> 需锁定的相关摄像头（前方主摄 -> 左/前/右三联；其余 -> 仅该路）。
+std::vector<std::string> related_cameras(const std::string& alarm_camera);
+
 struct SyncResult {
     long long max_deviation_ms = 0;
     bool in_sync = true;
@@ -81,6 +85,17 @@ struct SyncResult {
     std::string prompt;
 };
 SyncResult sync_status(const std::vector<long long>& positions_ms, int threshold_ms);
+
+// 三路同步快照：由各路真实回放时钟偏移构建位置。无可用时钟（或锁定路缺偏移）时
+// available=false（界面显示“同步状态不可用”，不显示恒真“在同步”）。
+struct SyncSnapshot {
+    bool available = false;
+    bool in_sync = false;
+    long long max_deviation_ms = 0;
+    std::string prompt;
+};
+SyncSnapshot sync_snapshot(const std::vector<std::string>& locked_cameras, long long cursor_ms,
+                           const std::map<std::string, long long>& camera_offsets_ms, int threshold_ms);
 
 // 回放来源（NVR 不可用时显式标注并回退本机片段）。
 enum class ReplaySource { LocalClips, Nvr, Unavailable };

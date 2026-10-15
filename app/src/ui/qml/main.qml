@@ -35,8 +35,10 @@ Rectangle {
         if (id === "maintenance") return "pages/P6Maintenance.qml"
         return "pages/PageView.qml"
     }
-    // 报警中心“查看录像” -> 跳转历史回放（ITEM-018）。
+    // 报警中心“查看录像” -> 锁定相关摄像头并定位报警时刻（ITEM-020 D-01 修复）。
     function onReplayRequest(cameraId, tsWallMs) {
+        if (typeof railhmiReplay !== "undefined" && railhmiReplay)
+            railhmiReplay.selectAlarm(cameraId, tsWallMs)
         shell.currentPageId = "replay"
         shell.denied = !shell.allowed("replay")
     }
