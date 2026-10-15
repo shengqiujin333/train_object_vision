@@ -173,6 +173,7 @@ cat /sys/kernel/debug/rknpu/version; cat /sys/kernel/debug/rknpu/load; ldconfig 
 |---|---|---|
 | 2026-10-15 | 首次建立探针 `app/tools/env_probe.py` + `run_env_check.sh`；主机执行并留档 | 主机运行探针，原始输出归档至 `docs/hmi/test_evidence/ENV-B-dependency/`；核对了探针对“命令不存在/超时/未执行”的如实记录与 hostname/machine 环境标注 |
 | 2026-10-15 | 修复评审 D-02（编号对齐 §3.4）、D-03（E-11 接口能力归属明确）、D-04（新增 E-13 UI 渲染前提）；新增 §14 渲染 spike 状态 | 主机重跑探针生成 `env-probe-host-20251015-r2.{md,json}`；`analyze.py --selftest` 6/6；`run_render_spike.sh --dry-run` 通过 |
+| 2026-10-15（重试） | §14 增补 ENV-C 替代源（`--source file\|test`）与 `--md-out` 实测表生成；说明无相机时仍可完成协商/换算测量 | `analyze.py --selftest` 6/6；`--md-out` synthetic fixture 表格验证；`--source test --dry-run` 通过；证据 `ITEM-002-render-path/host-selftest-20251015-r2.txt`；板端仍未执行 |
 
 ---
 
@@ -188,6 +189,7 @@ cat /sys/kernel/debug/rknpu/version; cat /sys/kernel/debug/rknpu/load; ldconfig 
 | 板端实测（path=gl / path=cpu） | **未执行**（项目设备工具禁用，未连接 RK3588，未访问相机） |
 | 选定的主/回退路径 | **未选定**（`UNMEASURED`）——按判据“未实测前不假定主路径成立” |
 | 可执行入口 | `app/spikes/render_path/run_render_spike.sh`（板端）+ `analyze.py`（判据） |
+| 输入源模式 | `rtsp`（ENV-D 真机）/ `file`、`test`（ENV-C 替代源，无相机可测协商与换算） |
 | 主机可执行的校验 | `analyze.py --selftest` 6/6 通过；`run_render_spike.sh --dry-run` 通过（见证据） |
 
 **实测数据表（待板端填写；当前为空）**
@@ -212,8 +214,11 @@ cat /sys/kernel/debug/rknpu/version; cat /sys/kernel/debug/rknpu/load; ldconfig 
 ### 14.4 待授权后执行（交设备授权）
 
 ```sh
-# 目标板，需项目授权与可用相机
+# 目标板，需项目授权与可用相机（ENV-D）
 cd app/spikes/render_path
 ./run_render_spike.sh --url 'rtsp://<user>:<pass>@<cam>/...' --duration 20 --snapshot
-# 将 selection-<stamp>.json 的 selected 值回填本节 14.1 与 render_path_spike.md
+# 若无相机（设备未授权），可用 ENV-C 替代源完成协商/换算测量：
+./run_render_spike.sh --source file --file /path/to/clip.mp4 --duration 20 --snapshot
+./run_render_spike.sh --source test --duration 10
+# 将 selection-<stamp>.md 贴入本节 14.1，或把 selected 值回填
 ```

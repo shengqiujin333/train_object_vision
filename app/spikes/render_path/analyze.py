@@ -29,6 +29,31 @@ import sys
 FATAL_KEYS = ("error", "fail", "missing", "not available", "did not reach playing")
 
 
+def render_markdown(result: dict) -> str:
+    lines = []
+    lines.append("| path | playing | fps_source | fps_display | CPU%(单核) | GPU load avg | 色彩 spread | 结论 |")
+    lines.append("|---|---|---|---|---|---|---|---|")
+    for key in ("gl", "cpu"):
+        d = result.get(key) or {}
+        lines.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (
+            key, d.get("playing", "-"), _fmt(d.get("fps_source")), _fmt(d.get("fps_display")),
+            _fmt(d.get("cpu_pct_one_core")), _fmt(d.get("gpu_load_avg")),
+            _fmt(d.get("color_spread")), "可用" if d.get("usable") else "; ".join(d.get("reasons", [])) or "不可用"))
+    lines.append("")
+    lines.append("**选定路径: `%s`**（status=%s，min_fps=%s）" %
+                 (result.get("selected"), result.get("status"), result.get("min_fps")))
+    return "\n".join(lines)
+
+
+def _fmt(v):
+    if v is None:
+        return "-"
+    try:
+        return ("%.2f" % float(v)).rstrip("0").rstrip(".")
+    except (TypeError, ValueError):
+        return str(v)
+
+
 def path_usable(m, min_fps: float, max_spread: float):
     """返回 (usable: bool, reasons: list[str])"""
     reasons = []
@@ -66,6 +91,8 @@ def decide(gl, cpu, min_fps=20.0, max_spread=12.0) -> dict:
                 "note": "no board measurement provided; no path assumed (ITEM-002 requires real run)"}
     gl_ok, gl_reasons = path_usable(gl, min_fps, max_spread)
     cpu_ok, cpu_reasons = path_usable(cpu, min_fps, max_spread)
+    gl_color = (gl or {}).get("color") or {}
+    cpu_color = (cpu or {}).get("color") or {}
     if gl_ok:
         selected, status = "gl", "SELECTED"
     elif cpu_ok:
@@ -78,15 +105,19 @@ def decide(gl, cpu, min_fps=20.0, max_spread=12.0) -> dict:
         "min_fps": min_fps,
         "max_spread": max_spread,
         "gl": {"usable": gl_ok, "reasons": gl_reasons,
+               "playing": (gl or {}).get("playing"),
                "fps_source": (gl or {}).get("fps_source"),
                "fps_display": (gl or {}).get("fps_display"),
                "cpu_pct_one_core": (gl or {}).get("cpu_pct_one_core"),
-               "gpu_load_avg": (gl or {}).get("gpu_load_avg")},
+               "gpu_load_avg": (gl or {}).get("gpu_load_avg"),
+               "color_spread": gl_color.get("spread")},
         "cpu": {"usable": cpu_ok, "reasons": cpu_reasons,
+                "playing": (cpu or {}).get("playing"),
                 "fps_source": (cpu or {}).get("fps_source"),
                 "fps_display": (cpu or {}).get("fps_display"),
                 "cpu_pct_one_core": (cpu or {}).get("cpu_pct_one_core"),
-                "gpu_load_avg": (cpu or {}).get("gpu_load_avg")},
+                "gpu_load_avg": (cpu or {}).get("gpu_load_avg"),
+                "color_spread": cpu_color.get("spread")},
     }
 
 
@@ -126,6 +157,7 @@ def main() -> int:
     ap.add_argument("--min-fps", type=float, default=20.0)
     ap.add_argument("--max-spread", type=float, default=12.0)
     ap.add_argument("--out", help="write decision JSON")
+    ap.add_argument("--md-out", help="write markdown fragment for build_env_check.md §14")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
 
@@ -148,6 +180,9 @@ def main() -> int:
     if args.out:
         with open(args.out, "w", encoding="utf-8") as fh:
             fh.write(text)
+    if args.md_out:
+        with open(args.md_out, "w", encoding="utf-8") as fh:
+            fh.write(render_markdown(result) + "\n")
     if result["status"] == "UNMEASURED":
         return 2
     if result["status"] == "NONE_USABLE":

@@ -30,6 +30,14 @@
 - `gl` 出图侧由 `qmlglsink` 上游计数、`cpu` 出图侧由 `FrameItem::setImage` 计数 → `fps_display`；
 - 一次性 NV12→RGA→BGR 抓帧：检查 BGR 三通道均值（`README.md` §2.3 判据：三通道均值近似相等，G>2，spread<12）并保存快照（PNG，回退 BMP）供**用户**目视。
 
+输入源（`--source`）三选一，对应 `TEST_DESIGN` §1 的环境分层与资源缺口替代：
+
+| source | 管线头 | 用途 |
+|---|---|---|
+| `rtsp`（默认） | `rtspsrc(location, 强制 UDP) ! decodebin` | ENV-D 真机；需相机凭据与项目授权 |
+| `file` | `filesrc ! decodebin` | **ENV-C 替代源**：无相机时用预录视频测同一渲染/换算路径（文件需不短于 `--duration`） |
+| `test` | `videotestsrc ! videoconvert ! NV12` | ENV-C 合成源：只验协商与管线，不代表真实画面质量 |
+
 关键实现约束（与设计一致）：强制 UDP；`mppvideodec` 输出 NV12；**不**用 OpenCV 拉 NV12；RGA 成功码 `SUCCESS(1)/NOERROR(2)`；
 耗时转换与图像拷贝在工作线程，经排队信号投递 UI 线程。
 
@@ -58,10 +66,16 @@
 python3 app/spikes/render_path/analyze.py --selftest          # 6/6 期望通过
 bash    app/spikes/render_path/run_render_spike.sh --dry-run
 
-# 目标板：真实测量（需项目授权与可用相机）
+# 目标板 A：真机（需项目授权与可用相机）
 cd app/spikes/render_path
 ./run_render_spike.sh --url 'rtsp://<user>:<pass>@<cam>/...' --duration 20 --snapshot
-# 产物目录 docs/hmi/test_evidence/ITEM-002-render-path/
+
+# 目标板 B：无相机时的 ENV-C 替代源（预录文件 / 合成）
+./run_render_spike.sh --source file --file /path/to/clip.mp4 --duration 20 --snapshot
+./run_render_spike.sh --source test --duration 10
+
+# 结果：docs/hmi/test_evidence/ITEM-002-render-path/
+#   {gl,cpu,selection}-<stamp>.json  selection-<stamp>.md（可直接贴入 build_env_check.md §14）
 ```
 
 ---
@@ -90,8 +104,11 @@ cd app/spikes/render_path
 | R1 | `analyze.py --selftest` | 6/6 通过（覆盖 gl 优先、gl 失败回退 cpu、双失败、色彩不通过、帧率不足、无数据 UNMEASURED） |
 | R2 | `analyze.py`（无输入） | 输出 `UNMEASURED`，退出码 2（不假定路径） |
 | R3 | `run_render_spike.sh --dry-run` | 打印构建/测量/选择计划，退出 0；不构建、不访问设备 |
+| R4 | `analyze.py --md-out`（**synthetic fixtures**） | 正确生成可贴入 `build_env_check.md` §14 的实测表与选定行（gl 优先）；fixtures 非真实设备数据 |
+| R5 | `run_render_spike.sh --source test --dry-run` | 确认 ENV-C 替代源参数贯通 |
 
-证据: `docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015.txt`
+证据: `docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015.txt`（首次）、
+`docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015-r2.txt`（重试：source/md-out 验证）
 
 ---
 
@@ -101,6 +118,7 @@ cd app/spikes/render_path
 2. **spike 未在主机编译**（主机无 Qt/GStreamer/librga/编译器）——C++ 源码与 CMake 的编译验证属板端范围。
 3. 依赖 E-02（`qmlglsink`）、E-03（Mali GL）、E-04（`glupload/glcolorconvert`）、E-05（librga）；任一缺失会影响对应路径，结果以实测记录为准。
 4. 6 路并发与多页面合成性能不在本 spike。
+5. 重试新增 `source=file/test` 后，即使目标板没有可用相机也可在 ENV-C 完成**协商与管线/换算性能**测量；但真实相机画面质量（眩光/夜间）仍需 ENV-D 且由用户目视。
 
 ---
 
@@ -109,3 +127,4 @@ cd app/spikes/render_path
 | 日期 | 变更 | 检查方式 |
 |---|---|---|
 | 2026-10-15 | 初次交付 spike（`main.cpp`/QML/CMake/驱动/判据）；主机实测入口与判据自检 | `analyze.py --selftest` 6/6；`run_render_spike.sh --dry-run` 通过；板端测量未执行 |
+| 2026-10-15（重试） | 新增 `--source rtsp|file|test` 输入源（ENV-C 无相机替代源）；`analyze.py --md-out` 自动生成可贴入 `build_env_check.md` §14 的表格；驱动与文档同步 | `analyze.py --selftest` 6/6；`--md-out` fixture 验证；`run_render_spike.sh --dry-run`（含 source）通过；板端仍未执行 |

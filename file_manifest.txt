@@ -7,8 +7,8 @@ app/spikes/render_path/CMakeLists.txt | active | spike 板端本机构建（Qt5 
 app/spikes/render_path/CpuView.qml | active | CPU 回退路径 QML 场景（FrameItem）
 app/spikes/render_path/GlView.qml | active | GL 路径 QML 场景（GstGLVideoItem）
 app/spikes/render_path/README.md | active | 渲染路径选型 spike 说明（ITEM-002）：路径定义/运行/判据/未实测状态
-app/spikes/render_path/analyze.py | active | 渲染路径选择判据（含 --selftest；无实测输入返回 UNMEASURED）
-app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu；fps/CPU/GPU/色彩测量；写 JSON）（未在主机编译）
+app/spikes/render_path/analyze.py | active | 渲染路径选择判据（--selftest/--md-out；无实测输入返回 UNMEASURED）
+app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu；源 rtsp|file|test；fps/CPU/GPU/色彩测量；写 JSON）（未在主机编译）
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
 app/tools/env_probe.py | active | 桌面应用依赖/环境只读探针（标准库；目标板与主机均可跑，生成 md/raw/json）
@@ -51,6 +51,7 @@ docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-verify.json | ac
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-verify.md | active | 软件验证独立复现的探针报告（逐行等于归档原件除时间戳，ITEM-001 验证证据）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.json | active | 依赖探针主机运行结构化结果（ITEM-001 证据，过渡编号，被 -r2 取代）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.md | active | 依赖探针主机运行原始报告（非目标板结论，ITEM-001 证据）
+docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015-r2.txt | active | ITEM-002 重试主机自检（source=file/test 与 --md-out synthetic fixture 表格，未执行板端）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015.txt | active | ITEM-002 主机自检证据（analyze.py --selftest 6/6 与 run_render_spike.sh --dry-run）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：ITEM-001 依赖基线核验的独立复现、判据逐条核对、偏差 D-01..D-05 与修复要求（TEST_PASS，范围限 ITEM-001）
 file_manifest.txt | existing | 本清单，项目文件用途登记

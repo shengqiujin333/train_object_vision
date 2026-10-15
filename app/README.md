@@ -74,6 +74,9 @@ bash    app/spikes/render_path/run_render_spike.sh --dry-run
 # 目标板：真实测量（需项目授权与可用相机）
 cd app/spikes/render_path
 ./run_render_spike.sh --url 'rtsp://<user>:<pass>@<cam>/...' --duration 20 --snapshot
+# 无相机时用 ENV-C 替代源（预录文件/合成）完成协商与换算测量
+./run_render_spike.sh --source file --file /path/to/clip.mp4 --duration 20 --snapshot
+./run_render_spike.sh --source test --duration 10
 ```
 
 结果与判据说明: `docs/hmi/render_path_spike.md`、`docs/hmi/build_env_check.md` §14。

@@ -209,16 +209,27 @@ static double read_rss_mb() {
 // ---------------------------------------------------------------------------
 // 管线
 // ---------------------------------------------------------------------------
-static std::string build_pipeline(const std::string &path, const std::string &url) {
+static std::string build_pipeline(const std::string &path, const std::string &source,
+                                  const std::string &url, const std::string &file) {
+    // 输入源: rtsp(真机) | file(预录文件, ENV-C 替代源) | test(videotestsrc 合成源)
+    std::ostringstream head;
+    if (source == "test") {
+        head << "videotestsrc is-live=true ! videoconvert "
+                "! video/x-raw,format=NV12,width=1280,height=720,framerate=25/1";
+    } else if (source == "file") {
+        head << "filesrc location=\"" << file << "\" ! decodebin "
+                "! video/x-raw,format=NV12";
+    } else {
+        head << "rtspsrc location=\"" << url
+             << "\" latency=500 timeout=5000000 udp-buffer-size=4194304 "
+                "! decodebin ! video/x-raw,format=NV12";
+    }
     std::ostringstream s;
-    s << "rtspsrc location=\"" << url
-      << "\" latency=500 timeout=5000000 udp-buffer-size=4194304 "
-         "! decodebin ! video/x-raw,format=NV12 ! tee name=t "
+    s << head.str() << " ! tee name=t "
          "t. ! queue leaky=downstream max-size-buffers=1 ! fakesink name=count_sink sync=false ";
     if (path == "gl") {
         s << "t. ! queue leaky=downstream max-size-buffers=1 "
              "! glupload ! glcolorconvert ! qmlglsink name=videosink ";
-        // GL 路径的一次性抓帧+色彩校验分支
         s << "t. ! queue leaky=downstream max-size-buffers=1 "
              "! appsink name=snap_sink drop=1 max-buffers=1 sync=false";
     } else {
@@ -306,21 +317,30 @@ int main(int argc, char **argv) {
     parser.setApplicationDescription("railhmi render path spike (gl|cpu)");
     parser.addHelpOption();
     QCommandLineOption optPath("path", "render path: gl|cpu", "path", "gl");
-    QCommandLineOption optUrl("url", "RTSP URL", "url");
+    QCommandLineOption optUrl("url", "RTSP URL (source=rtsp)", "url");
+    QCommandLineOption optSource("source", "input source: rtsp|file|test", "source", "rtsp");
+    QCommandLineOption optFile("file", "media file path (source=file)", "file");
     QCommandLineOption optDuration("duration", "measurement seconds", "sec", "20");
     QCommandLineOption optOut("out", "write JSON result here", "file");
     QCommandLineOption optSnapshot("snapshot", "save one frame (PNG/BMP) here", "file");
-    parser.addOption(optPath); parser.addOption(optUrl);
-    parser.addOption(optDuration); parser.addOption(optOut); parser.addOption(optSnapshot);
+    parser.addOption(optPath); parser.addOption(optUrl); parser.addOption(optSource);
+    parser.addOption(optFile); parser.addOption(optDuration);
+    parser.addOption(optOut); parser.addOption(optSnapshot);
     parser.process(app);
 
     const std::string path = parser.value(optPath).toStdString();
     const std::string url = parser.value(optUrl).toStdString();
+    const std::string source = parser.value(optSource).toStdString();
+    const std::string file = parser.value(optFile).toStdString();
     const int duration = parser.value(optDuration).toInt();
     const std::string out = parser.value(optOut).toStdString();
     const std::string snapshot = parser.value(optSnapshot).toStdString();
 
-    if (url.empty()) { fprintf(stderr, "--url is required\n"); return 2; }
+    if (source == "rtsp" && url.empty()) { fprintf(stderr, "--url is required for source=rtsp\n"); return 2; }
+    if (source == "file" && file.empty()) { fprintf(stderr, "--file is required for source=file\n"); return 2; }
+    if (source != "rtsp" && source != "file" && source != "test") {
+        fprintf(stderr, "--source must be rtsp|file|test\n"); return 2;
+    }
     if (path != "gl" && path != "cpu") { fprintf(stderr, "--path must be gl|cpu\n"); return 2; }
 
     gst_init(&argc, &argv);
@@ -340,7 +360,7 @@ int main(int argc, char **argv) {
     view.show();
 
     GError *err = nullptr;
-    GstElement *pipeline = gst_parse_launch(build_pipeline(path, url).c_str(), &err);
+    GstElement *pipeline = gst_parse_launch(build_pipeline(path, source, url, file).c_str(), &err);
     if (err) { add_error(std::string("pipeline parse: ") + err->message); g_error_free(err); }
     if (!pipeline) { add_error("pipeline build failed"); return 3; }
 
@@ -450,7 +470,9 @@ int main(int argc, char **argv) {
 
         QJsonObject o;
         o["path"] = QString::fromStdString(path);
+        o["source"] = QString::fromStdString(source);
         o["url"] = QString::fromStdString(url);
+        o["file"] = QString::fromStdString(file);
         o["duration_s"] = secs;
         o["playing"] = g_stats.ever_playing.load();
         o["frames_source"] = (double)fs;

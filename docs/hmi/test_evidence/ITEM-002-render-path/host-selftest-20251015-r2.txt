@@ -1,0 +1,43 @@
+# ITEM-002 render spike — 重试主机自检 (无板、无设备访问)
+
+生成: 主机 Windows/MINGW64 (x86_64), python Python 3.13.9, Thu Oct 15 16:33:37     2026
+
+## bash -n run_render_spike.sh
+```
+OK
+```
+
+## analyze.py --selftest
+```
+[PASS] gl 可用 -> 选 gl -> status=SELECTED selected=gl
+[PASS] gl 协商失败 -> 回退 cpu -> status=SELECTED selected=cpu
+[PASS] 两条都失败 -> none -> status=NONE_USABLE selected=None
+[PASS] 色彩不通过 -> 不可用 -> status=NONE_USABLE selected=None
+[PASS] 帧率不足 -> 不可用 -> status=NONE_USABLE selected=None
+[PASS] 无数据 -> UNMEASURED -> status=UNMEASURED selected=None
+selftest: 6/6 passed
+```
+
+## analyze.py --md-out on SYNTHETIC fixtures (非真实设备数据，仅验证拼接/表格生成)
+```
+| path | playing | fps_source | fps_display | CPU%(单核) | GPU load avg | 色彩 spread | 结论 |
+|---|---|---|---|---|---|---|---|
+| gl | True | 25 | 24.6 | 38 | 22 | 4.1 | 可用 |
+| cpu | True | 25 | 21.3 | 96.5 | 9 | 4.3 | 可用 |
+
+**选定路径: `gl`**（status=SELECTED，min_fps=20.0）
+```
+
+## run_render_spike.sh --source test --duration 5 --dry-run
+```
+[render-spike] source=test url=<none> file=<none> duration=5s outdir=/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path
+[render-spike] DRY-RUN plan:
+  1) build: cmake -S '/e/work/rail_issue/rk3588_handover/app/spikes/render_path' -B '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build' -DCMAKE_BUILD_TYPE=Release && cmake --build '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build' -j
+  2) run:   '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build/render_spike' --path gl  --source test --url '<url>' --file '<file>' --duration 5 --out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/gl-20261015-163338.json'
+  3) run:   '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build/render_spike' --path cpu --source test --url '<url>' --file '<file>' --duration 5 --out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/cpu-20261015-163338.json'
+  4) decide: python3 '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/analyze.py' --gl ... --cpu ... --min-fps 20 --out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/selection-20261015-163338.json' --md-out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/selection-20261015-163338.md'
+[render-spike] dry-run OK (no build, no device access)
+# exit=0
+```
+
+注: 以上 synthetic fixtures 仅用于验证判据/表格拼接逻辑，不是目标板测量结果，不得作为路径选定依据。

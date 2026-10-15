@@ -17,6 +17,8 @@ set -eu
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 URL=""
+SOURCE="rtsp"
+FILE=""
 DURATION=20
 OUTDIR="$SCRIPT_DIR/../../../docs/hmi/test_evidence/ITEM-002-render-path"
 MIN_FPS=20
@@ -28,6 +30,8 @@ BUILD_DIR="$SCRIPT_DIR/build"
 while [ $# -gt 0 ]; do
   case "$1" in
     --url) URL="$2"; shift 2;;
+    --source) SOURCE="$2"; shift 2;;
+    --file) FILE="$2"; shift 2;;
     --duration) DURATION="$2"; shift 2;;
     --outdir) OUTDIR="$2"; shift 2;;
     --min-fps) MIN_FPS="$2"; shift 2;;
@@ -42,19 +46,24 @@ done
 BIN="$BUILD_DIR/render_spike"
 STAMP=$(date +%Y%m%d-%H%M%S 2>/dev/null || echo manual)
 
-echo "[render-spike] url=${URL:-<none>} duration=${DURATION}s outdir=$OUTDIR"
+echo "[render-spike] source=$SOURCE url=${URL:-<none>} file=${FILE:-<none>} duration=${DURATION}s outdir=$OUTDIR"
 
 if [ "$DRY_RUN" -eq 1 ]; then
   echo "[render-spike] DRY-RUN plan:"
   echo "  1) build: cmake -S '$SCRIPT_DIR' -B '$BUILD_DIR' -DCMAKE_BUILD_TYPE=Release && cmake --build '$BUILD_DIR' -j"
-  echo "  2) run:   '$BIN' --path gl  --url '<url>' --duration $DURATION --out '$OUTDIR/gl-$STAMP.json'"
-  echo "  3) run:   '$BIN' --path cpu --url '<url>' --duration $DURATION --out '$OUTDIR/cpu-$STAMP.json'"
-  echo "  4) decide: python3 '$SCRIPT_DIR/analyze.py' --gl ... --cpu ... --min-fps $MIN_FPS --out '$OUTDIR/selection-$STAMP.json'"
+  echo "  2) run:   '$BIN' --path gl  --source $SOURCE --url '<url>' --file '<file>' --duration $DURATION --out '$OUTDIR/gl-$STAMP.json'"
+  echo "  3) run:   '$BIN' --path cpu --source $SOURCE --url '<url>' --file '<file>' --duration $DURATION --out '$OUTDIR/cpu-$STAMP.json'"
+  echo "  4) decide: python3 '$SCRIPT_DIR/analyze.py' --gl ... --cpu ... --min-fps $MIN_FPS --out '$OUTDIR/selection-$STAMP.json' --md-out '$OUTDIR/selection-$STAMP.md'"
   echo "[render-spike] dry-run OK (no build, no device access)"
   exit 0
 fi
 
-if [ -z "$URL" ]; then echo "ERROR: --url is required (real board measurement)" >&2; exit 2; fi
+if [ "$SOURCE" = "rtsp" ] && [ -z "$URL" ]; then
+  echo "ERROR: --url is required for --source rtsp" >&2; exit 2
+fi
+if [ "$SOURCE" = "file" ] && [ -z "$FILE" ]; then
+  echo "ERROR: --file is required for --source file" >&2; exit 2
+fi
 
 mkdir -p "$OUTDIR"
 
@@ -74,18 +83,19 @@ if [ "$SNAPSHOT" -eq 1 ]; then
 fi
 
 echo "[render-spike] path=gl"
-"$BIN" --path gl --url "$URL" --duration "$DURATION" --out "$GL_JSON" \
-  ${GL_SNAP:+--snapshot "$GL_SNAP"} || echo "[render-spike] gl exited non-zero (recorded in JSON)"
+"$BIN" --path gl --source "$SOURCE" --url "$URL" --file "$FILE" --duration "$DURATION" \
+  --out "$GL_JSON" ${GL_SNAP:+--snapshot "$GL_SNAP"} || echo "[render-spike] gl exited non-zero (recorded in JSON)"
 
 echo "[render-spike] path=cpu"
-"$BIN" --path cpu --url "$URL" --duration "$DURATION" --out "$CPU_JSON" \
-  ${CPU_SNAP:+--snapshot "$CPU_SNAP"} || echo "[render-spike] cpu exited non-zero (recorded in JSON)"
+"$BIN" --path cpu --source "$SOURCE" --url "$URL" --file "$FILE" --duration "$DURATION" \
+  --out "$CPU_JSON" ${CPU_SNAP:+--snapshot "$CPU_SNAP"} || echo "[render-spike] cpu exited non-zero (recorded in JSON)"
 
 SEL_JSON="$OUTDIR/selection-$STAMP.json"
+SEL_MD="$OUTDIR/selection-$STAMP.md"
 echo "[render-spike] deciding..."
 set +e
 python3 "$SCRIPT_DIR/analyze.py" --gl "$GL_JSON" --cpu "$CPU_JSON" --min-fps "$MIN_FPS" \
-  --out "$SEL_JSON"
+  --out "$SEL_JSON" --md-out "$SEL_MD"
 RC=$?
 set -e
 echo "[render-spike] analyze exit=$RC"
@@ -93,4 +103,5 @@ echo "[render-spike] artifacts:"
 echo "  $GL_JSON"
 echo "  $CPU_JSON"
 echo "  $SEL_JSON"
+echo "  $SEL_MD (markdown fragment for build_env_check.md §14)"
 exit 0
