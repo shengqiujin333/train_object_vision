@@ -63,3 +63,25 @@ selftest: 6/6 passed
 ```
 
 注：以上仍无板端测量数据；路径选择保持 UNMEASURED。
+
+## 重试3（Thu Oct 15 16:39:41     2026）：响应 software_verification TEST_FAIL (VERIFY-ITEM-002)
+
+验证反馈: 实现侧工具/判据独立复现全部通过；唯一未满足点=板端实测数据+选定路径；根因=ENV-C/D 设备授权缺失，非源码缺陷。
+本轮响应: (1) 不改 spike 源码语义、不伪造测量；(2) 修复验证者指出的 Windows python3 shim 不可用时解释器回退。
+
+```
+bash -n OK
+
+[PASS] gl 可用 -> 选 gl -> status=SELECTED selected=gl
+[PASS] gl 协商失败 -> 回退 cpu -> status=SELECTED selected=cpu
+[PASS] 两条都失败 -> none -> status=NONE_USABLE selected=None
+[PASS] 色彩不通过 -> 不可用 -> status=NONE_USABLE selected=None
+[PASS] 帧率不足 -> 不可用 -> status=NONE_USABLE selected=None
+[PASS] 无数据 -> UNMEASURED -> status=UNMEASURED selected=None
+selftest: 6/6 passed
+
+[render-spike] DRY-RUN plan:
+  1) build: cmake -S '/e/work/rail_issue/rk3588_handover/app/spikes/render_path' -B '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build' -DCMAKE_BUILD_TYPE=Release && cmake --build '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build' -j
+```
+
+仍未产出板端测量；选择保持 UNMEASURED。

@@ -132,6 +132,11 @@ cd app/spikes/render_path
   并把 `gl` 作为可开启的候选；待 ENV-C/D 授权后按本节判据冻结选择。
 - 选择的冻结入口（已就绪）：`app/spikes/render_path/run_render_spike.sh` + `analyze.py --md-out`，一条命令回填本节表格与选定值。
 
+**验证反馈闭环**：`software_verification` 已对本交付返回 **TEST_FAIL**（`docs/hmi/test_evidence/ITEM-002-render-path/VERIFY-ITEM-002.md`），
+结论为：实现侧工具链/判据独立复现全部通过（`--dry-run`、`--selftest` 6/6、无数据 UNMEASURED），
+唯一未满足点是 **板端实测数据 + 选定路径**，根因为 ENV-C/D 设备授权缺失，非源码缺陷。
+本节与 §7 已保持“未实测/UNMEASURED”，未回填任何伪造数据；此缺口不由源码修复消除，只能由设备授权解锁后按 §4 命令一次执行补测。
+
 ---
 
 ## 8. 变更记录
@@ -141,3 +146,4 @@ cd app/spikes/render_path
 | 2026-10-15 | 初次交付 spike（`main.cpp`/QML/CMake/驱动/判据）；主机实测入口与判据自检 | `analyze.py --selftest` 6/6；`run_render_spike.sh --dry-run` 通过；板端测量未执行 |
 | 2026-10-15（重试） | 新增 `--source rtsp|file|test` 输入源（ENV-C 无相机替代源）；`analyze.py --md-out` 自动生成可贴入 `build_env_check.md` §14 的表格；驱动与文档同步 | `analyze.py --selftest` 6/6；`--md-out` fixture 验证；`run_render_spike.sh --dry-run`（含 source）通过；板端仍未执行 |
 | 2026-10-15（重试2） | 按 `E2E_PLAN` §3 / `TEST_DESIGN` §1 明确缺口分类（设备授权缺口≠软件功能失败）；补充“未选定前不得假定 GL 主路径、默认取 cpu”的下游强制约束；说明实现侧无可再推进项 | 复跑 `analyze.py --selftest` 6/6 与 `run_render_spike.sh --dry-run`；缺口分类与项目规则逐字对齐核对 |
+| 2026-10-15（重试3） | 响应 `software_verification` TEST_FAIL（`VERIFY-ITEM-002.md`）：确认未满足点=板端实测与选定路径，根因=ENV-C/D 设备授权；修复验证者指出的 Windows `python3` shim 不可用时的解释器回退 | `bash -n run_render_spike.sh` 通过；`--dry-run` 在解释器回退下通过；复跑 `analyze.py --selftest` 6/6 |

@@ -16,6 +16,11 @@
 set -eu
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+# 解释器解析: 默认 python3; 若不存在或“存在但不可用”(如 Windows Store shim 报错) 则回退 python
+PY=${PYTHON:-python3}
+if ! command -v "$PY" >/dev/null 2>&1 || ! "$PY" -c 'pass' >/dev/null 2>&1; then
+  PY=python
+fi
 URL=""
 SOURCE="rtsp"
 FILE=""
@@ -53,7 +58,7 @@ if [ "$DRY_RUN" -eq 1 ]; then
   echo "  1) build: cmake -S '$SCRIPT_DIR' -B '$BUILD_DIR' -DCMAKE_BUILD_TYPE=Release && cmake --build '$BUILD_DIR' -j"
   echo "  2) run:   '$BIN' --path gl  --source $SOURCE --url '<url>' --file '<file>' --duration $DURATION --out '$OUTDIR/gl-$STAMP.json'"
   echo "  3) run:   '$BIN' --path cpu --source $SOURCE --url '<url>' --file '<file>' --duration $DURATION --out '$OUTDIR/cpu-$STAMP.json'"
-  echo "  4) decide: python3 '$SCRIPT_DIR/analyze.py' --gl ... --cpu ... --min-fps $MIN_FPS --out '$OUTDIR/selection-$STAMP.json' --md-out '$OUTDIR/selection-$STAMP.md'"
+  echo "  4) decide: '$PY' '$SCRIPT_DIR/analyze.py' --gl ... --cpu ... --min-fps $MIN_FPS --out '$OUTDIR/selection-$STAMP.json' --md-out '$OUTDIR/selection-$STAMP.md'"
   echo "[render-spike] dry-run OK (no build, no device access)"
   exit 0
 fi
@@ -94,7 +99,7 @@ SEL_JSON="$OUTDIR/selection-$STAMP.json"
 SEL_MD="$OUTDIR/selection-$STAMP.md"
 echo "[render-spike] deciding..."
 set +e
-python3 "$SCRIPT_DIR/analyze.py" --gl "$GL_JSON" --cpu "$CPU_JSON" --min-fps "$MIN_FPS" \
+"$PY" "$SCRIPT_DIR/analyze.py" --gl "$GL_JSON" --cpu "$CPU_JSON" --min-fps "$MIN_FPS" \
   --out "$SEL_JSON" --md-out "$SEL_MD"
 RC=$?
 set -e
