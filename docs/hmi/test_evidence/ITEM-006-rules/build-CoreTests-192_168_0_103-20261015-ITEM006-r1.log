@@ -1,0 +1,201 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 55 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [build] exit=0 =====
+[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_build' -B '/tmp/railhmi_build/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = CoreTests
+-- railhmi: SQLite3 dev not found -> SqliteStore disabled (install libsqlite3-dev to enable)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_build/build-core
+[build.sh] building: cmake --build '/tmp/railhmi_build/build-core' -j8
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[ 33%] Linking CXX static library librailhmi_core.a
+[ 33%] Built target railhmi_core
+[ 38%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 44%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 55%] Linking CXX executable ../../tools/railhmi-config-check
+[ 55%] Built target railhmi-config-check
+[ 61%] Linking CXX static library librailhmi_platform.a
+[ 61%] Built target railhmi_platform
+[ 77%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o
+[ 77%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o
+[ 77%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_config.cpp.o
+[ 83%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_stream.cpp.o
+[ 94%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o
+[ 94%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_rules.cpp.o
+[100%] Linking CXX executable ../railhmi-core-tests
+[100%] Built target railhmi-core-tests
+[build.sh] build OK (mode=core-tests); artifacts under /tmp/railhmi_build/build-core
+[build.sh] run: /tmp/railhmi_build/build-core/tests/railhmi-core-tests
+BUILD_EXIT=0
+
+
+===== [tests] exit=0 =====
+== railhmi-core tests (railhmi 0.1.0 [mode=CoreTests, simulation=off]) ==
+[PASS] version_string == 0.1.0
+[PASS] build_mode is a known mode
+[PASS] build_description contains railhmi
+[PASS] redact_url hides credentials
+[PASS] redact_url leaves credential-free url unchanged
+[PASS] FileStore::write_atomic
+[PASS] FileStore::read_all round-trip
+[PASS] FileStore::exists after write
+[PASS] FileStore::exists false for missing
+[SKIP] sqlite tests (RAILHMI_HAVE_SQLITE not defined)
+[PASS] baseline config loads without errors
+[PASS] baseline has 6 cameras
+[PASS] CAM-01 id/position=primary
+[PASS] CAM-01 ai_enabled=true, ai_profile=front
+[PASS] CAM-02 ai_enabled=false, ai_profile=none
+[PASS] CAM-03 ai_enabled=false, ai_profile=none
+[PASS] CAM-04 ai_profile=pantograph
+[PASS] CAM-05 ai_profile=wheel_rail
+[PASS] CAM-06 ai_profile=cab_door
+[PASS] app.render_path=cpu
+[PASS] app.mode=visible
+[PASS] IR is not connected this phase
+[PASS] app.recording_source=both
+[PASS] app.resolution=1920x1080
+[PASS] thresholds values parsed
+[PASS] stream timing thresholds parsed
+[PASS] baseline has 4 roi entries
+[PASS] one integration (NVR)
+[PASS] NVR registered
+[PASS] NVR initial integration_state=unconfigured
+[PASS] integration_state string is 'unconfigured'
+[PASS] missing optional tile_aspect recorded in applied_defaults
+[PASS] missing required field reports cameras[0].username
+[PASS] invalid transport reports cameras[0].transport
+[PASS] invalid ai_profile reports cameras[0].ai_profile
+[PASS] ai_enabled/profile mismatch reports cameras[0].ai_profile
+[PASS] missing thresholds field reports thresholds.confirm_frames
+[PASS] invalid render_path reports app.render_path
+[PASS] invalid mode reports app.mode
+[PASS] unknown roi camera reports roi[0].camera
+[PASS] out-of-range roi w reports roi[0].w
+[PASS] missing config file reports file name
+[PASS] initial state = offline
+[PASS] offline cannot present as live
+[PASS] start -> connecting
+[PASS] connecting cannot present as live
+[PASS] first frame -> live
+[PASS] Started event emitted
+[PASS] FirstFrame event emitted
+[PASS] live presents fresh frame as live
+[PASS] no new frame -> frozen
+[PASS] frozen cannot present old frame as live
+[PASS] Freeze event emitted
+[PASS] frozen -> reconnecting
+[PASS] reconnect count = 1
+[PASS] reconnecting -> connecting (retry)
+[PASS] retry timeout -> reconnecting count 2
+[PASS] retry again -> connecting
+[PASS] threshold reached -> offline
+[PASS] reconnect count = 3 (threshold)
+[PASS] Escalated device event emitted at threshold
+[PASS] offline cannot present as live
+[PASS] recover from offline -> live
+[PASS] reconnect count reset on recovery
+[PASS] Recovered event emitted
+[PASS] source-error test live
+[PASS] source error -> reconnecting count 1
+[PASS] second source error -> offline (threshold 2)
+[PASS] source-error escalation event emitted
+[PASS] SourceError event emitted
+[PASS] quality flag -> degraded
+[PASS] degraded counts as streaming (degraded available)
+[PASS] degraded may present fresh frame
+[PASS] QualityDegraded event emitted
+[PASS] classify: low mean -> too_dark
+[PASS] classify: high mean -> too_bright
+[PASS] classify: near-uniform -> occluded
+[PASS] classify: low lapvar -> blurred
+[PASS] classify: normal frame -> no flags
+[PASS] classify: invalid stats -> no flags
+[PASS] person_on_rail=L1
+[PASS] front_obstacle=L1
+[PASS] wheel_derail=L1
+[PASS] pantograph_abnormal=L2
+[PASS] door_ajar=L2
+[PASS] front_camera_device=L2
+[PASS] side_camera_device=L3
+[PASS] device front primary=L2
+[PASS] device side=L3
+[PASS] front person: event after confirm_frames
+[PASS] front person level = L1
+[PASS] front person type
+[PASS] new event unacked
+[PASS] front obstacle -> L1 FrontObstacle
+[PASS] front outside ROI -> no event
+[PASS] front low confidence -> no event
+[PASS] front frames beyond confirm window -> no event
+[PASS] suppression: first event created
+[PASS] same track within suppress window -> no new event
+[PASS] events size still 1 under suppression
+[PASS] suppressed event distance updated
+[PASS] different track -> new event
+[PASS] events size 2 after second track
+[PASS] same track after suppress window -> new event
+[PASS] events size 3 after suppress window
+[PASS] pantograph normal -> no event
+[PASS] pantograph abnormal -> L2
+[PASS] wheel_rail abnormal -> L1
+[PASS] cab_door ajar -> L2
+[PASS] ai_profile=none -> no event
+[PASS] front primary device event -> L2
+[PASS] side device event -> L3
+[PASS] duplicate device event suppressed
+[PASS] single-frame confirm event created
+[PASS] unacked count 1
+[PASS] ack returns true for existing event
+[PASS] ack does NOT delete event
+[PASS] ack_state becomes acked
+[PASS] unacked count 0 after ack
+[PASS] ack unknown id returns false
+[PASS] roi contains center point
+[PASS] roi rejects outside point
+[PASS] roi rejects beyond x+w
+[PASS] find_roi finds entry
+[PASS] find_roi miss
+== 124 passed, 0 failed ==
+TEST_EXIT=0
+
+
+===== [config-check-good] exit=0 =====
+config OK: 6 cameras, 4 roi, 1 integrations (dir=./config)
+  mode=visible render_path=cpu recording_source=both
+CFG_EXIT=0
+
+
+===== [config-check-bad] exit=0 =====
+config INVALID (1 error(s)) dir=/tmp/railhmi_cfg_bad:
+  thresholds.confirm_frames: required field missing
+CFG_EXIT=1
+
+
+===== [artifacts] exit=0 =====
+-rwxrwxr-x 1 admin admin 263624 Oct 15 22:58 build-core/tests/railhmi-core-tests
+
+
+===== [cleanup] exit=0 =====
+cleaned
+

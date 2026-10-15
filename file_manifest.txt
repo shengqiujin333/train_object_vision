@@ -18,12 +18,14 @@ app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
 app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
-app/src/core/CMakeLists.txt | active | railhmi_core 静态库（version/yaml/config/stream_state）+ railhmi-config-check 启动校验工具
+app/src/core/CMakeLists.txt | active | railhmi_core 静态库（version/yaml/config/stream_state/rules）+ railhmi-config-check 启动校验工具
 app/src/core/include/railhmi/core/config.h | active | 配置与状态契约模型/枚举（含 ai_profile/integration_state/mode/recording_source）+ 流时序阈值字段（first_frame_timeout_ms/reconnect_backoff_ms）与校验入口
+app/src/core/include/railhmi/core/rules.h | active | 检测职责与报警规则/事件层接口（ai_profile 分派/多帧确认/抑制/级别映射/ack/ROI）
 app/src/core/include/railhmi/core/stream_state.h | active | 流状态机与质量判定接口（六态/质量标志/classify_quality/事件/非 LIVE 禁止旧帧接口）
 app/src/core/include/railhmi/core/version.h | active | 版本/构建档位/模拟开关接口（core 无 Qt/GStreamer/相机/SQLite 依赖）
 app/src/core/include/railhmi/core/yaml.h | active | 无依赖 YAML 子集解析器接口（块映射/序列/流序列/标量，含行号错误）
 app/src/core/src/config.cpp | active | 配置加载与校验实现（报具体字段路径，不静默默认；applied_defaults 记录可选默认；含流时序阈值校验）
+app/src/core/src/rules.cpp | active | 规则/事件层实现（PRD §8.2 级别、跟踪 ID 与抑制窗口、ack 不删事件）
 app/src/core/src/stream_state.cpp | active | 流状态机实现（首帧超时/冻结/重连退避/阈值升级/降级/恢复）
 app/src/core/src/version.cpp | active | 版本与构建描述实现
 app/src/core/src/yaml.cpp | active | YAML 子集解析器实现
@@ -42,10 +44,11 @@ app/src/ui/CMakeLists.txt | active | railhmi Qt/QML 可执行（Qt5 Quick/Qml；
 app/src/ui/qml.qrc | active | QML 资源清单
 app/src/ui/qml/main.qml | active | 骨架窗口（仅 QtQuick 基础模块，避免硬依赖 Controls2）
 app/src/ui/src/main.cpp | active | Qt 应用入口（启动即校验配置，非法报具体字段并非零退出；加载 qrc:/qml/main.qml）
-app/tests/core/CMakeLists.txt | active | railhmi-core-tests 可执行（多源：harness/平台/配置/流；注入 RAILHMI_CONFIG_DIR；固定输出到 build/tests/）
-app/tests/core/main.cpp | active | railhmi-core 单元测试入口（平台/配置/流三组）
+app/tests/core/CMakeLists.txt | active | railhmi-core-tests 可执行（多源：harness/平台/配置/流/规则；注入 RAILHMI_CONFIG_DIR；固定输出到 build/tests/）
+app/tests/core/main.cpp | active | railhmi-core 单元测试入口（平台/配置/流/规则四组）
 app/tests/core/test_config.cpp | active | 配置与状态契约测试（TC-CORE-01：合法逐项 + 非法报具体字段 + 流时序阈值断言）
 app/tests/core/test_platform.cpp | active | 平台基础测试（版本/脱敏/原子文件/SQLite 条件）
+app/tests/core/test_rules.cpp | active | 检测职责与规则/事件测试（TC-CORE-04/05：级别映射/多帧确认/抑制/track/ack/ROI）
 app/tests/core/test_stream.cpp | active | 流状态机与质量判定测试（TC-CORE-02/03：六态/升级序列/非 LIVE 接口/classify_quality）
 app/tests/core/test_util.cpp | active | 测试 harness 实现
 app/tests/core/test_util.h | active | 测试 harness 声明（pass/fail 计数与 check）
@@ -206,6 +209,9 @@ docs/hmi/test_evidence/ITEM-005-stream/build-CoreTests-192_168_0_103-20261015-ve
 docs/hmi/test_evidence/ITEM-005-stream/build-CoreTests-192_168_0_103-20261015-verify-v1.transcript.json | active | 软件验证独立复跑 CoreTests transcript（指纹与实现者 r1 一致；keep-remote 后由夹具轮按名清理）
 docs/hmi/test_evidence/ITEM-005-stream/verify_stream_ext.cpp | active | 验证自有扩展夹具源码（classify 边界/全非 LIVE 拒绝/显式重连升级/DEGRADED 全链/OFFLINE 粘滞/drain 语义）
 docs/hmi/test_evidence/ITEM-005-stream/verify_stream_fixtures.py | active | 验证自有夹具板上运行器（指纹校验中止/全超时/凭据仅环境变量/按名清理）
+docs/hmi/test_evidence/ITEM-006-rules/README.md | active | ITEM-006 检测职责与规则/事件层证据（交付内容/级别与职责/多帧抑制确认/复现）
+docs/hmi/test_evidence/ITEM-006-rules/build-CoreTests-192_168_0_103-20261015-ITEM006-r1.log | active | ITEM-006 权威构建/测试日志
+docs/hmi/test_evidence/ITEM-006-rules/build-CoreTests-192_168_0_103-20261015-ITEM006-r1.transcript.json | active | ITEM-006 权威 CoreTests（124/124 + config-check）transcript
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）
