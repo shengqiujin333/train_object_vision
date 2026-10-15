@@ -1,0 +1,25 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 36 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [build] exit=0 =====
+[build.sh] mode=target host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] note: SQLite3 dev not found -> SqliteStore disabled (install libsqlite3-dev to enable)
+BUILD_EXIT=1
+[build.sh] MISSING BUILD DEPENDENCIES (mode=target):
+  - Qt5 Quick/Qml dev (qtbase5-dev qtdeclarative5-dev qml-module-qtquick2)
+[build.sh] 依赖缺失，未执行构建（非静默失败）。请按上表安装或改用其它档位。
+
+
+===== [artifacts] exit=0 =====
+ls: cannot access 'build-target/railhmi': No such file or directory
+ls: cannot access 'build-target/src/media/librailhmi_media.a': No such file or directory
+
+
+===== [cleanup] exit=0 =====
+cleaned
+

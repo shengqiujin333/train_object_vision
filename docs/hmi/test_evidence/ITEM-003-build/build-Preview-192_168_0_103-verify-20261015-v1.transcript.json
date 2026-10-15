@@ -1,0 +1,53 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "local_dir": "E:\\work\\rail_issue\\rk3588_handover\\app",
+    "remote_dir": "/tmp/railhmi_build",
+    "mode": "Preview",
+    "outdir": "docs/hmi/test_evidence/ITEM-003-build",
+    "stamp": "verify-20261015-v1",
+    "connect_timeout": 10,
+    "build_timeout": 900,
+    "run_tests": false,
+    "keep_remote": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_build",
+      "exit": 0,
+      "elapsed_s": 0.21,
+      "output": ""
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 36 files from E:\\work\\rail_issue\\rk3588_handover\\app"
+    },
+    {
+      "step": "build",
+      "cmd": "cd /tmp/railhmi_build && bash build.sh Preview; echo BUILD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "[build.sh] mode=preview host=aarch64 compiler=c++ cmake=cmake version 3.22.1\nBUILD_EXIT=1\n[build.sh] MISSING BUILD DEPENDENCIES (mode=preview):\n  - Qt5 Quick/Qml dev for host preview (qtbase5-dev qtdeclarative5-dev qml-module-qtquick2)\n[build.sh] 依赖缺失，未执行构建（非静默失败）。请按上表安装或改用其它档位。\n"
+    },
+    {
+      "step": "artifacts",
+      "cmd": "cd /tmp/railhmi_build; ls -l build-preview/railhmi 2>&1; true",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "ls: cannot access 'build-preview/railhmi': No such file or directory\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_build && echo cleaned",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "cleaned\n"
+    }
+  ]
+}
