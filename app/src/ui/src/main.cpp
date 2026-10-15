@@ -11,7 +11,9 @@
 #include <vector>
 
 #include "railhmi/core/camera_registry.h"
+#include "railhmi/core/channel_view.h"
 #include "railhmi/core/config.h"
+#include "railhmi/core/grid.h"
 #include "railhmi/core/layout.h"
 #include "railhmi/core/navigation.h"
 #include "railhmi/core/version.h"
@@ -76,8 +78,9 @@ int main(int argc, char** argv) {
     const QString defaultPage = QString::fromLatin1(railhmi::core::to_string(railhmi::core::default_page(role)));
 
     // 配置驱动摄像头注册表与 NVR 集成项（ITEM-012）：槽位保持 cameras.yaml 顺序；徽标由 ai_profile 决定。
+    const std::vector<railhmi::core::CameraSlot> registry = railhmi::core::build_registry(cfg.settings);
     QVariantList camList;
-    for (const auto& c : railhmi::core::build_registry(cfg.settings)) {
+    for (const auto& c : registry) {
         QVariantMap m;
         m["id"] = QString::fromStdString(c.id);
         m["name"] = QString::fromUtf8(c.name.c_str());
@@ -87,6 +90,34 @@ int main(int argc, char** argv) {
         m["state"] = QString::fromStdString(c.stream_state);
         camList.append(m);
     }
+
+    // 全摄像头页每格展示视图（ITEM-015）：注册表顺序 + 运行时快照。应用尚未接入媒体
+    // 取流时，各路按“未启动”占位（仍占格，不丢格、不重排）。
+    QVariantList chanList;
+    for (const auto& v : railhmi::core::build_channel_views(registry, {}, 0)) {
+        QVariantMap m;
+        m["id"] = QString::fromStdString(v.id);
+        m["name"] = QString::fromUtf8(v.name.c_str());
+        m["position"] = QString::fromStdString(v.position);
+        m["badge"] = QString::fromUtf8(v.badge.c_str());
+        m["aiEnabled"] = v.ai_enabled;
+        m["slot"] = v.slot;
+        m["state"] = QString::fromStdString(v.state);
+        m["stateLabel"] = QString::fromUtf8(v.state_label.c_str());
+        m["fpsText"] = QString::fromUtf8(v.fps_text.c_str());
+        m["lastFrameText"] = QString::fromUtf8(v.last_frame_text.c_str());
+        m["reconnectText"] = QString::fromUtf8(v.reconnect_text.c_str());
+        m["presentable"] = v.presentable;
+        m["placeholder"] = v.placeholder;
+        chanList.append(m);
+    }
+
+    // 网格形状（ITEM-015）：宽屏 3x2，竖屏 2x3，随窗口尺寸切换。
+    QVariantMap gridMap;
+    gridMap["wideColumns"] = railhmi::core::grid_columns(railhmi::core::GridShape::ThreeByTwo);
+    gridMap["wideRows"] = railhmi::core::grid_rows(railhmi::core::GridShape::ThreeByTwo);
+    gridMap["tallColumns"] = railhmi::core::grid_columns(railhmi::core::GridShape::TwoByThree);
+    gridMap["tallRows"] = railhmi::core::grid_rows(railhmi::core::GridShape::TwoByThree);
     QVariantList intList;
     for (const auto& in : railhmi::core::build_integrations(cfg.settings)) {
         QVariantMap m;
@@ -113,6 +144,8 @@ int main(int argc, char** argv) {
     view.rootContext()->setContextProperty("railhmiModeSecondary", QString::fromUtf8(mode.secondary.c_str()));
     view.rootContext()->setContextProperty("railhmiModeInteractive", mode.interactive);
     view.rootContext()->setContextProperty("railhmiCameras", camList);
+    view.rootContext()->setContextProperty("railhmiChannels", chanList);
+    view.rootContext()->setContextProperty("railhmiGrid", gridMap);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
     view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
     view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);

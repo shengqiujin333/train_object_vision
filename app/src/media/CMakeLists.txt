@@ -17,6 +17,7 @@ endif()
 add_library(railhmi_media STATIC
     src/pipeline_factory.cpp
     src/camera_stream.cpp
+    src/multi_stream.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -34,5 +35,12 @@ target_compile_options(railhmi_media PRIVATE ${GST_CFLAGS_OTHER})
 add_executable(railhmi-stream-probe tools/stream_probe.cpp)
 target_link_libraries(railhmi-stream-probe PRIVATE railhmi_media)
 set_target_properties(railhmi-stream-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 六路并发取流探针（ITEM-015；同时启动多路并注入单路断流）
+add_executable(railhmi-multi-probe tools/multi_probe.cpp)
+target_link_libraries(railhmi-multi-probe PRIVATE railhmi_media)
+set_target_properties(railhmi-multi-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

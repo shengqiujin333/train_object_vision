@@ -27,7 +27,8 @@
 | ITEM-012 | 配置驱动摄像头注册表与 UI 接入 | **已交付**：`railhmi-core` 注册表模型（六路按 cameras.yaml 顺序、位置/职责徽标/`DetectionBadge` 仅 P4/P6、NVR 集成项通道映射=未配置）+ QML 组件（DetectionBadge/CameraTile/DeviceCard）与 P1/P4/P6 页面接入。板端 **348/348 通过**，扫描 PASS。证据：`docs/hmi/test_evidence/ITEM-012-registry/README.md` |
 | ITEM-013 | 单路取流与流状态机接入 | **已交付**：`CameraStream`（原生 GStreamer 强制 UDP，test/file/rtsp 源；接入 railhmi-core 六态 + 质量标志；fps/最近帧/重连次数/presentable；`simulate_cut` 断流注入）+ `railhmi-stream-probe` CLI。板端 MediaCheck 构建成功；test 源实测 live 25fps → 断流 → reconnecting(count=1, presentable=false) → connecting。证据：`docs/hmi/test_evidence/ITEM-013-stream/README.md` |
 | ITEM-014 | 视频渲染与实时监控页三联布局 | **已交付**：`railhmi-core` `compute_layout`（三联 0.26/0.48/0.26、前方最大 ≥0.34、P0 一屏内可见、一级横幅不遮挡前方中央、缩放比例保持）+ QML 接入：`main.cpp` 注入 `railhmiLayout` 与配置选定渲染路径 `railhmiRenderPath`（默认 cpu，gl 可开关）；`VideoSurface.qml`（按路径选渲染实现 + 非 LIVE 占位层）、`P1Realtime.qml`（左-前-右三联 + 关键状态区 + 当前报警条）。板端 TestRun **377/377 通过**（两档分辨率用例齐全），扫描 PASS。证据：`docs/hmi/test_evidence/ITEM-014-layout/README.md` |
-| ITEM-015.. | 六路并发、状态条、推理、报警中心、录像、回放、权限、恢复、打包 | 未实现 |
+| ITEM-015 | 六路并发与全摄像头页 | **已交付**：`railhmi-core` 网格模型（3x2/2x3 形状、稳定槽位、单元格不重叠）+ 每格视图（名/状态中文标签/fps/最近帧/重连/徽标；顺序=注册表，断流不重排不丢格）；`railhmi-media` `MultiStreamManager`（多路并发 + 单路断流注入，不互相影响）+ `railhmi-multi-probe`；`P4AllCameras.qml` 3x2/2x3 网格消费 `railhmiChannels`。板端 MediaCheck 实测：6 路 test 源同时 live，断开第 4 路后该格 presentable=false、最近帧冻结、重连计数，其余五路继续 presentable；core 单测网格稳定性。 |
+| ITEM-016.. | 状态条、推理、报警中心、录像、回放、权限、恢复、打包 | 未实现 |
 
 > 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 

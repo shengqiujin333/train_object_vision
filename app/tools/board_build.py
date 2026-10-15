@@ -220,11 +220,18 @@ def main() -> int:
                             "--source test --duration 6 --cut-after 3 "
                             "--out core-evidence/stream-probe-%s.log --json core-evidence/stream-probe-%s.json; "
                             "echo PROBE_EXIT=$?" % (remote, args.stamp, args.stamp), args.build_timeout))
+                note("multi-probe", rrun(
+                    client, "cd %s && ./build-media/tools/railhmi-multi-probe "
+                            "--count 6 --source test --duration 8 --cut-index 3 --cut-after 4 "
+                            "--out core-evidence/multi-probe-%s.log --json core-evidence/multi-probe-%s.json; "
+                            "echo MULTI_EXIT=$?" % (remote, args.stamp, args.stamp), args.build_timeout))
                 sftp = client.open_sftp()
                 try:
                     sftp.get_channel().settimeout(args.connect_timeout * 6)
                     for rel in ("core-evidence/stream-probe-%s.log" % args.stamp,
-                                "core-evidence/stream-probe-%s.json" % args.stamp):
+                                "core-evidence/stream-probe-%s.json" % args.stamp,
+                                "core-evidence/multi-probe-%s.log" % args.stamp,
+                                "core-evidence/multi-probe-%s.json" % args.stamp):
                         local_out = outdir / ("%s.%s" % (tag, rel.replace("/", "_")))
                         try:
                             sftp.get("%s/%s" % (remote, rel), str(local_out))
@@ -236,7 +243,7 @@ def main() -> int:
 
         art_targets = {
             "CoreTests": ["build-core/tests/railhmi-core-tests"],
-            "MediaCheck": ["build-media/src/media/librailhmi_media.a", "build-media/tools/railhmi-stream-probe"],
+            "MediaCheck": ["build-media/src/media/librailhmi_media.a", "build-media/tools/railhmi-stream-probe", "build-media/tools/railhmi-multi-probe"],
             "Release": ["build-target/railhmi", "build-target/src/media/librailhmi_media.a"],
             "Preview": ["build-preview/railhmi"],
             "check": [],

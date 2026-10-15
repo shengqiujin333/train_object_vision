@@ -10,6 +10,7 @@ add_executable(railhmi-core-tests
     test_navigation.cpp
     test_registry.cpp
     test_layout.cpp
+    test_grid.cpp
 )
 target_link_libraries(railhmi-core-tests PRIVATE railhmi_core railhmi_platform)
 
