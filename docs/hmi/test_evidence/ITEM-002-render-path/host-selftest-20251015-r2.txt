@@ -41,3 +41,25 @@ selftest: 6/6 passed
 ```
 
 注: 以上 synthetic fixtures 仅用于验证判据/表格拼接逻辑，不是目标板测量结果，不得作为路径选定依据。
+
+## 重试2（Thu Oct 15 16:35:36     2026）：缺口分类与再验证
+
+板端实测仍不可执行（设备工具禁用 / ENV-C-D 无授权）。本轮不新增测量，只做：
+1) 按 E2E_PLAN §3 与 TEST_DESIGN §1 将本项剩余缺口分类为“依赖/授权缺口”，不等同软件功能失败；
+2) 补充“未选定前不得假定 GL 主路径、默认取 cpu”的下游强制约束；
+3) 复跑主机可验证项。
+
+```
+[PASS] gl 可用 -> 选 gl -> status=SELECTED selected=gl
+[PASS] gl 协商失败 -> 回退 cpu -> status=SELECTED selected=cpu
+[PASS] 两条都失败 -> none -> status=NONE_USABLE selected=None
+[PASS] 色彩不通过 -> 不可用 -> status=NONE_USABLE selected=None
+[PASS] 帧率不足 -> 不可用 -> status=NONE_USABLE selected=None
+[PASS] 无数据 -> UNMEASURED -> status=UNMEASURED selected=None
+selftest: 6/6 passed
+
+  4) decide: python3 '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/analyze.py' --gl ... --cpu ... --min-fps 20 --out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/selection-20261015-163537.json' --md-out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/selection-20261015-163537.md'
+[render-spike] dry-run OK (no build, no device access)
+```
+
+注：以上仍无板端测量数据；路径选择保持 UNMEASURED。

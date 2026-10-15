@@ -210,6 +210,8 @@ cat /sys/kernel/debug/rknpu/version; cat /sys/kernel/debug/rknpu/load; ldconfig 
 - 两条路径存在性依赖 E-02（`qmlglsink`）与 E-05/E-06（librga/librknnrt）；若 E-02 缺失，path=gl 预期在协商阶段失败，应由测量结果而非预判来决定回退。
 - 本 spike **不覆盖 6 路并发合成**性能；单路选型完成后，6 路合成与显示帧率分级在后续页面/取流任务验证。
 - 主机不含 Qt/GStreamer/librga 工具链，spike **未在主机编译**；编译与运行均为目标板范围。
+- **缺口分类（项目自有规则）**：`E2E_PLAN` §3 “板端档失败若根因属板端资源/驱动/BSP（如 E-01..E-09 缺项）→ 记录为依赖缺口交平台/嵌入式职责，不算软件功能失败”；`TEST_DESIGN` §1 将 ENV-B/C/D 标为“待实现 + 设备授权”。本项未产出板端实测的根因是 **ENV-C/D 设备授权缺失**，属依赖/授权缺口，非本 spike 源码缺陷。
+- **未选定前的下游强制约束**：渲染实现必须同时保留 `gl` 与 `cpu` 路径并由配置开关选择；不得把未实测的 `gl` 当作唯一/默认主路径。必须给默认值时取已有板端证据支持的 `cpu`（`mppvideodec`+librga），`gl` 作为可开启候选。详见 `render_path_spike.md` §7。
 
 ### 14.4 待授权后执行（交设备授权）
 
