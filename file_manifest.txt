@@ -26,9 +26,9 @@ code/yolov5_postprocess.cc | existing | yolov5 后处理实现
 code/yolov5_postprocess.h | existing | yolov5 后处理头
 code/yolov8_seg.h | existing | yolov8-seg 头
 docs/hmi/DESKTOP_APP_DESIGN.md | active | 桌面应用架构与构建运行方案 v2（DesktopAppDesignArtifact）：三阶段环境与授权现状三态登记/技术选型/railhmi-core 无GUI业务层/模块与线程/双路径渲染/状态契约(ai_profile,integration_state,mode)/检测职责与六类级别映射/录像回放(含NVR)/持久化/配置/健康/构建部署/分阶段验证范围
-docs/hmi/E2E_PLAN.md | active | 桌面应用端到端测试计划（E2EPlan）：六条跨组件关键旅程（报警闭环/真人场景/断流恢复/故障马拉松/断电复活/权限贯穿）、环境分层与升降级准则
+docs/hmi/E2E_PLAN.md | active | 桌面应用端到端测试计划（E2EPlan）v2：七条跨组件关键旅程（报警闭环/真人场景/断流恢复/故障马拉松/断电复活/权限贯穿/配置即视图）、环境分层（ENV-A0..E）与升降级准则、当前授权缺口从严登记、渲染路径 UNMEASURED 口径
 docs/hmi/INTERACTION_DESIGN.md | active | 交互设计方案 v2（FrontendDesignArtifact）：信息架构/页面状态/报警与回放交互/状态模型/可访问性/可检验结果；含本期 6 路可见光范围、无红外口径、各摄像头检测职责与 NVR 登记未配置态
-docs/hmi/TEST_DESIGN.md | active | 软件测试设计（TestDesignArtifact）：环境分层/度量定义/故障注入目录/P0 冒烟集 15 条/功能域用例/需求覆盖矩阵/回归集/证据规范
+docs/hmi/TEST_DESIGN.md | active | 软件测试设计（TestDesignArtifact）v2：六档环境分层（含 ENV-A0 railhmi-core 单测域 TC-CORE-01..07）/度量定义/故障注入目录 FI-01..10/P0 冒烟集 15 条/功能域 G1..G9（含 v2 契约域 integration_state、NVR 未配置、模式位、DetectionBadge、ai_profile）/需求覆盖矩阵/回归集 REG-01..06/证据规范
 docs/hmi/VISUAL_DESIGN.md | active | 视觉设计规范 v2（UIVisualDesignArtifact）：色彩/字体/间距/图标/组件/页面状态/资源清单/实现规则；含仅可见光模式位、设备集成状态、NVR 卡片、检测职责徽标
 docs/hmi/build_env_check.md | active | 目标构建/运行依赖基线核验（ITEM-001，ITEM-002 §14 追加）：E-01..E-13 逐条命令/板端未核验声明/主机原始结果摘录/替代结论
 docs/hmi/design_tokens.yaml | active | 视觉设计令牌 v2（颜色/报警级别/流状态/模式与集成状态/检测职责徽标/字体/间距/圆角/层级/对比度校验）
