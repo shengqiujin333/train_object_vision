@@ -1,0 +1,10 @@
+type=config pre_s=30 post_s=60 buffer=0 capacity_gb=12
+type=buffer cam=CAM-01 frames=2251 capacity=0
+type=clip id=1 cam=CAM-01 trigger_ms=60000 t0_ms=30000 t1_ms=120000 duration_ms=90000 state=recording
+type=finalize before=0 at=1
+type=clip id=1 state=finalized complete=true frames=2001 duration_ms=90000
+type=clip-store dir_ok=true wrote=true exists=true path=/tmp/railhmi_clips/clip-1.json
+type=clip-manifest {"id":1,"cam":"CAM-01","level":"L1","trigger_ms":60000,"t0_ms":30000,"t1_ms":120000,"duration_ms":90000,"state":"finalized","complete":true,"frame_count":2001}
+type=retention evicted=1 continuous=1 critical=0 protected_remaining=1
+type=gap cam=CAM-01 count=1 t0=200000 t1=210000 reason=recording_interrupted
+type=acceptance duration_ms=90000 clip_complete=true clip_file_exists=true protected_priority=true gap_merged=true result=PASS

@@ -16,6 +16,7 @@ add_library(railhmi_core STATIC
     src/status.cpp
     src/inference.cpp
     src/alarm_center.cpp
+    src/clip.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -54,5 +55,12 @@ set_target_properties(railhmi-ai-probe PROPERTIES
 add_executable(railhmi-alarm-probe tools/alarm_probe.cpp)
 target_link_libraries(railhmi-alarm-probe PRIVATE railhmi_core)
 set_target_properties(railhmi-alarm-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 保护片段/缺口探针（ITEM-019；含原子写盘，链 railhmi_platform）
+add_executable(railhmi-clip-probe tools/clip_probe.cpp)
+target_link_libraries(railhmi-clip-probe PRIVATE railhmi_core railhmi_platform)
+set_target_properties(railhmi-clip-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
