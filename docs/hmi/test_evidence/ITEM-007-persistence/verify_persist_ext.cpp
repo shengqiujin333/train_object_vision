@@ -5,8 +5,9 @@
 //      survive, uncommitted transaction row invisible, journal mode stays WAL (TC-CORE-06).
 //   2. retention boundary/ties: exact age limit, exact capacity, continuous-vs-critical tie at
 //      equal t0, retention_days=0, empty input, incomplete segment aging.
-//   3. gap model: containment, 1ms-hole separation, bridging merge, reversed input, ordering,
-//      repository query with/without camera filter.
+//   3. gap model under the v2 contract (retention.h): closed-interval adjacency = difference
+//      <=1ms merges; >=2ms holes separate; bridging absorbs ALL pieces (no residual overlap);
+//      reason = first existing non-empty; containment, reversed input, ordering, repo query.
 //   4. schema DDL conformity to DESKTOP_APP_DESIGN §11.1: 9 tables, exact column counts,
 //      paired ts_wall_ms/ts_mono_us on event-class tables, kind enum round-trip.
 //   5. repository upsert overwrite semantics, explicit event id, duplicate-PK failure reporting,
@@ -322,27 +323,56 @@ void test_retention_edges() {
 
 // ---------------- 3. gap model edges ----------------
 void test_gap_edges() {
-    {   // containment does not grow bounds; 1ms hole separates; later bridge — VERIFIER
-        // EXPECTATION (declared contract "缺口按相机合并重叠/相邻区间，保持按 t0 排序"):
-        // merging must cover ALL overlapping/adjacent same-camera intervals, not only the first.
+    {   // containment does not grow bounds; contract (retention.h, v2 fix round): same-camera
+        // closed intervals overlapping or within 1ms merge; >=2ms holes stay separate; a later
+        // interval bridging must merge ALL pieces into one with no residual pairs.
+        // Reason convention (README §7): "first existing" = first non-empty in scan (t0) order;
+        // here [50,98]'s 'x' precedes [100,300]'s 'drop' in scan order.
         std::vector<RecordingGapRow> gaps;
         add_gap(gaps, "C1", 100, 300, "drop");
         add_gap(gaps, "C1", 120, 180, "x");        // fully contained
         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 100 && gaps[0].t1_ms == 300,
               "fx gaps: contained interval leaves bounds unchanged");
-        add_gap(gaps, "C1", 50, 99, "x");          // 1ms hole at 99..100
-        CHECK(gaps.size() == 2 && gaps[0].t0_ms == 50 && gaps[0].t1_ms == 99,
-              "fx gaps: 1ms hole keeps separate gap and sorted order");
-        add_gap(gaps, "C1", 99, 110, "bridge");    // bridges both existing same-camera gaps
+        add_gap(gaps, "C1", 50, 98, "x");          // hole 98..100 (>=2ms): kept separate
+        CHECK(gaps.size() == 2 && gaps[0].t0_ms == 50 && gaps[0].t1_ms == 98,
+              "fx gaps: >=2ms hole keeps separate gap and sorted order");
+        add_gap(gaps, "C1", 99, 110, "bridge");    // adjacent to [50,98], bridges to [100,300]
         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 50 && gaps[0].t1_ms == 300,
-              "fx gaps: bridging interval merges ALL overlapping pieces (declared contract)");
-        CHECK(gaps[0].reason == "drop", "fx gaps: first existing non-empty reason kept on merge");
+              "fx gaps: bridging interval merges ALL pieces (adjacent + contained)");
+        CHECK(gaps[0].reason == "x", "fx gaps: merged reason = first non-empty in scan order");
+    }
+    {   // v2 contract: difference of exactly 1ms counts as adjacent -> direct merge; >=2ms split.
+        std::vector<RecordingGapRow> gaps;
+        add_gap(gaps, "C1", 100, 300, "drop");
+        add_gap(gaps, "C1", 50, 99, "x");          // 100-99 = 1ms -> adjacent
+        CHECK(gaps.size() == 1 && gaps[0].t0_ms == 50 && gaps[0].t1_ms == 300,
+              "fx gaps: up-to-1ms proximity merges per v2 declared contract");
+        add_gap(gaps, "C1", 305, 320, "late");     // 305-300 = 5ms hole -> separate
+        CHECK(gaps.size() == 2 && gaps[1].t0_ms == 305 && gaps[1].reason == "late",
+              "fx gaps: >=2ms hole stays separate after adjacency merge");
     }
     {   // reversed input normalized by swap
         std::vector<RecordingGapRow> gaps;
         add_gap(gaps, "C2", 300, 100, "r");
         CHECK(gaps.size() == 1 && gaps[0].t0_ms == 100 && gaps[0].t1_ms == 300,
               "fx gaps: reversed t0>t1 normalized");
+    }
+    {   // reason inheritance: first existing non-empty wins across multi-interval absorption
+        std::vector<RecordingGapRow> gaps;
+        add_gap(gaps, "C3", 0, 10, "a");
+        add_gap(gaps, "C3", 20, 30, "");           // empty existing reason must not win
+        add_gap(gaps, "C3", 40, 50, "c");
+        add_gap(gaps, "C3", 5, 45, "b");           // bridges all three
+        CHECK(gaps.size() == 1 && gaps[0].t0_ms == 0 && gaps[0].t1_ms == 50
+                  && gaps[0].reason == "a",
+              "fx gaps: bridge absorbs three pieces, reason first-existing-non-empty");
+    }
+    {   // empty-reason-only history: new reason fills after merge (1ms-adjacent, not 2ms hole)
+        std::vector<RecordingGapRow> gaps;
+        add_gap(gaps, "C4", 0, 10, "");
+        add_gap(gaps, "C4", 11, 20, "later");
+        CHECK(gaps.size() == 1 && gaps[0].reason == "later",
+              "fx gaps: empty existing reason filled by new value on merge");
     }
     {   // ordering by camera then t0
         std::vector<RecordingGapRow> gaps;

@@ -1,0 +1,100 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify007",
+    "cpp": "docs/hmi/test_evidence/ITEM-007-persistence/verify_persist_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-007-persistence",
+    "stamp": "verify-item007-persist-20261015-v7",
+    "connect_timeout": 10,
+    "app_root": "app",
+    "timeout_sec": 1200
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "rm -rf /tmp/railhmi_verify007 /tmp/railhmi_verify007_board && mkdir -p /tmp/railhmi_verify007_board/app/app /tmp/railhmi_verify007",
+      "exit": 0,
+      "elapsed_s": 0.24,
+      "output": ""
+    },
+    {
+      "step": "upload-app",
+      "exit": 0,
+      "output": "uploaded app tree (90687 bytes compressed)"
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "uploaded docs/hmi/test_evidence/ITEM-007-persistence/verify_persist_ext.cpp -> /tmp/railhmi_verify007/verify_persist_ext.cpp"
+    },
+    {
+      "step": "extract",
+      "cmd": "cd /tmp/railhmi_verify007_board && tar xzf /tmp/railhmi_verify007/app.tgz -C /tmp/railhmi_verify007_board/app && echo APP_FILES=$(find /tmp/railhmi_verify007_board/app -type f | wc -l)",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "APP_FILES=65\n"
+    },
+    {
+      "step": "build-coretests",
+      "cmd": "cd /tmp/railhmi_verify007_board/app && bash build.sh CoreTests 2>&1; echo BUILDEXIT=$?",
+      "exit": 0,
+      "elapsed_s": 11.27,
+      "output": "[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1\n[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no\n[build.sh] configuring: cmake -S '/tmp/railhmi_verify007_board/app' -B '/tmp/railhmi_verify007_board/app/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- railhmi: build mode = CoreTests\n-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/railhmi_verify007_board/app/build-core\n[build.sh] building: cmake --build '/tmp/railhmi_verify007_board/app/build-core' -j8\n[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o\n[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o\n[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o\n[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o\n[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o\n[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o\n[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o\n[ 33%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o\n[ 37%] Linking CXX static library librailhmi_core.a\n[ 37%] Built target railhmi_core\n[ 41%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o\n[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o\n[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o\n[ 54%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o\n[ 58%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o\n[ 62%] Linking CXX executable ../../tools/railhmi-config-check\n[ 62%] Built target railhmi-config-check\n[ 66%] Linking CXX static library librailhmi_platform.a\n[ 66%] Built target railhmi_platform\n[ 83%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o\n[ 79%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o\n[ 79%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_rules.cpp.o\n[ 83%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_config.cpp.o\n[ 87%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o\n[ 91%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_persistence.cpp.o\n[ 95%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_stream.cpp.o\n[100%] Linking CXX executable ../railhmi-core-tests\n[100%] Built target railhmi-core-tests\n[build.sh] build OK (mode=core-tests); artifacts under /tmp/railhmi_verify007_board/app/build-core\n[build.sh] run: /tmp/railhmi_verify007_board/app/build-core/tests/railhmi-core-tests\nBUILDEXIT=0\n"
+    },
+    {
+      "step": "run-coretests",
+      "cmd": "cd /tmp/railhmi_verify007_board/app/build-core/tests && ./railhmi-core-tests; echo TESTEXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.23,
+      "output": "== railhmi-core tests (railhmi 0.1.0 [mode=CoreTests, simulation=off]) ==\n[PASS] version_string == 0.1.0\n[PASS] build_mode is a known mode\n[PASS] build_description contains railhmi\n[PASS] redact_url hides credentials\n[PASS] redact_url leaves credential-free url unchanged\n[PASS] FileStore::write_atomic\n[PASS] FileStore::read_all round-trip\n[PASS] FileStore::exists after write\n[PASS] FileStore::exists false for missing\n[PASS] SqliteStore::open\n[PASS] SqliteStore::exec create table\n[PASS] SqliteStore::exec insert\n[PASS] SqliteStore::query_int\n[PASS] SqliteStore row count == 1\n[PASS] SqliteStore::open (reopen)\n[PASS] SqliteStore persistence across reopen\n[PASS] baseline config loads without errors\n[PASS] baseline has 6 cameras\n[PASS] CAM-01 id/position=primary\n[PASS] CAM-01 ai_enabled=true, ai_profile=front\n[PASS] CAM-02 ai_enabled=false, ai_profile=none\n[PASS] CAM-03 ai_enabled=false, ai_profile=none\n[PASS] CAM-04 ai_profile=pantograph\n[PASS] CAM-05 ai_profile=wheel_rail\n[PASS] CAM-06 ai_profile=cab_door\n[PASS] app.render_path=cpu\n[PASS] app.mode=visible\n[PASS] IR is not connected this phase\n[PASS] app.recording_source=both\n[PASS] app.resolution=1920x1080\n[PASS] thresholds values parsed\n[PASS] stream timing thresholds parsed\n[PASS] baseline has 4 roi entries\n[PASS] one integration (NVR)\n[PASS] NVR registered\n[PASS] NVR initial integration_state=unconfigured\n[PASS] integration_state string is 'unconfigured'\n[PASS] missing optional tile_aspect recorded in applied_defaults\n[PASS] missing required field reports cameras[0].username\n[PASS] invalid transport reports cameras[0].transport\n[PASS] invalid ai_profile reports cameras[0].ai_profile\n[PASS] ai_enabled/profile mismatch reports cameras[0].ai_profile\n[PASS] missing thresholds field reports thresholds.confirm_frames\n[PASS] invalid render_path reports app.render_path\n[PASS] invalid mode reports app.mode\n[PASS] unknown roi camera reports roi[0].camera\n[PASS] out-of-range roi w reports roi[0].w\n[PASS] missing config file reports file name\n[PASS] initial state = offline\n[PASS] offline cannot present as live\n[PASS] start -> connecting\n[PASS] connecting cannot present as live\n[PASS] first frame -> live\n[PASS] Started event emitted\n[PASS] FirstFrame event emitted\n[PASS] live presents fresh frame as live\n[PASS] no new frame -> frozen\n[PASS] frozen cannot present old frame as live\n[PASS] Freeze event emitted\n[PASS] frozen -> reconnecting\n[PASS] reconnect count = 1\n[PASS] reconnecting -> connecting (retry)\n[PASS] retry timeout -> reconnecting count 2\n[PASS] retry again -> connecting\n[PASS] threshold reached -> offline\n[PASS] reconnect count = 3 (threshold)\n[PASS] Escalated device event emitted at threshold\n[PASS] offline cannot present as live\n[PASS] recover from offline -> live\n[PASS] reconnect count reset on recovery\n[PASS] Recovered event emitted\n[PASS] source-error test live\n[PASS] source error -> reconnecting count 1\n[PASS] second source error -> offline (threshold 2)\n[PASS] source-error escalation event emitted\n[PASS] SourceError event emitted\n[PASS] quality flag -> degraded\n[PASS] degraded counts as streaming (degraded available)\n[PASS] degraded may present fresh frame\n[PASS] QualityDegraded event emitted\n[PASS] classify: low mean -> too_dark\n[PASS] classify: high mean -> too_bright\n[PASS] classify: near-uniform -> occluded\n[PASS] classify: low lapvar -> blurred\n[PASS] classify: normal frame -> no flags\n[PASS] classify: invalid stats -> no flags\n[PASS] person_on_rail=L1\n[PASS] front_obstacle=L1\n[PASS] wheel_derail=L1\n[PASS] pantograph_abnormal=L2\n[PASS] door_ajar=L2\n[PASS] front_camera_device=L2\n[PASS] side_camera_device=L3\n[PASS] device front primary=L2\n[PASS] device side=L3\n[PASS] front person: event after confirm_frames\n[PASS] front person level = L1\n[PASS] front person type\n[PASS] new event unacked\n[PASS] front obstacle -> L1 FrontObstacle\n[PASS] front outside ROI -> no event\n[PASS] front low confidence -> no event\n[PASS] front frames beyond confirm window -> no event\n[PASS] suppression: first event created\n[PASS] same track within suppress window -> no new event\n[PASS] events size still 1 under suppression\n[PASS] suppressed event distance updated\n[PASS] different track -> new event\n[PASS] events size 2 after second track\n[PASS] same track after suppress window -> new event\n[PASS] events size 3 after suppress window\n[PASS] pantograph normal -> no event\n[PASS] pantograph abnormal -> L2\n[PASS] wheel_rail abnormal -> L1\n[PASS] cab_door ajar -> L2\n[PASS] ai_profile=none -> no event\n[PASS] front primary device event -> L2\n[PASS] side device event -> L3\n[PASS] duplicate device event suppressed\n[PASS] single-frame confirm event created\n[PASS] unacked count 1\n[PASS] ack returns true for existing event\n[PASS] ack does NOT delete event\n[PASS] ack_state becomes acked\n[PASS] unacked count 0 after ack\n[PASS] ack unknown id returns false\n[PASS] roi contains center point\n[PASS] roi rejects outside point\n[PASS] roi rejects beyond x+w\n[PASS] find_roi finds entry\n[PASS] find_roi miss\n[PASS] to_string(Device)\n[PASS] to_string(SideCameraDevice)\n[PASS] to_string(Acked)\n[PASS] to_string(Unacked)\n[PASS] to_string(PantographState::Abnormal)\n[PASS] to_string(DoorState::Ajar)\n[PASS] to_string(DeviceCategory::Side)\n[PASS] map_level(Device)=L2\n[PASS] position primary -> FrontPrimary\n[PASS] position left/right -> Side\n[PASS] position roof/underfloor/cab -> Other\n[PASS] device other -> L2 (explicit)\n[PASS] roi includes top-left corner\n[PASS] roi includes bottom-right corner\n[PASS] roi rejects x-epsilon\n[PASS] roi rejects y+h+epsilon\n[PASS] wheel event independent\n[PASS] front key isolated from wheel (same cam/track, different type)\n[PASS] cross-type events independent\n[PASS] device channel event 1\n[PASS] detection channel independent of device suppression\n[PASS] device event after window\n[PASS] device event after second window\n[PASS] device(3)+detection(1)=4\n[PASS] no event with two single-frame counts\n[PASS] non-candidate frame resets all camera confirms\n[PASS] reset cleared cross-type confirms (need full cycle)\n[PASS] full cycle after reset emits\n[PASS] emit resets cycle: first event\n[PASS] suppressed updates do not emit\n[PASS] boundary frame alone not enough\n[PASS] second frame not enough\n[PASS] full new cycle emits\n[PASS] emit resets cycle: second event\n[PASS] boundary: first event\n[PASS] 999ms still suppressed\n[PASS] exactly suppress_window not suppressed (new event)\n[PASS] 1999ms still suppressed\n[PASS] 2000ms not suppressed\n[PASS] boundary events count 3\n[PASS] update test: first event\n[PASS] update within window no new event\n[PASS] update refreshes last_update_ms\n[PASS] update refreshes distance\n[PASS] new event after window from original emit\n[PASS] update test: two events\n[PASS] two tracks -> two events\n[PASS] ack id1\n[PASS] ack id1 is idempotent\n[PASS] id1 acked\n[PASS] id2 unaffected\n[PASS] ack isolation: unacked 1\n[PASS] timebase starts uncalibrated\n[PASS] timebase calibrated\n[PASS] to_wall_ms at reference\n[PASS] to_wall_ms +2s\n[PASS] to_mono_us round-trip\n[PASS] to_wall_ms truncates to ms\n[PASS] wall/mono round-trip identity (ms-aligned)\n[PASS] system_now_ms is UTC epoch ms\n[PASS] steady_now_us positive\n[PASS] age: only expired continuous evicted\n[PASS] age: retained bytes 20\n[PASS] age: critical not evicted\n[PASS] age: one continuous evicted\n[PASS] capacity: oldest continuous evicted first\n[PASS] capacity: keep critical, retained 30\n[PASS] capacity: continuous(11,12) then oldest critical(13)\n[PASS] capacity: eviction counts\n[PASS] capacity: retained 10\n[PASS] gap merge: adjacent/overlap merged to one\n[PASS] gap merge bounds 100..300\n[PASS] gap merge: keeps first existing reason\n[PASS] gap merge: different camera separate\n[PASS] bridge merge: single gap, no residual overlap\n[PASS] bridge merge bounds 0..30\n[PASS] bridge merge: first existing reason 'a'\n[PASS] verify sequence: single merged gap\n[PASS] verify sequence bounds 50..300\n[PASS] verify sequence reason drop (first existing)\n[PASS] separate gaps (1ms apart) stay distinct\n[PASS] contiguous gaps merge\n[PASS] repo.open\n[PASS] repo.init_schema\n[PASS] repo journal_mode == wal\n[PASS] insert_event returns id\n[PASS] insert_event_target\n[PASS] insert_maintenance\n[PASS] insert_health\n[PASS] insert_stream_event\n[PASS] upsert_integration\n[PASS] set_config\n[PASS] get_config round-trip\n[PASS] insert_segment x2\n[PASS] insert_gap\n[PASS] 9 tables populated (segments=2)\n[PASS] copy db for WAL replay\n[PASS] open WAL copy\n[PASS] WAL replay: event recovered from -wal\n[PASS] WAL replay: gap recovered\n[PASS] reopen after restart\n[PASS] write-restart-read consistent\n[PASS] gap persisted across restart\n[PASS] gaps queryable by camera\n[PASS] segments read back with kind\n[PASS] repo retention evicts continuous first\n[PASS] repo retention: one segment left\n[PASS] repo retention keeps critical segment\n[PASS] crash: reopen after SIGKILL\n[PASS] crash: journal_mode still wal\n[PASS] crash: uncommitted transaction discarded\n[PASS] crash: committed row intact\n== 243 passed, 0 failed ==\nTESTEXIT=0\n"
+    },
+    {
+      "step": "config-good",
+      "cmd": "cd /tmp/railhmi_verify007_board/app && ./build-core/tools/railhmi-config-check ./config; echo CFG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "config OK: 6 cameras, 4 roi, 1 integrations (dir=./config)\n  mode=visible render_path=cpu recording_source=both\nCFG_EXIT=0\n"
+    },
+    {
+      "step": "config-bad",
+      "cmd": "rm -rf /tmp/railhmi_cfg_bad && mkdir -p /tmp/railhmi_cfg_bad && cp /tmp/railhmi_verify007_board/app/config/*.yaml /tmp/railhmi_cfg_bad/ && sed -i '/confirm_frames:/d' /tmp/railhmi_cfg_bad/thresholds.yaml && /tmp/railhmi_verify007_board/app/build-core/tools/railhmi-config-check /tmp/railhmi_cfg_bad 2>&1; echo CFG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.15,
+      "output": "config INVALID (1 error(s)) dir=/tmp/railhmi_cfg_bad:\n  thresholds.confirm_frames: required field missing\nCFG_EXIT=1\n"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_verify007_board/app && g++ -std=c++17 -O0 -Wall -Wextra -Isrc/core/include -Isrc/platform/include -Ithird_party/sqlite -DRAILHMI_HAVE_SQLITE=1 /tmp/railhmi_verify007/verify_persist_ext.cpp src/core/src/persistence_model.cpp src/core/src/retention.cpp src/core/src/timebase.cpp src/platform/src/sqlite_store.cpp src/platform/src/repository.cpp -L/lib/aarch64-linux-gnu -l:libsqlite3.so.0 -o /tmp/railhmi_verify007/verify_persist_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 3.38,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_verify007_board/app && /tmp/railhmi_verify007/verify_persist_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.64,
+      "output": "== verify_item007 persistence/retention extension fixtures ==\n[PASS] fx ddl: open temp db\n[PASS] fx ddl: 9 tables with design §11.1 column counts\n[PASS] fx ddl: event-class tables pair ts_wall_ms + ts_mono_us\n[PASS] fx ddl: events/id uses INTEGER PRIMARY KEY\n[PASS] fx ddl: segment kind text round-trip + invalid literal rejected\n[PASS] fx retention: age boundary strict — exact limit kept, +1ms evicted\n[PASS] fx retention: critical exempt from age limit\n[PASS] fx retention: exactly at capacity evicts nothing\n[PASS] fx retention: one byte over capacity evicts oldest only, stops under limit\n[PASS] fx retention: tie order continuous-first, then ascending id at equal t0\n[PASS] fx retention: tie eviction counts\n[PASS] fx retention: days=0 evicts expired continuous only\n[PASS] fx retention: empty input safe\n[PASS] fx retention: incomplete continuous ages out by same rule (observed behavior)\n[PASS] fx gaps: contained interval leaves bounds unchanged\n[PASS] fx gaps: >=2ms hole keeps separate gap and sorted order\n[PASS] fx gaps: bridging interval merges ALL pieces (adjacent + contained)\n[PASS] fx gaps: merged reason = first non-empty in scan order\n[PASS] fx gaps: up-to-1ms proximity merges per v2 declared contract\n[PASS] fx gaps: >=2ms hole stays separate after adjacency merge\n[PASS] fx gaps: reversed t0>t1 normalized\n[PASS] fx gaps: bridge absorbs three pieces, reason first-existing-non-empty\n[PASS] fx gaps: empty existing reason filled by new value on merge\n[PASS] fx gaps: sorted by camera then t0\n[PASS] fx gaps: repo open+schema\n[PASS] fx gaps: insert two cameras\n[PASS] fx gaps: empty filter returns all ordered by t0\n[PASS] fx gaps: camera filter isolates\n[PASS] fx repo: open\n[PASS] fx repo: init_schema\n[PASS] fx repo: set_config v1\n[PASS] fx repo: set_config v2\n[PASS] fx repo: config_kv upsert overwrites (count==1, last value)\n[PASS] fx repo: upsert probing\n[PASS] fx repo: upsert unreachable\n[PASS] fx repo: integrations upsert count==1\n[PASS] fx repo: explicit event id preserved\n[PASS] fx repo: get_event finds explicit id\n[PASS] fx repo: second explicit id\n[PASS] fx repo: record_available=false round-trips\n[PASS] fx repo: duplicate PK reported as failure\n[PASS] fx repo: three segments inserted\n[PASS] fx repo: DB retention evicts expired continuous only\n[PASS] fx repo: DB retention leaves 2 segments\n[PASS] fx repo: survivors queryable\n[PASS] fx repo: critical survivor kept over age policy\n[PASS] fx repo: fresh survivor kept over age policy\n[PASS] fx crash: parent prepared schema + committed row\n[PASS] fx crash: child killed by SIGKILL mid-write (uncommitted)\n[PASS] fx crash: DB reopens after mid-write kill\n[PASS] fx crash: uncommitted row invisible, committed row intact\n[PASS] fx crash: journal_mode still wal after recovery\n[PASS] fx crash: fresh WAL db prepared\n[PASS] fx crash: child killed by SIGKILL after commit, no close\n[PASS] fx crash: committed row recovered via SqliteRepository (WAL replay)\n== 55 passed, 0 failed ==\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify007 /tmp/railhmi_verify007_board /tmp/railhmi_cfg_bad && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify007 /tmp/railhmi_verify007_board 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.13,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify007': No such file or directory\nls: cannot access '/tmp/railhmi_verify007_board': No such file or directory\n"
+    }
+  ]
+}
