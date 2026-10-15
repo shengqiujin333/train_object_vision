@@ -34,6 +34,8 @@ add_executable(railhmi
     src/main.cpp
     src/alarm_model.cpp
     src/alarm_model.h
+    src/replay_model.cpp
+    src/replay_model.h
     qml.qrc
 )
 target_include_directories(railhmi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)

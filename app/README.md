@@ -32,7 +32,8 @@
 | ITEM-017 | 推理服务接入与双模型复用 | **已交付**：`railhmi-core` 推理模型（有界丢旧帧/帧间隔降频/优先级 front>wheel_rail>pantograph>cab_door/NPU 预算/温度守卫降载不停/两侧广角不入队/AI 不可用语义与报警标注/AI 调试视图）+ `railhmi-media` `AiWorker` 工作线程（可插拔 `Detector`；`SimDetector` 替代输入）+ 配置 `app.yaml ai:`（帧间隔/队列深度/预算/温度/模型版本）+ QML `P5AiDebug.qml`（框/ROI/置信度/耗时/模型版本，叠加层默认关）+ `railhmi-ai-probe`/`railhmi-ai-runner`。板端 TestRun **480/480 通过** + ai-probe PASS；MediaCheck ai-runner `eligible=4 with_result=4`、停止后 `AI 不可用`。证据：`docs/hmi/test_evidence/ITEM-017-inference/README.md` |
 | ITEM-018 | 报警中心页面 | **已交付**：`railhmi-core` 报警中心模型（字段派生/默认排序级别降序→时间降序/六维筛选与空态/确认与批量确认只改 ack 不删事件/维护日志条目/录像三态标注/UTC 时间工具）+ UI 桥接 `RailhmiAlarmModel`（过滤排序确认委托 core）+ QML `P2AlarmCenter.qml`（筛选栏/列表/空态/行内录像标注/确认·查看录像·查看快照）+ `railhmi-alarm-probe`。板端 TestRun **512/512 通过**，探针 PASS（批量确认 changed=3、事件保留、空态、维护日志）。证据：`docs/hmi/test_evidence/ITEM-018-alarm-center/README.md` |
 | ITEM-019 | 本地报警保护片段与缺口记录 | **已交付**：`railhmi-core` 有界滚动缓冲 + 保护片段（报警固化 [pre,post]、post 后 finalize）+ 原子写盘（`FileStore.write_atomic`）+ 保留策略保护优先 + 缺口记录合并 + `railhmi-clip-probe`。板端 TestRun **537/537 通过**，探针 PASS（时长 90000ms、写入存在、保护保留、缺口合并）。证据：`docs/hmi/test_evidence/ITEM-019-clips/README.md` |
-| ITEM-020.. | 回放、权限、恢复、打包 | 未实现 |
+| ITEM-020 | 历史回放页 | **已交付**：`railhmi-core` 回放模型（时间轴连续/报警/缺口/关键帧、四跳转 -30s/报警/+30s/+60s、游标 seek、三联同步偏差阈值提示、来源回退本机片段、事件详情）+ UI 桥接 `RailhmiReplayModel` + QML `P3Replay.qml` + 配置 `replay_sync_threshold_ms` + `railhmi-replay-probe`。板端 TestRun **566/566 通过**，探针 PASS（报警段/缺口/同步偏差提示/本机片段回退）。证据：`docs/hmi/test_evidence/ITEM-020-replay/README.md` |
+| ITEM-021.. | 权限、恢复、打包 | 未实现 |
 
 > 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 

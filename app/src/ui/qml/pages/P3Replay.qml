@@ -1,0 +1,249 @@
+import QtQuick 2.15
+import ".."
+import "../components"
+
+// P3 历史回放（ITEM-020 / 交互 §5.3、视觉 §8.3）。
+// 上：日期/摄像头 + 三联同步开关；中：回放画面（前方报警默认左/前/右）；下：时间轴
+// （连续段/报警区段显著色标/缺口/游标）+ 关键帧 + 播放控制（-30s/报警时刻/+30s/+60s）；
+// 右：事件详情栏。NVR 不可用时显式标注并回放本机片段；三路同步偏差超阈值显示提示。
+Rectangle {
+    id: page
+    color: Theme.color.bg_base
+
+    readonly property var R: (typeof railhmiReplay !== "undefined") ? railhmiReplay : null
+    readonly property var detail: (typeof railhmiReplayDetail !== "undefined") ? railhmiReplayDetail : ({})
+    property string date: "2026-10-16"
+    property string activeCam: "CAM-01"
+    property bool syncOn: true
+    property var tl: ({})
+    property double cursor: 0
+    property var syncInfo: ({ inSync: true, hasPrompt: false, prompt: "" })
+
+    readonly property var syncGroup: [
+        { "id": "CAM-02", "name": "左侧" },
+        { "id": "CAM-01", "name": "前方" },
+        { "id": "CAM-03", "name": "右侧" }
+    ]
+
+    function dayStart() { return tl.dayStartMs !== undefined ? tl.dayStartMs : 0 }
+    function dayMs() { return tl.durationMs !== undefined ? tl.durationMs : 86400000 }
+    function xOf(ts) { return (ts - dayStart()) / dayMs() * track.width }
+    function reload() {
+        if (!R) { tl = {}; return }
+        tl = R.timeline(activeCam, date)
+        if (cursor <= 0 && detail.tsWallMs !== undefined) cursor = detail.tsWallMs
+        refreshSync()
+    }
+    function refreshSync() {
+        if (!R) return
+        // 三路同步的偏差（示例偏移由 cursor 派生；真实偏移来自各路回放时钟）
+        syncInfo = R.syncStatus([cursor, cursor, cursor], R.syncThreshold())
+    }
+    function doJump(which) {
+        if (!R) return
+        var j = R.jumpTargets(detail.tsWallMs !== undefined ? detail.tsWallMs : cursor)
+        cursor = j[which]
+        refreshSync()
+    }
+    function levelColor(l) {
+        if (l === "L1") return Theme.alarm.L1.accent
+        if (l === "L2") return Theme.alarm.L2.accent
+        return Theme.alarm.L3.accent
+    }
+
+    Component.onCompleted: reload()
+
+    Column {
+        anchors.fill: parent
+        anchors.margins: Theme.spacing.s3
+        spacing: Theme.spacing.s2
+
+        // ---- 顶部：日期/摄像头/同步开关 + 来源标注 ----
+        Row {
+            spacing: Theme.spacing.s2
+            Text { anchors.verticalCenter: parent.verticalCenter; color: Theme.color.text_secondary
+                   font.pixelSize: Theme.typography.scale.caption.size; text: "日期" }
+            Rectangle {
+                width: 120; height: Theme.size.button.sm; color: Theme.color.bg_sunken
+                border.color: Theme.color.border; border.width: Theme.border.width; radius: Theme.radius.chip
+                TextInput {
+                    id: dateInput
+                    anchors.fill: parent; anchors.leftMargin: Theme.spacing.s2
+                    verticalAlignment: TextInput.AlignVCenter; color: Theme.color.text_primary
+                    font.pixelSize: Theme.typography.scale.caption.size; text: page.date
+                    onEditingFinished: { page.date = text; page.reload() }
+                }
+            }
+            Repeater {
+                model: page.syncGroup
+                FilterChip {
+                    text: modelData.name
+                    selected: page.activeCam === modelData.id
+                    onClicked: { page.activeCam = modelData.id; page.reload() }
+                }
+            }
+            FilterChip { text: "三联同步"; selected: page.syncOn; onClicked: page.syncOn = !page.syncOn }
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
+                visible: page.R ? !page.R.sourceStatus().usable || page.R.sourceStatus().note.length > 0 : false
+                color: Theme.color.degraded
+                font.pixelSize: Theme.typography.scale.caption.size
+                text: page.R ? ("来源：" + page.R.sourceStatus().label +
+                                (page.R.sourceStatus().note.length > 0 ? "（" + page.R.sourceStatus().note + "）" : "")) : ""
+            }
+        }
+        Text {
+            visible: page.syncInfo.hasPrompt
+            color: Theme.color.error
+            font.pixelSize: Theme.typography.scale.caption.size
+            text: page.syncInfo.hasPrompt ? page.syncInfo.prompt : ""
+        }
+
+        // ---- 中部：回放画面（三联） ----
+        Row {
+            id: videoRow
+            width: parent.width
+            height: parent.height * 0.42
+            spacing: Theme.spacing.s2
+            Repeater {
+                model: page.syncOn ? page.syncGroup : [{ id: page.activeCam, name: "单路" }]
+                Rectangle {
+                    objectName: "replayPanel-" + modelData.id
+                    width: (videoRow.width - 2 * Theme.spacing.s2) / 3
+                    height: videoRow.height
+                    color: Theme.color.bg_sunken
+                    border.color: Theme.color.border; border.width: Theme.border.width; radius: Theme.radius.card
+                    Text { anchors.top: parent.top; anchors.left: parent.left; anchors.margins: Theme.spacing.s2
+                           color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
+                           text: modelData.name + " (" + modelData.id + ")" }
+                    Text { anchors.centerIn: parent; color: Theme.color.text_muted
+                           font.pixelSize: Theme.typography.scale.caption.size
+                           text: "回放画面（媒体层提供）" }
+                    Text { anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.margins: Theme.spacing.s2
+                           color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                           text: page.R ? page.R.formatTime(page.cursor) : "" }
+                }
+            }
+        }
+
+        // ---- 下部：时间轴 + 关键帧 + 播放控制 ----
+        Item {
+            id: timelineArea
+            width: parent.width
+            height: parent.height - videoRow.height - Theme.spacing.s4
+
+            Rectangle {
+                id: track
+                objectName: "timelineTrack"
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                height: Theme.size.button.md
+                color: Theme.color.surface
+                border.color: Theme.color.border; border.width: Theme.border.width
+
+                // 连续/报警区段
+                Repeater {
+                    model: page.tl.segments !== undefined ? page.tl.segments : []
+                    Rectangle {
+                        objectName: modelData.kind === "critical" ? "alarmSegment" : "continuousSegment"
+                        x: page.xOf(modelData.t0); width: Math.max(1, page.xOf(modelData.t1) - page.xOf(modelData.t0))
+                        height: parent.height
+                        color: modelData.kind === "critical" ? Theme.color.degraded_bg : Theme.color.neutral_bg
+                        border.color: modelData.kind === "critical" ? page.levelColor("L2") : Theme.color.border
+                        border.width: modelData.kind === "critical" ? 3 : Theme.border.width
+                    }
+                }
+                // 缺口（斜纹示意：深底 + 缺失标注）
+                Repeater {
+                    model: page.tl.gaps !== undefined ? page.tl.gaps : []
+                    Rectangle {
+                        objectName: "timelineGap"
+                        x: page.xOf(modelData.t0); width: Math.max(1, page.xOf(modelData.t1) - page.xOf(modelData.t0))
+                        height: parent.height
+                        color: Theme.color.bg_base
+                        border.color: Theme.color.degraded; border.width: Theme.border.width
+                        Text { anchors.centerIn: parent; color: Theme.color.degraded
+                               font.pixelSize: Theme.typography.scale.caption.size; text: "录像缺失" }
+                    }
+                }
+                // 报警标记
+                Repeater {
+                    model: page.tl.alarms !== undefined ? page.tl.alarms : []
+                    Rectangle {
+                        objectName: "alarmMarker"
+                        x: page.xOf(modelData); width: 3; height: parent.height; color: page.levelColor("L1")
+                    }
+                }
+                // 游标
+                Rectangle {
+                    objectName: "timelineCursor"
+                    x: page.xOf(page.cursor); width: 2; height: parent.height; color: Theme.color.text_primary
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: { page.cursor = page.dayStart() + mouseX / track.width * page.dayMs(); page.refreshSync() }
+                }
+            }
+
+            // 关键帧缩略图条
+            Rectangle {
+                id: keyStrip
+                objectName: "keyframeStrip"
+                anchors.top: track.bottom; anchors.left: parent.left; anchors.right: parent.right
+                height: Theme.size.button.md
+                color: Theme.color.bg_sunken
+                border.color: Theme.color.border; border.width: Theme.border.width
+                Repeater {
+                    // 抽样展示关键帧刻度（避免过多图元）
+                    model: page.tl.keyframes !== undefined ? Math.min(48, page.tl.keyframes.length) : 0
+                    Rectangle {
+                        x: index * (keyStrip.width / 48); width: 1; height: parent.height
+                        color: Theme.color.border
+                    }
+                }
+            }
+
+            // 播放控制 + 四个跳转
+            Row {
+                anchors.top: keyStrip.bottom; anchors.topMargin: Theme.spacing.s2; spacing: Theme.spacing.s2
+                FilterChip { text: "-30s"; onClicked: page.doJump("minus30") }
+                FilterChip { text: "报警时刻"; onClicked: page.doJump("alarm") }
+                FilterChip { text: "+30s"; onClicked: page.doJump("plus30") }
+                FilterChip { text: "+60s"; onClicked: page.doJump("plus60") }
+                Text { anchors.verticalCenter: parent.verticalCenter; color: Theme.color.text_secondary
+                       font.pixelSize: Theme.typography.scale.caption.size
+                       text: page.R ? ("游标 " + page.R.formatTime(page.cursor)) : "" }
+            }
+        }
+    }
+
+    // ---- 右侧：事件详情栏 ----
+    Rectangle {
+        objectName: "replayDetail"
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        width: parent.width * 0.22
+        color: Theme.color.surface
+        border.color: Theme.color.border; border.width: Theme.border.width
+        Column {
+            anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
+            Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size; text: "事件详情" }
+            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                   text: "时间：" + (page.detail.timeText !== undefined ? page.detail.timeText : "—") }
+            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                   text: "类型：" + (page.detail.typeLabel !== undefined ? page.detail.typeLabel : "—") }
+            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                   text: "级别：" + (page.detail.levelLabel !== undefined ? page.detail.levelLabel : "—") }
+            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                   text: "距离：" + (page.detail.distanceText !== undefined ? page.detail.distanceText : "—") }
+            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                   text: "置信度：" + (page.detail.confidenceText !== undefined ? page.detail.confidenceText : "—") }
+            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                   text: "处理状态：" + (page.detail.ackLabel !== undefined ? page.detail.ackLabel : "—") }
+            Text { color: Theme.color.text_muted; font.pixelSize: Theme.typography.scale.caption.size
+                   text: "备注：" + (page.detail.note !== undefined ? page.detail.note : "—") }
+        }
+    }
+}

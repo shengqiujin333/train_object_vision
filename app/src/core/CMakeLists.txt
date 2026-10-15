@@ -17,6 +17,7 @@ add_library(railhmi_core STATIC
     src/inference.cpp
     src/alarm_center.cpp
     src/clip.cpp
+    src/replay.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -62,5 +63,12 @@ set_target_properties(railhmi-alarm-probe PROPERTIES
 add_executable(railhmi-clip-probe tools/clip_probe.cpp)
 target_link_libraries(railhmi-clip-probe PRIVATE railhmi_core railhmi_platform)
 set_target_properties(railhmi-clip-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 历史回放模型探针（ITEM-020；无 Qt/SQLite）
+add_executable(railhmi-replay-probe tools/replay_probe.cpp)
+target_link_libraries(railhmi-replay-probe PRIVATE railhmi_core)
+set_target_properties(railhmi-replay-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

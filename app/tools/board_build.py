@@ -191,7 +191,9 @@ def main() -> int:
                         "./build-core/tools/railhmi-alarm-probe "
                         "--out core-evidence/alarm-probe-%s.log; echo ALARM_EXIT=$?; "
                         "./build-core/tools/railhmi-clip-probe --dir /tmp/railhmi_clips "
-                        "--out core-evidence/clip-probe-%s.log; echo CLIP_EXIT=$?" % (remote, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp), 60))
+                        "--out core-evidence/clip-probe-%s.log; echo CLIP_EXIT=$?; "
+                        "./build-core/tools/railhmi-replay-probe "
+                        "--out core-evidence/replay-probe-%s.log; echo REPLAY_EXIT=$?" % (remote, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp), 60))
             sftp = client.open_sftp()
             try:
                 sftp.get_channel().settimeout(args.connect_timeout * 6)
@@ -203,7 +205,8 @@ def main() -> int:
                             "core-evidence/status-probe-driver-%s.log" % args.stamp,
                             "core-evidence/ai-probe-%s.log" % args.stamp,
                             "core-evidence/alarm-probe-%s.log" % args.stamp,
-                            "core-evidence/clip-probe-%s.log" % args.stamp):
+                            "core-evidence/clip-probe-%s.log" % args.stamp,
+                            "core-evidence/replay-probe-%s.log" % args.stamp):
                     local_out = outdir / ("%s.%s" % (tag, rel.replace("/", "_")))
                     try:
                         sftp.get("%s/%s" % (remote, rel), str(local_out))

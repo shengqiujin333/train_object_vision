@@ -120,6 +120,7 @@ struct ThresholdsConfig {
     double storage_low_pct = 0.0;
     int clip_pre_seconds = 0;
     int clip_post_seconds = 0;
+    int replay_sync_threshold_ms = 0;   // 三联回放同步偏差阈值
 };
 
 struct RoiConfig {

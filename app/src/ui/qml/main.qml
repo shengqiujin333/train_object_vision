@@ -29,6 +29,7 @@ Rectangle {
     function pageSource(id) {
         if (id === "realtime") return "pages/P1Realtime.qml"
         if (id === "alarm_center") return "pages/P2AlarmCenter.qml"
+        if (id === "replay") return "pages/P3Replay.qml"
         if (id === "all_cameras") return "pages/P4AllCameras.qml"
         if (id === "ai_debug") return "pages/P5AiDebug.qml"
         if (id === "maintenance") return "pages/P6Maintenance.qml"

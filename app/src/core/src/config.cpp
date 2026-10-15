@@ -412,6 +412,10 @@ void load_thresholds(const Node& root, AppSettings* s, Errors& e) {
     if (req_int(*th, "clip_post_seconds", "thresholds", &v, e)) {
         if (v < 0) err(e, "thresholds.clip_post_seconds", "must be >= 0"); else t.clip_post_seconds = static_cast<int>(v);
     }
+    if (req_int(*th, "replay_sync_threshold_ms", "thresholds", &v, e)) {
+        if (v < 0) err(e, "thresholds.replay_sync_threshold_ms", "must be >= 0");
+        else t.replay_sync_threshold_ms = static_cast<int>(v);
+    }
     if (t.danger_proximity_m <= 0) err(e, "thresholds.danger_proximity_m", "must be > 0");
     if (t.confidence_min < 0 || t.confidence_min > 1) err(e, "thresholds.confidence_min", "must be in [0,1]");
     if (t.storage_low_pct <= 0 || t.storage_low_pct >= 100) err(e, "thresholds.storage_low_pct", "must be in (0,100)");

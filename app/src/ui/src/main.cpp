@@ -23,6 +23,7 @@
 #include "railhmi/platform/log.h"
 
 #include "alarm_model.h"
+#include "replay_model.h"
 
 #ifndef RAILHMI_CONFIG_DIR
 #define RAILHMI_CONFIG_DIR "config"
@@ -271,6 +272,50 @@ int main(int argc, char** argv) {
         alarmModel.seedEvents(evs, names, rec);
     }
     view.rootContext()->setContextProperty("railhmiAlarms", &alarmModel);
+
+    // 历史回放（ITEM-020）：桥接对象（时间轴/跳转/同步/来源委托 core）。模拟开启时灌入样例。
+    RailhmiReplayModel replayModel;
+    replayModel.setSyncThreshold(cfg.settings.thresholds.replay_sync_threshold_ms);
+    QVariantMap replayDetail;
+    if (cfg.settings.app.simulation) {
+        const long long t0 = 1760000000000LL;
+        auto seg = [&](long long id, const char* cam, long long a, long long b, bool crit) {
+            railhmi::core::RecordingSegmentRow r;
+            r.id = id; r.cam = cam; r.t0_ms = t0 + a; r.t1_ms = t0 + b;
+            r.kind = crit ? railhmi::core::SegmentKind::Critical : railhmi::core::SegmentKind::Continuous;
+            r.complete = true;
+            return r;
+        };
+        std::vector<railhmi::core::RecordingSegmentRow> segs = {
+            seg(1, "CAM-01", 10000, 80000, false), seg(2, "CAM-01", 90000, 200000, true),
+            seg(3, "CAM-01", 260000, 300000, false), seg(11, "CAM-02", 10000, 300000, false),
+            seg(12, "CAM-03", 10000, 300000, false)};
+        std::vector<railhmi::core::RecordingGapRow> gaps;
+        railhmi::core::RecordingGapRow gp;
+        gp.cam = "CAM-01"; gp.t0_ms = t0 + 210000; gp.t1_ms = t0 + 250000; gp.reason = "recording_interrupted";
+        gaps.push_back(gp);
+        std::vector<long long> alarms = {t0 + 120000};
+        replayModel.seed(segs, gaps, alarms, false /*nvr 未核验/不可用*/, true /*本机片段可用*/);
+
+        railhmi::core::EventRow de;
+        de.id = 1; de.level = 1; de.type = "person_on_rail"; de.source_cam = "CAM-01";
+        de.ts_wall_ms = t0 + 120000; de.description = "轨道人员"; de.ack_state = "acked";
+        const railhmi::core::AlarmRow row = railhmi::core::make_alarm_row(
+            de, "前方", railhmi::core::RecordAvailability::Available);
+        const railhmi::core::ReplayEventDetail d = railhmi::core::build_event_detail(row, 12.34, 0.87);
+        replayDetail["timeText"] = QString::fromStdString(d.time_text);
+        replayDetail["typeLabel"] = QString::fromUtf8(d.type_label.c_str());
+        replayDetail["levelLabel"] = QString::fromUtf8(d.level_label.c_str());
+        replayDetail["distanceText"] = QString::fromUtf8(d.distance_text.c_str());
+        replayDetail["confidenceText"] = QString::fromUtf8(d.confidence_text.c_str());
+        replayDetail["ackLabel"] = QString::fromUtf8(d.ack_label.c_str());
+        replayDetail["note"] = QString::fromUtf8(d.note.c_str());
+        replayDetail["tsWallMs"] = static_cast<qlonglong>(de.ts_wall_ms);
+    } else {
+        replayModel.seed({}, {}, {}, false, false);
+    }
+    view.rootContext()->setContextProperty("railhmiReplay", &replayModel);
+    view.rootContext()->setContextProperty("railhmiReplayDetail", replayDetail);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
     view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
     view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);
