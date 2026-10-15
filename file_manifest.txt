@@ -1,2 +1,29 @@
 # Project File Manifest
 # path | status | purpose
+PROJECT_GUIDE.md | existing | 铁轨异物检测项目总纲（历史，数据集/训练/转换/部署流程）
+README.md | existing | RK3588 交接文档，记录硬件/网络/摄像头/程序现状与已知坑（2026-10-13）
+code/librga.so | existing | 板端 RGA 库备份
+code/librknnrt.so | existing | 板端 NPU 运行时库备份
+code/main.cc | existing | 板端 demo 主入口（双模型+取流+GStreamer/RGA）
+code/person_measure.cc | existing | 人形测量逻辑
+code/postprocess.h | existing | yolov8-seg 后处理头
+code/rknn_yolov8_seg_demo | existing | aarch64 编译产物备份
+code/rknpu2_postprocess.cc | existing | RKNPU2 后处理实现
+code/yolov5_person.cc | existing | yolov5 人形检测实现
+code/yolov5_person.h | existing | yolov5 人形检测头
+code/yolov5_postprocess.cc | existing | yolov5 后处理实现
+code/yolov5_postprocess.h | existing | yolov5 后处理头
+code/yolov8_seg.h | existing | yolov8-seg 头
+docs/hmi/INTERACTION_DESIGN.md | active | 交互设计方案（FrontendDesignArtifact）：信息架构/页面状态/报警与回放交互/状态模型/可访问性/可检验结果
+docs/hmi/interaction_tasks.yaml | active | 交互设计任务清单（TaskListArtifact）
+file_manifest.txt | existing | 本清单，项目文件用途登记
+models/rail_labels.txt | existing | 轨道分割标签
+models/yolov5s.rknn | existing | 人形检测模型（RKNN）
+models/yolov8s-seg.rknn | existing | 轨道分割模型（RKNN）
+tools/_rk3588.py | existing | 板端 SSH 上传下载工具
+tools/cam_viewer.py | existing | PC 端双路取流观看器（诊断/FPS/坏帧/重连）
+tools/onvif_test.py | existing | 热成像相机 ONVIF 探测/重启
+tools/ptz_control.py | existing | 前方球机 PTZ 变焦/聚焦控制
+troubleshooting_cameras_demo.md | existing | 相机与 demo 故障排查手册（历史）
+一些说明和要求.txt | existing | 用户口述摄像头部署与检测职责要求
+功能需求.docx | existing | 产品功能需求说明书 PRD V0.1（交互与报警/回放判据来源）
