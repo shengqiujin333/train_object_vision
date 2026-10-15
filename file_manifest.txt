@@ -346,13 +346,29 @@ docs/hmi/test_evidence/ITEM-010-tokens/verify_board_qt_check.py | active | 验�
 docs/hmi/test_evidence/ITEM-010-tokens/verify_tokens_consistency.py | active | 验证自有夹具：tokens.json/Theme.qml 与 design_tokens.yaml 内容级深度一致性 + 关键令牌探针 + rgba 解码 + main.qml 绑定
 docs/hmi/test_evidence/ITEM-010-tokens/verify_tokens_ext.py | active | 验证自有扩展夹具（16 项：字号传播/qmldir/异常路径 exit 2,3/rgba 数值往返/扫描器力度与豁免/负例）
 docs/hmi/test_evidence/ITEM-011-shell/README.md | active | ITEM-011 应用外壳与角色化导航证据（权限矩阵/外壳/无权限返回/模式位/边界/复现）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log | active | 验证 v1 轮交付入口归档 stdout（板端 319/319 已复现，留痕）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml | active | 验证 v1 轮交付入口归档 JUnit XML（319/0；留痕）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json | active | 验证 v1 轮 sim-inject 复现 JSON（留痕）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log | active | 验证 v1 轮 sim-inject 复现 log（与实现者逐行一致；留痕）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v1.log | active | 验证夹具 v1 过程留痕（断言 12 失败为验证侧期望表达式构造错误，不作判据）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v1.transcript.json | active | 验证夹具 v1 transcript（留痕）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log | active | 验证轮板上交付入口自身归档的完整测试 stdout（319 PASS 行与实现者 r1 逐行一致）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml | active | 验证轮板上交付入口自身归档的 JUnit XML（独立解析 tests=319 failures=0）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.json | active | 验证轮 sim-inject 复现 JSON（63 entries，与实现者一致）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.log | active | 验证轮 sim-inject 复现结构化日志（63 行与实现者逐行一致）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v2.log | active | 验证夹具权威轮 v2 日志（ENTRY_EXIT=0 + 319/319 与实现者逐行一致 + TOKENS/SCAN/SIM 复现 + 扩展夹具 137/137 + 清理确认）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-FIXTURES-VERIFY-20261016-v2.transcript.json | active | 验证夹具权威轮 v2 transcript（指纹一致/逐条命令/退出码/清理确认）
+docs/hmi/test_evidence/ITEM-011-shell/VERIFY-ITEM-011.md | active | ITEM-011 软件验证 TestEvidence（VERIFY-20261016-v2 判定，TEST_PASS：板端独立复跑 319/319 与实现者逐行一致、验证自有导航扩展夹具 137/137、扫描/token/sim-inject 复现；过程轮 v1 验证侧期望错误留痕；QML 运行期呈现按 O-1 边界如实标注）
 docs/hmi/test_evidence/ITEM-011-shell/build-TestRun-192_168_0_103-20261015-ITEM011-r1.core-evidence_core-tests-20261015-ITEM011-r1.log | active | ITEM-011 归档测试 stdout（319/319）
 docs/hmi/test_evidence/ITEM-011-shell/build-TestRun-192_168_0_103-20261015-ITEM011-r1.core-evidence_core-tests-20261015-ITEM011-r1.xml | active | ITEM-011 归档 JUnit XML（319 tests, 0 failures）
 docs/hmi/test_evidence/ITEM-011-shell/build-TestRun-192_168_0_103-20261015-ITEM011-r1.core-evidence_sim-inject-20261015-ITEM011-r1.json | active | ITEM-011 同轮 sim-inject JSON
 docs/hmi/test_evidence/ITEM-011-shell/build-TestRun-192_168_0_103-20261015-ITEM011-r1.core-evidence_sim-inject-20261015-ITEM011-r1.log | active | ITEM-011 同轮 sim-inject 日志
 docs/hmi/test_evidence/ITEM-011-shell/build-TestRun-192_168_0_103-20261015-ITEM011-r1.log | active | ITEM-011 TestRun 运行日志
 docs/hmi/test_evidence/ITEM-011-shell/build-TestRun-192_168_0_103-20261015-ITEM011-r1.transcript.json | active | ITEM-011 TestRun transcript（tokens/ui-scan/测试/sim-inject）
-docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
+docs/hmi/test_evidence/ITEM-011-shell/run_verify_round.sh | active | 本验证轮启动脚本（凭据经用户环境导入当前进程并导出给子进程；默认 stamp=VERIFY-20261016-v1，VERIFY_STAMP 可覆盖）
+docs/hmi/test_evidence/ITEM-011-shell/verify_nav_ext.cpp | active | 验证自有扩展夹具源码（137 断言：4×6 权限矩阵/visible 保序子集/司机精确三元组/默认页可达不变量/resolve 24 组合回显/parse_page 负例矩阵/id 标题身份/mode_display 稳定性）
+docs/hmi/test_evidence/ITEM-011-shell/verify_nav_fixtures.py | active | 验证自有板端运行器（上传 app+tokens 快照独立目录 + 交付入口 + 扩展夹具；指纹校验中止/全超时/凭据仅环境变量/按名清理）
+docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-004.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit a2ade63 的 ITEM-004 配置与状态契约层做主机独立数据核对、契约枚举/S7.2 对照与源码/证据审阅；偏差 D-01..D-05（mode:ir/spectrum:ir 本期可写、integration_state 语义、展示标签映射、启动错误面）与修复要求（TEST_PASS，范围限 ITEM-004，无 UI 结论）

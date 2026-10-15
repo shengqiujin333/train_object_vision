@@ -1,0 +1,63 @@
+t=0 type=injection camera=CAM-01 profile=front faults=FI-01,FI-02,FI-03,FI-04,FI-05,FI-10 onset_ms=1500 recovery_ms=5000 duration_ms=6000 step_ms=500
+t=0 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=0 type=ai status=ok cam=CAM-01
+t=0 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=0 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=500 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=500 type=ai status=ok cam=CAM-01
+t=500 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=500 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=1000 type=alarm type=person_on_rail level=L1 cam=CAM-01 track_id=1
+t=1000 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=1000 type=ai status=ok cam=CAM-01
+t=1000 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=1000 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=1500 type=stream_state state=reconnecting reconnect_count=1 presentable=false cam=CAM-01
+t=1500 type=ai status=unavailable cam=CAM-01
+t=1500 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=1500 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=1500 type=gap cam=CAM-01 t0_ms=1500 t1_ms=2000 gap_count=1
+t=2000 type=stream_state state=reconnecting reconnect_count=2 presentable=false cam=CAM-01
+t=2000 type=ai status=unavailable cam=CAM-01
+t=2000 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=2000 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=2000 type=gap cam=CAM-01 t0_ms=2000 t1_ms=2500 gap_count=1
+t=2500 type=stream_state state=offline reconnect_count=3 presentable=false cam=CAM-01
+t=2500 type=ai status=unavailable cam=CAM-01
+t=2500 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=2500 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=2500 type=gap cam=CAM-01 t0_ms=2500 t1_ms=3000 gap_count=1
+t=3000 type=stream_state state=offline reconnect_count=4 presentable=false cam=CAM-01
+t=3000 type=ai status=unavailable cam=CAM-01
+t=3000 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=3000 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=3000 type=gap cam=CAM-01 t0_ms=3000 t1_ms=3500 gap_count=1
+t=3500 type=stream_state state=offline reconnect_count=5 presentable=false cam=CAM-01
+t=3500 type=ai status=unavailable cam=CAM-01
+t=3500 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=3500 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=3500 type=gap cam=CAM-01 t0_ms=3500 t1_ms=4000 gap_count=1
+t=4000 type=stream_state state=offline reconnect_count=6 presentable=false cam=CAM-01
+t=4000 type=ai status=unavailable cam=CAM-01
+t=4000 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=4000 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=4000 type=gap cam=CAM-01 t0_ms=4000 t1_ms=4500 gap_count=1
+t=4500 type=stream_state state=offline reconnect_count=7 presentable=false cam=CAM-01
+t=4500 type=ai status=unavailable cam=CAM-01
+t=4500 type=storage free_bytes=2147483647 total_bytes=107374182400 low=true record_available=false
+t=4500 type=ptz tolerance_ok=false target_zoom=10.000000 actual_zoom=10.000000
+t=4500 type=gap cam=CAM-01 t0_ms=4500 t1_ms=5000 gap_count=1
+t=5000 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=5000 type=ai status=ok cam=CAM-01
+t=5000 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=5000 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=5500 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=5500 type=ai status=ok cam=CAM-01
+t=5500 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=5500 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=6000 type=alarm type=person_on_rail level=L1 cam=CAM-01 track_id=1
+t=6000 type=stream_state state=live reconnect_count=0 presentable=true cam=CAM-01
+t=6000 type=ai status=ok cam=CAM-01
+t=6000 type=storage free_bytes=10737418240 total_bytes=107374182400 low=false record_available=true
+t=6000 type=ptz tolerance_ok=true target_zoom=10.000000 actual_zoom=10.000000
+t=6000 type=summary final_state=live reconnect_count=0 alarms=2 gaps=1 events_recorded=2
