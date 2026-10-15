@@ -160,6 +160,10 @@ def check_qt() -> dict:
         ("qmake6 -v", run(["qmake6", "-v"])),
         ("dpkg -l | grep -i qt5 (filtered)", run(["bash", "-lc",
             "dpkg -l 2>/dev/null | grep -iE 'qtbase5|qtdeclarative5|qml-module-qtquick' | head -40"])),
+        ("dpkg -l | grep QML/Quick libs (filtered)", run(["bash", "-lc",
+            "dpkg -l 2>/dev/null | grep -iE 'libqt5qml|libqt5quick|qtdeclarative|qml-module' | head -40"])),
+        ("ls qt5/qml modules", run(["bash", "-lc",
+            "ls %s 2>&1 | head -40" % " ".join(BOARD_QT_QML_DIRS)])),
     ]
     plugin_dir = first_existing(BOARD_QT_PLUGIN_DIRS)
     return {"commands": cmds, "plugin_dir": plugin_dir,
@@ -231,7 +235,7 @@ def check_display_session() -> dict:
     return {"commands": cmds}
 
 
-def check_disk() -> dict:
+def check_disk(skip_slow: bool = False) -> dict:
     rows = []
     for t in ("/", "/home/admin"):
         try:
@@ -242,9 +246,14 @@ def check_disk() -> dict:
     cmds = [
         ("df -h /", run(["df", "-h", "/"])),
         ("df -h /home/admin", run(["df", "-h", "/home/admin"])),
-        ("du -sh /home/admin (may be slow)", run(["bash", "-lc",
-            "du -sh /home/admin 2>/dev/null | head -5"], 60)),
     ]
+    if skip_slow:
+        cmds.append(("du -sh /home/admin (skipped: --skip-slow)", {
+            "cmd": ["du", "-sh", "/home/admin"], "available": True, "exit": None,
+            "output": "skipped by --skip-slow (bounded board probe)"}))
+    else:
+        cmds.append(("du -sh /home/admin (may be slow)", run(["bash", "-lc",
+            "du -sh /home/admin 2>/dev/null | head -5"], 60)))
     return {"commands": cmds, "usage": rows}
 
 
@@ -311,7 +320,7 @@ def fmt_cmd(entry) -> list:
     return lines
 
 
-def build_report(probe_cameras: bool) -> tuple:
+def build_report(probe_cameras: bool, skip_slow: bool = False) -> tuple:
     now = time.strftime("%Y-%m-%d %H:%M:%S")
     env = {
         "hostname": platform.node(),
@@ -387,7 +396,7 @@ def build_report(probe_cameras: bool) -> tuple:
     section("E-08", "显示会话与图形目标", "确认 X11 DISPLAY/XAUTHORITY 与 systemd 默认目标",
             check_display_session()["commands"])
 
-    d = check_disk()
+    d = check_disk(skip_slow=skip_slow)
     extra = []
     for t, total, used, free in d["usage"]:
         if total:
@@ -447,9 +456,11 @@ def main() -> int:
     ap.add_argument("--json-out", help="write structured JSON to this path")
     ap.add_argument("--probe-cameras", action="store_true",
                     help="enable network reachability probe (requires project authorization)")
+    ap.add_argument("--skip-slow", action="store_true",
+                    help="skip potentially slow commands (e.g. du) for a bounded board run")
     args = ap.parse_args()
 
-    md, data = build_report(probe_cameras=args.probe_cameras)
+    md, data = build_report(probe_cameras=args.probe_cameras, skip_slow=args.skip_slow)
     sys.stdout.write(md)
     for path, content in ((args.raw_out, md),
                           (args.out, md),

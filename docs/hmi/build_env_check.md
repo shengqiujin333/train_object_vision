@@ -1,226 +1,139 @@
 # railhmi 目标构建 / 运行依赖基线核验（ITEM-001）
 
-- 工作项: `TL-...-tasks-ITEM-001`（冻结目标构建依赖基线）
-- 依据: `docs/hmi/DESKTOP_APP_DESIGN.md` §3.4（E-01..E-11）
-- 探针（可复现入口）: `app/tools/env_probe.py` / `app/tools/run_env_check.sh`
-- 本轮主机原始输出证据: `docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.md`（+ `.json`）
-- 结论状态: **目标板依赖基线未冻结（板端核验未执行）**；见 §0、§12。
+- 工作项: `TL-778f77eb-1fde-496d-9677-7330e26c6476-tasks-ITEM-001`（冻结构建/运行依赖基线与授权缺口登记）
+- 依据: `docs/hmi/DESKTOP_APP_DESIGN.md` §3.3（E-00..E-13）、§3.2/§3.4（环境与授权现状）
+- 探针（可复现入口）: `app/tools/env_probe.py`（只读，标准库）
+- 板端运行器（经登记 SSH 入口）: `app/tools/board_env_probe.py`
+- 本轮证据:
+  - 板端（RK3588，本轮实际执行）: `docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r2.md`（+ `.raw.txt` / `.json` / `.commands.json`；r1 为不含相机探测的首次运行）
+  - 主机（Windows，本轮实际执行）: `docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20261015-210821.md`（+ `.raw.txt` / `.json`）
+- 结论状态: **板端依赖基线已实测采集**（E-00..E-13 三态登记见 §2）；**目标构建/运行尚未授权范围内验证**（本轮未编译、未取流）；主机结果不替代板端结论。
 
 ---
 
-## 0. 执行范围与硬声明
+## 0. 执行范围、授权与硬声明
 
-1. **本轮未连接 RK3588 目标板，未在板端执行任何命令**。项目设备工具已禁用，不得假定物理测试/板端执行已发生。所有 E-01..E-11 的**板端结论均为“未核验”**。
-2. 本轮唯一实际执行的是探针在**主机**（Windows x86_64，MINGW64）上的运行；主机结果**不能**作为目标板结论（`DESKTOP_APP_DESIGN` §15、`TEST_DESIGN` §1）。
-3. RAW 证据在 `docs/hmi/test_evidence/ENV-B-dependency/`，本文件对其中结果做定向摘录；未执行项明确写“未执行”。
-4. “元素/库存在”不等于“协商/运行成功”；`mppvideodec→glupload→glcolorconvert→qmlglsink` 的运行时协商属 ITEM-002（渲染 spike），不在本项结案。
+1. 本轮**实际执行**了经项目登记 SSH 入口（`rk3588_inspect`，Paramiko，有限超时）的板端只读探测：目标 `192.168.0.103:22`，用户 `admin`，aarch64 `RK3588 EVB1`。SSH 主机密钥取自受信任 `known_hosts`（默认 RejectPolicy，未使用 AutoAddPolicy），指纹 `SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU`，记录于 `.commands.json` 供用户核验。
+2. 本轮**未在板端编译、未运行 demo、未读取相机码流、未安装/修改任何系统包**。探针只读；写入仅限目标 `/tmp`（探针脚本与报告），运行结束后清除。
+3. 相机/NVR 探测为**端口可达性**（TCP connect），**不发送 RTSP 鉴权、不协商编码**。`E-10` 的“凭据/编码结论”与 `E-11` 的“回放/导出接口能力”**未核验**，属 ITEM-002 渲染 spike 与现场档，不得由本项代替。
+4. 主机结果与板端结果**分开记录、不得合并表述**；主机可运行不等于目标可运行；板端“库/元素存在”不等于“运行时协商成功”。
+5. 本轮授权较历史轮次变化：`rk3588_inspect`/`rk3588_build`/`rk3588_deploy`/`rk3588_verify` 与各 `*_camera_stream` 在本能力均为 `configured_unverified`（`remote_inspect`/`remote_build`/`remote_deploy`/`remote_verify`/`read_camera_stream` 已授权）。`configured_unverified` 只表示配置与工具要求满足，**不证明在线/安装成功/测试通过**；本轮以实际连接结果为准（结果见 §2）。
 
 ---
 
-## 1. 核验方法
+## 1. 核验方法（可复现）
 
 ```sh
-# 目标板（RK3588，Ubuntu 22.04 aarch64）——待授权后执行
-python3 app/tools/env_probe.py \
-  --out  docs/hmi/test_evidence/ENV-B-dependency/env-probe-<board>.md \
-  --raw-out docs/hmi/test_evidence/ENV-B-dependency/env-probe-<board>.raw.txt \
-  --json-out docs/hmi/test_evidence/ENV-B-dependency/env-probe-<board>.json
-# 或：
-sh app/tools/run_env_check.sh docs/hmi/test_evidence/ENV-B-dependency
+# 主机（只读）
+python app/tools/env_probe.py --skip-slow \
+  --out  docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-<stamp>.md \
+  --raw-out docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-<stamp>.raw.txt \
+  --json-out docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-<stamp>.json
+
+# 目标板（经登记 Paramiko SSH 入口；只读 + /tmp）
+python app/tools/board_env_probe.py \
+  --host 192.168.0.103 --user admin \
+  --credential-env TRAIN_RK3588_SSH_CREDENTIAL \
+  --out-dir docs/hmi/test_evidence/ENV-B-dependency \
+  --stamp <stamp> --connect-timeout 10 --command-timeout 90 --probe-cameras
 ```
 
-- 探针只读、仅标准库，不安装/不修改系统，不硬编码开发机路径。
-- 相机/NVR 网络探测默认关闭，需 `--probe-cameras` 且**项目授权**；本轮未开启。
+- `env_probe.py` 只读、仅标准库；`--skip-slow` 跳过 `du` 以约束板端执行时长。
+- `board_env_probe.py` 使用 `load_system_host_keys()` + 默认 `RejectPolicy`；连接/命令/SFTP 全部显式超时；凭据仅从环境变量读取，不落日志。
+- 输出保留**每条命令、退出码与原始输出**（`.md`/`.raw.txt`/`.json`/`.commands.json`）。
 
 ---
 
-## 2. 状态总表
+## 2. 状态总表（E-00..E-13，板端实测）
 
-| 项 | 内容 | 板端状态 | 本轮主机结果（不适用目标板） | 文档基线（来源，未实测） |
-|---|---|---|---|---|
-| E-00 | 架构 / 工具链（gcc/g++/cmake/pkg-config） | **未核验** | 无 gcc/g++/cmake/pkg-config | `aarch64-linux-gnu-gcc` 11.4、cmake 3.22.1（`README.md` §3.1） |
-| E-01 | Qt5.15 + xcb/eglfs 平台插件 | **未核验** | qmake 报 Qt **5.15.2**（Anaconda/x86_64），无平台插件目录 | 目标板 Qt 版本与插件**未见文档**，为关键未知 |
-| E-02 | GStreamer + qmlglsink(`gstreamer1.0-qt5`) | **未核验** | 无 gst-inspect / 无 GStreamer | GStreamer 1.20.3 已装（`README.md` §2.1）；qmlglsink **未证实** |
-| E-03 | Mali EGL/GLES | **未核验** | 无 eglinfo/glxinfo；`/proc/driver/mali` 不存在 | 目标板 GL 栈**未见文档**，为关键未知 |
-| E-04 | `mppvideodec`/`glupload`/`glcolorconvert`/`rgavideoconvert` | **未核验** | 无 GStreamer 元素可查 | 现有 demo 用 `mppvideodec`+`rgaconvert`（`code/main.cc`），其余元素未证实 |
-| E-05 | librga | **未核验** | 无 librga | librga **1.10.1**（`README.md` §7），已验证可用于 NV12→BGR |
-| E-06 | librknnrt | **未核验** | 无 librknnrt、无 `/sys/kernel/debug/rknpu` | librknnrt **2.3.2**、rknpu 驱动 2.3.0a（`README.md` §2.1） |
-| E-07 | SQLite3 | **未核验** | `sqlite3` 3.50.6 / python 模块 3.51.0 | 目标板 libsqlite3-dev **未见文档**，需确认 |
-| E-08 | 显示会话（X11 DISPLAY/XAUTHORITY）与 systemd 目标 | **未核验** | 无 X11/systemd（Windows） | 现有 demo 以 `DISPLAY=:0` 运行（`README.md` §3），证明存在图形会话 |
-| E-09 | 磁盘容量 | **未核验** | 主机 `/` 118G/115G used（98%，与本项无关） | 板端 `/` 57G 已用 24G（`README.md` §2.1，届时复核） |
-| E-10 | 相机可达/凭据（§3.4 E-10） | **未执行**（需授权） | 未执行 | `.162/.163/.165/.167` 凭据/URL 未知 |
-| E-11 | NVR 回放/导出接口（§3.4 E-11） | **未核验** | 未执行 | 接口能力未知（Q-06） |
-| E-12 | CPU governor / UDP 缓冲基线（**扩展项**） | **未核验** | 不适用（Windows） | `cpu-performance.service` 已 enable；`/etc/sysctl.d/99-udp-buffers.conf` rmem_max=16MB（`README.md` §2.1） |
-| E-13 | UI 渲染前提：字体/触控/分辨率/QML 模块（**扩展项, D-04**） | **未核验** | 无 fc-list/xinput/xrandr；无 QML 模块 | `VISUAL_DESIGN` §4/§9 依赖 CJK+等宽字体、触控、两档分辨率、QtQuick.Controls |
+三态口径：**已核实可用**（本轮板端命令有成功证据）/ **未核验**（未执行或权限/工具不足）/ **有证据的缺口**（本轮实测为缺失或失败）。
 
----
+| 项 | 内容 | 板端实测结果（本轮，真实输出摘录） | 三态 |
+|---|---|---|---|
+| E-00 | 架构/工具链 | `uname -a`=Linux 6.1.141 aarch64；`gcc/g++` 11.4.0；`cmake` 3.22.1；`pkg-config` 0.29.2；`dpkg --print-architecture`=arm64 | **已核实可用** |
+| E-01 | Qt 版本与平台插件 | `qmake -v`=Qt **5.15.3**（/usr/lib/aarch64-linux-gnu）；平台插件目录含 `libqxcb.so` 与 `libqeglfs.so`；`libqt5qml5/libqt5qmlmodels5/libqt5quick5/libqt5quickwidgets5` 已装 | Qt 基础 + 平台插件：**已核实可用** |
+| E-01b | Qt QML 模块与开发包 | `/usr/lib/aarch64-linux-gnu/qt5/qml` 仅 `builtins.qmltypes`；无 `QtQuick/Controls.2`；`qtdeclarative5-dev`、`qml-module-qtquick*` 未安装 | **有证据的缺口**（见 §3.1） |
+| E-02 | qmlglsink | `gst-inspect-1.0 --version`=1.20.3；`gst-inspect-1.0 qmlglsink` → **No such element**（exit 255）；`gstreamer1.0-qt5` 未安装 | **有证据的缺口**（见 §3.2） |
+| E-03 | GL/EGL (Mali) | `eglinfo`/`glxinfo` 命令不存在；`/proc/driver/mali` 不存在；但 `libEGL.so.1`、`libGLESv2.so.2`、`libmali-valhall-g610-g24p0-x11-gbm.so` 存在 | 用户态库：**已核实可用**；renderer 版本：**未核验** |
+| E-04 | MPP 解码与 GL 元素 | `mppvideodec`✓(rockchipmpp 1.14.4)、`glupload`✓、`glcolorconvert`✓、`rtspsrc`✓、`h265parse`✓、`h264parse`✓、`appsink`✓、`glimagesink`✓；`rgavideoconvert`✗（No such element） | 主体**已核实可用**；`rgavideoconvert` **有证据的缺口**（见 §3.3） |
+| E-05 | RGA (librga) | `librga.so.2` → `/lib/aarch64-linux-gnu/librga.so.2`；`/usr/local/lib/librga.so` 存在 | **已核实可用**（库级） |
+| E-06 | NPU 运行时 | `librknnrt.so` → `/lib/librknnrt.so` 存在；`/sys/kernel/debug/rknpu/{version,load}` = **Permission denied**（需 root） | 库：**已核实可用**；驱动版本/负载：**未核验**（权限） |
+| E-07 | SQLite | `libsqlite3.so.0` 存在；Python `sqlite3.sqlite_version`=3.37.2；`sqlite3` CLI 未安装 | 库**已核实可用**（CLI 非必需） |
+| E-08 | 显示会话与图形目标 | `DISPLAY=:0`；`/tmp/.X11-unix/X0` 存在；`systemctl get-default`=graphical.target；`loginctl` 4 sessions | **已核实可用** |
+| E-09 | 磁盘 | `/` 57G、已用 24G、可用 **31G**（44%）；`/home/admin` 同根分区 | **已核实可用**（容量约束见 §3.5） |
+| E-10 | 相机可达性 | 六路 RTSP TCP 554 全部 **open**（CAM-01 .65 / CAM-02 .160 / CAM-03 .162 / CAM-04 .163 / CAM-05 .165 / CAM-06 .167） | 端口可达：**已核实可用**；凭据/编码协商：**未核验** |
+| E-11 | NVR 接口 | `192.168.1.4` HTTP 80 **open**、RTSP 554 **open** | 端口可达：**已核实可用**；协议/账户/6 路通道映射/回放接口：**未核验**（Q-NVR） |
+| E-12 | governor / UDP 基线 | `scaling_governor`=**performance**；`cpu-performance.service`=**enabled**；`/etc/sysctl.d/99-udp-buffers.conf`：rmem_max=16777216、rmem_default=4194304、wmem_max=4194304；`sysctl net.core.rmem_max`=16777216 | **已核实可用**（不得回退） |
+| E-13 | UI 渲染前提 | Noto Sans CJK 等字体存在（fc-list 512 项）；`xinput`/`xrandr` 存在但 **SSH 会话无 XAUTHORITY**（“Unable to connect to X server”/“Can't open display”）；`QtQuick/Controls.2` 目录不存在 | CJK 字体：**已核实可用**；触控/分辨率：**未核验**；QML 控件模块：**有证据的缺口** |
 
-## 3. E-00 架构与工具链
-
-**目标板命令**：`uname -a`、`gcc --version`、`g++ --version`、`cmake --version`、`pkg-config --version`、`dpkg --print-architecture`
-**板端状态**：未核验（未执行）。
-**本轮主机原始输出**（`env-probe-host-20251015.md`）：`uname` 为 `x86_64 Msys`；`gcc`/`g++`/`cmake`/`pkg-config`/`dpkg` 均 `command not found`。
-**替代结论**：主机当前**没有 C/C++ 工具链与构建系统**，因此 `DESKTOP_APP_DESIGN` §15 定义的“ENV-A 主机预览”在**本机当前不可执行**。这是环境依赖缺口（属平台/环境职责或需另配主机），记入 §12；不得据此推断目标板不可构建（目标板是另一环境）。
+> 完整命令与原始输出见证据文件；上表为定向摘录，未改数。
 
 ---
 
-## 4. E-01 Qt 版本与平台插件
+## 3. 缺口、替代结论与后续责任（不阻塞主机/core 增量）
 
-**目标板命令**：`qmake -v` / `qmake6 -v`；`dpkg -l | grep -iE 'qtbase5|qtdeclarative5|qml-module-qtquick'`；`ls /usr/lib/aarch64-linux-gnu/qt5/plugins/platforms/`
-**判据**：存在 Qt5.15 且平台插件含 `libqxcb.so`（首选）或 `libqeglfs.so`（回退）。
-**板端状态**：未核验。
-**主机原始输出**：`qmake -v` → `Using Qt version 5.15.2 in D:/Users/123/anaconda3/Library/lib`（win32-msvc spec，Anaconda 自带，**非目标板**）；平台插件目录 `/usr/lib/aarch64-linux-gnu/qt5/plugins/platforms` 在主机不存在。
-**替代结论**：目标板 Qt 情况**无任何本轮证据**；若板端无 Qt5.15 或缺失 xcb/eglfs 插件，则需平台职责安装 Qt5.15 最小集（`qtbase5-dev qtdeclarative5-dev qml-module-qtquick*` + `gstreamer1.0-qt5`），或改用 EGLFS/回退渲染（与 ITEM-002 联动）。**此项为阻塞目标构建的前置未知项。**
+### 3.1 Qt QML 控件/开发包缺失（E-01b，阻塞目标运行）
+- 现象：`libqt5qml5/libqt5quick5` 在，但 `QtQuick/Controls.2` 等 QML 模块与 `qtdeclarative5-dev` 不在。
+- 影响：基于 Qt Quick/QML 的桌面应用**在板端无法启动**（缺控件模块）且**无法在板端编译**（缺 Qt5Quick CMake 配置）。
+- 替代/动作：由**平台/rootfs 职责**按授权安装最小集 `qtdeclarative5-dev qml-module-qtquick2 qml-module-qtquick-controls2 qml-module-qtquick-layouts`（安装前 `df` 复核磁盘）。桌面应用不自行安装系统包。
+- 不阻塞：主机/core 逻辑增量（`railhmi-core` 不依赖 Qt）与源码编写。
 
----
+### 3.2 qmlglsink 缺失（E-02，约束渲染选型）
+- 现象：`mppvideodec`+`glupload`+`glcolorconvert`+`glimagesink` 在，但 `qmlglsink`（`gstreamer1.0-qt5`）不在。
+- 影响：设计 §4.3 的 `gl` 主候选路径中的 `qmlglsink` 环节**当前不可用**。
+- 替代/动作：渲染实现**默认走 `cpu` 路径**（`mppvideodec` NV12 → librga `NV12→BGR` → Qt 纹理上传），与 `DESKTOP_APP_DESIGN` §4.3 及 `render_path_spike.md` §7 一致；`gl` 路径保留为可开启候选，待安装 `gstreamer1.0-qt5` 后由 ITEM-002 spike 实测决定。**不得**把未实测的 `gl` 当唯一主路径。
 
-## 5. E-02 GStreamer 与 qmlglsink
+### 3.3 rgavideoconvert GStreamer 元素缺失（E-04）
+- 现象：`gst-inspect-1.0 rgavideoconvert` = No such element；但 librga（E-05）存在。
+- 影响：若原计划用 GStreamer 元素做 RGA 转换则不可用。
+- 替代/动作：`cpu` 路径直接在应用内调用 **librga C API** 做 `NV12→BGR`（沿用现有 `code/main.cc` 的 `nv2_to_bgr_rga` 语义与成功码 `SUCCESS(1)/NOERROR(2)`）；不依赖该 GStreamer 元素。
 
-**目标板命令**：`gst-inspect-1.0 --version`、`gst-inspect-1.0 qmlglsink`、`dpkg -l | grep -iE 'gstreamer1.0-(qt5|qt6)'`
-**判据**：`qmlglsink` 元素存在且可 `gst-inspect`。
-**板端状态**：未核验。
-**主机原始输出**：`gst-inspect-1.0` 不存在（Windows 未装 GStreamer），无结论。
-**替代结论**：板端 GStreamer 1.20.3 已在（文档基线），但 **`gstreamer1.0-qt5` 是否已装未证实**。若缺失：首选补装；不可用时按 `DESKTOP_APP_DESIGN` §4.3 回退到 RGA NV12→BGR + Qt 纹理上传路径，且必须在 ITEM-002 用实测数据确定。
+### 3.4 NPU 驱动版本与负载不可读（E-06）
+- 现象：`/sys/kernel/debug/rknpu/version|load` Permission denied（需 root）。
+- 替代/动作：librknnrt 库存在且可链接；驱动版本/实时负载核验需 root 或平台协助，登记为未核验；不据此推断 NPU 不可用。
 
----
+### 3.5 磁盘容量约束（E-09）
+- 现象：可用 31G。
+- 替代/动作：按设计 §2.2/§10.3，连续录像由 NVR 承担，本机只保留**报警保护片段 + 快照 + 元数据**，并设保留阈值与提前告警（DATA-003）。
 
-## 6. E-03 GL/EGL（Mali）
+### 3.6 相机/NVR 凭据与编码（E-10/E-11，未核验）
+- 现象：六路 RTSP 554 与 NVR 80/554 端口从板端**可达**；`.162/.163/.165/.167` 文档凭据与编码仍未知；NVR 协议/通道映射未提供。
+- 替代/动作：`TRAIN_FRONT_RTSP_CREDENTIAL`/`TRAIN_SIDE_RTSP_CREDENTIAL` 已在本进程加载（仅确认变量存在，未传输、未落日志）；RTSP 鉴权与编码协商归 **ITEM-002**（`read_camera_stream`，有限等待），NVR 接口归现场/Q-NVR。注册表按配置读取，缺项不静默。
 
-**目标板命令**：`eglinfo`（或 `glxinfo -B`）、`ls -la /proc/driver/mali`、候选库目录含 `libmali`/`libEGL`/`libGLESv2`
-**判据**：GLES renderer 可读、EGL 库存在。
-**板端状态**：未核验。
-**主机原始输出**：`eglinfo`/`glxinfo` 不存在；`/proc/driver/mali` 不存在（主机无 Mali）。
-**替代结论**：目标板 GL 栈**无本轮证据**。若 Mali 库/驱动缺失或 GLES 不可用，则 QML/GL 合成路径不可行，须回退渲染（ITEM-002 决策门）。
-
----
-
-## 7. E-04 解码与 GL 元素 / E-05 RGA / E-06 NPU
-
-**目标板命令**：
-```sh
-gst-inspect-1.0 mppvideodec; gst-inspect-1.0 glupload; gst-inspect-1.0 glcolorconvert
-gst-inspect-1.0 rgavideoconvert; ldconfig -p | grep -i rga
-cat /sys/kernel/debug/rknpu/version; cat /sys/kernel/debug/rknpu/load; ldconfig -p | grep -i rknnrt
-```
-**板端状态**：E-04/E-05/E-06 均**未核验**。
-**主机原始输出**：GStreamer 元素全部不可查；`librga`/`librknnrt` 未发现；`/sys/kernel/debug/rknpu/*` 不存在。
-**文档基线（未实测）**：`mppvideodec` 与 `rgaconvert` 已在现有 demo 链路中使用（`code/main.cc`），librga 1.10.1、librknnrt 2.3.2 与 rknpu 2.3.0a 已记录（`README.md` §2.1/§7）。
-**替代结论**：
-- 若 `mppvideodec` 缺失 → 硬件解码不可用，属平台/视频模块依赖缺口（不由桌面应用弥补）。
-- 若 `glupload`/`glcolorconvert` 缺失 → 采用回退渲染路径。
-- `librga`/`librknnrt` 版本必须以板端实测为准；**推理运行时版本必须与模型转换版本匹配**（`README.md` §3.1），版本不符属模型/平台缺口，不得由桌面应用改换。
+### 3.7 主机工具链缺口（E-00 主机侧，仍存在）
+- 主机：无 `gcc/g++/cmake/pkg-config`，无 GStreamer，Qt 仅 Anaconda x86_64 5.15.2 且无平台插件（见主机证据）。ENV-A/ENV-A0 需主机 C/C++ 工具链，属环境/平台缺口；**不阻塞**已在板端可编译的 `railhmi-core`（目标 gcc 11.4/cmake 3.22.1 已核实可用）。
 
 ---
 
-## 8. E-07 SQLite
+## 4. 结论与未冻结项
 
-**目标板命令**：`sqlite3 --version`；`dpkg -l | grep libsqlite3`；`python3 -c "import sqlite3,print(sqlite3.sqlite_version)"`
-**板端状态**：未核验。
-**主机原始输出**：`sqlite3` 3.50.6（32-bit build）；Python `sqlite3` 模块 3.51.0。
-**替代结论**：主机 SQLite 可用不能证明目标板。目标板若缺 `libsqlite3-dev`，需平台职责安装；否则持久化层需改用其他嵌入式存储（不建议，会增加与设计偏差）。
-
----
-
-## 9. E-08 显示会话
-
-**目标板命令**：`printenv DISPLAY`、`printenv XAUTHORITY`、`ls -la /tmp/.X11-unix`、`systemctl get-default`、`loginctl list-sessions`
-**判据**：存在可用 X 会话（`DISPLAY` + X socket），且 systemd 默认目标允许图形自启。
-**板端状态**：未核验。
-**主机原始输出**：Windows 无 X11/systemd（`systemctl`/`loginctl` 不存在）。
-**文档基线**：现有 demo 以 `DISPLAY=:0` 运行（`README.md` §3），说明板上存在图形会话，但**当前是否仍有活动会话、自启时序**未核验。
-**替代结论**：若无人登录图形会话或 xcb 不可用，systemd 自启需按 EGLFS 或特定 X 会话时序处理（`DESKTOP_APP_DESIGN` §14.3）。
+1. **板端依赖基线已建立（本轮实测）**：目标工具链、Qt 基础/平台插件、GStreamer 解码与 GL 元素（缺 `qmlglsink`/`rgavideoconvert`）、librga、librknnrt、sqlite3 库、显示会话、磁盘、governor/UDP、CJK 字体、六路相机与 NVR 端口可达性，均已按命令与退出码留证。
+2. **有证据的缺口（交平台/rootfs、模型、现场）**：Qt QML 控件/开发包、`gstreamer1.0-qt5`(qmlglsink)、`rgavideoconvert`、rknpu root 可读性、NVR 协议/通道映射、主机工具链。
+3. **未核验（非“缺失”）**：NPU 驱动版本与负载（需 root）、相机 RTSP 鉴权与编码、触控/显示分辨率（SSH 无 XAUTHORITY）、NVR 回放/导出能力。
+4. **不跨层外推**：端口可达 ≠ 取流可用；库/元素存在 ≠ 协商/渲染成功；板端可编译 ≠ 运行正确。运行协商归 ITEM-002，功能验收归测试。
+5. **本项不阻塞主机/core 增量**：`railhmi-core` 只需 C++ 编译器 + SQLite，板端工具链已核实存在；QML 缺口只影响 UI 运行/编译，按 §3.1 交平台补齐。
 
 ---
 
-## 10. E-09 磁盘
-
-**目标板命令**：`df -h /`、`df -h /home/admin`、`du -sh /home/admin`
-**板端状态**：未核验。
-**主机原始输出**：`df -h /` → 118G 总、115G 已用、3.4G 可用（98%）；`/home/admin` 在主机不存在。**与目标板无关。**
-**文档基线**：板端 `/` 57G、已用 24G（约 33G 可用，`README.md` §2.1）。
-**替代结论**：33G 可用不足以支撑 6 路连续录像（约 12GB/小时，见设计 §2.2），必须按设计走 NVR 连续录像 + 本地报警保护片段；运行前须复核实际可用空间并据此设置保留阈值（DATA-003）。
-
----
-
-## 11. E-10 相机 / E-11 NVR / E-12 平台基线 / E-13 UI 前提
-
-- **E-10**（相机可达/凭据）：**未执行**。默认关闭且需授权；`.162/.163/.165/.167` 四路凭据/URL 仍未知（`TEST_DESIGN` §1 资源缺口）。属 ENV-D 真机档前置未知项，归现场/用户与视频模块。
-- **E-11**（NVR 回放/导出接口）：**未核验**。本项只能用端口可达性接近，**回放/导出接口能力需厂商文档或现场核验**，本探针不覆盖该能力（D-03 修复：与“可达性”明确区分，不再合并表述）。
-- **E-12**（扩展项，governor/UDP）：板端状态未核验；文档基线为 `cpu-performance.service` 已 enable、UDP 缓冲 16MB 配置已存在（`README.md` §2.1，勿回退/勿删）。主机不适用。
-- **E-13**（扩展项，D-04）：UI 渲染前提（CJK/等宽字体、触控输入、xrandr 分辨率、QtQuick.Controls 模块）板端**未核验**。主机无 fc-list/xinput/xrandr 与 QML 模块。字体缺失会导致中文回退/等宽数字错位；触控缺失影响 ≥44px 目标可用性（V-01）；分辨率影响两档布局验收。
-
-> **编号对齐（D-02 修复）**：本文件与 `app/tools/env_probe.py` 现已按 `DESKTOP_APP_DESIGN` §3.4 编号：E-10=相机、E-11=NVR；governor/UDP 与 UI 前提列为扩展项 E-12/E-13。此前 2026-10-15 首次归档的主机报告（`env-probe-host-20251015.md`）使用过渡编号（E-10=governor、E-11=相机/NVR），已被本轮 `env-probe-host-20251015-r2.md` 取代，旧件保留仅作追溯。
-
----
-
-## 12. 结论与未冻结项
-
-1. **依赖基线未冻结**：E-01..E-11 无一项在 RK3588 目标板执行，全部为“未核验”。本文件不宣称任何板端依赖已满足。
-2. **文档基线不能替代实测**：GStreamer 1.20.3、librga 1.10.1、librknnrt 2.3.2 等来自现有交接文档，属“来源可追溯、未本轮实测”，上板前必须用 `env_probe.py` 复测。
-3. **主机不可作为目标验证面**：本机（Windows）无编译器/CMake/GStreamer，连 `DESKTOP_APP_DESIGN` §15 的 ENV-A 预览构建当前也不具备；需要另配主机工具链或授权板端构建。**主机可运行绝不等于目标板可运行。**
-4. **阻塞/前置未知项（交相应职责，不自行判定）**：
-   - 平台/rootfs：板端 Qt5.15 + 平台插件、`gstreamer1.0-qt5`、Mali GL 栈、`libsqlite3-dev`、显示会话与自启时序、磁盘容量复核。
-   - 视频模块：`mppvideodec`/`glupload`/`glcolorconvert`/`rgavideoconvert` 与 RGA 色彩转换可用性。
-   - 模型职责：librknnrt 版本与模型匹配。
-   - 现场/用户：E-11 相机凭据与 NVR 接口。
-5. **下一步（本工作项范围内可继续的）**：本项交付可复现的探针与核验流程；板端执行需设备授权，属于未完成缺口而非“已完成”。渲染协商实测归 ITEM-002，工程骨架与构建脚本归 ITEM-003。
-
----
-
-## 13. 变更与复核记录
+## 5. 与历史轮次的变化（变更记录）
 
 | 日期 | 变更 | 检查方式 |
 |---|---|---|
-| 2026-10-15 | 首次建立探针 `app/tools/env_probe.py` + `run_env_check.sh`；主机执行并留档 | 主机运行探针，原始输出归档至 `docs/hmi/test_evidence/ENV-B-dependency/`；核对了探针对“命令不存在/超时/未执行”的如实记录与 hostname/machine 环境标注 |
-| 2026-10-15 | 修复评审 D-02（编号对齐 §3.4）、D-03（E-11 接口能力归属明确）、D-04（新增 E-13 UI 渲染前提）；新增 §14 渲染 spike 状态 | 主机重跑探针生成 `env-probe-host-20251015-r2.{md,json}`；`analyze.py --selftest` 6/6；`run_render_spike.sh --dry-run` 通过 |
-| 2026-10-15（重试） | §14 增补 ENV-C 替代源（`--source file\|test`）与 `--md-out` 实测表生成；说明无相机时仍可完成协商/换算测量 | `analyze.py --selftest` 6/6；`--md-out` synthetic fixture 表格验证；`--source test --dry-run` 通过；证据 `ITEM-002-render-path/host-selftest-20251015-r2.txt`；板端仍未执行 |
+| 2026-10-15（历史） | 首次建立探针 `env_probe.py` + `run_env_check.sh`；仅主机执行，板端全部未核验 | 主机运行并归档；后续评审修复 D-02/D-03/D-04 |
+| 2026-10-15（本轮 ITEM-001） | 新增 `board_env_probe.py`（经登记 SSH 入口的板端只读运行器，受信任 known_hosts、全超时、/tmp 隔离）；`env_probe.py` 增加 `--skip-slow`、QML/Quick 库与 qml 目录核验；**首次实际执行板端 E-00..E-13**（含六路相机与 NVR 端口可达性）；按三态登记缺口与替代结论 | 板端命令逐条留证（含退出码）见 `board-env-probe-...-r2.*`；主机重跑见 `env-probe-host-20261015-210821.*`；主机探针退出码 0，板端探针退出码 0 |
+| 2026-10-15（本轮 ITEM-001） | 修正：`qmlglsink`/`qtdeclarative5` 缺失、`rgavideoconvert` 缺失为实测结论；渲染默认路径锚定 `cpu`/librga C API | 原始输出对照 §2 表；与 `render_path_spike.md` §7 约束一致 |
 
 ---
 
-## 14. 渲染路径选型 spike（ITEM-002）状态与实测数据
+## 6. 证据清单
 
-> 本节由 ITEM-002 追加。工作项要求“在板端用一路 RTSP 实测 `mppvideodec→glupload→glcolorconvert→qmlglsink`
-> 能否协商并显示，失败则实测 `RGA NV12→BGR + Qt 纹理上传` 回退路径，记录 fps/CPU/GPU/画面色彩正确性”。
+板端（RK3588，本轮）：
+- `docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r2.md`
+- `...-r2.raw.txt`、`...-r2.json`（结构化）、`...-r2.commands.json`（含 SSH 主机指纹、每条远程命令与时延）
+- `...-board-r1.*`（首次运行，不含相机探测，保留追溯）
 
-### 14.1 本轮执行状态
+主机（Windows，本轮）：
+- `docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20261015-210821.md` / `.raw.txt` / `.json`
 
-| 项 | 状态 |
-|---|---|
-| 板端实测（path=gl / path=cpu） | **未执行**（项目设备工具禁用，未连接 RK3588，未访问相机） |
-| 选定的主/回退路径 | **未选定**（`UNMEASURED`）——按判据“未实测前不假定主路径成立” |
-| 可执行入口 | `app/spikes/render_path/run_render_spike.sh`（板端）+ `analyze.py`（判据） |
-| 输入源模式 | `rtsp`（ENV-D 真机）/ `file`、`test`（ENV-C 替代源，无相机可测协商与换算） |
-| 主机可执行的校验 | `analyze.py --selftest` 6/6 通过；`run_render_spike.sh --dry-run` 通过（见证据） |
-
-**实测数据表（待板端填写；当前为空）**
-
-| path | playing | fps_source | fps_display | CPU%(单核) | GPU load avg | 色彩 spread | 结论 |
-|---|---|---|---|---|---|---|---|
-| gl | — | — | — | — | — | — | 未实测 |
-| cpu | — | — | — | — | — | — | 未实测 |
-
-### 14.2 证据
-
-- 主机自检证据: `docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015.txt`
-- 板端测量产物（待授权后生成）: `docs/hmi/test_evidence/ITEM-002-render-path/{gl,cpu,selection}-<stamp>.json`（+ `.png` 快照）
-- 判据与程序说明: `docs/hmi/render_path_spike.md`、`app/spikes/render_path/README.md`
-
-### 14.3 说明
-
-- 两条路径存在性依赖 E-02（`qmlglsink`）与 E-05/E-06（librga/librknnrt）；若 E-02 缺失，path=gl 预期在协商阶段失败，应由测量结果而非预判来决定回退。
-- 本 spike **不覆盖 6 路并发合成**性能；单路选型完成后，6 路合成与显示帧率分级在后续页面/取流任务验证。
-- 主机不含 Qt/GStreamer/librga 工具链，spike **未在主机编译**；编译与运行均为目标板范围。
-- **缺口分类（项目自有规则）**：`E2E_PLAN` §3 “板端档失败若根因属板端资源/驱动/BSP（如 E-01..E-09 缺项）→ 记录为依赖缺口交平台/嵌入式职责，不算软件功能失败”；`TEST_DESIGN` §1 将 ENV-B/C/D 标为“待实现 + 设备授权”。本项未产出板端实测的根因是 **ENV-C/D 设备授权缺失**，属依赖/授权缺口，非本 spike 源码缺陷。
-- **未选定前的下游强制约束**：渲染实现必须同时保留 `gl` 与 `cpu` 路径并由配置开关选择；不得把未实测的 `gl` 当作唯一/默认主路径。必须给默认值时取已有板端证据支持的 `cpu`（`mppvideodec`+librga），`gl` 作为可开启候选。详见 `render_path_spike.md` §7。
-
-### 14.4 待授权后执行（交设备授权）
-
-```sh
-# 目标板，需项目授权与可用相机（ENV-D）
-cd app/spikes/render_path
-./run_render_spike.sh --url 'rtsp://<user>:<pass>@<cam>/...' --duration 20 --snapshot
-# 若无相机（设备未授权），可用 ENV-C 替代源完成协商/换算测量：
-./run_render_spike.sh --source file --file /path/to/clip.mp4 --duration 20 --snapshot
-./run_render_spike.sh --source test --duration 10
-# 将 selection-<stamp>.md 贴入本节 14.1，或把 selected 值回填
-```
+工具源码：
+- `app/tools/env_probe.py`、`app/tools/run_env_check.sh`、`app/tools/board_env_probe.py`

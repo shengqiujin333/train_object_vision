@@ -2,7 +2,7 @@
 # path | status | purpose
 PROJECT_GUIDE.md | existing | 铁轨异物检测项目总纲（历史，数据集/训练/转换/部署流程）
 README.md | existing | RK3588 交接文档，记录硬件/网络/摄像头/程序现状与已知坑（2026-10-13）
-app/README.md | active | 桌面应用工程构建/运行入口说明（依赖探针 + ITEM-002 渲染 spike 入口；ITEM-003 补 CMake/build.sh）
+app/README.md | active | 桌面应用工程构建/运行入口说明（ITEM-001 依赖探针 + 板端探测运行器 + ITEM-002 渲染 spike 入口；ITEM-003 补 CMake/build.sh）
 app/spikes/render_path/CMakeLists.txt | active | spike 板端本机构建（Qt5 + GStreamer + librga）
 app/spikes/render_path/CpuView.qml | active | CPU 回退路径 QML 场景（FrameItem）
 app/spikes/render_path/GlView.qml | active | GL 路径 QML 场景（GstGLVideoItem）
@@ -11,7 +11,8 @@ app/spikes/render_path/analyze.py | active | 渲染路径选择判据（--selfte
 app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu；源 rtsp|file|test；fps/CPU/GPU/色彩测量；写 JSON）（未在主机编译）
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
-app/tools/env_probe.py | active | 桌面应用依赖/环境只读探针（标准库；目标板与主机均可跑，生成 md/raw/json）
+app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
+app/tools/env_probe.py | active | 桌面应用依赖/环境只读探针（标准库；目标板与主机均可跑，生成 md/raw/json；支持 --skip-slow 与 QML/Quick 库、qml 目录核验）
 app/tools/run_env_check.sh | active | 依赖探针运行入口脚本（输出到 docs/hmi/test_evidence/ENV-B-dependency）
 code/librga.so | existing | 板端 RGA 库备份
 code/librknnrt.so | existing | 板端 NPU 运行时库备份
@@ -30,7 +31,7 @@ docs/hmi/E2E_PLAN.md | active | 桌面应用端到端测试计划（E2EPlan）v2
 docs/hmi/INTERACTION_DESIGN.md | active | 交互设计方案 v2（FrontendDesignArtifact）：信息架构/页面状态/报警与回放交互/状态模型/可访问性/可检验结果；含本期 6 路可见光范围、无红外口径、各摄像头检测职责与 NVR 登记未配置态
 docs/hmi/TEST_DESIGN.md | active | 软件测试设计（TestDesignArtifact）v2：六档环境分层（含 ENV-A0 railhmi-core 单测域 TC-CORE-01..07）/度量定义/故障注入目录 FI-01..10/P0 冒烟集 15 条/功能域 G1..G9（含 v2 契约域 integration_state、NVR 未配置、模式位、DetectionBadge、ai_profile）/需求覆盖矩阵/回归集 REG-01..06/证据规范
 docs/hmi/VISUAL_DESIGN.md | active | 视觉设计规范 v2（UIVisualDesignArtifact）：色彩/字体/间距/图标/组件/页面状态/资源清单/实现规则；含仅可见光模式位、设备集成状态、NVR 卡片、检测职责徽标
-docs/hmi/build_env_check.md | active | 目标构建/运行依赖基线核验（ITEM-001，ITEM-002 §14 追加）：E-01..E-13 逐条命令/板端未核验声明/主机原始结果摘录/替代结论
+docs/hmi/build_env_check.md | active | 目标构建/运行依赖基线核验（ITEM-001）：E-00..E-13 板端实测（本轮实际执行 SSH 只读探测，含六路相机/NVR 端口可达）/主机结果分列/三态登记（已核实可用·未核验·有证据的缺口）/缺口替代结论与责任（Qt QML 包、qmlglsink、rgavideoconvert、rknpu 权限、主机工具链）/证据清单
 docs/hmi/design_tokens.yaml | active | 视觉设计令牌 v2（颜色/报警级别/流状态/模式与集成状态/检测职责徽标/字体/间距/圆角/层级/对比度校验）
 docs/hmi/desktop_app_tasks.yaml | active | 桌面应用实现任务清单 v2（TaskListArtifact，25 项有序）：依赖/授权缺口、渲染双路径选型、分层骨架、core 配置/状态机/profile规则/持久化/单测、模拟注入、令牌、导航、注册表+检测徽标、取流、三联、六路、状态条、推理、报警中心、保护片段、回放、AI调试、维护+NVR卡、权限、健康恢复、打包自检
 docs/hmi/interaction_tasks.yaml | active | 交互设计任务清单 v2（TaskListArtifact）：含摄像头检测职责与本期无红外范围、NVR 设备与录像来源交互任务
@@ -45,12 +46,23 @@ docs/hmi/mockups/p5_ai_debug.svg | active | P5 AI 调试页面示意
 docs/hmi/mockups/p6_maintenance.svg | active | P6 设备维护页面示意
 docs/hmi/render_path_spike.md | active | 渲染路径选型 spike 程序与判据（ITEM-002）：路径定义/判据/运行/未实测状态
 docs/hmi/test_evidence/ENV-B-dependency/VERIFY-ITEM-001.md | active | ITEM-001 交付物 TestEvidence（TEST_PASS：证据真实性与判据逐条核对，板端保持未核验口径）
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r1.commands.json | active | 板端探针首次运行命令日志（SSH 主机指纹/逐条命令退出码与时延）
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r1.json | active | 板端探针首次运行结构化结果
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r1.md | active | 板端依赖探针首次运行报告（RK3588，E-00..E-13；未含相机探测）
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r1.raw.txt | active | 板端探针首次运行原始输出
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r2.commands.json | active | 板端探针权威运行命令日志（SSH 主机指纹/逐条命令退出码与时延）
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r2.json | active | 板端探针权威运行结构化结果
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r2.md | active | 板端依赖探针权威报告（RK3588，E-00..E-13 + 六路相机/NVR 端口可达 + QML/qmlglsink/rgavideoconvert 缺口）
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r2.raw.txt | active | 板端探针权威运行原始输出
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-r2.json | active | 编号对齐 §3.4 后重新生成的主机探针结构化结果
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-r2.md | active | 编号对齐 §3.4 后重新生成的主机探针报告（D-02/D-04 修复后证据）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-verify.json | active | 独立复现探针的结构化结果（ITEM-001 验证证据）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-verify.md | active | 软件验证独立复现的探针报告（逐行等于归档原件除时间戳，ITEM-001 验证证据）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.json | active | 依赖探针主机运行结构化结果（ITEM-001 证据，过渡编号，被 -r2 取代）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.md | active | 依赖探针主机运行原始报告（非目标板结论，ITEM-001 证据）
+docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20261015-210821.json | active | 本轮主机探针结构化结果
+docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20261015-210821.md | active | 本轮主机探针报告（Windows；含 QML/Quick 库与 qml 目录核验）
+docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20261015-210821.raw.txt | active | 本轮主机探针原始输出
 docs/hmi/test_evidence/ITEM-002-render-path/VERIFY-ITEM-002.md | active | ITEM-002 渲染路径 spike 软件验证 TestEvidence（TEST_FAIL：板端实测未产出，设备授权缺口；实现侧工具独立复现通过）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015-r2.txt | active | ITEM-002 重试主机自检（source=file/test 与 --md-out synthetic fixture 表格，未执行板端）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015.txt | active | ITEM-002 主机自检证据（analyze.py --selftest 6/6 与 run_render_spike.sh --dry-run）

@@ -13,8 +13,8 @@
 
 | 工作项 | 内容 | 状态 |
 |---|---|---|
-| ITEM-001 | 目标构建/运行依赖探针与基线核验入口 | 源码已交付（`tools/env_probe.py`）；**板端核验未执行**（设备工具禁用） |
-| ITEM-002 | 渲染路径选型 spike（qmlglsink 主 / RGA+纹理回退） | 源码与判据已交付（`spikes/render_path/`）；**板端实测未执行 → 路径未选定（UNMEASURED）** |
+| ITEM-001 | 目标构建/运行依赖基线与授权缺口登记 | **源码 + 板端实测已交付**：`tools/env_probe.py`、`tools/board_env_probe.py`；板端 E-00..E-13 已实际采集（六路相机/NVR 端口可达），三态缺口与替代结论见 `docs/hmi/build_env_check.md` |
+| ITEM-002 | 渲染路径选型 spike（qmlglsink 主 / RGA+纹理回退） | 源码与判据已交付（`spikes/render_path/`）；**板端 path 实测未执行 → 路径未选定（UNMEASURED）**；依赖基线已确认 `qmlglsink` 缺失、`rgavideoconvert` 缺失（默认 `cpu`/librga） |
 | ITEM-003 | 工程骨架与板端本机构建脚本（Qt QML 目标 + 预览开关） | 未实现 |
 | ITEM-004.. | 主题、导航、注册表、取流、页面、推理、报警、录像、回放、权限、恢复、打包 | 未实现 |
 
@@ -30,6 +30,7 @@ app/
   tools/
     env_probe.py          # 依赖/环境只读探针（标准库；目标板与主机均可运行）
     run_env_check.sh      # 探针运行入口（输出 md/raw/json 到 test_evidence）
+    board_env_probe.py    # 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 全超时）
   spikes/render_path/     # ITEM-002 渲染路径选型 spike
     main.cpp GlView.qml CpuView.qml qml.qrc
     CMakeLists.txt        # 板端本机构建（Qt5 + GStreamer + librga）
@@ -61,6 +62,19 @@ sh app/tools/run_env_check.sh docs/hmi/test_evidence/ENV-B-dependency --probe-ca
 - 只读探测：不安装、不修改系统、不写产品目录以外位置；无第三方依赖。
 - 相机/NVR 端口探测**默认关闭**，需项目授权。
 - 结果口径见 `docs/hmi/build_env_check.md` §0/§12：**主机结果不等于目标板结论**。
+
+### 板端依赖基线（ITEM-001，经登记 SSH 入口）
+
+```sh
+python app/tools/board_env_probe.py \
+  --host 192.168.0.103 --user admin \
+  --credential-env TRAIN_RK3588_SSH_CREDENTIAL \
+  --out-dir docs/hmi/test_evidence/ENV-B-dependency \
+  --stamp <stamp> --connect-timeout 10 --command-timeout 90 --probe-cameras
+```
+- 使用受信任 `known_hosts`（默认 RejectPolicy），连接/命令/SFTP 全超时；凭据仅从环境变量读取，不落日志。
+- 只读探测；写入仅限目标 `/tmp`。产出 `.md/.raw.txt/.json/.commands.json`（含主机指纹与逐条命令）。
+- 结果与三态缺口见 `docs/hmi/build_env_check.md` §2/§3。
 
 ---
 
