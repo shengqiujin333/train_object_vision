@@ -1,0 +1,168 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify020",
+    "cpp": "docs/hmi/test_evidence/ITEM-020-replay/verify_replay20_ext_v3.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-020-replay",
+    "stamp": "VERIFY-20261016-v3",
+    "impl_testrun_log": "docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-uifix-r1.core-evidence_core-tests-20261016-ITEM020-uifix-r1.log",
+    "impl_replayprobe_log": "docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-uifix-r1.core-evidence_replay-probe-20261016-ITEM020-uifix-r1.log",
+    "connect_timeout": "10",
+    "timeout_sec": "1200",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "v3: asserts the UI-fix D-01..D-09 state; aborts on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir docs\\hmi\\test_evidence\\ITEM-020-replay --stamp VERIFY-20261016-v3 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 36.67,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 141 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 REPLAY_WIRE_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 REPLAY_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-driver-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_ai-probe-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_alarm-probe-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_clip-probe-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_replay-probe-VERIFY-20261016-v3.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: docs\\hmi\\test_evidence\\ITEM-020-replay\\build-TestRun-192_168_0_103-VERIFY-20261016-v3.transcript.json\nlog: docs\\hmi\\test_evidence\\ITEM-020-replay\\build-TestRun-192_168_0_103-VERIFY-20261016-v3.log\n"
+    },
+    {
+      "step": "fresh-artifacts",
+      "exit": 0,
+      "output": "build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_replay-probe-VERIFY-20261016-v3.log"
+    },
+    {
+      "step": "log-compare",
+      "exit": 0,
+      "output": "impl=build-TestRun-192_168_0_103-20261016-ITEM020-uifix-r1.core-evidence_core-tests-20261016-ITEM020-uifix-r1.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log impl_pass=579 verify_pass=579 identical=True verify_fails=0 expect=579 result=RESULT: PASS passed=579 failed=0"
+    },
+    {
+      "step": "junit-parse",
+      "exit": 0,
+      "output": "junit tests=579 failures=0 item020_cases=41/41 missing=[]"
+    },
+    {
+      "step": "replay-probe-assert",
+      "exit": 0,
+      "output": "{\"fails\": []}"
+    },
+    {
+      "step": "replay-probe-compare",
+      "exit": 0,
+      "output": "deterministic reproduction identical=True"
+    },
+    {
+      "step": "mkdir-verify",
+      "cmd": "mkdir -p /tmp/railhmi_build/verify",
+      "exit": 0,
+      "elapsed_s": 0.04,
+      "output": ""
+    },
+    {
+      "step": "mkdir-workdir",
+      "cmd": "rm -rf /tmp/railhmi_verify020 && mkdir -p /tmp/railhmi_verify020",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": ""
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "docs/hmi/test_evidence/ITEM-020-replay/verify_replay20_ext_v3.cpp"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -DRAILHMI_CONFIG_DIR='\"config\"' -Isrc/core/include -Isrc/platform/include /tmp/railhmi_verify020/verify_replay20_ext_v3.cpp build-core/src/core/librailhmi_core.a build-core/src/platform/librailhmi_platform.a -o /tmp/railhmi_verify020/verify_replay20_ext_v3 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.83,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify020/verify_replay20_ext_v3; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "== 100 passed, 0 failed ==\nRESULT: PASS passed=100 failed=0\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-summary",
+      "exit": 0,
+      "output": "ext passed=100 failed=0"
+    },
+    {
+      "step": "upload-scan",
+      "exit": 0,
+      "output": "verify_scan_v3.py"
+    },
+    {
+      "step": "qml-scan",
+      "cmd": "cd /tmp/railhmi_build && python3 /tmp/railhmi_verify020/verify_scan_v3.py; echo SCAN2_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "W1_emit_declaration= True\nW1_emission= True\nW1_handler_params_used_camera= True\nW1_handler_params_used_ts= True\nW1_handler_calls_selectAlarm= True\nW1_startup_selectAlarm= True\nW1_seedAlarms= True\nW1_offsets_injected= True\nW2_cursor_positions_literal= False\nW2_syncState_consumed= True\nW2_unavailable_state= True\nV2_objectnames= True\nV2_jump_chips= True\nV2_detail_fields= True\nV2_source_note_ui= True\nV2_selection_consumed= True\nV3_bridge_keyframes= True\nV3_p3_thumb_repeater= True\nV3_thumb_ts_positioned= True\nV3_thumb_strip_64= True\nV3_sample_keyframes= True\nV3_gap_hatch_canvas= True\nV3_bridge_playback= True\nV3_bridge_setplaying= True\nV3_bridge_setspeed= True\nV3_p3_playback_toggle= True\nV3_p3_speed_chips= True\nV3_p3_playback_state= True\nV3_bridge_seg_level= True\nV3_bridge_marker_level= True\nV3_p3_level_color_fn= True\nV3_p3_level_theme= True\nV3_p3_seg_uses_level= True\nV3_p3_marker_uses_level= True\nV3_seg_click= True\nV3_gap_click= True\nV3_marker_click= True\nV3_full_camera_list= True\nV3_detail_record_bar= True\nV3_record_bar_degraded= True\nV3_date_error_path= True\nV3_chip_touch_target= True\nV3_chip_keyboard= True\nV3_track_32= True\nV3_cursor_top= True\nV3_reload_handles_invalid= True\nSCAN2_EXIT=0\n"
+    },
+    {
+      "step": "wiring-scan-findings",
+      "exit": 0,
+      "output": "UI-fix state: v1/v2 persisted (selection=True literal-triple-absent=False syncState=True) | v3 D-01 (bridge_keyframes=True thumb_repeater=True ts_positioned=True strip64=True) | v3 D-02 (hatch=True) | v3 D-03 (playback_bridge=True toggle=True speed_chips=True) | v3 D-04 (seg_level=True marker_level=True level_fns=True theme=True seg_uses=True marker_uses=True) | v3 D-05 (seg=True gap=True marker=True) | v3 D-06 (full_list=True) | v3 D-07 (record_bar=True degraded=True) | v3 D-08 (date_error=True chip_touch=True chip_kb=True) | v3 D-09 (track32=True cursor_top_mono=True) | mismatch=[] raw={\"W1_emit_declaration\": \"True\", \"W1_emission\": \"True\", \"W1_handler_params_used_camera\": \"True\", \"W1_handler_params_used_ts\": \"True\", \"W1_handler_calls_selectAlarm\": \"True\", \"W1_startup_selectAlarm\": \"True\", \"W1_seedAlarms\": \"True\", \"W1_offsets_injected\": \"True\", \"W2_cursor_positions_literal\": \"False\", \"W2_syncState_consumed\": \"True\", \"W2_unavailable_state\": \"True\", \"V2_objectnames\": \"True\", \"V2_jump_chips\": \"True\", \"V2_detail_fields\": \"True\", \"V2_source_note_ui\": \"True\", \"V2_selection_consumed\": \"True\", \"V3_bridge_keyframes\": \"True\", \"V3_p3_thumb_repeater\": \"True\", \"V3_thumb_ts_positioned\": \"True\", \"V3_thumb_strip_64\": \"True\", \"V3_sample_keyframes\": \"True\", \"V3_gap_hatch_canvas\": \"True\", \"V3_bridge_playback\": \"True\", \"V3_bridge_setplaying\": \"True\", \"V3_bridge_setspeed\": \"True\", \"V3_p3_playback_toggle\": \"True\", \"V3_p3_speed_chips\": \"True\", \"V3_p3_playback_state\": \"True\", \"V3_bridge_seg_level\": \"True\", \"V3_bridge_marker_level\": \"True\", \"V3_p3_level_color_fn\": \"True\", \"V3_p3_level_theme\": \"True\", \"V3_p3_seg_uses_level\": \"True\", \"V3_p3_marker_uses_level\": \"True\", \"V3_seg_click\": \"True\", \"V3_gap_click\": \"True\", \"V3_marker_click\": \"True\", \"V3_full_camera_list\": \"True\", \"V3_detail_record_bar\": \"True\", \"V3_record_bar_degraded\": \"True\", \"V3_date_error_path\": \"True\", \"V3_chip_touch_target\": \"True\", \"V3_chip_keyboard\": \"True\", \"V3_track_32\": \"True\", \"V3_cursor_top\": \"True\", \"V3_reload_handles_invalid\": \"True\"}"
+    },
+    {
+      "step": "replay-probe-negative-arg",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-replay-probe --nope; echo NARG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "NARG_EXIT=2\nunknown arg: --nope\n"
+    },
+    {
+      "step": "replay-probe-help",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-replay-probe --help; echo HELP_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "usage: railhmi-replay-probe [--out log]\nHELP_EXIT=0\n"
+    },
+    {
+      "step": "replay-probe-rep-run",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-replay-probe --out verify/replay-probe-rep.log; echo REPL_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "type=timeline cam=CAM-01 day=1792108800000 duration_ms=86400000 segments=3 gaps=1 alarms=1 keyframes=1440\nseg kind=continuous level=0 t0=1792108810000 t1=1792108880000 label=连续录像\nseg kind=critical level=1 t0=1792108890000 t1=1792109000000 label=报警保护片段\nseg kind=continuous level=0 t0=1792109060000 t1=1792109100000 label=连续录像\ngap t0=1792109010000 t1=1792109050000 reason=recording_interrupted\nflags has_alarm_segment=true has_gap=true alarm_marker_level=1 keyframe_thumb=thumb/CAM-01/1792108800000.bmp\ntype=jumps minus30=1792108890000 alarm=1792108920000 plus30=1792108950000 plus60=1792108980000\ntype=seek pos=1792108920000\ntype=jump plus30 pos=1792108950000\ntype=sync in_sync=true dev=200 | deviation=true dev=900 prompt=同步偏差 900 ms（阈值 300 ms）\ntype=lock alarm_cam=CAM-01 locked=CAM-02,CAM-01,CAM-03\ntype=sync-snapshot in_sync_available=true dev=200 | deviation_prompt=同步偏差 900 ms（阈值 300 ms） | no_clock=同步状态不可用\ntype=source source=local_clips label=本机片段 usable=true note=NVR 录像不可用，回放本机片段\ntype=detail time=2026-10-16 00:02:00 type=前方轨道人员 level=一级 distance=12.3 m confidence=87% ack=已确认 record=可回放 record_ok=true\ntype=acceptance alarm_segment=true gap=true jumps_ok=true sync_prompt_on_deviation=true lock_related_cameras=true sync_unavailable_without_clock=true nvr_fallback_local=true result=PASS\nREPL_EXIT=0\n"
+    },
+    {
+      "step": "replay-probe-determinism",
+      "cmd": "cd /tmp/railhmi_build && diff /tmp/railhmi_build/verify/replay-probe-rep.log /tmp/railhmi_build/core-evidence/replay-probe-VERIFY-20261016-v3.log && echo IDENTICAL",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "IDENTICAL\n"
+    },
+    {
+      "step": "regression-artifacts",
+      "cmd": "cd /tmp/railhmi_build && ls core-evidence/",
+      "exit": 0,
+      "elapsed_s": 0.15,
+      "output": "ai-probe-VERIFY-20261016-v3.log\nalarm-probe-VERIFY-20261016-v3.log\nclip-probe-VERIFY-20261016-v3.log\ncore-tests-VERIFY-20261016-v3.log\ncore-tests-VERIFY-20261016-v3.xml\nreplay-probe-VERIFY-20261016-v3.log\nsim-inject-VERIFY-20261016-v3.json\nsim-inject-VERIFY-20261016-v3.log\nstatus-probe-driver-VERIFY-20261016-v3.log\nstatus-probe-VERIFY-20261016-v3.log\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify020 /tmp/railhmi_build /tmp/railhmi_clips && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify020 /tmp/railhmi_build /tmp/railhmi_clips 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.14,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify020': No such file or directory\nls: cannot access '/tmp/railhmi_build': No such file or directory\nls: cannot access '/tmp/railhmi_clips': No such file or directory\n"
+    },
+    {
+      "step": "cleanup-verify",
+      "exit": 0,
+      "output": "cleanup_ok=True"
+    },
+    {
+      "step": "findings",
+      "exit": 0,
+      "output": "[{\"UI-review D-01..D-09\": \"bridge exports keyframes/levels; P3 renders strip+hatch+playback+level colors+click targets+full cameras+record bar+date error+sizes; v1/v2 selection & sync fix state persisted\", \"confirmed\": true}]"
+    }
+  ]
+}
