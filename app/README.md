@@ -15,10 +15,10 @@
 |---|---|---|
 | ITEM-001 | 目标构建/运行依赖基线与授权缺口登记 | **源码 + 板端实测已交付**：`tools/env_probe.py`、`tools/board_env_probe.py`；板端 E-00..E-13 已实际采集（六路相机/NVR 端口可达），三态缺口与替代结论见 `docs/hmi/build_env_check.md` |
 | ITEM-002 | 渲染路径选型 spike（qmlglsink 主 / RGA+纹理回退） | **已在板端实测并选定路径**：`cpu`（SELECTED）；`gl` 因缺 `qmlglsink`/Qt QML 包不可用（保留可开启候选）；数据与证据见 `docs/hmi/build_env_check.md` §14 与 `spikes/render_path/spike_core.c` |
-| ITEM-003 | 工程骨架与板端本机构建脚本（Qt QML 目标 + 预览开关） | 未实现 |
+| ITEM-003 | 分层 CMake 工程骨架与三档构建入口（`build.sh`） | **已交付**：`railhmi_core`（纯 stdlib）/`railhmi_platform`（日志/文件存储+可选 SQLite）/`railhmi_media`（target GStreamer+librga）/`railhmi`（Qt/QML）；板端 `CoreTests` 构建成功且 **9/9 测试通过**、`MediaCheck` 媒体层编译成功；`Release`/`Preview` 缺 Qt5 Quick/Qml 开发包时**明确报错**。证据：`docs/hmi/test_evidence/ITEM-003-build/README.md` |
 | ITEM-004.. | 主题、导航、注册表、取流、页面、推理、报警、录像、回放、权限、恢复、打包 | 未实现 |
 
-> 本文件是工程构建/运行入口说明；随着 ITEM-003 落地，将补充 CMake 目标与 `build.sh`/`deploy.sh`。
+> 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 
 ---
 
@@ -27,13 +27,23 @@
 ```
 app/
   README.md               # 本文件：构建/运行入口说明
+  CMakeLists.txt          # 分层工程（core/platform/media/ui 子目录）
+  build.sh                # 构建入口: Release | Preview | CoreTests | MediaCheck | check
+  src/
+    core/                 # railhmi_core: 纯业务逻辑，仅 C++ 标准库（无 Qt/GStreamer/相机/SQLite）
+    platform/             # railhmi_platform: 日志/文件存储 + 可选 SQLite(SqliteStore)
+    media/                # railhmi_media: target 专用 GStreamer + librga
+    ui/                   # railhmi: Qt/QML 应用（qml/main.qml）
+  tests/core/             # railhmi-core-tests（最小工具链可跑）
   tools/
     env_probe.py          # 依赖/环境只读探针（标准库；目标板与主机均可运行）
     run_env_check.sh      # 探针运行入口（输出 md/raw/json 到 test_evidence）
     board_env_probe.py    # 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 全超时）
+    board_build.py        # 经登记 SSH 入口的板端构建运行器（上传 app/ + build.sh 三档）
   spikes/render_path/     # ITEM-002 渲染路径选型 spike
     main.cpp GlView.qml CpuView.qml qml.qrc
     CMakeLists.txt        # 板端本机构建（Qt5 + GStreamer + librga）
+    spike_core.c          # 无 Qt 核心管线测量
     analyze.py            # 选择判据（--selftest 主机可跑）
     run_render_spike.sh   # 驱动（--dry-run 可在无板环境校验入口）
 ```
@@ -98,18 +108,35 @@ cd app/spikes/render_path
 
 ---
 
-## 构建（计划，尚未实现 — ITEM-003）
+## 构建（ITEM-003 已落地）
 
-目标构建沿用项目既定模式：**板端本机编译，无交叉工具链**。
+目标构建沿用项目既定模式：**板端本机编译，无交叉工具链**。分层：`railhmi_core`（纯 stdlib）/`railhmi_platform`（日志/文件存储 + 可选 SQLite）/`railhmi_media`（target GStreamer+librga）/`railhmi`（Qt/QML）。
 
 ```sh
-# 目标板（aarch64 本机构建）——待 ITEM-003 落地
-cd /home/admin/railhmi/src/app
-./build.sh Release
-./deploy.sh                       # 安装到 /home/admin/railhmi
+# 目标板（aarch64 本机构建）——需 Qt5 Quick/Qml + GStreamer + librga
+cd <app>
+./build.sh Release                # RAILHMI_BUILD_TARGET
+./build.sh MediaCheck             # 仅 railhmi_media（GStreamer+librga，无 Qt）编译检查
 
-# 主机开发预览（x86_64 模拟输入）——待 ITEM-003 落地
-./build.sh Preview                # -DRAILHMI_SIMULATION=ON
+# 主机开发预览（x86_64 模拟输入）——需宿主 Qt5 Quick/Qml
+./build.sh Preview                # RAILHMI_BUILD_PREVIEW + RAILHMI_SIMULATION
+
+# 最小工具链单元测试（C++ 编译器 + CMake；不依赖 Qt/GStreamer/相机）
+./build.sh CoreTests && ./build-core/tests/railhmi-core-tests
+
+# 只做依赖自检
+./build.sh check
 ```
 
-依赖与版本以 `docs/hmi/build_env_check.md` 的板端核验结果为准，不在此写死。
+经登记 SSH 入口的板端构建（代传 `app/` 并执行）：
+
+```sh
+python app/tools/board_build.py --host <addr> --user <user> \
+  --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode CoreTests \
+  --outdir docs/hmi/test_evidence/ITEM-003-build --stamp <tag> --run-tests
+# 其它: --mode MediaCheck | Release | Preview | check
+```
+
+- 无对应工具链时 `build.sh` 逐项打印缺失依赖并退出 1，**不静默失败**。
+- 依赖与版本以 `docs/hmi/build_env_check.md` 的板端核验结果为准；构建结果见 `docs/hmi/test_evidence/ITEM-003-build/README.md`。
+- 主机编译不代表目标板运行。

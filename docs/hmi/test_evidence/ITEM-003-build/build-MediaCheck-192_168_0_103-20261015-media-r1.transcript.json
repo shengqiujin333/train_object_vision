@@ -1,0 +1,53 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "local_dir": "E:\\work\\rail_issue\\rk3588_handover\\app",
+    "remote_dir": "/tmp/railhmi_build",
+    "mode": "MediaCheck",
+    "outdir": "docs/hmi/test_evidence/ITEM-003-build",
+    "stamp": "20261015-media-r1",
+    "connect_timeout": 10,
+    "build_timeout": 600,
+    "run_tests": false,
+    "keep_remote": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_build",
+      "exit": 0,
+      "elapsed_s": 0.19,
+      "output": ""
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 36 files from E:\\work\\rail_issue\\rk3588_handover\\app"
+    },
+    {
+      "step": "build",
+      "cmd": "cd /tmp/railhmi_build && bash build.sh MediaCheck; echo BUILD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 2.76,
+      "output": "[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1\n[build.sh] dependency check: Qt=no gstreamer=yes librga=yes sqlite3=no\n[build.sh] configuring: cmake -S '/tmp/railhmi_build' -B '/tmp/railhmi_build/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- railhmi: build mode = MediaCheck\n-- railhmi: SQLite3 dev not found -> SqliteStore disabled (install libsqlite3-dev to enable)\n-- Found PkgConfig: /usr/bin/pkg-config (found version \"0.29.2\") \n-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'\n--   Found gstreamer-1.0, version 1.20.3\n--   Found gstreamer-app-1.0, version 1.20.1\n--   Found gstreamer-video-1.0, version 1.20.1\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/railhmi_build/build-media\n[build.sh] building: cmake --build '/tmp/railhmi_build/build-media' -j8\n[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o\n[ 28%] Linking CXX static library librailhmi_core.a\n[ 28%] Built target railhmi_core\n[ 42%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o\n[ 57%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o\n[ 71%] Linking CXX static library librailhmi_platform.a\n[ 71%] Built target railhmi_platform\n[ 85%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o\n[100%] Linking CXX static library librailhmi_media.a\n[100%] Built target railhmi_media\n[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_build/build-media\n[build.sh] media layer: /tmp/railhmi_build/build-media/src/media/librailhmi_media.a\nBUILD_EXIT=0\n"
+    },
+    {
+      "step": "artifacts",
+      "cmd": "ls -l /tmp/railhmi_build/build-core/tests/railhmi-core-tests /tmp/railhmi_build/build-target/railhmi /tmp/railhmi_build/build-preview/railhmi 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.09,
+      "output": "ls: cannot access '/tmp/railhmi_build/build-core/tests/railhmi-core-tests': No such file or directory\nls: cannot access '/tmp/railhmi_build/build-target/railhmi': No such file or directory\nls: cannot access '/tmp/railhmi_build/build-preview/railhmi': No such file or directory\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_build && echo cleaned",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "cleaned\n"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 36 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [build] exit=0 =====
+[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_build' -B '/tmp/railhmi_build/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = CoreTests
+-- railhmi: SQLite3 dev not found -> SqliteStore disabled (install libsqlite3-dev to enable)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_build/build-core
+[build.sh] building: cmake --build '/tmp/railhmi_build/build-core' -j8
+[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[ 28%] Linking CXX static library librailhmi_core.a
+[ 28%] Built target railhmi_core
+[ 57%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 57%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 71%] Linking CXX static library librailhmi_platform.a
+[ 71%] Built target railhmi_platform
+[ 85%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o
+[100%] Linking CXX executable railhmi-core-tests
+[100%] Built target railhmi-core-tests
+[build.sh] build OK (mode=core-tests); artifacts under /tmp/railhmi_build/build-core
+[build.sh] run: /tmp/railhmi_build/build-core/tests/railhmi-core-tests
+BUILD_EXIT=0
+/tmp/railhmi_build/src/platform/src/log.cpp: In member function ‘void railhmi::platform::Logger::log(railhmi::platform::LogLevel, const string&)’:
+/tmp/railhmi_build/src/platform/src/log.cpp:45:60: warning: ‘:’ directive output may be truncated writing 1 byte into a region of size between 0 and 16 [-Wformat-truncation=]
+   45 |     std::snprintf(ts, sizeof(ts), "%04d-%02d-%02dT%02d:%02d:%02d.%03d",
+      |                                                            ^
+/tmp/railhmi_build/src/platform/src/log.cpp:45:35: note: directive argument in the range [-999, 999]
+   45 |     std::snprintf(ts, sizeof(ts), "%04d-%02d-%02dT%02d:%02d:%02d.%03d",
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from /usr/include/c++/11/cstdio:42,
+                 from /usr/include/c++/11/ext/string_conversions.h:43,
+                 from /usr/include/c++/11/bits/basic_string.h:6608,
+                 from /usr/include/c++/11/string:55,
+                 from /tmp/railhmi_build/src/platform/include/railhmi/platform/log.h:7,
+                 from /tmp/railhmi_build/src/platform/src/log.cpp:1:
+/usr/include/aarch64-linux-gnu/bits/stdio2.h:71:35: note: ‘__builtin___snprintf_chk’ output between 24 and 77 bytes into a destination of size 32
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+
+
+===== [tests] exit=0 =====
+TEST_EXIT=127
+bash: line 1: ./build-core/tests/railhmi-core-tests: No such file or directory
+
+
+===== [artifacts] exit=2 =====
+ls: cannot access '/tmp/railhmi_build/build-core/tests/railhmi-core-tests': No such file or directory
+ls: cannot access '/tmp/railhmi_build/build-target/railhmi': No such file or directory
+ls: cannot access '/tmp/railhmi_build/build-preview/railhmi': No such file or directory
+
+
+===== [cleanup] exit=0 =====
+cleaned
+

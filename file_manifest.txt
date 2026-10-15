@@ -2,7 +2,9 @@
 # path | status | purpose
 PROJECT_GUIDE.md | existing | 铁轨异物检测项目总纲（历史，数据集/训练/转换/部署流程）
 README.md | existing | RK3588 交接文档，记录硬件/网络/摄像头/程序现状与已知坑（2026-10-13）
-app/README.md | active | 桌面应用工程构建/运行入口说明（ITEM-001 依赖探针 + 板端探测运行器 + ITEM-002 渲染 spike 入口；ITEM-003 补 CMake/build.sh）
+app/CMakeLists.txt | active | 分层 CMake 工程（ITEM-003）：RAILHMI_BUILD_{TARGET,PREVIEW,CORE_TESTS,MEDIA} 开关；core/platform/media/ui 子目录
+app/README.md | active | 桌面应用工程构建/运行入口说明：ITEM-001 依赖探针 + 板端探测、ITEM-002 渲染选型 spike、ITEM-003 分层 CMake 三档构建（Release/Preview/CoreTests/MediaCheck）
+app/build.sh | active | 构建入口（ITEM-003）：Release|Preview|CoreTests|MediaCheck|check；依赖缺失时逐项报错退出 1，不静默失败
 app/spikes/render_path/CMakeLists.txt | active | spike 板端本机构建（Qt5 + GStreamer + librga）
 app/spikes/render_path/CpuView.qml | active | CPU 回退路径 QML 场景（FrameItem）
 app/spikes/render_path/GlView.qml | active | GL 路径 QML 场景（GstGLVideoItem）
@@ -12,6 +14,26 @@ app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
 app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
+app/src/core/CMakeLists.txt | active | railhmi_core 静态库（纯业务逻辑，仅 C++ 标准库）
+app/src/core/include/railhmi/core/version.h | active | 版本/构建档位/模拟开关接口（core 无 Qt/GStreamer/相机/SQLite 依赖）
+app/src/core/src/version.cpp | active | 版本与构建描述实现
+app/src/media/CMakeLists.txt | active | railhmi_media 静态库（target 专用；pkg-config gstreamer + librga）
+app/src/media/include/railhmi/media/pipeline_factory.h | active | 渲染路径枚举与管线描述接口
+app/src/media/src/pipeline_factory.cpp | active | 管线描述/渲染路径解析/GStreamer 版本实现
+app/src/platform/CMakeLists.txt | active | railhmi_platform 静态库；SQLite3 可选（条件编译 SqliteStore，缺失时明确提示）
+app/src/platform/include/railhmi/platform/file_store.h | active | 原子文件存储接口（临时文件+rename，断电保护）
+app/src/platform/include/railhmi/platform/log.h | active | 结构化日志与 URL 凭据脱敏接口
+app/src/platform/include/railhmi/platform/sqlite_store.h | active | SqliteStore 接口（仅 RAILHMI_HAVE_SQLITE 时编译）
+app/src/platform/src/file_store.cpp | active | 原子写入/读取/目录创建实现
+app/src/platform/src/log.cpp | active | 日志与 redact_url 实现
+app/src/platform/src/sqlite_store.cpp | active | SqliteStore WAL 打开/执行/查询实现
+app/src/ui/CMakeLists.txt | active | railhmi Qt/QML 可执行（Qt5 Quick/Qml；缺失时明确 FATAL 信息）
+app/src/ui/qml.qrc | active | QML 资源清单
+app/src/ui/qml/main.qml | active | 骨架窗口（仅 QtQuick 基础模块，避免硬依赖 Controls2）
+app/src/ui/src/main.cpp | active | Qt 应用入口（加载 qrc:/qml/main.qml，注入构建描述与模拟标志）
+app/tests/core/CMakeLists.txt | active | railhmi-core-tests 可执行（固定输出到 build/tests/）
+app/tests/core/main.cpp | active | core/platform 单元测试（版本/脱敏/原子文件；SQLite 用例条件编译）
+app/tools/board_build.py | active | ITEM-003 板端构建运行器（上传 app/ + build.sh 三档/MediaCheck；取回构建/测试日志与产物清单；全超时 + known_hosts）
 app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
 app/tools/board_render_spike.py | active | ITEM-002 板端渲染 spike 运行器（上传/构建 QML spike、无 Qt 核心测量编译运行、gl 构造探测、取回日志/JSON、判据选择；全超时 + known_hosts）
 app/tools/env_probe.py | active | 桌面应用依赖/环境只读探针（标准库；目标板与主机均可跑，生成 md/raw/json；支持 --skip-slow 与 QML/Quick 库、qml 目录核验）
@@ -121,6 +143,21 @@ docs/hmi/test_evidence/ITEM-002-render-path/verify-dryrun-20261015.txt | existin
 docs/hmi/test_evidence/ITEM-002-render-path/verify-selftest-20261015-r2.txt | active | 软件验证 ITER2 独立复跑 analyze.py --selftest 原始输出（6/6 通过）
 docs/hmi/test_evidence/ITEM-002-render-path/verify-selftest-20261015.txt | active | ITEM-002 验证人独立复现 analyze.py --selftest 原始输出（6/6 通过）
 docs/hmi/test_evidence/ITEM-002-render-path/verify-tmp-cleanup-20261015-r2.log | active | 软件验证板端 /tmp 验证工件清理与终态列表（仅剩上传源码）
+docs/hmi/test_evidence/ITEM-003-build/README.md | active | ITEM-003 构建证据与修复历史（三档开关、板端实测结果、依赖缺口与责任、复现）
+docs/hmi/test_evidence/ITEM-003-build/build-CoreTests-192_168_0_103-20261015-core-r1.log | active | CoreTests 首次运行日志（测试可执行路径错误）
+docs/hmi/test_evidence/ITEM-003-build/build-CoreTests-192_168_0_103-20261015-core-r1.transcript.json | active | CoreTests 首次运行 transcript
+docs/hmi/test_evidence/ITEM-003-build/build-CoreTests-192_168_0_103-20261015-core-r2.log | active | CoreTests 第二次日志（FileStore 目录创建缺陷暴露）
+docs/hmi/test_evidence/ITEM-003-build/build-CoreTests-192_168_0_103-20261015-core-r2.transcript.json | active | CoreTests 第二次 transcript
+docs/hmi/test_evidence/ITEM-003-build/build-CoreTests-192_168_0_103-20261015-core-r3.log | active | CoreTests 权威运行日志（构建成功 + 9/9 测试通过）
+docs/hmi/test_evidence/ITEM-003-build/build-CoreTests-192_168_0_103-20261015-core-r3.transcript.json | active | CoreTests 权威 transcript（含测试逐项输出）
+docs/hmi/test_evidence/ITEM-003-build/build-MediaCheck-192_168_0_103-20261015-media-r1.log | active | MediaCheck 首次日志（产物清单未区分模式）
+docs/hmi/test_evidence/ITEM-003-build/build-MediaCheck-192_168_0_103-20261015-media-r1.transcript.json | active | MediaCheck 首次 transcript
+docs/hmi/test_evidence/ITEM-003-build/build-MediaCheck-192_168_0_103-20261015-media-r2.log | active | MediaCheck 权威日志（railhmi_media 编译成功，GStreamer+librga）
+docs/hmi/test_evidence/ITEM-003-build/build-MediaCheck-192_168_0_103-20261015-media-r2.transcript.json | active | MediaCheck 权威 transcript
+docs/hmi/test_evidence/ITEM-003-build/build-Preview-192_168_0_103-20261015-preview-r1.log | active | preview 档缺依赖实测（明确列出缺 Qt5 Quick/Qml，BUILD_EXIT=1）
+docs/hmi/test_evidence/ITEM-003-build/build-Preview-192_168_0_103-20261015-preview-r1.transcript.json | active | preview 档 transcript
+docs/hmi/test_evidence/ITEM-003-build/build-Release-192_168_0_103-20261015-target-r1.log | active | target 档缺依赖实测（明确列出缺 Qt5 Quick/Qml，BUILD_EXIT=1）
+docs/hmi/test_evidence/ITEM-003-build/build-Release-192_168_0_103-20261015-target-r1.transcript.json | active | target 档 transcript
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 file_manifest.txt | existing | 本清单，项目文件用途登记
