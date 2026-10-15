@@ -24,7 +24,7 @@
 
 | 步骤 | 结果 | 证据 |
 |---|---|---|
-| `./build-core/tests/railhmi-core-tests` | **230 passed / 0 failed**（平台/配置/流/规则/持久化） | `...-ITEM007-r2.transcript.json` → `tests` |
+| `./build-core/tests/railhmi-core-tests` | **243 passed / 0 failed**（平台/配置/流/规则/持久化） | `...-ITEM007-r3.transcript.json` → `tests` |
 | `railhmi-config-check ./config` | OK 退出 0 | 同上 → `config-check-good` |
 | 坏配置 | 报 `thresholds.confirm_frames: required field missing` 退出 1 | 同上 → `config-check-bad` |
 
@@ -47,6 +47,7 @@ CMake 日志确认：`railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqli
 | 运行 | 现象 | 根因 | 修复 | 复测 |
 |---|---|---|---|---|
 | ITEM007-r1 | 1 项失败：`wall/mono round-trip identity` | 测试期望错误：毫秒分辨率下非整毫秒的单调值往返必然截断 | 断言改为显式截断 + 毫秒对齐往返恒等 | ITEM007-r2（230/230） |
+| ITEM007-r3 | 软件验证 TEST_FAIL：D-01 桥接缺口留重叠残对、D-02 合并未继承 reason | `add_gap` 只合并到第一个命中区间就 `return`；且相邻判定用严格相等（99 与 100 未视为相邻） | `add_gap` 改为迭代吸收所有可合并区间（重叠或相差≤1ms），reason 取先存在非空值；新增桥接/验证序列/相邻边界第一方断言 + 真实 SIGKILL WAL 恢复测试 | ITEM007-r3（243/243） |
 
 ## 4. 边界与后续
 
@@ -57,8 +58,10 @@ CMake 日志确认：`railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqli
 
 ## 5. 证据文件
 
-- `build-CoreTests-192_168_0_103-20261015-ITEM007-r2.{transcript.json,log}`（**权威**：230/230 + config-check）
+- `build-CoreTests-192_168_0_103-20261015-ITEM007-r3.{transcript.json,log}`（**权威(v2 修复后)**：243/243 + config-check）
+- `build-CoreTests-192_168_0_103-20261015-ITEM007-r2.{transcript.json,log}`（v1：230/230，保留追溯）
 - `build-CoreTests-192_168_0_103-20261015-ITEM007-r1.{transcript.json,log}`（首次：229/230，时间基准测试期望错误，保留追溯）
+- `VERIFY-ITEM-007.md`、`verify_persist_ext.cpp`、`verify_persist_fixtures.py`、`VERIFY-FIXTURES-*`（软件验证交付）
 
 ## 6. 复现
 
@@ -68,3 +71,22 @@ python app/tools/board_build.py --host <addr> --user <user> \
   --outdir docs/hmi/test_evidence/ITEM-007-persistence --stamp <tag> --run-tests
 # 板上直接: ./build-core/tests/railhmi-core-tests
 ```
+
+## 7. v2 修复记录（响应软件验证 TEST_FAIL：D-01/D-02）
+
+软件验证 `result_code=TEST_FAIL`，定位两个 `add_gap` 缺陷（主套件与其余判据全绿）：
+
+- **D-01 桥接缺口留永久重叠残对**：`add_gap` 在 for 循环内合并到第一个命中区间后 `return`，未吸收后续可合并区间。
+- **D-02 合并未继承 reason**：同一 early-return 导致只访问一个既有 gap，桥接时其它区间 reason 参与不到合并。
+
+**修复**（`app/src/core/src/retention.cpp` `add_gap`）：
+1. 改为**迭代吸收**：把新缺口与同相机所有“重叠或相邻”区间反复合并，直到一整轮无新增吸收——桥接的两个区间会被一并吸收，结果只留一个区间（无重叠残对）。
+2. **相邻判定**改为闭合区间语义：`lo <= g.t1+1 && g.t0 <= hi+1`（相差≤1ms 视为相邻，如 [50,99] 与 [100,300]）；真正间隔≥2ms 的缺口仍分离。
+3. **reason 取先存在的非空值**（扫描顺序下第一个既有非空 reason 优先，否则用本次入参），符合验证侧契约。
+4. 接口签名不变；结果仍按 `(cam, t0, id)` 排序；`SqliteRepository::insert_gap` 与查询接口未受影响。
+
+**新增第一方回归**（不复依赖验证外部夹具）：桥接合并为单区间 `[0,30]`（reason `a`）、验证侧原序列 `[100,300]+[50,99]+[99,110]`→单区间 `[50,300]`（reason `drop`）、相差 1ms 不合并/连续合并边界、首存 reason 保留；并将 D-03 观察（WAL 恢复口径）升级为第一方**真实 `fork()+SIGKILL` 写中终止**测试（未提交事务丢弃、已提交行完好、journal_mode 仍 wal）。
+
+**复测**：ITEM007-r3 → **243 passed / 0 failed**（223→243，+13 缺口/崩溃断言）。
+
+> 说明：本能力不自行判定验证结论对错；按验证侧可复现缺陷 D-01/D-02 修复并扩大第一方覆盖后重新提交，供验证与 Runtime 重新判定。

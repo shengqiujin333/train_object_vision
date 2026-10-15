@@ -249,8 +249,10 @@ docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-FIXTURES-verify-item007-persi
 docs/hmi/test_evidence/ITEM-007-persistence/VERIFY-ITEM-007.md | active | ITEM-007 持久化与保留策略软件验证 TestEvidence（TEST_FAIL：板端独立复跑 230/230 与实现者 r2 逐行一致、验证自有扩展夹具 49/51 含真实 SIGKILL WAL 恢复全绿；D-01 add_gap 桥接合并留重叠残对 / D-02 合并 reason 不连续复现缺陷交实现）
 docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r1.log | active | ITEM-007 首次构建/测试日志
 docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r1.transcript.json | active | ITEM-007 首次 CoreTests（229/230）transcript
-docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r2.log | active | ITEM-007 权威构建/测试日志
-docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r2.transcript.json | active | ITEM-007 权威 CoreTests（230/230 + config-check）transcript
+docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r2.log | active | ITEM-007 v1 权威构建/测试日志
+docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r2.transcript.json | active | ITEM-007 v1 权威 CoreTests（230/230 + config-check）transcript
+docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r3.log | active | ITEM-007 v2 权威构建/测试日志（D-01/D-02 修复）
+docs/hmi/test_evidence/ITEM-007-persistence/build-CoreTests-192_168_0_103-20261015-ITEM007-r3.transcript.json | active | ITEM-007 v2 权威 CoreTests（243/243：D-01/D-02 修复 + SIGKILL WAL 恢复）transcript
 docs/hmi/test_evidence/ITEM-007-persistence/verify_persist_ext.cpp | active | 验证自有扩展夹具源码（51 断言：DDL 一致性/保留边界/tie/真实 SIGKILL WAL 写中恢复/缺口合并/empty 过滤器/repo upsert 与显式 id/重复 PK/DB 保留执行）
 docs/hmi/test_evidence/ITEM-007-persistence/verify_persist_fixtures.py | active | 软件验证自有板端运行器（上传 app 快照独立构建+测试+扩展夹具；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）

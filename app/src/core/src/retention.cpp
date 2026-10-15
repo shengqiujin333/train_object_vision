@@ -62,27 +62,59 @@ RetentionResult apply_retention(const std::vector<RecordingSegmentRow>& segments
 void add_gap(std::vector<RecordingGapRow>& gaps, const std::string& cam,
              long long t0_ms, long long t1_ms, const std::string& reason) {
     if (t1_ms < t0_ms) std::swap(t0_ms, t1_ms);
-    for (auto& g : gaps) {
-        if (g.cam != cam) continue;
-        const bool overlap = (t0_ms <= g.t1_ms) && (t1_ms >= g.t0_ms);
-        const bool adjacent = (t0_ms == g.t1_ms) || (t1_ms == g.t0_ms);
-        if (overlap || adjacent) {
-            g.t0_ms = std::min(g.t0_ms, t0_ms);
-            g.t1_ms = std::max(g.t1_ms, t1_ms);
-            if (g.reason.empty()) g.reason = reason;
-            return;
+    long long lo = t0_ms;
+    long long hi = t1_ms;
+
+    std::vector<RecordingGapRow> same;
+    std::vector<RecordingGapRow> others;
+    for (const auto& g : gaps) {
+        if (g.cam == cam) same.push_back(g);
+        else others.push_back(g);
+    }
+
+    // 迭代吸收：合并区间会扩大 [lo,hi]，可能又涵盖之前不重叠的区间（桥接），
+    // 直到一整轮无新增吸弶为止。闭合区间：重叠或相邻（相差≤1ms）即可合并。
+    std::vector<char> absorbed(same.size(), 0);
+    std::string merged_reason;
+    bool have_reason = false;
+    bool changed = true;
+    while (changed) {
+        changed = false;
+        for (std::size_t i = 0; i < same.size(); ++i) {
+            if (absorbed[i]) continue;
+            const RecordingGapRow& g = same[i];
+            if (!((lo <= g.t1_ms + 1) && (g.t0_ms <= hi + 1))) continue;
+            if (g.t0_ms < lo) lo = g.t0_ms;
+            if (g.t1_ms > hi) hi = g.t1_ms;
+            absorbed[i] = 1;
+            changed = true;
+            if (!have_reason && !g.reason.empty()) {
+                merged_reason = g.reason;  // 先存在的非空 reason 优先
+                have_reason = true;
+            }
         }
     }
-    RecordingGapRow g;
-    g.cam = cam;
-    g.t0_ms = t0_ms;
-    g.t1_ms = t1_ms;
-    g.reason = reason;
-    gaps.push_back(g);
-    std::sort(gaps.begin(), gaps.end(), [](const RecordingGapRow& a, const RecordingGapRow& b) {
+    if (!have_reason) merged_reason = reason;
+
+    std::vector<RecordingGapRow> result;
+    result.reserve(others.size() + same.size() + 1);
+    for (const auto& g : others) result.push_back(g);
+    for (std::size_t i = 0; i < same.size(); ++i) {
+        if (!absorbed[i]) result.push_back(same[i]);
+    }
+    RecordingGapRow merged;
+    merged.cam = cam;
+    merged.t0_ms = lo;
+    merged.t1_ms = hi;
+    merged.reason = merged_reason;
+    result.push_back(merged);
+
+    std::sort(result.begin(), result.end(), [](const RecordingGapRow& a, const RecordingGapRow& b) {
         if (a.cam != b.cam) return a.cam < b.cam;
-        return a.t0_ms < b.t0_ms;
+        if (a.t0_ms != b.t0_ms) return a.t0_ms < b.t0_ms;
+        return a.id < b.id;
     });
+    gaps.swap(result);
 }
 
 }  // namespace core

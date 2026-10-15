@@ -14,6 +14,9 @@
 #include "railhmi/core/timebase.h"
 #ifdef RAILHMI_HAVE_SQLITE
 #include "railhmi/platform/repository.h"
+#include <csignal>
+#include <sys/wait.h>
+#include <unistd.h>
 #endif
 
 namespace {
@@ -92,9 +95,42 @@ void test_gap_merge() {
     railhmi_test::check(gaps.size() == 1, "gap merge: adjacent/overlap merged to one");
     if (!gaps.empty()) {
         railhmi_test::check(gaps[0].t0_ms == 100 && gaps[0].t1_ms == 300, "gap merge bounds 100..300");
+        railhmi_test::check(gaps[0].reason == "drop", "gap merge: keeps first existing reason");
     }
     add_gap(gaps, "CAM-02", 100, 200, "y");      // 不同相机 -> 新缺口
     railhmi_test::check(gaps.size() == 2, "gap merge: different camera separate");
+
+    // D-01 桥接：新缺口连接两个既有缺口 -> 合并为一个，无重叠残对
+    std::vector<RecordingGapRow> br;
+    add_gap(br, "C1", 0, 10, "a");
+    add_gap(br, "C1", 20, 30, "b");
+    add_gap(br, "C1", 5, 25, "c");   // 桥接
+    railhmi_test::check(br.size() == 1, "bridge merge: single gap, no residual overlap");
+    if (!br.empty()) {
+        railhmi_test::check(br[0].t0_ms == 0 && br[0].t1_ms == 30, "bridge merge bounds 0..30");
+        railhmi_test::check(br[0].reason == "a", "bridge merge: first existing reason 'a'");
+    }
+
+    // 验证侧复现序列（D-01/D-02）: [100,300] + [50,99] + [99,110] -> 单个 [50,300], reason drop
+    std::vector<RecordingGapRow> seq;
+    add_gap(seq, "C1", 100, 300, "drop");
+    add_gap(seq, "C1", 50, 99, "x");
+    add_gap(seq, "C1", 99, 110, "z");
+    railhmi_test::check(seq.size() == 1, "verify sequence: single merged gap");
+    if (!seq.empty()) {
+        railhmi_test::check(seq[0].t0_ms == 50 && seq[0].t1_ms == 300, "verify sequence bounds 50..300");
+        railhmi_test::check(seq[0].reason == "drop", "verify sequence reason drop (first existing)");
+    }
+
+    // 真正间隔 1ms 的缺口不合并；连续（相差 1ms）合并
+    std::vector<RecordingGapRow> sep;
+    add_gap(sep, "C1", 0, 10, "a");
+    add_gap(sep, "C1", 12, 20, "b");
+    railhmi_test::check(sep.size() == 2, "separate gaps (1ms apart) stay distinct");
+    std::vector<RecordingGapRow> cont;
+    add_gap(cont, "C1", 0, 10, "a");
+    add_gap(cont, "C1", 11, 20, "b");
+    railhmi_test::check(cont.size() == 1 && cont[0].t1_ms == 20, "contiguous gaps merge");
 }
 
 #ifdef RAILHMI_HAVE_SQLITE
@@ -234,6 +270,49 @@ void test_sqlite_repository() {
     remove_db(path);
 }
 
+// 真实 SIGKILL 写中终止的 WAL 恢复（D-03 观察 -> 第一方覆盖）：
+// 子进程写入已提交行后开启未提交事务并被 SIGKILL；重开数据库应只见已提交行。
+void test_wal_crash_recovery() {
+    using namespace railhmi::platform;
+    const std::string path = "/tmp/railhmi_item007_crash.db";
+    std::remove(path.c_str());
+    std::remove((path + "-wal").c_str());
+    std::remove((path + "-shm").c_str());
+
+    pid_t pid = fork();
+    if (pid == 0) {
+        SqliteStore st;
+        std::string e;
+        st.open(path, &e);
+        st.exec("CREATE TABLE IF NOT EXISTS events(id INTEGER PRIMARY KEY, level INTEGER, type TEXT, "
+                "source_cam TEXT, ts_wall_ms INTEGER, ts_mono_us INTEGER, ack_state TEXT);", &e);
+        st.exec("INSERT INTO events(level,type,source_cam,ts_wall_ms,ts_mono_us,ack_state) "
+                "VALUES(1,'committed','CAM-01',1,1000,'unacked');", &e);
+        st.exec("BEGIN;", &e);
+        st.exec("INSERT INTO events(level,type,source_cam,ts_wall_ms,ts_mono_us,ack_state) "
+                "VALUES(2,'uncommitted','CAM-01',2,2000,'unacked');", &e);
+        kill(getpid(), SIGKILL);  // 不提交、不清理，模拟崩溃
+        _exit(0);
+    }
+    int status = 0;
+    waitpid(pid, &status, 0);
+    {
+        SqliteStore st;
+        std::string e;
+        railhmi_test::check(st.open(path, &e), "crash: reopen after SIGKILL", e);
+        railhmi_test::check(st.journal_mode(&e) == "wal", "crash: journal_mode still wal");
+        long long n = -1;
+        st.query_int("SELECT count(*) FROM events;", &n, &e);
+        railhmi_test::check(n == 1, "crash: uncommitted transaction discarded", std::to_string(n));
+        long long committed = -1;
+        st.query_int("SELECT count(*) FROM events WHERE type='committed';", &committed, &e);
+        railhmi_test::check(committed == 1, "crash: committed row intact");
+    }
+    std::remove(path.c_str());
+    std::remove((path + "-wal").c_str());
+    std::remove((path + "-shm").c_str());
+}
+
 #endif  // RAILHMI_HAVE_SQLITE
 
 }  // namespace
@@ -245,6 +324,7 @@ void run_persistence_tests() {
     test_gap_merge();
 #ifdef RAILHMI_HAVE_SQLITE
     test_sqlite_repository();
+    test_wal_crash_recovery();
 #else
     std::printf("[SKIP] sqlite repository tests (RAILHMI_HAVE_SQLITE not defined)\n");
 #endif

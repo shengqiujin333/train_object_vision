@@ -30,7 +30,9 @@ struct RetentionResult {
 RetentionResult apply_retention(const std::vector<RecordingSegmentRow>& segments,
                                 long long now_ms, const RetentionPolicy& policy);
 
-// 追加缺口，若与同相机已有缺口重叠或相邻则合并（保持按 t0 排序）。
+// 追加缺口，若与同相机已有缺口重叠或相邻（闭合区间，相差≤1ms）则合并。
+// 合并会吸收**所有**可合并区间（含被新缺口桥接的多个区间），reason 取最先存在的非空值；
+// 结果保持按 (cam, t0) 排序。
 void add_gap(std::vector<RecordingGapRow>& gaps, const std::string& cam,
              long long t0_ms, long long t1_ms, const std::string& reason);
 
