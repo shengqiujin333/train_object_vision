@@ -1,0 +1,143 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 140 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 SCAN_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 REPLAY_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_alarm-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_clip-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_replay-probe-VERIFY-20261016-v1.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-020-replay\build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json
+log: docs\hmi\test_evidence\ITEM-020-replay\build-TestRun-192_168_0_103-VERIFY-20261016-v1.log
+
+
+===== [fresh-artifacts] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_replay-probe-VERIFY-20261016-v1.log
+
+===== [log-compare] exit=0 =====
+impl=build-TestRun-192_168_0_103-20261016-ITEM020-r1.core-evidence_core-tests-20261016-ITEM020-r1.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log impl_pass=566 verify_pass=566 identical=True verify_fails=0 result=RESULT: PASS passed=566 failed=0
+
+===== [junit-parse] exit=0 =====
+junit tests=566 failures=0 item020_cases=29 missing=[]
+
+===== [replay-probe-assert] exit=0 =====
+{"fails": []}
+
+===== [replay-probe-compare] exit=0 =====
+deterministic reproduction identical=True
+
+===== [mkdir-verify] exit=0 =====
+
+
+===== [mkdir-workdir] exit=0 =====
+
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-020-replay/verify_replay20_ext.cpp
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+== 63 passed, 0 failed ==
+RESULT: PASS passed=63 failed=0
+EXT_EXIT=0
+
+
+===== [ext-summary] exit=0 =====
+ext passed=63 failed=0
+
+===== [upload-scan] exit=0 =====
+verify_scan.py
+
+===== [qml-scan] exit=0 =====
+W1_emit_declaration= True
+W1_emission= True
+W1_handler_params_used_camera= False
+W1_handler_params_used_ts= False
+W2_cursor_positions_literal= True
+W3_objectnames= True
+W3_jump_chips= True
+W3_detail_fields= True
+W3_source_note_ui= True
+SCAN2_EXIT=0
+
+
+===== [qml-scan-findings] exit=0 =====
+W1 emit+connect present but handler drops cameraId/tsWallMs (entry-to-replay定位缺陷 D-01)=True | W2 sync feed [cursor,cursor,cursor]='True' (D-02) | present-ui W3 objnames=True chips=True fields=True src=True
+
+===== [replay-probe-negative-arg] exit=0 =====
+NARG_EXIT=2
+unknown arg: --nope
+
+
+===== [replay-probe-help] exit=0 =====
+usage: railhmi-replay-probe [--out log]
+HELP_EXIT=0
+
+
+===== [replay-probe-rep-run] exit=0 =====
+type=timeline cam=CAM-01 day=1792108800000 duration_ms=86400000 segments=3 gaps=1 alarms=1 keyframes=1440
+seg kind=continuous t0=1792108810000 t1=1792108880000 label=连续录像
+seg kind=critical t0=1792108890000 t1=1792109000000 label=报警保护片段
+seg kind=continuous t0=1792109060000 t1=1792109100000 label=连续录像
+gap t0=1792109010000 t1=1792109050000 reason=recording_interrupted
+flags has_alarm_segment=true has_gap=true
+type=jumps minus30=1792108890000 alarm=1792108920000 plus30=1792108950000 plus60=1792108980000
+type=seek pos=1792108920000
+type=jump plus30 pos=1792108950000
+type=sync in_sync=true dev=200 | deviation=true dev=900 prompt=同步偏差 900 ms（阈值 300 ms）
+type=source source=local_clips label=本机片段 usable=true note=NVR 录像不可用，回放本机片段
+type=detail time=2026-10-16 00:02:00 type=前方轨道人员 level=一级 distance=12.3 m confidence=87% ack=已确认
+type=acceptance alarm_segment=true gap=true jumps_ok=true sync_prompt_on_deviation=true nvr_fallback_local=true result=PASS
+REPL_EXIT=0
+
+
+===== [replay-probe-determinism] exit=0 =====
+IDENTICAL
+
+
+===== [regression-artifacts] exit=0 =====
+ai-probe-VERIFY-20261016-v1.log
+alarm-probe-VERIFY-20261016-v1.log
+clip-probe-VERIFY-20261016-v1.log
+core-tests-VERIFY-20261016-v1.log
+core-tests-VERIFY-20261016-v1.xml
+replay-probe-VERIFY-20261016-v1.log
+sim-inject-VERIFY-20261016-v1.json
+sim-inject-VERIFY-20261016-v1.log
+status-probe-driver-VERIFY-20261016-v1.log
+status-probe-VERIFY-20261016-v1.log
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify020': No such file or directory
+ls: cannot access '/tmp/railhmi_build': No such file or directory
+ls: cannot access '/tmp/railhmi_clips': No such file or directory
+
+
+===== [cleanup-verify] exit=0 =====
+cleanup_ok=True
+
+===== [findings] exit=0 =====
+[{"D-01": "replayRequested(cameraId, tsWallMs) emitted by P2 but main.qml handler uses neither -> 报警卡进入后未自动定位报警时刻/锁定摄像头", "confirmed": true}, {"D-02": "P3 refreshSync feeds [cursor,cursor,cursor] to syncStatus; 三路同步偏差提示永远无法由真实偏移触发", "confirmed": true}]

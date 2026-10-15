@@ -786,6 +786,9 @@ docs/hmi/test_evidence/ITEM-019-clips/run_verify_round.sh | active | ITEM-019 �
 docs/hmi/test_evidence/ITEM-019-clips/verify_clip19_ext.cpp | active | ITEM-019 验证自有扩展夹具（配置化 pre/post/RollingBuffer 语义/帧计数口径/保留经 ClipRecorder 状态联动/缺口交换-相邻-桥接-reason-排序/manifest 键集合/原子写覆盖-残留-失败路径 57 断言；链接交付 librailhmi_core.a + librailhmi_platform.a）
 docs/hmi/test_evidence/ITEM-019-clips/verify_clip19_fixtures.py | active | ITEM-019 验证夹具运行器（Paramiko 指纹校验；TestRun 交付入口复跑 + 537 行逐行比对 + JUnit 独立解析 + clip-probe 独立断言与确定性比对 + ext 编译运行 + 负例/二次运行 + 回归留痕 + 按名清理/有限等待全程）
 docs/hmi/test_evidence/ITEM-020-replay/README.md | active | ITEM-020 历史回放页证据（时间轴/四跳转/三联同步/来源回退/详情；板端 566/566 单测 + replay-probe PASS；边界/复现）
+docs/hmi/test_evidence/ITEM-020-replay/VERIFY-FIXTURES-VERIFY-20261016-v1.log | active | ITEM-020 验证轮 v1 权威日志（全部业务步骤 exit=0；QML 接线扫描 D-01/D-02 确证）
+docs/hmi/test_evidence/ITEM-020-replay/VERIFY-FIXTURES-VERIFY-20261016-v1.transcript.json | active | ITEM-020 验证轮 v1 transcript（指纹/逐 step/退出码/findings）
+docs/hmi/test_evidence/ITEM-020-replay/VERIFY-ITEM-020.md | active | ITEM-020 验证报告（software_verification 权威轮 v1 TEST_FAIL：板端 TestRun 独立复跑 566/566 逐行一致 + replay-probe 独立断言/确定性复现 + ext 63/63 + 配置阈值接线；D-01 报警卡进入未定位报警时刻/未锁定摄像头（main.qml onReplayRequest 丢弃参数）、D-02 三联同步提示恒不可触发（[cursor,cursor,cursor] 喂 syncStatus）交实现）
 docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.core-evidence_ai-probe-20261016-ITEM020-r1.log | active | ITEM-020 推理探针回归留痕
 docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.core-evidence_alarm-probe-20261016-ITEM020-r1.log | active | ITEM-020 报警中心探针回归留痕
 docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.core-evidence_clip-probe-20261016-ITEM020-r1.log | active | ITEM-020 保护片段探针回归留痕
@@ -798,6 +801,21 @@ docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM
 docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.core-evidence_status-probe-driver-20261016-ITEM020-r1.log | active | ITEM-020 状态探针回归留痕
 docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.log | active | ITEM-020 TestRun 运行日志（构建 + 单测 + 探针）
 docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.transcript.json | active | ITEM-020 TestRun transcript（主机指纹/退出码/取回）
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log | active | ITEM-020 推理探针回归（verify v1）留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_alarm-probe-VERIFY-20261016-v1.log | active | ITEM-020 报警中心探针回归（verify v1）留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_clip-probe-VERIFY-20261016-v1.log | active | ITEM-020 保护片段探针回归（verify v1）留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log | active | ITEM-020 验证轮板端单测逐项输出（566 passed / 0 failed，与实现者 r1 逐行一致）
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml | active | ITEM-020 验证轮 JUnit XML（tests=566 failures=0，item020 判例 29/29）
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_replay-probe-VERIFY-20261016-v1.log | active | ITEM-020 验证轮 replay-probe 输出（与实现者 r1 逐行 identical；二次运行 diff IDENTICAL）
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json | active | ITEM-020 sim-inject 回归（verify v1）留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log | active | ITEM-020 sim-inject 回归（verify v1）留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log | active | ITEM-020 状态探针回归（verify v1）留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log | active | ITEM-020 状态探针回归（verify v1）留痕
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.log | active | ITEM-020 验证轮 TestRun 运行日志（构建 + 单测 + 探针）
+docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json | active | ITEM-020 验证轮 TestRun transcript（主机指纹/退出码/取回）
+docs/hmi/test_evidence/ITEM-020-replay/run_verify_round.sh | active | ITEM-020 验证轮驱动（PowerShell User env 凭据导入/指纹核验/默认 stamp/有限等待全程）
+docs/hmi/test_evidence/ITEM-020-replay/verify_replay20_ext.cpp | active | ITEM-020 验证自有扩展夹具（日期解析格式化边界/时间轴跨日裁剪排序过滤/四跳偏移与 seek clamp/同步含边界与空单点零阈值/来源四组合/详情舍入哨兵/thresholds.replay_sync_threshold_ms 解析删除键报错负值拒绝 63 断言；链接交付 librailhmi_core.a + librailhmi_platform.a）
+docs/hmi/test_evidence/ITEM-020-replay/verify_replay20_fixtures.py | active | ITEM-020 验证夹具运行器（Paramiko 指纹校验；TestRun 交付入口复跑 + 566 行逐行比对 + JUnit 独立解析含 ITEM-020 判例名清单 + replay-probe 独立正则断言与确定性比对 + ext 编译运行 + QML 接线静态扫描（D-01/D-02 取证） + 负例/二次运行 + 回归留痕 + 按名清理/有限等待全程）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）
