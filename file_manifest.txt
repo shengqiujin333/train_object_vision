@@ -286,12 +286,34 @@ docs/hmi/test_evidence/ITEM-008-coretests/run_verify_round.sh | active | 本验�
 docs/hmi/test_evidence/ITEM-008-coretests/verify_coretests_ext.cpp | active | 验证自有扩展夹具源码 v3（14 断言：harness records API/计数器/字段保真/XML 实体转义逐字节/独立解析计数/声明行结构/套件名回写/失败记录位相确定性）
 docs/hmi/test_evidence/ITEM-008-coretests/verify_coretests_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立目录 + 直接执行交付入口 + 退出码负例 + 扩展夹具 + config 守门；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/test_evidence/ITEM-009-simulation/README.md | active | ITEM-009 模拟输入/故障注入证据（FI 映射/结构化日志/板端实测/边界/复现）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log | active | 验证 v1 轮交付入口归档 stdout（留痕：入口路径错误前未产生，本轮无归档）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml | active | 验证 v1 轮交付入口归档 JUnit XML（留痕：未产生）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json | active | 验证 v1 轮 sim-inject 归档 JSON（留痕：未产生）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log | active | 验证 v1 轮 sim-inject 归档 log（留痕：未产生）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v1.log | active | 验证夹具 v1 过程留痕（运行器板端路径漏 /app 致入口全程 127，非板面结论，不作判据）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v1.transcript.json | active | 验证夹具 v1 transcript（留痕）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log | active | 验证 v2 轮交付入口归档 stdout（入口独立复现 274/0，留痕）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml | active | 验证 v2 轮交付入口归档 JUnit XML（274/0，留痕）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.json | active | 验证 v2 轮 sim-inject 归档 JSON（63 entries，留痕）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.log | active | 验证 v2 轮 sim-inject 归档 log（63 行与实现者一致，留痕）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v2.log | active | 验证夹具 v2 过程留痕（入口/sim-inject 已复现；扩展夹具缺 count_obs 窗口重载编译失败，验证侧自查更正；不作判据）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v2.transcript.json | active | 验证夹具 v2 transcript（留痕）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log | active | 验证轮板上交付入口自身归档的完整测试 stdout（274 PASS 行与实现者 r2 程序化逐行一致）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml | active | 验证轮板上交付入口自身归档的 JUnit XML（独立解析 tests=274 failures=0）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.json | active | 验证轮 sim-inject 复现 JSON（63 entries，8 类观测）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.log | active | 验证轮 sim-inject 复现结构化日志（63 行与实现者逐行一致）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v3.log | active | 验证夹具权威轮 v3 日志（ENTRY_EXIT=0 + 交付入口归档 274/0 与实现者逐行一致 + SIM_EXIT=0 + CLI 负例/列表/确定性/自定义 + 扩展夹具 49/49 + 清理确认）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-FIXTURES-VERIFY-20261016-v3.transcript.json | active | 验证夹具权威轮 v3 transcript（指纹一致/逐条命令/退出码/清理确认）
+docs/hmi/test_evidence/ITEM-009-simulation/VERIFY-ITEM-009.md | active | ITEM-009 模拟输入/故障注入软件验证 TestEvidence（TEST_PASS：板端独立复现 274/274 与 sim-inject 63 行逐行一致、CLI 负例/列表/确定性/自定义 5 项实测、验证自有扩展夹具 49/49；O-1/O-2 观察项交实现参考；v1/v2 过程轮验证侧错误留痕）
 docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.core-evidence_core-tests-20261015-ITEM009-r2.log | active | ITEM-009 归档测试 stdout（274/274 + RESULT PASS）
 docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.core-evidence_core-tests-20261015-ITEM009-r2.xml | active | ITEM-009 归档 JUnit XML（274 tests, 0 failures）
 docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.core-evidence_sim-inject-20261015-ITEM009-r2.json | active | ITEM-009 故障注入 JSON
 docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.core-evidence_sim-inject-20261015-ITEM009-r2.log | active | ITEM-009 故障注入结构化日志（FI-01..05,10）
 docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.log | active | ITEM-009 TestRun+sim-inject 运行日志
 docs/hmi/test_evidence/ITEM-009-simulation/build-TestRun-192_168_0_103-20261015-ITEM009-r2.transcript.json | active | ITEM-009 TestRun+sim-inject transcript
+docs/hmi/test_evidence/ITEM-009-simulation/run_verify_round.sh | active | 本验证轮启动脚本（凭据经用户环境导入当前进程并导出给子进程；默认 stamp=VERIFY-20261016-v1，VERIFY_STAMP 可覆盖）
+docs/hmi/test_evidence/ITEM-009-simulation/verify_sim_ext.cpp | active | 验证自有扩展夹具源码（49 断言：parse 全别名/负例矩阵/FI-01 窗口收敛与恢复/FI-01+FI-02 cut 优先/FI-02 五态逐时序/FI-10 相邻合并包络/FI-04/FI-05 逐 tick on-off 划分/FI-03 recovery<=onset 不解除/第二配置确定性/格式契约）
+docs/hmi/test_evidence/ITEM-009-simulation/verify_sim_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立目录 + 交付入口 + sim-inject 权威参数复现 + CLI 负例/确定性/自定义 + 链接入口构建产物编译扩展夹具；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

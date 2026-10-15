@@ -1,0 +1,148 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify009",
+    "cpp": "docs/hmi/test_evidence/ITEM-009-simulation/verify_sim_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-009-simulation",
+    "stamp": "VERIFY-20261016-v1",
+    "connect_timeout": 10,
+    "timeout_sec": 1200,
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "rm -rf /tmp/railhmi_verify009 /tmp/railhmi_verify009_board && mkdir -p /tmp/railhmi_verify009_board/app /tmp/railhmi_verify009",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": ""
+    },
+    {
+      "step": "upload-app",
+      "exit": 0,
+      "output": "uploaded app tree (98856 bytes compressed)"
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "uploaded docs/hmi/test_evidence/ITEM-009-simulation/verify_sim_ext.cpp -> /tmp/railhmi_verify009/verify_sim_ext.cpp"
+    },
+    {
+      "step": "extract",
+      "cmd": "cd /tmp/railhmi_verify009_board && tar xzf /tmp/railhmi_verify009/app.tgz -C /tmp/railhmi_verify009_board/app && echo APP_FILES=$(find /tmp/railhmi_verify009_board/app -type f | wc -l)",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "APP_FILES=70\n"
+    },
+    {
+      "step": "run-entry",
+      "cmd": "cd /tmp/railhmi_verify009_board && bash tests/run_core_tests.sh --outdir core-evidence --stamp VERIFY-20261016-v1 2>&1; echo ENTRY_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "bash: tests/run_core_tests.sh: No such file or directory\nENTRY_EXIT=127\n"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/core-tests-VERIFY-20261016-v1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/core-tests-VERIFY-20261016-v1.xml: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "sim-inject",
+      "cmd": "cd /tmp/railhmi_verify009_board && ./build-core/tools/railhmi-sim-inject --fi 01,02,03,04,05,10 --duration 6000 --out core-evidence/sim-inject-VERIFY-20261016-v1.log --json core-evidence/sim-inject-VERIFY-20261016-v1.json 2>&1; echo SIM_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.06,
+      "output": "bash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory\nSIM_EXIT=127\n"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/sim-inject-VERIFY-20261016-v1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "core-evidence/sim-inject-VERIFY-20261016-v1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "neg-invalid-fi",
+      "cmd": "cd /tmp/railhmi_verify009_board && ./build-core/tools/railhmi-sim-inject --fi 01,99 2>&1; echo NEGFI_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.06,
+      "output": "bash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory\nNEGFI_EXIT=127\n"
+    },
+    {
+      "step": "neg-unknown-arg",
+      "cmd": "cd /tmp/railhmi_verify009_board && ./build-core/tools/railhmi-sim-inject --bogus-arg 2>&1; echo NEGARG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "bash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory\nNEGARG_EXIT=127\n"
+    },
+    {
+      "step": "sim-list",
+      "cmd": "cd /tmp/railhmi_verify009_board && ./build-core/tools/railhmi-sim-inject --list; echo LIST_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "LIST_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory\n"
+    },
+    {
+      "step": "sim-determinism",
+      "cmd": "cd /tmp/railhmi_verify009_board && ./build-core/tools/railhmi-sim-inject --camera CAM-99 --profile front --duration 4000 --step 250 --onset 1000 --recovery 3000 --fi 01 --out /tmp/sim_det_a.log >/dev/null 2>&1 && ./build-core/tools/railhmi-sim-inject --camera CAM-99 --profile front --duration 4000 --step 250 --onset 1000 --recovery 3000 --fi 01 --out /tmp/sim_det_b.log >/dev/null 2>&1 && sha256sum /tmp/sim_det_a.log /tmp/sim_det_b.log; echo DET_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "DET_EXIT=127\n"
+    },
+    {
+      "step": "sim-custom-args",
+      "cmd": "cd /tmp/railhmi_verify009_board && ./build-core/tools/railhmi-sim-inject --camera CAM-42 --profile pantograph --duration 1000 --step 100 --onset 0 --recovery 0 --fi 05 --no-detections; echo CUST_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.16,
+      "output": "CUST_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory\n"
+    },
+    {
+      "step": "probe-lib",
+      "cmd": "find /tmp/railhmi_verify009_board/build-core -name 'librailhmi_core.a'; echo PROBE_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "PROBE_EXIT=1\nfind: ‘/tmp/railhmi_verify009_board/build-core’: No such file or directory\n"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_verify009_board && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include /tmp/railhmi_verify009/verify_sim_ext.cpp /tmp/railhmi_verify009_board/build-core/src/core/librailhmi_core.a -o /tmp/railhmi_verify009/verify_sim_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.17,
+      "output": "/tmp/railhmi_verify009/verify_sim_ext.cpp:14:10: fatal error: railhmi/core/simulation.h: No such file or directory\n   14 | #include \"railhmi/core/simulation.h\"\n      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~\ncompilation terminated.\nGXX_EXIT=1\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_verify009_board && /tmp/railhmi_verify009/verify_sim_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "EXT_EXIT=127\nbash: line 1: /tmp/railhmi_verify009/verify_sim_ext: No such file or directory\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify009 /tmp/railhmi_verify009_board /tmp/sim_det_a.log /tmp/sim_det_b.log && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify009 /tmp/railhmi_verify009_board 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.1,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify009': No such file or directory\nls: cannot access '/tmp/railhmi_verify009_board': No such file or directory\n"
+    }
+  ]
+}

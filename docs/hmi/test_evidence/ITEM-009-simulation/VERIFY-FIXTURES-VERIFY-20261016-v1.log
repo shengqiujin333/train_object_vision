@@ -1,0 +1,88 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload-app] exit=0 =====
+uploaded app tree (98856 bytes compressed)
+
+===== [upload-fixture] exit=0 =====
+uploaded docs/hmi/test_evidence/ITEM-009-simulation/verify_sim_ext.cpp -> /tmp/railhmi_verify009/verify_sim_ext.cpp
+
+===== [extract] exit=0 =====
+APP_FILES=70
+
+
+===== [run-entry] exit=0 =====
+bash: tests/run_core_tests.sh: No such file or directory
+ENTRY_EXIT=127
+
+
+===== [download] exit=None =====
+core-evidence/core-tests-VERIFY-20261016-v1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+core-evidence/core-tests-VERIFY-20261016-v1.xml: FileNotFoundError(2, 'No such file')
+
+===== [sim-inject] exit=0 =====
+bash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory
+SIM_EXIT=127
+
+
+===== [download] exit=None =====
+core-evidence/sim-inject-VERIFY-20261016-v1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+core-evidence/sim-inject-VERIFY-20261016-v1.json: FileNotFoundError(2, 'No such file')
+
+===== [neg-invalid-fi] exit=0 =====
+bash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory
+NEGFI_EXIT=127
+
+
+===== [neg-unknown-arg] exit=0 =====
+bash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory
+NEGARG_EXIT=127
+
+
+===== [sim-list] exit=0 =====
+LIST_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory
+
+
+===== [sim-determinism] exit=0 =====
+DET_EXIT=127
+
+
+===== [sim-custom-args] exit=0 =====
+CUST_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-sim-inject: No such file or directory
+
+
+===== [probe-lib] exit=0 =====
+PROBE_EXIT=1
+find: ‘/tmp/railhmi_verify009_board/build-core’: No such file or directory
+
+
+===== [compile-ext] exit=0 =====
+/tmp/railhmi_verify009/verify_sim_ext.cpp:14:10: fatal error: railhmi/core/simulation.h: No such file or directory
+   14 | #include "railhmi/core/simulation.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+GXX_EXIT=1
+
+
+===== [run-ext] exit=0 =====
+EXT_EXIT=127
+bash: line 1: /tmp/railhmi_verify009/verify_sim_ext: No such file or directory
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify009': No such file or directory
+ls: cannot access '/tmp/railhmi_verify009_board': No such file or directory
+
