@@ -1,0 +1,75 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "user": "admin",
+    "stamp": "verify-item004-20261015-v1",
+    "remote": "/tmp/railhmi_build",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "driver": "verifier ad-hoc python (this repo not modified)"
+  },
+  "host_key_fingerprint_reference_item004_r2": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "host_key_fingerprint_runner": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "host_key_fingerprint_live_session": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "fingerprint_match_runner_vs_item004_r2": true,
+  "steps": [
+    {
+      "step": "runner",
+      "exit": 0,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 49 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[build] exit=0 BUILD_EXIT=0\n[tests] exit=0 TEST_EXIT=0\n[config-check-good] exit=0 CFG_EXIT=0\n[config-check-bad] exit=0 CFG_EXIT=1\n[artifacts] exit=0 -rwxrwxr-x 1 admin admin 173848 Oct 15 22:36 build-core/tests/railhmi-core-tests\ntranscript: E:\\work\\rail_issue\\rk3588_handover\\docs\\hmi\\test_evidence\\ITEM-004-config\\build-CoreTests-192_168_0_103-verify-item004-20261015-v1.transcript.json\nlog: E:\\work\\rail_issue\\rk3588_handover\\docs\\hmi\\test_evidence\\ITEM-004-config\\build-CoreTests-192_168_0_103-verify-item004-20261015-v1.log\n"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_build && mkdir -p /tmp/railhmi_fx && cp config/*.yaml /tmp/railhmi_fx/ && ./build-core/tools/railhmi-config-check /tmp/railhmi_fx; echo FIX_EXIT=$?; rm -rf /tmp/railhmi_fx",
+      "exit": 0,
+      "elapsed_s": 0.22,
+      "output": "config OK: 6 cameras, 4 roi, 1 integrations (dir=/tmp/railhmi_fx)\n  mode=visible render_path=cpu recording_source=both\nFIX_EXIT=0\n",
+      "step": "fixture-good_reference"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_build && rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp config/*.yaml /tmp/railhmi_fx/ && sed -i '0,/display_fps: 25/s/25/120/' /tmp/railhmi_fx/cameras.yaml && ./build-core/tools/railhmi-config-check /tmp/railhmi_fx; echo FIX_EXIT=$?; rm -rf /tmp/railhmi_fx",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "config INVALID (1 error(s)) dir=/tmp/railhmi_fx:\n  cameras[0].display_fps: out of range 1..60\nFIX_EXIT=1\n",
+      "step": "fixture-display_fps_out_of_range",
+      "expect_path": "cameras[0].display_fps"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_build && rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp config/*.yaml /tmp/railhmi_fx/ && sed -i 's/  - id: CAM-03/  - id: CAM-01/' /tmp/railhmi_fx/cameras.yaml && ./build-core/tools/railhmi-config-check /tmp/railhmi_fx; echo FIX_EXIT=$?; rm -rf /tmp/railhmi_fx",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "config INVALID (1 error(s)) dir=/tmp/railhmi_fx:\n  cameras[2].id: duplicate camera id 'CAM-01'\nFIX_EXIT=1\n",
+      "step": "fixture-duplicate_camera_id",
+      "expect_path": "cameras[2].id"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_build && rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp config/*.yaml /tmp/railhmi_fx/ && sed -i '0,/spectrum: visible/s/visible/thermal/' /tmp/railhmi_fx/cameras.yaml && ./build-core/tools/railhmi-config-check /tmp/railhmi_fx; echo FIX_EXIT=$?; rm -rf /tmp/railhmi_fx",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "config INVALID (1 error(s)) dir=/tmp/railhmi_fx:\n  cameras[0].spectrum: invalid value 'thermal'\nFIX_EXIT=1\n",
+      "step": "fixture-invalid_spectrum",
+      "expect_path": "cameras[0].spectrum"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_build && rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp config/*.yaml /tmp/railhmi_fx/ && sed -i 's|\"rtsp://192.168.1.65:554/cam/realmonitor?channel=1&subtype=0\"|\"http://example.invalid/x\"|' /tmp/railhmi_fx/cameras.yaml && ./build-core/tools/railhmi-config-check /tmp/railhmi_fx; echo FIX_EXIT=$?; rm -rf /tmp/railhmi_fx",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "config INVALID (1 error(s)) dir=/tmp/railhmi_fx:\n  cameras[0].rtsp_url: must start with rtsp://\nFIX_EXIT=1\n",
+      "step": "fixture-bad_url_prefix",
+      "expect_path": "cameras[0].rtsp_url"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_build && rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp config/*.yaml /tmp/railhmi_fx/ && sed -i '0,/w: 0.84/s/0.84/0.94/' /tmp/railhmi_fx/roi.yaml && ./build-core/tools/railhmi-config-check /tmp/railhmi_fx; echo FIX_EXIT=$?; rm -rf /tmp/railhmi_fx",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "config INVALID (1 error(s)) dir=/tmp/railhmi_fx:\n  roi[0]: x + w must be <= 1\nFIX_EXIT=1\n",
+      "step": "fixture-roi_x_w_overflow",
+      "expect_path": "roi[0]"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_build /tmp/railhmi_fx; echo fixture_cleanup_done",
+      "exit": 0,
+      "elapsed_s": 0.14,
+      "output": "fixture_cleanup_done\n"
+    }
+  ]
+}

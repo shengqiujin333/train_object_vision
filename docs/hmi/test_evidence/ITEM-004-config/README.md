@@ -55,6 +55,9 @@
 
 - `build-CoreTests-192_168_0_103-20261015-ITEM004-r1.{transcript.json,log}`（首轮：40/40）
 - `build-CoreTests-192_168_0_103-20261015-ITEM004-r2.{transcript.json,log}`（权威：40/40 + config-check good/bad）
+- `build-CoreTests-192_168_0_103-verify-item004-20261015-v1.{transcript.json,log}`（软件验证独立复跑：40/40 + good/bad + 指纹一致）
+- `VERIFY-FIXTURES-verify-item004-20261015-v1.transcript.json`（软件验证自有 5 负例夹具 + 合法参照，均报具体字段路径）
+- `VERIFY-ITEM-004.md`（软件验证 TestEvidence，TEST_PASS）
 
 ## 5. 复现
 

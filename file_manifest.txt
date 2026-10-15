@@ -181,10 +181,14 @@ docs/hmi/test_evidence/ITEM-003-build/build-Release-192_168_0_103-20261015-targe
 docs/hmi/test_evidence/ITEM-003-build/build-Release-192_168_0_103-verify-20261015-v1.log | active | 软件验证独立复跑 Release 档缺依赖实测（MISSING Qt5 Quick/Qml，BUILD_EXIT=1，非静默）
 docs/hmi/test_evidence/ITEM-003-build/build-Release-192_168_0_103-verify-20261015-v1.transcript.json | active | 软件验证独立复跑 Release 档 transcript
 docs/hmi/test_evidence/ITEM-004-config/README.md | active | ITEM-004 配置与状态契约层证据（交付内容/板端实测/断言节选/边界/复现）
+docs/hmi/test_evidence/ITEM-004-config/VERIFY-FIXTURES-verify-item004-20261015-v1.transcript.json | active | 软件验证自有负例夹具 transcript（display_fps 越界/重复 id/非法 spectrum/URL 前缀/ROI x+w 越界 + 合法参照，逐条报具体字段路径并清理 /tmp）
+docs/hmi/test_evidence/ITEM-004-config/VERIFY-ITEM-004.md | active | ITEM-004 配置与状态契约层软件验证 TestEvidence（TEST_PASS：板端独立复跑 40/40 与实现者一致、5 个验证自有负例夹具逐条核对、§7.2 契约字段与不静默默认值判据逐条满足；观察 O-1 mode:ir 静态接受交实现参考）
 docs/hmi/test_evidence/ITEM-004-config/build-CoreTests-192_168_0_103-20261015-ITEM004-r1.log | active | ITEM-004 首轮构建/测试日志
 docs/hmi/test_evidence/ITEM-004-config/build-CoreTests-192_168_0_103-20261015-ITEM004-r1.transcript.json | active | ITEM-004 首轮 CoreTests（40/40）transcript
 docs/hmi/test_evidence/ITEM-004-config/build-CoreTests-192_168_0_103-20261015-ITEM004-r2.log | active | ITEM-004 权威构建/测试日志
 docs/hmi/test_evidence/ITEM-004-config/build-CoreTests-192_168_0_103-20261015-ITEM004-r2.transcript.json | active | ITEM-004 权威 CoreTests（40/40 + config-check good/bad）transcript
+docs/hmi/test_evidence/ITEM-004-config/build-CoreTests-192_168_0_103-verify-item004-20261015-v1.log | active | 软件验证独立复跑 CoreTests 权威日志（构建 0 + 40/40 测试 + config-check good/bad）
+docs/hmi/test_evidence/ITEM-004-config/build-CoreTests-192_168_0_103-verify-item004-20261015-v1.transcript.json | active | 软件验证独立复跑 CoreTests transcript（指纹与实现者 r2 一致；keep-remote 后按名清理）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）
