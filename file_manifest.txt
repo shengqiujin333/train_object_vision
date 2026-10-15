@@ -20,12 +20,12 @@ app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两�
 app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
 app/src/core/CMakeLists.txt | active | railhmi_core 静态库（version/yaml/config/stream_state/rules）+ railhmi-config-check 启动校验工具
 app/src/core/include/railhmi/core/config.h | active | 配置与状态契约模型/枚举（含 ai_profile/integration_state/mode/recording_source）+ 流时序阈值字段（first_frame_timeout_ms/reconnect_backoff_ms）与校验入口
-app/src/core/include/railhmi/core/rules.h | active | 检测职责与报警规则/事件层接口（ai_profile 分派/多帧确认/抑制/级别映射/ack/ROI）
+app/src/core/include/railhmi/core/rules.h | active | 检测职责与报警规则/事件层接口（ai_profile 分派/多帧确认/抑制/级别映射/ack/ROI/设备类别映射）
 app/src/core/include/railhmi/core/stream_state.h | active | 流状态机与质量判定接口（六态/质量标志/classify_quality/事件/非 LIVE 禁止旧帧接口）
 app/src/core/include/railhmi/core/version.h | active | 版本/构建档位/模拟开关接口（core 无 Qt/GStreamer/相机/SQLite 依赖）
 app/src/core/include/railhmi/core/yaml.h | active | 无依赖 YAML 子集解析器接口（块映射/序列/流序列/标量，含行号错误）
 app/src/core/src/config.cpp | active | 配置加载与校验实现（报具体字段路径，不静默默认；applied_defaults 记录可选默认；含流时序阈值校验）
-app/src/core/src/rules.cpp | active | 规则/事件层实现（PRD §8.2 级别、跟踪 ID 与抑制窗口、ack 不删事件）
+app/src/core/src/rules.cpp | active | 规则/事件层实现（PRD §8.2 级别、跟踪 ID 与抑制窗口、ack 不删事件、device_category_from_position）
 app/src/core/src/stream_state.cpp | active | 流状态机实现（首帧超时/冻结/重连退避/阈值升级/降级/恢复）
 app/src/core/src/version.cpp | active | 版本与构建描述实现
 app/src/core/src/yaml.cpp | active | YAML 子集解析器实现
@@ -217,8 +217,10 @@ docs/hmi/test_evidence/ITEM-006-rules/VERIFY-FIXTURES-verify-item006-rules-20261
 docs/hmi/test_evidence/ITEM-006-rules/VERIFY-FIXTURES-verify-item006-rules-20261015-v3.log | active | 验证夹具权威轮 v3 日志（CoreTests 124/124 + 扩展夹具 65/65 + config-check 好/坏 + 清理确认）
 docs/hmi/test_evidence/ITEM-006-rules/VERIFY-FIXTURES-verify-item006-rules-20261015-v3.transcript.json | active | 验证夹具权威轮 v3 transcript（指纹一致/逐条命令/清理确认）
 docs/hmi/test_evidence/ITEM-006-rules/VERIFY-ITEM-006.md | active | ITEM-006 规则/事件层软件验证 TestEvidence（TEST_PASS：板端独立复跑 124/124 与实现者 r1 规则段逐行一致、验证自有扩展夹具 65/65（键隔离/重置语义/抑制边界/ack 幂等/设备事件细节）、config-check 好/坏一致、指纹链三四轮一致；观察 O-1..O-3 交实现参考）
-docs/hmi/test_evidence/ITEM-006-rules/build-CoreTests-192_168_0_103-20261015-ITEM006-r1.log | active | ITEM-006 权威构建/测试日志
+docs/hmi/test_evidence/ITEM-006-rules/build-CoreTests-192_168_0_103-20261015-ITEM006-r1.log | active | ITEM-006 v1 构建/测试日志
 docs/hmi/test_evidence/ITEM-006-rules/build-CoreTests-192_168_0_103-20261015-ITEM006-r1.transcript.json | active | ITEM-006 权威 CoreTests（124/124 + config-check）transcript
+docs/hmi/test_evidence/ITEM-006-rules/build-CoreTests-192_168_0_103-20261015-ITEM006-r2.log | active | ITEM-006 v2 权威构建/测试日志
+docs/hmi/test_evidence/ITEM-006-rules/build-CoreTests-192_168_0_103-20261015-ITEM006-r2.transcript.json | active | ITEM-006 v2 权威 CoreTests（176/176 + config-check）transcript
 docs/hmi/test_evidence/ITEM-006-rules/verify_rules_ext.cpp | active | 验证自有扩展夹具源码（65 断言：跨类型键隔离/设备与检测通道互不干扰/非候选整相机重置/emit 后周期重置/抑制窗口严格<边界/抑制更新语义/ack 幂等/ROI 角点边界/设备 detail 回退）
 docs/hmi/test_evidence/ITEM-006-rules/verify_rules_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立构建+测试+扩展夹具；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）

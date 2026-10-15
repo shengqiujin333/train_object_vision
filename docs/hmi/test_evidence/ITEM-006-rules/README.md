@@ -25,7 +25,7 @@
 
 | 步骤 | 结果 | 证据 |
 |---|---|---|
-| `./build-core/tests/railhmi-core-tests` | **124 passed / 0 failed**（平台 10 + 配置 34 + 流 38 + 规则 42） | `...-ITEM006-r1.transcript.json` → `tests` |
+| `./build-core/tests/railhmi-core-tests` | **176 passed / 0 failed**（平台 10 + 配置 34 + 流 38 + 规则 94） | `...-ITEM006-r2.transcript.json` → `tests` |
 | `railhmi-config-check ./config` | OK（6 cameras / 4 roi / 1 integrations）退出 0 | 同上 → `config-check-good` |
 | 坏配置 | 报 `thresholds.confirm_frames: required field missing` 退出 1 | 同上 → `config-check-bad` |
 
@@ -51,9 +51,25 @@
 
 ## 4. 证据文件
 
-- `build-CoreTests-192_168_0_103-20261015-ITEM006-r1.{transcript.json,log}`（权威：124/124 + config-check）
+- `build-CoreTests-192_168_0_103-20261015-ITEM006-r2.{transcript.json,log}`（**权威(v2 修复后)**：176/176 + config-check）
+- `build-CoreTests-192_168_0_103-20261015-ITEM006-r1.{transcript.json,log}`（v1：124/124，保留追溯）
+- `VERIFY-ITEM-006.md`、`verify_rules_ext.cpp`、`verify_rules_fixtures.py`、`VERIFY-FIXTURES-*`（软件验证交付）
 
-## 5. 复现
+## 6. v2 修复记录（响应软件验证 TEST_FAIL）
+
+软件验证 `result_code=TEST_FAIL`，但其自身证据与 stdout 的结论为 **TEST_PASS**（板端独立复跑 124/124、自有扩展夹具 65/65、
+config-check 好/坏一致），未指出任何实现缺陷；可操作项为观察 O-1/O-2/O-3。本轮修复：
+
+1. **O-1 设备类别映射显式化**：新增 `device_category_from_position(CameraPosition)`（primary→FrontPrimary、left/right→Side、
+   roof/underfloor/cab→Other）与 `to_string(DeviceCategory)`，使设备级别不依赖调用方隐式选择；`Other` 仍按 PRD 未列举的通用设备 = L2（与验证 O-1 同口径）。
+2. **吸收验证侧边界夹具为第一方回归**：将验证 `verify_rules_ext.cpp` 的边界用例落为 `test_rules.cpp` 断言（不再仅依赖外部夹具）：
+   枚举 to_string 身份、跨类型键隔离、设备/检测通道互不干扰、非候选帧整相机重置、emit 后确认周期重置、抑制窗口严格 `<` 边界、
+   抑制更新刷新 `last_update_ms`/距离、ack 幂等与跨事件隔离、ROI 角点含端点。
+3. **重新板端实测**：`ITEM006-r2` → **176 passed / 0 failed**（规则段 42→94，新增 52 条第一方断言）。
+
+> 说明：本能力不自行判定验证结论对错；对“结果码 TEST_FAIL / 证据叙述 TEST_PASS”的不一致，按可操作观察修复并扩大第一方覆盖后重新提交，供验证与 Runtime 重新判定。
+
+## 7. 复现
 
 ```sh
 python app/tools/board_build.py --host <addr> --user <user> \

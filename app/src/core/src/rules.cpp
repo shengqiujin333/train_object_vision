@@ -30,6 +30,34 @@ const char* to_string(AckState v) {
     return v == AckState::Acked ? "acked" : "unacked";
 }
 
+const char* to_string(PantographState v) {
+    switch (v) {
+        case PantographState::Unknown: return "unknown";
+        case PantographState::NotRaised: return "not_raised";
+        case PantographState::Normal: return "normal";
+        case PantographState::Abnormal: return "abnormal";
+    }
+    return "?";
+}
+
+const char* to_string(DoorState v) {
+    switch (v) {
+        case DoorState::Unknown: return "unknown";
+        case DoorState::Closed: return "closed";
+        case DoorState::Ajar: return "ajar";
+    }
+    return "?";
+}
+
+const char* to_string(DeviceCategory v) {
+    switch (v) {
+        case DeviceCategory::FrontPrimary: return "front_primary";
+        case DeviceCategory::Side: return "side";
+        case DeviceCategory::Other: return "other";
+    }
+    return "?";
+}
+
 AlarmLevel map_level(AlarmType t) {
     switch (t) {
         case AlarmType::PersonOnRail:
@@ -54,6 +82,18 @@ AlarmLevel map_device_level(DeviceCategory c) {
         case DeviceCategory::Other: return AlarmLevel::L2;          // 其它设备故障（PRD 未列举）
     }
     return AlarmLevel::L2;
+}
+
+DeviceCategory device_category_from_position(CameraPosition p) {
+    switch (p) {
+        case CameraPosition::Primary: return DeviceCategory::FrontPrimary;
+        case CameraPosition::Left:
+        case CameraPosition::Right: return DeviceCategory::Side;
+        case CameraPosition::Roof:
+        case CameraPosition::Underfloor:
+        case CameraPosition::Cab: return DeviceCategory::Other;
+    }
+    return DeviceCategory::Other;
 }
 
 bool roi_contains(const RoiConfig& r, double nx, double ny) {

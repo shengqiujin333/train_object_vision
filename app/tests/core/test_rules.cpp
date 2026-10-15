@@ -247,6 +247,182 @@ void test_roi_helpers() {
     railhmi_test::check(find_roi(rois, "CAM-09", "danger_zone") == nullptr, "find_roi miss");
 }
 
+void test_to_string_identity() {
+    railhmi_test::check(std::string(to_string(AlarmType::Device)) == "device", "to_string(Device)");
+    railhmi_test::check(std::string(to_string(AlarmType::SideCameraDevice)) == "side_camera_device",
+                        "to_string(SideCameraDevice)");
+    railhmi_test::check(std::string(to_string(AckState::Acked)) == "acked", "to_string(Acked)");
+    railhmi_test::check(std::string(to_string(AckState::Unacked)) == "unacked", "to_string(Unacked)");
+    railhmi_test::check(std::string(to_string(PantographState::Abnormal)) == "abnormal",
+                        "to_string(PantographState::Abnormal)");
+    railhmi_test::check(std::string(to_string(DoorState::Ajar)) == "ajar", "to_string(DoorState::Ajar)");
+    railhmi_test::check(std::string(to_string(DeviceCategory::Side)) == "side",
+                        "to_string(DeviceCategory::Side)");
+    railhmi_test::check(map_level(AlarmType::Device) == AlarmLevel::L2, "map_level(Device)=L2");
+}
+
+void test_device_category_from_position() {
+    railhmi_test::check(device_category_from_position(CameraPosition::Primary) ==
+                            DeviceCategory::FrontPrimary,
+                        "position primary -> FrontPrimary");
+    railhmi_test::check(device_category_from_position(CameraPosition::Left) == DeviceCategory::Side &&
+                            device_category_from_position(CameraPosition::Right) == DeviceCategory::Side,
+                        "position left/right -> Side");
+    railhmi_test::check(device_category_from_position(CameraPosition::Roof) == DeviceCategory::Other &&
+                            device_category_from_position(CameraPosition::Underfloor) == DeviceCategory::Other &&
+                            device_category_from_position(CameraPosition::Cab) == DeviceCategory::Other,
+                        "position roof/underfloor/cab -> Other");
+    railhmi_test::check(map_device_level(DeviceCategory::Other) == AlarmLevel::L2,
+                        "device other -> L2 (explicit)");
+}
+
+void test_roi_corner_inclusive() {
+    RoiConfig r;
+    r.camera = "CAM-01";
+    r.name = "zone";
+    r.x = 0.2; r.y = 0.3; r.w = 0.5; r.h = 0.4;
+    railhmi_test::check(roi_contains(r, 0.2, 0.3), "roi includes top-left corner");
+    railhmi_test::check(roi_contains(r, 0.7, 0.7), "roi includes bottom-right corner");
+    railhmi_test::check(!roi_contains(r, 0.19, 0.3), "roi rejects x-epsilon");
+    railhmi_test::check(!roi_contains(r, 0.5, 0.71), "roi rejects y+h+epsilon");
+}
+
+void test_cross_type_key_isolation() {
+    RuleEngine e(cfg());
+    Detection w;
+    w.camera_id = "CAM-05";
+    w.profile = AiProfile::WheelRail;
+    w.confidence = 0.9;
+    w.wheel_abnormal = true;
+    std::vector<AlarmEvent> wev;
+    for (int i = 0; i < 3; ++i) { w.t_ms = 10 + i * 20; for (auto& x : e.on_detection(w)) wev.push_back(x); }
+    railhmi_test::check(wev.size() == 1 && wev[0].type == AlarmType::WheelDerail &&
+                            wev[0].level == AlarmLevel::L1,
+                        "wheel event independent");
+    Detection f;
+    f.camera_id = "CAM-05";
+    f.profile = AiProfile::Front;
+    f.in_roi = true;
+    f.confidence = 0.9;
+    f.label = "person";
+    f.track_id = 0;
+    std::vector<AlarmEvent> fev;
+    for (int i = 0; i < 3; ++i) { f.t_ms = 200 + i * 20; for (auto& x : e.on_detection(f)) fev.push_back(x); }
+    railhmi_test::check(fev.size() == 1 && fev[0].type == AlarmType::PersonOnRail,
+                        "front key isolated from wheel (same cam/track, different type)");
+    railhmi_test::check(e.events().size() == 2, "cross-type events independent");
+}
+
+void test_device_vs_detection_independence() {
+    RuleEngine e(cfg());
+    auto d1 = e.on_device_event("CAM-01", DeviceCategory::FrontPrimary, 10, "offline");
+    railhmi_test::check(d1.size() == 1, "device channel event 1");
+    int dn = 0;
+    for (int i = 0; i < 3; ++i) dn += (int)e.on_detection(front_det("CAM-01", 20 + i * 20, 1, true, 0.9, "person")).size();
+    railhmi_test::check(dn == 1, "detection channel independent of device suppression");
+    auto d2 = e.on_device_event("CAM-01", DeviceCategory::FrontPrimary, 1011, "offline");
+    railhmi_test::check(d2.size() == 1, "device event after window");
+    auto d3 = e.on_device_event("CAM-01", DeviceCategory::FrontPrimary, 2200, "offline");
+    railhmi_test::check(d3.size() == 1, "device event after second window");
+    railhmi_test::check(e.events().size() == 4, "device(3)+detection(1)=4");
+}
+
+void test_non_candidate_full_reset() {
+    RuleEngine e(cfg());
+    Detection w;
+    w.camera_id = "CAM-05";
+    w.profile = AiProfile::WheelRail;
+    w.confidence = 0.9;
+    w.wheel_abnormal = true;
+    w.t_ms = 10;
+    e.on_detection(w);
+    int fn = (int)e.on_detection(front_det("CAM-05", 20, 0, true, 0.9, "person")).size();
+    railhmi_test::check(fn == 0, "no event with two single-frame counts");
+    Detection nc = w;
+    nc.wheel_abnormal = false;  // 非候选
+    nc.t_ms = 30;
+    railhmi_test::check(e.on_detection(nc).empty() && e.events().empty(),
+                        "non-candidate frame resets all camera confirms");
+    // 重置后需连续 3 帧才确认
+    int n40 = (int)e.on_detection(front_det("CAM-05", 40, 0, true, 0.9, "person")).size();
+    int n50 = (int)e.on_detection(front_det("CAM-05", 50, 0, true, 0.9, "person")).size();
+    railhmi_test::check(n40 == 0 && n50 == 0 && e.events().empty(),
+                        "reset cleared cross-type confirms (need full cycle)");
+    int n60 = (int)e.on_detection(front_det("CAM-05", 60, 0, true, 0.9, "person")).size();
+    railhmi_test::check(n60 == 1 && e.events().size() == 1, "full cycle after reset emits");
+}
+
+void test_emit_resets_confirm_cycle() {
+    RuleEngine e(cfg());
+    int n = 0;
+    for (int i = 0; i < 3; ++i) n += (int)e.on_detection(front_det("CAM-01", 10 + i * 10, 1, true, 0.9, "person")).size();
+    railhmi_test::check(n == 1 && e.events().size() == 1, "emit resets cycle: first event");
+    railhmi_test::check(e.on_detection(front_det("CAM-01", 40, 1, true, 0.9, "person")).empty() &&
+                            e.on_detection(front_det("CAM-01", 50, 1, true, 0.9, "person")).empty(),
+                        "suppressed updates do not emit");
+    // t=1030 恰跨出抑制窗口(30+1000)，但确认计数已重置 -> 需完整 3 帧
+    railhmi_test::check(e.on_detection(front_det("CAM-01", 1030, 1, true, 0.9, "person")).empty(),
+                        "boundary frame alone not enough");
+    railhmi_test::check(e.on_detection(front_det("CAM-01", 1040, 1, true, 0.9, "person")).empty(),
+                        "second frame not enough");
+    railhmi_test::check(
+        e.on_detection(front_det("CAM-01", 1050, 1, true, 0.9, "person")).size() == 1,
+        "full new cycle emits");
+    railhmi_test::check(e.events().size() == 2, "emit resets cycle: second event");
+}
+
+void test_suppress_boundary_strict() {
+    RuleConfig c = cfg();
+    c.confirm_frames = 1;
+    RuleEngine e(c);
+    railhmi_test::check(e.on_detection(front_det("CAM-01", 0, 1, true, 0.9, "person")).size() == 1,
+                        "boundary: first event");
+    railhmi_test::check(e.on_detection(front_det("CAM-01", 999, 1, true, 0.9, "person")).empty(),
+                        "999ms still suppressed");
+    railhmi_test::check(e.on_detection(front_det("CAM-01", 1000, 1, true, 0.9, "person")).size() == 1,
+                        "exactly suppress_window not suppressed (new event)");
+    railhmi_test::check(e.on_detection(front_det("CAM-01", 1999, 1, true, 0.9, "person")).empty(),
+                        "1999ms still suppressed");
+    railhmi_test::check(e.on_detection(front_det("CAM-01", 2000, 1, true, 0.9, "person")).size() == 1,
+                        "2000ms not suppressed");
+    railhmi_test::check(e.events().size() == 3, "boundary events count 3");
+}
+
+void test_suppress_update_refreshes() {
+    RuleConfig c = cfg();
+    c.confirm_frames = 1;
+    RuleEngine e(c);
+    auto a = e.on_detection(front_det("CAM-01", 0, 1, true, 0.9, "person"));
+    railhmi_test::check(a.size() == 1, "update test: first event");
+    const long long id = a.empty() ? -1 : a[0].id;
+    Detection u = front_det("CAM-01", 800, 1, true, 0.95, "person");
+    u.distance_m = 10.0;
+    railhmi_test::check(e.on_detection(u).empty() && e.events().size() == 1,
+                        "update within window no new event");
+    const AlarmEvent* ev = e.find(id);
+    railhmi_test::check(ev && ev->last_update_ms == 800, "update refreshes last_update_ms");
+    railhmi_test::check(ev && ev->distance_m == 10.0, "update refreshes distance");
+    railhmi_test::check(e.on_detection(front_det("CAM-01", 1600, 1, true, 0.9, "person")).size() == 1,
+                        "new event after window from original emit");
+    railhmi_test::check(e.events().size() == 2, "update test: two events");
+}
+
+void test_ack_idempotent_isolated() {
+    RuleConfig c = cfg();
+    c.confirm_frames = 1;
+    RuleEngine e(c);
+    auto a = e.on_detection(front_det("CAM-01", 0, 1, true, 0.9, "person"));
+    auto b = e.on_detection(front_det("CAM-01", 10, 2, true, 0.9, "person"));
+    railhmi_test::check(a.size() == 1 && b.size() == 1 && e.events().size() == 2,
+                        "two tracks -> two events");
+    const long long id1 = a[0].id, id2 = b[0].id;
+    railhmi_test::check(e.ack(id1), "ack id1");
+    railhmi_test::check(e.ack(id1), "ack id1 is idempotent");
+    railhmi_test::check(e.find(id1)->ack_state == AckState::Acked, "id1 acked");
+    railhmi_test::check(e.find(id2)->ack_state == AckState::Unacked, "id2 unaffected");
+    railhmi_test::check(e.unacked_count() == 1, "ack isolation: unacked 1");
+}
+
 }  // namespace
 
 void run_rule_tests() {
@@ -258,4 +434,15 @@ void run_rule_tests() {
     test_device_events();
     test_ack_keeps_event();
     test_roi_helpers();
+    // v2 修复：吸收验证侧边界夹具与设备类别映射（O-1）为第一方回归
+    test_to_string_identity();
+    test_device_category_from_position();
+    test_roi_corner_inclusive();
+    test_cross_type_key_isolation();
+    test_device_vs_detection_independence();
+    test_non_candidate_full_reset();
+    test_emit_resets_confirm_cycle();
+    test_suppress_boundary_strict();
+    test_suppress_update_refreshes();
+    test_ack_idempotent_isolated();
 }

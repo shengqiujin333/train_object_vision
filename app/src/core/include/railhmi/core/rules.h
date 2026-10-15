@@ -36,10 +36,13 @@ enum class AckState { Unacked, Acked };
 const char* to_string(AckState v);
 
 enum class PantographState { Unknown, NotRaised, Normal, Abnormal };
+const char* to_string(PantographState v);
 enum class DoorState { Unknown, Closed, Ajar };
+const char* to_string(DoorState v);
 
 // 设备事件分类（用于级别映射：前方主摄=2、侧视=3、其它=2）。
 enum class DeviceCategory { FrontPrimary, Side, Other };
+const char* to_string(DeviceCategory v);
 
 struct Detection {
     std::string camera_id;
@@ -82,6 +85,9 @@ struct RuleConfig {
 AlarmLevel map_level(AlarmType t);
 // 设备事件级别：前方主摄=2、侧视=3、其它=2。
 AlarmLevel map_device_level(DeviceCategory c);
+// 由相机位置（cameras.yaml position）推导设备类别：primary->FrontPrimary、
+// left/right->Side、其余(roof/underfloor/cab)->Other。使设备级别映射不依赖调用方隐式选择。
+DeviceCategory device_category_from_position(CameraPosition p);
 
 // ROI 命中：归一化矩形 [0,1]。
 bool roi_contains(const RoiConfig& r, double nx, double ny);
