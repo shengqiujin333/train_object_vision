@@ -1,0 +1,40 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 113 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 SCAN_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 STATUS_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-016-status\build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json
+log: docs\hmi\test_evidence\ITEM-016-status\build-TestRun-192_168_0_103-VERIFY-20261016-v1.log
+
+
+===== [probe-assert-maintainer] exit=0 =====
+{"fails": [], "items": 7, "tops": 7}
+
+===== [probe-assert-driver] exit=0 =====
+{"fails": [], "items": 7, "tops": 7}
+
+===== [log-compare] exit=0 =====
+impl=build-TestRun-192_168_0_103-20261016-ITEM016-r1.core-evidence_core-tests-20261016-ITEM016-r1.log impl_pass_lines=443 verify_pass_lines=443 identical=True
+
+===== [junit-parse] exit=0 =====
+junit build-TestRun-192_168_0_103-20261016-ITEM016-r1.core-evidence_core-tests-20261016-ITEM016-r1.xml tests=443 failures=0 status_cases=25

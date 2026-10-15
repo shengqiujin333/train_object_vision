@@ -1,0 +1,109 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify016",
+    "cpp": "docs/hmi/test_evidence/ITEM-016-status/verify_status16_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-016-status",
+    "stamp": "VERIFY-20261016-v3",
+    "impl_log": "docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-20261016-ITEM016-r2.core-evidence_core-tests-20261016-ITEM016-r2.log",
+    "keep_remote": "False",
+    "connect_timeout": "10",
+    "timeout_sec": "1500",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app",
+    "tokens_yaml": "E:\\work\\rail_issue\\rk3588_handover\\docs\\hmi\\design_tokens.yaml"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_verify016 /tmp/railhmi_build",
+      "exit": 0,
+      "elapsed_s": 0.23,
+      "output": ""
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir docs\\hmi\\test_evidence\\ITEM-016-status --stamp VERIFY-20261016-v3 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 29.96,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 113 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 SCAN_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 STATUS_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-driver-VERIFY-20261016-v3.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: docs\\hmi\\test_evidence\\ITEM-016-status\\build-TestRun-192_168_0_103-VERIFY-20261016-v3.transcript.json\nlog: docs\\hmi\\test_evidence\\ITEM-016-status\\build-TestRun-192_168_0_103-VERIFY-20261016-v3.log\n"
+    },
+    {
+      "step": "probe-assert-maintainer",
+      "exit": 0,
+      "output": "{\"fails\": [], \"items\": 7, \"tops\": 7}"
+    },
+    {
+      "step": "probe-assert-driver",
+      "exit": 0,
+      "output": "{\"fails\": [], \"items\": 7, \"tops\": 7}"
+    },
+    {
+      "step": "log-compare",
+      "exit": 0,
+      "output": "impl=build-TestRun-192_168_0_103-20261016-ITEM016-r2.core-evidence_core-tests-20261016-ITEM016-r2.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log impl_pass_lines=443 verify_pass_lines=443 identical=True"
+    },
+    {
+      "step": "junit-parse",
+      "exit": 0,
+      "output": "junit build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml tests=443 failures=0 status_cases=25"
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "docs/hmi/test_evidence/ITEM-016-status/verify_status16_ext.cpp"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include /tmp/railhmi_verify016/verify_status16_ext.cpp build-core/src/core/librailhmi_core.a -o /tmp/railhmi_verify016/verify_status16_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.13,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify016/verify_status16_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "[PASS] e0.0 to_string == ok\n[PASS] e0b.0 shape ==dot\n[PASS] e0c.0 glyph-wide identity\n[PASS] e0d.0 label ==正常\n[PASS] e0e.0 color ==ok\n[PASS] e0.1 to_string == info\n[PASS] e0b.1 shape ==spinner\n[PASS] e0c.1 glyph-wide identity\n[PASS] e0d.1 label ==信息\n[PASS] e0e.1 color ==info\n[PASS] e0.2 to_string == warning\n[PASS] e0b.2 shape ==triangle\n[PASS] e0c.2 glyph-wide identity\n[PASS] e0d.2 label ==警告\n[PASS] e0e.2 color ==degraded\n[PASS] e0.3 to_string == alarm\n[PASS] e0b.3 shape ==square\n[PASS] e0c.3 glyph-wide identity\n[PASS] e0d.3 label ==报警\n[PASS] e0e.3 color ==error\n[PASS] e0.4 to_string == unavailable\n[PASS] e0b.4 shape ==minus-circle\n[PASS] e0c.4 glyph-wide identity\n[PASS] e0d.4 label ==未接入\n[PASS] e0e.4 color ==neutral\n[PASS] e0f glyph[0]!=glyph[1]\n[PASS] e0g label[0]!=label[1]\n[PASS] e0f glyph[0]!=glyph[2]\n[PASS] e0g label[0]!=label[2]\n[PASS] e0f glyph[0]!=glyph[3]\n[PASS] e0g label[0]!=label[3]\n[PASS] e0f glyph[0]!=glyph[4]\n[PASS] e0g label[0]!=label[4]\n[PASS] e0f glyph[1]!=glyph[2]\n[PASS] e0g label[1]!=label[2]\n[PASS] e0f glyph[1]!=glyph[3]\n[PASS] e0g label[1]!=label[3]\n[PASS] e0f glyph[1]!=glyph[4]\n[PASS] e0g label[1]!=label[4]\n[PASS] e0f glyph[2]!=glyph[3]\n[PASS] e0g label[2]!=label[3]\n[PASS] e0f glyph[2]!=glyph[4]\n[PASS] e0g label[2]!=label[4]\n[PASS] e0f glyph[3]!=glyph[4]\n[PASS] e0g label[3]!=label[4]\n[PASS] a0 ok not abnormal\n[PASS] a0b info not abnormal\n[PASS] a0c warning abnormal\n[PASS] a0d alarm abnormal\n[PASS] a0e unavailable not abnormal\n[PASS] a0f info level propagated\n[PASS] a0g info uses spinner/↻/info triple\n[PASS] a0h info not abnormal/clickable\n[PASS] a0i info value passthrough\n[PASS] s0 mixed snapshot yields 7 items in fixed order\n[PASS] s0b keys+levels in fixed order match verifier-built matrix\n[PASS] s0c abnormal/clickable isolated to warning/alarm items\n[PASS] s0d per-item value passthrough\n[PASS] s0e empty ok value -> level default '正常'\n[PASS] s0f empty alarm value -> level default '报警'\n[PASS] s1 top bar 7 items\n[PASS] s1b kind+key identities in fixed order\n[PASS] s1c time item neutral/none-shape/no-glyph not clickable shows text\n[PASS] s1d mode item offers visible+IR-not-connected, neutral dot, no toggle\n[PASS] s1e unconnected item[5] full triple\n[PASS] s1e unconnected item[6] full triple\n[PASS] s1f unconnected labels 车速/门磁\n[PASS] s1g top AI alarm prominent and clickable to P5\n[PASS] s1h top health warning triangle/degraded to P6\n[PASS] s2 driver: all non-ai top items not clickable\n[PASS] s2b driver ai warning clickable but not allowed\n[PASS] s2c admin ai warning clickable and allowed to P5\n[PASS] s2d default snapshot nothing clickable from any angle\n[PASS] p0 per-category target pages match verifier hand table (P4/P4/P4/P6/P5/P3/P6)\n[PASS] p0b 4x7 permission matrix == role_can_access contract\n[PASS] d0 build_key_status is role-insensitive (no role coupling in items)\n[PASS] d0b determinism: two calls field-identical\n[PASS] d1 top bar determinism across two calls\n[PASS] d1b build_top_bar role-insensitive\n== 79 passed, 0 failed ==\nRESULT: PASS passed=79 failed=0\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-summary",
+      "exit": 0,
+      "output": "ext passed=79 failed=0"
+    },
+    {
+      "step": "probe-negative-arg",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-status-probe --nope; echo N1_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "N1_EXIT=2\nunknown arg: --nope\n"
+    },
+    {
+      "step": "probe-negative-role",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-status-probe --role nobody; echo N2_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "N2_EXIT=2\nbad role: nobody\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify016 /tmp/railhmi_build && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify016 /tmp/railhmi_build 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.12,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify016': No such file or directory\nls: cannot access '/tmp/railhmi_build': No such file or directory\n"
+    }
+  ]
+}

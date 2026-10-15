@@ -1,0 +1,152 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 113 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 SCAN_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 STATUS_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-driver-VERIFY-20261016-v3.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-016-status\build-TestRun-192_168_0_103-VERIFY-20261016-v3.transcript.json
+log: docs\hmi\test_evidence\ITEM-016-status\build-TestRun-192_168_0_103-VERIFY-20261016-v3.log
+
+
+===== [probe-assert-maintainer] exit=0 =====
+{"fails": [], "items": 7, "tops": 7}
+
+===== [probe-assert-driver] exit=0 =====
+{"fails": [], "items": 7, "tops": 7}
+
+===== [log-compare] exit=0 =====
+impl=build-TestRun-192_168_0_103-20261016-ITEM016-r2.core-evidence_core-tests-20261016-ITEM016-r2.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log impl_pass_lines=443 verify_pass_lines=443 identical=True
+
+===== [junit-parse] exit=0 =====
+junit build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml tests=443 failures=0 status_cases=25
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-016-status/verify_status16_ext.cpp
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+[PASS] e0.0 to_string == ok
+[PASS] e0b.0 shape ==dot
+[PASS] e0c.0 glyph-wide identity
+[PASS] e0d.0 label ==正常
+[PASS] e0e.0 color ==ok
+[PASS] e0.1 to_string == info
+[PASS] e0b.1 shape ==spinner
+[PASS] e0c.1 glyph-wide identity
+[PASS] e0d.1 label ==信息
+[PASS] e0e.1 color ==info
+[PASS] e0.2 to_string == warning
+[PASS] e0b.2 shape ==triangle
+[PASS] e0c.2 glyph-wide identity
+[PASS] e0d.2 label ==警告
+[PASS] e0e.2 color ==degraded
+[PASS] e0.3 to_string == alarm
+[PASS] e0b.3 shape ==square
+[PASS] e0c.3 glyph-wide identity
+[PASS] e0d.3 label ==报警
+[PASS] e0e.3 color ==error
+[PASS] e0.4 to_string == unavailable
+[PASS] e0b.4 shape ==minus-circle
+[PASS] e0c.4 glyph-wide identity
+[PASS] e0d.4 label ==未接入
+[PASS] e0e.4 color ==neutral
+[PASS] e0f glyph[0]!=glyph[1]
+[PASS] e0g label[0]!=label[1]
+[PASS] e0f glyph[0]!=glyph[2]
+[PASS] e0g label[0]!=label[2]
+[PASS] e0f glyph[0]!=glyph[3]
+[PASS] e0g label[0]!=label[3]
+[PASS] e0f glyph[0]!=glyph[4]
+[PASS] e0g label[0]!=label[4]
+[PASS] e0f glyph[1]!=glyph[2]
+[PASS] e0g label[1]!=label[2]
+[PASS] e0f glyph[1]!=glyph[3]
+[PASS] e0g label[1]!=label[3]
+[PASS] e0f glyph[1]!=glyph[4]
+[PASS] e0g label[1]!=label[4]
+[PASS] e0f glyph[2]!=glyph[3]
+[PASS] e0g label[2]!=label[3]
+[PASS] e0f glyph[2]!=glyph[4]
+[PASS] e0g label[2]!=label[4]
+[PASS] e0f glyph[3]!=glyph[4]
+[PASS] e0g label[3]!=label[4]
+[PASS] a0 ok not abnormal
+[PASS] a0b info not abnormal
+[PASS] a0c warning abnormal
+[PASS] a0d alarm abnormal
+[PASS] a0e unavailable not abnormal
+[PASS] a0f info level propagated
+[PASS] a0g info uses spinner/↻/info triple
+[PASS] a0h info not abnormal/clickable
+[PASS] a0i info value passthrough
+[PASS] s0 mixed snapshot yields 7 items in fixed order
+[PASS] s0b keys+levels in fixed order match verifier-built matrix
+[PASS] s0c abnormal/clickable isolated to warning/alarm items
+[PASS] s0d per-item value passthrough
+[PASS] s0e empty ok value -> level default '正常'
+[PASS] s0f empty alarm value -> level default '报警'
+[PASS] s1 top bar 7 items
+[PASS] s1b kind+key identities in fixed order
+[PASS] s1c time item neutral/none-shape/no-glyph not clickable shows text
+[PASS] s1d mode item offers visible+IR-not-connected, neutral dot, no toggle
+[PASS] s1e unconnected item[5] full triple
+[PASS] s1e unconnected item[6] full triple
+[PASS] s1f unconnected labels 车速/门磁
+[PASS] s1g top AI alarm prominent and clickable to P5
+[PASS] s1h top health warning triangle/degraded to P6
+[PASS] s2 driver: all non-ai top items not clickable
+[PASS] s2b driver ai warning clickable but not allowed
+[PASS] s2c admin ai warning clickable and allowed to P5
+[PASS] s2d default snapshot nothing clickable from any angle
+[PASS] p0 per-category target pages match verifier hand table (P4/P4/P4/P6/P5/P3/P6)
+[PASS] p0b 4x7 permission matrix == role_can_access contract
+[PASS] d0 build_key_status is role-insensitive (no role coupling in items)
+[PASS] d0b determinism: two calls field-identical
+[PASS] d1 top bar determinism across two calls
+[PASS] d1b build_top_bar role-insensitive
+== 79 passed, 0 failed ==
+RESULT: PASS passed=79 failed=0
+EXT_EXIT=0
+
+
+===== [ext-summary] exit=0 =====
+ext passed=79 failed=0
+
+===== [probe-negative-arg] exit=0 =====
+N1_EXIT=2
+unknown arg: --nope
+
+
+===== [probe-negative-role] exit=0 =====
+N2_EXIT=2
+bad role: nobody
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify016': No such file or directory
+ls: cannot access '/tmp/railhmi_build': No such file or directory
+

@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="443" failures="0">
+  <testsuite name="railhmi-core-tests" tests="443" failures="0">
+    <testcase classname="railhmi-core" name="version_string == 0.1.0"/>
+    <testcase classname="railhmi-core" name="build_mode is a known mode"/>
+    <testcase classname="railhmi-core" name="build_description contains railhmi"/>
+    <testcase classname="railhmi-core" name="redact_url hides credentials"/>
+    <testcase classname="railhmi-core" name="redact_url leaves credential-free url unchanged"/>
+    <testcase classname="railhmi-core" name="FileStore::write_atomic"/>
+    <testcase classname="railhmi-core" name="FileStore::read_all round-trip"/>
+    <testcase classname="railhmi-core" name="FileStore::exists after write"/>
+    <testcase classname="railhmi-core" name="FileStore::exists false for missing"/>
+    <testcase classname="railhmi-core" name="SqliteStore::open"/>
+    <testcase classname="railhmi-core" name="SqliteStore::exec create table"/>
+    <testcase classname="railhmi-core" name="SqliteStore::exec insert"/>
+    <testcase classname="railhmi-core" name="SqliteStore::query_int"/>
+    <testcase classname="railhmi-core" name="SqliteStore row count == 1"/>
+    <testcase classname="railhmi-core" name="SqliteStore::open (reopen)"/>
+    <testcase classname="railhmi-core" name="SqliteStore persistence across reopen"/>
+    <testcase classname="railhmi-core" name="baseline config loads without errors"/>
+    <testcase classname="railhmi-core" name="baseline has 6 cameras"/>
+    <testcase classname="railhmi-core" name="CAM-01 id/position=primary"/>
+    <testcase classname="railhmi-core" name="CAM-01 ai_enabled=true, ai_profile=front"/>
+    <testcase classname="railhmi-core" name="CAM-02 ai_enabled=false, ai_profile=none"/>
+    <testcase classname="railhmi-core" name="CAM-03 ai_enabled=false, ai_profile=none"/>
+    <testcase classname="railhmi-core" name="CAM-04 ai_profile=pantograph"/>
+    <testcase classname="railhmi-core" name="CAM-05 ai_profile=wheel_rail"/>
+    <testcase classname="railhmi-core" name="CAM-06 ai_profile=cab_door"/>
+    <testcase classname="railhmi-core" name="app.render_path=cpu"/>
+    <testcase classname="railhmi-core" name="app.mode=visible"/>
+    <testcase classname="railhmi-core" name="IR is not connected this phase"/>
+    <testcase classname="railhmi-core" name="app.recording_source=both"/>
+    <testcase classname="railhmi-core" name="app.resolution=1920x1080"/>
+    <testcase classname="railhmi-core" name="thresholds values parsed"/>
+    <testcase classname="railhmi-core" name="stream timing thresholds parsed"/>
+    <testcase classname="railhmi-core" name="baseline has 4 roi entries"/>
+    <testcase classname="railhmi-core" name="one integration (NVR)"/>
+    <testcase classname="railhmi-core" name="NVR registered"/>
+    <testcase classname="railhmi-core" name="NVR initial integration_state=unconfigured"/>
+    <testcase classname="railhmi-core" name="integration_state string is &apos;unconfigured&apos;"/>
+    <testcase classname="railhmi-core" name="missing optional tile_aspect recorded in applied_defaults"/>
+    <testcase classname="railhmi-core" name="missing required field reports cameras[0].username"/>
+    <testcase classname="railhmi-core" name="invalid transport reports cameras[0].transport"/>
+    <testcase classname="railhmi-core" name="invalid ai_profile reports cameras[0].ai_profile"/>
+    <testcase classname="railhmi-core" name="ai_enabled/profile mismatch reports cameras[0].ai_profile"/>
+    <testcase classname="railhmi-core" name="missing thresholds field reports thresholds.confirm_frames"/>
+    <testcase classname="railhmi-core" name="invalid render_path reports app.render_path"/>
+    <testcase classname="railhmi-core" name="invalid mode reports app.mode"/>
+    <testcase classname="railhmi-core" name="unknown roi camera reports roi[0].camera"/>
+    <testcase classname="railhmi-core" name="out-of-range roi w reports roi[0].w"/>
+    <testcase classname="railhmi-core" name="missing config file reports file name"/>
+    <testcase classname="railhmi-core" name="initial state = offline"/>
+    <testcase classname="railhmi-core" name="offline cannot present as live"/>
+    <testcase classname="railhmi-core" name="start -&gt; connecting"/>
+    <testcase classname="railhmi-core" name="connecting cannot present as live"/>
+    <testcase classname="railhmi-core" name="first frame -&gt; live"/>
+    <testcase classname="railhmi-core" name="Started event emitted"/>
+    <testcase classname="railhmi-core" name="FirstFrame event emitted"/>
+    <testcase classname="railhmi-core" name="live presents fresh frame as live"/>
+    <testcase classname="railhmi-core" name="no new frame -&gt; frozen"/>
+    <testcase classname="railhmi-core" name="frozen cannot present old frame as live"/>
+    <testcase classname="railhmi-core" name="Freeze event emitted"/>
+    <testcase classname="railhmi-core" name="frozen -&gt; reconnecting"/>
+    <testcase classname="railhmi-core" name="reconnect count = 1"/>
+    <testcase classname="railhmi-core" name="reconnecting -&gt; connecting (retry)"/>
+    <testcase classname="railhmi-core" name="retry timeout -&gt; reconnecting count 2"/>
+    <testcase classname="railhmi-core" name="retry again -&gt; connecting"/>
+    <testcase classname="railhmi-core" name="threshold reached -&gt; offline"/>
+    <testcase classname="railhmi-core" name="reconnect count = 3 (threshold)"/>
+    <testcase classname="railhmi-core" name="Escalated device event emitted at threshold"/>
+    <testcase classname="railhmi-core" name="offline cannot present as live"/>
+    <testcase classname="railhmi-core" name="recover from offline -&gt; live"/>
+    <testcase classname="railhmi-core" name="reconnect count reset on recovery"/>
+    <testcase classname="railhmi-core" name="Recovered event emitted"/>
+    <testcase classname="railhmi-core" name="source-error test live"/>
+    <testcase classname="railhmi-core" name="source error -&gt; reconnecting count 1"/>
+    <testcase classname="railhmi-core" name="second source error -&gt; offline (threshold 2)"/>
+    <testcase classname="railhmi-core" name="source-error escalation event emitted"/>
+    <testcase classname="railhmi-core" name="SourceError event emitted"/>
+    <testcase classname="railhmi-core" name="quality flag -&gt; degraded"/>
+    <testcase classname="railhmi-core" name="degraded counts as streaming (degraded available)"/>
+    <testcase classname="railhmi-core" name="degraded may present fresh frame"/>
+    <testcase classname="railhmi-core" name="QualityDegraded event emitted"/>
+    <testcase classname="railhmi-core" name="classify: low mean -&gt; too_dark"/>
+    <testcase classname="railhmi-core" name="classify: high mean -&gt; too_bright"/>
+    <testcase classname="railhmi-core" name="classify: near-uniform -&gt; occluded"/>
+    <testcase classname="railhmi-core" name="classify: low lapvar -&gt; blurred"/>
+    <testcase classname="railhmi-core" name="classify: normal frame -&gt; no flags"/>
+    <testcase classname="railhmi-core" name="classify: invalid stats -&gt; no flags"/>
+    <testcase classname="railhmi-core" name="person_on_rail=L1"/>
+    <testcase classname="railhmi-core" name="front_obstacle=L1"/>
+    <testcase classname="railhmi-core" name="wheel_derail=L1"/>
+    <testcase classname="railhmi-core" name="pantograph_abnormal=L2"/>
+    <testcase classname="railhmi-core" name="door_ajar=L2"/>
+    <testcase classname="railhmi-core" name="front_camera_device=L2"/>
+    <testcase classname="railhmi-core" name="side_camera_device=L3"/>
+    <testcase classname="railhmi-core" name="device front primary=L2"/>
+    <testcase classname="railhmi-core" name="device side=L3"/>
+    <testcase classname="railhmi-core" name="front person: event after confirm_frames"/>
+    <testcase classname="railhmi-core" name="front person level = L1"/>
+    <testcase classname="railhmi-core" name="front person type"/>
+    <testcase classname="railhmi-core" name="new event unacked"/>
+    <testcase classname="railhmi-core" name="front obstacle -&gt; L1 FrontObstacle"/>
+    <testcase classname="railhmi-core" name="front outside ROI -&gt; no event"/>
+    <testcase classname="railhmi-core" name="front low confidence -&gt; no event"/>
+    <testcase classname="railhmi-core" name="front frames beyond confirm window -&gt; no event"/>
+    <testcase classname="railhmi-core" name="suppression: first event created"/>
+    <testcase classname="railhmi-core" name="same track within suppress window -&gt; no new event"/>
+    <testcase classname="railhmi-core" name="events size still 1 under suppression"/>
+    <testcase classname="railhmi-core" name="suppressed event distance updated"/>
+    <testcase classname="railhmi-core" name="different track -&gt; new event"/>
+    <testcase classname="railhmi-core" name="events size 2 after second track"/>
+    <testcase classname="railhmi-core" name="same track after suppress window -&gt; new event"/>
+    <testcase classname="railhmi-core" name="events size 3 after suppress window"/>
+    <testcase classname="railhmi-core" name="pantograph normal -&gt; no event"/>
+    <testcase classname="railhmi-core" name="pantograph abnormal -&gt; L2"/>
+    <testcase classname="railhmi-core" name="wheel_rail abnormal -&gt; L1"/>
+    <testcase classname="railhmi-core" name="cab_door ajar -&gt; L2"/>
+    <testcase classname="railhmi-core" name="ai_profile=none -&gt; no event"/>
+    <testcase classname="railhmi-core" name="front primary device event -&gt; L2"/>
+    <testcase classname="railhmi-core" name="side device event -&gt; L3"/>
+    <testcase classname="railhmi-core" name="duplicate device event suppressed"/>
+    <testcase classname="railhmi-core" name="single-frame confirm event created"/>
+    <testcase classname="railhmi-core" name="unacked count 1"/>
+    <testcase classname="railhmi-core" name="ack returns true for existing event"/>
+    <testcase classname="railhmi-core" name="ack does NOT delete event"/>
+    <testcase classname="railhmi-core" name="ack_state becomes acked"/>
+    <testcase classname="railhmi-core" name="unacked count 0 after ack"/>
+    <testcase classname="railhmi-core" name="ack unknown id returns false"/>
+    <testcase classname="railhmi-core" name="roi contains center point"/>
+    <testcase classname="railhmi-core" name="roi rejects outside point"/>
+    <testcase classname="railhmi-core" name="roi rejects beyond x+w"/>
+    <testcase classname="railhmi-core" name="find_roi finds entry"/>
+    <testcase classname="railhmi-core" name="find_roi miss"/>
+    <testcase classname="railhmi-core" name="to_string(Device)"/>
+    <testcase classname="railhmi-core" name="to_string(SideCameraDevice)"/>
+    <testcase classname="railhmi-core" name="to_string(Acked)"/>
+    <testcase classname="railhmi-core" name="to_string(Unacked)"/>
+    <testcase classname="railhmi-core" name="to_string(PantographState::Abnormal)"/>
+    <testcase classname="railhmi-core" name="to_string(DoorState::Ajar)"/>
+    <testcase classname="railhmi-core" name="to_string(DeviceCategory::Side)"/>
+    <testcase classname="railhmi-core" name="map_level(Device)=L2"/>
+    <testcase classname="railhmi-core" name="position primary -&gt; FrontPrimary"/>
+    <testcase classname="railhmi-core" name="position left/right -&gt; Side"/>
+    <testcase classname="railhmi-core" name="position roof/underfloor/cab -&gt; Other"/>
+    <testcase classname="railhmi-core" name="device other -&gt; L2 (explicit)"/>
+    <testcase classname="railhmi-core" name="roi includes top-left corner"/>
+    <testcase classname="railhmi-core" name="roi includes bottom-right corner"/>
+    <testcase classname="railhmi-core" name="roi rejects x-epsilon"/>
+    <testcase classname="railhmi-core" name="roi rejects y+h+epsilon"/>
+    <testcase classname="railhmi-core" name="wheel event independent"/>
+    <testcase classname="railhmi-core" name="front key isolated from wheel (same cam/track, different type)"/>
+    <testcase classname="railhmi-core" name="cross-type events independent"/>
+    <testcase classname="railhmi-core" name="device channel event 1"/>
+    <testcase classname="railhmi-core" name="detection channel independent of device suppression"/>
+    <testcase classname="railhmi-core" name="device event after window"/>
+    <testcase classname="railhmi-core" name="device event after second window"/>
+    <testcase classname="railhmi-core" name="device(3)+detection(1)=4"/>
+    <testcase classname="railhmi-core" name="no event with two single-frame counts"/>
+    <testcase classname="railhmi-core" name="non-candidate frame resets all camera confirms"/>
+    <testcase classname="railhmi-core" name="reset cleared cross-type confirms (need full cycle)"/>
+    <testcase classname="railhmi-core" name="full cycle after reset emits"/>
+    <testcase classname="railhmi-core" name="emit resets cycle: first event"/>
+    <testcase classname="railhmi-core" name="suppressed updates do not emit"/>
+    <testcase classname="railhmi-core" name="boundary frame alone not enough"/>
+    <testcase classname="railhmi-core" name="second frame not enough"/>
+    <testcase classname="railhmi-core" name="full new cycle emits"/>
+    <testcase classname="railhmi-core" name="emit resets cycle: second event"/>
+    <testcase classname="railhmi-core" name="boundary: first event"/>
+    <testcase classname="railhmi-core" name="999ms still suppressed"/>
+    <testcase classname="railhmi-core" name="exactly suppress_window not suppressed (new event)"/>
+    <testcase classname="railhmi-core" name="1999ms still suppressed"/>
+    <testcase classname="railhmi-core" name="2000ms not suppressed"/>
+    <testcase classname="railhmi-core" name="boundary events count 3"/>
+    <testcase classname="railhmi-core" name="update test: first event"/>
+    <testcase classname="railhmi-core" name="update within window no new event"/>
+    <testcase classname="railhmi-core" name="update refreshes last_update_ms"/>
+    <testcase classname="railhmi-core" name="update refreshes distance"/>
+    <testcase classname="railhmi-core" name="new event after window from original emit"/>
+    <testcase classname="railhmi-core" name="update test: two events"/>
+    <testcase classname="railhmi-core" name="two tracks -&gt; two events"/>
+    <testcase classname="railhmi-core" name="ack id1"/>
+    <testcase classname="railhmi-core" name="ack id1 is idempotent"/>
+    <testcase classname="railhmi-core" name="id1 acked"/>
+    <testcase classname="railhmi-core" name="id2 unaffected"/>
+    <testcase classname="railhmi-core" name="ack isolation: unacked 1"/>
+    <testcase classname="railhmi-core" name="timebase starts uncalibrated"/>
+    <testcase classname="railhmi-core" name="timebase calibrated"/>
+    <testcase classname="railhmi-core" name="to_wall_ms at reference"/>
+    <testcase classname="railhmi-core" name="to_wall_ms +2s"/>
+    <testcase classname="railhmi-core" name="to_mono_us round-trip"/>
+    <testcase classname="railhmi-core" name="to_wall_ms truncates to ms"/>
+    <testcase classname="railhmi-core" name="wall/mono round-trip identity (ms-aligned)"/>
+    <testcase classname="railhmi-core" name="system_now_ms is UTC epoch ms"/>
+    <testcase classname="railhmi-core" name="steady_now_us positive"/>
+    <testcase classname="railhmi-core" name="age: only expired continuous evicted"/>
+    <testcase classname="railhmi-core" name="age: retained bytes 20"/>
+    <testcase classname="railhmi-core" name="age: critical not evicted"/>
+    <testcase classname="railhmi-core" name="age: one continuous evicted"/>
+    <testcase classname="railhmi-core" name="capacity: oldest continuous evicted first"/>
+    <testcase classname="railhmi-core" name="capacity: keep critical, retained 30"/>
+    <testcase classname="railhmi-core" name="capacity: continuous(11,12) then oldest critical(13)"/>
+    <testcase classname="railhmi-core" name="capacity: eviction counts"/>
+    <testcase classname="railhmi-core" name="capacity: retained 10"/>
+    <testcase classname="railhmi-core" name="gap merge: adjacent/overlap merged to one"/>
+    <testcase classname="railhmi-core" name="gap merge bounds 100..300"/>
+    <testcase classname="railhmi-core" name="gap merge: keeps first existing reason"/>
+    <testcase classname="railhmi-core" name="gap merge: different camera separate"/>
+    <testcase classname="railhmi-core" name="bridge merge: single gap, no residual overlap"/>
+    <testcase classname="railhmi-core" name="bridge merge bounds 0..30"/>
+    <testcase classname="railhmi-core" name="bridge merge: first existing reason &apos;a&apos;"/>
+    <testcase classname="railhmi-core" name="verify sequence: single merged gap"/>
+    <testcase classname="railhmi-core" name="verify sequence bounds 50..300"/>
+    <testcase classname="railhmi-core" name="verify sequence reason drop (first existing)"/>
+    <testcase classname="railhmi-core" name="separate gaps (1ms apart) stay distinct"/>
+    <testcase classname="railhmi-core" name="contiguous gaps merge"/>
+    <testcase classname="railhmi-core" name="repo.open"/>
+    <testcase classname="railhmi-core" name="repo.init_schema"/>
+    <testcase classname="railhmi-core" name="repo journal_mode == wal"/>
+    <testcase classname="railhmi-core" name="insert_event returns id"/>
+    <testcase classname="railhmi-core" name="insert_event_target"/>
+    <testcase classname="railhmi-core" name="insert_maintenance"/>
+    <testcase classname="railhmi-core" name="insert_health"/>
+    <testcase classname="railhmi-core" name="insert_stream_event"/>
+    <testcase classname="railhmi-core" name="upsert_integration"/>
+    <testcase classname="railhmi-core" name="set_config"/>
+    <testcase classname="railhmi-core" name="get_config round-trip"/>
+    <testcase classname="railhmi-core" name="insert_segment x2"/>
+    <testcase classname="railhmi-core" name="insert_gap"/>
+    <testcase classname="railhmi-core" name="9 tables populated (segments=2)"/>
+    <testcase classname="railhmi-core" name="copy db for WAL replay"/>
+    <testcase classname="railhmi-core" name="open WAL copy"/>
+    <testcase classname="railhmi-core" name="WAL replay: event recovered from -wal"/>
+    <testcase classname="railhmi-core" name="WAL replay: gap recovered"/>
+    <testcase classname="railhmi-core" name="reopen after restart"/>
+    <testcase classname="railhmi-core" name="write-restart-read consistent"/>
+    <testcase classname="railhmi-core" name="gap persisted across restart"/>
+    <testcase classname="railhmi-core" name="gaps queryable by camera"/>
+    <testcase classname="railhmi-core" name="segments read back with kind"/>
+    <testcase classname="railhmi-core" name="repo retention evicts continuous first"/>
+    <testcase classname="railhmi-core" name="repo retention: one segment left"/>
+    <testcase classname="railhmi-core" name="repo retention keeps critical segment"/>
+    <testcase classname="railhmi-core" name="crash: reopen after SIGKILL"/>
+    <testcase classname="railhmi-core" name="crash: journal_mode still wal"/>
+    <testcase classname="railhmi-core" name="crash: uncommitted transaction discarded"/>
+    <testcase classname="railhmi-core" name="crash: committed row intact"/>
+    <testcase classname="railhmi-core" name="FI-01 id"/>
+    <testcase classname="railhmi-core" name="FI-10 id"/>
+    <testcase classname="railhmi-core" name="fault to_string"/>
+    <testcase classname="railhmi-core" name="parse &apos;01&apos;"/>
+    <testcase classname="railhmi-core" name="parse &apos;fi-10&apos;"/>
+    <testcase classname="railhmi-core" name="parse &apos;freeze&apos;"/>
+    <testcase classname="railhmi-core" name="parse invalid fault rejected"/>
+    <testcase classname="railhmi-core" name="injection params logged"/>
+    <testcase classname="railhmi-core" name="injection camera logged"/>
+    <testcase classname="railhmi-core" name="format_observation non-empty"/>
+    <testcase classname="railhmi-core" name="FI-01 -&gt; reconnecting"/>
+    <testcase classname="railhmi-core" name="FI-01 -&gt; offline escalation"/>
+    <testcase classname="railhmi-core" name="FI-01 recovers to live"/>
+    <testcase classname="railhmi-core" name="FI-01 final state live"/>
+    <testcase classname="railhmi-core" name="FI-02 -&gt; frozen"/>
+    <testcase classname="railhmi-core" name="FI-02 recovers to live"/>
+    <testcase classname="railhmi-core" name="FI-03 -&gt; ai unavailable"/>
+    <testcase classname="railhmi-core" name="FI-03 no detections -&gt; no alarms"/>
+    <testcase classname="railhmi-core" name="FI-03 summary alarms=0"/>
+    <testcase classname="railhmi-core" name="FI-04 -&gt; storage low"/>
+    <testcase classname="railhmi-core" name="FI-04 record_available=false"/>
+    <testcase classname="railhmi-core" name="FI-04 recovers (low=false after)"/>
+    <testcase classname="railhmi-core" name="FI-05 -&gt; ptz tolerance fail"/>
+    <testcase classname="railhmi-core" name="FI-05 recovers tolerance"/>
+    <testcase classname="railhmi-core" name="FI-10 -&gt; recording gap logged"/>
+    <testcase classname="railhmi-core" name="FI-10 summary has gaps"/>
+    <testcase classname="railhmi-core" name="no fault -&gt; front alarm produced"/>
+    <testcase classname="railhmi-core" name="no fault summary alarms=1"/>
+    <testcase classname="railhmi-core" name="simulation is deterministic/resettable"/>
+    <testcase classname="railhmi-core" name="pantograph injection -&gt; L2 alarm"/>
+    <testcase classname="railhmi-core" name="none profile -&gt; no alarms"/>
+    <testcase classname="railhmi-core" name="to_string(AiDebug)"/>
+    <testcase classname="railhmi-core" name="page_title(Maintenance)"/>
+    <testcase classname="railhmi-core" name="parse_page(all_cameras)"/>
+    <testcase classname="railhmi-core" name="parse_page rejects unknown"/>
+    <testcase classname="railhmi-core" name="six fixed pages"/>
+    <testcase classname="railhmi-core" name="fixed page order"/>
+    <testcase classname="railhmi-core" name="driver can realtime"/>
+    <testcase classname="railhmi-core" name="driver can alarm center"/>
+    <testcase classname="railhmi-core" name="driver can replay"/>
+    <testcase classname="railhmi-core" name="driver cannot all cameras"/>
+    <testcase classname="railhmi-core" name="driver cannot AI debug"/>
+    <testcase classname="railhmi-core" name="driver cannot maintenance"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="maintainer/developer/admin can all pages"/>
+    <testcase classname="railhmi-core" name="driver sees 3 nav entries"/>
+    <testcase classname="railhmi-core" name="driver nav = realtime/alarm/replay"/>
+    <testcase classname="railhmi-core" name="driver nav excludes AI debug/maintenance/all cameras"/>
+    <testcase classname="railhmi-core" name="maintainer sees all 6 nav entries"/>
+    <testcase classname="railhmi-core" name="developer/admin see all 6 nav entries"/>
+    <testcase classname="railhmi-core" name="driver lands on realtime"/>
+    <testcase classname="railhmi-core" name="maintainer lands on all cameras"/>
+    <testcase classname="railhmi-core" name="developer lands on AI debug"/>
+    <testcase classname="railhmi-core" name="admin lands on maintenance"/>
+    <testcase classname="railhmi-core" name="driver realtime allowed"/>
+    <testcase classname="railhmi-core" name="driver direct AI debug -&gt; denied (show no-permission + return)"/>
+    <testcase classname="railhmi-core" name="maintainer maintenance allowed"/>
+    <testcase classname="railhmi-core" name="mode primary = visible"/>
+    <testcase classname="railhmi-core" name="mode secondary = IR not connected"/>
+    <testcase classname="railhmi-core" name="mode has no interactive toggle"/>
+    <testcase classname="railhmi-core" name="baseline config loads"/>
+    <testcase classname="railhmi-core" name="registry has 6 slots"/>
+    <testcase classname="railhmi-core" name="registry order = CAM-01..06"/>
+    <testcase classname="railhmi-core" name="registry order field"/>
+    <testcase classname="railhmi-core" name="registry positions"/>
+    <testcase classname="railhmi-core" name="CAM-01 ai front"/>
+    <testcase classname="railhmi-core" name="CAM-02 no ai"/>
+    <testcase classname="railhmi-core" name="badge front"/>
+    <testcase classname="railhmi-core" name="badge none (side)"/>
+    <testcase classname="railhmi-core" name="badge pantograph"/>
+    <testcase classname="railhmi-core" name="badge wheel rail"/>
+    <testcase classname="railhmi-core" name="badge cab door"/>
+    <testcase classname="railhmi-core" name="badge hidden on P1 (driver realtime)"/>
+    <testcase classname="railhmi-core" name="badge visible on P4"/>
+    <testcase classname="railhmi-core" name="badge visible on P6"/>
+    <testcase classname="railhmi-core" name="badge hidden on P2/P3/P5"/>
+    <testcase classname="railhmi-core" name="one integration (NVR)"/>
+    <testcase classname="railhmi-core" name="NVR id/address"/>
+    <testcase classname="railhmi-core" name="NVR registered"/>
+    <testcase classname="railhmi-core" name="NVR state = unconfigured"/>
+    <testcase classname="railhmi-core" name="NVR channel mapping = 未配置"/>
+    <testcase classname="railhmi-core" name="NVR protocol placeholder —"/>
+    <testcase classname="railhmi-core" name="rename reflected in registry"/>
+    <testcase classname="railhmi-core" name="remove camera -&gt; 5 slots"/>
+    <testcase classname="railhmi-core" name="removed camera absent"/>
+    <testcase classname="railhmi-core" name="add camera -&gt; 7 slots"/>
+    <testcase classname="railhmi-core" name="two-camera config loads"/>
+    <testcase classname="railhmi-core" name="registry order follows config order"/>
+    <testcase classname="railhmi-core" name="missing required field reports cameras[0].rtsp_url"/>
+    <testcase classname="railhmi-core" name="1920x1080 three-panel order left-front-right"/>
+    <testcase classname="railhmi-core" name="1920x1080 front largest (&gt;=0.34 width)"/>
+    <testcase classname="railhmi-core" name="1920x1080 front wider than both sides"/>
+    <testcase classname="railhmi-core" name="1920x1080 P0 elements fit without scroll"/>
+    <testcase classname="railhmi-core" name="1920x1080 L1 alarm banner does not cover front center"/>
+    <testcase classname="railhmi-core" name="1920x1080 left/front adjacent"/>
+    <testcase classname="railhmi-core" name="1920x1080 front/right adjacent"/>
+    <testcase classname="railhmi-core" name="1920x1080 right flush to row edge"/>
+    <testcase classname="railhmi-core" name="1920x1080 front center inside front panel"/>
+    <testcase classname="railhmi-core" name="1920x1080 top bar at top"/>
+    <testcase classname="railhmi-core" name="1920x1080 status strip below row"/>
+    <testcase classname="railhmi-core" name="1920x1080 alarm bar flush bottom"/>
+    <testcase classname="railhmi-core" name="1280x720 three-panel order left-front-right"/>
+    <testcase classname="railhmi-core" name="1280x720 front largest (&gt;=0.34 width)"/>
+    <testcase classname="railhmi-core" name="1280x720 front wider than both sides"/>
+    <testcase classname="railhmi-core" name="1280x720 P0 elements fit without scroll"/>
+    <testcase classname="railhmi-core" name="1280x720 L1 alarm banner does not cover front center"/>
+    <testcase classname="railhmi-core" name="1280x720 left/front adjacent"/>
+    <testcase classname="railhmi-core" name="1280x720 front/right adjacent"/>
+    <testcase classname="railhmi-core" name="1280x720 right flush to row edge"/>
+    <testcase classname="railhmi-core" name="1280x720 front center inside front panel"/>
+    <testcase classname="railhmi-core" name="1280x720 top bar at top"/>
+    <testcase classname="railhmi-core" name="1280x720 status strip below row"/>
+    <testcase classname="railhmi-core" name="1280x720 alarm bar flush bottom"/>
+    <testcase classname="railhmi-core" name="16:9 1920x1080 vs 1280x720 ratios preserved"/>
+    <testcase classname="railhmi-core" name="16:9 1920x1080 vs 960x540 ratios preserved"/>
+    <testcase classname="railhmi-core" name="resized layouts keep left-front-right order"/>
+    <testcase classname="railhmi-core" name="front area ratio &gt;= 0.34"/>
+    <testcase classname="railhmi-core" name="side ratio within [0.22,0.30]"/>
+    <testcase classname="railhmi-core" name="landsacpe -&gt; 3x2"/>
+    <testcase classname="railhmi-core" name="1280x720 -&gt; 3x2"/>
+    <testcase classname="railhmi-core" name="portrait -&gt; 2x3"/>
+    <testcase classname="railhmi-core" name="3x2 dims"/>
+    <testcase classname="railhmi-core" name="2x3 dims"/>
+    <testcase classname="railhmi-core" name="6 slots"/>
+    <testcase classname="railhmi-core" name="slots identical across calls (state-independent)"/>
+    <testcase classname="railhmi-core" name="3x2 slot mapping (row = i/3, col = i%3)"/>
+    <testcase classname="railhmi-core" name="2x3 slot mapping (row = i/2, col = i%2)"/>
+    <testcase classname="railhmi-core" name="3x2 cells do not overlap"/>
+    <testcase classname="railhmi-core" name="3x2 cells within area"/>
+    <testcase classname="railhmi-core" name="unstarted: still 6 cells (no cell dropped)"/>
+    <testcase classname="railhmi-core" name="unstarted: order equals registry order"/>
+    <testcase classname="railhmi-core" name="unstarted token/label"/>
+    <testcase classname="railhmi-core" name="unstarted: fps/last = —"/>
+    <testcase classname="railhmi-core" name="unstarted: placeholder"/>
+    <testcase classname="railhmi-core" name="badge carried from registry"/>
+    <testcase classname="railhmi-core" name="live label"/>
+    <testcase classname="railhmi-core" name="live fps text"/>
+    <testcase classname="railhmi-core" name="live last-frame text"/>
+    <testcase classname="railhmi-core" name="live presentable, no placeholder"/>
+    <testcase classname="railhmi-core" name="live no reconnect text"/>
+    <testcase classname="railhmi-core" name="cut: grid size unchanged"/>
+    <testcase classname="railhmi-core" name="cut: slots do not reorder (grid does not jump)"/>
+    <testcase classname="railhmi-core" name="cut: channel 4 reconnecting"/>
+    <testcase classname="railhmi-core" name="cut: channel 4 placeholder"/>
+    <testcase classname="railhmi-core" name="cut: reconnect count text"/>
+    <testcase classname="railhmi-core" name="cut: frozen last-frame time shown"/>
+    <testcase classname="railhmi-core" name="cut: the other five cells keep refreshing"/>
+    <testcase classname="railhmi-core" name="frozen label"/>
+    <testcase classname="railhmi-core" name="unknown token passthrough"/>
+    <testcase classname="railhmi-core" name="fps 0 -&gt; —"/>
+    <testcase classname="railhmi-core" name="no-frame text set"/>
+    <testcase classname="railhmi-core" name="minutes format"/>
+    <testcase classname="railhmi-core" name="5 levels have 5 distinct shapes"/>
+    <testcase classname="railhmi-core" name="5 levels have 5 distinct glyphs (B&amp;W distinguishable)"/>
+    <testcase classname="railhmi-core" name="5 levels have 5 distinct labels"/>
+    <testcase classname="railhmi-core" name="5 levels have 5 distinct color tokens"/>
+    <testcase classname="railhmi-core" name="warning/alarm are abnormal"/>
+    <testcase classname="railhmi-core" name="ok/unavailable are not abnormal"/>
+    <testcase classname="railhmi-core" name="key status has 7 items"/>
+    <testcase classname="railhmi-core" name="7 items in fixed order"/>
+    <testcase classname="railhmi-core" name="default snapshot -&gt; all 未接入, not abnormal, not clickable"/>
+    <testcase classname="railhmi-core" name="item labels"/>
+    <testcase classname="railhmi-core" name="all-ok strip: nothing abnormal/clickable"/>
+    <testcase classname="railhmi-core" name="all-ok uses ok color + dot shape (简单)"/>
+    <testcase classname="railhmi-core" name="camera warning prominent (triangle/degraded)"/>
+    <testcase classname="railhmi-core" name="ai alarm prominent (square/error)"/>
+    <testcase classname="railhmi-core" name="pantograph stays simple"/>
+    <testcase classname="railhmi-core" name="pantograph -&gt; P4"/>
+    <testcase classname="railhmi-core" name="wheel_rail -&gt; P4"/>
+    <testcase classname="railhmi-core" name="door -&gt; P4"/>
+    <testcase classname="railhmi-core" name="camera -&gt; P6"/>
+    <testcase classname="railhmi-core" name="ai -&gt; P5"/>
+    <testcase classname="railhmi-core" name="recording -&gt; P3"/>
+    <testcase classname="railhmi-core" name="driver clicking AI alarm -&gt; no permission (提示无权限)"/>
+    <testcase classname="railhmi-core" name="maintainer clicking AI alarm -&gt; allowed to P5"/>
+    <testcase classname="railhmi-core" name="normal item is not clickable"/>
+    <testcase classname="railhmi-core" name="top bar has 7 items"/>
+    <testcase classname="railhmi-core" name="top bar fixed order"/>
+    <testcase classname="railhmi-core" name="top bar shows time"/>
+    <testcase classname="railhmi-core" name="mode bit: visible + IR not connected, neutral, no alarm color"/>
+    <testcase classname="railhmi-core" name="mode bit has no toggle/click"/>
+    <testcase classname="railhmi-core" name="vehicle speed / door sensor shown as 未接入"/>
+    <testcase classname="railhmi-core" name="AI warning in top bar clickable"/>
+    <testcase classname="railhmi-core" name="driver clicking AI warning -&gt; no permission"/>
+  </testsuite>
+</testsuites>

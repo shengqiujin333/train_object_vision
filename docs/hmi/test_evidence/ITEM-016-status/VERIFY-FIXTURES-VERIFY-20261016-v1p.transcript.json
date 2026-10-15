@@ -1,0 +1,64 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify016",
+    "cpp": "docs/hmi/test_evidence/ITEM-016-status/verify_status16_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-016-status",
+    "stamp": "VERIFY-20261016-v1",
+    "impl_log": "docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-20261016-ITEM016-r2.core-evidence_core-tests-20261016-ITEM016-r2.log",
+    "keep_remote": "False",
+    "connect_timeout": "10",
+    "timeout_sec": "1500",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app",
+    "tokens_yaml": "E:\\work\\rail_issue\\rk3588_handover\\docs\\hmi\\design_tokens.yaml"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_build",
+      "exit": 0,
+      "elapsed_s": 0.26,
+      "output": ""
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir docs\\hmi\\test_evidence\\ITEM-016-status --stamp VERIFY-20261016-v1 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 27.95,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 113 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 SCAN_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 STATUS_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: docs\\hmi\\test_evidence\\ITEM-016-status\\build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json\nlog: docs\\hmi\\test_evidence\\ITEM-016-status\\build-TestRun-192_168_0_103-VERIFY-20261016-v1.log\n"
+    },
+    {
+      "step": "probe-assert-maintainer",
+      "exit": 0,
+      "output": "{\"fails\": [], \"items\": 7, \"tops\": 7}"
+    },
+    {
+      "step": "probe-assert-driver",
+      "exit": 0,
+      "output": "{\"fails\": [], \"items\": 7, \"tops\": 7}"
+    },
+    {
+      "step": "log-compare",
+      "exit": 0,
+      "output": "impl=build-TestRun-192_168_0_103-20261016-ITEM016-r1.core-evidence_core-tests-20261016-ITEM016-r1.log impl_pass_lines=443 verify_pass_lines=443 identical=True"
+    },
+    {
+      "step": "junit-parse",
+      "exit": 0,
+      "output": "junit build-TestRun-192_168_0_103-20261016-ITEM016-r1.core-evidence_core-tests-20261016-ITEM016-r1.xml tests=443 failures=0 status_cases=25"
+    }
+  ]
+}

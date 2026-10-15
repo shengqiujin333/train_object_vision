@@ -1,0 +1,70 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 113 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 SCAN_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 STATUS_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-VERIFY-20261016-v2.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-driver-VERIFY-20261016-v2.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-016-status\build-TestRun-192_168_0_103-VERIFY-20261016-v2.transcript.json
+log: docs\hmi\test_evidence\ITEM-016-status\build-TestRun-192_168_0_103-VERIFY-20261016-v2.log
+
+
+===== [probe-assert-maintainer] exit=0 =====
+{"fails": [], "items": 7, "tops": 7}
+
+===== [probe-assert-driver] exit=0 =====
+{"fails": [], "items": 7, "tops": 7}
+
+===== [log-compare] exit=0 =====
+impl=build-TestRun-192_168_0_103-20261016-ITEM016-r2.core-evidence_core-tests-20261016-ITEM016-r2.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log impl_pass_lines=443 verify_pass_lines=443 identical=True
+
+===== [junit-parse] exit=0 =====
+junit build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml tests=443 failures=0 status_cases=25
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-016-status/verify_status16_ext.cpp
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=1
+bash: line 1: cd: /tmp/railhmi_build/app: No such file or directory
+
+
+===== [run-ext] exit=0 =====
+EXT_EXIT=1
+bash: line 1: cd: /tmp/railhmi_build/app: No such file or directory
+
+
+===== [probe-negative-arg] exit=0 =====
+N1_EXIT=1
+bash: line 1: cd: /tmp/railhmi_build/app: No such file or directory
+
+
+===== [probe-negative-role] exit=0 =====
+N2_EXIT=1
+bash: line 1: cd: /tmp/railhmi_build/app: No such file or directory
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify016': No such file or directory
+ls: cannot access '/tmp/railhmi_build': No such file or directory
+

@@ -516,6 +516,13 @@ docs/hmi/test_evidence/ITEM-015-grid/verify_grid15_ext.cpp | active | ITEM-015 �
 docs/hmi/test_evidence/ITEM-015-grid/verify_grid15_fixtures.py | active | ITEM-015 验证夹具运行器（Paramiko 指纹校验；交付入口复跑+逐行比对+JUnit 独立解析、multi-probe 三组独立参数解析、负例、ext 编译运行、有限等待全程）
 docs/hmi/test_evidence/ITEM-015-grid/verify_qml_wiring15.py | active | ITEM-015 QML 接线静态核对（P4/CameraTile/main.cpp 注入链 34 断言；主机执行）
 docs/hmi/test_evidence/ITEM-016-status/README.md | active | ITEM-016 关键状态区与顶部模式信息条证据（五级三重编码/七类状态/顶部条/点击权限/板端 443/443 单测 + 状态探针 PASS/边界/复现）
+docs/hmi/test_evidence/ITEM-016-status/VERIFY-FIXTURES-VERIFY-20261016-v1p.log | active | ITEM-016 v1 过程轮留痕（夹具 mkdir 漏建验证工作目录致 ext 上传 ENOENT；主链 443/443 已一致）
+docs/hmi/test_evidence/ITEM-016-status/VERIFY-FIXTURES-VERIFY-20261016-v1p.transcript.json | active | ITEM-016 v1 过程轮 transcript 留痕
+docs/hmi/test_evidence/ITEM-016-status/VERIFY-FIXTURES-VERIFY-20261016-v2.log | active | ITEM-016 v2 过程轮留痕（主链全绿；ext 步 cd /tmp/railhmi_build/app 为验证侧模板错误）
+docs/hmi/test_evidence/ITEM-016-status/VERIFY-FIXTURES-VERIFY-20261016-v2.transcript.json | active | ITEM-016 v2 过程轮 transcript 留痕
+docs/hmi/test_evidence/ITEM-016-status/VERIFY-FIXTURES-VERIFY-20261016-v3.log | active | ITEM-016 v3 权威验证轮全程（443/443 identical=True、探针两角色、ext 79/79、负例 N1/N2=2、清理确认）
+docs/hmi/test_evidence/ITEM-016-status/VERIFY-FIXTURES-VERIFY-20261016-v3.transcript.json | active | ITEM-016 v3 权威轮 transcript（指纹/逐命令/退出码/取回）
+docs/hmi/test_evidence/ITEM-016-status/VERIFY-ITEM-016.md | active | ITEM-016 软件验证 TestEvidence（VERIFY-20261016-v3 权威轮：判据 J1-J6 逐条、板端独立复跑 443/443 逐行一致 identical=True、JUnit 独立解析 443/0、探针两角色独立断言 fails=[]、负例 exit2、ext 夹具 79/79、QML 静态接线、边界与 v1/v2 过程轮留痕）
 docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-20261016-ITEM016-r1.core-evidence_core-tests-20261016-ITEM016-r1.log | active | ITEM-016 首轮 core 单测（443 passed / 0 failed）留痕
 docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-20261016-ITEM016-r1.core-evidence_core-tests-20261016-ITEM016-r1.xml | active | ITEM-016 首轮 JUnit XML 留痕
 docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-20261016-ITEM016-r1.core-evidence_sim-inject-20261016-ITEM016-r1.json | active | ITEM-016 首轮 sim-inject 回归 JSON 留痕
@@ -531,6 +538,33 @@ docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-20261016-ITEM
 docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-20261016-ITEM016-r2.core-evidence_status-probe-driver-20261016-ITEM016-r2.log | active | ITEM-016 状态探针（mixed/driver）异常项可点但 allowed=false（无权限）原文
 docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-20261016-ITEM016-r2.log | active | ITEM-016 板端 TestRun 运行日志（构建 + 单测 + 令牌自检 + UI 扫描 + 状态探针）
 docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-20261016-ITEM016-r2.transcript.json | active | ITEM-016 板端 TestRun transcript（主机指纹/逐命令退出码/取回）
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log | active | ITEM-016 v1 core 单测逐项通过原文留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml | active | ITEM-016 v1 JUnit XML 留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json | active | ITEM-016 v1 sim-inject 回归 JSON 留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log | active | ITEM-016 v1 sim-inject 回归日志留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log | active | ITEM-016 v1 状态探针（maintainer）留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log | active | ITEM-016 v1 状态探针（driver）留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v1.log | active | ITEM-016 v1 验证轮板端交付入口归档（443/443）留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json | active | ITEM-016 v1 验证轮 TestRun transcript 留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log | active | ITEM-016 v2 core 单测逐项通过原文留痕（与实现者 r2 逐行一致）
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml | active | ITEM-016 v2 JUnit XML 留痕（443 用例）
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.json | active | ITEM-016 v2 sim-inject 回归 JSON 留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.log | active | ITEM-016 v2 sim-inject 回归日志留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-VERIFY-20261016-v2.log | active | ITEM-016 v2 状态探针（maintainer）留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v2.core-evidence_status-probe-driver-VERIFY-20261016-v2.log | active | ITEM-016 v2 状态探针（driver）留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v2.log | active | ITEM-016 v2 过程轮板端交付入口归档（443/443）留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v2.transcript.json | active | ITEM-016 v2 过程轮 TestRun transcript 留痕
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log | active | ITEM-016 v3 core 单测逐项通过原文（443/[PASS] 行）
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml | active | ITEM-016 v3 JUnit XML（443 用例，独立解析 failures=0，status_cases=25）
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.json | active | ITEM-016 v3 sim-inject 回归 JSON
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.log | active | ITEM-016 v3 sim-inject 回归日志
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-VERIFY-20261016-v3.log | active | ITEM-016 v3 状态探针（mixed/maintainer）原文（独立解析 fails=[]）
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-driver-VERIFY-20261016-v3.log | active | ITEM-016 v3 状态探针（mixed/driver）原文（独立解析 fails=[]，异常项 allowed=false）
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v3.log | active | ITEM-016 v3 权威轮板端交付入口归档（443/443，与实现者 r2 逐行一致 identical=True）
+docs/hmi/test_evidence/ITEM-016-status/build-TestRun-192_168_0_103-VERIFY-20261016-v3.transcript.json | active | ITEM-016 v3 权威轮 TestRun transcript（指纹/逐命令/退出码/取回）
+docs/hmi/test_evidence/ITEM-016-status/run_verify_round.sh | active | ITEM-016 验证轮驱动（PowerShell User env 凭据仅进程内导出；stamp 可覆盖）
+docs/hmi/test_evidence/ITEM-016-status/verify_status16_ext.cpp | active | ITEM-016 验证自有扩展夹具（五级三重编码逐级显式十对互异/异常精确性+Info 传递/混合矩阵隔离/顶部条身份与未接入/权限矩阵 28 组合/确定性 79 断言；链接交付 librailhmi_core.a）
+docs/hmi/test_evidence/ITEM-016-status/verify_status16_fixtures.py | active | ITEM-016 验证夹具运行器（Paramiko 指纹校验；TestRun 交付入口复跑+443 行逐行比对+JUnit 独立解析、探针两角色独立解析、负例 exit2、ext 编译运行、按名清理/有限等待全程）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）
