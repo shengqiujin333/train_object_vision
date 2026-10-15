@@ -1,0 +1,7 @@
+[render-spike] source=rtsp url=<none> file=<none> duration=20s outdir=/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path
+[render-spike] DRY-RUN plan:
+  1) build: cmake -S '/e/work/rail_issue/rk3588_handover/app/spikes/render_path' -B '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build' -DCMAKE_BUILD_TYPE=Release && cmake --build '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build' -j
+  2) run:   '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build/render_spike' --path gl  --source rtsp --url '<url>' --file '<file>' --duration 20 --out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/gl-20261015-163701.json'
+  3) run:   '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build/render_spike' --path cpu --source rtsp --url '<url>' --file '<file>' --duration 20 --out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/cpu-20261015-163701.json'
+  4) decide: python3 '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/analyze.py' --gl ... --cpu ... --min-fps 20 --out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/selection-20261015-163701.json' --md-out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/selection-20261015-163701.md'
+[render-spike] dry-run OK (no build, no device access)

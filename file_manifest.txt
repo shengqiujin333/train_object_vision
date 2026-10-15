@@ -51,8 +51,11 @@ docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-verify.json | ac
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-verify.md | active | 软件验证独立复现的探针报告（逐行等于归档原件除时间戳，ITEM-001 验证证据）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.json | active | 依赖探针主机运行结构化结果（ITEM-001 证据，过渡编号，被 -r2 取代）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.md | active | 依赖探针主机运行原始报告（非目标板结论，ITEM-001 证据）
+docs/hmi/test_evidence/ITEM-002-render-path/VERIFY-ITEM-002.md | active | ITEM-002 渲染路径 spike 软件验证 TestEvidence（TEST_FAIL：板端实测未产出，设备授权缺口；实现侧工具独立复现通过）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015-r2.txt | active | ITEM-002 重试主机自检（source=file/test 与 --md-out synthetic fixture 表格，未执行板端）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015.txt | active | ITEM-002 主机自检证据（analyze.py --selftest 6/6 与 run_render_spike.sh --dry-run）
+docs/hmi/test_evidence/ITEM-002-render-path/verify-dryrun-20261015.txt | active | ITEM-002 验证人独立复现 run_render_spike.sh --dry-run 原始输出（退出码 0）
+docs/hmi/test_evidence/ITEM-002-render-path/verify-selftest-20261015.txt | active | ITEM-002 验证人独立复现 analyze.py --selftest 原始输出（6/6 通过）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：ITEM-001 依赖基线核验的独立复现、判据逐条核对、偏差 D-01..D-05 与修复要求（TEST_PASS，范围限 ITEM-001）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
