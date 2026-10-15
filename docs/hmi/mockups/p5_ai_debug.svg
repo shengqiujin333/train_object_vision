@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" font-family="'Noto Sans CJK SC','Source Han Sans SC',sans-serif">
+  <title>P5 AI 调试（视觉示意，非运行截图）</title>
+  <rect width="1920" height="1080" fill="#0E1116"/>
+
+  <rect x="0" y="0" width="1920" height="48" fill="#161B22"/><line x1="0" y1="48" x2="1920" y2="48" stroke="#2D3644"/>
+  <text x="24" y="30" fill="#E6EDF3" font-size="18" font-family="'Noto Sans Mono',monospace">2026-10-15 09:42:07</text>
+  <rect x="1760" y="10" width="140" height="28" rx="4" fill="#2A2312"/><text x="1830" y="30" fill="#E3B341" font-size="13" text-anchor="middle">仅调试角色</text>
+
+  <rect x="0" y="48" width="88" height="1032" fill="#161B22"/><line x1="88" y1="48" x2="88" y2="1080" stroke="#2D3644"/>
+  <text x="44" y="196" fill="#4C5764" font-size="14" text-anchor="middle">▣</text><text x="44" y="216" fill="#4C5764" font-size="12" text-anchor="middle">实时</text>
+  <text x="44" y="284" fill="#9BA7B4" font-size="14" text-anchor="middle">🔔</text><text x="44" y="304" fill="#9BA7B4" font-size="12" text-anchor="middle">报警</text>
+  <text x="44" y="372" fill="#9BA7B4" font-size="14" text-anchor="middle">⟲</text><text x="44" y="392" fill="#9BA7B4" font-size="12" text-anchor="middle">回放</text>
+  <text x="44" y="460" fill="#9BA7B4" font-size="14" text-anchor="middle">⊞</text><text x="44" y="480" fill="#9BA7B4" font-size="12" text-anchor="middle">全摄</text>
+  <rect x="0" y="508" width="4" height="72" fill="#3B82F6"/>
+  <rect x="20" y="524" width="48" height="32" rx="6" fill="#1F2630"/><text x="44" y="548" fill="#3B82F6" font-size="16" text-anchor="middle">⌗</text>
+  <text x="44" y="572" fill="#E6EDF3" font-size="12" text-anchor="middle">AI</text>
+  <text x="44" y="636" fill="#9BA7B4" font-size="14" text-anchor="middle">⚙</text><text x="44" y="656" fill="#9BA7B4" font-size="12" text-anchor="middle">维护</text>
+
+  <text x="128" y="100" fill="#E6EDF3" font-size="24" font-weight="bold">AI 调试</text>
+  <text x="128" y="126" fill="#9BA7B4" font-size="14">前方 CAM-01 · rail seg + 人形检测 · 叠加层仅调试可见</text>
+
+  <!-- debug video -->
+  <rect x="128" y="152" width="1220" height="700" rx="8" fill="#0A0D11" stroke="#3A4552" stroke-width="2"/>
+  <text x="148" y="180" fill="#9BA7B4" font-size="13">前方 CAM-01</text>
+  <!-- ROI dashed -->
+  <path d="M 420 852 L 560 400 L 820 400 L 1010 852 Z" fill="none" stroke="#FFD400" stroke-width="2" stroke-dasharray="10 6"/>
+  <text x="560" y="392" fill="#FFD400" font-size="14">ROI 行车走廊</text>
+  <!-- detection boxes (debug cyan, distinct from alarm red) -->
+  <rect x="700" y="500" width="150" height="220" fill="none" stroke="#00E5FF" stroke-width="2"/>
+  <rect x="700" y="476" width="230" height="24" fill="#00343D"/><text x="708" y="493" fill="#00E5FF" font-size="13">person 0.91 · 38.2 m #T-17</text>
+  <rect x="520" y="560" width="120" height="170" fill="none" stroke="#00E5FF" stroke-width="2"/>
+  <rect x="520" y="536" width="200" height="24" fill="#00343D"/><text x="528" y="553" fill="#00E5FF" font-size="13">person 0.62 · 61.5 m #T-18</text>
+  <!-- rail mask legend -->
+  <rect x="140" y="812" width="16" height="16" fill="#00E5FF" opacity="0.35"/><text x="164" y="826" fill="#9BA7B4" font-size="13">轨道 mask</text>
+  <line x1="270" y1="820" x2="300" y2="820" stroke="#FFD400" stroke-width="2" stroke-dasharray="10 6"/><text x="308" y="826" fill="#9BA7B4" font-size="13">ROI</text>
+  <rect x="370" y="812" width="16" height="16" fill="none" stroke="#00E5FF" stroke-width="2"/><text x="394" y="826" fill="#9BA7B4" font-size="13">检测框</text>
+
+  <!-- metrics panel -->
+  <rect x="1364" y="152" width="424" height="700" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="1388" y="184" fill="#E6EDF3" font-size="18" font-weight="bold">运行指标</text>
+  <g font-size="14" fill="#E6EDF3">
+    <text x="1388" y="220" fill="#9BA7B4" font-size="12">推理帧率</text><text x="1760" y="220" text-anchor="end" font-family="'Noto Sans Mono',monospace">23.9 fps</text>
+    <text x="1388" y="252" fill="#9BA7B4" font-size="12">端到端延迟</text><text x="1760" y="252" text-anchor="end" font-family="'Noto Sans Mono',monospace">86 ms</text>
+    <text x="1388" y="284" fill="#9BA7B4" font-size="12">模型版本</text><text x="1760" y="284" text-anchor="end" font-family="'Noto Sans Mono',monospace">yolov8s-seg-r3</text>
+    <text x="1388" y="316" fill="#9BA7B4" font-size="12">最近结果</text><text x="1760" y="316" text-anchor="end" font-family="'Noto Sans Mono',monospace">09:42:07.31</text>
+    <text x="1388" y="348" fill="#9BA7B4" font-size="12">NPU 负载</text><text x="1760" y="348" text-anchor="end" font-family="'Noto Sans Mono',monospace">42 %</text>
+  </g>
+  <line x1="1388" y1="372" x2="1764" y2="372" stroke="#2D3644"/>
+  <text x="1388" y="404" fill="#E6EDF3" font-size="16" font-weight="bold">叠加层</text>
+  <!-- toggles -->
+  <g font-size="14">
+    <text x="1388" y="440" fill="#9BA7B4">检测框</text><rect x="1700" y="424" width="44" height="24" rx="12" fill="#3B82F6"/><circle cx="1732" cy="436" r="10" fill="#FFFFFF"/>
+    <text x="1388" y="480" fill="#9BA7B4">ROI / 轨道走廊</text><rect x="1700" y="464" width="44" height="24" rx="12" fill="#3B82F6"/><circle cx="1732" cy="476" r="10" fill="#FFFFFF"/>
+    <text x="1388" y="520" fill="#9BA7B4">置信度 / 距离</text><rect x="1700" y="504" width="44" height="24" rx="12" fill="#3B82F6"/><circle cx="1732" cy="516" r="10" fill="#FFFFFF"/>
+    <text x="1388" y="560" fill="#9BA7B4">轨道 mask</text><rect x="1700" y="544" width="44" height="24" rx="12" fill="#2D3644"/><circle cx="1712" cy="556" r="10" fill="#9BA7B4"/>
+    <text x="1388" y="600" fill="#9BA7B4">原始录像</text><rect x="1700" y="584" width="44" height="24" rx="12" fill="#2D3644"/><circle cx="1712" cy="596" r="10" fill="#9BA7B4"/>
+  </g>
+  <line x1="1388" y1="628" x2="1764" y2="628" stroke="#2D3644"/>
+  <rect x="1388" y="648" width="376" height="180" rx="6" fill="#1B2027"/>
+  <text x="1404" y="674" fill="#9BA7B4" font-size="12">事件日志（最近）</text>
+  <g font-family="'Noto Sans Mono',monospace" font-size="12" fill="#9BA7B4">
+    <text x="1404" y="700">09:42:07 T-17 person 0.91 38.2m</text>
+    <text x="1404" y="722">09:42:06 T-18 person 0.62 61.5m</text>
+    <text x="1404" y="744">09:42:05 多帧确认 3/3 → 一级</text>
+    <text x="1404" y="766">09:42:04 rail mask 12.1%</text>
+    <text x="1404" y="788">09:42:03 seg 8.4ms detect 6.1ms</text>
+  </g>
+
+  <text x="128" y="960" fill="#E6EDF3" font-size="14">⚠ 本页及调试叠加层对司机角色不渲染；调试框（青色 #00E5FF）与 ROI（黄虚线 #FFD400）刻意避开报警红，避免误读。</text>
+  <text x="128" y="1046" fill="#4C5764" font-size="12">视觉示意（手绘 SVG 线框，非运行截图） · 参考 1920×1080</text>
+</svg>

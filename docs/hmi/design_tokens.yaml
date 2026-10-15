@@ -1,0 +1,203 @@
+# UI 视觉设计令牌（Design Tokens）
+# Capability: web_frontend.ui_visual_design
+# 平台: RK3588 本地桌面 HMI（X11），参考分辨率 1920x1080，最低 1280x720
+# 说明: 本文件是机器可读的视觉令牌，供 desktop_app_implementation 与 ui_visual_design 消费。
+#       数值与 docs/hmi/VISUAL_DESIGN.md 保持一致；改此处须同步正文。
+
+meta:
+  theme: dark            # 车载司机环境默认深色，降低眩光
+  reference_resolution: [1920, 1080]
+  min_resolution: [1280, 720]
+  grid: 8                # 基础网格 px
+  scale_policy: proportional
+  density: comfortable
+
+color:
+  # ---- 基础层 ----
+  bg_base:        "#0E1116"   # 应用背景
+  bg_sunken:      "#0A0D11"   # 视频格/凹陷区
+  surface:        "#161B22"   # 面板
+  surface_elev:   "#1F2630"   # 卡片/浮层
+  surface_hover:  "#232B36"
+  border:         "#2D3644"
+  border_strong:  "#3A4552"
+  overlay_scrim:  "rgba(6,9,12,0.72)"   # 模态遮罩
+
+  # ---- 文本 ----
+  text_primary:   "#E6EDF3"
+  text_secondary: "#9BA7B4"
+  text_muted:     "#6E7A88"
+  text_disabled:  "#4C5764"
+  text_on_solid:  "#FFFFFF"
+
+  # ---- 交互 ----
+  accent:         "#3B82F6"   # 主操作/选中
+  accent_hover:   "#2F6FE0"
+  accent_pressed: "#2563C9"
+  focus_ring:     "#58A6FF"
+  link:           "#79B8FF"
+
+  # ---- 语义 ----
+  ok:             "#3FB950"   # 正常/在线
+  ok_bg:          "#12261A"
+  info:           "#4C9AFF"   # 连接中/信息
+  info_bg:        "#12203A"
+  degraded:       "#E3B341"   # 降级/冻结/警告
+  degraded_bg:    "#2A2312"
+  error:          "#E5484D"   # 离线/故障（实底/边框/强调）
+  error_fg:       "#FF6B6B"   # 深红底上的文本/图标（保证对比度）
+  error_bg:       "#331114"
+  neutral:        "#8B949E"   # 未知/不适用
+  neutral_bg:     "#1B2027"
+
+alarm:
+  # 报警级别：颜色 + 形状 + 文字 三重编码，颜色非唯一判据
+  L1:
+    label: "一级"
+    glyph: "triangle"          # ▲ 实心三角
+    accent: "#FF6B6B"          # 图标/边框/文字强调
+    solid_bg: "#C42B1C"        # 横幅实底（配白字，对比 ~7:1）
+    tint_bg: "#3A1518"
+    border: "#E5484D"
+    text_on_solid: "#FFFFFF"
+    sound: required            # 持续到确认
+    pulse_hz: 1.5              # 脉冲，≤3Hz
+    persist: until_ack
+  L2:
+    label: "二级"
+    glyph: "circle"            # ● 实心圆
+    accent: "#F0883E"
+    solid_bg: "#B45309"
+    tint_bg: "#3A2612"
+    border: "#F0883E"
+    text_on_solid: "#FFFFFF"
+    sound: short
+    pulse_hz: 0
+    persist: until_dismiss_or_ack
+  L3:
+    label: "三级"
+    glyph: "diamond"           # ◆ 实心菱形
+    accent: "#E3B341"
+    solid_bg: "#8A6D00"
+    tint_bg: "#332A12"
+    border: "#E3B341"
+    text_on_solid: "#FFFFFF"
+    sound: none
+    pulse_hz: 0
+    persist: auto_dismiss_10s
+
+stream_state:
+  live:         { label: "在线",    fg: "#3FB950", bg: "#12261A", glyph: "dot",   placeholder: false }
+  connecting:   { label: "连接中",  fg: "#4C9AFF", bg: "#12203A", glyph: "spinner", placeholder: true }
+  reconnecting: { label: "重连中",  fg: "#4C9AFF", bg: "#12203A", glyph: "spinner", placeholder: true }
+  frozen:       { label: "画面冻结", fg: "#E3B341", bg: "#2A2312", glyph: "snowflake", placeholder: true }
+  degraded:     { label: "画面降级", fg: "#E3B341", bg: "#2A2312", glyph: "warning", placeholder: false }
+  offline:      { label: "离线",    fg: "#FF6B6B", bg: "#331114", glyph: "slash",  placeholder: true }
+
+typography:
+  family:
+    ui: '"Noto Sans CJK SC","Source Han Sans SC","WenQuanYi Micro Hei","Noto Sans",sans-serif'
+    mono: '"Noto Sans Mono","DejaVu Sans Mono",monospace'
+  scale:
+    display:   { size: 32, line: 40, weight: 700 }   # 一级报警标题
+    h1:        { size: 24, line: 32, weight: 700 }   # 页面标题
+    h2:        { size: 20, line: 28, weight: 500 }   # 区块标题
+    body_lg:   { size: 18, line: 26, weight: 400 }   # 驾驶员关键文本
+    body:      { size: 16, line: 24, weight: 400 }   # 正文/表格
+    label:     { size: 14, line: 20, weight: 500 }   # 标签/按钮
+    caption:   { size: 12, line: 16, weight: 400 }   # 辅助信息（非关键）
+  min_driver_text: 16      # 1280x720 档司机可见文本下限
+  min_alarm_title: 24
+  numeral: mono            # 时间/FPS/距离/置信度用等宽
+
+spacing:
+  s0: 0
+  s1: 4
+  s2: 8
+  s3: 12
+  s4: 16
+  s5: 24
+  s6: 32
+  s7: 48
+  s8: 64
+  safe_area: { "1920x1080": 24, "1280x720": 16 }
+
+radius:
+  chip: 4
+  button: 6
+  card: 8
+  panel: 8
+  modal: 12
+  pill: 999
+
+border:
+  width: 1
+  width_emphasis: 2
+  alarm_width: 3
+
+elevation:
+  # 深色+车载环境：以边框分层为主，阴影轻量，避免光晕
+  "0": "none"
+  "1": "0 1px 2px rgba(0,0,0,0.4)"
+  "2": "0 4px 12px rgba(0,0,0,0.5)"
+  "3": "0 12px 32px rgba(0,0,0,0.6)"
+
+radius_note: border+表面层级优先于阴影
+
+size:
+  top_bar_height: 48
+  nav_width: 88
+  status_strip_height: 64
+  alarm_bar_height: 64
+  touch_target_min: 44
+  button:
+    lg: 44
+    md: 36
+    sm: 32
+  camera_tile:
+    front_min_area_ratio: 0.34     # 前方画面面积占比下限（三联内）
+    side_area_ratio: [0.22, 0.30]
+
+motion:
+  fast:   120ms
+  normal: 200ms
+  slow:   320ms
+  easing: "cubic-bezier(0.2,0,0,1)"
+  pulse_min_hz: 1.0
+  pulse_max_hz: 3.0
+  reduce_motion: respect_os_setting
+
+z_index:
+  base: 0
+  camera_overlay: 10
+  top_bar: 100
+  nav: 100
+  auto_popup: 300
+  alarm_banner: 400
+  modal: 500
+  toast: 600
+
+icon:
+  grid: 24
+  stroke: 2
+  style: outline
+  status_filled: true       # 状态点/级别用实心
+  set_rule: "使用开源许可图标集（如 Lucide ISC / Material Symbols Apache-2.0）或项目自绘 SVG；须登记来源与许可，禁止未授权素材"
+  required_glyphs: [camera, camera-off, bell, replay-clock, grid-6, cpu-ai, wrench, check, warning-triangle, circle, diamond, play, pause, speed, export, lock, user, clock, thermometer, disk, network, chevron-left, chevron-right, close, search, filter]
+
+contrast_verified_pairs:
+  # 记录已核对组合（WCAG 2.1 相对亮度计算，2026-10 用脚本复算），实现不得降低
+  - { fg: "#E6EDF3", bg: "#0E1116", ratio: 16.00 }
+  - { fg: "#9BA7B4", bg: "#0E1116", ratio: 7.73 }
+  - { fg: "#E6EDF3", bg: "#161B22", ratio: 14.64 }
+  - { fg: "#E6EDF3", bg: "#1F2630", ratio: 12.90 }
+  - { fg: "#9BA7B4", bg: "#1F2630", ratio: 6.23 }
+  - { fg: "#FFFFFF", bg: "#C42B1C", ratio: 5.66 }   # 一级报警实底
+  - { fg: "#FFFFFF", bg: "#B45309", ratio: 5.02 }   # 二级报警实底
+  - { fg: "#FFFFFF", bg: "#8A6D00", ratio: 4.92 }   # 三级报警实底
+  - { fg: "#3FB950", bg: "#12261A", ratio: 6.27 }
+  - { fg: "#FF6B6B", bg: "#331114", ratio: 6.15 }
+  - { fg: "#FF6B6B", bg: "#0E1116", ratio: 6.81 }
+  - { fg: "#4C9AFF", bg: "#12203A", ratio: 5.70 }
+  - { fg: "#E3B341", bg: "#2A2312", ratio: 8.01 }
+  - { fg: "#0E1116", bg: "#58A6FF", ratio: 7.49 }   # 焦点环上深色文字（如按钮内）

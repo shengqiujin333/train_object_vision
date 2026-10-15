@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" font-family="'Noto Sans CJK SC','Source Han Sans SC',sans-serif">
+  <title>摄像头与流状态视觉总览（视觉示意，非运行截图）</title>
+  <rect width="1920" height="1080" fill="#0E1116"/>
+  <text x="64" y="72" fill="#E6EDF3" font-size="24" font-weight="bold">摄像头 / 流状态视觉总览</text>
+  <text x="64" y="104" fill="#9BA7B4" font-size="15">每格 = 视频画面 + 状态徽标（形状+文字+颜色）+ 最近帧时间；非在线状态必须占位并显示最近帧时间戳，禁止旧帧冒充实时</text>
+
+  <!-- helper tiles: 3 columns x 2 rows -->
+  <!-- tile geometry: x = 64, 656, 1248 ; w = 512 ; h = 384 ; y = 152, 576 -->
+  <!-- 1 在线 -->
+  <g transform="translate(64,152)">
+    <rect width="512" height="384" rx="8" fill="#0A0D11" stroke="#2D3644"/>
+    <text x="16" y="28" fill="#9BA7B4" font-size="14">前方 CAM-01</text>
+    <rect x="416" y="12" width="80" height="24" rx="4" fill="#12261A"/><circle cx="430" cy="24" r="4" fill="#3FB950"/><text x="442" y="29" fill="#3FB950" font-size="13">在线</text>
+    <text x="16" y="364" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace">24.1 fps</text>
+    <text x="496" y="364" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace" text-anchor="end">09:42:07</text>
+  </g>
+  <!-- 2 连接中 -->
+  <g transform="translate(656,152)">
+    <rect width="512" height="384" rx="8" fill="#0A0D11" stroke="#2D3644"/>
+    <rect width="512" height="384" rx="8" fill="#12203A" opacity="0.45"/>
+    <text x="16" y="28" fill="#9BA7B4" font-size="14">左侧 CAM-02</text>
+    <rect x="396" y="12" width="100" height="24" rx="4" fill="#12203A"/><text x="410" y="29" fill="#4C9AFF" font-size="13">◌ 连接中</text>
+    <circle cx="256" cy="196" r="22" fill="none" stroke="#4C9AFF" stroke-width="3" stroke-dasharray="40 90"/>
+    <text x="256" y="252" fill="#4C9AFF" font-size="15" text-anchor="middle">正在建立视频流…</text>
+    <text x="16" y="364" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace">-- fps</text>
+  </g>
+  <!-- 3 重连中 -->
+  <g transform="translate(1248,152)">
+    <rect width="512" height="384" rx="8" fill="#0A0D11" stroke="#2D3644"/>
+    <rect width="512" height="384" rx="8" fill="#12203A" opacity="0.45"/>
+    <text x="16" y="28" fill="#9BA7B4" font-size="14">右侧 CAM-03</text>
+    <rect x="376" y="12" width="120" height="24" rx="4" fill="#12203A"/><text x="390" y="29" fill="#4C9AFF" font-size="13">◌ 重连中 · 2</text>
+    <circle cx="256" cy="196" r="22" fill="none" stroke="#4C9AFF" stroke-width="3" stroke-dasharray="40 90"/>
+    <text x="256" y="252" fill="#4C9AFF" font-size="15" text-anchor="middle">连接中断，正在重连…</text>
+    <text x="16" y="364" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace">最近帧 09:41:58</text>
+  </g>
+  <!-- 4 画面冻结 -->
+  <g transform="translate(64,576)">
+    <rect width="512" height="384" rx="8" fill="#0A0D11" stroke="#2D3644"/>
+    <rect width="512" height="384" rx="8" fill="#0A0D11" opacity="0.55"/>
+    <text x="16" y="28" fill="#9BA7B4" font-size="14">车顶 CAM-04</text>
+    <rect x="396" y="12" width="100" height="24" rx="4" fill="#2A2312"/><text x="408" y="29" fill="#E3B341" font-size="13">❄ 画面冻结</text>
+    <text x="256" y="196" fill="#E3B341" font-size="40" text-anchor="middle">❄</text>
+    <text x="256" y="248" fill="#E3B341" font-size="15" text-anchor="middle">画面长时间未变化</text>
+    <text x="16" y="364" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace">最近帧 09:41:12</text>
+  </g>
+  <!-- 5 画面降级 -->
+  <g transform="translate(656,576)">
+    <rect width="512" height="384" rx="8" fill="#0A0D11" stroke="#E3B341" stroke-width="2"/>
+    <text x="16" y="28" fill="#9BA7B4" font-size="14">车底 CAM-05</text>
+    <rect x="386" y="12" width="110" height="24" rx="4" fill="#2A2312"/><text x="398" y="29" fill="#E3B341" font-size="13">⚠ 画面降级</text>
+    <text x="16" y="364" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace">21.0 fps</text>
+    <text x="496" y="364" fill="#E3B341" font-size="13" text-anchor="end">画面过暗</text>
+  </g>
+  <!-- 6 离线 -->
+  <g transform="translate(1248,576)">
+    <rect width="512" height="384" rx="8" fill="#0A0D11" stroke="#331114"/>
+    <rect width="512" height="384" rx="8" fill="#331114" opacity="0.55"/>
+    <text x="16" y="28" fill="#9BA7B4" font-size="14">司机室 CAM-06</text>
+    <rect x="416" y="12" width="80" height="24" rx="4" fill="#331114"/><text x="426" y="29" fill="#FF6B6B" font-size="13">⊘ 离线</text>
+    <text x="256" y="196" fill="#FF6B6B" font-size="40" text-anchor="middle">⊘</text>
+    <text x="256" y="248" fill="#FF6B6B" font-size="15" text-anchor="middle">摄像头不可达</text>
+    <text x="16" y="364" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace">最近帧 09:40:02</text>
+  </g>
+
+  <!-- legend -->
+  <text x="64" y="1020" fill="#6E7A88" font-size="13">状态均以「字形 + 文字 + 颜色」三重编码；仅颜色不构成可辨识判据。</text>
+  <text x="64" y="1046" fill="#4C5764" font-size="12">视觉示意（手绘 SVG 线框，非运行截图） · 参考 1920×1080</text>
+</svg>

@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" font-family="'Noto Sans CJK SC','Source Han Sans SC',sans-serif">
+  <title>P6 设备维护（视觉示意，非运行截图）</title>
+  <rect width="1920" height="1080" fill="#0E1116"/>
+
+  <rect x="0" y="0" width="1920" height="48" fill="#161B22"/><line x1="0" y1="48" x2="1920" y2="48" stroke="#2D3644"/>
+  <text x="24" y="30" fill="#E6EDF3" font-size="18" font-family="'Noto Sans Mono',monospace">2026-10-15 09:42:07</text>
+  <circle cx="950" cy="24" r="6" fill="#3FB950"/><text x="966" y="30" fill="#9BA7B4" font-size="15">系统健康:正常</text>
+
+  <rect x="0" y="48" width="88" height="1032" fill="#161B22"/><line x1="88" y1="48" x2="88" y2="1080" stroke="#2D3644"/>
+  <text x="44" y="196" fill="#4C5764" font-size="14" text-anchor="middle">▣</text><text x="44" y="216" fill="#4C5764" font-size="12" text-anchor="middle">实时</text>
+  <text x="44" y="284" fill="#9BA7B4" font-size="14" text-anchor="middle">🔔</text><text x="44" y="304" fill="#9BA7B4" font-size="12" text-anchor="middle">报警</text>
+  <text x="44" y="372" fill="#9BA7B4" font-size="14" text-anchor="middle">⟲</text><text x="44" y="392" fill="#9BA7B4" font-size="12" text-anchor="middle">回放</text>
+  <text x="44" y="460" fill="#9BA7B4" font-size="14" text-anchor="middle">⊞</text><text x="44" y="480" fill="#9BA7B4" font-size="12" text-anchor="middle">全摄</text>
+  <text x="44" y="548" fill="#4C5764" font-size="14" text-anchor="middle">⌗</text><text x="44" y="568" fill="#4C5764" font-size="12" text-anchor="middle">AI</text>
+  <rect x="0" y="596" width="4" height="72" fill="#3B82F6"/>
+  <rect x="20" y="612" width="48" height="32" rx="6" fill="#1F2630"/><text x="44" y="636" fill="#3B82F6" font-size="16" text-anchor="middle">⚙</text>
+  <text x="44" y="660" fill="#E6EDF3" font-size="12" text-anchor="middle">维护</text>
+
+  <text x="128" y="100" fill="#E6EDF3" font-size="24" font-weight="bold">设备维护</text>
+  <text x="128" y="126" fill="#9BA7B4" font-size="14">摄像头 · AI · 录像与存储 · 网络与温度 · 云台 · 日志</text>
+
+  <!-- card: cameras -->
+  <rect x="128" y="152" width="800" height="300" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="152" y="184" fill="#E6EDF3" font-size="18" font-weight="bold">摄像头</text>
+  <rect x="700" y="164" width="204" height="28" rx="4" fill="#2A2312"/><text x="802" y="184" fill="#E3B341" font-size="13" text-anchor="middle">⚠ 1 路异常</text>
+  <g font-size="14">
+    <text x="152" y="222" fill="#9BA7B4" font-size="12">ID / 位置</text><text x="330" y="222" fill="#9BA7B4" font-size="12">状态</text><text x="470" y="222" fill="#9BA7B4" font-size="12">码流</text><text x="600" y="222" fill="#9BA7B4" font-size="12">帧率</text><text x="700" y="222" fill="#9BA7B4" font-size="12">最近帧</text>
+    <text x="152" y="252" fill="#E6EDF3">CAM-01 前方</text><circle cx="340" cy="247" r="4" fill="#3FB950"/><text x="352" y="252" fill="#3FB950">在线</text><text x="470" y="252" fill="#E6EDF3">4.2 Mbps</text><text x="600" y="252" fill="#E6EDF3" font-family="'Noto Sans Mono',monospace">24.1</text><text x="700" y="252" fill="#6E7A88" font-family="'Noto Sans Mono',monospace">09:42:07</text>
+    <text x="152" y="284" fill="#E6EDF3">CAM-02 左侧</text><circle cx="340" cy="279" r="4" fill="#3FB950"/><text x="352" y="284" fill="#3FB950">在线</text><text x="470" y="284" fill="#E6EDF3">3.9 Mbps</text><text x="600" y="284" fill="#E6EDF3" font-family="'Noto Sans Mono',monospace">23.8</text><text x="700" y="284" fill="#6E7A88" font-family="'Noto Sans Mono',monospace">09:42:07</text>
+    <text x="152" y="316" fill="#E6EDF3">CAM-03 右侧</text><rect x="330" y="298" width="90" height="22" rx="4" fill="#331114"/><text x="340" y="314" fill="#FF6B6B" font-size="12">⊘ 离线</text><text x="470" y="316" fill="#6E7A88">—</text><text x="600" y="316" fill="#6E7A88">—</text><text x="700" y="316" fill="#6E7A88" font-family="'Noto Sans Mono',monospace">09:27:03</text>
+    <text x="152" y="348" fill="#E6EDF3">CAM-05 车底</text><rect x="330" y="330" width="100" height="22" rx="4" fill="#2A2312"/><text x="340" y="346" fill="#E3B341" font-size="12">⚠ 画面过暗</text><text x="470" y="348" fill="#E6EDF3">4.0 Mbps</text><text x="600" y="348" fill="#E6EDF3" font-family="'Noto Sans Mono',monospace">21.0</text><text x="700" y="348" fill="#6E7A88" font-family="'Noto Sans Mono',monospace">09:42:06</text>
+  </g>
+
+  <!-- card: AI -->
+  <rect x="952" y="152" width="836" height="140" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="976" y="184" fill="#E6EDF3" font-size="18" font-weight="bold">AI 模块</text>
+  <g font-size="14" fill="#E6EDF3">
+    <text x="976" y="220" fill="#9BA7B4" font-size="12">状态</text><text x="1100" y="220" fill="#3FB950">就绪</text>
+    <text x="1200" y="220" fill="#9BA7B4" font-size="12">模型版本</text><text x="1310" y="220" font-family="'Noto Sans Mono',monospace">yolov8s-seg-r3 / yolov5s</text>
+    <text x="976" y="256" fill="#9BA7B4" font-size="12">推理 FPS</text><text x="1100" y="256" font-family="'Noto Sans Mono',monospace">23.9</text>
+    <text x="1200" y="256" fill="#9BA7B4" font-size="12">最近结果</text><text x="1310" y="256" font-family="'Noto Sans Mono',monospace">09:42:07.31</text>
+  </g>
+
+  <!-- card: recording/storage -->
+  <rect x="952" y="308" width="836" height="144" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="976" y="340" fill="#E6EDF3" font-size="18" font-weight="bold">录像与存储</text>
+  <g font-size="14" fill="#E6EDF3">
+    <text x="976" y="376" fill="#9BA7B4" font-size="12">录像进程</text><text x="1100" y="376" fill="#3FB950">运行中</text>
+    <text x="1200" y="376" fill="#9BA7B4" font-size="12">剩余容量</text><text x="1310" y="376" font-family="'Noto Sans Mono',monospace">128 GB / 42%</text>
+    <text x="976" y="412" fill="#9BA7B4" font-size="12">写入异常</text><text x="1100" y="412" fill="#E6EDF3">0</text>
+    <text x="1200" y="412" fill="#9BA7B4" font-size="12">文件完整性</text><text x="1340" y="412" fill="#3FB950">正常</text>
+  </g>
+  <!-- storage bar -->
+  <rect x="976" y="428" width="788" height="10" rx="5" fill="#1F2630"/><rect x="976" y="428" width="331" height="10" rx="5" fill="#3B82F6"/>
+
+  <!-- card: network/temperature -->
+  <rect x="128" y="468" width="800" height="200" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="152" y="500" fill="#E6EDF3" font-size="18" font-weight="bold">网络与温度</text>
+  <g font-size="14" fill="#E6EDF3">
+    <text x="152" y="536" fill="#9BA7B4" font-size="12">NPU 负载</text><text x="300" y="536" font-family="'Noto Sans Mono',monospace">42 %</text>
+    <text x="152" y="568" fill="#9BA7B4" font-size="12">CPU</text><text x="300" y="568" font-family="'Noto Sans Mono',monospace">31 %</text>
+    <text x="152" y="600" fill="#9BA7B4" font-size="12">温度</text><text x="300" y="600" font-family="'Noto Sans Mono',monospace">58.4 °C</text>
+    <text x="470" y="536" fill="#9BA7B4" font-size="12">网络错误</text><text x="620" y="536" font-family="'Noto Sans Mono',monospace">0</text>
+    <text x="470" y="568" fill="#9BA7B4" font-size="12">丢流时间</text><text x="620" y="568" font-family="'Noto Sans Mono',monospace">00:00:12</text>
+    <text x="470" y="600" fill="#9BA7B4" font-size="12">eth1 / wlan0</text><text x="620" y="600" fill="#3FB950" font-size="13">在线</text>
+  </g>
+  <rect x="152" y="624" width="132" height="32" rx="6" fill="none" stroke="#3A4552"/><text x="218" y="645" fill="#E6EDF3" font-size="13" text-anchor="middle">重新连接全部</text>
+
+  <!-- card: PTZ -->
+  <rect x="952" y="468" width="836" height="200" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="976" y="500" fill="#E6EDF3" font-size="18" font-weight="bold">云台（前方）</text>
+  <rect x="1600" y="480" width="164" height="28" rx="4" fill="#12261A"/><text x="1682" y="500" fill="#3FB950" font-size="13" text-anchor="middle">✓ 容差校验通过</text>
+  <g font-size="14" fill="#E6EDF3">
+    <text x="976" y="540" fill="#9BA7B4" font-size="12">Pan</text><text x="1120" y="540">目标 0.0° / 实际 0.1°</text>
+    <text x="976" y="572" fill="#9BA7B4" font-size="12">Tilt</text><text x="1120" y="572">目标 -5.0° / 实际 -5.1°</text>
+    <text x="976" y="604" fill="#9BA7B4" font-size="12">Zoom</text><text x="1120" y="604">目标 6.0x / 实际 6.0x</text>
+    <text x="976" y="636" fill="#9BA7B4" font-size="12">预置位</text><text x="1120" y="636">前方 Preset-1</text>
+  </g>
+  <rect x="1480" y="560" width="140" height="36" rx="6" fill="#3B82F6"/><text x="1550" y="584" fill="#FFFFFF" font-size="14" text-anchor="middle">一键归位</text>
+  <rect x="1632" y="560" width="132" height="36" rx="6" fill="none" stroke="#3A4552"/><text x="1698" y="584" fill="#E6EDF3" font-size="13" text-anchor="middle">重调预置位</text>
+
+  <!-- card: logs -->
+  <rect x="128" y="684" width="1660" height="220" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="152" y="716" fill="#E6EDF3" font-size="18" font-weight="bold">维护日志</text>
+  <g font-family="'Noto Sans Mono',monospace" font-size="13" fill="#9BA7B4">
+    <text x="152" y="750">09:30:02</text><text x="260" y="750">maintenance</text><text x="440" y="750">云台归位</text><text x="640" y="750" fill="#3FB950">成功</text>
+    <text x="152" y="778">09:12:44</text><text x="260" y="778">maintenance</text><text x="440" y="778">调用前方预置位</text><text x="640" y="778" fill="#3FB950">成功</text>
+    <text x="152" y="806">08:58:10</text><text x="260" y="806">system</text><text x="440" y="806">CAM-03 重连失败 3 次 → 三级报警</text><text x="900" y="806" fill="#E3B341">已记录</text>
+    <text x="152" y="834">08:41:35</text><text x="260" y="834">driver</text><text x="440" y="834">确认报警 #A-1027</text><text x="640" y="834" fill="#3FB950">成功</text>
+    <text x="152" y="862">08:20:00</text><text x="260" y="862">admin</text><text x="440" y="862">录像保留策略变更 → 7 天</text><text x="900" y="862" fill="#3FB950">成功</text>
+  </g>
+
+  <text x="128" y="960" fill="#6E7A88" font-size="13">参数变更/导出/重启/归位均需二次确认并写日志；失败与超差以状态徽标 + 原因文字呈现，不静默。</text>
+  <text x="128" y="1046" fill="#4C5764" font-size="12">视觉示意（手绘 SVG 线框，非运行截图） · 参考 1920×1080</text>
+</svg>

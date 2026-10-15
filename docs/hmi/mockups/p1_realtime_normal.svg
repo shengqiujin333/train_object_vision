@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" font-family="'Noto Sans CJK SC','Source Han Sans SC',sans-serif">
+  <title>P1 实时监控 — 正常态（视觉示意，非运行截图）</title>
+  <rect width="1920" height="1080" fill="#0E1116"/>
+
+  <!-- Top global status bar -->
+  <rect x="0" y="0" width="1920" height="48" fill="#161B22"/>
+  <line x1="0" y1="48" x2="1920" y2="48" stroke="#2D3644"/>
+  <text x="24" y="30" fill="#E6EDF3" font-size="18" font-family="'Noto Sans Mono',monospace">2026-10-15 09:42:07</text>
+  <circle cx="300" cy="24" r="6" fill="#3FB950"/>
+  <text x="316" y="30" fill="#9BA7B4" font-size="15">车速 -- km/h</text>
+  <text x="470" y="30" fill="#9BA7B4" font-size="15">成像模式</text>
+  <rect x="548" y="10" width="72" height="28" rx="4" fill="#12203A"/>
+  <text x="562" y="30" fill="#4C9AFF" font-size="14">可见光</text>
+  <circle cx="700" cy="24" r="6" fill="#3FB950"/>
+  <text x="716" y="30" fill="#9BA7B4" font-size="15">录像:运行</text>
+  <circle cx="830" cy="24" r="6" fill="#3FB950"/>
+  <text x="846" y="30" fill="#9BA7B4" font-size="15">AI:就绪</text>
+  <circle cx="950" cy="24" r="6" fill="#3FB950"/>
+  <text x="966" y="30" fill="#9BA7B4" font-size="15">系统健康:正常</text>
+
+  <!-- Left navigation -->
+  <rect x="0" y="48" width="88" height="1032" fill="#161B22"/>
+  <line x1="88" y1="48" x2="88" y2="1080" stroke="#2D3644"/>
+  <rect x="0" y="64" width="4" height="72" fill="#3B82F6"/>
+  <rect x="20" y="80" width="48" height="32" rx="6" fill="#1F2630"/><text x="44" y="104" fill="#3B82F6" font-size="16" text-anchor="middle">▣</text>
+  <text x="44" y="128" fill="#E6EDF3" font-size="12" text-anchor="middle">实时</text>
+  <text x="44" y="196" fill="#9BA7B4" font-size="14" text-anchor="middle">🔔</text><text x="44" y="216" fill="#9BA7B4" font-size="12" text-anchor="middle">报警</text>
+  <text x="44" y="284" fill="#9BA7B4" font-size="14" text-anchor="middle">⟲</text><text x="44" y="304" fill="#9BA7B4" font-size="12" text-anchor="middle">回放</text>
+  <text x="44" y="372" fill="#9BA7B4" font-size="14" text-anchor="middle">⊞</text><text x="44" y="392" fill="#9BA7B4" font-size="12" text-anchor="middle">全摄</text>
+  <text x="44" y="460" fill="#4C5764" font-size="14" text-anchor="middle">⌗</text><text x="44" y="480" fill="#4C5764" font-size="12" text-anchor="middle">AI</text>
+  <text x="44" y="548" fill="#9BA7B4" font-size="14" text-anchor="middle">⚙</text><text x="44" y="568" fill="#9BA7B4" font-size="12" text-anchor="middle">维护</text>
+
+  <!-- Triple view: left / front / right -->
+  <!-- left CAM-02 -->
+  <rect x="104" y="64" width="440" height="760" rx="8" fill="#0A0D11" stroke="#2D3644"/>
+  <text x="120" y="92" fill="#9BA7B4" font-size="14">左侧 CAM-02</text>
+  <rect x="490" y="76" width="40" height="22" rx="4" fill="#12261A"/><circle cx="500" cy="87" r="4" fill="#3FB950"/><text x="510" y="92" fill="#3FB950" font-size="12">在线</text>
+  <text x="120" y="808" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace">23.8 fps</text>
+  <text x="440" y="808" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace" text-anchor="end">09:42:07</text>
+
+  <!-- front CAM-01 (largest) -->
+  <rect x="559" y="64" width="890" height="760" rx="8" fill="#0A0D11" stroke="#3A4552" stroke-width="2"/>
+  <text x="579" y="92" fill="#E6EDF3" font-size="16" font-weight="bold">前方 CAM-01（主画面）</text>
+  <rect x="1390" y="76" width="42" height="22" rx="4" fill="#12261A"/><circle cx="1400" cy="87" r="4" fill="#3FB950"/><text x="1410" y="92" fill="#3FB950" font-size="12">在线</text>
+  <text x="579" y="808" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace">24.1 fps</text>
+  <text x="1429" y="808" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace" text-anchor="end">09:42:07</text>
+
+  <!-- right CAM-03 -->
+  <rect x="1464" y="64" width="440" height="760" rx="8" fill="#0A0D11" stroke="#2D3644"/>
+  <text x="1480" y="92" fill="#9BA7B4" font-size="14">右侧 CAM-03</text>
+  <rect x="1850" y="76" width="40" height="22" rx="4" fill="#12261A"/><circle cx="1860" cy="87" r="4" fill="#3FB950"/><text x="1870" y="92" fill="#3FB950" font-size="12">在线</text>
+  <text x="1480" y="808" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace">23.5 fps</text>
+  <text x="1800" y="808" fill="#6E7A88" font-size="13" font-family="'Noto Sans Mono',monospace" text-anchor="end">09:42:07</text>
+
+  <!-- status strip -->
+  <rect x="104" y="840" width="1800" height="64" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <g font-size="13">
+    <circle cx="136" cy="872" r="5" fill="#3FB950"/><text x="150" y="866" fill="#6E7A88" font-size="11">受电弓</text><text x="150" y="884" fill="#E6EDF3" font-size="13">正常接触</text>
+    <circle cx="356" cy="872" r="5" fill="#3FB950"/><text x="370" y="866" fill="#6E7A88" font-size="11">轮轨</text><text x="370" y="884" fill="#E6EDF3" font-size="13">正常</text>
+    <circle cx="546" cy="872" r="5" fill="#3FB950"/><text x="560" y="866" fill="#6E7A88" font-size="11">车门</text><text x="560" y="884" fill="#E6EDF3" font-size="13">关闭正常</text>
+    <circle cx="726" cy="872" r="5" fill="#3FB950"/><text x="740" y="866" fill="#6E7A88" font-size="11">摄像头</text><text x="740" y="884" fill="#E6EDF3" font-size="13">6/6 在线</text>
+    <circle cx="926" cy="872" r="5" fill="#3FB950"/><text x="940" y="866" fill="#6E7A88" font-size="11">AI</text><text x="940" y="884" fill="#E6EDF3" font-size="13">就绪</text>
+    <circle cx="1086" cy="872" r="5" fill="#3FB950"/><text x="1100" y="866" fill="#6E7A88" font-size="11">录像</text><text x="1100" y="884" fill="#E6EDF3" font-size="13">运行中</text>
+    <circle cx="1266" cy="872" r="5" fill="#3FB950"/><text x="1280" y="866" fill="#6E7A88" font-size="11">存储</text><text x="1280" y="884" fill="#E6EDF3" font-size="13">剩余 42%</text>
+  </g>
+
+  <!-- current alarm bar (empty state) -->
+  <rect x="104" y="920" width="1800" height="80" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="136" y="966" fill="#6E7A88" font-size="16">当前报警：暂无</text>
+  <rect x="1660" y="940" width="220" height="44" rx="6" fill="none" stroke="#3A4552"/>
+  <text x="1770" y="968" fill="#E6EDF3" font-size="16" text-anchor="middle">警报复览</text>
+
+  <!-- annotation -->
+  <text x="104" y="1040" fill="#4C5764" font-size="12">视觉示意（手绘 SVG 线框，非运行截图） · 参考 1920×1080 · 三联顺序 左-前-右，前方面积最大</text>
+</svg>

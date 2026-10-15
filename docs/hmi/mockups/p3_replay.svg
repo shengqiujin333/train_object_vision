@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" font-family="'Noto Sans CJK SC','Source Han Sans SC',sans-serif">
+  <title>P3 历史录像与报警回放（视觉示意，非运行截图）</title>
+  <rect width="1920" height="1080" fill="#0E1116"/>
+
+  <rect x="0" y="0" width="1920" height="48" fill="#161B22"/><line x1="0" y1="48" x2="1920" y2="48" stroke="#2D3644"/>
+  <text x="24" y="30" fill="#E6EDF3" font-size="18" font-family="'Noto Sans Mono',monospace">2026-10-15 09:42:07</text>
+  <circle cx="950" cy="24" r="6" fill="#3FB950"/><text x="966" y="30" fill="#9BA7B4" font-size="15">系统健康:正常</text>
+
+  <rect x="0" y="48" width="88" height="1032" fill="#161B22"/><line x1="88" y1="48" x2="88" y2="1080" stroke="#2D3644"/>
+  <text x="44" y="196" fill="#4C5764" font-size="14" text-anchor="middle">▣</text><text x="44" y="216" fill="#4C5764" font-size="12" text-anchor="middle">实时</text>
+  <text x="44" y="284" fill="#9BA7B4" font-size="14" text-anchor="middle">🔔</text><text x="44" y="304" fill="#9BA7B4" font-size="12" text-anchor="middle">报警</text>
+  <rect x="0" y="332" width="4" height="72" fill="#3B82F6"/>
+  <rect x="20" y="348" width="48" height="32" rx="6" fill="#1F2630"/><text x="44" y="372" fill="#3B82F6" font-size="16" text-anchor="middle">⟲</text>
+  <text x="44" y="396" fill="#E6EDF3" font-size="12" text-anchor="middle">回放</text>
+  <text x="44" y="460" fill="#9BA7B4" font-size="14" text-anchor="middle">⊞</text><text x="44" y="480" fill="#9BA7B4" font-size="12" text-anchor="middle">全摄</text>
+  <text x="44" y="548" fill="#4C5764" font-size="14" text-anchor="middle">⌗</text><text x="44" y="568" fill="#4C5764" font-size="12" text-anchor="middle">AI</text>
+  <text x="44" y="636" fill="#9BA7B4" font-size="14" text-anchor="middle">⚙</text><text x="44" y="656" fill="#9BA7B4" font-size="12" text-anchor="middle">维护</text>
+
+  <text x="128" y="100" fill="#E6EDF3" font-size="24" font-weight="bold">历史录像</text>
+
+  <!-- selection bar -->
+  <rect x="128" y="124" width="1500" height="56" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <g font-size="14">
+    <rect x="148" y="138" width="200" height="32" rx="6" fill="#1F2630" stroke="#2D3644"/><text x="164" y="160" fill="#9BA7B4">日期: 2026-10-15 ▾</text>
+    <rect x="364" y="138" width="260" height="32" rx="6" fill="#1F2630" stroke="#2D3644"/><text x="380" y="160" fill="#9BA7B4">摄像头: 锁定 前/左/右 ▾</text>
+    <rect x="640" y="138" width="150" height="32" rx="6" fill="#12203A"/><text x="715" y="160" fill="#4C9AFF" font-size="13" text-anchor="middle">三路同步 开</text>
+    <text x="820" y="160" fill="#6E7A88" font-size="13">由报警事件进入，已锁定相关摄像头与时间</text>
+  </g>
+
+  <!-- replay area: left/front/right -->
+  <rect x="128" y="196" width="360" height="300" rx="8" fill="#0A0D11" stroke="#2D3644"/>
+  <text x="144" y="222" fill="#9BA7B4" font-size="13">左侧 CAM-02</text>
+  <rect x="504" y="196" width="740" height="300" rx="8" fill="#0A0D11" stroke="#3A4552" stroke-width="2"/>
+  <text x="524" y="222" fill="#E6EDF3" font-size="14" font-weight="bold">前方 CAM-01</text>
+  <rect x="1260" y="196" width="368" height="300" rx="8" fill="#0A0D11" stroke="#2D3644"/>
+  <text x="1276" y="222" fill="#9BA7B4" font-size="13">右侧 CAM-03</text>
+
+  <!-- event detail side panel -->
+  <rect x="1644" y="124" width="144" height="372" rx="8" fill="#161B22" stroke="#2D3644"/>
+
+  <!-- timeline -->
+  <rect x="128" y="524" width="1500" height="120" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="148" y="550" fill="#9BA7B4" font-size="13">时间轴 · 09:41:30 — 09:43:30</text>
+  <!-- continuous recording track -->
+  <rect x="148" y="566" width="1460" height="24" rx="4" fill="#1F2630"/>
+  <rect x="148" y="566" width="940" height="24" rx="4" fill="#25406B"/>
+  <!-- alarm band (L1) -->
+  <rect x="1040" y="562" width="120" height="32" rx="4" fill="#3A1518" stroke="#FF6B6B" stroke-width="3"/>
+  <text x="1100" y="584" fill="#FF6B6B" font-size="12" text-anchor="middle">▲ 一级 报警</text>
+  <!-- recording gap -->
+  <rect x="1260" y="566" width="90" height="24" fill="#0E1116"/>
+  <g stroke="#3A4552" stroke-width="1"><line x1="1272" y1="566" x2="1248" y2="590"/><line x1="1296" y1="566" x2="1272" y2="590"/><line x1="1320" y1="566" x2="1296" y2="590"/><line x1="1344" y1="566" x2="1320" y2="590"/></g>
+  <text x="1305" y="620" fill="#E3B341" font-size="12" text-anchor="middle">⚠ 录像缺失</text>
+  <!-- playhead -->
+  <line x1="1100" y1="556" x2="1100" y2="600" stroke="#FFFFFF" stroke-width="2"/>
+  <circle cx="1100" cy="556" r="5" fill="#FFFFFF"/>
+  <text x="1100" y="644" fill="#E6EDF3" font-size="14" text-anchor="middle" font-family="'Noto Sans Mono',monospace">09:42:05</text>
+
+  <!-- keyframe thumbnails -->
+  <text x="128" y="676" fill="#9BA7B4" font-size="13">关键帧</text>
+  <g>
+    <rect x="128" y="688" width="150" height="84" rx="6" fill="#0A0D11" stroke="#2D3644"/><text x="203" y="736" fill="#6E7A88" font-size="11" text-anchor="middle">08:41:35</text>
+    <rect x="290" y="688" width="150" height="84" rx="6" fill="#0A0D11" stroke="#FF6B6B" stroke-width="2"/><text x="365" y="736" fill="#FF6B6B" font-size="11" text-anchor="middle">09:42:05 ▲</text>
+    <rect x="452" y="688" width="150" height="84" rx="6" fill="#0A0D11" stroke="#2D3644"/><text x="527" y="736" fill="#6E7A88" font-size="11" text-anchor="middle">09:42:35</text>
+    <rect x="614" y="688" width="150" height="84" rx="6" fill="#0A0D11" stroke="#2D3644"/><text x="689" y="736" fill="#6E7A88" font-size="11" text-anchor="middle">09:43:05</text>
+  </g>
+
+  <!-- playback controls -->
+  <rect x="128" y="800" width="1500" height="72" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <g>
+    <rect x="152" y="818" width="44" height="36" rx="6" fill="none" stroke="#3A4552"/><text x="174" y="842" fill="#E6EDF3" font-size="14" text-anchor="middle">-30s</text>
+    <rect x="208" y="818" width="88" height="36" rx="6" fill="none" stroke="#3A4552"/><text x="252" y="842" fill="#E6EDF3" font-size="14" text-anchor="middle">报警时刻</text>
+    <rect x="308" y="818" width="80" height="36" rx="6" fill="none" stroke="#3A4552"/><text x="348" y="842" fill="#E6EDF3" font-size="14" text-anchor="middle">+30s</text>
+    <rect x="400" y="818" width="80" height="36" rx="6" fill="none" stroke="#3A4552"/><text x="440" y="842" fill="#E6EDF3" font-size="14" text-anchor="middle">+60s</text>
+    <rect x="508" y="818" width="64" height="36" rx="6" fill="#3B82F6"/><text x="540" y="842" fill="#FFFFFF" font-size="14" text-anchor="middle">▶</text>
+    <rect x="584" y="818" width="80" height="36" rx="6" fill="#1F2630" stroke="#2D3644"/><text x="624" y="842" fill="#E6EDF3" font-size="13" text-anchor="middle">1.0x ▾</text>
+    <rect x="1360" y="818" width="120" height="36" rx="6" fill="none" stroke="#3A4552"/><text x="1420" y="842" fill="#9BA7B4" font-size="13" text-anchor="middle">🔒 导出</text>
+  </g>
+
+  <!-- detail panel note -->
+  <text x="128" y="1020" fill="#6E7A88" font-size="13">事件详情侧栏默认展示：时间、类型、级别、目标距离、置信度、处理状态、备注；录像不可用时黄条显式标注。</text>
+  <text x="128" y="1046" fill="#4C5764" font-size="12">视觉示意（手绘 SVG 线框，非运行截图） · 参考 1920×1080</text>
+</svg>

@@ -15,7 +15,18 @@ code/yolov5_postprocess.cc | existing | yolov5 后处理实现
 code/yolov5_postprocess.h | existing | yolov5 后处理头
 code/yolov8_seg.h | existing | yolov8-seg 头
 docs/hmi/INTERACTION_DESIGN.md | active | 交互设计方案（FrontendDesignArtifact）：信息架构/页面状态/报警与回放交互/状态模型/可访问性/可检验结果
+docs/hmi/VISUAL_DESIGN.md | active | 视觉设计规范（UIVisualDesignArtifact）：色彩/字体/间距/图标/组件/页面状态/资源清单/实现规则
+docs/hmi/design_tokens.yaml | active | 视觉设计令牌（颜色/报警级别/流状态/字体/间距/圆角/层级/对比度校验）
 docs/hmi/interaction_tasks.yaml | active | 交互设计任务清单（TaskListArtifact）
+docs/hmi/mockups/components_states.svg | active | 组件与状态总览示意
+docs/hmi/mockups/p1_realtime_alarm_l1.svg | active | P1 一级报警态页面示意
+docs/hmi/mockups/p1_realtime_normal.svg | active | P1 实时监控正常态页面示意（1920x1080 SVG）
+docs/hmi/mockups/p1_stream_states.svg | active | 摄像头与流状态视觉总览示意
+docs/hmi/mockups/p2_alarm_center.svg | active | P2 报警中心页面示意
+docs/hmi/mockups/p3_replay.svg | active | P3 历史录像与回放页面示意
+docs/hmi/mockups/p4_all_cameras.svg | active | P4 全摄像头页面示意
+docs/hmi/mockups/p5_ai_debug.svg | active | P5 AI 调试页面示意
+docs/hmi/mockups/p6_maintenance.svg | active | P6 设备维护页面示意
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
 models/yolov5s.rknn | existing | 人形检测模型（RKNN）
