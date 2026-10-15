@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""railhmi 回放接线静态核对（ITEM-020 修复取证）
+"""railhmi 回放接线静态核对（ITEM-020）
 
-核对两处用户可观察点的接线事实（源码级、可在无 Qt 环境运行）：
-  D-01 报警卡 -> 回放选择：main.qml onReplayRequest 必须使用 cameraId 与 tsWallMs 并调用 selectAlarm；
-       P3Replay 必须消费 selectedCameraId/selectedAlarmTs/relatedCameras/selectedDetail。
-  D-02 三联同步：P3Replay 必须通过 syncState 构建同步状态，且不得出现恒等三值 [cursor, cursor, cursor]；
-       无时钟时显示“同步状态不可用”。
+源码级核对回放页交付项（无 Qt 环境可运行）：
+  D-01 关键帧：桥接 timeline() 必须导出 keyframes；P3 必须按 ts 定位渲染缩略图槽。
+  D-02 缺口斜纹：P3 缺口必须有 Canvas 斜纹绘制。
+  D-03 播放控制：P3 必须有播放/暂停与倍速控件并联线 bridge.setPlaying/setSpeed。
+  D-04 级别：桥接导出 segment level 与 alarm marker level；P3 按级别上色。
+  D-05 点选：段/缺口/标记可点选。
+  D-06 摄像头选择：P3 使用完整摄像头列表（railhmiCameras）。
+  D-07 详情黄条：P3 有录像不可用显著黄条（detailRecordBar）。
+  D-08 非法日期：P3 有 dateError 提示；FilterChip 使用 touch_target_min。
+  D-09 尺寸：轨道 32 / 关键帧 64 / 游标顶部等宽时间。
+  D-01/D-02(v1) 选择锁定与动态同步：onReplayRequest 使用 cameraId/tsWallMs 并调 selectAlarm；
+       P3 使用 syncState 且无恒等三值、含“同步状态不可用”。
 
 退出码: 0 通过；1 发现缺陷；2 路径错误。
 """
@@ -51,36 +58,52 @@ def main() -> int:
         sys.stderr.write("root not found: %s\n" % args.root)
         return 2
 
-    main_qml = os.path.join(args.root, "qml", "main.qml")
-    p3 = os.path.join(args.root, "qml", "pages", "P3Replay.qml")
+    main_qml = read(os.path.join(args.root, "qml", "main.qml"))
+    p3 = read(os.path.join(args.root, "qml", "pages", "P3Replay.qml"))
+    bridge = read(os.path.join(args.root, "src", "replay_model.cpp"))
+    chip = read(os.path.join(args.root, "qml", "components", "FilterChip.qml"))
     fails = []
 
-    mt = read(main_qml)
-    body = func_body(mt, "onReplayRequest")
-    if "cameraId" not in body:
-        fails.append("main.qml onReplayRequest does not use cameraId (D-01)")
-    if "tsWallMs" not in body:
-        fails.append("main.qml onReplayRequest does not use tsWallMs (D-01)")
-    if "selectAlarm" not in body:
-        fails.append("main.qml onReplayRequest does not call selectAlarm (D-01)")
+    body = func_body(main_qml, "onReplayRequest")
+    for need in ("cameraId", "tsWallMs", "selectAlarm"):
+        if need not in body:
+            fails.append("main.qml onReplayRequest missing %s" % need)
 
-    pt = read(p3)
-    for need in ("selectedCameraId", "relatedCameras", "selectedDetail", "syncState"):
-        if need not in pt:
-            fails.append("P3Replay.qml missing %s (D-01/D-02)" % need)
-    if "[cursor, cursor, cursor]" in pt:
-        fails.append("P3Replay.qml still feeds identical triple to syncStatus (D-02)")
-    if "同步状态不可用" not in pt:
-        fails.append("P3Replay.qml missing '同步状态不可用' unavailable state (D-02)")
+    # D-01 keyframes / D-04 levels exported by bridge
+    if '"keyframes"' not in bridge:
+        fails.append("replay_model.cpp timeline() does not export keyframes (D-01)")
+    if 'sm["level"]' not in bridge:
+        fails.append("replay_model.cpp does not export segment level (D-04)")
+    if 'am["level"]' not in bridge:
+        fails.append("replay_model.cpp does not export alarm marker level (D-04)")
 
-    print("[check_replay_wiring] main.qml onReplayRequest uses cameraId=%s tsWallMs=%s selectAlarm=%s"
+    checks = {
+        "keyframeThumb": "keyframe thumbnail (D-01)",
+        "onPaint": "gap hatch canvas (D-02)",
+        "playbackToggle": "play/pause control (D-03)",
+        "setSpeed": "speed control (D-03)",
+        "railhmiCameras": "full camera selection (D-06)",
+        "detailRecordBar": "recording-unavailable bar (D-07)",
+        "dateError": "invalid-date feedback (D-08)",
+        "syncState": "dynamic sync (v1 D-02)",
+        "同步状态不可用": "sync unavailable state (v1 D-02)",
+    }
+    for token, what in checks.items():
+        if token not in p3:
+            fails.append("P3Replay.qml missing %s" % what)
+    if "[cursor, cursor, cursor]" in p3:
+        fails.append("P3Replay.qml still feeds identical triple to syncStatus")
+    if "Theme.size.touch_target_min" not in chip:
+        fails.append("FilterChip does not use touch_target_min (D-08)")
+
+    print("[check_replay_wiring] main.qml onReplayRequest(cameraId=%s tsWallMs=%s selectAlarm=%s)"
           % ("cameraId" in body, "tsWallMs" in body, "selectAlarm" in body))
     if fails:
         for f in fails:
             print("[FAIL] %s" % f)
         print("[check_replay_wiring] FAIL (%d)" % len(fails))
         return 1
-    print("[check_replay_wiring] PASS (D-01 selection wired; D-02 dynamic sync + unavailable state)")
+    print("[check_replay_wiring] PASS (D-01..D-09 + v1 D-01/D-02 wired)")
     return 0
 
 

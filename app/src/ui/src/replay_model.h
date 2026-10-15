@@ -40,6 +40,10 @@ public:
     Q_INVOKABLE QVariantMap selectedDetail() const;
     // 三路同步状态（由真实时钟偏移构建；无时钟 -> available=false）。
     Q_INVOKABLE QVariantMap syncState(double cursor_ms) const;
+    // 播放控制（PlaybackState；D-03）。
+    Q_INVOKABLE QVariantMap playback() const;
+    Q_INVOKABLE void setPlaying(bool playing);
+    Q_INVOKABLE void setSpeed(double speed);
 
     // 某相机某日时间轴（date = YYYY-MM-DD）。
     Q_INVOKABLE QVariantMap timeline(const QString& camera_id, const QString& date,
@@ -53,6 +57,7 @@ public:
 
 signals:
     void selectionChanged();
+    void playbackChanged();
 
 private:
     const railhmi::core::AlarmRow* find(const std::string& cam, long long ts) const;
@@ -69,4 +74,5 @@ private:
     bool nvr_available_ = false;
     bool local_available_ = false;
     int sync_threshold_ms_ = 300;
+    railhmi::core::PlaybackState playback_;
 };

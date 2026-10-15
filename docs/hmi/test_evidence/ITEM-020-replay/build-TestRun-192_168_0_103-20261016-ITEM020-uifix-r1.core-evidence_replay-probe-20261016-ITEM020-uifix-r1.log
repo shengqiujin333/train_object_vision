@@ -1,0 +1,15 @@
+type=timeline cam=CAM-01 day=1792108800000 duration_ms=86400000 segments=3 gaps=1 alarms=1 keyframes=1440
+seg kind=continuous level=0 t0=1792108810000 t1=1792108880000 label=连续录像
+seg kind=critical level=1 t0=1792108890000 t1=1792109000000 label=报警保护片段
+seg kind=continuous level=0 t0=1792109060000 t1=1792109100000 label=连续录像
+gap t0=1792109010000 t1=1792109050000 reason=recording_interrupted
+flags has_alarm_segment=true has_gap=true alarm_marker_level=1 keyframe_thumb=thumb/CAM-01/1792108800000.bmp
+type=jumps minus30=1792108890000 alarm=1792108920000 plus30=1792108950000 plus60=1792108980000
+type=seek pos=1792108920000
+type=jump plus30 pos=1792108950000
+type=sync in_sync=true dev=200 | deviation=true dev=900 prompt=同步偏差 900 ms（阈值 300 ms）
+type=lock alarm_cam=CAM-01 locked=CAM-02,CAM-01,CAM-03
+type=sync-snapshot in_sync_available=true dev=200 | deviation_prompt=同步偏差 900 ms（阈值 300 ms） | no_clock=同步状态不可用
+type=source source=local_clips label=本机片段 usable=true note=NVR 录像不可用，回放本机片段
+type=detail time=2026-10-16 00:02:00 type=前方轨道人员 level=一级 distance=12.3 m confidence=87% ack=已确认 record=可回放 record_ok=true
+type=acceptance alarm_segment=true gap=true jumps_ok=true sync_prompt_on_deviation=true lock_related_cameras=true sync_unavailable_without_clock=true nvr_fallback_local=true result=PASS

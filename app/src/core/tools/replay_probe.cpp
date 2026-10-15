@@ -42,18 +42,22 @@ int main(int argc, char** argv) {
     gaps = {g};
 
     const long long alarm = day + 120000;
-    const ReplayTimeline t = build_timeline("CAM-01", day, segs, gaps, {alarm}, 60000);
+    const ReplayTimeline t = build_timeline("CAM-01", day, segs, gaps,
+                                            {AlarmMark{alarm, AlarmLevel::L1}}, 60000);
     emit("type=timeline cam=CAM-01 day=" + std::to_string(t.day_start_ms) + " duration_ms=" +
          std::to_string(t.duration_ms()) + " segments=" + std::to_string(t.segments.size()) +
          " gaps=" + std::to_string(t.gaps.size()) + " alarms=" + std::to_string(t.alarms.size()) +
          " keyframes=" + std::to_string(t.keyframes.size()));
     for (const auto& s : t.segments)
         emit("seg kind=" + std::string(s.kind == SegmentKind::Critical ? "critical" : "continuous") +
+             " level=" + std::to_string(s.level) +
              " t0=" + std::to_string(s.t0_ms) + " t1=" + std::to_string(s.t1_ms) + " label=" + s.label);
     for (const auto& gg : t.gaps)
         emit("gap t0=" + std::to_string(gg.t0_ms) + " t1=" + std::to_string(gg.t1_ms) + " reason=" + gg.reason);
     emit("flags has_alarm_segment=" + std::string(t.has_alarm_segment() ? "true" : "false") +
-         " has_gap=" + std::string(t.has_gap() ? "true" : "false"));
+         " has_gap=" + std::string(t.has_gap() ? "true" : "false") +
+         (t.alarms.empty() ? "" : (" alarm_marker_level=" + std::to_string(t.alarms[0].level))) +
+         (t.keyframes.empty() ? "" : (" keyframe_thumb=" + t.keyframes[0].thumb)));
 
     const JumpTargets j = jump_targets(alarm);
     emit("type=jumps minus30=" + std::to_string(j.minus30_ms) + " alarm=" + std::to_string(j.alarm_ms) +
@@ -95,7 +99,8 @@ int main(int argc, char** argv) {
     const AlarmRow row = make_alarm_row(e, "前方", RecordAvailability::Available);
     const ReplayEventDetail d = build_event_detail(row, 12.34, 0.87);
     emit("type=detail time=" + d.time_text + " type=" + d.type_label + " level=" + d.level_label +
-         " distance=" + d.distance_text + " confidence=" + d.confidence_text + " ack=" + d.ack_label);
+         " distance=" + d.distance_text + " confidence=" + d.confidence_text + " ack=" + d.ack_label +
+         " record=" + d.record_label + " record_ok=" + std::string(d.record_ok ? "true" : "false"));
 
     const bool okall = (t.segments.size() == 3) && t.has_alarm_segment() && t.has_gap() &&
                        (t.alarms.size() == 1) && !t.keyframes.empty() &&

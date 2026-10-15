@@ -33,16 +33,21 @@ void test_timeline() {
     gaps = {g, g2};
 
     const ReplayTimeline t = build_timeline("CAM-01", kDayStart, segs, gaps,
-                                            {kDayStart + 70000, kDayStart + 130000}, 60000);
+                                            {AlarmMark{kDayStart + 70000, AlarmLevel::L1},
+                                             AlarmMark{kDayStart + 130000, AlarmLevel::L2}},
+                                            60000);
     railhmi_test::check(t.segments.size() == 2, "timeline only CAM-01 segments");
     railhmi_test::check(t.segments[0].t0_ms == kDayStart + 10000 && t.segments[0].kind == SegmentKind::Continuous,
                         "continuous segment");
     railhmi_test::check(t.segments[1].kind == SegmentKind::Critical && t.has_alarm_segment(),
                         "critical/alarm segment prominent");
+    railhmi_test::check(t.segments[1].level == 1, "alarm segment carries real level (D-04)");
     railhmi_test::check(t.gaps.size() == 1 && t.gaps[0].reason == "recording_interrupted", "gap per camera");
     railhmi_test::check(t.has_gap(), "has_gap");
     railhmi_test::check(t.alarms.size() == 2, "two alarm markers");
+    railhmi_test::check(t.alarms[0].level == 1 && t.alarms[1].level == 2, "alarm markers carry level (D-04)");
     railhmi_test::check(!t.keyframes.empty(), "keyframe markers present");
+    railhmi_test::check(!t.keyframes[0].thumb.empty(), "keyframe carries thumbnail ref (D-01)");
     railhmi_test::check(t.duration_ms() == 86400000LL, "day window duration");
 }
 
@@ -139,6 +144,8 @@ void test_event_detail() {
     railhmi_test::check(d.distance_text == std::string("12.3 m"), "detail distance");
     railhmi_test::check(d.confidence_text == std::string("87%"), "detail confidence");
     railhmi_test::check(d.ack_label == std::string("已确认"), "detail ack");
+    railhmi_test::check(d.record_label == std::string("可回放") && d.record_ok, "detail record status (D-07)");
+    railhmi_test::check(d.note.empty(), "detail note independent from record status (D-07)");
     railhmi_test::check(!d.time_text.empty(), "detail time");
 }
 

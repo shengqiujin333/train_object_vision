@@ -90,8 +90,28 @@ QVariantMap RailhmiReplayModel::selectedDetail() const {
     m["distanceText"] = QString::fromUtf8(d.distance_text.c_str());
     m["confidenceText"] = QString::fromUtf8(d.confidence_text.c_str());
     m["ackLabel"] = QString::fromUtf8(d.ack_label.c_str());
+    m["recordLabel"] = QString::fromUtf8(d.record_label.c_str());   // D-07 黄条
+    m["recordOk"] = d.record_ok;
     m["note"] = QString::fromUtf8(d.note.c_str());
     return m;
+}
+
+QVariantMap RailhmiReplayModel::playback() const {
+    QVariantMap m;
+    m["playing"] = playback_.playing;
+    m["speed"] = playback_.speed;
+    m["posMs"] = static_cast<qlonglong>(playback_.pos_ms);
+    return m;
+}
+
+void RailhmiReplayModel::setPlaying(bool playing) {
+    playback_.playing = playing;
+    emit playbackChanged();
+}
+
+void RailhmiReplayModel::setSpeed(double speed) {
+    playback_.speed = speed > 0 ? speed : 1.0;
+    emit playbackChanged();
 }
 
 QVariantMap RailhmiReplayModel::syncState(double cursor_ms) const {
@@ -129,6 +149,7 @@ QVariantMap RailhmiReplayModel::timeline(const QString& camera_id, const QString
         sm["t1"] = static_cast<qlonglong>(s.t1_ms);
         sm["kind"] = QString::fromLatin1(s.kind == railhmi::core::SegmentKind::Critical ? "critical" : "continuous");
         sm["label"] = QString::fromUtf8(s.label.c_str());
+        sm["level"] = s.level;   // 1|2|3；0=未知（D-04）
         segs.append(sm);
     }
     m["segments"] = segs;
@@ -142,8 +163,21 @@ QVariantMap RailhmiReplayModel::timeline(const QString& camera_id, const QString
     }
     m["gaps"] = gs;
     QVariantList alarms;
-    for (const auto& a : t.alarms) alarms.append(static_cast<qlonglong>(a.ts_ms));
+    for (const auto& a : t.alarms) {
+        QVariantMap am;
+        am["ts"] = static_cast<qlonglong>(a.ts_ms);
+        am["level"] = a.level;
+        alarms.append(am);
+    }
     m["alarms"] = alarms;
+    QVariantList keyframes;
+    for (const auto& k : t.keyframes) {
+        QVariantMap km;
+        km["ts"] = static_cast<qlonglong>(k.ts_ms);
+        km["thumb"] = QString::fromStdString(k.thumb);
+        keyframes.append(km);
+    }
+    m["keyframes"] = keyframes;   // D-01：导出关键帧（含缩略图引用）
     m["hasAlarmSegment"] = t.has_alarm_segment();
     m["hasGap"] = t.has_gap();
     return m;

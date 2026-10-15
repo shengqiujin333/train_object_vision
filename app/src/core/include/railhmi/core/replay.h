@@ -15,12 +15,19 @@
 namespace railhmi {
 namespace core {
 
+// 报警标记（带级别，供区段/标记按 §3.4 级别色渲染）。
+struct AlarmMark {
+    long long ts_ms = 0;
+    AlarmLevel level = AlarmLevel::L3;
+};
+
 // 时间轴区段。
 struct TimelineSegment {
     long long t0_ms = 0;
     long long t1_ms = 0;
     SegmentKind kind = SegmentKind::Continuous;   // Continuous=连续录像, Critical=报警保护
     std::string label;                            // 连续录像 / 报警保护片段
+    int level = 0;                                // 1|2|3；0=未知（模型携带实际级别，D-04）
 };
 
 struct TimelineGap {
@@ -33,6 +40,8 @@ struct TimelineMarker {
     long long ts_ms = 0;
     std::string kind;   // "alarm" / "keyframe"
     std::string label;
+    int level = 0;      // 报警标记级别（1|2|3；0=keyframe/未知）
+    std::string thumb;  // 关键帧缩略图引用（由媒体层生成；D-01）
 };
 
 struct ReplayTimeline {
@@ -48,7 +57,13 @@ struct ReplayTimeline {
     bool has_gap() const;
 };
 
-// 构建某相机某日的时间轴（段/缺口裁剪到当日窗口；报警区段显著；关键帧按间隔）。
+// 构建某相机某日的时间轴（段/缺口裁剪到当日窗口；报警区段显著含级别；关键帧带缩略图引用）。
+ReplayTimeline build_timeline(const std::string& camera_id, long long day_start_ms,
+                              const std::vector<RecordingSegmentRow>& segments,
+                              const std::vector<RecordingGapRow>& gaps,
+                              const std::vector<AlarmMark>& alarms,
+                              int keyframe_interval_ms);
+// 仅时间戳的便捷重载（无级别 -> 标记/区段 level=0）。
 ReplayTimeline build_timeline(const std::string& camera_id, long long day_start_ms,
                               const std::vector<RecordingSegmentRow>& segments,
                               const std::vector<RecordingGapRow>& gaps,
@@ -116,9 +131,12 @@ struct ReplayEventDetail {
     std::string distance_text;
     std::string confidence_text;
     std::string ack_label;
-    std::string note;
+    std::string record_label;    // 录像可用性（详情栏黄条显著标注，D-07）
+    bool record_ok = false;
+    std::string note;            // 独立备注（不占用录像可用性字段）
 };
-ReplayEventDetail build_event_detail(const AlarmRow& row, double distance_m, double confidence);
+ReplayEventDetail build_event_detail(const AlarmRow& row, double distance_m, double confidence,
+                                     const std::string& note = std::string());
 
 }  // namespace core
 }  // namespace railhmi

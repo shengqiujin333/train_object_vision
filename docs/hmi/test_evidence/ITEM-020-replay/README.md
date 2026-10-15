@@ -75,6 +75,31 @@ type=acceptance ... lock_related_cameras=true sync_unavailable_without_clock=tru
 ```
 `sync_prompt_on_deviation=true`：提示现在**可达**（真实偏移 dev=900 > 阈值 300）；无时钟时明确显示“同步状态不可用”，不再谎报在同步。
 
+## 2.6 UI 评审修复轮（D-01..D-09，web_frontend.ui_implementation_review TEST_FAIL 交回）
+
+UI 评审 `REVIEW-ITEM-020.md` 确认 v1 D-01/D-02 已修复，但列出 9 项界面缺项（源码可确证）：
+
+| 偏差 | 修复 |
+|---|---|
+| D-01 关键帧条恒空/非缩略图 | 桥接 `timeline()` 导出 `keyframes`（`{ts,thumb}`）；`build_timeline` 关键帧带 `thumb` 引用；P3 按 `ts` 定位渲染 64px 缩略图槽 |
+| D-02 缺口无斜纹 | P3 缺口用 `Canvas` 绘制斜纹 + “录像缺失” |
+| D-03 缺播放/暂停、倍速 | 桥接 `playback()/setPlaying()/setSpeed()` 消费 core `PlaybackState`；P3 增播放/暂停 + 0.5×/1×/2× |
+| D-04 报警级别硬编码 | `AlarmMark{ts,level}`；`TimelineSegment.level`/`TimelineMarker.level` 由关联报警推导；桥接导出；P3 按 `Theme.alarm.<lvl>` 上色（tint+3px） |
+| D-05 段/缺口/标记不可点选 | P3 段/缺口/标记各有 `MouseArea`：段/缺口 seek，标记 `selectAlarm` |
+| D-06 摄像头选择受限 | P3 顶部用完整 `railhmiCameras`（6 路）；`relatedCameras` 仅作进入默认锁定 |
+| D-07 详情无录像黄条/备注混用 | `ReplayEventDetail` 新增 `record_label/record_ok`，`note` 独立；P3 `detailRecordBar` 黄条 + “备注”独立字段 |
+| D-08 非法日期静默/无键盘可达 | P3 `dateError` 提示（非法日期不静默）；`FilterChip` 高 `touch_target_min=44`、`activeFocusOnTab`、Enter/Space 触发、焦点环 |
+| D-09 尺寸/游标时间 | 轨道 `button.sm=32`、关键帧条 `status_strip_height=64`；游标顶部等宽（mono）时间 |
+
+修复轮板端实测（`board_build.py --mode TestRun`，stamp `20261016-ITEM020-uifix-r1`）→ `TESTRUN_EXIT=0` `SCAN_EXIT=0` `REPLAY_WIRE_EXIT=0`：
+```
+== 579 passed, 0 failed ==   （新增 segment/marker level、keyframe thumb、detail record 断言）
+seg kind=critical level=1 ... label=报警保护片段
+flags ... alarm_marker_level=1 keyframe_thumb=thumb/CAM-01/1792108800000.bmp
+type=detail ... record=可回放 record_ok=true
+[check_replay_wiring] PASS (D-01..D-09 + v1 D-01/D-02 wired)
+```
+
 ## 3. 边界
 
 - **真实回放取流/解码**复用媒体层（GStreamer 播放链，属媒体/视频职责）；本项交付回放**模型/时间轴/同步/来源/详情**与 QML 页面骨架。

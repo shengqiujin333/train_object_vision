@@ -16,12 +16,18 @@ bool ReplayTimeline::has_gap() const { return !gaps.empty(); }
 ReplayTimeline build_timeline(const std::string& camera_id, long long day_start_ms,
                               const std::vector<RecordingSegmentRow>& segments,
                               const std::vector<RecordingGapRow>& gaps,
-                              const std::vector<long long>& alarm_ts,
+                              const std::vector<AlarmMark>& alarms,
                               int keyframe_interval_ms) {
     ReplayTimeline t;
     t.camera_id = camera_id;
     t.day_start_ms = day_start_ms;
     t.day_end_ms = day_start_ms + 86400000LL;
+
+    auto level_in = [&](long long a, long long b) -> int {
+        for (const auto& m : alarms)
+            if (m.ts_ms >= a && m.ts_ms <= b) return static_cast<int>(m.level);
+        return 0;
+    };
 
     for (const auto& s : segments) {
         if (s.cam != camera_id) continue;
@@ -31,6 +37,7 @@ ReplayTimeline build_timeline(const std::string& camera_id, long long day_start_
         ts.t1_ms = std::min(s.t1_ms, t.day_end_ms);
         ts.kind = s.kind;
         ts.label = (s.kind == SegmentKind::Critical) ? "报警保护片段" : "连续录像";
+        ts.level = (s.kind == SegmentKind::Critical) ? level_in(ts.t0_ms, ts.t1_ms) : 0;
         t.segments.push_back(ts);
     }
     std::sort(t.segments.begin(), t.segments.end(),
@@ -48,13 +55,14 @@ ReplayTimeline build_timeline(const std::string& camera_id, long long day_start_
     std::sort(t.gaps.begin(), t.gaps.end(),
               [](const TimelineGap& a, const TimelineGap& b) { return a.t0_ms < b.t0_ms; });
 
-    for (long long ts : alarm_ts) {
-        if (ts < t.day_start_ms || ts >= t.day_end_ms) continue;
-        TimelineMarker m;
-        m.ts_ms = ts;
-        m.kind = "alarm";
-        m.label = "报警";
-        t.alarms.push_back(m);
+    for (const auto& m : alarms) {
+        if (m.ts_ms < t.day_start_ms || m.ts_ms >= t.day_end_ms) continue;
+        TimelineMarker mk;
+        mk.ts_ms = m.ts_ms;
+        mk.kind = "alarm";
+        mk.label = "报警";
+        mk.level = static_cast<int>(m.level);
+        t.alarms.push_back(mk);
     }
     std::sort(t.alarms.begin(), t.alarms.end(),
               [](const TimelineMarker& a, const TimelineMarker& b) { return a.ts_ms < b.ts_ms; });
@@ -64,10 +72,21 @@ ReplayTimeline build_timeline(const std::string& camera_id, long long day_start_
             TimelineMarker m;
             m.ts_ms = ts;
             m.kind = "keyframe";
+            m.thumb = "thumb/" + camera_id + "/" + std::to_string(ts) + ".bmp";
             t.keyframes.push_back(m);
         }
     }
     return t;
+}
+
+ReplayTimeline build_timeline(const std::string& camera_id, long long day_start_ms,
+                              const std::vector<RecordingSegmentRow>& segments,
+                              const std::vector<RecordingGapRow>& gaps,
+                              const std::vector<long long>& alarm_ts,
+                              int keyframe_interval_ms) {
+    std::vector<AlarmMark> marks;
+    for (long long ts : alarm_ts) marks.push_back(AlarmMark{ts, AlarmLevel::L3});
+    return build_timeline(camera_id, day_start_ms, segments, gaps, marks, keyframe_interval_ms);
 }
 
 JumpTargets jump_targets(long long alarm_ts) {
@@ -167,7 +186,8 @@ ReplaySourceStatus replay_source_status(bool nvr_available, bool local_clips_ava
     return st;
 }
 
-ReplayEventDetail build_event_detail(const AlarmRow& row, double distance_m, double confidence) {
+ReplayEventDetail build_event_detail(const AlarmRow& row, double distance_m, double confidence,
+                                     const std::string& note) {
     ReplayEventDetail d;
     d.time_text = row.time_text;
     d.type_label = row.type_label;
@@ -186,7 +206,9 @@ ReplayEventDetail build_event_detail(const AlarmRow& row, double distance_m, dou
         d.confidence_text = "—";
     }
     d.ack_label = row.ack_label;
-    d.note = row.record_label;   // 录像可用性作为备注/标注
+    d.record_label = row.record_label;                       // 黄条标注（D-07）
+    d.record_ok = (row.record == RecordAvailability::Available);
+    d.note = note;                                           // 独立备注，不占用录像字段
     return d;
 }
 
