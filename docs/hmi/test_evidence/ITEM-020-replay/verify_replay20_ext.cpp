@@ -1,25 +1,21 @@
-// Verifier-owned ext fixture for ITEM-020 replay model (software_verification).
-// Linked against the delivered librailhmi_core.a built by the verifier's own
-// board_build.py TestRun round; asserts acceptance boundaries the implementer's
-// tests/probe do not cover:
-//   * parse_date_utc_ms / format_time_text arithmetic bound to an independent
-//     expected constant + malformed-input rejection + day-edge formatting
-//   * build_timeline cross-day clipping (segment/gap straddling day start and
-//     end), out-of-window exclusion both sides, other camera exclusion,
-//     unsorted input -> sorted output, zero-length exclusion, day-edge alarm
-//     markers (ts==day_start kept, ts==day_end dropped), keyframe interval
-//     <=0 -> none, interval == day length -> exactly one
-//   * seek clamps at exact day_end / beyond, jump_to contract-as-implemented
-//     (no clamp), jump_targets exact offsets
-//   * sync_status: empty list, single position, threshold 0, deviation exactly
-//     == threshold (inclusive), deviation == threshold+1, exact prompt text
-//   * replay_source_status all four boolean combinations incl. nvr-only with
-//     empty note, unavailable note text
-//   * build_event_detail: distance/confidence <0 sentinel, rounding granularity,
-//     L2/L3 labels, unacked label, note == record availability label chain
+// Verifier-owned ext fixture for ITEM-020 replay model (software_verification, v2).
+// v2 targets the D-01/D-02 FIX round: keeps all v1 logic-edge checks as regression
+// and adds fix-round boundaries the deliverable does not cover:
+//   * related_cameras: front triple order (CAM-02,CAM-01,CAM-03), non-front single
+//     lock, unknown camera single lock, empty camera -> no lock
+//   * sync_snapshot: positions are cursor+offset (independent of cursor value),
+//     unlocked/partial offsets -> unavailable with exact UI text, single-camera
+//     snapshot, inclusive threshold boundary through snapshot, empty offsets,
+//     exact prompt texts
+//   plus v1 coverage retained: date parse/format edges, cross-day timeline
+//   clipping/sorting/filtering, jump/seek clamping, sync_status edges (empty,
+//   single, threshold 0, inclusive boundary, exact prompt), source combinations,
+//   detail sentinels/rounding/labels, replay_sync_threshold_ms config
+//   parse/validation path (missing key, negative value).
 // Pure logic + stdlib, no Qt — like the delivered probe.
 #include <cstdio>
 #include <fstream>
+#include <map>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -89,7 +85,7 @@ void t_timeline() {
     std::vector<RecordingGapRow> g = {
         gap("CAM-01", kDay - 1000, kDay + 5000, "recording_interrupted"),           // straddles start
         gap("CAM-01", kDay + 86450000, kDay + 87000000, "fi10"),                    // fully after
-        gap("CAM-02", kDay, kDay + 100, "fi10")                                    // other camera
+        gap("CAM-02", kDay, kDay + 100, "fi10")                                     // other camera
     };
     const ReplayTimeline t = build_timeline("CAM-01", kDay, s, g,
                                             {kDay - 1, kDay, kDay + 86400000, kDay + 5000},
@@ -120,8 +116,7 @@ void t_timeline() {
     check("no critical -> has_alarm_segment false", !t2.has_alarm_segment());
     check("no gaps -> has_gap false", !t2.has_gap());
     check("keyframe interval 0 / negative -> none", t2.keyframes.empty());
-    const ReplayTimeline t3 = build_timeline("CAM-01", kDay, {}, {}, {},
-                                             -5);
+    const ReplayTimeline t3 = build_timeline("CAM-01", kDay, {}, {}, {}, -5);
     check("keyframe interval negative -> none", t3.keyframes.empty());
     const ReplayTimeline t4 = build_timeline("CAM-01", kDay, {seg(1, "CAM-01", kDay + 100, kDay + 200,
                                                               SegmentKind::Continuous)},
@@ -150,7 +145,7 @@ void t_jumps_seek() {
           s.pos_ms == kDay + 999999999);
 }
 
-// --- 4. sync edges ---------------------------------------------------------------
+// --- 4. sync edges (v1 regression) ------------------------------------------------
 void t_sync() {
     const SyncResult e = sync_status({}, 300);
     check("empty positions -> defaults (dev 0, in sync, no prompt)",
@@ -173,7 +168,89 @@ void t_sync() {
           mx.has_prompt && mx.prompt == "同步偏差 800 ms（阈值 300 ms）");
 }
 
-// --- 5. source status --------------------------------------------------------------
+// --- 5. D-01 fix: related_cameras ------------------------------------------------
+void t_related_cameras() {
+    const std::vector<std::string> front = related_cameras("CAM-01");
+    check("front alarm locks exactly the sync triple in order CAM-02,CAM-01,CAM-03",
+          front.size() == 3 && front[0] == "CAM-02" && front[1] == "CAM-01" &&
+          front[2] == "CAM-03");
+    check("front triple == front_alarm_sync_group", front == front_alarm_sync_group());
+    const std::vector<std::string> left = related_cameras("CAM-02");
+    check("non-front alarm locks only its own camera (left)",
+          left.size() == 1 && left[0] == "CAM-02");
+    const std::vector<std::string> roof = related_cameras("CAM-04");
+    check("roof camera alarm locks only CAM-04 (not the front triple)",
+          roof.size() == 1 && roof[0] == "CAM-04");
+    check("unknown camera id still locks single (no crash / no empty)",
+          related_cameras("CAM-XX").size() == 1 &&
+          related_cameras("CAM-XX")[0] == "CAM-XX");
+    check("empty camera -> no lock", related_cameras("").empty());
+}
+
+// --- 6. D-02 fix: sync_snapshot ---------------------------------------------------
+void t_sync_snapshot() {
+    const std::vector<std::string> locked = related_cameras("CAM-01");
+    // empty offsets -> unavailable with exact UI text; no false "in sync"
+    const SyncSnapshot none = sync_snapshot(locked, kDay + 5000, {}, 300);
+    check("empty offsets -> unavailable, not in_sync, exact text",
+          !none.available && !none.in_sync && none.max_deviation_ms == 0 &&
+          none.prompt == "同步状态不可用");
+    // locked set empty -> unavailable too
+    const SyncSnapshot noLock = sync_snapshot({}, kDay + 5000, {{ "CAM-01", 0 }}, 300);
+    check("empty locked set -> unavailable", !noLock.available &&
+          noLock.prompt == "同步状态不可用");
+    // missing one locked camera -> unavailable (no silent guess)
+    std::map<std::string, long long> partial;
+    partial["CAM-02"] = 0;
+    partial["CAM-01"] = 10;
+    const SyncSnapshot miss = sync_snapshot(locked, kDay + 5000, partial, 300);
+    check("missing CAM-03 offset -> unavailable", !miss.available &&
+          miss.prompt == "同步状态不可用");
+    // positions are cursor + offset: dev independent of the absolute cursor
+    std::map<std::string, long long> ok;
+    ok["CAM-02"] = 0;
+    ok["CAM-01"] = 120;
+    ok["CAM-03"] = 200;
+    const SyncSnapshot a = sync_snapshot(locked, kDay + 5000, ok, 300);
+    check("within-threshold snapshot: available, in sync, dev 200, no prompt",
+          a.available && a.in_sync && a.max_deviation_ms == 200 && a.prompt.empty());
+    const SyncSnapshot b = sync_snapshot(locked, kDay + 777777, ok, 300);
+    check("deviation independent of absolute cursor", b.available && b.in_sync &&
+          b.max_deviation_ms == 200);
+    // inclusive threshold boundary through the snapshot path
+    std::map<std::string, long long> edge = ok;
+    edge["CAM-03"] = 300;
+    const SyncSnapshot at = sync_snapshot(locked, 1000, edge, 300);
+    check("dev == threshold stays in sync (inclusive)", at.available && at.in_sync &&
+          at.max_deviation_ms == 300 && at.prompt.empty());
+    std::map<std::string, long long> over = ok;
+    over["CAM-03"] = 301;
+    const SyncSnapshot o1 = sync_snapshot(locked, 1000, over, 300);
+    check("dev == threshold+1 -> prompt with exact text", o1.available && !o1.in_sync &&
+          o1.max_deviation_ms == 301 && o1.prompt == "同步偏差 301 ms（阈值 300 ms）");
+    // big deviation -> probe-matching full prompt text
+    std::map<std::string, long long> dev = ok;
+    dev["CAM-03"] = 900;
+    const SyncSnapshot big = sync_snapshot(locked, kDay + 5000, dev, 300);
+    check("dev 900 -> exact probe prompt text",
+          big.available && !big.in_sync && big.max_deviation_ms == 900 &&
+          big.prompt == "同步偏差 900 ms（阈值 300 ms）");
+    // single-camera lock (non-front alarm) with its own offset
+    const std::vector<std::string> one = related_cameras("CAM-05");
+    std::map<std::string, long long> off5;
+    off5["CAM-05"] = 60;
+    const SyncSnapshot s1 = sync_snapshot(one, kDay + 2000, off5, 300);
+    check("single-camera snapshot in sync (only offset no dev)",
+          s1.available && s1.in_sync && s1.max_deviation_ms == 0);
+    // single-camera lock WITHOUT its offset -> unavailable (no fallback to triple)
+    std::map<std::string, long long> other;
+    other["CAM-02"] = 0;
+    const SyncSnapshot s2 = sync_snapshot(one, kDay + 2000, other, 300);
+    check("single-camera lock without its offset -> unavailable", !s2.available &&
+          s2.prompt == "同步状态不可用");
+}
+
+// --- 7. source status (v1 regression) ----------------------------------------------
 void t_source() {
     const ReplaySourceStatus nvr = replay_source_status(true, false);
     check("nvr-only -> Nvr usable, empty note",
@@ -194,7 +271,7 @@ void t_source() {
           std::string(to_string(ReplaySource::Unavailable)) == "unavailable");
 }
 
-// --- 6. event detail edges -----------------------------------------------------------
+// --- 8. event detail edges (v1 regression + D-01 detail-from-row chain) -------------
 void t_detail() {
     EventRow e;
     e.id = 7; e.level = 2; e.type = "person_on_rail"; e.source_cam = "CAM-01";
@@ -212,6 +289,9 @@ void t_detail() {
                                                     -1.0, 0.875);
     check("distance sentinel -> dash", d3.distance_text == "—");
     check("note == 可回放 (available)", d3.note == "可回放");
+    check("row carries selection identity fields (D-01 detail chain)",
+          row2.camera_id == "CAM-01" && row2.time_text.size() == 19 &&
+          row2.ts_wall_ms == kDay + 125000 && row2.camera_name == "前方");
     const ReplayEventDetail d4 = build_event_detail(make_alarm_row(e, "前方", RecordAvailability::Unavailable),
                                                     -1.0, -1.0);
     check("confidence sentinel -> dash", d4.confidence_text == "—");
@@ -225,15 +305,34 @@ void t_detail() {
     check("L3 label", dl3.level_label == "三级");
     check("confidence 0 -> 0%", dl3.confidence_text == "0%");
 
-    const AlarmRow rowAck = make_alarm_row(e, "前方", RecordAvailability::Available);
     e.ack_state = "acked";
     check("acked label", build_event_detail(make_alarm_row(e, "前方", RecordAvailability::Available),
                                             1.0, 0.9).ack_label == "已确认");
-    check("time_text empty for valid ts", !rowAck.time_text.empty() &&
-          rowAck.time_text.size() == 19);
 }
 
-// --- 7. config: replay threshold parse / validate (replay_model consumes) ------
+// --- 9. pantograph row -> distinct detail (selection must change detail) -------------
+void t_detail_distinct_types() {
+    EventRow roof;
+    roof.id = 3; roof.level = 2; roof.type = "pantograph_abnormal"; roof.source_cam = "CAM-04";
+    roof.ts_wall_ms = kDay + 9000; roof.description = "受电弓异常"; roof.ack_state = "unacked";
+    const AlarmRow r3 = make_alarm_row(roof, "车顶", RecordAvailability::Incomplete);
+    const ReplayEventDetail d3 = build_event_detail(r3, -1.0, 0.91);
+    check("roof row type label distinct", d3.type_label == "受电弓异常");
+    check("roof row distance sentinel -> dash (no number faked)",
+          d3.distance_text == "—");
+    check("roof row confidence 91%", d3.confidence_text == "91%");
+    check("roof row unacked", d3.ack_label == "未确认");
+    const AlarmRow front = make_alarm_row(
+        EventRow{1, 1, "person_on_rail", "CAM-01", "", kDay + 5000, 0, 0.0, -1.0, "",
+                 "", "轨道人员", "acked", false, ""},
+        "前方", RecordAvailability::Available);
+    const ReplayEventDetail d1 = build_event_detail(front, 12.34, 0.87);
+    check("front row distinct from roof row (selection changes detail)",
+          d1.type_label == "前方轨道人员" && d1.level_label == "一级" &&
+          d1.ack_label == "已确认" && d1.distance_text == "12.3 m");
+}
+
+// --- 10. config: replay threshold parse / validate (replay_model consumes) -----------
 void t_config_threshold() {
     const std::string dir = RAILHMI_CONFIG_DIR;
     const auto read = [&](const char* name) {
@@ -262,7 +361,7 @@ void t_config_threshold() {
         if (e2.path.find("thresholds.replay_sync_threshold_ms") != std::string::npos) miss_path = true;
     check("missing replay key -> explicit field error, not ok", !miss.ok && miss_path);
 
-    // negative value rejected; huge value allowed (int, no range check) then sync math works
+    // negative value rejected
     std::string th2 = read("thresholds.yaml");
     {
         const std::string from = "replay_sync_threshold_ms: 300";
@@ -277,10 +376,15 @@ void t_config_threshold() {
             e2.message.find(">= 0") != std::string::npos) neg_path = true;
     check("negative replay threshold -> error must be >= 0", !neg.ok && neg_path);
 
-    // cross-check: threshold parsed from config feeding sync_status semantics
+    // cross-check: threshold parsed from config drives sync_snapshot semantics
     const int ms = base.settings.thresholds.replay_sync_threshold_ms;
-    check("config threshold drives inclusive sync boundary",
-          sync_status({0, ms}, ms).in_sync && !sync_status({0, ms + 1}, ms).in_sync);
+    const std::vector<std::string> locked = related_cameras("CAM-01");
+    std::map<std::string, long long> at, over;
+    at["CAM-02"] = 0; at["CAM-01"] = 0; at["CAM-03"] = ms;
+    over = at; over["CAM-03"] = ms + 1;
+    check("config threshold drives inclusive snapshot boundary",
+          sync_snapshot(locked, 1000, at, ms).in_sync &&
+          !sync_snapshot(locked, 1000, over, ms).in_sync);
 }
 
 }  // namespace
@@ -290,8 +394,11 @@ int main() {
     t_timeline();
     t_jumps_seek();
     t_sync();
+    t_related_cameras();
+    t_sync_snapshot();
     t_source();
     t_detail();
+    t_detail_distinct_types();
     t_config_threshold();
 
     for (const auto& n : g_notes) std::printf("%s\n", n.c_str());

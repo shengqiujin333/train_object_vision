@@ -8,7 +8,7 @@ V="$(powershell.exe -NoProfile -Command "[Environment]::GetEnvironmentVariable('
 if [ -z "$V" ]; then echo "credential empty" >&2; exit 2; fi
 export TRAIN_RK3588_SSH_CREDENTIAL="$V"
 cd "E:/work/rail_issue/rk3588_handover" || exit 1
-STAMP="${VERIFY_STAMP:-VERIFY-20261016-v1}"
+STAMP="${VERIFY_STAMP:-VERIFY-20261016-v2}"
 OUT="docs/hmi/test_evidence/ITEM-020-replay"
 mkdir -p "$OUT"
 export MSYS_NO_PATHCONV=1
@@ -18,8 +18,8 @@ python "docs/hmi/test_evidence/ITEM-020-replay/verify_replay20_fixtures.py" \
   --credential-env TRAIN_RK3588_SSH_CREDENTIAL \
   --expected-fingerprint "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU" \
   --cpp "docs/hmi/test_evidence/ITEM-020-replay/verify_replay20_ext.cpp" \
-  --impl-testrun-log "docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.core-evidence_core-tests-20261016-ITEM020-r1.log" \
-  --impl-replayprobe-log "docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-r1.core-evidence_replay-probe-20261016-ITEM020-r1.log" \
+  --impl-testrun-log "docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_core-tests-20261016-ITEM020-fix-r1.log" \
+  --impl-replayprobe-log "docs/hmi/test_evidence/ITEM-020-replay/build-TestRun-192_168_0_103-20261016-ITEM020-fix-r1.core-evidence_replay-probe-20261016-ITEM020-fix-r1.log" \
   --outdir "$OUT" --stamp "$STAMP" \
   --connect-timeout 10 --timeout-sec 1200
 rc=$?
