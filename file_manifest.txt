@@ -169,6 +169,7 @@ docs/hmi/test_evidence/ITEM-003-build/build-Release-192_168_0_103-verify-2026101
 docs/hmi/test_evidence/ITEM-003-build/build-Release-192_168_0_103-verify-20261015-v1.transcript.json | active | 软件验证独立复跑 Release 档 transcript
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
+docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
 models/yolov5s.rknn | existing | 人形检测模型（RKNN）
