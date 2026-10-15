@@ -2,6 +2,9 @@
 # path | status | purpose
 PROJECT_GUIDE.md | existing | 铁轨异物检测项目总纲（历史，数据集/训练/转换/部署流程）
 README.md | existing | RK3588 交接文档，记录硬件/网络/摄像头/程序现状与已知坑（2026-10-13）
+app/README.md | active | 桌面应用工程构建/运行入口说明（当前唯一可执行入口为依赖探针；ITEM-003 补 CMake/build.sh）
+app/tools/env_probe.py | active | 桌面应用依赖/环境只读探针（标准库；目标板与主机均可跑，生成 md/raw/json）
+app/tools/run_env_check.sh | active | 依赖探针运行入口脚本（输出到 docs/hmi/test_evidence/ENV-B-dependency）
 code/librga.so | existing | 板端 RGA 库备份
 code/librknnrt.so | existing | 板端 NPU 运行时库备份
 code/main.cc | existing | 板端 demo 主入口（双模型+取流+GStreamer/RGA）
@@ -19,6 +22,7 @@ docs/hmi/E2E_PLAN.md | active | 桌面应用端到端测试计划（E2EPlan）�
 docs/hmi/INTERACTION_DESIGN.md | active | 交互设计方案（FrontendDesignArtifact）：信息架构/页面状态/报警与回放交互/状态模型/可访问性/可检验结果
 docs/hmi/TEST_DESIGN.md | active | 软件测试设计（TestDesignArtifact）：环境分层/度量定义/故障注入目录/P0 冒烟集 15 条/功能域用例/需求覆盖矩阵/回归集/证据规范
 docs/hmi/VISUAL_DESIGN.md | active | 视觉设计规范（UIVisualDesignArtifact）：色彩/字体/间距/图标/组件/页面状态/资源清单/实现规则
+docs/hmi/build_env_check.md | active | 目标构建/运行依赖基线核验（ITEM-001）：E-01..E-11 逐条命令/板端未核验声明/主机原始结果定向摘录/替代结论
 docs/hmi/design_tokens.yaml | active | 视觉设计令牌（颜色/报警级别/流状态/字体/间距/圆角/层级/对比度校验）
 docs/hmi/desktop_app_tasks.yaml | active | 桌面应用实现任务清单（TaskListArtifact）：依赖核验、渲染选型、骨架、令牌、导航、注册表、取流状态机、三联、六路、推理、报警、录像、回放、调试、维护、权限、恢复、自检打包
 docs/hmi/interaction_tasks.yaml | active | 交互设计任务清单（TaskListArtifact）
@@ -31,6 +35,8 @@ docs/hmi/mockups/p3_replay.svg | active | P3 历史录像与回放页面示意
 docs/hmi/mockups/p4_all_cameras.svg | active | P4 全摄像头页面示意
 docs/hmi/mockups/p5_ai_debug.svg | active | P5 AI 调试页面示意
 docs/hmi/mockups/p6_maintenance.svg | active | P6 设备维护页面示意
+docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.json | active | 依赖探针主机运行结构化结果（ITEM-001 证据）
+docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.md | active | 依赖探针主机运行原始报告（非目标板结论，ITEM-001 证据）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
 models/yolov5s.rknn | existing | 人形检测模型（RKNN）
