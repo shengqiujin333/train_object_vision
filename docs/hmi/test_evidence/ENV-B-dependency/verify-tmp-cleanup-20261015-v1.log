@@ -1,0 +1,35 @@
+# Verifier /tmp cleanup command log — verify-20261015-v1 (2026-10-15)
+
+Verification console record of the two bounded SSH commands run by the verifier
+after its independent board probe re-run (stamp `verify-20261015-v1`).
+Scope: exactly the four /tmp artifacts created by that re-run. No other files touched.
+
+## Command 1 — list before cleanup (exit=0)
+
+```
+$ ls -l /tmp/railhmi_env_probe.py /tmp/railhmi_env_probe_board.md /tmp/railhmi_env_probe_board.raw.txt /tmp/railhmi_env_probe_board.json 2>&1
+-rw-rw-r-- 1 admin admin 82314 Oct 15 21:17 /tmp/railhmi_env_probe_board.json
+-rw-rw-r-- 1 admin admin 77205 Oct 15 21:17 /tmp/railhmi_env_probe_board.md
+-rw-rw-r-- 1 admin admin 77205 Oct 15 21:17 /tmp/railhmi_env_probe_board.raw.txt
+-rw-rw-r-- 1 admin admin 19686 Oct 15 21:17 /tmp/railhmi_env_probe.py
+```
+
+(Note: the listed mtimes 21:17 are the verifier's own re-run time; the re-run
+had overwritten the implementation-run files of the same name, so the
+implementation run's cleanup action at its own time could not be re-observed.)
+
+## Command 2 — remove exactly those four files (exit=0)
+
+```
+$ rm -f /tmp/railhmi_env_probe.py /tmp/railhmi_env_probe_board.md /tmp/railhmi_env_probe_board.raw.txt /tmp/railhmi_env_probe_board.json
+```
+
+## Command 3 — confirm gone (exit=2 = targets absent)
+
+```
+$ ls -l /tmp/railhmi_env_probe.py /tmp/railhmi_env_probe_board.md /tmp/railhmi_env_probe_board.raw.txt /tmp/railhmi_env_probe_board.json 2>&1
+ls: cannot access '/tmp/railhmi_env_probe.py': No such file or directory
+ls: cannot access '/tmp/railhmi_env_probe_board.md': No such file or directory
+ls: cannot access '/tmp/railhmi_env_probe_board.raw.txt': No such file or directory
+ls: cannot access '/tmp/railhmi_env_probe_board.json': No such file or directory
+```

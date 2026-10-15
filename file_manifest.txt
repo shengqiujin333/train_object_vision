@@ -45,7 +45,7 @@ docs/hmi/mockups/p4_all_cameras.svg | active | P4 全摄像头页面示意
 docs/hmi/mockups/p5_ai_debug.svg | active | P5 AI 调试页面示意
 docs/hmi/mockups/p6_maintenance.svg | active | P6 设备维护页面示意
 docs/hmi/render_path_spike.md | active | 渲染路径选型 spike 程序与判据（ITEM-002）：路径定义/判据/运行/未实测状态
-docs/hmi/test_evidence/ENV-B-dependency/VERIFY-ITEM-001.md | active | ITEM-001 交付物 TestEvidence（TEST_PASS：证据真实性与判据逐条核对，板端保持未核验口径）
+docs/hmi/test_evidence/ENV-B-dependency/VERIFY-ITEM-001.md | active | ITEM-001 交付物 TestEvidence（ITER2 重写，TEST_PASS：commit 06b6f9f 板端实测证据独立复现一致、判据逐条满足；偏差 R-1..R-7 记录在案）
 docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r1.commands.json | active | 板端探针首次运行命令日志（SSH 主机指纹/逐条命令退出码与时延）
 docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r1.json | active | 板端探针首次运行结构化结果
 docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r1.md | active | 板端依赖探针首次运行报告（RK3588，E-00..E-13；未含相机探测）
@@ -54,6 +54,10 @@ docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-b
 docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r2.json | active | 板端探针权威运行结构化结果
 docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r2.md | active | 板端依赖探针权威报告（RK3588，E-00..E-13 + 六路相机/NVR 端口可达 + QML/qmlglsink/rgavideoconvert 缺口）
 docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r2.raw.txt | active | 板端探针权威运行原始输出
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-verify-20261015-v1.commands.json | active | 软件验证板端复跑命令日志（SSH 主机指纹/逐条命令退出码）
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-verify-20261015-v1.json | active | 软件验证板端复跑结构化结果
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-verify-20261015-v1.md | active | 软件验证板端探针独立复跑报告（ITER2，六路相机/NVR open；host fingerprint 与 r2 一致）
+docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-verify-20261015-v1.raw.txt | active | 软件验证板端复跑原始输出（与 r2 除易变时间项逐行一致）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-r2.json | active | 编号对齐 §3.4 后重新生成的主机探针结构化结果
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-r2.md | active | 编号对齐 §3.4 后重新生成的主机探针报告（D-02/D-04 修复后证据）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-verify.json | active | 独立复现探针的结构化结果（ITEM-001 验证证据）
@@ -63,6 +67,10 @@ docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.md | active | �
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20261015-210821.json | active | 本轮主机探针结构化结果
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20261015-210821.md | active | 本轮主机探针报告（Windows；含 QML/Quick 库与 qml 目录核验）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20261015-210821.raw.txt | active | 本轮主机探针原始输出
+docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-verify-20261015.json | active | 软件验证独立复跑主机探针结构化结果
+docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-verify-20261015.md | active | 软件验证独立复跑主机探针报告（ITER2 复现证据；比实现者 21:08 归档多 E-01 两命令，根因实现期脚本迭代，与板端最终版一致）
+docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-verify-20261015.raw.txt | active | 软件验证独立复跑主机探针原始输出
+docs/hmi/test_evidence/ENV-B-dependency/verify-tmp-cleanup-20261015-v1.log | active | 验证人板端 /tmp 四个探针文件按名清理的原始控制台记录（对应 VERIFY-ITEM-001 R-4）
 docs/hmi/test_evidence/ITEM-002-render-path/VERIFY-ITEM-002.md | active | ITEM-002 渲染路径 spike 软件验证 TestEvidence（TEST_FAIL：板端实测未产出，设备授权缺口；实现侧工具独立复现通过）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015-r2.txt | active | ITEM-002 重试主机自检（source=file/test 与 --md-out synthetic fixture 表格，未执行板端）
 docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015.txt | active | ITEM-002 主机自检证据（analyze.py --selftest 6/6 与 run_render_spike.sh --dry-run）

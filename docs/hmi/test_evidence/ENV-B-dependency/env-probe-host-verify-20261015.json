@@ -1,0 +1,400 @@
+{
+  "generated_at": "2026-10-15 21:18:50",
+  "environment": {
+    "hostname": "DESKTOP-476JGQ4",
+    "system": "Windows",
+    "release": "10",
+    "machine": "AMD64",
+    "python": "3.13.9"
+  },
+  "checks": {
+    "E-00": {
+      "title": "执行环境与工具链（扩展项）",
+      "commands": [
+        {
+          "cmd": "uname -a",
+          "exit": 0,
+          "available": true,
+          "output": "MINGW64_NT-10.0-19045 DESKTOP-476JGQ4 3.6.7-fb42d713.x86_64 2026-03-29 11:44 UTC x86_64 Msys"
+        },
+        {
+          "cmd": "python3 --version",
+          "exit": 0,
+          "available": true,
+          "output": "Python 3.13.9"
+        },
+        {
+          "cmd": "gcc --version",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gcc)"
+        },
+        {
+          "cmd": "g++ --version",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: g++)"
+        },
+        {
+          "cmd": "cmake --version",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: cmake)"
+        },
+        {
+          "cmd": "pkg-config --version",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: pkg-config)"
+        },
+        {
+          "cmd": "dpkg --print-architecture",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: dpkg)"
+        }
+      ]
+    },
+    "E-01": {
+      "title": "Qt 版本与平台插件",
+      "commands": [
+        {
+          "cmd": "qmake -v",
+          "exit": 0,
+          "available": true,
+          "output": "QMake version 3.1\nUsing Qt version 5.15.2 in D:/Users/123/anaconda3/Library/lib"
+        },
+        {
+          "cmd": "qmake6 -v",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: qmake6)"
+        },
+        {
+          "cmd": "dpkg -l | grep -i qt5 (filtered)",
+          "exit": 0,
+          "available": true,
+          "output": ""
+        },
+        {
+          "cmd": "dpkg -l | grep QML/Quick libs (filtered)",
+          "exit": 0,
+          "available": true,
+          "output": ""
+        },
+        {
+          "cmd": "ls qt5/qml modules",
+          "exit": 0,
+          "available": true,
+          "output": "ls: cannot access '/usr/lib/aarch64-linux-gnu/qt5/qml': No such file or directory\nls: cannot access '/usr/lib/qt5/qml': No such file or directory\nls: cannot access '/usr/lib/aarch64-linux-gnu/qt6/qml': No such file or directory"
+        }
+      ]
+    },
+    "E-02": {
+      "title": "GStreamer Qt sink (qmlglsink)",
+      "commands": [
+        {
+          "cmd": "gst-inspect-1.0 --version",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "gst-inspect-1.0 qmlglsink",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "dpkg -l | grep gstreamer1.0-qt (filtered)",
+          "exit": 0,
+          "available": true,
+          "output": ""
+        }
+      ]
+    },
+    "E-03": {
+      "title": "GL/EGL (Mali)",
+      "commands": [
+        {
+          "cmd": "eglinfo",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: eglinfo)"
+        },
+        {
+          "cmd": "glxinfo -B",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: glxinfo)"
+        },
+        {
+          "cmd": "ls /proc/driver/mali",
+          "exit": 0,
+          "available": true,
+          "output": "ls: cannot access '/proc/driver/mali': No such file or directory"
+        }
+      ]
+    },
+    "E-04": {
+      "title": "MPP 解码与 GL 元素",
+      "commands": [
+        {
+          "cmd": "gst-inspect-1.0 mppvideodec",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "gst-inspect-1.0 glupload",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "gst-inspect-1.0 glcolorconvert",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "gst-inspect-1.0 rgavideoconvert",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "gst-inspect-1.0 rtspsrc",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "gst-inspect-1.0 h265parse",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "gst-inspect-1.0 h264parse",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "gst-inspect-1.0 appsink",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "gst-inspect-1.0 glimagesink",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        }
+      ]
+    },
+    "E-05": {
+      "title": "RGA (librga)",
+      "commands": [
+        {
+          "cmd": "gst-inspect-1.0 rgavideoconvert",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: gst-inspect-1.0)"
+        },
+        {
+          "cmd": "ldconfig -p | grep -i rga (filtered)",
+          "exit": 0,
+          "available": true,
+          "output": ""
+        }
+      ]
+    },
+    "E-06": {
+      "title": "NPU 运行时 (librknnrt)",
+      "commands": [
+        {
+          "cmd": "cat /sys/kernel/debug/rknpu/version",
+          "exit": 1,
+          "available": true,
+          "output": "cat: /sys/kernel/debug/rknpu/version: No such file or directory"
+        },
+        {
+          "cmd": "cat /sys/kernel/debug/rknpu/load",
+          "exit": 1,
+          "available": true,
+          "output": "cat: /sys/kernel/debug/rknpu/load: No such file or directory"
+        },
+        {
+          "cmd": "ldconfig -p | grep -i rknnrt (filtered)",
+          "exit": 0,
+          "available": true,
+          "output": ""
+        }
+      ]
+    },
+    "E-07": {
+      "title": "SQLite",
+      "commands": [
+        {
+          "cmd": "sqlite3 --version",
+          "exit": 0,
+          "available": true,
+          "output": "3.50.6 2025-09-22 18:50:24 9cc554372371e07bf01d8070a64d461ac85b91be6eef0e642ed129a0c7fa8105 (32-bit)"
+        },
+        {
+          "cmd": "python3 -c 'import sqlite3; print(sqlite3.sqlite_version)'",
+          "exit": 0,
+          "available": true,
+          "output": "3.51.0"
+        }
+      ]
+    },
+    "E-08": {
+      "title": "显示会话与图形目标",
+      "commands": [
+        {
+          "cmd": "printenv DISPLAY",
+          "exit": 0,
+          "available": true,
+          "output": "needs-to-be-defined"
+        },
+        {
+          "cmd": "printenv XAUTHORITY",
+          "exit": 0,
+          "available": true,
+          "output": "(XAUTHORITY unset)"
+        },
+        {
+          "cmd": "ls /tmp/.X11-unix",
+          "exit": 0,
+          "available": true,
+          "output": "ls: cannot access '/tmp/.X11-unix': No such file or directory"
+        },
+        {
+          "cmd": "systemctl get-default",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: systemctl)"
+        },
+        {
+          "cmd": "loginctl list-sessions",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: loginctl)"
+        }
+      ]
+    },
+    "E-09": {
+      "title": "磁盘容量",
+      "commands": [
+        {
+          "cmd": "df -h /",
+          "exit": 0,
+          "available": true,
+          "output": "Filesystem            Size  Used Avail Use% Mounted on\nC:/Program Files/Git  118G  115G  3.3G  98% /"
+        },
+        {
+          "cmd": "df -h /home/admin",
+          "exit": 1,
+          "available": true,
+          "output": "df: /home/admin: No such file or directory"
+        },
+        {
+          "cmd": "du -sh /home/admin (skipped: --skip-slow)",
+          "exit": null,
+          "available": true,
+          "output": "skipped by --skip-slow (bounded board probe)"
+        }
+      ]
+    },
+    "E-10": {
+      "title": "camera reachability",
+      "commands": [],
+      "status": "not_run_needs_authorization"
+    },
+    "E-11": {
+      "title": "NVR interface",
+      "commands": [],
+      "status": "not_run_needs_authorization"
+    },
+    "E-12": {
+      "title": "温度/调频/UDP 基线（扩展项）",
+      "commands": [
+        {
+          "cmd": "cat scaling_governor",
+          "exit": 1,
+          "available": true,
+          "output": "cat: /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor: No such file or directory"
+        },
+        {
+          "cmd": "systemctl is-enabled cpu-performance.service",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: systemctl)"
+        },
+        {
+          "cmd": "cat /etc/sysctl.d/99-udp-buffers.conf",
+          "exit": 1,
+          "available": true,
+          "output": "cat: /etc/sysctl.d/99-udp-buffers.conf: No such file or directory"
+        },
+        {
+          "cmd": "sysctl net.core.rmem_max",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: sysctl)"
+        }
+      ]
+    },
+    "E-13": {
+      "title": "UI 渲染前提（扩展项, D-04）",
+      "commands": [
+        {
+          "cmd": "fc-list | grep -iE 'Noto Sans CJK|Noto Sans Mono' (filtered)",
+          "exit": 0,
+          "available": true,
+          "output": ""
+        },
+        {
+          "cmd": "fc-list | wc -l",
+          "exit": 0,
+          "available": true,
+          "output": "514"
+        },
+        {
+          "cmd": "xinput list",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: xinput)"
+        },
+        {
+          "cmd": "libinput list-devices (needs root)",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: libinput)"
+        },
+        {
+          "cmd": "xrandr",
+          "exit": null,
+          "available": false,
+          "output": "(command not found: xrandr)"
+        },
+        {
+          "cmd": "dpkg -l | grep qml-module-qtquick (filtered)",
+          "exit": 0,
+          "available": true,
+          "output": ""
+        },
+        {
+          "cmd": "ls QtQuick Controls 2 qml dir",
+          "exit": 0,
+          "available": true,
+          "output": "ls: cannot access '/usr/lib/aarch64-linux-gnu/qt5/qml/QtQuick/Controls.2': No such file or directory"
+        }
+      ]
+    }
+  }
+}
