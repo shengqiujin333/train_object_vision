@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
+        <file>qml/Theme.qml</file>
+        <file>qml/Tokens.qml</file>
+        <file>qml/qmldir</file>
     </qresource>
 </RCC>

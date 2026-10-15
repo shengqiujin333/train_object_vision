@@ -1,33 +1,34 @@
 import QtQuick 2.15
+import "."
 
-// railhmi 骨架窗口（ITEM-003）。仅使用 QtQuick 基础模块，避免对 Controls2 的硬依赖。
+// railhmi 骨架窗口（ITEM-003/ITEM-010）。所有颜色/字号来自生成的 Theme 单例，不硬编码。
 Rectangle {
     id: root
     width: 1920
     height: 1080
-    color: "#0E1116"   // design_tokens bg_base（后续由令牌生成层接管，ITEM-004）
+    color: Theme.color.bg_base
 
     Column {
         anchors.centerIn: parent
-        spacing: 12
+        spacing: Theme.spacing.s4
 
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#E6EDF3"
-            font.pixelSize: 32
+            color: Theme.color.text_primary
+            font.pixelSize: Theme.typography.scale.display.size
             font.bold: true
             text: "railhmi"
         }
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#9BA7B4"
-            font.pixelSize: 18
+            color: Theme.color.text_secondary
+            font.pixelSize: Theme.typography.scale.body_lg.size
             text: railhmiBuildDescription
         }
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#6E7A88"
-            font.pixelSize: 16
+            color: Theme.color.text_muted
+            font.pixelSize: Theme.typography.scale.body.size
             text: railhmiSimulation ? "simulation input (preview)" : "target skeleton"
         }
     }

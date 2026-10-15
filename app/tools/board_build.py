@@ -160,9 +160,22 @@ def main() -> int:
             sftp.close()
 
         if args.mode == "TestRun":
+            tokens_yaml = Path(args.local_dir).resolve().parent / "docs" / "hmi" / "design_tokens.yaml"
+            if tokens_yaml.is_file():
+                sftp = client.open_sftp()
+                try:
+                    sftp.put(str(tokens_yaml), remote + "/design_tokens.yaml")
+                    note("upload-tokens", {"exit": 0, "output": "design_tokens.yaml"})
+                finally:
+                    sftp.close()
             trun = rrun(client, "cd %s && bash tests/run_core_tests.sh --outdir core-evidence --stamp %s; "
                                 "echo TESTRUN_EXIT=$?" % (remote, args.stamp), args.build_timeout)
             note("testrun", trun)
+            note("tokens-selftest", rrun(
+                client, "cd %s && python3 tools/gen_tokens.py --selftest --yaml design_tokens.yaml; "
+                        "echo TOKENS_EXIT=$?" % remote, 120))
+            note("ui-scan", rrun(
+                client, "cd %s && python3 tools/check_no_hardcoded_ui.py --root src/ui; echo SCAN_EXIT=$?" % remote, 60))
             sim = rrun(client, "cd %s && ./build-core/tools/railhmi-sim-inject "
                               "--fi 01,02,03,04,05,10 --duration 6000 "
                               "--out core-evidence/sim-inject-%s.log --json core-evidence/sim-inject-%s.json; "
