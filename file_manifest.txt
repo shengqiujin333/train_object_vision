@@ -446,12 +446,24 @@ docs/hmi/test_evidence/ITEM-013-stream/build-MediaCheck-192_168_0_103-20261015-I
 docs/hmi/test_evidence/ITEM-013-stream/verify_stream13_ext.cpp | active | 验证自有扩展夹具源码（26 断言：真实帧→LIVE/last_frame fresh 与推进/fps 滑窗/camera_id 透传/cut 后 reconnect+presentable+pump 无帧/时间线镜像/无 live 复活/计数单调/无相机不崩溃）
 docs/hmi/test_evidence/ITEM-013-stream/verify_stream13_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立目录 + 交付入口 MediaCheck 构建 + 探针权威轮程序化断言 + 头部一致性比对 + cutonly 轮 + 扩展夹具编译链 media/core/platform；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/test_evidence/ITEM-014-layout/README.md | active | ITEM-014 三联布局与渲染路径接入证据（compute_layout/QML 接入/板端 TestRun 377/377/两档几何/边界/复现）
+docs/hmi/test_evidence/ITEM-014-layout/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log | active | 验证轮板上交付入口自身归档的完整测试 stdout（377 PASS 行与实现者 r1 程序化逐行一致）
+docs/hmi/test_evidence/ITEM-014-layout/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml | active | 验证轮板上交付入口自身归档的 JUnit XML（独立解析 tests=377 failures=0）
+docs/hmi/test_evidence/ITEM-014-layout/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json | active | 验证轮 sim-inject 复现 JSON
+docs/hmi/test_evidence/ITEM-014-layout/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log | active | 验证轮 sim-inject 复现结构化日志（与实现者归档同形）
+docs/hmi/test_evidence/ITEM-014-layout/VERIFY-FIXTURES-VERIFY-20261016-v1.log | active | 验证夹具权威轮 v1 日志（ENTRY_EXIT=0 + 交付入口归档 377/377 与实现者逐行一致 + TOKENS/SCAN/SIM 复现 + 扩展夹具 46/46 + 清理确认）
+docs/hmi/test_evidence/ITEM-014-layout/VERIFY-FIXTURES-VERIFY-20261016-v1.transcript.json | active | 验证夹具权威轮 v1 transcript（指纹一致/逐条命令/退出码/清理确认）
+docs/hmi/test_evidence/ITEM-014-layout/VERIFY-ITEM-014.md | active | ITEM-014 软件验证 TestEvidence（VERIFY-20261016-v1 判定，TEST_PASS：板端独立复跑 377/377 与实现者逐行一致、JUnit 独立解析 377/0、验证自有扩展夹具 46/46（两档手算精确几何/判据鉴别力反例/7 尺寸矩阵与连续扫描/横幅裕量 131px·54px/确定性）；QML 静态接线 30/30；QML 运行期与视觉确认按 E-01b 边界如实标注）
+docs/hmi/test_evidence/ITEM-014-layout/VERIFY-QML-WIRING-VERIFY-20261016-v1.log | active | 验证轮静态接线核对归档输出（30/30；过程轮 q1e 曾把 typeof 守卫回退块内的比例字面量误判为双源，验证侧自查更正后 v1 权威，见 VERIFY-ITEM-014.md §4）
 docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.core-evidence_core-tests-20261016-ITEM014-r1.log | active | ITEM-014 core 单测逐项通过原文（377 passed / 0 failed）
 docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.core-evidence_core-tests-20261016-ITEM014-r1.xml | active | ITEM-014 JUnit XML（377 用例）
 docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.core-evidence_sim-inject-20261016-ITEM014-r1.json | active | ITEM-014 板端 TestRun sim-inject 回归 JSON
 docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.core-evidence_sim-inject-20261016-ITEM014-r1.log | active | ITEM-014 板端 TestRun sim-inject 回归日志
 docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.log | active | ITEM-014 板端 TestRun 运行日志（构建 + 单测 + 令牌自检 + UI 扫描）
 docs/hmi/test_evidence/ITEM-014-layout/build-TestRun-192_168_0_103-20261016-ITEM014-r1.transcript.json | active | ITEM-014 板端 TestRun transcript（主机指纹/逐命令退出码/取回）
+docs/hmi/test_evidence/ITEM-014-layout/run_verify_round.sh | active | 本验证轮启动脚本（凭据经 Windows User env 导入当前进程并导出给子进程；默认 stamp=VERIFY-20261016-v1，VERIFY_STAMP 可覆盖）
+docs/hmi/test_evidence/ITEM-014-layout/verify_layout14_ext.cpp | active | 验证自有扩展夹具源码（46 断言：两档分辨率逐像素手算身份/判据函数坏布局拒绝/常规尺寸响应矩阵/高度宽度连续扫描恒等式/横幅-中央裕量实测/确定性/0 尺寸健壮）
+docs/hmi/test_evidence/ITEM-014-layout/verify_layout14_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立目录 + 交付入口 + 与实现者归档 PASS 行程序化逐行比对 + JUnit 独立解析 + tokens/scan/sim 复现 + 夹具链接交付构建的 librailhmi_core.a；指纹校验中止/全超时/凭据仅环境变量/按名清理）
+docs/hmi/test_evidence/ITEM-014-layout/verify_qml_wiring.py | active | 验证自有 QML 接线静态核对（30 断言：三联子项顺序/比例消费无游离字面量/P0 锚定链/渲染路径注入与消费/占位层互补/徽标隐藏/头文件判据 API 面）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

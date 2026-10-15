@@ -1,0 +1,33 @@
+[PASS] q0 qrc registers P1Realtime.qml
+[PASS] q0b qrc registers VideoSurface.qml
+[PASS] q1 tile child order inside row is Left,Front,Right
+[PASS] q1b all tiles inside the row item
+[PASS] q1c tile widths consume railhmiLayout ratios
+[PASS] q1d front width formula consistent with gap arithmetic
+[PASS] q1e no ratio literal outside the typeof-guard fallback in P1Realtime.qml
+[PASS] q1f ratio literals confined to the injected-fallback (page.L guard)
+[PASS] q2a alarm bar P0 anchored to page bottom
+[PASS] q2b status strip sits directly above alarm bar
+[PASS] q2c tri-panel row bottom bounded by status strip top
+[PASS] q2d row top margin from layout margin token
+[PASS] q4a front tile bound to position primary
+[PASS] q4b side tiles bound to left/right
+[PASS] q4c all three tiles currently non-live (media wiring follows ITEM-013 state)
+[PASS] q4d driver P1 page shows no detection badges (showBadge false)
+[PASS] q5a VideoSurface consumes injected railhmiRenderPath
+[PASS] q5b placeholder layer exactly complements live layer
+[PASS] q5c render path label displayed on the surface
+[PASS] q6a main.cpp injects railhmiLayout from core compute_layout
+[PASS] q6b main.cpp injects railhmiRenderPath
+[PASS] q6c render path injected from loaded config, not a literal
+[PASS] q6d main.cpp introduces no ratio literals (compute_layout output used)
+[PASS] q7 baseline config render_path=cpu (ITEM-002 selection)
+[PASS] q8 header exposes compute_layout
+[PASS] q8 header exposes three_panel_ordered
+[PASS] q8 header exposes front_is_largest
+[PASS] q8 header exposes p0_fits_without_scroll
+[PASS] q8 header exposes alarm_banner_obscures_front_center
+[PASS] q8 header exposes ratios_preserved
+== static wiring check ==
+== 30 passed, 0 failed ==
+RESULT: PASS passed=30 failed=0
