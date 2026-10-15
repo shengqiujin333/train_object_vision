@@ -1,0 +1,37 @@
+# ITEM-002 render spike — host-runnable self-check (no board, no device access)
+
+生成: 主机 Windows/MINGW64 (x86_64), python Python 3.13.9, Thu Oct 15 16:29:20     2026
+
+## analyze.py --selftest
+```
+[PASS] gl 可用 -> 选 gl -> status=SELECTED selected=gl
+[PASS] gl 协商失败 -> 回退 cpu -> status=SELECTED selected=cpu
+[PASS] 两条都失败 -> none -> status=NONE_USABLE selected=None
+[PASS] 色彩不通过 -> 不可用 -> status=NONE_USABLE selected=None
+[PASS] 帧率不足 -> 不可用 -> status=NONE_USABLE selected=None
+[PASS] 无数据 -> UNMEASURED -> status=UNMEASURED selected=None
+selftest: 6/6 passed
+# exit=0
+```
+
+## analyze.py (no measurement input)
+```
+{
+  "status": "UNMEASURED",
+  "selected": null,
+  "note": "no board measurement provided; no path assumed (ITEM-002 requires real run)"
+}
+# exit=2 (2=UNMEASURED)
+```
+
+## run_render_spike.sh --dry-run
+```
+[render-spike] url=<none> duration=20s outdir=/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path
+[render-spike] DRY-RUN plan:
+  1) build: cmake -S '/e/work/rail_issue/rk3588_handover/app/spikes/render_path' -B '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build' -DCMAKE_BUILD_TYPE=Release && cmake --build '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build' -j
+  2) run:   '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build/render_spike' --path gl  --url '<url>' --duration 20 --out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/gl-20261015-162921.json'
+  3) run:   '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/build/render_spike' --path cpu --url '<url>' --duration 20 --out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/cpu-20261015-162921.json'
+  4) decide: python3 '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/analyze.py' --gl ... --cpu ... --min-fps 20 --out '/e/work/rail_issue/rk3588_handover/app/spikes/render_path/../../../docs/hmi/test_evidence/ITEM-002-render-path/selection-20261015-162921.json'
+[render-spike] dry-run OK (no build, no device access)
+# exit=0
+```

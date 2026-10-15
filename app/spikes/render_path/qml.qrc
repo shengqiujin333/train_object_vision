@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>GlView.qml</file>
+        <file>CpuView.qml</file>
+    </qresource>
+</RCC>

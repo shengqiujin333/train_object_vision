@@ -48,8 +48,10 @@ sh app/tools/run_env_check.sh docs/hmi/test_evidence/ENV-B-dependency
 | E-07 | SQLite3 | **未核验** | `sqlite3` 3.50.6 / python 模块 3.51.0 | 目标板 libsqlite3-dev **未见文档**，需确认 |
 | E-08 | 显示会话（X11 DISPLAY/XAUTHORITY）与 systemd 目标 | **未核验** | 无 X11/systemd（Windows） | 现有 demo 以 `DISPLAY=:0` 运行（`README.md` §3），证明存在图形会话 |
 | E-09 | 磁盘容量 | **未核验** | 主机 `/` 118G/115G used（98%，与本项无关） | 板端 `/` 57G 已用 24G（`README.md` §2.1，届时复核） |
-| E-10 | CPU governor / UDP 缓冲基线 | **未核验** | 不适用（Windows） | `cpu-performance.service` 已 enable；`/etc/sysctl.d/99-udp-buffers.conf` rmem_max=16MB（`README.md` §2.1） |
-| E-11 | 相机/NVR 可达性 | **未执行**（需授权） | 未执行 | `.162/.163/.165/.167` 凭据/URL 未知（`E-10`） |
+| E-10 | 相机可达/凭据（§3.4 E-10） | **未执行**（需授权） | 未执行 | `.162/.163/.165/.167` 凭据/URL 未知 |
+| E-11 | NVR 回放/导出接口（§3.4 E-11） | **未核验** | 未执行 | 接口能力未知（Q-06） |
+| E-12 | CPU governor / UDP 缓冲基线（**扩展项**） | **未核验** | 不适用（Windows） | `cpu-performance.service` 已 enable；`/etc/sysctl.d/99-udp-buffers.conf` rmem_max=16MB（`README.md` §2.1） |
+| E-13 | UI 渲染前提：字体/触控/分辨率/QML 模块（**扩展项, D-04**） | **未核验** | 无 fc-list/xinput/xrandr；无 QML 模块 | `VISUAL_DESIGN` §4/§9 依赖 CJK+等宽字体、触控、两档分辨率、QtQuick.Controls |
 
 ---
 
@@ -140,10 +142,14 @@ cat /sys/kernel/debug/rknpu/version; cat /sys/kernel/debug/rknpu/load; ldconfig 
 
 ---
 
-## 11. E-10 平台基线 / E-11 相机与 NVR
+## 11. E-10 相机 / E-11 NVR / E-12 平台基线 / E-13 UI 前提
 
-- **E-10**（governor/UDP 缓冲）：板端状态未核验；文档基线为 `cpu-performance.service` 已 enable、UDP 缓冲 16MB 配置已存在（`README.md` §2.1，勿回退/勿删）。主机不适用。
-- **E-11**（相机/NVR 可达性）：**未执行**。默认关闭且需授权；`.162/.163/.165/.167` 四路凭据/URL 仍未知（`TEST_DESIGN` §1 资源缺口）。这是 ENV-D 真机档的前置未知项，**不由桌面应用解决**，归现场/用户与视频模块。
+- **E-10**（相机可达/凭据）：**未执行**。默认关闭且需授权；`.162/.163/.165/.167` 四路凭据/URL 仍未知（`TEST_DESIGN` §1 资源缺口）。属 ENV-D 真机档前置未知项，归现场/用户与视频模块。
+- **E-11**（NVR 回放/导出接口）：**未核验**。本项只能用端口可达性接近，**回放/导出接口能力需厂商文档或现场核验**，本探针不覆盖该能力（D-03 修复：与“可达性”明确区分，不再合并表述）。
+- **E-12**（扩展项，governor/UDP）：板端状态未核验；文档基线为 `cpu-performance.service` 已 enable、UDP 缓冲 16MB 配置已存在（`README.md` §2.1，勿回退/勿删）。主机不适用。
+- **E-13**（扩展项，D-04）：UI 渲染前提（CJK/等宽字体、触控输入、xrandr 分辨率、QtQuick.Controls 模块）板端**未核验**。主机无 fc-list/xinput/xrandr 与 QML 模块。字体缺失会导致中文回退/等宽数字错位；触控缺失影响 ≥44px 目标可用性（V-01）；分辨率影响两档布局验收。
+
+> **编号对齐（D-02 修复）**：本文件与 `app/tools/env_probe.py` 现已按 `DESKTOP_APP_DESIGN` §3.4 编号：E-10=相机、E-11=NVR；governor/UDP 与 UI 前提列为扩展项 E-12/E-13。此前 2026-10-15 首次归档的主机报告（`env-probe-host-20251015.md`）使用过渡编号（E-10=governor、E-11=相机/NVR），已被本轮 `env-probe-host-20251015-r2.md` 取代，旧件保留仅作追溯。
 
 ---
 
@@ -166,3 +172,48 @@ cat /sys/kernel/debug/rknpu/version; cat /sys/kernel/debug/rknpu/load; ldconfig 
 | 日期 | 变更 | 检查方式 |
 |---|---|---|
 | 2026-10-15 | 首次建立探针 `app/tools/env_probe.py` + `run_env_check.sh`；主机执行并留档 | 主机运行探针，原始输出归档至 `docs/hmi/test_evidence/ENV-B-dependency/`；核对了探针对“命令不存在/超时/未执行”的如实记录与 hostname/machine 环境标注 |
+| 2026-10-15 | 修复评审 D-02（编号对齐 §3.4）、D-03（E-11 接口能力归属明确）、D-04（新增 E-13 UI 渲染前提）；新增 §14 渲染 spike 状态 | 主机重跑探针生成 `env-probe-host-20251015-r2.{md,json}`；`analyze.py --selftest` 6/6；`run_render_spike.sh --dry-run` 通过 |
+
+---
+
+## 14. 渲染路径选型 spike（ITEM-002）状态与实测数据
+
+> 本节由 ITEM-002 追加。工作项要求“在板端用一路 RTSP 实测 `mppvideodec→glupload→glcolorconvert→qmlglsink`
+> 能否协商并显示，失败则实测 `RGA NV12→BGR + Qt 纹理上传` 回退路径，记录 fps/CPU/GPU/画面色彩正确性”。
+
+### 14.1 本轮执行状态
+
+| 项 | 状态 |
+|---|---|
+| 板端实测（path=gl / path=cpu） | **未执行**（项目设备工具禁用，未连接 RK3588，未访问相机） |
+| 选定的主/回退路径 | **未选定**（`UNMEASURED`）——按判据“未实测前不假定主路径成立” |
+| 可执行入口 | `app/spikes/render_path/run_render_spike.sh`（板端）+ `analyze.py`（判据） |
+| 主机可执行的校验 | `analyze.py --selftest` 6/6 通过；`run_render_spike.sh --dry-run` 通过（见证据） |
+
+**实测数据表（待板端填写；当前为空）**
+
+| path | playing | fps_source | fps_display | CPU%(单核) | GPU load avg | 色彩 spread | 结论 |
+|---|---|---|---|---|---|---|---|
+| gl | — | — | — | — | — | — | 未实测 |
+| cpu | — | — | — | — | — | — | 未实测 |
+
+### 14.2 证据
+
+- 主机自检证据: `docs/hmi/test_evidence/ITEM-002-render-path/host-selftest-20251015.txt`
+- 板端测量产物（待授权后生成）: `docs/hmi/test_evidence/ITEM-002-render-path/{gl,cpu,selection}-<stamp>.json`（+ `.png` 快照）
+- 判据与程序说明: `docs/hmi/render_path_spike.md`、`app/spikes/render_path/README.md`
+
+### 14.3 说明
+
+- 两条路径存在性依赖 E-02（`qmlglsink`）与 E-05/E-06（librga/librknnrt）；若 E-02 缺失，path=gl 预期在协商阶段失败，应由测量结果而非预判来决定回退。
+- 本 spike **不覆盖 6 路并发合成**性能；单路选型完成后，6 路合成与显示帧率分级在后续页面/取流任务验证。
+- 主机不含 Qt/GStreamer/librga 工具链，spike **未在主机编译**；编译与运行均为目标板范围。
+
+### 14.4 待授权后执行（交设备授权）
+
+```sh
+# 目标板，需项目授权与可用相机
+cd app/spikes/render_path
+./run_render_spike.sh --url 'rtsp://<user>:<pass>@<cam>/...' --duration 20 --snapshot
+# 将 selection-<stamp>.json 的 selected 值回填本节 14.1 与 render_path_spike.md
+```

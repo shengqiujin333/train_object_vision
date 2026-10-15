@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""railhmi 依赖 / 构建环境探针 (ITEM-001)
+"""railhmi 依赖 / 构建环境探针 (ITEM-001, ITEM-002 复用)
 
 按 docs/hmi/DESKTOP_APP_DESIGN.md §3.4 逐条核验桌面应用的目标构建/运行依赖，
 把每条命令的原始输出记录下来，生成可归档的 Markdown 报告。
+
+编号对齐 (D-02 修复): 与 DESKTOP_APP_DESIGN §3.4 一致
+  E-01 Qt / E-02 qmlglsink / E-03 GL-EGL / E-04 MPP+GL 元素 / E-05 RGA /
+  E-06 NPU / E-07 SQLite / E-08 显示会话 / E-09 磁盘 / E-10 相机可达 /
+  E-11 NVR 接口 / E-12 governor+UDP(扩展) / E-13 UI 渲染前提(扩展, D-04)
 
 设计约束:
   * 只读探测: 不安装、不修改系统、不写产品目录以外位置。
@@ -17,7 +22,7 @@
   python3 env_probe.py --out report.md       # 写 Markdown 报告
   python3 env_probe.py --raw-out raw.txt     # 同时保留原始日志
   python3 env_probe.py --json-out probe.json # 机器可读结果
-  python3 env_probe.py --probe-cameras       # 额外探测相机 RTSP 端口 (需授权)
+  python3 env_probe.py --probe-cameras       # 额外探测相机/NVR 端口 (需授权)
 """
 
 from __future__ import annotations
@@ -35,11 +40,15 @@ from pathlib import Path
 
 DEFAULT_TIMEOUT = 20
 
-# 目标板默认路径 (仅作为“候选位置”探测, 不作为结论)
 BOARD_QT_PLUGIN_DIRS = [
     "/usr/lib/aarch64-linux-gnu/qt5/plugins/platforms",
     "/usr/lib/aarch64-linux-gnu/qt6/plugins/platforms",
     "/usr/lib/qt5/plugins/platforms",
+]
+BOARD_QT_QML_DIRS = [
+    "/usr/lib/aarch64-linux-gnu/qt5/qml",
+    "/usr/lib/qt5/qml",
+    "/usr/lib/aarch64-linux-gnu/qt6/qml",
 ]
 BOARD_LIB_DIRS = [
     "/usr/lib/aarch64-linux-gnu",
@@ -49,7 +58,6 @@ BOARD_LIB_DIRS = [
 BOARD_PATHS = {
     "rknpu_version": "/sys/kernel/debug/rknpu/version",
     "rknpu_load": "/sys/kernel/debug/rknpu/load",
-    "thermal_glob": "/sys/class/thermal",
     "x11_socket": "/tmp/.X11-unix",
     "governor": "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
     "udp_sysctl": "/etc/sysctl.d/99-udp-buffers.conf",
@@ -68,7 +76,6 @@ NVR_BASELINE = ("NVR", "192.168.1.4")
 
 
 def run(cmd, timeout: int = DEFAULT_TIMEOUT) -> dict:
-    """执行一条命令并捕获原始输出; 命令不存在/超时都作为事实记录。"""
     exe = cmd[0]
     if shutil.which(exe) is None:
         return {"cmd": cmd, "available": False, "exit": None,
@@ -80,7 +87,7 @@ def run(cmd, timeout: int = DEFAULT_TIMEOUT) -> dict:
     except subprocess.TimeoutExpired:
         return {"cmd": cmd, "available": True, "exit": None,
                 "output": "(timeout after %ss)" % timeout}
-    except Exception as e:  # noqa: BLE001 - 记录任何异常作为事实
+    except Exception as e:  # noqa: BLE001
         return {"cmd": cmd, "available": True, "exit": None, "output": "(error: %r)" % e}
 
 
@@ -91,15 +98,14 @@ def first_existing(paths):
     return None
 
 
-def list_plugins(plugin_dir: str) -> list:
+def list_dir(path: str) -> list:
     try:
-        return sorted(os.listdir(plugin_dir))
+        return sorted(os.listdir(path))
     except OSError:
         return []
 
 
 def lib_present(name_fragment: str) -> list:
-    """在候选库目录里找名字含 fragment 的库文件。"""
     hits = []
     for d in BOARD_LIB_DIRS:
         if not os.path.isdir(d):
@@ -113,14 +119,6 @@ def lib_present(name_fragment: str) -> list:
     return sorted(hits)
 
 
-def read_first_line(path: str) -> str:
-    try:
-        with open(path, "r", encoding="utf-8", errors="replace") as fh:
-            return fh.readline().strip()
-    except OSError as e:
-        return "(unreadable: %s)" % e
-
-
 def port_open(host: str, port: int, timeout: float = 2.0) -> bool:
     try:
         with socket.create_connection((host, port), timeout=timeout):
@@ -129,8 +127,14 @@ def port_open(host: str, port: int, timeout: float = 2.0) -> bool:
         return False
 
 
+def tcp_entry(label: str, host: str, port: int) -> tuple:
+    return (label, {"cmd": ["[tcp-connect]", host, str(port)], "available": True,
+                    "exit": None,
+                    "output": "open" if port_open(host, port) else "closed/unreachable"})
+
+
 # --------------------------------------------------------------------------
-# 检查项定义
+# 检查项
 # --------------------------------------------------------------------------
 
 def check_env_header() -> list:
@@ -158,8 +162,8 @@ def check_qt() -> dict:
             "dpkg -l 2>/dev/null | grep -iE 'qtbase5|qtdeclarative5|qml-module-qtquick' | head -40"])),
     ]
     plugin_dir = first_existing(BOARD_QT_PLUGIN_DIRS)
-    plugins = list_plugins(plugin_dir) if plugin_dir else []
-    return {"commands": cmds, "plugin_dir": plugin_dir, "plugins": plugins}
+    return {"commands": cmds, "plugin_dir": plugin_dir,
+            "plugins": list_dir(plugin_dir) if plugin_dir else []}
 
 
 def check_gst_qt_sink() -> list:
@@ -177,18 +181,15 @@ def check_graphics() -> dict:
         ("glxinfo -B", run(["glxinfo", "-B"])),
         ("ls /proc/driver/mali", run(["bash", "-lc", "ls -la /proc/driver/mali 2>&1 | head -20"])),
     ]
-    libs = lib_present("libEGL") + lib_present("libGLESv2") + lib_present("libmali") \
-        + lib_present("libgbm")
+    libs = (lib_present("libEGL") + lib_present("libGLESv2") + lib_present("libmali")
+            + lib_present("libgbm"))
     return {"commands": cmds, "libs": libs}
 
 
 def check_mpp_gl_elements() -> list:
     elems = ["mppvideodec", "glupload", "glcolorconvert", "rgavideoconvert",
-             "rtspsrc", "h265parse", "h264parse", "appsink"]
-    out = []
-    for e in elems:
-        out.append(("gst-inspect-1.0 %s" % e, run(["gst-inspect-1.0", e])))
-    return out
+             "rtspsrc", "h265parse", "h264parse", "appsink", "glimagesink"]
+    return [("gst-inspect-1.0 %s" % e, run(["gst-inspect-1.0", e])) for e in elems]
 
 
 def check_rga() -> dict:
@@ -197,8 +198,7 @@ def check_rga() -> dict:
         ("ldconfig -p | grep -i rga (filtered)", run(["bash", "-lc",
             "ldconfig -p 2>/dev/null | grep -i rga | head -20"])),
     ]
-    libs = lib_present("librga")
-    return {"commands": cmds, "libs": libs}
+    return {"commands": cmds, "libs": lib_present("librga")}
 
 
 def check_npu() -> dict:
@@ -208,8 +208,7 @@ def check_npu() -> dict:
         ("ldconfig -p | grep -i rknnrt (filtered)", run(["bash", "-lc",
             "ldconfig -p 2>/dev/null | grep -i rknnrt | head -20"])),
     ]
-    libs = lib_present("librknnrt")
-    return {"commands": cmds, "libs": libs}
+    return {"commands": cmds, "libs": lib_present("librknnrt")}
 
 
 def check_sqlite() -> dict:
@@ -218,8 +217,7 @@ def check_sqlite() -> dict:
         ("python3 -c 'import sqlite3; print(sqlite3.sqlite_version)'",
          run([sys.executable, "-c", "import sqlite3; print(sqlite3.sqlite_version)"])),
     ]
-    libs = lib_present("libsqlite3")
-    return {"commands": cmds, "libs": libs}
+    return {"commands": cmds, "libs": lib_present("libsqlite3")}
 
 
 def check_display_session() -> dict:
@@ -234,9 +232,8 @@ def check_display_session() -> dict:
 
 
 def check_disk() -> dict:
-    targets = ["/", "/home/admin"]
     rows = []
-    for t in targets:
+    for t in ("/", "/home/admin"):
         try:
             u = shutil.disk_usage(t)
             rows.append((t, u.total, u.used, u.free))
@@ -262,25 +259,50 @@ def check_cpu_governor_udp() -> dict:
     return {"commands": cmds}
 
 
+def check_ui_prerequisites() -> dict:
+    """D-04: VISUAL_DESIGN §4/§9 的渲染前提（字体/触控/分辨率/QML 模块）。"""
+    qml_dir = first_existing(BOARD_QT_QML_DIRS)
+    controls2 = None
+    if qml_dir:
+        for cand in ("QtQuick/Controls.2", "QtQuick/Controls"):
+            if os.path.isdir(os.path.join(qml_dir, cand)):
+                controls2 = os.path.join(qml_dir, cand)
+                break
+    cmds = [
+        ("fc-list | grep -iE 'Noto Sans CJK|Noto Sans Mono' (filtered)", run(["bash", "-lc",
+            "fc-list 2>/dev/null | grep -iE 'Noto Sans CJK|Noto Sans Mono' | head -10"])),
+        ("fc-list | wc -l", run(["bash", "-lc", "fc-list 2>/dev/null | wc -l"])),
+        ("xinput list", run(["xinput", "list"])),
+        ("libinput list-devices (needs root)", run(["libinput", "list-devices"])),
+        ("xrandr", run(["xrandr"])),
+        ("dpkg -l | grep qml-module-qtquick (filtered)", run(["bash", "-lc",
+            "dpkg -l 2>/dev/null | grep -E 'qml-module-qtquick' | head -20"])),
+        ("ls QtQuick Controls 2 qml dir", run(["bash", "-lc",
+            "ls -d /usr/lib/aarch64-linux-gnu/qt5/qml/QtQuick/Controls.2 2>&1 | head -5"])),
+    ]
+    return {"commands": cmds, "qml_dir": qml_dir, "controls2": controls2}
+
+
 def check_cameras() -> list:
     out = []
     for cid, name, ip in CAMERA_BASELINE:
-        out.append(("RTSP TCP 554 %s %s (%s)" % (cid, name, ip),
-                    {"cmd": ["[tcp-connect]", ip, "554"], "available": True, "exit": None,
-                     "output": "open" if port_open(ip, 554) else "closed/unreachable"}))
-    cid, ip = NVR_BASELINE
-    out.append(("NVR HTTP 80 %s" % ip,
-                {"cmd": ["[tcp-connect]", ip, "80"], "available": True, "exit": None,
-                 "output": "open" if port_open(ip, 80) else "closed/unreachable"}))
+        out.append(tcp_entry("RTSP TCP 554 %s %s (%s)" % (cid, name, ip), ip, 554))
     return out
+
+
+def check_nvr() -> list:
+    cid, ip = NVR_BASELINE
+    return [
+        tcp_entry("NVR HTTP 80 %s" % ip, ip, 80),
+        tcp_entry("NVR RTSP 554 %s" % ip, ip, 554),
+    ]
 
 
 # --------------------------------------------------------------------------
 
 def fmt_cmd(entry) -> list:
     cmd, res = entry
-    lines = ["```"]
-    lines.append("$ " + cmd)
+    lines = ["```", "$ " + cmd]
     if res.get("exit") is not None:
         lines.append("# exit=%s" % res["exit"])
     out = res.get("output", "")
@@ -290,7 +312,6 @@ def fmt_cmd(entry) -> list:
 
 
 def build_report(probe_cameras: bool) -> tuple:
-    """返回 (markdown 文本, 结构化 dict)。"""
     now = time.strftime("%Y-%m-%d %H:%M:%S")
     env = {
         "hostname": platform.node(),
@@ -298,14 +319,11 @@ def build_report(probe_cameras: bool) -> tuple:
         "release": platform.release(),
         "machine": platform.machine(),
         "python": sys.version.split()[0],
-        "cwd": os.getcwd(),
     }
-    md = []
-    data = {"generated_at": now, "environment": env, "checks": {}}
-
+    md, data = [], {"generated_at": now, "environment": env, "checks": {}}
     md.append("# railhmi 依赖 / 构建环境核验原始报告")
     md.append("")
-    md.append("- 探针: `app/tools/env_probe.py` (只读, 标准库)")
+    md.append("- 探针: `app/tools/env_probe.py` (只读, 标准库); 编号对齐 `DESKTOP_APP_DESIGN` §3.4")
     md.append("- 生成时间: %s" % now)
     md.append("- 执行环境: hostname=`%s` system=`%s %s` machine=`%s` python=`%s`"
               % (env["hostname"], env["system"], env["release"], env["machine"], env["python"]))
@@ -322,18 +340,17 @@ def build_report(probe_cameras: bool) -> tuple:
         for e in entries:
             md.extend(fmt_cmd(e))
             md.append("")
+        for line in (extra or []):
+            md.append(line)
         if extra:
-            for line in extra:
-                md.append(line)
             md.append("")
         data["checks"][cid] = {
             "title": title,
-            "commands": [{"cmd": c, "exit": r.get("exit"),
-                          "available": r.get("available"),
+            "commands": [{"cmd": c, "exit": r.get("exit"), "available": r.get("available"),
                           "output": r.get("output")} for c, r in entries],
         }
 
-    section("E-00", "执行环境与工具链", "确认 ABI/架构与编译工具链",
+    section("E-00", "执行环境与工具链（扩展项）", "确认 ABI/架构与编译工具链",
             check_env_header() + check_build_toolchain())
 
     q = check_qt()
@@ -348,12 +365,11 @@ def build_report(probe_cameras: bool) -> tuple:
             check_gst_qt_sink())
 
     g = check_graphics()
-    extra = []
-    if g["libs"]:
-        extra.append("- GL/EGL 库: " + ", ".join(g["libs"][:12]))
+    extra = ["- GL/EGL 库: " + ", ".join(g["libs"][:12])] if g["libs"] else []
     section("E-03", "GL/EGL (Mali)", "确认 EGL/GLES 驱动与 renderer", g["commands"], extra)
 
-    section("E-04", "MPP 解码与 GL 元素", "确认 mppvideodec/glupload/glcolorconvert/rgavideoconvert 存在",
+    section("E-04", "MPP 解码与 GL 元素",
+            "确认 mppvideodec/glupload/glcolorconvert/rgavideoconvert/glimagesink 存在",
             check_mpp_gl_elements())
 
     r = check_rga()
@@ -381,19 +397,37 @@ def build_report(probe_cameras: bool) -> tuple:
             extra.append("- `%s`: (unavailable)" % t)
     section("E-09", "磁盘容量", "确认根分区与运行目录可用空间", d["commands"], extra)
 
-    section("E-10", "温度与调频/UDP 基线", "确认 governor 与 UDP 缓冲配置（现有平台事实）",
+    if probe_cameras:
+        section("E-10", "相机可达性 (需授权)", "六路 RTSP 端口可达性；不发送 RTSP 鉴权",
+                check_cameras())
+        section("E-11", "NVR 接口 (需授权)",
+                "NVR 端口可达性；**回放/导出接口能力需厂商文档或现场核验，本项不覆盖**",
+                check_nvr())
+    else:
+        md.append("## E-10 相机可达性")
+        md.append("")
+        md.append("- 状态: **未执行**（默认关闭；网络探测需项目授权，`--probe-cameras` 开启）。")
+        md.append("")
+        md.append("## E-11 NVR 接口")
+        md.append("")
+        md.append("- 状态: **未执行**（需授权）。注: 本项仅能测端口可达性，"
+                  "NVR 回放/导出接口能力需厂商文档/现场核验，属 E2E/现场档。")
+        md.append("")
+        data["checks"]["E-10"] = {"title": "camera reachability", "commands": [],
+                                  "status": "not_run_needs_authorization"}
+        data["checks"]["E-11"] = {"title": "NVR interface", "commands": [],
+                                  "status": "not_run_needs_authorization"}
+
+    section("E-12", "温度/调频/UDP 基线（扩展项）",
+            "确认 governor 与 UDP 缓冲配置（现有平台事实）",
             check_cpu_governor_udp()["commands"])
 
-    if probe_cameras:
-        section("E-11", "相机/NVR 可达性 (需授权)", "TCP 端口可达性探测；不发送 RTSP 鉴权",
-                check_cameras())
-    else:
-        md.append("## E-11 相机/NVR 可达性")
-        md.append("")
-        md.append("- 状态: **未执行**（默认关闭；网络探测需项目授权，使用 `--probe-cameras` 开启）。")
-        md.append("")
-        data["checks"]["E-11"] = {"title": "camera reachability", "commands": [],
-                                  "status": "not_run_needs_authorization"}
+    u = check_ui_prerequisites()
+    extra = ["- Qt QML 目录: `%s`" % (u["qml_dir"] or "(not found)"),
+             "- QtQuick Controls 目录: `%s`" % (u["controls2"] or "(not found)")]
+    section("E-13", "UI 渲染前提（扩展项, D-04）",
+            "字体（CJK/等宽）、触控输入、显示分辨率、QML 控件模块",
+            u["commands"], extra)
 
     md.append("---")
     md.append("")
@@ -417,17 +451,12 @@ def main() -> int:
 
     md, data = build_report(probe_cameras=args.probe_cameras)
     sys.stdout.write(md)
-
-    if args.raw_out:
-        Path(args.raw_out).parent.mkdir(parents=True, exist_ok=True)
-        Path(args.raw_out).write_text(md, encoding="utf-8")
-    if args.out:
-        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-        Path(args.out).write_text(md, encoding="utf-8")
-    if args.json_out:
-        Path(args.json_out).parent.mkdir(parents=True, exist_ok=True)
-        Path(args.json_out).write_text(
-            json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    for path, content in ((args.raw_out, md),
+                          (args.out, md),
+                          (args.json_out, json.dumps(data, ensure_ascii=False, indent=2))):
+        if path:
+            Path(path).parent.mkdir(parents=True, exist_ok=True)
+            Path(path).write_text(content, encoding="utf-8")
     return 0
 
 
