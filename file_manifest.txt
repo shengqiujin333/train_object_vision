@@ -35,6 +35,9 @@ docs/hmi/mockups/p3_replay.svg | active | P3 历史录像与回放页面示意
 docs/hmi/mockups/p4_all_cameras.svg | active | P4 全摄像头页面示意
 docs/hmi/mockups/p5_ai_debug.svg | active | P5 AI 调试页面示意
 docs/hmi/mockups/p6_maintenance.svg | active | P6 设备维护页面示意
+docs/hmi/test_evidence/ENV-B-dependency/VERIFY-ITEM-001.md | active | ITEM-001 交付物 TestEvidence（TEST_PASS：证据真实性与判据逐条核对，板端保持未核验口径）
+docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-verify.json | active | 独立复现探针的结构化结果（ITEM-001 验证证据）
+docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015-verify.md | active | 软件验证独立复现的探针报告（逐行等于归档原件除时间戳，ITEM-001 验证证据）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.json | active | 依赖探针主机运行结构化结果（ITEM-001 证据）
 docs/hmi/test_evidence/ENV-B-dependency/env-probe-host-20251015.md | active | 依赖探针主机运行原始报告（非目标板结论，ITEM-001 证据）
 file_manifest.txt | existing | 本清单，项目文件用途登记
