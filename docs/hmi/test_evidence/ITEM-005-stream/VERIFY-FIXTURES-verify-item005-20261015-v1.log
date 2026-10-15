@@ -1,0 +1,39 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded docs/hmi/test_evidence/ITEM-005-stream/verify_stream_ext.cpp -> /tmp/railhmi_verify/verify_stream_ext.cpp
+
+===== [compile] exit=0 =====
+GXX_EXIT=1
+bash: line 1: cd: C:/Users/123/AppData/Local/Temp/railhmi_build: No such file or directory
+
+
+===== [run-ext] exit=0 =====
+EXT_EXIT=1
+bash: line 1: cd: C:/Users/123/AppData/Local/Temp/railhmi_build: No such file or directory
+
+
+===== [fx1_first_frame_timeout_zero] exit=0 =====
+FX1_EXIT=1
+cp: cannot stat 'C:/Users/123/AppData/Local/Temp/railhmi_build/config/*.yaml': No such file or directory
+
+
+===== [fx2_reconnect_backoff_negative] exit=0 =====
+FX2_EXIT=1
+cp: cannot stat 'C:/Users/123/AppData/Local/Temp/railhmi_build/config/*.yaml': No such file or directory
+
+
+===== [fx3_good_reference] exit=0 =====
+FX3_EXIT=1
+cp: cannot stat 'C:/Users/123/AppData/Local/Temp/railhmi_build/config/*.yaml': No such file or directory
+
+
+===== [cleanup] exit=0 =====
+fixture_cleanup_done
+

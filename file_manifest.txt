@@ -193,8 +193,19 @@ docs/hmi/test_evidence/ITEM-004-config/build-CoreTests-192_168_0_103-20261015-IT
 docs/hmi/test_evidence/ITEM-004-config/build-CoreTests-192_168_0_103-verify-item004-20261015-v1.log | active | 软件验证独立复跑 CoreTests 权威日志（构建 0 + 40/40 测试 + config-check good/bad）
 docs/hmi/test_evidence/ITEM-004-config/build-CoreTests-192_168_0_103-verify-item004-20261015-v1.transcript.json | active | 软件验证独立复跑 CoreTests transcript（指纹与实现者 r2 一致；keep-remote 后按名清理）
 docs/hmi/test_evidence/ITEM-005-stream/README.md | active | ITEM-005 流状态机与质量判定证据（交付内容/六态与升级序列/板端实测/复现）
+docs/hmi/test_evidence/ITEM-005-stream/VERIFY-FIXTURES-verify-item005-20261015-v1.log | active | 验证夹具 v1 过程留痕（MSYS 路径转换错误致板上命令全部无效，非板面结论，不作判据）
+docs/hmi/test_evidence/ITEM-005-stream/VERIFY-FIXTURES-verify-item005-20261015-v1.transcript.json | active | 验证夹具 v1 transcript（留痕）
+docs/hmi/test_evidence/ITEM-005-stream/VERIFY-FIXTURES-verify-item005-20261015-v2.log | active | 验证夹具 v2 过程留痕（39/40，multi-flag 断言互斥组合不满足，验证侧自查修正如实登记；不作判据）
+docs/hmi/test_evidence/ITEM-005-stream/VERIFY-FIXTURES-verify-item005-20261015-v2.transcript.json | active | 验证夹具 v2 transcript（留痕）
+docs/hmi/test_evidence/ITEM-005-stream/VERIFY-FIXTURES-verify-item005-20261015-v3.log | active | 验证夹具权威轮 v3 日志（40/40 + fx1/fx2 neg + fx3 ref + 清理）
+docs/hmi/test_evidence/ITEM-005-stream/VERIFY-FIXTURES-verify-item005-20261015-v3.transcript.json | active | 验证夹具权威轮 v3 transcript（指纹一致/逐条命令/清理确认）
+docs/hmi/test_evidence/ITEM-005-stream/VERIFY-ITEM-005.md | active | ITEM-005 软件验证 TestEvidence（TEST_PASS：板端独立复跑 79/79、验证自有扩展夹具 40/40、阈值校验负例 2 条 fx1/fx2、指纹链一致；验证侧过程教训如实登记）
 docs/hmi/test_evidence/ITEM-005-stream/build-CoreTests-192_168_0_103-20261015-ITEM005-r1.log | active | ITEM-005 权威构建/测试日志
 docs/hmi/test_evidence/ITEM-005-stream/build-CoreTests-192_168_0_103-20261015-ITEM005-r1.transcript.json | active | ITEM-005 权威 CoreTests（79/79 + config-check）transcript
+docs/hmi/test_evidence/ITEM-005-stream/build-CoreTests-192_168_0_103-20261015-verify-v1.log | active | 软件验证独立复跑 CoreTests 权威日志（构建 0 + 79/79 测试 + config-check good/bad）
+docs/hmi/test_evidence/ITEM-005-stream/build-CoreTests-192_168_0_103-20261015-verify-v1.transcript.json | active | 软件验证独立复跑 CoreTests transcript（指纹与实现者 r1 一致；keep-remote 后由夹具轮按名清理）
+docs/hmi/test_evidence/ITEM-005-stream/verify_stream_ext.cpp | active | 验证自有扩展夹具源码（classify 边界/全非 LIVE 拒绝/显式重连升级/DEGRADED 全链/OFFLINE 粘滞/drain 语义）
+docs/hmi/test_evidence/ITEM-005-stream/verify_stream_fixtures.py | active | 验证自有夹具板上运行器（指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

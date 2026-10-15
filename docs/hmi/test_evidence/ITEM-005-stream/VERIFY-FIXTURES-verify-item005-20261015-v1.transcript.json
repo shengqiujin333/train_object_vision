@@ -1,0 +1,80 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "remote_build_dir": "C:/Users/123/AppData/Local/Temp/railhmi_build",
+    "workdir": "/tmp/railhmi_verify",
+    "cpp": "docs/hmi/test_evidence/ITEM-005-stream/verify_stream_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-005-stream",
+    "stamp": "verify-item005-20261015-v1",
+    "connect_timeout": 10
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_verify",
+      "exit": 0,
+      "elapsed_s": 0.22,
+      "output": ""
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded docs/hmi/test_evidence/ITEM-005-stream/verify_stream_ext.cpp -> /tmp/railhmi_verify/verify_stream_ext.cpp"
+    },
+    {
+      "step": "compile",
+      "cmd": "cd C:/Users/123/AppData/Local/Temp/railhmi_build && g++ -std=c++17 -O0 -Wall -Isrc/core/include /tmp/railhmi_verify/verify_stream_ext.cpp src/core/src/stream_state.cpp -o /tmp/railhmi_verify/verify_stream_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.03,
+      "output": "GXX_EXIT=1\nbash: line 1: cd: C:/Users/123/AppData/Local/Temp/railhmi_build: No such file or directory\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd C:/Users/123/AppData/Local/Temp/railhmi_build && /tmp/railhmi_verify/verify_stream_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "EXT_EXIT=1\nbash: line 1: cd: C:/Users/123/AppData/Local/Temp/railhmi_build: No such file or directory\n"
+    },
+    {
+      "step": "fx1_first_frame_timeout_zero",
+      "cmd": "rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp C:/Users/123/AppData/Local/Temp/railhmi_build/config/*.yaml /tmp/railhmi_fx/ && sed -i 's/first_frame_timeout_ms: 5000/first_frame_timeout_ms: 0/' /tmp/railhmi_fx/thresholds.yaml && C:/Users/123/AppData/Local/Temp/railhmi_build/build-core/tools/railhmi-config-check /tmp/railhmi_fx 2>&1; echo FX1_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.16,
+      "output": "FX1_EXIT=1\ncp: cannot stat 'C:/Users/123/AppData/Local/Temp/railhmi_build/config/*.yaml': No such file or directory\n"
+    },
+    {
+      "step": "fx2_reconnect_backoff_negative",
+      "cmd": "rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp C:/Users/123/AppData/Local/Temp/railhmi_build/config/*.yaml /tmp/railhmi_fx/ && sed -i 's/reconnect_backoff_ms: 1000/reconnect_backoff_ms: -1/' /tmp/railhmi_fx/thresholds.yaml && C:/Users/123/AppData/Local/Temp/railhmi_build/build-core/tools/railhmi-config-check /tmp/railhmi_fx 2>&1; echo FX2_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "FX2_EXIT=1\ncp: cannot stat 'C:/Users/123/AppData/Local/Temp/railhmi_build/config/*.yaml': No such file or directory\n"
+    },
+    {
+      "step": "fx3_good_reference",
+      "cmd": "rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp C:/Users/123/AppData/Local/Temp/railhmi_build/config/*.yaml /tmp/railhmi_fx/ && C:/Users/123/AppData/Local/Temp/railhmi_build/build-core/tools/railhmi-config-check /tmp/railhmi_fx 2>&1; echo FX3_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "FX3_EXIT=1\ncp: cannot stat 'C:/Users/123/AppData/Local/Temp/railhmi_build/config/*.yaml': No such file or directory\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify /tmp/railhmi_fx C:/Users/123/AppData/Local/Temp/railhmi_build && echo fixture_cleanup_done",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "fixture_cleanup_done\n"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded docs/hmi/test_evidence/ITEM-005-stream/verify_stream_ext.cpp -> /tmp/railhmi_verify/verify_stream_ext.cpp
+
+===== [compile] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+== verify-stream-ext (software tester fixture, ITEM-005) ==
+[PASS] boundary mean==40 not too_dark (strict <)
+[PASS] mean 39.999 -> too_dark
+[PASS] boundary mean==220 not too_bright (strict >)
+[PASS] mean 220.001 -> too_bright
+[PASS] boundary stddev==3 not occluded
+[PASS] stddev 2.999 -> occluded
+[PASS] boundary lapvar==30 not blurred (strict <)
+[PASS] lapvar 0 -> blurred
+[PASS] partial invalid stats -> only occluded
+[FAIL] multi-flag describe covers all four
+[PASS] offline rejects present-as-live
+[PASS] connecting rejects present-as-live
+[PASS] first-frame timeout -> reconnecting
+[PASS] reconnecting rejects present-as-live
+[PASS] backoff elapsed -> connecting
+[PASS] explicit attempt reaches threshold -> offline
+[PASS] explicit attempt emits Escalated
+[PASS] escalated offline rejects present-as-live
+[PASS] drain returns all buffered events
+[PASS] start after escalation resets count
+[PASS] start emits Started
+[PASS] second drain is empty
+[PASS] frame after restart -> live
+[PASS] 49ms old frame presents as live
+[PASS] exactly freeze_timeout old rejects
+[PASS] bad-quality first frame -> degraded streaming
+[PASS] connecting->degraded emits Started+QualityDegraded+FirstFrame
+[PASS] degraded no-frame -> frozen
+[PASS] frozen after degraded rejects
+[PASS] degraded->frozen->reconnect escalates at threshold 1
+[PASS] escalated emitted in degraded chain
+[PASS] recovery with flags -> degraded, count reset
+[PASS] recovered emitted from offline
+[PASS] degraded old frame (50ms) rejects
+[PASS] two attempts below threshold stay reconnecting
+[PASS] one ReconnectAttempt event per attempt
+[PASS] third attempt escalates
+[PASS] arrived offline
+[PASS] offline sticky under tick
+[PASS] offline chain event buffer
+== 39 passed, 1 failed ==
+EXT_EXIT=1
+
+
+===== [fx1_first_frame_timeout_zero] exit=0 =====
+config INVALID (1 error(s)) dir=/tmp/railhmi_fx:
+  thresholds.first_frame_timeout_ms: must be >= 1
+FX1_EXIT=1
+
+
+===== [fx2_reconnect_backoff_negative] exit=0 =====
+config INVALID (1 error(s)) dir=/tmp/railhmi_fx:
+  thresholds.reconnect_backoff_ms: must be >= 0
+FX2_EXIT=1
+
+
+===== [fx3_good_reference] exit=0 =====
+config OK: 6 cameras, 4 roi, 1 integrations (dir=/tmp/railhmi_fx)
+  mode=visible render_path=cpu recording_source=both
+FX3_EXIT=0
+
+
+===== [cleanup] exit=0 =====
+fixture_cleanup_done
+
