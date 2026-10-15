@@ -1,0 +1,116 @@
+type=multi source=test channels=6 started=6 cut_index=1 cut_after_s=4
+t=0 type=cell idx=0 id=CAM-01 state=live fps=0.5 last_frame_ms=221645891 reconnect=0 presentable=true
+t=0 type=cell idx=1 id=CAM-02 state=live fps=0.5 last_frame_ms=221645891 reconnect=0 presentable=true
+t=0 type=cell idx=2 id=CAM-03 state=live fps=0.5 last_frame_ms=221645897 reconnect=0 presentable=true
+t=0 type=cell idx=3 id=CAM-04 state=live fps=0.5 last_frame_ms=221645899 reconnect=0 presentable=true
+t=0 type=cell idx=4 id=CAM-05 state=live fps=0.5 last_frame_ms=221645902 reconnect=0 presentable=true
+t=0 type=cell idx=5 id=CAM-06 state=live fps=0.5 last_frame_ms=221645904 reconnect=0 presentable=true
+t=0 type=grid cells=6 live=6 presentable=6
+t=533 type=cell idx=0 id=CAM-01 state=live fps=7.5 last_frame_ms=221646425 reconnect=0 presentable=true
+t=533 type=cell idx=1 id=CAM-02 state=live fps=7.5 last_frame_ms=221646446 reconnect=0 presentable=true
+t=533 type=cell idx=2 id=CAM-03 state=live fps=7.5 last_frame_ms=221646457 reconnect=0 presentable=true
+t=533 type=cell idx=3 id=CAM-04 state=live fps=7.5 last_frame_ms=221646459 reconnect=0 presentable=true
+t=533 type=cell idx=4 id=CAM-05 state=live fps=7.5 last_frame_ms=221646463 reconnect=0 presentable=true
+t=533 type=cell idx=5 id=CAM-06 state=live fps=7.5 last_frame_ms=221646464 reconnect=0 presentable=true
+t=533 type=grid cells=6 live=6 presentable=6
+t=1012 type=cell idx=0 id=CAM-01 state=live fps=13.5 last_frame_ms=221646904 reconnect=0 presentable=true
+t=1012 type=cell idx=1 id=CAM-02 state=live fps=13.5 last_frame_ms=221646926 reconnect=0 presentable=true
+t=1012 type=cell idx=2 id=CAM-03 state=live fps=13.5 last_frame_ms=221646937 reconnect=0 presentable=true
+t=1012 type=cell idx=3 id=CAM-04 state=live fps=13.5 last_frame_ms=221646939 reconnect=0 presentable=true
+t=1012 type=cell idx=4 id=CAM-05 state=live fps=13.5 last_frame_ms=221646942 reconnect=0 presentable=true
+t=1012 type=cell idx=5 id=CAM-06 state=live fps=13.5 last_frame_ms=221646944 reconnect=0 presentable=true
+t=1012 type=grid cells=6 live=6 presentable=6
+t=1532 type=cell idx=0 id=CAM-01 state=live fps=20.0 last_frame_ms=221647424 reconnect=0 presentable=true
+t=1532 type=cell idx=1 id=CAM-02 state=live fps=20.0 last_frame_ms=221647446 reconnect=0 presentable=true
+t=1532 type=cell idx=2 id=CAM-03 state=live fps=20.0 last_frame_ms=221647457 reconnect=0 presentable=true
+t=1532 type=cell idx=3 id=CAM-04 state=live fps=20.0 last_frame_ms=221647459 reconnect=0 presentable=true
+t=1532 type=cell idx=4 id=CAM-05 state=live fps=20.0 last_frame_ms=221647462 reconnect=0 presentable=true
+t=1532 type=cell idx=5 id=CAM-06 state=live fps=20.0 last_frame_ms=221647464 reconnect=0 presentable=true
+t=1532 type=grid cells=6 live=6 presentable=6
+t=2013 type=cell idx=0 id=CAM-01 state=live fps=25.0 last_frame_ms=221647905 reconnect=0 presentable=true
+t=2013 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=221647926 reconnect=0 presentable=true
+t=2013 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221647937 reconnect=0 presentable=true
+t=2013 type=cell idx=3 id=CAM-04 state=live fps=25.0 last_frame_ms=221647940 reconnect=0 presentable=true
+t=2013 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221647942 reconnect=0 presentable=true
+t=2013 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221647944 reconnect=0 presentable=true
+t=2013 type=grid cells=6 live=6 presentable=6
+t=2533 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=221648424 reconnect=0 presentable=true
+t=2533 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=221648446 reconnect=0 presentable=true
+t=2533 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221648457 reconnect=0 presentable=true
+t=2533 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221648459 reconnect=0 presentable=true
+t=2533 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221648462 reconnect=0 presentable=true
+t=2533 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221648464 reconnect=0 presentable=true
+t=2533 type=grid cells=6 live=6 presentable=6
+t=3013 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=221648904 reconnect=0 presentable=true
+t=3013 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=221648926 reconnect=0 presentable=true
+t=3013 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221648937 reconnect=0 presentable=true
+t=3013 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221648939 reconnect=0 presentable=true
+t=3013 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221648942 reconnect=0 presentable=true
+t=3013 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221648944 reconnect=0 presentable=true
+t=3013 type=grid cells=6 live=6 presentable=6
+t=3534 type=cell idx=0 id=CAM-01 state=live fps=25.0 last_frame_ms=221649426 reconnect=0 presentable=true
+t=3534 type=cell idx=1 id=CAM-02 state=live fps=25.5 last_frame_ms=221649446 reconnect=0 presentable=true
+t=3534 type=cell idx=2 id=CAM-03 state=live fps=25.0 last_frame_ms=221649458 reconnect=0 presentable=true
+t=3534 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221649459 reconnect=0 presentable=true
+t=3534 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221649462 reconnect=0 presentable=true
+t=3534 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221649464 reconnect=0 presentable=true
+t=3534 type=grid cells=6 live=6 presentable=6
+t=4013 type=injection cut=FI-01 index=1
+t=4013 type=cell idx=0 id=CAM-01 state=live fps=25.0 last_frame_ms=221649906 reconnect=0 presentable=true
+t=4013 type=cell idx=1 id=CAM-02 state=reconnecting fps=25.0 last_frame_ms=221649886 reconnect=1 presentable=false
+t=4013 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221649926 reconnect=0 presentable=true
+t=4013 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221649939 reconnect=0 presentable=true
+t=4013 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221649942 reconnect=0 presentable=true
+t=4013 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221649944 reconnect=0 presentable=true
+t=4013 type=grid cells=6 live=5 presentable=5
+t=4533 type=cell idx=0 id=CAM-01 state=live fps=25.0 last_frame_ms=221650425 reconnect=0 presentable=true
+t=4533 type=cell idx=1 id=CAM-02 state=reconnecting fps=18.5 last_frame_ms=221649886 reconnect=1 presentable=false
+t=4533 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221650446 reconnect=0 presentable=true
+t=4533 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221650459 reconnect=0 presentable=true
+t=4533 type=cell idx=4 id=CAM-05 state=live fps=25.0 last_frame_ms=221650463 reconnect=0 presentable=true
+t=4533 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221650464 reconnect=0 presentable=true
+t=4533 type=grid cells=6 live=5 presentable=5
+t=5013 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=221650904 reconnect=0 presentable=true
+t=5013 type=cell idx=1 id=CAM-02 state=connecting fps=12.5 last_frame_ms=221649886 reconnect=1 presentable=false
+t=5013 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221650926 reconnect=0 presentable=true
+t=5013 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221650939 reconnect=0 presentable=true
+t=5013 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221650942 reconnect=0 presentable=true
+t=5013 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221650944 reconnect=0 presentable=true
+t=5013 type=grid cells=6 live=5 presentable=5
+t=5532 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=221651424 reconnect=0 presentable=true
+t=5532 type=cell idx=1 id=CAM-02 state=connecting fps=6.0 last_frame_ms=221649886 reconnect=1 presentable=false
+t=5532 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221651446 reconnect=0 presentable=true
+t=5532 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221651459 reconnect=0 presentable=true
+t=5532 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221651462 reconnect=0 presentable=true
+t=5532 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221651464 reconnect=0 presentable=true
+t=5532 type=grid cells=6 live=5 presentable=5
+t=6013 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=221651904 reconnect=0 presentable=true
+t=6013 type=cell idx=1 id=CAM-02 state=connecting fps=0.0 last_frame_ms=221649886 reconnect=1 presentable=false
+t=6013 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221651926 reconnect=0 presentable=true
+t=6013 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221651939 reconnect=0 presentable=true
+t=6013 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221651942 reconnect=0 presentable=true
+t=6013 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221651944 reconnect=0 presentable=true
+t=6013 type=grid cells=6 live=5 presentable=5
+t=6533 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=221652424 reconnect=0 presentable=true
+t=6533 type=cell idx=1 id=CAM-02 state=connecting fps=0.0 last_frame_ms=221649886 reconnect=1 presentable=false
+t=6533 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221652446 reconnect=0 presentable=true
+t=6533 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221652459 reconnect=0 presentable=true
+t=6533 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221652463 reconnect=0 presentable=true
+t=6533 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221652464 reconnect=0 presentable=true
+t=6533 type=grid cells=6 live=5 presentable=5
+t=7012 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=221652904 reconnect=0 presentable=true
+t=7012 type=cell idx=1 id=CAM-02 state=connecting fps=0.0 last_frame_ms=221649886 reconnect=1 presentable=false
+t=7012 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221652926 reconnect=0 presentable=true
+t=7012 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221652939 reconnect=0 presentable=true
+t=7012 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221652942 reconnect=0 presentable=true
+t=7012 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221652944 reconnect=0 presentable=true
+t=7012 type=grid cells=6 live=5 presentable=5
+t=7533 type=cell idx=0 id=CAM-01 state=live fps=25.5 last_frame_ms=221653424 reconnect=0 presentable=true
+t=7533 type=cell idx=1 id=CAM-02 state=connecting fps=0.0 last_frame_ms=221649886 reconnect=1 presentable=false
+t=7533 type=cell idx=2 id=CAM-03 state=live fps=25.5 last_frame_ms=221653446 reconnect=0 presentable=true
+t=7533 type=cell idx=3 id=CAM-04 state=live fps=25.5 last_frame_ms=221653459 reconnect=0 presentable=true
+t=7533 type=cell idx=4 id=CAM-05 state=live fps=25.5 last_frame_ms=221653462 reconnect=0 presentable=true
+t=7533 type=cell idx=5 id=CAM-06 state=live fps=25.5 last_frame_ms=221653464 reconnect=0 presentable=true
+t=7533 type=grid cells=6 live=5 presentable=5
+type=summary channels=6 final_live=5 final_presentable=5
+type=acceptance all_presentable_before_cut=true cut_not_presentable=true others_still_presentable=true cut_last_frame_frozen=true result=PASS

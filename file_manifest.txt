@@ -473,6 +473,26 @@ docs/hmi/test_evidence/ITEM-014-layout/verify_layout14_ext.cpp | active | 验证
 docs/hmi/test_evidence/ITEM-014-layout/verify_layout14_fixtures.py | active | 验证自有板端运行器（上传 app 快照独立目录 + 交付入口 + 与实现者归档 PASS 行程序化逐行比对 + JUnit 独立解析 + tokens/scan/sim 复现 + 夹具链接交付构建的 librailhmi_core.a；指纹校验中止/全超时/凭据仅环境变量/按名清理）
 docs/hmi/test_evidence/ITEM-014-layout/verify_qml_wiring.py | active | 验证自有 QML 接线静态核对（30 断言：三联子项顺序/比例消费无游离字面量/P0 锚定链/渲染路径注入与消费/占位层互补/徽标隐藏/头文件判据 API 面）
 docs/hmi/test_evidence/ITEM-015-grid/README.md | active | ITEM-015 六路并发与全摄像头页证据（网格模型/每格视图/多路管理/板端 411/411 单测 + 六路探针断流验收 PASS/边界/复现）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log | active | ITEM-015 v1 验证轮板上交付入口归档（411/0）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml | active | ITEM-015 v1 验证轮 JUnit XML（411 用例）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json | active | ITEM-015 v1 sim-inject 回归 JSON
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log | active | ITEM-015 v1 sim-inject 回归日志
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v1.log | active | ITEM-015 v1 过程轮全程留痕（ext 首跑 79/81 两处验证侧期望错误；核心 411/411 与探针证据）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v1.multi-count2_cut1.log | active | ITEM-015 v1 独立参数探针（两路很低配计数）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v1.multi-cut0_count6.log | active | ITEM-015 v1 独立参数探针（cut-index 0 → CAM-01 断流；六路）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v1.multi-cut1_count6.log | active | ITEM-015 v1 独立参数探针（cut-index 1 → CAM-02 断流；六路）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v1.transcript.json | active | ITEM-015 v1 过程轮 transcript（指纹/逐命令/退出码）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.log | active | ITEM-015 v2 板上交付入口归档 stdout + JUnit 结果
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_core-tests-VERIFY-20261016-v2.xml | active | ITEM-015 v2 JUnit XML（411 用例）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.json | active | ITEM-015 v2 sim-inject 回归 JSON
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v2.core-evidence_sim-inject-VERIFY-20261016-v2.log | active | ITEM-015 v2 sim-inject 回归日志
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v2.log | active | ITEM-015 v2 权威验证轮全程（411/411 逐行一致 identical=True、三组探针解析判定独立全 true、负例 exit3、ext 81/81、清理）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v2.multi-count2_cut1.log | active | ITEM-015 v2 独立参数探针（两路 1 断流）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v2.multi-cut0_count6.log | active | ITEM-015 v2 独立参数探针（cut-index 0 → CAM-01 断流；其余五路保持可显示）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v2.multi-cut1_count6.log | active | ITEM-015 v2 独立参数探针（cut-index 1 → CAM-02 断流；其余五路保持可显示）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-FIXTURES-VERIFY-20261016-v2.transcript.json | active | ITEM-015 v2 权威轮 transcript（指纹/逐命令/退出码/取回）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-ITEM-015.md | active | ITEM-015 软件验证 TestEvidence（VERIFY-20261016-v2：判据逐条 J1-J6、板端独立复跑 411/411 逐行一致、multi-probe 三组独立参数+负例解析全 true、ext 夹具 81/81、QML 接线 34/34、边界与过程轮留痕）
+docs/hmi/test_evidence/ITEM-015-grid/VERIFY-QML-WIRING15-VERIFY-20261016-v2.log | active | ITEM-015 主机 QML 接线静态核对输出（34/34）
 docs/hmi/test_evidence/ITEM-015-grid/build-MediaCheck-192_168_0_103-20261016-ITEM015-media-r1.core-evidence_multi-probe-20261016-ITEM015-media-r1.json | active | ITEM-015 六路并发探针结构化 JSON（rounds/cells/acceptance）
 docs/hmi/test_evidence/ITEM-015-grid/build-MediaCheck-192_168_0_103-20261016-ITEM015-media-r1.core-evidence_multi-probe-20261016-ITEM015-media-r1.log | active | ITEM-015 六路并发探针逐格状态原文（断流前 6 live；断流后 5 live + CAM-04 reconnecting/presentable=false/最近帧冻结 + 验收 PASS）
 docs/hmi/test_evidence/ITEM-015-grid/build-MediaCheck-192_168_0_103-20261016-ITEM015-media-r1.core-evidence_stream-probe-20261016-ITEM015-media-r1.json | active | ITEM-015 单路取流探针回归 JSON
@@ -485,6 +505,10 @@ docs/hmi/test_evidence/ITEM-015-grid/build-TestRun-192_168_0_103-20261016-ITEM01
 docs/hmi/test_evidence/ITEM-015-grid/build-TestRun-192_168_0_103-20261016-ITEM015-r1.core-evidence_sim-inject-20261016-ITEM015-r1.log | active | ITEM-015 板端 TestRun sim-inject 回归日志
 docs/hmi/test_evidence/ITEM-015-grid/build-TestRun-192_168_0_103-20261016-ITEM015-r1.log | active | ITEM-015 板端 TestRun 运行日志（构建 + 单测 + 令牌自检 + UI 扫描）
 docs/hmi/test_evidence/ITEM-015-grid/build-TestRun-192_168_0_103-20261016-ITEM015-r1.transcript.json | active | ITEM-015 板端 TestRun transcript（主机指纹/逐命令退出码/取回）
+docs/hmi/test_evidence/ITEM-015-grid/run_verify_round.sh | active | ITEM-015 验证轮驱动（证书仅进程内导出；stamp 可覆盖）
+docs/hmi/test_evidence/ITEM-015-grid/verify_grid15_ext.cpp | active | ITEM-015 验证自有扩展夹具（几何精确值/判据鉴别力/文本边界/状态标签/稳健性/配置驱动 81 断言；链接交付 librailhmi_core.a）
+docs/hmi/test_evidence/ITEM-015-grid/verify_grid15_fixtures.py | active | ITEM-015 验证夹具运行器（Paramiko 指纹校验；交付入口复跑+逐行比对+JUnit 独立解析、multi-probe 三组独立参数解析、负例、ext 编译运行、有限等待全程）
+docs/hmi/test_evidence/ITEM-015-grid/verify_qml_wiring15.py | active | ITEM-015 QML 接线静态核对（P4/CameraTile/main.cpp 注入链 34 断言；主机执行）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

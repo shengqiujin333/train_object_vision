@@ -1,0 +1,37 @@
+[PASS] p0 qrc registers P4AllCameras.qml
+[PASS] p0b qrc registers CameraTile.qml
+[PASS] p1 P4 cells driven by railhmiChannels (registry order)
+[PASS] p1b Grid columns/spacing from shape properties
+[PASS] p1c cell width formula from cols (gap arithmetic exact)
+[PASS] p1d cell height formula from rows (gap arithmetic exact)
+[PASS] p1e no per-cell manual reordering (order = model order only)
+[PASS] p2 P4 shows detection badges (P4/P6 visibility contract)
+[PASS] p2b name/badge/aiEnabled consumed from channel views
+[PASS] p2c state badge label consumed
+[PASS] p3 fps text wired to tile
+[PASS] p3b last-frame text wired to tile
+[PASS] p3c reconnect count wired to tile
+[PASS] p3d surface live bound to core presentable (stale frames guarded)
+[PASS] p4 CameraTile exposes ITEM-015 display fields
+[PASS] p4b tile renders fps/last-frame/reconnect texts
+[PASS] p4c tile embeds VideoSurface bound to tile.live
+[PASS] p4d placeholder exactly complements video layer (stale not shown as live)
+[PASS] p5 main.cpp injects railhmiChannels from core build_channel_views
+[PASS] p5b unstarted fallback: empty runtime -> placeholders, no dropped cells
+[PASS] p5e main.cpp injects railhmiGrid from core grid dims
+[PASS] p5f registry from config (single source)
+[PASS] p6 shape fallback confined to typeof-guard
+[PASS] p6b fallback dims equal core 3x2/2x3
+[PASS] p6c wide/tall selection matches core choose_grid_shape semantics
+[PASS] p7 MultiStreamManager exposes start_all
+[PASS] p7 MultiStreamManager exposes pump_all
+[PASS] p7 MultiStreamManager exposes simulate_cut
+[PASS] p7 MultiStreamManager exposes stats
+[PASS] p7 MultiStreamManager exposes stop_all
+[PASS] p7b header documents per-channel isolation
+[PASS] p7c multi-probe CLI registered in media CMake
+[PASS] p8 no camera name/IP literals in P4/CameraTile code
+[PASS] p8b no hardcoded camera ids in QML pages
+== static wiring check (ITEM-015) ==
+== 34 passed, 0 failed ==
+RESULT: PASS passed=34 failed=0
