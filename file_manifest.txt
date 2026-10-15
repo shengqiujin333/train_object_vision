@@ -27,13 +27,13 @@ code/yolov5_postprocess.h | existing | yolov5 后处理头
 code/yolov8_seg.h | existing | yolov8-seg 头
 docs/hmi/DESKTOP_APP_DESIGN.md | active | 桌面应用架构与构建运行方案（DesktopAppDesignArtifact）：环境分解/技术选型/模块与线程/渲染管线/状态契约/报警录像持久化/配置/健康/构建部署/验证范围
 docs/hmi/E2E_PLAN.md | active | 桌面应用端到端测试计划（E2EPlan）：六条跨组件关键旅程（报警闭环/真人场景/断流恢复/故障马拉松/断电复活/权限贯穿）、环境分层与升降级准则
-docs/hmi/INTERACTION_DESIGN.md | active | 交互设计方案（FrontendDesignArtifact）：信息架构/页面状态/报警与回放交互/状态模型/可访问性/可检验结果
+docs/hmi/INTERACTION_DESIGN.md | active | 交互设计方案 v2（FrontendDesignArtifact）：信息架构/页面状态/报警与回放交互/状态模型/可访问性/可检验结果；含本期 6 路可见光范围、无红外口径、各摄像头检测职责与 NVR 登记未配置态
 docs/hmi/TEST_DESIGN.md | active | 软件测试设计（TestDesignArtifact）：环境分层/度量定义/故障注入目录/P0 冒烟集 15 条/功能域用例/需求覆盖矩阵/回归集/证据规范
 docs/hmi/VISUAL_DESIGN.md | active | 视觉设计规范（UIVisualDesignArtifact）：色彩/字体/间距/图标/组件/页面状态/资源清单/实现规则
 docs/hmi/build_env_check.md | active | 目标构建/运行依赖基线核验（ITEM-001，ITEM-002 §14 追加）：E-01..E-13 逐条命令/板端未核验声明/主机原始结果摘录/替代结论
 docs/hmi/design_tokens.yaml | active | 视觉设计令牌（颜色/报警级别/流状态/字体/间距/圆角/层级/对比度校验）
 docs/hmi/desktop_app_tasks.yaml | active | 桌面应用实现任务清单（TaskListArtifact）：依赖核验、渲染选型、骨架、令牌、导航、注册表、取流状态机、三联、六路、推理、报警、录像、回放、调试、维护、权限、恢复、自检打包
-docs/hmi/interaction_tasks.yaml | active | 交互设计任务清单（TaskListArtifact）
+docs/hmi/interaction_tasks.yaml | active | 交互设计任务清单 v2（TaskListArtifact）：含摄像头检测职责与本期无红外范围、NVR 设备与录像来源交互任务
 docs/hmi/mockups/components_states.svg | active | 组件与状态总览示意
 docs/hmi/mockups/p1_realtime_alarm_l1.svg | active | P1 一级报警态页面示意
 docs/hmi/mockups/p1_realtime_normal.svg | active | P1 实时监控正常态页面示意（1920x1080 SVG）
