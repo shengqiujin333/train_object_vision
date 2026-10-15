@@ -17,7 +17,7 @@
   <text x="44" y="660" fill="#E6EDF3" font-size="12" text-anchor="middle">维护</text>
 
   <text x="128" y="100" fill="#E6EDF3" font-size="24" font-weight="bold">设备维护</text>
-  <text x="128" y="126" fill="#9BA7B4" font-size="14">摄像头 · AI · 录像与存储 · 网络与温度 · 云台 · 日志</text>
+  <text x="128" y="126" fill="#9BA7B4" font-size="14">摄像头 · AI · 录像与存储 · NVR · 网络与温度 · 云台 · 日志</text>
 
   <!-- card: cameras -->
   <rect x="128" y="152" width="800" height="300" rx="8" fill="#161B22" stroke="#2D3644"/>
@@ -79,17 +79,30 @@
   <rect x="1480" y="560" width="140" height="36" rx="6" fill="#3B82F6"/><text x="1550" y="584" fill="#FFFFFF" font-size="14" text-anchor="middle">一键归位</text>
   <rect x="1632" y="560" width="132" height="36" rx="6" fill="none" stroke="#3A4552"/><text x="1698" y="584" fill="#E6EDF3" font-size="13" text-anchor="middle">重调预置位</text>
 
+  <!-- card: NVR device (registered, unconfigured) -->
+  <rect x="128" y="684" width="1660" height="110" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="152" y="714" fill="#E6EDF3" font-size="18" font-weight="bold">NVR（已登记）</text>
+  <rect x="1600" y="696" width="164" height="28" rx="4" fill="#1B2027"/><text x="1682" y="716" fill="#8B949E" font-size="13" text-anchor="middle">－ 未配置</text>
+  <g font-size="14" fill="#E6EDF3">
+    <text x="152" y="752" fill="#9BA7B4" font-size="12">设备地址</text><text x="270" y="752" font-family="'Noto Sans Mono',monospace">192.168.1.4</text>
+    <text x="470" y="752" fill="#9BA7B4" font-size="12">协议</text><text x="560" y="752" fill="#6E7A88">—</text>
+    <text x="640" y="752" fill="#9BA7B4" font-size="12">通道映射</text><text x="770" y="752" fill="#8B949E">未配置</text>
+    <text x="960" y="752" fill="#9BA7B4" font-size="12">可达性</text><text x="1070" y="752" fill="#8B949E">未核验</text>
+    <text x="1240" y="752" fill="#9BA7B4" font-size="12">录像来源</text><text x="1370" y="752" fill="#E6EDF3">本地（默认）</text>
+  </g>
+  <text x="152" y="780" fill="#6E7A88" font-size="12">未提供账户/协议/6 路通道映射；界面不提供自动修改 NVR 配置入口，不虚构通道号。</text>
+
   <!-- card: logs -->
-  <rect x="128" y="684" width="1660" height="220" rx="8" fill="#161B22" stroke="#2D3644"/>
-  <text x="152" y="716" fill="#E6EDF3" font-size="18" font-weight="bold">维护日志</text>
+  <rect x="128" y="810" width="1660" height="206" rx="8" fill="#161B22" stroke="#2D3644"/>
+  <text x="152" y="842" fill="#E6EDF3" font-size="18" font-weight="bold">维护日志</text>
   <g font-family="'Noto Sans Mono',monospace" font-size="13" fill="#9BA7B4">
-    <text x="152" y="750">09:30:02</text><text x="260" y="750">maintenance</text><text x="440" y="750">云台归位</text><text x="640" y="750" fill="#3FB950">成功</text>
-    <text x="152" y="778">09:12:44</text><text x="260" y="778">maintenance</text><text x="440" y="778">调用前方预置位</text><text x="640" y="778" fill="#3FB950">成功</text>
-    <text x="152" y="806">08:58:10</text><text x="260" y="806">system</text><text x="440" y="806">CAM-03 重连失败 3 次 → 三级报警</text><text x="900" y="806" fill="#E3B341">已记录</text>
-    <text x="152" y="834">08:41:35</text><text x="260" y="834">driver</text><text x="440" y="834">确认报警 #A-1027</text><text x="640" y="834" fill="#3FB950">成功</text>
-    <text x="152" y="862">08:20:00</text><text x="260" y="862">admin</text><text x="440" y="862">录像保留策略变更 → 7 天</text><text x="900" y="862" fill="#3FB950">成功</text>
+    <text x="152" y="876">09:30:02</text><text x="260" y="876">maintenance</text><text x="440" y="876">云台归位</text><text x="640" y="876" fill="#3FB950">成功</text>
+    <text x="152" y="904">09:12:44</text><text x="260" y="904">maintenance</text><text x="440" y="904">调用前方预置位</text><text x="640" y="904" fill="#3FB950">成功</text>
+    <text x="152" y="932">08:58:10</text><text x="260" y="932">system</text><text x="440" y="932">CAM-03 重连失败 3 次 → 三级报警</text><text x="900" y="932" fill="#E3B341">已记录</text>
+    <text x="152" y="960">08:41:35</text><text x="260" y="960">driver</text><text x="440" y="960">确认报警 #A-1027</text><text x="640" y="960" fill="#3FB950">成功</text>
+    <text x="152" y="988">08:20:00</text><text x="260" y="988">admin</text><text x="440" y="988">录像保留策略变更 → 7 天</text><text x="900" y="988" fill="#3FB950">成功</text>
   </g>
 
-  <text x="128" y="960" fill="#6E7A88" font-size="13">参数变更/导出/重启/归位均需二次确认并写日志；失败与超差以状态徽标 + 原因文字呈现，不静默。</text>
-  <text x="128" y="1046" fill="#4C5764" font-size="12">视觉示意（手绘 SVG 线框，非运行截图） · 参考 1920×1080</text>
+  <text x="128" y="1048" fill="#6E7A88" font-size="13">参数变更/导出/重启/归位均需二次确认并写日志；失败与超差以状态徽标 + 原因文字呈现，不静默。</text>
+  <text x="128" y="1070" fill="#4C5764" font-size="12">视觉示意（手绘 SVG 线框，非运行截图） · 参考 1920×1080</text>
 </svg>

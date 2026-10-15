@@ -11,6 +11,8 @@ meta:
   grid: 8                # 基础网格 px
   scale_policy: proportional
   density: comfortable
+  interaction_design: v2 # 消费 docs/hmi/INTERACTION_DESIGN.md v2（本期 6 路可见光、不含红外、NVR 登记）
+  spectrum: visible_only # 本期仅可见光，无红外切换
 
 color:
   # ---- 基础层 ----
@@ -93,6 +95,25 @@ stream_state:
   frozen:       { label: "画面冻结", fg: "#E3B341", bg: "#2A2312", glyph: "snowflake", placeholder: true }
   degraded:     { label: "画面降级", fg: "#E3B341", bg: "#2A2312", glyph: "warning", placeholder: false }
   offline:      { label: "离线",    fg: "#FF6B6B", bg: "#331114", glyph: "slash",  placeholder: true }
+
+mode:
+  # 本期仅可见光；红外未接入以中性灰显，不提供切换控件（交互方案 §0.4）
+  visible:      { label: "可见光",     fg: "#8B949E", bg: "#1B2027",     glyph: "dot",   interactive: false }
+  ir:           { label: "红外未接入", fg: "#4C5764", bg: "transparent", glyph: "slash", interactive: false }
+
+integration_state:
+  # 外部设备（NVR 等）集成状态，与摄像头 stream_state 区分
+  probing:      { label: "探测中",   fg: "#4C9AFF", bg: "#12203A", glyph: "spinner" }
+  reachable:    { label: "可达",     fg: "#3FB950", bg: "#12261A", glyph: "dot" }
+  unreachable:  { label: "不可达",   fg: "#FF6B6B", bg: "#331114", glyph: "slash" }
+  unconfigured: { label: "未配置",   fg: "#8B949E", bg: "#1B2027", glyph: "minus" }
+  unverified:   { label: "未核验",   fg: "#8B949E", bg: "#1B2027", glyph: "help" }
+
+detection_badge:
+  # 摄像头检测职责徽标（供 P4/P6，不上司机 P1），值来自注册表 ai_profile
+  base:         { fg: "#9BA7B4", bg: "#1B2027" }
+  none:         { fg: "#6E7A88", bg: "#1B2027", label: "广角·无检测" }
+  profiles:     ["前方障碍/人员", "受电弓三状态", "轮轨", "车门", "广角·无检测"]
 
 typography:
   family:
@@ -183,7 +204,7 @@ icon:
   style: outline
   status_filled: true       # 状态点/级别用实心
   set_rule: "使用开源许可图标集（如 Lucide ISC / Material Symbols Apache-2.0）或项目自绘 SVG；须登记来源与许可，禁止未授权素材"
-  required_glyphs: [camera, camera-off, bell, replay-clock, grid-6, cpu-ai, wrench, check, warning-triangle, circle, diamond, play, pause, speed, export, lock, user, clock, thermometer, disk, network, chevron-left, chevron-right, close, search, filter]
+  required_glyphs: [camera, camera-off, bell, replay-clock, grid-6, cpu-ai, wrench, check, warning-triangle, circle, diamond, play, pause, speed, export, lock, user, clock, thermometer, disk, network, server, minus-circle, chevron-left, chevron-right, close, search, filter]
 
 contrast_verified_pairs:
   # 记录已核对组合（WCAG 2.1 相对亮度计算，2026-10 用脚本复算），实现不得降低

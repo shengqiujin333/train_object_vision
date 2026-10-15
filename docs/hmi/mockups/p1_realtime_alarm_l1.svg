@@ -6,7 +6,7 @@
   <line x1="0" y1="48" x2="1920" y2="48" stroke="#2D3644"/>
   <text x="24" y="30" fill="#E6EDF3" font-size="18" font-family="'Noto Sans Mono',monospace">2026-10-15 09:42:07</text>
   <text x="300" y="30" fill="#9BA7B4" font-size="15">车速 -- km/h</text>
-  <rect x="548" y="10" width="72" height="28" rx="4" fill="#12203A"/><text x="562" y="30" fill="#4C9AFF" font-size="14">可见光</text>
+  <rect x="548" y="10" width="64" height="28" rx="4" fill="#1B2027"/><text x="570" y="30" fill="#8B949E" font-size="14">可见光</text><text x="620" y="30" fill="#4C5764" font-size="12">红外未接入</text>
   <circle cx="700" cy="24" r="6" fill="#3FB950"/><text x="716" y="30" fill="#9BA7B4" font-size="15">录像:运行</text>
   <circle cx="830" cy="24" r="6" fill="#3FB950"/><text x="846" y="30" fill="#9BA7B4" font-size="15">AI:就绪</text>
   <circle cx="950" cy="24" r="6" fill="#3FB950"/><text x="966" y="30" fill="#9BA7B4" font-size="15">系统健康:正常</text>
