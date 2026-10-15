@@ -4,6 +4,9 @@ add_library(railhmi_core STATIC
     src/config.cpp
     src/stream_state.cpp
     src/rules.cpp
+    src/timebase.cpp
+    src/persistence_model.cpp
+    src/retention.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include

@@ -2,7 +2,9 @@
 
 #ifdef RAILHMI_HAVE_SQLITE
 
-#include <sqlite3.h>
+#include "sqlite3_min.h"
+
+#include <vector>
 
 namespace railhmi {
 namespace platform {
@@ -19,8 +21,10 @@ bool SqliteStore::open(const std::string& path, std::string* err) {
         close();
         return false;
     }
+    sqlite3_busy_timeout(db_, 5000);
     if (!exec("PRAGMA journal_mode=WAL;", err)) return false;
     if (!exec("PRAGMA foreign_keys=ON;", err)) return false;
+    if (!exec("PRAGMA synchronous=NORMAL;", err)) return false;
     return true;
 }
 
@@ -59,6 +63,22 @@ bool SqliteStore::query_int(const std::string& sql, long long* out, std::string*
     }
     sqlite3_finalize(stmt);
     return ok;
+}
+
+std::string SqliteStore::journal_mode(std::string* err) {
+    if (!db_) { if (err) *err = "db not open"; return std::string(); }
+    sqlite3_stmt* stmt = nullptr;
+    if (sqlite3_prepare_v2(db_, "PRAGMA journal_mode;", -1, &stmt, nullptr) != SQLITE_OK) {
+        if (err) *err = std::string("prepare journal_mode failed: ") + sqlite3_errmsg(db_);
+        return std::string();
+    }
+    std::string mode;
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        const unsigned char* t = sqlite3_column_text(stmt, 0);
+        if (t) mode = reinterpret_cast<const char*>(t);
+    }
+    sqlite3_finalize(stmt);
+    return mode;
 }
 
 }  // namespace platform

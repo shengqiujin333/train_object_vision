@@ -1,0 +1,70 @@
+# ITEM-007 证据 — railhmi-core 持久化与保留策略模型
+
+- Work item: `TL-778f77eb-1fde-496d-9677-7330e26c6476-tasks-ITEM-007`
+- 依据: `docs/hmi/DESKTOP_APP_DESIGN.md` §10（持久化）/§9.3（存储策略）/§7.3；`docs/hmi/TEST_DESIGN.md` TC-CORE-06
+- 源码: `app/src/core/{persistence_model,retention,timebase}`、`app/src/platform/{sqlite_store,repository}`、`app/third_party/sqlite/sqlite3_min.h`
+- 测试: `app/tests/core/test_persistence.cpp`；运行器 `app/tools/board_build.py`
+
+## 1. 交付内容
+
+1. **数据模型与 schema**（`railhmi-core`，纯 stdlib）：9 张表的行结构与 `CREATE TABLE IF NOT EXISTS` DDL —
+   `events / event_targets / maintenance_log / device_health / recording_segments / recording_gaps / stream_events / integrations / config_kv`。
+2. **统一时间基准**（`TimeBase`）：单调微秒为内部基准，启动时与 UTC 墙钟毫秒建立偏移；
+   `to_wall_ms`/`to_mono_us` 成对换算（DATA-001）。事件/健康/流事件表成对存 `ts_wall_ms` + `ts_mono_us`。
+3. **保留策略**（`apply_retention`，纯逻辑）：先按期限淘汰过期**普通**片段，再按容量淘汰——
+   **普通最旧优先**，仅当仍超容量才淘汰**保护（critical）**片段（最旧优先）；返回确定性淘汰顺序与计数。
+4. **录像缺口模型**（`add_gap`）：同相机重叠/相邻缺口合并，按 t0 排序。
+5. **SQLite 仓储**（`railhmi-platform`，`RAILHMI_HAVE_SQLITE`）：`SqliteStore`（WAL/同步/busy_timeout）+ `SqliteRepository`
+   （9 表写入/查询、`count`、事件回读、缺口按相机查询、`apply_retention` 删除被淘汰片段）。
+6. **SQLite 依赖处理**：板端只有运行时库 `libsqlite3.so.0`（无 `libsqlite3-dev` 的 `sqlite3.h`/`.so` 链接名）。
+   CMake 优先用 dev 包；否则链接运行时库并使用项目自带最小头 `app/third_party/sqlite/sqlite3_min.h`
+   （在存在系统 `<sqlite3.h>` 时自动优先系统头）。**不安装/不修改系统**。
+
+## 2. 实测（板端本机，经登记 SSH 入口；SQLite 用运行时库 + shim）
+
+| 步骤 | 结果 | 证据 |
+|---|---|---|
+| `./build-core/tests/railhmi-core-tests` | **230 passed / 0 failed**（平台/配置/流/规则/持久化） | `...-ITEM007-r2.transcript.json` → `tests` |
+| `railhmi-config-check ./config` | OK 退出 0 | 同上 → `config-check-good` |
+| 坏配置 | 报 `thresholds.confirm_frames: required field missing` 退出 1 | 同上 → `config-check-bad` |
+
+CMake 日志确认：`railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled`。
+
+### 2.1 持久化断言（r2 原文摘录）
+
+- 时间基准：`timebase calibrated`、`to_wall_ms truncates to ms`、`wall/mono round-trip identity (ms-aligned)`。
+- SQLite：`repo journal_mode == wal`、`9 tables populated (segments=2)`、`get_config round-trip`。
+- 写入-重启-读取：`write-restart-read consistent`（事件按 id 回读，含双时间戳与置信度）、`gap persisted across restart`、
+  `segments read back with kind`。
+- **WAL 恢复**：`copy db for WAL replay` → `open WAL copy` → `WAL replay: event recovered from -wal` + `WAL replay: gap recovered`
+  （运行中复制 db + `-wal` 再打开副本，验证 WAL 重放可见已提交数据）。
+- 保留淘汰：`capacity: oldest continuous evicted first`、`continuous(11,12) then oldest critical(13)`、
+  `repo retention evicts continuous first`、`repo retention keeps critical segment`。
+- 缺口可查：`gaps queryable by camera`、`gap merge bounds 100..300`。
+
+## 3. 修复历史
+
+| 运行 | 现象 | 根因 | 修复 | 复测 |
+|---|---|---|---|---|
+| ITEM007-r1 | 1 项失败：`wall/mono round-trip identity` | 测试期望错误：毫秒分辨率下非整毫秒的单调值往返必然截断 | 断言改为显式截断 + 毫秒对齐往返恒等 | ITEM007-r2（230/230） |
+
+## 4. 边界与后续
+
+- 本层为**持久化模型与 SQLite 执行**；写入线程模型（单写线程）与高频写入编排由上层（录像/健康/事件运行时）接入，本层保证单连接串行写入语义。
+- WAL 恢复为“运行中复制 db+wal 后重放”的可复现验证；真实断电恢复属 ENV-E 现场/嵌入式测试边界。
+- 位图/快照/片段文件本身由 `SegmentFileStore`（后续工作项）落盘；本层记录元数据与缺口。
+- SQLite dev 包缺失时仅靠运行时库 + shim；若目标连 `libsqlite3.so.0` 也没有，CMake 明确提示持久化禁用（不静默）。
+
+## 5. 证据文件
+
+- `build-CoreTests-192_168_0_103-20261015-ITEM007-r2.{transcript.json,log}`（**权威**：230/230 + config-check）
+- `build-CoreTests-192_168_0_103-20261015-ITEM007-r1.{transcript.json,log}`（首次：229/230，时间基准测试期望错误，保留追溯）
+
+## 6. 复现
+
+```sh
+python app/tools/board_build.py --host <addr> --user <user> \
+  --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode CoreTests \
+  --outdir docs/hmi/test_evidence/ITEM-007-persistence --stamp <tag> --run-tests
+# 板上直接: ./build-core/tests/railhmi-core-tests
+```

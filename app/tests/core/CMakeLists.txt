@@ -5,6 +5,7 @@ add_executable(railhmi-core-tests
     test_config.cpp
     test_stream.cpp
     test_rules.cpp
+    test_persistence.cpp
 )
 target_link_libraries(railhmi-core-tests PRIVATE railhmi_core railhmi_platform)
 
