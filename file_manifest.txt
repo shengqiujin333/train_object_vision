@@ -14,9 +14,11 @@ code/yolov5_person.h | existing | yolov5 人形检测头
 code/yolov5_postprocess.cc | existing | yolov5 后处理实现
 code/yolov5_postprocess.h | existing | yolov5 后处理头
 code/yolov8_seg.h | existing | yolov8-seg 头
+docs/hmi/DESKTOP_APP_DESIGN.md | active | 桌面应用架构与构建运行方案（DesktopAppDesignArtifact）：环境分解/技术选型/模块与线程/渲染管线/状态契约/报警录像持久化/配置/健康/构建部署/验证范围
 docs/hmi/INTERACTION_DESIGN.md | active | 交互设计方案（FrontendDesignArtifact）：信息架构/页面状态/报警与回放交互/状态模型/可访问性/可检验结果
 docs/hmi/VISUAL_DESIGN.md | active | 视觉设计规范（UIVisualDesignArtifact）：色彩/字体/间距/图标/组件/页面状态/资源清单/实现规则
 docs/hmi/design_tokens.yaml | active | 视觉设计令牌（颜色/报警级别/流状态/字体/间距/圆角/层级/对比度校验）
+docs/hmi/desktop_app_tasks.yaml | active | 桌面应用实现任务清单（TaskListArtifact）：依赖核验、渲染选型、骨架、令牌、导航、注册表、取流状态机、三联、六路、推理、报警、录像、回放、调试、维护、权限、恢复、自检打包
 docs/hmi/interaction_tasks.yaml | active | 交互设计任务清单（TaskListArtifact）
 docs/hmi/mockups/components_states.svg | active | 组件与状态总览示意
 docs/hmi/mockups/p1_realtime_alarm_l1.svg | active | P1 一级报警态页面示意
