@@ -1,0 +1,15 @@
+type=health level=ok text="NPU 42.0% / CPU 33.0% / 温度 58.0°C / 网络错误 3 / 正常" alerts=0
+type=health level=warn alerts=1 first="温度 80.0°C > 75.0°C"
+type=log-json {"ts_ms":1792108801000,"level":"error","source":"stream","message":"CAM-04 断流","fields":{"cam":"CAM-04"}}
+type=log-query by_source=1 by_keyword=1 by_severity=2 day_rolled=2
+type=recovery step=load_config label=加载配置 status=完成 progress=12
+type=recovery step=open_database label=打开数据库 status=完成 progress=25
+type=recovery step=start_recording label=启动录像/存储 status=完成 progress=37
+type=recovery step=start_streaming label=启动相机取流 status=降级 progress=50
+type=recovery step=start_ai label=启动 AI status=完成 progress=62
+type=recovery step=ptz_home label=云台归位 status=完成 progress=75
+type=recovery step=front_preset label=调前方预置位 status=完成 progress=87
+type=recovery step=front_ai_ready label=前方 AI READY status=完成 progress=100
+type=recovery-summary completed=true alive=true degraded_cameras=1 progress=100 text="恢复完成（部分降级）"
+type=recovery-critical config_failed_alive=false progress=25
+type=acceptance health_ok_warn=true log_query_and_rolling=true recovery_completed=true noncritical_isolated=true critical_stops_alive=true result=PASS
