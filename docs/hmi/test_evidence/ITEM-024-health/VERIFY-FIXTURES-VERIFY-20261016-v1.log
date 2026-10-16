@@ -1,0 +1,140 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 166 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[upload-perm-matrix] exit=0 PERMISSION_MATRIX.md
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 HEALTH_WIRE_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 HEALTH_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_alarm-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_clip-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_replay-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_maintenance-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_permissions-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_health-probe-VERIFY-20261016-v1.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-024-health\build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json
+log: docs\hmi\test_evidence\ITEM-024-health\build-TestRun-192_168_0_103-VERIFY-20261016-v1.log
+
+
+===== [fresh-artifacts] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_health-probe-VERIFY-20261016-v1.log
+
+===== [log-compare] exit=0 =====
+impl_pass=663 verify_pass=663 identical=True verify_fails=0 expect=663 result=RESULT: PASS passed=663 failed=0
+
+===== [junit-parse] exit=0 =====
+junit tests=663 failures=0 item024_cases=22/22 missing=[]
+
+===== [health-probe-assert] exit=0 =====
+{"fails": []}
+
+===== [health-probe-compare] exit=0 =====
+cross-round deterministic reproduction identical=True
+
+===== [mkdir-workdir] exit=0 =====
+
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-024-health/verify_health24_ext.cpp
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+== verify ITEM-024 ext (health/logs/recovery fixtures) ==
+RESULT: FAIL passed=98 failed=4
+  FAIL: json starts with ts_ms
+  FAIL: fresh text [恢复中 0/8] want [未开始]
+  FAIL: critical camera failure -> not alive
+  FAIL: mid text with degraded [恢复中 2/8] want [恢复中 1/8]
+EXT_EXIT=1
+
+
+===== [upload-scan] exit=0 =====
+verify_scan24.py
+
+===== [wiring-scan] exit=0 =====
+T1_overlay_structure= True
+T2_overlay_wired= True
+T3_p6_log_card= True
+T4_p6_recovery_card= True
+T5_bridge_core= True
+T6_main_inject= True
+T7_board= True
+T8_bridge_filter= True
+T9_overlay_gating= True
+N2_degraded_not_failed= True
+T10_no_hex= True
+SCAN24_EXIT=0
+
+
+===== [wiring-scan-findings] exit=0 =====
+mismatch=[] scan_exit_ok=True raw={"T1_overlay_structure": "True", "T2_overlay_wired": "True", "T3_p6_log_card": "True", "T4_p6_recovery_card": "True", "T5_bridge_core": "True", "T6_main_inject": "True", "T7_board": "True", "T8_bridge_filter": "True", "T9_overlay_gating": "True", "N2_degraded_not_failed": "True", "T10_no_hex": "True"}
+
+===== [health-probe-rep-run] exit=0 =====
+type=health level=ok text="NPU 42.0% / CPU 33.0% / 温度 58.0°C / 网络错误 3 / 正常" alerts=0
+type=health level=warn alerts=1 first="温度 80.0°C > 75.0°C"
+type=log-json {"ts_ms":1792108801000,"level":"error","source":"stream","message":"CAM-04 断流","fields":{"cam":"CAM-04"}}
+type=log-query by_source=1 by_keyword=1 by_severity=2 day_rolled=2
+type=recovery step=load_config label=加载配置 status=完成 progress=12
+type=recovery step=open_database label=打开数据库 status=完成 progress=25
+type=recovery step=start_recording label=启动录像/存储 status=完成 progress=37
+type=recovery step=start_streaming label=启动相机取流 status=降级 progress=50
+type=recovery step=start_ai label=启动 AI status=完成 progress=62
+type=recovery step=ptz_home label=云台归位 status=完成 progress=75
+type=recovery step=front_preset label=调前方预置位 status=完成 progress=87
+type=recovery step=front_ai_ready label=前方 AI READY status=完成 progress=100
+type=recovery-summary completed=true alive=true degraded_cameras=1 progress=100 text="恢复完成（部分降级）"
+type=recovery-critical config_failed_alive=false progress=25
+type=acceptance health_ok_warn=true log_query_and_rolling=true recovery_completed=true noncritical_isolated=true critical_stops_alive=true result=PASS
+HEALTHREP_EXIT=0
+
+
+===== [health-probe-determinism] exit=0 =====
+IDENTICAL
+
+
+===== [regression-artifacts] exit=0 =====
+ai-probe-VERIFY-20261016-v1.log
+alarm-probe-VERIFY-20261016-v1.log
+clip-probe-VERIFY-20261016-v1.log
+core-tests-VERIFY-20261016-v1.log
+core-tests-VERIFY-20261016-v1.xml
+health-probe-VERIFY-20261016-v1.log
+maintenance-probe-VERIFY-20261016-v1.log
+permissions-probe-VERIFY-20261016-v1.log
+replay-probe-VERIFY-20261016-v1.log
+sim-inject-VERIFY-20261016-v1.json
+sim-inject-VERIFY-20261016-v1.log
+status-probe-driver-VERIFY-20261016-v1.log
+status-probe-VERIFY-20261016-v1.log
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify024': No such file or directory
+
+
+===== [cleanup-verify] exit=0 =====
+cleanup_ok=True (board /tmp/railhmi_build kept for post-run negative probe)
+
+===== [findings] exit=0 =====
+[{"independent_recheck": "ITEM-024 health monitoring + structured logs + power-on recovery: deliverable TestRun entry re-run ok, core-tests 663 line-identical + JUnit 663/0 (22 ITEM-024 cases), health-probe oracle + determinism, ext fixtures and wiring scan both green on-board", "confirmed": false}, {"observable_recovery_progress": "restart flow shows ordered 8-step recovery with progress 12->100 and completion text; RecoveryOverlay + P6 recovery card wired via railhmiHealth", "present": true}, {"observable_noncritical_isolation": "single non-critical camera failure -> StartStreaming degraded, degraded_cameras=1, alive=true, recovery completes", "present": true}]

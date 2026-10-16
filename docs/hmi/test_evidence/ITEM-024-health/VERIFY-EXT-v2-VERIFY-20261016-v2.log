@@ -1,0 +1,28 @@
+
+===== [fingerprint] exit=0 =====
+SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir-workdir] exit=0 =====
+
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-024-health/verify_health24_ext.cpp
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+== verify ITEM-024 ext (health/logs/recovery fixtures) ==
+RESULT: PASS passed=103 failed=0
+EXT_EXIT=0
+
+
+===== [ext-summary] exit=0 =====
+ext passed=103 failed=0
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify024': No such file or directory
+

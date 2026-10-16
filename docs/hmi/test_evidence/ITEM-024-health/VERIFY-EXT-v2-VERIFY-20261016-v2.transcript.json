@@ -1,0 +1,57 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "cpp": "docs/hmi/test_evidence/ITEM-024-health/verify_health24_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-024-health",
+    "stamp": "VERIFY-20261016-v2",
+    "connect_timeout": "10"
+  },
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir-workdir",
+      "cmd": "mkdir -p /tmp/railhmi_verify024",
+      "exit": 0,
+      "elapsed_s": 0.19,
+      "output": ""
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "docs/hmi/test_evidence/ITEM-024-health/verify_health24_ext.cpp"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include -Isrc/platform/include /tmp/railhmi_verify024/verify_health24_ext.cpp build-core/src/core/librailhmi_core.a build-core/src/platform/librailhmi_platform.a -o /tmp/railhmi_verify024/verify_health24_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.48,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify024/verify_health24_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "== verify ITEM-024 ext (health/logs/recovery fixtures) ==\nRESULT: PASS passed=103 failed=0\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-summary",
+      "exit": 0,
+      "output": "ext passed=103 failed=0"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify024 && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify024 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.11,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify024': No such file or directory\n"
+    }
+  ]
+}
