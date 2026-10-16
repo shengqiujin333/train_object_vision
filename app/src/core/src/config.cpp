@@ -310,6 +310,14 @@ void load_app(const Node& root, AppSettings* s, Errors& e) {
         if (a.storage.low_threshold_pct <= 0 || a.storage.low_threshold_pct >= 100)
             err(e, "app.storage.low_threshold_pct", "must be in (0,100)");
     }
+    // permissions（可选）：导出等“受配置”项；缺省记录默认值。
+    const Node* perms = app->get("permissions");
+    if (perms && !perms->is_null()) {
+        if (require_map(*perms, "app.permissions", e))
+            req_bool(*perms, "export_ops_allowed", "app.permissions", &a.permissions.export_ops_allowed, e);
+    } else {
+        s->applied_defaults.push_back("app.permissions");
+    }
     // ai（可选）：推理调度配置；缺省时记录默认值，不静默。
     const Node* ai = app->get("ai");
     if (ai && !ai->is_null()) {

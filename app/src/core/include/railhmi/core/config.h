@@ -77,6 +77,11 @@ struct StorageConfig {
     double low_threshold_pct = 0.0;
 };
 
+// 权限相关配置（交互 §8：“受配置”的导出权限）。
+struct PermissionsConfig {
+    bool export_ops_allowed = false;   // 维护/研发是否允许导出（默认 false=仅管理员）
+};
+
 // 推理调度配置（DESKTOP §8.2）：帧间隔、有界丢旧帧队列深度、NPU 预算、温度守卫。
 // 模型版本按 ai_profile 登记（应用只消费模型名/版本，不定义精度）。
 struct AiModelConfig {
@@ -103,6 +108,7 @@ struct AppConfig {
     LogLevel log_level = LogLevel::Info;
     bool simulation = false;
     StorageConfig storage;
+    PermissionsConfig permissions;
     AiConfig ai;
     std::vector<IntegrationConfig> integrations;
 };

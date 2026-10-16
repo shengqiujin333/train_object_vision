@@ -1,0 +1,24 @@
+type=matrix export_ops_allowed=false
+row perm=view_realtime label=实时监控 driver=Y maintainer=Y developer=Y admin=Y
+row perm=view_alarm_center label=报警中心 driver=Y maintainer=Y developer=Y admin=Y
+row perm=view_replay label=历史回放 driver=Y maintainer=Y developer=Y admin=Y
+row perm=view_all_cameras label=全摄像头 driver=- maintainer=Y developer=Y admin=Y
+row perm=view_ai_debug label=AI 调试 driver=- maintainer=Y developer=Y admin=Y
+row perm=view_maintenance label=设备维护 driver=- maintainer=Y developer=Y admin=Y
+row perm=acknowledge label=报警确认 driver=Y maintainer=Y developer=Y admin=Y
+row perm=export_recording label=录像导出 driver=- maintainer=- developer=- admin=Y
+row perm=export_snapshot label=快照导出 driver=- maintainer=- developer=- admin=Y
+row perm=modify_device_config label=设备配置修改 driver=- maintainer=Y developer=Y admin=Y
+row perm=modify_system_config label=系统配置修改 driver=- maintainer=- developer=- admin=Y
+row perm=ptz_control label=云台控制 driver=- maintainer=Y developer=Y admin=Y
+row perm=reconnect label=手动重连 driver=- maintainer=Y developer=Y admin=Y
+type=export-gate driver=- maintainer_off=- maintainer_on=Y
+type=gate driver reason="权限不足" allowed=false
+type=gate admin_unconfirmed reason="需二次确认" requires_confirm=true
+type=gate admin_confirmed allowed=true
+type=action kind=export_recording target=CAM-01 result=ok executed=true
+type=maint-log action=export_recording user=admin result=ok detail="录像导出 CAM-01 [1000,61000]"
+type=config scope=device role=maintainer result=ok
+type=config scope=system role=maintainer result=denied
+type=config scope=system role=admin result=ok
+type=acceptance driver_export_absent=true admin_export_confirm_required=true admin_export_logged=true export_config_gated=true config_system_admin_only=true result=PASS

@@ -19,6 +19,7 @@ add_library(railhmi_core STATIC
     src/clip.cpp
     src/replay.cpp
     src/maintenance.cpp
+    src/permissions.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -78,5 +79,12 @@ set_target_properties(railhmi-replay-probe PROPERTIES
 add_executable(railhmi-maintenance-probe tools/maintenance_probe.cpp)
 target_link_libraries(railhmi-maintenance-probe PRIVATE railhmi_core)
 set_target_properties(railhmi-maintenance-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 权限矩阵/二次确认探针（ITEM-023；无 Qt/SQLite）
+add_executable(railhmi-permissions-probe tools/permissions_probe.cpp)
+target_link_libraries(railhmi-permissions-probe PRIVATE railhmi_core)
+set_target_properties(railhmi-permissions-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

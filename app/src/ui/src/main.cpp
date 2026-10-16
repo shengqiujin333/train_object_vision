@@ -25,6 +25,7 @@
 #include "alarm_model.h"
 #include "replay_model.h"
 #include "maintenance_model.h"
+#include "permissions_model.h"
 
 #ifndef RAILHMI_CONFIG_DIR
 #define RAILHMI_CONFIG_DIR "config"
@@ -370,6 +371,11 @@ int main(int argc, char** argv) {
     }
     view.rootContext()->setContextProperty("railhmiMaintenance", &maintModel);
     view.rootContext()->setContextProperty("railhmiMaintenanceCameras", maintCams);
+
+    // 权限与二次确认（ITEM-023）：权限矩阵/门控/导出·配置修改写维护日志委托 core。
+    RailhmiPermissionsModel permsModel;
+    permsModel.seed(role, cfg.settings.app.permissions, QString::fromLatin1(railhmi::core::to_string(role)));
+    view.rootContext()->setContextProperty("railhmiPermissions", &permsModel);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
     view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
     view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);

@@ -212,6 +212,46 @@ Rectangle {
                 channelMapping: modelData.channelMapping
             }
         }
+
+        // 权限矩阵卡（ITEM-023）：页面/导出/配置权限矩阵；受限入口不渲染由权限查询驱动
+        Rectangle {
+            objectName: "maintPermMatrixCard"
+            width: (parent.width - Theme.spacing.s3) / 2; height: 320
+            color: Theme.color.surface; border.color: Theme.color.border; border.width: Theme.border.width
+            radius: Theme.radius.card
+            Column {
+                anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
+                Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
+                       text: "权限矩阵（当前角色：" + (typeof railhmiPermissions !== "undefined" && railhmiPermissions
+                                                        ? railhmiPermissions.roleName() : "—") + "）" }
+                Row {
+                    spacing: Theme.spacing.s3
+                    Text { color: Theme.color.text_muted; font.pixelSize: Theme.typography.scale.caption.size; text: "项目" }
+                    Text { color: Theme.color.text_muted; font.pixelSize: Theme.typography.scale.caption.size; text: "司机" }
+                    Text { color: Theme.color.text_muted; font.pixelSize: Theme.typography.scale.caption.size; text: "维护" }
+                    Text { color: Theme.color.text_muted; font.pixelSize: Theme.typography.scale.caption.size; text: "研发" }
+                    Text { color: Theme.color.text_muted; font.pixelSize: Theme.typography.scale.caption.size; text: "管理员" }
+                }
+                Repeater {
+                    model: (typeof railhmiPermissions !== "undefined" && railhmiPermissions)
+                           ? railhmiPermissions.matrix() : []
+                    Row {
+                        objectName: "permRow-" + modelData.permission
+                        spacing: Theme.spacing.s3
+                        Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                               text: modelData.label }
+                        Text { color: modelData.driver ? Theme.color.ok : Theme.color.text_disabled
+                               font.pixelSize: Theme.typography.scale.caption.size; text: modelData.driver ? "Y" : "-" }
+                        Text { color: modelData.maintainer ? Theme.color.ok : Theme.color.text_disabled
+                               font.pixelSize: Theme.typography.scale.caption.size; text: modelData.maintainer ? "Y" : "-" }
+                        Text { color: modelData.developer ? Theme.color.ok : Theme.color.text_disabled
+                               font.pixelSize: Theme.typography.scale.caption.size; text: modelData.developer ? "Y" : "-" }
+                        Text { color: modelData.admin ? Theme.color.ok : Theme.color.text_disabled
+                               font.pixelSize: Theme.typography.scale.caption.size; text: modelData.admin ? "Y" : "-" }
+                    }
+                }
+            }
+        }
     }
 
     // 二次确认模态

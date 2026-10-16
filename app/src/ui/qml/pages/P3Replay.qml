@@ -24,6 +24,19 @@ Rectangle {
     property double cursor: 0
     property var syncInfo: ({ available: false, inSync: false, prompt: "同步状态不可用" })
     property var playState: ({ playing: false, speed: 1.0 })
+    property bool exportPending: false
+    property var exportResult: ({})
+
+    function canExport() {
+        return (typeof railhmiPermissions !== "undefined" && railhmiPermissions)
+                ? railhmiPermissions.canExportRecording() : false
+    }
+    function askExport() { page.exportPending = true }
+    function confirmExport() {
+        if (typeof railhmiPermissions !== "undefined" && railhmiPermissions)
+            page.exportResult = railhmiPermissions.exportRecording(page.activeCam, page.cursor, page.cursor + 60000, true)
+        page.exportPending = false
+    }
 
     function dayStart() { return tl.dayStartMs !== undefined ? tl.dayStartMs : 0 }
     function dayMs() { return tl.durationMs !== undefined ? tl.durationMs : 86400000 }
@@ -129,6 +142,9 @@ Rectangle {
                 }
             }
             FilterChip { text: "三联同步"; selected: page.syncOn; onClicked: page.syncOn = !page.syncOn }
+            // 受限入口不渲染：司机无导出权限时不出现该控件（ITEM-023）
+            FilterChip { objectName: "exportRecording"; visible: page.canExport(); text: "导出录像"
+                         onClicked: page.askExport() }
         }
         Row {
             spacing: Theme.spacing.s2
@@ -310,6 +326,32 @@ Rectangle {
                 FilterChip { text: "报警时刻"; onClicked: page.doJump("alarm") }
                 FilterChip { text: "+30s"; onClicked: page.doJump("plus30") }
                 FilterChip { text: "+60s"; onClicked: page.doJump("plus60") }
+            }
+        }
+    }
+
+    // 导出录像二次确认模态（ITEM-023）
+    Rectangle {
+        objectName: "exportConfirmModal"
+        anchors.fill: parent
+        visible: page.exportPending
+        color: Theme.color.overlay_scrim
+        Rectangle {
+            anchors.centerIn: parent
+            width: parent.width * 0.36; height: 180
+            color: Theme.color.surface_elev
+            border.color: Theme.color.border_strong; border.width: Theme.border.width
+            radius: Theme.radius.modal
+            Column {
+                anchors.centerIn: parent; spacing: Theme.spacing.s3
+                Text { anchors.horizontalCenter: parent.horizontalCenter; color: Theme.color.text_primary
+                       font.pixelSize: Theme.typography.scale.body.size
+                       text: "确认导出录像？" + page.activeCam }
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter; spacing: Theme.spacing.s3
+                    FilterChip { objectName: "exportConfirmYes"; text: "确认"; onClicked: page.confirmExport() }
+                    FilterChip { objectName: "exportConfirmNo"; text: "取消"; onClicked: page.exportPending = false }
+                }
             }
         }
     }
