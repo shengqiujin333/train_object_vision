@@ -1,0 +1,149 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 156 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[upload-perm-matrix] exit=0 PERMISSION_MATRIX.md
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 PERM_WIRE_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 PERM_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_alarm-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_clip-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_replay-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_maintenance-probe-VERIFY-20261016-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_permissions-probe-VERIFY-20261016-v1.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-023-permissions\build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json
+log: docs\hmi\test_evidence\ITEM-023-permissions\build-TestRun-192_168_0_103-VERIFY-20261016-v1.log
+
+
+===== [fresh-artifacts] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_permissions-probe-VERIFY-20261016-v1.log
+
+===== [log-compare] exit=0 =====
+impl_pass=641 verify_pass=641 identical=True verify_fails=0 expect=641 result=RESULT: PASS passed=641 failed=0
+
+===== [junit-parse] exit=0 =====
+junit tests=641 failures=0 item023_cases=21/21 missing=[]
+
+===== [perm-probe-assert] exit=0 =====
+{"fails": []}
+
+===== [perm-probe-compare] exit=0 =====
+cross-round deterministic reproduction identical=True
+
+===== [mkdir-workdir] exit=0 =====
+
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-023-permissions/verify_perm23_ext.cpp
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+== verify ITEM-023 ext (permissions + secondary confirmation fixtures) ==
+RESULT: PASS passed=233 failed=0
+EXT_EXIT=0
+
+
+===== [ext-summary] exit=0 =====
+ext passed=233 failed=0
+
+===== [upload-scan] exit=0 =====
+verify_scan23.py
+
+===== [wiring-scan] exit=0 =====
+T1_export_control_gated= True
+T2_export_modal= True
+T2_confirm_exec= True
+T3_p6_matrix_card= True
+T3_p6_roleName= True
+T4_bridge_can_methods= True
+T5_bridge_confirm= True
+T6_main_inject= True
+T7_config= True
+T8_doc= True
+T9_board= True
+N2_driver_export_visibility_gated= True
+N2_admin_confirm_logged_chain= True
+T10_no_hex= True
+SCAN23_EXIT=0
+
+
+===== [wiring-scan-findings] exit=0 =====
+mismatch=[] scan_exit_ok=True raw={"T1_export_control_gated": "True", "T2_export_modal": "True", "T2_confirm_exec": "True", "T3_p6_matrix_card": "True", "T3_p6_roleName": "True", "T4_bridge_can_methods": "True", "T5_bridge_confirm": "True", "T6_main_inject": "True", "T7_config": "True", "T8_doc": "True", "T9_board": "True", "N2_driver_export_visibility_gated": "True", "N2_admin_confirm_logged_chain": "True", "T10_no_hex": "True"}
+
+===== [perm-probe-rep-run] exit=0 =====
+type=matrix export_ops_allowed=false
+row perm=view_realtime label=实时监控 driver=Y maintainer=Y developer=Y admin=Y
+row perm=view_alarm_center label=报警中心 driver=Y maintainer=Y developer=Y admin=Y
+row perm=view_replay label=历史回放 driver=Y maintainer=Y developer=Y admin=Y
+row perm=view_all_cameras label=全摄像头 driver=- maintainer=Y developer=Y admin=Y
+row perm=view_ai_debug label=AI 调试 driver=- maintainer=Y developer=Y admin=Y
+row perm=view_maintenance label=设备维护 driver=- maintainer=Y developer=Y admin=Y
+row perm=acknowledge label=报警确认 driver=Y maintainer=Y developer=Y admin=Y
+row perm=export_recording label=录像导出 driver=- maintainer=- developer=- admin=Y
+row perm=export_snapshot label=快照导出 driver=- maintainer=- developer=- admin=Y
+row perm=modify_device_config label=设备配置修改 driver=- maintainer=Y developer=Y admin=Y
+row perm=modify_system_config label=系统配置修改 driver=- maintainer=- developer=- admin=Y
+row perm=ptz_control label=云台控制 driver=- maintainer=Y developer=Y admin=Y
+row perm=reconnect label=手动重连 driver=- maintainer=Y developer=Y admin=Y
+type=export-gate driver=- maintainer_off=- maintainer_on=Y
+type=gate driver reason="权限不足" allowed=false
+type=gate admin_unconfirmed reason="需二次确认" requires_confirm=true
+type=gate admin_confirmed allowed=true
+type=action kind=export_recording target=CAM-01 result=ok executed=true
+type=maint-log action=export_recording user=admin result=ok detail="录像导出 CAM-01 [1000,61000]"
+type=config scope=device role=maintainer result=ok
+type=config scope=system role=maintainer result=denied
+type=config scope=system role=admin result=ok
+type=acceptance driver_export_absent=true admin_export_confirm_required=true admin_export_logged=true export_config_gated=true config_system_admin_only=true result=PASS
+PERMREP_EXIT=0
+
+
+===== [perm-probe-determinism] exit=0 =====
+IDENTICAL
+
+
+===== [regression-artifacts] exit=0 =====
+ai-probe-VERIFY-20261016-v1.log
+alarm-probe-VERIFY-20261016-v1.log
+clip-probe-VERIFY-20261016-v1.log
+core-tests-VERIFY-20261016-v1.log
+core-tests-VERIFY-20261016-v1.xml
+maintenance-probe-VERIFY-20261016-v1.log
+permissions-probe-VERIFY-20261016-v1.log
+replay-probe-VERIFY-20261016-v1.log
+sim-inject-VERIFY-20261016-v1.json
+sim-inject-VERIFY-20261016-v1.log
+status-probe-driver-VERIFY-20261016-v1.log
+status-probe-VERIFY-20261016-v1.log
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify023': No such file or directory
+
+
+===== [cleanup-verify] exit=0 =====
+cleanup_ok=True (board /tmp/railhmi_build kept for post-run negative probe)
+
+===== [findings] exit=0 =====
+[{"independent_recheck": "ITEM-023 permissions + secondary confirmation: deliverable TestRun entry re-run ok, core-tests 641 line-identical + JUnit 641/0 (21 ITEM-023 cases), permissions-probe oracle + determinism, ext fixtures and wiring scan both green on-board", "confirmed": true}, {"observable_driver_export": "driver export permission=false (matrix off row); P3 control visible: canExportRecording() -> entry not rendered for driver", "present": true}, {"observable_admin_confirm_logging": "admin/gate: export gate admin_unconfirmed reason=需二次确认 -> confirmed executed=true logged; bridge writes build_action_log rows", "present": true}]

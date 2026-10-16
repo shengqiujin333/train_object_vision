@@ -1,0 +1,147 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify023",
+    "cpp": "docs/hmi/test_evidence/ITEM-023-permissions/verify_perm23_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-023-permissions",
+    "stamp": "VERIFY-20261016-v1",
+    "impl_testrun_log": "docs/hmi/test_evidence/ITEM-023-permissions/build-TestRun-192_168_0_103-20261016-ITEM023-r3.core-evidence_core-tests-20261016-ITEM023-r3.log",
+    "impl_permprobe_log": "docs/hmi/test_evidence/ITEM-023-permissions/build-TestRun-192_168_0_103-20261016-ITEM023-r3.core-evidence_permissions-probe-20261016-ITEM023-r3.log",
+    "connect_timeout": "10",
+    "timeout_sec": "1500",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "ITEM-023: permissions + secondary confirmation; abort on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir docs\\hmi\\test_evidence\\ITEM-023-permissions --stamp VERIFY-20261016-v1 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 36.87,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 156 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[upload-perm-matrix] exit=0 PERMISSION_MATRIX.md\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 PERM_WIRE_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 PERM_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_alarm-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_clip-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_replay-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_maintenance-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_permissions-probe-VERIFY-20261016-v1.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: docs\\hmi\\test_evidence\\ITEM-023-permissions\\build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json\nlog: docs\\hmi\\test_evidence\\ITEM-023-permissions\\build-TestRun-192_168_0_103-VERIFY-20261016-v1.log\n"
+    },
+    {
+      "step": "fresh-artifacts",
+      "exit": 0,
+      "output": "build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_permissions-probe-VERIFY-20261016-v1.log"
+    },
+    {
+      "step": "log-compare",
+      "exit": 0,
+      "output": "impl_pass=641 verify_pass=641 identical=True verify_fails=0 expect=641 result=RESULT: PASS passed=641 failed=0"
+    },
+    {
+      "step": "junit-parse",
+      "exit": 0,
+      "output": "junit tests=641 failures=0 item023_cases=21/21 missing=[]"
+    },
+    {
+      "step": "perm-probe-assert",
+      "exit": 0,
+      "output": "{\"fails\": []}"
+    },
+    {
+      "step": "perm-probe-compare",
+      "exit": 0,
+      "output": "cross-round deterministic reproduction identical=True"
+    },
+    {
+      "step": "mkdir-workdir",
+      "cmd": "mkdir -p /tmp/railhmi_verify023",
+      "exit": 0,
+      "elapsed_s": 0.02,
+      "output": ""
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "docs/hmi/test_evidence/ITEM-023-permissions/verify_perm23_ext.cpp"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include -Isrc/platform/include /tmp/railhmi_verify023/verify_perm23_ext.cpp build-core/src/core/librailhmi_core.a build-core/src/platform/librailhmi_platform.a -o /tmp/railhmi_verify023/verify_perm23_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.37,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify023/verify_perm23_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "== verify ITEM-023 ext (permissions + secondary confirmation fixtures) ==\nRESULT: PASS passed=233 failed=0\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-summary",
+      "exit": 0,
+      "output": "ext passed=233 failed=0"
+    },
+    {
+      "step": "upload-scan",
+      "exit": 0,
+      "output": "verify_scan23.py"
+    },
+    {
+      "step": "wiring-scan",
+      "cmd": "cd /tmp/railhmi_build && python3 /tmp/railhmi_verify023/verify_scan23.py; echo SCAN23_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "T1_export_control_gated= True\nT2_export_modal= True\nT2_confirm_exec= True\nT3_p6_matrix_card= True\nT3_p6_roleName= True\nT4_bridge_can_methods= True\nT5_bridge_confirm= True\nT6_main_inject= True\nT7_config= True\nT8_doc= True\nT9_board= True\nN2_driver_export_visibility_gated= True\nN2_admin_confirm_logged_chain= True\nT10_no_hex= True\nSCAN23_EXIT=0\n"
+    },
+    {
+      "step": "wiring-scan-findings",
+      "exit": 0,
+      "output": "mismatch=[] scan_exit_ok=True raw={\"T1_export_control_gated\": \"True\", \"T2_export_modal\": \"True\", \"T2_confirm_exec\": \"True\", \"T3_p6_matrix_card\": \"True\", \"T3_p6_roleName\": \"True\", \"T4_bridge_can_methods\": \"True\", \"T5_bridge_confirm\": \"True\", \"T6_main_inject\": \"True\", \"T7_config\": \"True\", \"T8_doc\": \"True\", \"T9_board\": \"True\", \"N2_driver_export_visibility_gated\": \"True\", \"N2_admin_confirm_logged_chain\": \"True\", \"T10_no_hex\": \"True\"}"
+    },
+    {
+      "step": "perm-probe-rep-run",
+      "cmd": "cd /tmp/railhmi_build && mkdir -p verify && ./build-core/tools/railhmi-permissions-probe --out verify/permissions-probe-rep.log; echo PERMREP_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "type=matrix export_ops_allowed=false\nrow perm=view_realtime label=实时监控 driver=Y maintainer=Y developer=Y admin=Y\nrow perm=view_alarm_center label=报警中心 driver=Y maintainer=Y developer=Y admin=Y\nrow perm=view_replay label=历史回放 driver=Y maintainer=Y developer=Y admin=Y\nrow perm=view_all_cameras label=全摄像头 driver=- maintainer=Y developer=Y admin=Y\nrow perm=view_ai_debug label=AI 调试 driver=- maintainer=Y developer=Y admin=Y\nrow perm=view_maintenance label=设备维护 driver=- maintainer=Y developer=Y admin=Y\nrow perm=acknowledge label=报警确认 driver=Y maintainer=Y developer=Y admin=Y\nrow perm=export_recording label=录像导出 driver=- maintainer=- developer=- admin=Y\nrow perm=export_snapshot label=快照导出 driver=- maintainer=- developer=- admin=Y\nrow perm=modify_device_config label=设备配置修改 driver=- maintainer=Y developer=Y admin=Y\nrow perm=modify_system_config label=系统配置修改 driver=- maintainer=- developer=- admin=Y\nrow perm=ptz_control label=云台控制 driver=- maintainer=Y developer=Y admin=Y\nrow perm=reconnect label=手动重连 driver=- maintainer=Y developer=Y admin=Y\ntype=export-gate driver=- maintainer_off=- maintainer_on=Y\ntype=gate driver reason=\"权限不足\" allowed=false\ntype=gate admin_unconfirmed reason=\"需二次确认\" requires_confirm=true\ntype=gate admin_confirmed allowed=true\ntype=action kind=export_recording target=CAM-01 result=ok executed=true\ntype=maint-log action=export_recording user=admin result=ok detail=\"录像导出 CAM-01 [1000,61000]\"\ntype=config scope=device role=maintainer result=ok\ntype=config scope=system role=maintainer result=denied\ntype=config scope=system role=admin result=ok\ntype=acceptance driver_export_absent=true admin_export_confirm_required=true admin_export_logged=true export_config_gated=true config_system_admin_only=true result=PASS\nPERMREP_EXIT=0\n"
+    },
+    {
+      "step": "perm-probe-determinism",
+      "cmd": "cd /tmp/railhmi_build && diff verify/permissions-probe-rep.log core-evidence/permissions-probe-VERIFY-20261016-v1.log && echo IDENTICAL",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "IDENTICAL\n"
+    },
+    {
+      "step": "regression-artifacts",
+      "cmd": "cd /tmp/railhmi_build && ls core-evidence/",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "ai-probe-VERIFY-20261016-v1.log\nalarm-probe-VERIFY-20261016-v1.log\nclip-probe-VERIFY-20261016-v1.log\ncore-tests-VERIFY-20261016-v1.log\ncore-tests-VERIFY-20261016-v1.xml\nmaintenance-probe-VERIFY-20261016-v1.log\npermissions-probe-VERIFY-20261016-v1.log\nreplay-probe-VERIFY-20261016-v1.log\nsim-inject-VERIFY-20261016-v1.json\nsim-inject-VERIFY-20261016-v1.log\nstatus-probe-driver-VERIFY-20261016-v1.log\nstatus-probe-VERIFY-20261016-v1.log\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify023 && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify023 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.1,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify023': No such file or directory\n"
+    },
+    {
+      "step": "cleanup-verify",
+      "exit": 0,
+      "output": "cleanup_ok=True (board /tmp/railhmi_build kept for post-run negative probe)"
+    },
+    {
+      "step": "findings",
+      "exit": 0,
+      "output": "[{\"independent_recheck\": \"ITEM-023 permissions + secondary confirmation: deliverable TestRun entry re-run ok, core-tests 641 line-identical + JUnit 641/0 (21 ITEM-023 cases), permissions-probe oracle + determinism, ext fixtures and wiring scan both green on-board\", \"confirmed\": true}, {\"observable_driver_export\": \"driver export permission=false (matrix off row); P3 control visible: canExportRecording() -> entry not rendered for driver\", \"present\": true}, {\"observable_admin_confirm_logging\": \"admin/gate: export gate admin_unconfirmed reason=需二次确认 -> confirmed executed=true logged; bridge writes build_action_log rows\", \"present\": true}]"
+    }
+  ]
+}
