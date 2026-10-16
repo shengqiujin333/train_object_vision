@@ -14,6 +14,7 @@
 #include "railhmi/core/camera_registry.h"
 #include "railhmi/core/channel_view.h"
 #include "railhmi/core/config.h"
+#include "railhmi/core/fault_catalog.h"
 #include "railhmi/core/grid.h"
 #include "railhmi/core/inference.h"
 #include "railhmi/core/layout.h"
@@ -405,6 +406,18 @@ int main(int argc, char** argv) {
         healthModel.seed(hs, railhmi::core::HealthThresholds{}, logs, rec.state());
     }
     view.rootContext()->setContextProperty("railhmiHealth", &healthModel);
+
+    // 故障自检目录（ITEM-025）：FI-01..10 显式提示 + 恢复路径，供维护页展示。
+    QVariantList faultList;
+    for (const auto& f : railhmi::core::fault_catalog()) {
+        QVariantMap m;
+        m["id"] = QString::fromStdString(f.id);
+        m["label"] = QString::fromUtf8(f.label.c_str());
+        m["prompt"] = QString::fromUtf8(f.prompt.c_str());
+        m["recovery"] = QString::fromUtf8(f.recovery.c_str());
+        faultList.append(m);
+    }
+    view.rootContext()->setContextProperty("railhmiFaults", faultList);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
     view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
     view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);

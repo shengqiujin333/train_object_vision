@@ -378,6 +378,31 @@ Rectangle {
                 }
             }
         }
+
+        // 故障自检卡（ITEM-025）：FI-01..10 显式提示 + 恢复路径
+        Rectangle {
+            objectName: "maintSelfCheckCard"
+            width: (parent.width - Theme.spacing.s3) / 2; height: 320
+            color: Theme.color.surface; border.color: Theme.color.border; border.width: Theme.border.width
+            radius: Theme.radius.card
+            Column {
+                anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
+                Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
+                       text: "故障自检（模拟注入 → 显式提示 → 恢复路径）" }
+                Repeater {
+                    model: (typeof railhmiFaults !== "undefined") ? railhmiFaults : []
+                    Column {
+                        objectName: "faultRow-" + modelData.id
+                        Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.caption.size
+                               text: modelData.id + " · " + modelData.label }
+                        Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                               text: "提示：" + modelData.prompt }
+                        Text { color: Theme.color.degraded; font.pixelSize: Theme.typography.scale.caption.size
+                               text: "恢复：" + modelData.recovery }
+                    }
+                }
+            }
+        }
     }
     }
 

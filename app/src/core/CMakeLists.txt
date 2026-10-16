@@ -22,6 +22,7 @@ add_library(railhmi_core STATIC
     src/permissions.cpp
     src/health.cpp
     src/recovery.cpp
+    src/fault_catalog.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -95,5 +96,12 @@ set_target_properties(railhmi-permissions-probe PROPERTIES
 add_executable(railhmi-health-probe tools/health_probe.cpp)
 target_link_libraries(railhmi-health-probe PRIVATE railhmi_core)
 set_target_properties(railhmi-health-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 故障自检目录探针（ITEM-025；无 Qt）
+add_executable(railhmi-fault-probe tools/fault_probe.cpp)
+target_link_libraries(railhmi-fault-probe PRIVATE railhmi_core)
+set_target_properties(railhmi-fault-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

@@ -1,0 +1,12 @@
+# railhmi 版本信息（ITEM-025）
+# 由构建/打包消费；不写开发机路径。
+version: 0.1.0
+build: railhmi-0.1.0
+target: rk3588-aarch64
+qt: "5.15.3"
+gstreamer: "1.20.3"
+librknnrt: "2.3.2"
+librga: "1.10.1"
+notes: >
+  首期 6 路可见光监控桌面应用（实时监控/报警中心/历史回放/全摄像头/AI 调试/设备维护）。
+  渲染路径默认 cpu（librga），gl 可开关；推理复用现有双模型。

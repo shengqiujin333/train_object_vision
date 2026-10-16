@@ -1,0 +1,25 @@
+# railhmi 桌面应用 systemd 单元（ITEM-025）
+# 常驻自启、崩溃自动重启；显式提供 DISPLAY；**不修改也不依赖 cpu-performance.service**。
+[Unit]
+Description=railhmi 车载监控桌面应用
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=admin
+# X11 显示（历史记录为 :0；部署时按现场 X 会话核对）
+Environment=DISPLAY=:0
+Environment=QT_QPA_PLATFORM=xcb
+WorkingDirectory=/opt/railhmi
+ExecStartPre=/opt/railhmi/bin/railhmi-version-check
+ExecStart=/opt/railhmi/bin/railhmi --config /opt/railhmi/config
+# 崩溃/退出后自动拉起（不阻塞其余服务，不触碰 cpu-performance.service）
+Restart=always
+RestartSec=3
+# 日志按日滚动（应用内 LogService）；此处仅捕获 stdout/stderr
+StandardOutput=append:/opt/railhmi/logs/railhmi.out.log
+StandardError=append:/opt/railhmi/logs/railhmi.err.log
+
+[Install]
+WantedBy=graphical.target
