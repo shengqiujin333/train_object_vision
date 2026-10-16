@@ -8,6 +8,7 @@
 #include <QString>
 #include <QVariantList>
 #include <QVariantMap>
+#include <map>
 #include <vector>
 
 #include "railhmi/core/maintenance.h"
@@ -28,6 +29,11 @@ public:
     Q_INVOKABLE QVariantMap recording() const;
     Q_INVOKABLE QVariantMap health() const;
     Q_INVOKABLE QVariantList recentLogs(int n) const;
+    // 手动重连（ITEM-022 D-01）：执行并写维护日志。
+    Q_INVOKABLE QVariantMap reconnect(const QString& camera_id);
+    // 按日滚动维护日志（ITEM-022 D-02）：按日分组，仅保留最近 max_days 天。
+    Q_INVOKABLE QVariantList logsByDay(int max_days = 7) const;
+    Q_INVOKABLE int logDayCount() const;
 
 signals:
     void changed();
@@ -42,6 +48,7 @@ private:
     railhmi::core::HealthSnapshot health_;
     railhmi::core::RecordingStatus recording_;
     std::vector<railhmi::core::MaintenanceLogRow> logs_;
+    std::map<std::string, int> reconnect_counts_;
     QString user_ = "operator";
     long long clock_ms_ = 1760000000000LL;
 };

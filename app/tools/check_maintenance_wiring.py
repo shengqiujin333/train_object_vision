@@ -48,7 +48,10 @@ def main() -> int:
         "ptzCheckText": "tolerance check text", "ptzFrontAi": "front AI readiness",
         "ptzHome": "one-key homing control", "ptzPreset": "front preset control",
         "ptzConfirmModal": "secondary confirmation modal", "ptzConfirmYes": "confirm action",
-        "recentLogs": "maintenance log list",
+        "logsByDay": "day-rolling log grouping (D-02)",
+        "reconnectNotice": "reconnect feedback (D-01)",
+        "reconnect-": "manual reconnect control (D-01)",
+        "reconnectText": "per-camera reconnect text (D-01)",
         "channelMapping": "NVR channel mapping (未配置)",
     }.items():
         if token not in p6:
@@ -62,6 +65,9 @@ def main() -> int:
     for token, what in {
         "ptzAction": "ptzAction", "build_ptz_log": "maintenance log build",
         "front_ai_ready": "front AI readiness", "ptz_check": "tolerance check",
+        "reconnect": "manual reconnect action (D-01)",
+        "logsByDay": "day-rolling logs (D-02)",
+        "roll_logs_by_day": "day-rolling roll (D-02)",
     }.items():
         if token not in bridge:
             fails.append("maintenance bridge missing core call %s (%s)" % (what, token))

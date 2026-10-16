@@ -119,7 +119,62 @@ QVariantMap RailhmiMaintenanceModel::health() const {
 
 QVariantList RailhmiMaintenanceModel::recentLogs(int n) const {
     QVariantList out;
-    const int start = (n > 0 && static_cast<int>(logs_.size()) > n) ? static_cast<int>(logs_.size()) - n : 0;
-    for (int i = start; i < static_cast<int>(logs_.size()); ++i) out.append(logMap(logs_[i]));
+    const std::vector<MaintenanceLogRow> rolled = railhmi::core::roll_logs_by_day(logs_, 7);
+    const int start = (n > 0 && static_cast<int>(rolled.size()) > n) ? static_cast<int>(rolled.size()) - n : 0;
+    for (int i = start; i < static_cast<int>(rolled.size()); ++i) out.append(logMap(rolled[i]));
     return out;
+}
+
+QVariantMap RailhmiMaintenanceModel::reconnect(const QString& camera_id) {
+    const std::string cam = camera_id.toStdString();
+    int& count = reconnect_counts_[cam];
+    ++count;
+    clock_ms_ += 1000;
+    const MaintenanceLogRow log = railhmi::core::build_maintenance_log(
+        "reconnect", cam, "ok", "手动重连", user_.toStdString(), clock_ms_, 0);
+    logs_.push_back(log);
+    if (logs_.size() > 1000) logs_.erase(logs_.begin());
+    emit changed();
+    QVariantMap m;
+    m["cameraId"] = camera_id;
+    m["reconnectCount"] = count;
+    m["stateLabel"] = QString::fromUtf8("重连中");
+    m["log"] = logMap(log);
+    return m;
+}
+
+QVariantList RailhmiMaintenanceModel::logsByDay(int max_days) const {
+    const std::vector<MaintenanceLogRow> rolled = railhmi::core::roll_logs_by_day(logs_, max_days);
+    QVariantList out;
+    std::string cur;
+    QVariantList entries;
+    auto flush = [&]() {
+        if (cur.empty()) return;
+        QVariantMap day;
+        day["day"] = QString::fromStdString(cur);
+        day["count"] = static_cast<int>(entries.size());
+        day["entries"] = entries;
+        out.append(day);
+        entries = QVariantList();
+    };
+    for (const auto& r : rolled) {
+        const std::string d = railhmi::core::log_day_key(r.ts_wall_ms);
+        if (d != cur) {
+            flush();
+            cur = d;
+        }
+        entries.append(logMap(r));
+    }
+    flush();
+    return out;
+}
+
+int RailhmiMaintenanceModel::logDayCount() const {
+    const std::vector<MaintenanceLogRow> rolled = railhmi::core::roll_logs_by_day(logs_, 0);
+    std::vector<std::string> days;
+    for (const auto& r : rolled) {
+        const std::string d = railhmi::core::log_day_key(r.ts_wall_ms);
+        if (days.empty() || days.back() != d) days.push_back(d);
+    }
+    return static_cast<int>(days.size());
 }

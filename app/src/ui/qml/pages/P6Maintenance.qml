@@ -15,7 +15,14 @@ Rectangle {
     property var ptz: ({})
     property var ptzResult: ({})
     property string pendingKind: ""
+    property string reconnectNotice: ""
     property var rowBg: Theme.color.surface
+
+    function doReconnect(cameraId) {
+        if (!M) return
+        var r = M.reconnect(cameraId)
+        page.reconnectNotice = cameraId + " 重连中（已重连 " + r.reconnectCount + " 次）"
+    }
 
     function reload() {
         if (M) ptz = M.ptzState()
@@ -64,9 +71,18 @@ Rectangle {
                                text: modelData.online ? "在线" : "离线" }
                         Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
                                text: modelData.stateLabel + " · " + modelData.fpsText + " · " + modelData.lastFrameText +
-                                     " · 质量 " + modelData.qualityLabel }
+                                     " · 质量 " + modelData.qualityLabel +
+                                     (modelData.reconnectText.length > 0 ? " · " + modelData.reconnectText : "") }
+                        FilterChip {
+                            objectName: "reconnect-" + modelData.id
+                            text: "重连"
+                            onClicked: page.doReconnect(modelData.id)
+                        }
                     }
                 }
+                Text { objectName: "reconnectNotice"; visible: page.reconnectNotice.length > 0
+                       color: Theme.color.info; font.pixelSize: Theme.typography.scale.caption.size
+                       text: page.reconnectNotice }
             }
         }
 
@@ -162,13 +178,21 @@ Rectangle {
             radius: Theme.radius.card
             Column {
                 anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
-                Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size; text: "维护日志" }
+                Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size; text: "维护日志（按日滚动）" }
                 Repeater {
-                    model: page.M ? page.M.recentLogs(8) : []
-                    Text {
-                        objectName: "maintLogRow"
-                        color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
-                        text: modelData.action + " · " + modelData.user + " · " + modelData.result + " · " + modelData.detail
+                    model: page.M ? page.M.logsByDay(7) : []
+                    Column {
+                        Text { objectName: "maintLogDay"
+                               color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.caption.size
+                               text: modelData.day + "（" + modelData.count + "）" }
+                        Repeater {
+                            model: modelData.entries
+                            Text {
+                                objectName: "maintLogRow"
+                                color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                                text: "  " + modelData.action + " · " + modelData.user + " · " + modelData.result + " · " + modelData.detail
+                            }
+                        }
                     }
                 }
             }

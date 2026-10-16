@@ -54,6 +54,15 @@ PtzAction ptz_recall_front_preset(const PtzState& before, const PtzState& after,
 MaintenanceLogRow build_ptz_log(const PtzAction& a, const std::string& user,
                                 long long ts_wall_ms, long long ts_mono_us);
 
+// 通用维护日志条目（重连/归位/参数变更/模型升级/导出等）。
+MaintenanceLogRow build_maintenance_log(const std::string& action, const std::string& target,
+                                        const std::string& result, const std::string& detail,
+                                        const std::string& user, long long ts_wall_ms, long long ts_mono_us);
+// 日志日键（UTC，YYYY-MM-DD）。
+std::string log_day_key(long long ts_wall_ms);
+// 按日滚动：仅保留最近 max_days 天（按日键）的日志，保持时间序（ITEM-022 D-02）。
+std::vector<MaintenanceLogRow> roll_logs_by_day(const std::vector<MaintenanceLogRow>& logs, int max_days);
+
 // 前方 AI 就绪：云台容差通过 且 前方 AI 可用；超差 -> 未就绪（交互 §5.6）。
 bool front_ai_ready(bool front_ptz_ok, bool front_ai_available);
 

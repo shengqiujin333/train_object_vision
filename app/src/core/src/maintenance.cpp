@@ -1,7 +1,10 @@
 #include "railhmi/core/maintenance.h"
 
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
+
+#include "railhmi/core/alarm_center.h"   // format_time_text
 
 namespace railhmi {
 namespace core {
@@ -85,15 +88,45 @@ PtzAction ptz_recall_front_preset(const PtzState& before, const PtzState& after,
 
 MaintenanceLogRow build_ptz_log(const PtzAction& a, const std::string& user,
                                 long long ts_wall_ms, long long ts_mono_us) {
+    return build_maintenance_log(a.kind, "ptz", a.check.ok ? "ok" : to_string(a.check.result),
+                                 a.label + " " + a.check.text, user, ts_wall_ms, ts_mono_us);
+}
+
+MaintenanceLogRow build_maintenance_log(const std::string& action, const std::string& target,
+                                        const std::string& result, const std::string& detail,
+                                        const std::string& user, long long ts_wall_ms, long long ts_mono_us) {
     MaintenanceLogRow row;
     row.ts_wall_ms = ts_wall_ms;
     row.ts_mono_us = ts_mono_us;
     row.user = user;
-    row.action = a.kind;                     // home / preset_front
-    row.target = "ptz";
-    row.result = a.check.ok ? "ok" : to_string(a.check.result);
-    row.detail = a.label + " " + a.check.text;
+    row.action = action;
+    row.target = target;
+    row.result = result;
+    row.detail = detail;
     return row;
+}
+
+std::string log_day_key(long long ts_wall_ms) {
+    return format_time_text(ts_wall_ms).substr(0, 10);   // "YYYY-MM-DD"
+}
+
+std::vector<MaintenanceLogRow> roll_logs_by_day(const std::vector<MaintenanceLogRow>& logs, int max_days) {
+    // 收集出现的日键（时间序），仅保留最近 max_days 天。
+    std::vector<std::string> days;
+    for (const auto& r : logs) {
+        const std::string d = log_day_key(r.ts_wall_ms);
+        if (std::find(days.begin(), days.end(), d) == days.end()) days.push_back(d);
+    }
+    std::sort(days.begin(), days.end());   // YYYY-MM-DD 字典序 = 时间序
+    std::vector<std::string> keep = days;
+    if (max_days > 0 && static_cast<int>(keep.size()) > max_days)
+        keep.erase(keep.begin(), keep.begin() + (static_cast<int>(keep.size()) - max_days));
+    std::vector<MaintenanceLogRow> out;
+    for (const auto& r : logs) {
+        const std::string d = log_day_key(r.ts_wall_ms);
+        if (std::find(keep.begin(), keep.end(), d) != keep.end()) out.push_back(r);
+    }
+    return out;
 }
 
 bool front_ai_ready(bool front_ptz_ok, bool front_ai_available) {

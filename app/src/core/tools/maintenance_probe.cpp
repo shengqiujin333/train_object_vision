@@ -61,6 +61,16 @@ int main(int argc, char** argv) {
     emit("type=action kind=" + fail.kind + " result=" + to_string(fail.check.result));
     emit("type=maint-log action=" + flog.action + " result=" + flog.result + " detail=\"" + flog.detail + "\"");
 
+    // D-01 手动重连 -> 维护日志；D-02 按日滚动
+    const MaintenanceLogRow rc = build_maintenance_log("reconnect", "CAM-02", "ok", "手动重连", "maintainer", 1760000000000LL, 7);
+    emit("type=maint-log action=" + rc.action + " target=" + rc.target + " result=" + rc.result + " detail=\"" + rc.detail + "\"");
+    std::vector<MaintenanceLogRow> alllogs = {log, flog, rc};
+    alllogs.push_back(build_maintenance_log("home", "ptz", "ok", "旧日志（应滚动淘汰）", "maintainer",
+                                            1760000000000LL - 5LL * 86400000LL, 8));
+    const std::vector<MaintenanceLogRow> rolled = roll_logs_by_day(alllogs, 1);
+    emit("type=log-days total=" + std::to_string(alllogs.size()) + " rolled=" + std::to_string(rolled.size()) +
+         " max_days=1 day_key=" + log_day_key(1760000000000LL));
+
     const bool ready_ok = front_ai_ready(cgood.ok, true);
     const bool ready_fail = front_ai_ready(cbad.ok, true);
     emit("type=front-ai ptz_ok=" + std::string(ready_ok ? "READY" : "NOT_READY") +
@@ -89,10 +99,12 @@ int main(int argc, char** argv) {
                     home.requires_confirm && home.applied && home.check.ok && preset.check.ok &&
                     (log.result == "ok") && (flog.result == "out_of_tolerance") && ready_ok && !ready_fail &&
                     !build_maintenance_cameras(reg, rt, 100000)[1].online &&
-                    (rs.used_pct == 75);
+                    (rs.used_pct == 75) && (rc.action == "reconnect") && (rolled.size() == 3);
     emit(std::string("type=acceptance ptz_within_ok=") + (cgood.ok ? "true" : "false") +
          " ptz_over_detected=" + (!cbad.ok ? "true" : "false") +
          " home_logged=" + (log.result == "ok" ? "true" : "false") +
+         " reconnect_logged=" + (rc.action == "reconnect" ? "true" : "false") +
+         " log_day_rolling=" + (rolled.size() == 3 ? "true" : "false") +
          " over_tolerance_blocks_front_ai=" + (!ready_fail ? "true" : "false") +
          " result=" + (ok ? "PASS" : "FAIL"));
     return ok ? 0 : 1;

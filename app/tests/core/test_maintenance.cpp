@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "railhmi/core/alarm_center.h"   // parse_date_utc_ms
 #include "railhmi/core/maintenance.h"
 
 namespace {
@@ -114,6 +115,26 @@ void test_recording_health() {
                         "health text");
 }
 
+void test_day_rolling_logs() {
+    // D-02：日键 + 按日滚动（保留最近 max_days 天）
+    const long long day = parse_date_utc_ms("2026-10-16");
+    std::vector<MaintenanceLogRow> logs;
+    logs.push_back(build_maintenance_log("reconnect", "CAM-01", "ok", "手动重连", "maint", day - 3 * 86400000LL, 1));
+    logs.push_back(build_maintenance_log("home", "ptz", "ok", "一键归位", "maint", day - 2 * 86400000LL, 2));
+    logs.push_back(build_maintenance_log("reconnect", "CAM-02", "ok", "手动重连", "maint", day - 86400000LL, 3));
+    logs.push_back(build_maintenance_log("preset_front", "ptz", "ok", "重调前方预置位", "maint", day, 4));
+    railhmi_test::check(log_day_key(day) == "2026-10-16", "log day key (D-02)");
+    const std::vector<MaintenanceLogRow> rolled = roll_logs_by_day(logs, 2);
+    railhmi_test::check(rolled.size() == 2, "roll keeps latest 2 days (D-02)");
+    railhmi_test::check(rolled[0].action == "reconnect" && rolled[0].target == "CAM-02" &&
+                            rolled[1].action == "preset_front",
+                        "rolled entries are the most recent days");
+    railhmi_test::check(roll_logs_by_day(logs, 0).size() == logs.size(), "max_days=0 keeps all");
+    const MaintenanceLogRow rc = build_maintenance_log("reconnect", "CAM-03", "ok", "手动重连", "maint", day, 5);
+    railhmi_test::check(rc.action == "reconnect" && rc.target == "CAM-03" && rc.result == "ok",
+                        "generic maintenance log (reconnect)");
+}
+
 }  // namespace
 
 void run_maintenance_tests() {
@@ -122,4 +143,5 @@ void run_maintenance_tests() {
     test_front_ai_readiness();
     test_camera_rows();
     test_recording_health();
+    test_day_rolling_logs();
 }

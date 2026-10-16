@@ -1,0 +1,17 @@
+type=list rows=4 order=level_desc,time_desc
+row id=1 level=L1 type=person_on_rail time=2026-10-16 00:00:05 cam=CAM-01(前方) ack=unacked record=available snapshot=yes desc=轨道人员
+row id=4 level=L1 type=wheel_derail time=2026-10-16 00:00:01 cam=CAM-05(车底) ack=acked record=available snapshot=yes desc=轮轨异常
+row id=3 level=L2 type=pantograph_abnormal time=2026-10-16 00:00:09 cam=CAM-04(车顶) ack=unacked record=incomplete snapshot=yes desc=受电弓异常 [录像不完整]
+row id=2 level=L3 type=side_camera_device time=2026-10-16 00:00:03 cam=CAM-02(左侧) ack=unacked record=unavailable snapshot=no desc=侧视离线 [录像不可用]
+type=filter name=level_L1 count=2
+type=filter name=unacked count=3
+type=filter name=window count=2
+type=filter name=combo_empty count=0 empty=true
+type=ack changed=3
+row id=1 ack=acked ack_label=已确认
+row id=2 ack=acked ack_label=已确认
+row id=3 ack=acked ack_label=已确认
+row id=4 ack=acked ack_label=已确认
+type=maint-log action=ack_alarm target=1,2,3 user=maintainer detail=count=3
+type=options cameras=4 types=4 levels=3
+type=acceptance batch_ack_changed=3 events_preserved=true empty_state_ok=true maint_log=1,2,3 result=PASS

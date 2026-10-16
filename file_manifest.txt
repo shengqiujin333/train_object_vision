@@ -1010,6 +1010,19 @@ docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v2.t
 docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v3.log | active | ITEM-022 验证权威轮 v3 FIXTURES 日志（FIXTURES_RC=0：TestRun 复跑 612/0 逐行一致 + JUnit 612/0 + 探针公式/字节一致 + ext 83/83 + 接线扫描 22 项 + D-探测 D1/D2=False + 确定性 + 清理）
 docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v3.transcript.json | active | ITEM-022 验证权威轮 v3 transcript
 docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-ITEM-022.md | active | ITEM-022 软件验证报告（VERIFY-20261016-v3 权威轮 TEST_FAIL：core/probe/ext 83/83/接线扫描全绿；D-01 P6 缺手动重连入口、D-02 维护日志未按日滚动，交回实现；v1/v2 过程轮为验证侧夹具预期构造错）| evidence | TestEvidence
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_ai-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_alarm-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_clip-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_core-tests-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 core 单测（617 passed / 0 failed）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_core-tests-20261016-ITEM022-fix-r1.xml | active | ITEM-022 修复轮 JUnit XML
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_maintenance-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 maintenance-probe（重连日志/按日滚动 rolled=3/acceptance PASS）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_replay-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_sim-inject-20261016-ITEM022-fix-r1.json | active | ITEM-022 修复轮回归留痕
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_sim-inject-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_status-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_status-probe-driver-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.transcript.json | active | ITEM-022 修复轮 transcript
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-r1.core-evidence_ai-probe-20261016-ITEM022-r1.log | active | ITEM-022 TestRun 运行日志（构建 + 单测 + 探针 + 扫描/接线）
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-r1.core-evidence_alarm-probe-20261016-ITEM022-r1.log | active | ITEM-022 TestRun 运行日志（构建 + 单测 + 探针 + 扫描/接线）
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-r1.core-evidence_clip-probe-20261016-ITEM022-r1.log | active | ITEM-022 TestRun 运行日志（构建 + 单测 + 探针 + 扫描/接线）

@@ -44,6 +44,22 @@ type=acceptance ptz_within_ok=true ptz_over_detected=true home_logged=true over_
 - NVR 显示登记/状态/通道映射=未配置，无自动修改入口 ✅
 - 质量/在线/帧率/最近帧、AI 模型版本、录像剩余容量、网络/温度/NPU/CPU 均呈现 ✅
 
+## 2.5 修复轮（D-01 手动重连 / D-02 按日滚动日志，software_verification TEST_FAIL 交回）
+
+验证反馈（`VERIFY-ITEM-022.md` v3）：core/桥接/QML 全绿，唯任务书要求的**手动重连入口**与**按日滚动维护日志**缺失。修复：
+1. **D-01 手动重连**：core 新增通用 `build_maintenance_log(action,target,result,detail,user,…)`；桥接新增 `Q_INVOKABLE reconnect(cameraId)`（执行 → 计数 → 写维护日志 `action=reconnect`）；P6 摄像头行新增 `重连` 控件（`reconnect-<id>`）、显示 `reconnectText` 与 `reconnectNotice` 反馈。
+2. **D-02 按日滚动日志**：core 新增 `log_day_key`（UTC YYYY-MM-DD）与 `roll_logs_by_day(logs, max_days)`（仅保留最近 N 天）；桥接 `logsByDay(7)` 按日分组、`logDayCount`；P6 日志卡改为按日分组渲染（`maintLogDay` + 内层行）。
+3. 静态核对 `check_maintenance_wiring.py` 增加：`reconnect-` 控件、`reconnectText`、`reconnectNotice`、`logsByDay`、`roll_logs_by_day`、桥接 `reconnect`。
+
+修复轮板端实测（stamp `20261016-ITEM022-fix-r1`）→ `TESTRUN_EXIT=0` `MAINT_WIRE_EXIT=0` `MAINT_EXIT=0`：
+```
+== 617 passed, 0 failed ==   （新增 reconnect 日志 + 日键/按日滚动断言）
+type=maint-log action=reconnect target=CAM-02 result=ok detail="手动重连"
+type=log-days total=4 rolled=3 max_days=1 day_key=2025-10-09
+type=acceptance … reconnect_logged=true log_day_rolling=true result=PASS
+[check_maintenance_wiring] PASS (ITEM-022 device maintenance page wired)
+```
+
 ## 3. 边界
 
 - **真实云台控制/重连/录像进程/温度采样**：实际设备操作（PTZ CGI/ONVIF、录像进程、传感器）归平台/现场；本项交付维护模型/校验/日志与页面，桥接以确定性样例驱动（非模拟时空数据）。
