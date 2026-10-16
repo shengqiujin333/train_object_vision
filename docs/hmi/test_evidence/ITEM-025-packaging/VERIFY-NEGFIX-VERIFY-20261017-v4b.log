@@ -1,0 +1,31 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [upload-checker-set] exit=0 =====
+5 app files + packaging
+
+===== [neg-extract] exit=0 =====
+negfix.py (fixed staging)
+
+===== [negative-control] exit=0 =====
+NEG_HEALTHY_EXIT=0
+NEG_D01_EXIT=1
+neg-d01: [FAIL] systemd unit executes /opt/railhmi/bin/railhmi-version-check but install.sh never installs it
+NEG_D02_EXIT=1
+neg-d02: [FAIL] unit passes --config but main.cpp does not parse/consume it
+NEG_DRIVER_EXIT=0
+NEG_DRIVER_FAILS=[]
+
+
+===== [negative-control-findings] exit=0 =====
+neg_ok=True
+
+===== [cleanup] exit=2 =====
+negfix_cleanup_done
+ls: cannot access '/tmp/railhmi_negfix': No such file or directory
+
+
+===== [cleanup-verify] exit=0 =====
+cleanup_ok=True

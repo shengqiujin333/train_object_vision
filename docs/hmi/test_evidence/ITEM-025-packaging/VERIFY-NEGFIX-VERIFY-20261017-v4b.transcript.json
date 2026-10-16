@@ -1,0 +1,55 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "outdir": "E:/work/rail_issue/rk3588_handover/docs/hmi/test_evidence/ITEM-025-packaging",
+    "stamp": "VERIFY-20261017-v4b",
+    "connect_timeout": "10",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "upload-checker-set",
+      "exit": 0,
+      "output": "5 app files + packaging"
+    },
+    {
+      "step": "neg-extract",
+      "exit": 0,
+      "output": "negfix.py (fixed staging)"
+    },
+    {
+      "step": "negative-control",
+      "cmd": "cd /tmp/railhmi_negfix && python3 negfix.py; echo NEG_DRIVER_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.25,
+      "output": "NEG_HEALTHY_EXIT=0\nNEG_D01_EXIT=1\nneg-d01: [FAIL] systemd unit executes /opt/railhmi/bin/railhmi-version-check but install.sh never installs it\nNEG_D02_EXIT=1\nneg-d02: [FAIL] unit passes --config but main.cpp does not parse/consume it\nNEG_DRIVER_EXIT=0\nNEG_DRIVER_FAILS=[]\n"
+    },
+    {
+      "step": "negative-control-findings",
+      "exit": 0,
+      "output": "neg_ok=True"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_negfix && echo negfix_cleanup_done && ls -d /tmp/railhmi_negfix 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.11,
+      "output": "negfix_cleanup_done\nls: cannot access '/tmp/railhmi_negfix': No such file or directory\n"
+    },
+    {
+      "step": "cleanup-verify",
+      "exit": 0,
+      "output": "cleanup_ok=True"
+    }
+  ]
+}

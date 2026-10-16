@@ -1,98 +1,83 @@
 # VERIFY-ITEM-025 — Independent Software Verification Record
 
 - Capability: `software_tester.software_verification`（Restlessdream Runtime，RESUME_SYNC）
-- 被验证对象: implementer 轮 `20261016-ITEM025-r1`（commit `6d1787b`），声明工件 `app/README.md`，证据 `docs/hmi/test_evidence/ITEM-025-packaging/README.md`
+- 被验证对象: 实现方 fix 轮 `20261017-ITEM025-fix-r1`（commit `ee0a741`），声明工件 `app/README.md`，证据 `docs/hmi/test_evidence/ITEM-025-packaging/README.md`
 - 工作项: `TL-778f77eb-1fde-496d-9677-7330e26c6476-tasks-ITEM-025`（目标运行包、systemd 常驻自启与故障自检自证）
-- 验证轮 stamp: `VERIFY-20261017-v1`（全量步骤）→ `VERIFY-20261017-v2`（首次 ext+反例重跑：驱动自身 JUnit `&apos;` 未反转义、ext 头注释非注释、NEG 反例缺显式参数——三次失败均经离线复现定位为**验证方夹具缺陷**，未触及交付物）→ `VERIFY-20261017-v3`（修复后终轮，最终板上证据以此 stamp 归档）
-- 结论: **TEST_FAIL**
+- 验证轮: 上轮 `VERIFY-20261017-v1`（TEST_FAIL: D-01/D-02）→ v2/v3（夹具修复终轮，维持 FAIL）→ 本轮 `VERIFY-20261017-v4`（全量步骤，唯一失败为验证方负控制夹具缺陷）→ `VERIFY-20261017-v4b`（修复夹具的负控制板端补证）
+- 结论: **TEST_PASS**
+
+## 0. 上轮失败与本轮变化
+
+上轮 D-01/D-02 结论与修复边界（`git show` 1face14 轮 VERIFY-ITEM-025.md §3/§4）：
+- D-01（严重）`packaging/railhmi.service` `ExecStartPre=/opt/railhmi/bin/railhmi-version-check` 引用不存在且无人构建/安装的二进制 → 实机必启动失败并 Crash-Loop。
+- D-02（严重）单元传 `--config /opt/railhmi/config` 但 `main.cpp` 不解析 argv、配置目录被编译期钉死为构建时源码树路径 → 部署后启动即 exit 4 → Crash-Loop。
+- 建议交付物 `check_packaging.py` 增补两类断言。
+
+fix-r2（ee0a741）逐项对照修复边界：
+- D-01 选建议 (b)：删除 ExecStartPre 行；`UPGRADE.md` 相应改为“应用启动时校验配置与版本并写日志”，不再引用不存在的工具。
+- D-02 选建议（解析参数）：core 新增 `parse_config_dir()`（`--config <dir>` / `--config=<dir>`，无值/空值回退缺省），`main.cpp` 以 `load_config_dir(configDir)` 真正消费；新增 7 条单测。
+- 交付检查器增补 D-01（单元引用的 `/opt/railhmi/bin/*` 必须出现在 install.sh）与 D-02（单元传 `--config` 时 main.cpp 必须含 `parse_config_dir` + `load_config_dir(configDir)`）断言。
 
 ## 1. 独立复验方法（不信任实现方自检）
 
-1. 指纹校验 SSH 连接（`SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU`，RejectPolicy，凭据仅走环境变量不落日志）。
-2. 用被交付的入口 `app/tools/board_build.py --mode TestRun` 以验证方 stamp 独立复跑（上传 `app/`+`packaging/` 到板端 `/tmp/railhmi_build`，本机重建 CoreTests、跑 663 单测、tokens selftest、7 项接线扫描、sim-inject 六故障注入、10 个探针、归档取回）。
-3. 逐行比对：复跑 core-tests `[PASS]` 列表 vs 实现方 r1 归档（663 条，要求完全一致）。
-4. 独立解析 JUnit XML（不经过实现方汇总行）：663/0，且 31 条故障域用例名逐字存在。
-5. 对 `railhmi-fault-probe` 用验证方 16 行正则 oracle 独立断言 + 与实现方 r1 log 跨轮逐字节比对 + 板上重跑 diff（确定性）。
-6. 对 `railhmi-sim-inject`（六故障同时注入）独立断言起点/恢复/汇总观测 + JSON 结构 + 跨轮逐字节比对。
-7. 验证方 ext C++ 夹具现场编译链接**本轮新构建的** `librailhmi_core.a`：目录/自检契约、注入窗口语义（[onset,recovery) 半开、recovery≤onset 不恢复）、六故障模型状态序列、确定性。
-8. 验证方部署契约扫描（超出交付的 token 检查）：systemd 单元/install.sh/UPGRADE/VERSION/main.cpp/CMake 交叉一致性，包括 **ExecStartPre 目标存在性**（D-01）与 **--config 参数被消费**（D-02）。
-9. 板上反例对照：交付的 `check_packaging.py` 对新鲜副本 PASS、对合成畸变副本 FAIL（证明该检查器在其声称的层面有效）。
-10. 全部临时目录按名清理并 `ls` 确认（exit=2 为"不存在"确认，非失败）。
+与上轮同一套独立方法，参数按 fix-r2 更新：
 
-夹具/驱动（验证方所有，未修改任何产品源码）：`verify_packaging25_fixtures.py`、`verify_packaging25_ext.cpp`、`verify_packaging25_scan.py`、`verify_packaging25_ext_rerun.py`、`offline_selfcheck0/1/2.py`、`run_verify_round.sh`、`run_ext_rerun.sh`。
+1. 指纹校验 SSH 连接（`SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU`，RejectPolicy，凭据仅走环境变量）。
+2. 用被交付的入口 `app/tools/board_build.py --mode TestRun` 以验证方 stamp `VERIFY-20261017-v4` 独立复跑板端全量（上传 `app/`+`packaging/`，板端重建、670 单测、tokens selftest、7 项接线扫描、sim-inject、10 探针、归档取回）。
+3. 逐行比对复跑 core-tests `[PASS]` 列表 vs 实现方 fix-r1 归档（要求完全一致）；独立解析 JUnit XML 670/0，断言 31 条故障/注入域用例 + 7 条 fix-r2 新增 `parse_config_dir` 用例名逐字存在（共 38 条）。
+4. `railhmi-fault-probe` 16 行 oracle 独立断言 + 与 fix-r1 归档逐字节跨轮比对（fix-r2 未触及故障目录，应逐字节一致）+ 板上重跑 diff（确定性）。
+5. `railhmi-sim-inject` 六故障注入 oracle + JSON 结构断言 + 与 fix-r1 逐字节比对。
+6. 验证方 ext C++ 夹具现场编译链接**本轮新构建的** `librailhmi_core.a`/`librailhmi_platform.a`：目录/自检契约、判窗语义、六故障序列、确定性，并新增 **G 段（fix-r2 D-02 参数契约）**：`parse_config_dir` 七种参数形态（含单元实际形态 `--mode x --config /opt/railhmi/config`、无值/空值回退、`nullptr` argv 安全回退）。
+7. 验证方部署契约扫描（`verify_packaging25_scan.py`，本轮键语义更新）：P1..P16 全 True + **D-01/D-01b/D-02 三键必须为 True**（=缺陷缺席；上轮为 False），并要求 `D02_parses_arg=True`（真实解析路径，而非仅编译期前缀回退）。
+8. 交付检查器负控制板端补证：健康副本 0，新鲜注入 D-01（加重 ExecStartPre railhmi-version-check）→ 1 且点名 provenance 消息，注入 D-02（main.cpp 停止消费 `--config`）→ 1 且点名 parse/consume 消息。
+9. 临时目录按名清理并 `ls` 确认。
 
-## 2. 独立复验通过项（与业务交付相符的部分）
+夹具/驱动（验证方所有，未修改任何产品源码——`verify_packaging25_ext.cpp` 等为验证方夹具，本轮仅追加 G 段）：
+`verify_packaging25_fixround.py`（本轮全量驱动）、`run_fix_round.sh`、`verify_packaging25_negfix_only.py`（v4b 补证驱动）、`run_negfix_only.sh`、`pretest_negfix_local.py`（夹具修复的主机预检）、既有 `verify_packaging25_scan.py`（键语义更新）、`verify_packaging25_ext.cpp`（追加 G 段）。
+
+## 2. 独立复验通过项
 
 | # | 断言 | 结果 |
 |---|---|---|
-| R1 | 独立复跑 TestRun 入口成功；core-tests **663/663**，`[PASS]` 列表与实现方 r1 **逐行一致** | ✅（v1 log-compare identical=True） |
-| R2 | JUnit 独立解析 663/0；31 条故障/注入域用例全在（FI-01..05/10 状态序列、注入参数记录、确定性重置、级别映射） | ✅（v1 junit-parse tests=663 failures=0；注：v1 驱动自身 `&apos;` 未反转义报 28/31，离线修正后确认 31/31） |
-| R3 | fault-probe 16 行 oracle 全中 + 与 r1 **逐字节一致** + 板上重跑 `diff` → `IDENTICAL`（确定性） | ✅ |
-| R4 | sim-inject 六故障注入：t=1500 起断流重连/AI 不可用/存储低/云台超差/缺口，t=2500 offline 升级（阈值 3），t=5000 恢复 live 清零，汇总 `final_state=live alarms=2 gaps=1 events_recorded=2`；log 与 JSON 与 r1 逐字节一致 | ✅ |
-| R5 | ext 夹具（本轮静态库）：6 条 FI 目录项四字段非空、SC-01..10 注入命令可被 `parse_fault` 解析、SC-BOOT 重启的是 install.sh 启用的单元名 `railhmi` 且恢复路径引用 `Restart=always`、窗口半开/永不恢复语义、六故障模型序列、确定性 | ✅（v3 板上 GXX_EXIT=0, RESULT: PASS passed=78 failed=0） |
-| R6 | `railhmi-fault-probe` 验收 `fi_covered=true boot_step=true prompts_nonempty=true result=PASS`（TEXT_DESIGN FI 目录全量覆盖） | ✅ |
-| R7 | Unit `Restart=always`/`DISPLAY=:0`/install 目录/单元安装启用/VERSION/UPGRADE 回滚/RESOURCES 许可登记/P6 自检卡/main.cpp `railhmiFaults` 注入、单测域覆盖、探针/CLI 均为真实构建目标 | ✅（扫描 P1..P16 全 True） |
-| R8 | 反例对照：交付 `check_packaging.py` 新鲜副本 PASS / 畸变副本 FAIL（token 层健全） | ✅（v3 NEG_HEALTHY_EXIT=0 / NEG_MUTATED_EXIT=1，点名 `[FAIL] systemd unit missing auto-restart (Restart=always)` 与 `cpu-performance` 两条） |
+| R1 | 独立复跑 TestRun 入口成功；core-tests **670/670**，`[PASS]` 列表与实现方 fix-r1 **逐行一致** | ✅（v4 log-compare identical=True） |
+| R2 | JUnit 独立解析 670/0；31 条故障/注入域用例 + 7 条 fix-r2 `parse_config_dir` 用例全部逐字存在（38/38） | ✅ |
+| R3 | fault-probe 16 行 oracle 全中 + 与 fix-r1 **逐字节一致** + 板上重跑 `diff` → `IDENTICAL`（确定性） | ✅ |
+| R4 | sim-inject 六故障注入：onset 断流/AI 不可用/存储低/云台超差/缺口同时注入，t=2500 offline 升级（阈值 3），t=5000 恢复 live 清零，`final_state=live alarms=2 gaps=1 events_recorded=2`；log/JSON 与 fix-r1 逐字节一致 | ✅ |
+| R5 | ext 夹具（本轮静态库，含 G 段）：6 条 FI 目录四字段非空、SC-01..10 注入命令可解析、SC-BOOT 引用启用单元名 `railhmi` 与 `Restart=always`、判窗半开/永不恢复、六故障模型序列、确定性、**`parse_config_dir` 七种参数形态全过** | ✅（v4 板上 GXX_EXIT=0, RESULT: PASS passed=85 failed=0） |
+| R6 | fault-probe 验收 `fi_covered=true boot_step=true prompts_nonempty=true result=PASS` | ✅ |
+| R7 | 部署契约扫描：P1..P16 全 True；**D-01/D-01b/D-02 均 True**（缺陷已修复）且 `D02_parses_arg=True` | ✅（主机 + 板端新鲜副本两处扫描一致） |
+| R8 | 交付检查器负控制（板端 v4b）：健康副本 PASS；D-01 重注入 → `[FAIL] systemd unit executes /opt/railhmi/bin/railhmi-version-check but install.sh never installs it`（rc=1）；D-02 重注入 → `[FAIL] unit passes --config but main.cpp does not parse/consume it`（rc=1） | ✅（NEG_HEALTHY_EXIT=0 / NEG_D01_EXIT=1 / NEG_D02_EXIT=1 / NEG_DRIVER_EXIT=0） |
+| R9 | 交付 check_packaging.py 主机反例自检 `negcheck_packaging_fix.py`（实现方交付）：0/1/1 PASS | ✅ |
+| R10 | 打包核对 PASS（TestRun 内 PACK_EXIT=0，含 fix-r2 新断言版） | ✅ |
 
-## 3. 缺陷（构成 TEST_FAIL 的业务失败）
+## 3. 本轮验证方夹具缺陷（不构成业务失败）
 
-### D-01（严重） ExecStartPre 引用不存在且无人构建/安装的二进制 → 实机部署必启动失败并 Crash-Loop
+- v4 全量轮唯一失败步骤 `negative-control`：`FileExistsError ... /neg/d01` — 夹具 `staging()` 对已创建目录重复 `os.makedirs`，属**验证方夹具缺陷**（与 v1/v2 轮的三次夹具缺陷同类），未触及交付物。修复后在主机预检（`pretest_negfix_local.py`，含真实退出码断言 0/1/1 与点名消息）并以 `verify_packaging25_negfix_only.py` 板端补证（v4b，rc=0）。
+- 同步修正验证方扫描夹具键语义：D-01b（UPGRADE.md 登记 `bin/` 工具）改为“无登记即无缺陷”（fix-r2 后 `doc_tools=(none)`），与验收语义一致；R7 结果不受影响。
 
-`packaging/railhmi.service:15`：
+## 4. 边界说明（不影响 TEST_PASS 结论）
 
-```
-ExecStartPre=/opt/railhmi/bin/railhmi-version-check
-```
-
-取证（三路独立证据）：
-1. **构建系统**：`app/src/core/CMakeLists.txt` 全部 11 个工具目标为 config-check/sim-inject/status/ai/alarm/clip/replay/maintenance/permissions/health/**fault**-probe——无任何 `version-check` 目标；仓库内 `add_executable` 全扫无 `railhmi-version-check`。
-2. **安装器**：`packaging/install.sh` 只安装 `$SRC/app/build-target/railhmi` 与 `VERSION`，不产生/安装 `railhmi-version-check`。
-3. **文档**：`packaging/UPGRADE.md:7` 把 `railhmi-version-check`（`bin/` 内）登记为"启动前自检入口"——文档所指工具不存在。
-
-systemd 语义：`ExecStartPre` 非零退出直接导致启动失败；`Restart=always`（`RestartSec=3`）会使其进入无限 Crash-Loop，**永远不会进入 active**。因此任务的用户可观察点"**系统重启后应用随系统自动拉起并进入可用状态**"在真实部署（ENV-E）下**不成立**。板上验证扫描 D-01 键 = `False`（v1 与 v3 两轮板上独立确认）；反例对照证明交付的 `check_packaging.py` 检不出该缺陷（它只匹配 `ExecStart=` 子串前缀，未校验 ExecStartPre 目标存在性）——这就是交付证据 `PACK_EXIT=0` 与该缺陷并存的原因。
-
-### D-02（严重） 单元传 `--config` 但二进制不解析；配置目录是编译期源码树路径 → `/opt/railhmi/config` 部署契约不成立
-
-`packaging/railhmi.service:16`：
-
-```
-ExecStart=/opt/railhmi/bin/railhmi --config /opt/railhmi/config
-```
-
-取证：
-1. `app/src/ui/src/main.cpp:36-45`：`main()` 对 argv 不做任何解析（`QGuiApplication` 吞掉未知参数），配置来自 `load_config_dir(RAILHMI_CONFIG_DIR)`（main.cpp:45）。
-2. `app/src/ui/CMakeLists.txt:48`：`target_compile_definitions(railhmi PRIVATE RAILHMI_CONFIG_DIR="${CMAKE_SOURCE_DIR}/config")`——**编译期**把配置目录钉死为构建时源码树的绝对路径。
-3. 两相结合：部署到 `/opt/railhmi/bin/railhmi` 的二进制会在 `load_config_dir` 时指向构建时的源码树位置（例如 TestRun 的 `/tmp/railhmi_build`，该目录验证后即删除）。`/opt/railhmi/config`（install.sh 安装的拷贝）**不会被读取**；既有路径不存在时 `load_config_dir` 失败 → `main()` **exit 4**（main.cpp:51）→ 同样 `Restart=always` Crash-Loop。
-
-板上验证扫描 D-02 键 = `False`，并逐条打印 `RAILHMI_CONFIG_DIR` 定义（无任何 `/opt/railhmi` 出现）。
-
-### 边界说明（不影响 TEST_FAIL 结论）
-
-- 验证方**未执行** `systemctl enable` 或整机重启（ENV-E 需现场授权且涉及重启整机；与实现方边界声明一致）。D-01/D-02 属**静态可证伪的交付缺陷**：部署契约在 Referenced-binary / Parsed-args 层面即可证不成立，板端取证未尽事项在此不构成对缺陷的豁免。
-- 故障域（FI 目录、提示/恢复文案、模拟注入、自检清单）与运行目录/版本/升级回滚文档本体经独立复验为真（§2 R1-R8）；TEST_FAIL 由部署可用性缺陷 D-01/D-02 构成，修复边界明确（见 §4）。
-
-## 4. 修复边界建议（交实现方）
-
-1. **D-01**：三选一——(a) 新增 `railhmi-version-check` 工具目标并在 install.sh 安装；(b) 从单元移除 ExecStartPre 行并同步修订 UPGRADE.md 第 7 行；(c) 若版本自检语义保留为应用内启动步骤（main.cpp 已校验配置并落日志），删除 ExecStartPre 重复环节。
-2. **D-02**：让 `main.cpp` 解析 `--config <dir>`（无参数时回退编译期缺省），或将编译期定义改为部署前缀 `/opt/railhmi/config`。无论哪种，单元 `/opt/railhmi/config` 与 `railhmi-config-check ./config` 探针口径（启动校验入口）应统一。
-3. 建议交付物 `check_packaging.py` 增补两条断言（ExecStart* 目标在 provenance 集合内；`--config` 有消费路径），否则同类缺陷仍会漏检。
+- 验证方未执行 `systemctl enable`/整机重启（ENV-E 现场操作；上轮边界一致）。D-01/D-02 为静态可证伪的交付契约，修复在 Referenced-binary / Parsed-args 层面已由三类独立证据（扫描键翻转、ext G 段、负控制重注入被点名拦下）证实；`parse_config_dir` 行为另有 7 条板端单测 + ext G 段双覆盖。
+- “界面出现显式提示与恢复路径”的用户可观察点由故障目录/自检证据（fi_covered/prompts_nonempty、SC-BOOT Restart=always、P6 自检卡扫描 P8）与预验证轮通过的 UI 评审证据链支撑；画面内容本身仍属用户视觉确认范畴（既有边界），不在本轮自动证据范围。
+- 6 路真实摄像头取流不属于 ITEM-025 工作项范围（属取流/推理工作项），本轮未测。
 
 ## 5. 证据清单（本轮验证方生成）
 
-- `VERIFY-FIXTURES-VERIFY-20261017-v1.log` / `.transcript.json`（全量步骤：指纹、TestRun 复跑、逐行比对、oracle、跨轮字节一致性、确定性、扫描板端 D-01/D-02=False）
-- `VERIFY-FIXTURES-VERIFY-20261017-v3.log` / `.transcript.json`（修复夹具后的终轮板上证据：ext 夹具 GXX_EXIT=0 → `RESULT: PASS passed=78 failed=0`、反例对照 0/1、D-01/D-01b/D-02=False 复核、按名清理确认）
-- `build-TestRun-192_168_0_103-VERIFY-20261017-v1.log` + 14 份 `core-evidence_*` 归档（独立复跑产物）
-- `build-TestRun-192_168_0_103-VERIFY-20261017-v3.log` + 归档（v3 终轮 TestRun 复跑产物；注：跑动优先归档，先前失败轮未留存，stamp 内逻辑为同一步骤集的最终成功执行）
-- `RUN-ROUND-console.log` / `RUN-RERUN-console.log` / `RUN-RERUN3-console.log`（驱动控制台；含离线自检 PASS 与各步 exit 码）
-- `offline_selfcheck0/1/2/3.py` 输出内嵌于控制台日志（零板耗预期的期望构造自检）；`offline_negcheck.py` / `offline_negcheck_diag.py`（v2 反例异常 rc=2 的离线复现与 stderr 定位——定位到驱动 `fresh_args[:-1]` 切片把 `--packaging` 的值切掉，属验证方夹具缺陷）
+- `VERIFY-FIXTURES-VERIFY-20261017-v4.log` / `.transcript.json`（全量步骤：指纹、TestRun 复跑、670 逐行比对、JUnit 38/38、oracle、跨轮字节一致、确定性、扫描 D 键 True、负控制夹具 FileExistsError、清理确认）
+- `VERIFY-NEGFIX-VERIFY-20261017-v4b.log` / `.transcript.json`（修复夹具后的板端负控制补证：0/1/1 + 点名两条缺陷消息 + 按名清理）
+- `build-TestRun-192_168_0_103-VERIFY-20261017-v4.log` + 14 份 `core-evidence_*` 归档（独立复跑产物）
+- `run_fix_round.sh` / `run_negfix_only.sh`（有限等待驱动；指纹校验、凭据仅经环境变量）
+- `verify_packaging25_fixround.py` / `verify_packaging25_negfix_only.py` / `pretest_negfix_local.py`（验证方驱动/夹具，含本轮修正）
+- `verify_packaging25_scan.py`（键语义更新版）/ `verify_packaging25_ext.cpp`（追加 G 段版）
 
 ## 6. 复现
 
 ```sh
-# 主机（离线）：静态契约扫描 + 交付检查器 + 反例 + 夹具期望构造
-python docs/hmi/test_evidence/ITEM-025-packaging/offline_selfcheck1.py
-python docs/hmi/test_evidence/ITEM-025-packaging/offline_selfcheck3.py
-# 板端（经登记 SSH 入口，约 20 分钟）
-bash docs/hmi/test_evidence/ITEM-025-packaging/run_verify_round.sh      # 全量
-bash docs/hmi/test_evidence/ITEM-025-packaging/run_ext_rerun.sh        # ext+反例终轮（归档 stamp 内逻辑）
+# 主机（离线）：夹具期望预检 + 扫描 + 实现方反例自检
+python docs/hmi/test_evidence/ITEM-025-packaging/pretest_negfix_local.py
+python docs/hmi/test_evidence/ITEM-025-packaging/verify_packaging25_scan.py --app app --pkg packaging
+python docs/hmi/test_evidence/ITEM-025-packaging/negcheck_packaging_fix.py
+# 板端（经登记 SSH 入口，约 25 分钟 + 补证 2 分钟）
+bash docs/hmi/test_evidence/ITEM-025-packaging/run_fix_round.sh       # 全量（负控制步骤本轮由 v4b 补证）
+bash docs/hmi/test_evidence/ITEM-025-packaging/run_negfix_only.sh    # 负控制板端补证
 ```

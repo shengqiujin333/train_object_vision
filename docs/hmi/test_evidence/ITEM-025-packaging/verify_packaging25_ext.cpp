@@ -31,6 +31,7 @@
 #include "railhmi/core/fault_catalog.h"
 #include "railhmi/core/simulation.h"
 #include "railhmi/core/retention.h"
+#include "railhmi/core/config.h"
 
 using namespace railhmi::core;
 
@@ -278,6 +279,28 @@ void t_determinism() {
     check(fmt_all(o1) == fmt_all(o2), "same config -> byte-identical observation stream");
 }
 
+// --- G. deployment arg contract (fix-r2 D-02) -------------------------------
+// parse_config_dir is the runtime surface the systemd unit relies on:
+//   ExecStart=/opt/railhmi/bin/railhmi --config /opt/railhmi/config
+void t_config_dir_arg() {
+    const std::string fb = "/opt/railhmi/config";
+    { const char* argv[] = {"railhmi","--config","/data/cfg","--other"};
+      check_eq("--config <dir>", parse_config_dir(4, argv, "config"), "/data/cfg"); }
+    { const char* argv[] = {"railhmi","--config=/x"};
+      check_eq("--config=<dir>", parse_config_dir(2, argv, "config"), "/x"); }
+    { const char* argv[] = {"railhmi"};
+      check_eq("absent falls back", parse_config_dir(1, argv, fb), fb); }
+    { const char* argv[] = {"railhmi","--config"};
+      check_eq("no value falls back (never empty)", parse_config_dir(2, argv, fb), fb); }
+    { const char* argv[] = {"railhmi","--config",""};
+      check_eq("empty value falls back", parse_config_dir(3, argv, fb), fb); }
+    { const char* argv[] = {"railhmi","--mode","x","--config",
+                            "/opt/railhmi/config"};
+      check_eq("unit argument honoured (fix-r2 D-02)",
+               parse_config_dir(5, argv, "config"), "/opt/railhmi/config"); }
+    check_eq("no argv falls back safely", parse_config_dir(0, nullptr, fb), fb);
+}
+
 }  // namespace
 
 int main() {
@@ -287,6 +310,7 @@ int main() {
     t_window_semantics();
     t_fi_sequences();
     t_determinism();
+    t_config_dir_arg();
     std::printf("RESULT: %s passed=%d failed=%d\n",
                 g_failed == 0 ? "PASS" : "FAIL", g_passed, g_failed);
     for (const auto& n : g_notes) std::printf("  %s\n", n.c_str());

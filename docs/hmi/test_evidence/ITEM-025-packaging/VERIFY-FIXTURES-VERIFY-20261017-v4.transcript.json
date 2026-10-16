@@ -1,0 +1,164 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify025f",
+    "outdir": "E:/work/rail_issue/rk3588_handover/docs/hmi/test_evidence/ITEM-025-packaging",
+    "stamp": "VERIFY-20261017-v4",
+    "connect_timeout": "10",
+    "timeout_sec": "1800",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "ITEM-025 fix-round (D-01/D-02) independent verification; fingerprint-pinned; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir E:\\work\\rail_issue\\rk3588_handover\\docs\\hmi\\test_evidence\\ITEM-025-packaging --stamp VERIFY-20261017-v4 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 37.84,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 170 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[upload-perm-matrix] exit=0 PERMISSION_MATRIX.md\n[upload-packaging] exit=0 packaging/\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 PACK_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 FAULT_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_core-tests-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_core-tests-VERIFY-20261017-v4.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_sim-inject-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_sim-inject-VERIFY-20261017-v4.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_status-probe-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_status-probe-driver-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_ai-probe-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_alarm-probe-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_clip-probe-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_replay-probe-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_maintenance-probe-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_permissions-probe-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_health-probe-VERIFY-20261017-v4.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v4.core-evidence_fault-probe-VERIFY-20261017-v4.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: E:\\work\\rail_issue\\rk3588_handover\\docs\\hmi\\test_evidence\\ITEM-025-packaging\\build-TestRun-192_168_0_103-VERIFY-20261017-v4.transcript.json\nlog: E:\\work\\rail_issue\\rk3588_handover\\docs\\hmi\\test_evidence\\ITEM-025-packaging\\build-TestRun-192_168_0_103-VERIFY-20261017-v4.log\n"
+    },
+    {
+      "step": "log-compare",
+      "exit": 0,
+      "output": "identical=True verify_pass=670 verify_fails=0 expect=670"
+    },
+    {
+      "step": "junit-parse",
+      "exit": 0,
+      "output": "junit tests=670 failures=0 cases=38/38 missing=[]"
+    },
+    {
+      "step": "fault-probe-assert",
+      "exit": 0,
+      "output": "{\"fails\": []}"
+    },
+    {
+      "step": "fault-probe-compare",
+      "exit": 0,
+      "output": "byte identity vs implementer fix-r1: identical=True"
+    },
+    {
+      "step": "sim-inject-assert",
+      "exit": 0,
+      "output": "{\"fails\": []}"
+    },
+    {
+      "step": "sim-inject-compare",
+      "exit": 0,
+      "output": "byte identity vs implementer fix-r1: identical=True"
+    },
+    {
+      "step": "sim-json-assert",
+      "exit": 0,
+      "output": "json_ok=True inj=1"
+    },
+    {
+      "step": "mkdir-workdir",
+      "exit": 0,
+      "output": "/tmp/railhmi_verify025f"
+    },
+    {
+      "step": "upload-ext",
+      "exit": 0,
+      "output": "verify_packaging25_ext.cpp"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include -Isrc/platform/include /tmp/railhmi_verify025f/verify_packaging25_ext.cpp build-core/src/core/librailhmi_core.a build-core/src/platform/librailhmi_platform.a -o /tmp/railhmi_verify025f/verify_packaging25_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.3,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify025f/verify_packaging25_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "== verify ITEM-025 ext (fault catalog / self-check / injection) ==\nRESULT: PASS passed=85 failed=0\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-summary",
+      "exit": 0,
+      "output": "passed=85 failed=0"
+    },
+    {
+      "step": "upload-scan-neg",
+      "exit": 0,
+      "output": "verify_scan25.py verify_negfix25.py"
+    },
+    {
+      "step": "packaging-scan",
+      "cmd": "cd /tmp/railhmi_build && python3 /tmp/railhmi_verify025f/verify_scan25.py --app src; echo SCAN25_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "P1_unit_restart_always=True\nP2_unit_display=True\nP3_no_cpu_performance=True\nP4_install_runtime_dirs=True\nP5_install_enables_unit=True\nP6_version_upgrade_resources=True\nP7_fault_catalog_six_kinds=True\nP8_p6_selfcheck_card=True\nP9_main_injects_faults=True\nP13_unit_named_railhmi=True\nP14_execstart_binary_installed=True\nP15_sim_inject_cli_built=True\nP16_fault_probe_built=True\nD01_execstartpre_provenance=True\nD01b_upgrade_doc_bin_tools=True\nD01b_doc_tools=(none)\nD02_config_arg_consumed=True\nD02_parses_arg=True targets_prefix=False\nD02_cfg_def:RAILHMI_CONFIG_DIR=\"${CMAKE_SOURCE_DIR}/config\")\nD02_cfg_def:RAILHMI_CONFIG_DIR\nD02_cfg_def:RAILHMI_CONFIG_DIR \"config\"\nD02_cfg_def:RAILHMI_CONFIG_DIR);\nSCAN25_EXIT=0\n"
+    },
+    {
+      "step": "packaging-scan-findings",
+      "exit": 0,
+      "output": "positive_failing=[] defect_keys_not_true=[] d02_parses_arg=True"
+    },
+    {
+      "step": "negative-control",
+      "cmd": "cd /tmp/railhmi_build && python3 /tmp/railhmi_verify025f/verify_negfix25.py; echo NEG_DRIVER_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.26,
+      "output": "NEG_HEALTHY_EXIT=0\nNEG_DRIVER_EXIT=1\nTraceback (most recent call last):\n  File \"/tmp/railhmi_verify025f/verify_negfix25.py\", line 45, in <module>\n    src = staging(d1)\n  File \"/tmp/railhmi_verify025f/verify_negfix25.py\", line 16, in staging\n    os.makedirs(dst)\n  File \"/usr/lib/python3.10/os.py\", line 225, in makedirs\n    mkdir(name, mode)\nFileExistsError: [Errno 17] File exists: '/tmp/railhmi_verify025f/neg/d01'\n"
+    },
+    {
+      "step": "negative-control-findings",
+      "exit": 1,
+      "output": "neg_ok=False"
+    },
+    {
+      "step": "fault-probe-rep-run",
+      "cmd": "cd /tmp/railhmi_build && mkdir -p verify && ./build-core/tools/railhmi-fault-probe --out verify/fault-probe-rep.log; echo FAULTREP_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "type=fault-catalog count=6\nfault id=FI-01 label=断流 prompt=\"画面占位：重连中（显示已重连次数与最近帧时间），旧帧不作为实时\" recovery=\"等待自动重连（退避）或维护页手动重连；达阈值升级为设备报警\"\nfault id=FI-02 label=画面冻结 prompt=\"画面冻结：叠加占位层，最近帧时间停止推进\" recovery=\"确认摄像头/网络后重连；恢复出帧自动转在线\"\nfault id=FI-03 label=AI 退出 prompt=\"状态区 AI 项转“AI 不可用”，相关检测类报警标注“AI 不可用”（不静默）\" recovery=\"重启推理线程/服务；恢复后 AI 项转“运行”，前方 AI READY\"\nfault id=FI-04 label=磁盘不足 prompt=\"存储项提前告警；录像写入标注容量不足\" recovery=\"按保留策略淘汰普通片段（保护片段优先）；扩容或清理后恢复\"\nfault id=FI-05 label=云台超差 prompt=\"云台卡显示目标值 vs 实际值 + 容差校验失败（超差），前方 AI 进入 NOT_READY\" recovery=\"一键归位 / 重调前方预置位（二次确认）后复校；成功转 READY\"\nfault id=FI-10 label=录像中断 prompt=\"时间轴出现录像缺口标记，事件标注“录像不完整/不可用”（不静默）\" recovery=\"恢复录像进程/存储；缺口记录保留可检索\"\ntype=self-check count=7\nstep id=SC-01 inject=\"railhmi-sim-inject --fi 01（断流）\" prompt=\"该路画面占位 + 重连中 + 重连次数/最近帧时间\" recovery=\"自动重连或手动重连；恢复出帧转在线\"\nstep id=SC-02 inject=\"railhmi-sim-inject --fi 02（冻结）\" prompt=\"画面冻结占位，最近帧时间停更\" recovery=\"重连恢复；出帧自动转在线\"\nstep id=SC-03 inject=\"railhmi-sim-inject --fi 03（AI 退出）\" prompt=\"状态区 AI 项“AI 不可用”，关联报警标注\" recovery=\"重启推理；恢复后 AI 运行/READY\"\nstep id=SC-04 inject=\"railhmi-sim-inject --fi 04（磁盘不足）\" prompt=\"存储项告警 + 录像容量不足标注\" recovery=\"保留淘汰/清理后恢复\"\nstep id=SC-05 inject=\"railhmi-sim-inject --fi 05（云台超差）\" prompt=\"云台卡超差 + 前方 AI NOT_READY\" recovery=\"归位/预置位二次确认后复校\"\nstep id=SC-10 inject=\"railhmi-sim-inject --fi 10（录像中断）\" prompt=\"时间轴缺口标记 + 事件“录像不可用”\" recovery=\"恢复录像进程/存储\"\nstep id=SC-BOOT inject=\"systemctl restart railhmi（或断电重启）\" prompt=\"显示启动恢复进度（8 步），完成后进入可用状态\" recovery=\"systemd Restart=always 自动拉起；失败查日志\"\ntype=acceptance fi_covered=true boot_step=true prompts_nonempty=true result=PASS\nFAULTREP_EXIT=0\n"
+    },
+    {
+      "step": "fault-probe-determinism",
+      "cmd": "cd /tmp/railhmi_build && diff verify/fault-probe-rep.log core-evidence/fault-probe-VERIFY-20261017-v4.log && echo IDENTICAL",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "IDENTICAL\n"
+    },
+    {
+      "step": "regression-artifacts",
+      "cmd": "cd /tmp/railhmi_build && ls core-evidence/",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "ai-probe-VERIFY-20261017-v4.log\nalarm-probe-VERIFY-20261017-v4.log\nclip-probe-VERIFY-20261017-v4.log\ncore-tests-VERIFY-20261017-v4.log\ncore-tests-VERIFY-20261017-v4.xml\nfault-probe-VERIFY-20261017-v4.log\nhealth-probe-VERIFY-20261017-v4.log\nmaintenance-probe-VERIFY-20261017-v4.log\npermissions-probe-VERIFY-20261017-v4.log\nreplay-probe-VERIFY-20261017-v4.log\nsim-inject-VERIFY-20261017-v4.json\nsim-inject-VERIFY-20261017-v4.log\nstatus-probe-driver-VERIFY-20261017-v4.log\nstatus-probe-VERIFY-20261017-v4.log\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify025f /tmp/railhmi_build && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify025f /tmp/railhmi_build 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.14,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify025f': No such file or directory\nls: cannot access '/tmp/railhmi_build': No such file or directory\n"
+    },
+    {
+      "step": "cleanup-verify",
+      "exit": 0,
+      "output": "cleanup_ok=True"
+    },
+    {
+      "step": "findings",
+      "exit": 0,
+      "output": "[{\"fix_round_verification\": \"fix-r2 D-01/D-02 resolved: ExecStartPre railhmi-version-check removed (no dangling ref, UPGRADE.md updated), --config parsed+consumed in main.cpp via core parse_config_dir (ext fixture G green on fresh libs), delivered checker now bites on D-01/D-02 re-injection; core 670/0 line-identical to implementer fix-r1, fault-probe/sim-inject byte-identical (untouched), positives all True\", \"confirmed\": false}]"
+    }
+  ]
+}

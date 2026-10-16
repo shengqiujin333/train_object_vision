@@ -25,15 +25,21 @@ Positive keys (must be True on a healthy tree):
   P15_sim_inject_cli_built          SC inject commands reference a real built CLI
   P16_fault_probe_built             railhmi-fault-probe is a real built tool
 
-Defect keys (D-01/D-02 findings; expected False on stamp 20261016-ITEM025-r1):
+Defect keys (D-01/D-02 findings):
   D01_execstartpre_provenance       every ExecStartPre/ExecStart binary under the
                                     prefix is installed by install.sh OR built by a
-                                    CMake target (railhmi-version-check is neither)
+                                    CMake target. True = no such provenance defect.
+                                    (On stamp 20261016-ITEM025-r1 this was False:
+                                    railhmi-version-check was neither; fixed in
+                                    fix-r2 by removing the ExecStartPre line.)
   D01b_upgrade_doc_bin_tools        every bin/ tool documented in UPGRADE.md is
-                                    installed or built
-  D02_config_arg_consumed           the unit passes --config; the binary must either
-                                    parse it (main.cpp) or compile-time point at the
-                                    deployment prefix (/opt/railhmi/config)
+                                    installed or built (True also when no tools
+                                    are documented; fix-r2 removed the doc entry).
+  D02_config_arg_consumed           the unit passes --config; the binary must
+                                    actually consume that argument at runtime:
+                                    main.cpp parses --config (parse_config_dir,
+                                    fix-r2) or the compile-time default points at
+                                    the deployment prefix (/opt/railhmi/config).
 """
 from __future__ import annotations
 
@@ -149,24 +155,27 @@ def main() -> int:
           % (os.path.isfile(fault_probe_cpp) and "railhmi-fault-probe" in built_targets))
 
     # --- defect keys --------------------------------------------------------
-    # D-01: ExecStartPre=/opt/railhmi/bin/railhmi-version-check — nothing builds
-    # or installs it; ExecStartPre failure fails the start outright (and with
-    # Restart=always that is a boot crash loop, never "active").
+    # D-01: every ExecStartPre/ExecStart binary must be covered by install.sh
+    # or a CMake target (D-01 defect = False key). fix-r2 removed the
+    # railhmi-version-check ExecStartPre line; True = no provenance defect.
     print("D01_execstartpre_provenance=%s" % all(b in provenance for b in exec_bins))
 
-    # D-01b: UPGRADE.md documents bin/ tools that must exist.
+    # D-01b: UPGRADE.md documents bin/ tools that must exist. fix-r2 removed
+    # the railhmi-version-check entry (changed to in-app config/version check).
     doc_tools = set(re.findall(r"`([\w-]+)`（`bin/` 内）", upgrade))
     print("D01b_upgrade_doc_bin_tools=%s"
-          % (bool(doc_tools) and all(t in provenance for t in doc_tools)))
+          % ((not doc_tools) or all(t in provenance for t in doc_tools)))
+    print("D01b_doc_tools=%s" % (",".join(sorted(doc_tools)) if doc_tools else "(none)"))
 
-    # D-02: the unit passes --config /opt/railhmi/config but main.cpp never
-    # parses it; the config dir is compile-time CMAKE_SOURCE_DIR/config, so the
-    # deployed binary resolves config from wherever the source tree was at
-    # build time, not from /opt/railhmi/config.
+    # D-02: the unit passes --config /opt/railhmi/config; the binary must
+    # actually consume it: parse_config_dir in main.cpp + load_config_dir(
+    # configDir) — or the compile-time default must point at the deployment
+    # prefix. Key False = the deployment contract is broken.
     cfg_defs = re.findall(r"RAILHMI_CONFIG_DIR[^\n]*", ui_cmake + main_cpp)
-    parses_arg = '"--config"' in main_cpp
+    parses_arg = 'parse_config_dir' in main_cpp and 'load_config_dir(configDir)' in main_cpp
     targets_prefix = any("/opt/railhmi" in d for d in cfg_defs)
     print("D02_config_arg_consumed=%s" % (parses_arg or targets_prefix))
+    print("D02_parses_arg=%s targets_prefix=%s" % (parses_arg, targets_prefix))
     for d in cfg_defs:
         print("D02_cfg_def:%s" % d.strip())
 
