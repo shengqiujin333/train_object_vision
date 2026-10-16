@@ -17,6 +17,18 @@ Rectangle {
     property string pendingKind: ""
     property string reconnectNotice: ""
     property var rowBg: Theme.color.surface
+    // 健康/日志/恢复（ITEM-024，连接 changed() 以便刷新）
+    property var healthSt: ({ completed: true, steps: [] })
+    property var logRows: []
+
+    function reloadHealth() {
+        healthSt = (typeof railhmiHealth !== "undefined" && railhmiHealth)
+                   ? railhmiHealth.recovery() : ({ completed: true, steps: [] })
+    }
+    function reloadLogs() {
+        logRows = (typeof railhmiHealth !== "undefined" && railhmiHealth)
+                  ? railhmiHealth.logs(logCard.fLevel, logCard.fSource, logCard.fKeyword) : []
+    }
 
     function doReconnect(cameraId) {
         if (!M) return
@@ -26,6 +38,8 @@ Rectangle {
 
     function reload() {
         if (M) ptz = M.ptzState()
+        reloadHealth()
+        reloadLogs()
     }
     function askPtz(kind) { page.pendingKind = kind }
     function confirmPtz() {
@@ -43,10 +57,25 @@ Rectangle {
 
     Component.onCompleted: reload()
     Connections { target: page.M; function onChanged() { page.reload() } }
+    // 健康/日志/恢复变更刷新（ITEM-024 D-02）
+    Connections {
+        target: (typeof railhmiHealth !== "undefined") ? railhmiHealth : null
+        function onChanged() { page.reloadHealth(); page.reloadLogs() }
+    }
+
+    // 卡片区：可滚动，避免固定高卡片在 1920x1080 下溢出裁切（ITEM-024 D-01）
+    Flickable {
+        id: flick
+        anchors.fill: parent
+        clip: true
+        contentWidth: width
+        contentHeight: grid.height + 2 * Theme.spacing.s3
 
     Grid {
-        anchors.fill: parent
-        anchors.margins: Theme.spacing.s3
+        id: grid
+        x: Theme.spacing.s3
+        y: Theme.spacing.s3
+        width: flick.width - 2 * Theme.spacing.s3
         columns: 2
         spacing: Theme.spacing.s3
 
@@ -257,7 +286,7 @@ Rectangle {
         Rectangle {
             objectName: "maintLogQueryCard"
             id: logCard
-            width: (parent.width - Theme.spacing.s3) / 2; height: 260
+            width: (parent.width - Theme.spacing.s3) / 2; height: 320
             color: Theme.color.surface; border.color: Theme.color.border; border.width: Theme.border.width
             radius: Theme.radius.card
             property string fLevel: ""
@@ -270,15 +299,42 @@ Rectangle {
                 Row {
                     spacing: Theme.spacing.s2
                     FilterChip { objectName: "logFilterAll"; text: "全部"; selected: logCard.fLevel === ""
-                                 onClicked: logCard.fLevel = "" }
+                                 onClicked: { logCard.fLevel = ""; page.reloadLogs() } }
                     FilterChip { objectName: "logFilterWarn"; text: "警告+"; selected: logCard.fLevel === "warn"
-                                 onClicked: logCard.fLevel = "warn" }
+                                 onClicked: { logCard.fLevel = "warn"; page.reloadLogs() } }
                     FilterChip { objectName: "logFilterError"; text: "错误"; selected: logCard.fLevel === "error"
-                                 onClicked: logCard.fLevel = "error" }
+                                 onClicked: { logCard.fLevel = "error"; page.reloadLogs() } }
+                }
+                // 来源/关键字结构化查询输入（D-03）
+                Row {
+                    spacing: Theme.spacing.s2
+                    Rectangle {
+                        width: 110; height: Theme.size.touch_target_min; color: Theme.color.bg_sunken
+                        border.color: Theme.color.border; border.width: Theme.border.width; radius: Theme.radius.chip
+                        TextInput {
+                            objectName: "logSourceInput"
+                            anchors.fill: parent; anchors.leftMargin: Theme.spacing.s2
+                            verticalAlignment: TextInput.AlignVCenter; color: Theme.color.text_primary
+                            font.pixelSize: Theme.typography.scale.caption.size
+                            text: logCard.fSource
+                            onEditingFinished: { logCard.fSource = text; page.reloadLogs() }
+                        }
+                    }
+                    Rectangle {
+                        width: 130; height: Theme.size.touch_target_min; color: Theme.color.bg_sunken
+                        border.color: Theme.color.border; border.width: Theme.border.width; radius: Theme.radius.chip
+                        TextInput {
+                            objectName: "logKeywordInput"
+                            anchors.fill: parent; anchors.leftMargin: Theme.spacing.s2
+                            verticalAlignment: TextInput.AlignVCenter; color: Theme.color.text_primary
+                            font.pixelSize: Theme.typography.scale.caption.size
+                            text: logCard.fKeyword
+                            onEditingFinished: { logCard.fKeyword = text; page.reloadLogs() }
+                        }
+                    }
                 }
                 Repeater {
-                    model: (typeof railhmiHealth !== "undefined" && railhmiHealth)
-                           ? railhmiHealth.logs(logCard.fLevel, logCard.fSource, logCard.fKeyword) : []
+                    model: page.logRows
                     Text {
                         objectName: "structuredLogRow"
                         color: modelData.level === "error" ? Theme.color.error
@@ -300,12 +356,17 @@ Rectangle {
                 anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
                 Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
                        text: "启动恢复进度" }
-                Text { objectName: "recoveryProgressText"; color: Theme.color.text_secondary
-                       font.pixelSize: Theme.typography.scale.caption.size
-                       text: (typeof railhmiHealth !== "undefined" && railhmiHealth)
-                             ? (railhmiHealth.recovery().text + " · " + railhmiHealth.recovery().progress + "%") : "—" }
+                Row {
+                    spacing: Theme.spacing.s2
+                    Text { objectName: "recoveryProgressText"; color: Theme.color.text_secondary
+                           font.pixelSize: Theme.typography.scale.caption.size
+                           text: page.healthSt.text !== undefined
+                                 ? (page.healthSt.text + " · " + page.healthSt.progress + "%") : "—" }
+                    FilterChip { objectName: "recoveryDemo"; text: "演示恢复"
+                                 onClicked: { if (typeof railhmiHealth !== "undefined" && railhmiHealth) railhmiHealth.resetRecovery() } }
+                }
                 Repeater {
-                    model: (typeof railhmiHealth !== "undefined" && railhmiHealth) ? railhmiHealth.recovery().steps : []
+                    model: page.healthSt.steps !== undefined ? page.healthSt.steps : []
                     Text {
                         objectName: "recoveryStepRow-" + modelData.step
                         color: modelData.status === "ok" ? Theme.color.ok
@@ -317,6 +378,7 @@ Rectangle {
                 }
             }
         }
+    }
     }
 
     // 二次确认模态

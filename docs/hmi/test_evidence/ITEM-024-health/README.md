@@ -40,6 +40,18 @@ type=acceptance health_ok_warn=true log_query_and_rolling=true recovery_complete
 - 日志按日滚动且可结构化查询（级别/来源/关键字/JSON）✅
 - 关键步失败显式提示（`alive=false`、RecoveryOverlay “关键步骤失败：应用不可用”）✅
 
+## 2.5 UI 评审修复轮（D-01..D-04，web_frontend.ui_implementation_review TEST_FAIL 交回）
+
+UI 评审 `REVIEW-ITEM-024.md`：core 模型全绿，但界面侧四项源码可确证缺陷。修复：
+1. **D-01 P6 网格溢出裁切**：P6 卡片区改为 **`Flickable`**（`contentHeight: grid.height + 2*margin`，`clip: true`），含 ITEM-022/023/024 全部卡片可滚动可达；新增“结构化日志/恢复进度”卡不再被裁切。
+2. **D-02 未接 `changed()`**：`RecoveryOverlay` 新增 `Connections { target: railhmiHealth; function onChanged() { reload() } }` + `reload()`（`st` 由属性缓存），P6 新增 `healthSt`/`logRows` 属性与 `Connections` + `reloadHealth()/reloadLogs()`；进度/步骤/日志随模型刷新，浮层在完成时隐藏。
+3. **D-03 来源/关键字 UI 不可达**：结构化日志卡新增 `logSourceInput`/`logKeywordInput` 输入（回车触发重查）。
+4. **D-04 恢复路径未演示**：桥接新增 `resetRecovery()/advanceRecovery()`；P6 新增“演示恢复”控件 + `RecoveryOverlay` 定时逐步推进（含降级步骤），可观察进度 0→100% 与完成后隐藏。
+
+`check_health_wiring.py` 新增断言：Flickable、`healthSt/logRows`、P6/Overlay 的 `onChanged`、来源/关键字输入、`resetRecovery/advanceRecovery`。
+
+修复轮板端实测（stamp `20261016-ITEM024-uifix-r1`）→ `TESTRUN_EXIT=0` `SCAN_EXIT=0` `HEALTH_WIRE_EXIT=0` `HEALTH_EXIT=0`：core **663/0**，扫描/接线 PASS；health-probe 同前（未变）。
+
 ## 3. 边界
 
 - **真实采样源**（`/sys/kernel/debug/rknpu/load`、`/proc/stat`、thermal、`/proc/net/snmp`、`statvfs`）与**真实重启自恢复**（systemd、断电流水线）属目标平台/现场；本项交付采样/评估/日志/恢复**模型与进度语义**，桥接以确定性样例驱动。

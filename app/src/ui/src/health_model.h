@@ -23,6 +23,9 @@ public:
 
     Q_INVOKABLE QVariantMap health() const;
     Q_INVOKABLE QVariantMap recovery() const;
+    // 演示自恢复进度（仿真）：重置为进行中，并逐步推进直至完成（D-02/D-04）。
+    Q_INVOKABLE void resetRecovery();
+    Q_INVOKABLE void advanceRecovery();
     Q_INVOKABLE QVariantList logs(const QString& level, const QString& source, const QString& keyword) const;
     Q_INVOKABLE QString logJson(int index) const;
     Q_INVOKABLE int logCount() const;
@@ -31,8 +34,13 @@ signals:
     void changed();
 
 private:
+    QVariantMap recoveryMap(const railhmi::core::RecoveryState& st) const;
+
     railhmi::core::HealthSample sample_;
     railhmi::core::HealthThresholds th_;
     std::vector<railhmi::core::LogRecord> logs_;
     railhmi::core::RecoveryState recovery_;
+    railhmi::core::RecoveryTracker demo_tracker_;
+    bool demo_active_ = false;
+    long long demo_clock_ = 1000;
 };

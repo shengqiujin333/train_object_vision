@@ -44,7 +44,8 @@ def main() -> int:
     for token, what in {
         "recoveryOverlay": "recovery overlay root", "recoveryStep-": "per-step rows",
         "recoveryText": "recovery progress text", "recoveryAlive": "critical-failure notice",
-        "railhmiHealth": "bridge usage",
+        "railhmiHealth": "bridge usage", "Connections": "changed() wiring (D-02)",
+        "advanceRecovery": "progress demo (D-04)",
     }.items():
         if token not in overlay:
             fails.append("RecoveryOverlay missing %s (%s)" % (what, token))
@@ -53,12 +54,18 @@ def main() -> int:
     for token, what in {
         "maintLogQueryCard": "structured log card", "structuredLogRow": "structured log rows",
         "maintRecoveryCard": "recovery progress card", "recoveryStepRow-": "recovery step rows",
+        "Flickable": "scrollable card area (D-01)",
+        "logSourceInput": "source query input (D-03)", "logKeywordInput": "keyword query input (D-03)",
+        "healthSt": "reactive recovery state (D-02)", "logRows": "reactive log rows (D-02)",
+        "recoveryDemo": "recovery progress demo (D-04)",
     }.items():
         if token not in p6:
             fails.append("P6 missing %s (%s)" % (what, token))
+    if "onChanged" not in p6 or "page.reloadHealth" not in p6:
+        fails.append("P6 does not connect railhmiHealth changed() (D-02)")
     for token, what in {
         "evaluate_health": "health eval", "query_logs": "log query", "log_record_json": "log json",
-        "recovery": "recovery state",
+        "recovery": "recovery state", "resetRecovery": "recovery reset (D-04)", "advanceRecovery": "recovery advance (D-04)",
     }.items():
         if token not in bridge:
             fails.append("health bridge missing core call %s (%s)" % (what, token))

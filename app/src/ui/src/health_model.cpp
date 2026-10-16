@@ -35,10 +35,10 @@ QVariantMap RailhmiHealthModel::health() const {
     return m;
 }
 
-QVariantMap RailhmiHealthModel::recovery() const {
+QVariantMap RailhmiHealthModel::recoveryMap(const RecoveryState& st) const {
     QVariantMap m;
     QVariantList steps;
-    for (const auto& s : recovery_.steps) {
+    for (const auto& s : st.steps) {
         QVariantMap sm;
         sm["step"] = QString::fromLatin1(railhmi::core::to_string(s.step));
         sm["label"] = QString::fromUtf8(railhmi::core::recovery_step_label(s.step));
@@ -48,13 +48,48 @@ QVariantMap RailhmiHealthModel::recovery() const {
         steps.append(sm);
     }
     m["steps"] = steps;
-    m["started"] = recovery_.started;
-    m["completed"] = recovery_.completed;
-    m["alive"] = recovery_.alive;
-    m["degradedCameras"] = recovery_.degraded_cameras;
-    m["progress"] = recovery_.progress_pct();
-    m["text"] = QString::fromUtf8(recovery_.text().c_str());
+    m["started"] = st.started;
+    m["completed"] = st.completed;
+    m["alive"] = st.alive;
+    m["degradedCameras"] = st.degraded_cameras;
+    m["progress"] = st.progress_pct();
+    m["text"] = QString::fromUtf8(st.text().c_str());
     return m;
+}
+
+QVariantMap RailhmiHealthModel::recovery() const {
+    return recoveryMap(demo_active_ ? demo_tracker_.state() : recovery_);
+}
+
+void RailhmiHealthModel::resetRecovery() {
+    demo_tracker_.start(demo_clock_);
+    demo_active_ = true;
+    emit changed();
+}
+
+void RailhmiHealthModel::advanceRecovery() {
+    if (!demo_active_) { demo_tracker_.start(demo_clock_); demo_active_ = true; }
+    demo_clock_ += 500;
+    for (int i = 0; i < static_cast<int>(railhmi::core::RecoveryStep::Count); ++i) {
+        const railhmi::core::RecoveryStep s = static_cast<railhmi::core::RecoveryStep>(i);
+        const railhmi::core::RecoveryState cur = demo_tracker_.state();
+        if (cur.steps[i].status != railhmi::core::StepStatus::Pending &&
+            cur.steps[i].status != railhmi::core::StepStatus::Running)
+            continue;
+        if (s == railhmi::core::RecoveryStep::StartStreaming)
+            demo_tracker_.camera_result(false, false, "CAM-02 启动失败（降级）");
+        else
+            demo_tracker_.complete_step(s, true);
+        break;
+    }
+    // 全部步骤终态 -> 标记完成。
+    const railhmi::core::RecoveryState now = demo_tracker_.state();
+    bool all_terminal = true;
+    for (const auto& s : now.steps)
+        if (s.status == railhmi::core::StepStatus::Pending || s.status == railhmi::core::StepStatus::Running)
+            all_terminal = false;
+    if (all_terminal && !now.completed) demo_tracker_.finish(demo_clock_);
+    emit changed();
 }
 
 QVariantList RailhmiHealthModel::logs(const QString& level, const QString& source, const QString& keyword) const {

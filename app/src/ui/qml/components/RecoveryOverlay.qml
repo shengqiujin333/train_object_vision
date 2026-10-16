@@ -6,11 +6,28 @@ import ".."
 Rectangle {
     id: overlay
     readonly property var R: (typeof railhmiHealth !== "undefined") ? railhmiHealth : null
-    property var st: R ? R.recovery() : ({ completed: true, steps: [] })
+    property var st: ({ completed: true, steps: [] })
     anchors.fill: parent
     visible: st.completed === false
     color: Theme.color.overlay_scrim
     objectName: "recoveryOverlay"
+
+    function reload() {
+        overlay.st = overlay.R ? overlay.R.recovery() : ({ completed: true, steps: [] })
+    }
+    Component.onCompleted: reload()
+    // 订阅模型变更：恢复进度/步骤/完成后隐藏（D-02）
+    Connections {
+        target: overlay.R
+        function onChanged() { overlay.reload() }
+    }
+    // 演示模式：未完成时逐步推进（配合 D-04）
+    Timer {
+        interval: 600
+        running: overlay.visible && overlay.R
+        repeat: true
+        onTriggered: overlay.R.advanceRecovery()
+    }
 
     Rectangle {
         anchors.centerIn: parent
