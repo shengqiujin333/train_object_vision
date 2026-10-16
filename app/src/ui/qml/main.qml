@@ -104,4 +104,9 @@ Rectangle {
             }
         }
     }
+
+    // 启动自恢复进度浮层（ITEM-024）
+    RecoveryOverlay {
+        anchors.fill: parent
+    }
 }

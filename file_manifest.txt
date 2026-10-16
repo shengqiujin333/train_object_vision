@@ -19,19 +19,21 @@ app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
 app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
-app/src/core/CMakeLists.txt | active | railhmi_core 静态库（.../replay/maintenance/permissions）+ config-check + sim-inject + status/ai/alarm/clip/replay/maintenance/permissions 探针
+app/src/core/CMakeLists.txt | active | railhmi_core 静态库（.../维护/权限/健康/恢复）+ config-check + sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health 探针
 app/src/core/include/railhmi/core/alarm_center.h | active | 报警中心模型接口（字段派生/默认排序/六维筛选/确认与维护日志/录像三态；ITEM-018）
 app/src/core/include/railhmi/core/camera_registry.h | active | 配置驱动摄像头注册表/检测职责徽标/NVR 集成项接口
 app/src/core/include/railhmi/core/channel_view.h | active | 全摄像头页每格视图接口（名/状态中文标签/fps/最近帧/重连/徽标；顺序=注册表，断流不重排；ITEM-015）
 app/src/core/include/railhmi/core/clip.h | active | 保护片段/缺口接口（有界滚动缓冲/报警固化 pre-post/finalize/保留优先/缺口；ITEM-019）
 app/src/core/include/railhmi/core/config.h | active | 配置与状态契约模型/枚举（含 ai_profile/integration_state/mode/recording_source）+ 流时序阈值字段与 AI 推理调度（inference_interval/queue_depth/npu_budget/temp_limit_c/models）+ 回放同步阈值 + 校验入口
 app/src/core/include/railhmi/core/grid.h | active | 全摄像头网格接口（3x2/2x3 形状/稳定槽位/单元格矩形/不重叠；ITEM-015）
+app/src/core/include/railhmi/core/health.h | active | 健康采样/评估与结构化日志（JSON/查询/按日滚动）接口；ITEM-024
 app/src/core/include/railhmi/core/inference.h | active | 推理服务模型接口（有界丢旧帧/优先级/帧间隔/预算/温度守卫/AI 不可用语义/AI 调试视图；含目标距离与 ai_debug_visible 角色可见性；ITEM-017/021）
 app/src/core/include/railhmi/core/layout.h | active | 三联布局计算接口（compute_layout 像素 rect + 比例；顺序/前方最大/P0 可见/横幅遮挡/比例保持判据；ITEM-014）
 app/src/core/include/railhmi/core/maintenance.h | active | 设备维护模型接口（PTZ 容差/归位·预置位/维护日志/前方 AI 就绪/维护行/录像/健康；ITEM-022）
 app/src/core/include/railhmi/core/navigation.h | active | 导航与角色权限接口（六页固定顺序/权限矩阵/可见页/默认页/受限返回/模式位）
 app/src/core/include/railhmi/core/permissions.h | active | 权限矩阵与二次确认接口（13 权限×4 角色校验/导出受配置/门控/敏感动作/维护日志；ITEM-023）
 app/src/core/include/railhmi/core/persistence_model.h | active | 持久化数据模型（9 表行结构）+ schema DDL（ITEM-007）
+app/src/core/include/railhmi/core/recovery.h | active | 启动自恢复序列接口（8 步/进度/降级隔离/关键步存活；ITEM-024）
 app/src/core/include/railhmi/core/replay.h | active | 历史回放接口（时间轴/四跳转/游标/三联同步/来源/事件详情；ITEM-020）
 app/src/core/include/railhmi/core/retention.h | active | 保留策略与录像缺口模型接口
 app/src/core/include/railhmi/core/rules.h | active | 检测职责与报警规则/事件层接口（ai_profile 分派/多帧确认/抑制/级别映射/ack/ROI/设备类别映射）
@@ -47,12 +49,14 @@ app/src/core/src/channel_view.cpp | active | 每格视图实现（状态标签/f
 app/src/core/src/clip.cpp | active | 保护片段/缺口实现（滚动缓冲/片段生命周期/清单 JSON/保留优先/缺口合并；ITEM-019）
 app/src/core/src/config.cpp | active | 配置加载与校验实现（报具体字段路径，不静默默认；applied_defaults 记录可选默认；含流时序阈值/app.ai 推理调度/回放同步阈值校验）
 app/src/core/src/grid.cpp | active | 网格几何实现（形状选择/稳定槽位/单元格矩形/不重叠判定；ITEM-015）
+app/src/core/src/health.cpp | active | 健康评估与结构化日志实现（ITEM-024）
 app/src/core/src/inference.cpp | active | 推理服务模型实现（丢旧帧队列/优先级/调度/温度守卫/状态/调试视图；ITEM-017）
 app/src/core/src/layout.cpp | active | 三联布局几何实现（margin/顶部条/三联行/状态区/报警条/前方中央；判据函数；ITEM-014）
 app/src/core/src/maintenance.cpp | active | 设备维护模型实现（PTZ 校验/动作/日志/质量标签/维护行/录像/健康；ITEM-022）
 app/src/core/src/navigation.cpp | active | 导航与角色权限实现
 app/src/core/src/permissions.cpp | active | 权限矩阵/门控/导出·配置动作与日志实现（ITEM-023）
 app/src/core/src/persistence_model.cpp | active | 数据模型与 schema DDL 实现
+app/src/core/src/recovery.cpp | active | 自恢复跟踪实现（顺序/进度/降级/存活；ITEM-024）
 app/src/core/src/replay.cpp | active | 历史回放实现（时间轴构建/跳转/游标/同步/来源/详情；ITEM-020）
 app/src/core/src/retention.cpp | active | 保留淘汰顺序与缺口合并实现
 app/src/core/src/rules.cpp | active | 规则/事件层实现（PRD §8.2 级别、跟踪 ID 与抑制窗口、ack 不删事件、device_category_from_position）
@@ -66,6 +70,7 @@ app/src/core/tools/ai_probe.cpp | active | 推理调度/队列/遥测探针 CLI�
 app/src/core/tools/alarm_probe.cpp | active | 报警中心模型探针 CLI（railhmi-alarm-probe；排序/筛选/空态/批量确认/维护日志；ITEM-018）
 app/src/core/tools/clip_probe.cpp | active | 保护片段/缺口探针 CLI（railhmi-clip-probe；片段时长/原子写盘/保护优先/缺口合并；ITEM-019）
 app/src/core/tools/config_check.cpp | active | 启动配置校验入口 main（railhmi-config-check；合法摘要/非法逐条字段并非零退出）
+app/src/core/tools/health_probe.cpp | active | 健康/日志/自恢复探针 CLI（railhmi-health-probe；ITEM-024）
 app/src/core/tools/maintenance_probe.cpp | active | 设备维护模型探针 CLI（railhmi-maintenance-probe；PTZ 容差/动作/日志/前方 AI/维护行/录像/健康；ITEM-022）
 app/src/core/tools/permissions_probe.cpp | active | 权限矩阵/二次确认探针 CLI（railhmi-permissions-probe；矩阵/门控/导出·配置日志；ITEM-023）
 app/src/core/tools/replay_probe.cpp | active | 历史回放模型探针 CLI（railhmi-replay-probe；时间轴/跳转/同步偏差/来源回退/详情；ITEM-020）
@@ -92,7 +97,7 @@ app/src/platform/src/file_store.cpp | active | 原子写入/读取/目录创建�
 app/src/platform/src/log.cpp | active | 日志与 redact_url 实现
 app/src/platform/src/repository.cpp | active | SqliteRepository 实现（预编译语句插入/查询/保留删除）
 app/src/platform/src/sqlite_store.cpp | active | SqliteStore WAL/执行/查询实现（经 sqlite3_min.h）
-app/src/ui/CMakeLists.txt | active | railhmi Qt/QML 可执行（AUTOMOC；含报警中心/历史回放/设备维护/权限桥接；构建期 railhmi_tokens）
+app/src/ui/CMakeLists.txt | active | railhmi Qt/QML 可执行（AUTOMOC；含报警中心/历史回放/设备维护/权限/健康桥接；构建期 railhmi_tokens）
 app/src/ui/qml.qrc | active | QML 资源清单（main.qml + 生成 Theme/Tokens.qml + qmldir + components(NavBar/TopStatusBar/StatusItem/KeyStatusStrip/FilterChip/DetectionBadge/CameraTile/VideoSurface/DeviceCard) + pages(PageView/DeniedView/P1/P2/P3/P4/P5/P6)）
 app/src/ui/qml/Theme.qml | active | 生成的 Theme QML 单例（运行时主题外观；由 gen_tokens.py 生成，勿手改）
 app/src/ui/qml/Tokens.qml | active | 生成的令牌 QML 单例（令牌数据；由 gen_tokens.py 生成）
@@ -102,34 +107,38 @@ app/src/ui/qml/components/DeviceCard.qml | active | 设备卡片（NVR 等集成
 app/src/ui/qml/components/FilterChip.qml | active | 过滤选项 chip（选中高亮；触控≥touch_target_min、activeFocusOnTab + Enter/Space；ITEM-018/020）
 app/src/ui/qml/components/KeyStatusStrip.qml | active | 关键状态区七项（受电弓/轮轨/车门/摄像头/AI/录像/存储；异常点击冒泡；ITEM-016）
 app/src/ui/qml/components/NavBar.qml | active | 固定导航（仅渲染角色可见页 entries）
+app/src/ui/qml/components/RecoveryOverlay.qml | active | 启动自恢复进度浮层（顺序步骤/进度/关键失败提示；ITEM-024）
 app/src/ui/qml/components/StatusItem.qml | active | 状态项（颜色+形状字形+文字三重编码；正常简洁/异常突出；异常可点击；ITEM-016）
 app/src/ui/qml/components/TopStatusBar.qml | active | 顶部全局状态条（ITEM-016：时间/模式·红外未接入/录像/AI/系统健康/未接入项；三重编码；无切换控件）
 app/src/ui/qml/components/VideoSurface.qml | active | 视频渲染面（按配置渲染路径 cpu/gl 选择实现；非 LIVE 占位层，旧帧不当实时；右下显示 render 路径）
-app/src/ui/qml/main.qml | active | 应用外壳（ITEM-011/012/016/017/018/020）：顶部状态条 + 角色化固定导航 + 页面分发（P2/P3/P5）+ 受限页 + 状态项跳转/无权限 + 报警卡查看录像调 railhmiReplay.selectAlarm(cameraId, ts)；颜色/字号来自 Theme
+app/src/ui/qml/main.qml | active | 应用外壳（顶部状态条+角色导航+页面分发 P2/P3/P5+受限页+状态点击+报警卡跳回放；含启动自恢复浮层 RecoveryOverlay；颜色/字号来自 Theme）
 app/src/ui/qml/pages/DeniedView.qml | active | 受限页视图（无权限说明 + 返回）
 app/src/ui/qml/pages/P1Realtime.qml | active | P1 实时监控三联（比例来自 railhmiLayout；左-前-右，前方最大；关键状态区 KeyStatusStrip + 当前报警条；司机页不显示徽标；ITEM-016 状态点击冒泡）
 app/src/ui/qml/pages/P2AlarmCenter.qml | active | P2 报警中心（ITEM-018：筛选栏/列表字段/默认排序/行内录像标注/确认·批量确认·查看录像·查看快照/空态）
 app/src/ui/qml/pages/P3Replay.qml | active | P3 历史回放（ITEM-020 时间轴/四跳/三联同步/详情/缺口斜纹/关键帧；ITEM-023 导出录像受权限控制不渲染 + 二次确认）
 app/src/ui/qml/pages/P4AllCameras.qml | active | P4 全摄像头（ITEM-015：3x2/2x3 固定槽位网格；每格名/状态标签/fps/最近帧/重连/徽标；断流不重排不丢格）
 app/src/ui/qml/pages/P5AiDebug.qml | active | P5 AI 调试（ITEM-017/021：检测框/ROI/置信度/距离/FPS/端到端延迟/模型版本/最近结果；叠加层框·ROI·文字·掩码逐项开关默认全关；调试高对比描边 debug_box/debug_roi；司机无权限占位）
-app/src/ui/qml/pages/P6Maintenance.qml | active | P6 设备维护（ITEM-022 分区卡/PTZ 容差/归位·预置位二次确认/重连/按日日志/NVR；ITEM-023 权限矩阵卡）
+app/src/ui/qml/pages/P6Maintenance.qml | active | P6 设备维护（ITEM-022 分区卡/PTZ/重连/日志/NVR；ITEM-023 权限矩阵卡；ITEM-024 结构化日志查询卡 + 恢复进度卡）
 app/src/ui/qml/pages/PageView.qml | active | 通用页面骨架（标题/角色/模式）
 app/src/ui/qml/qmldir | active | QML 模块清单（singleton Theme/Tokens；由 gen_tokens.py 生成）
 app/src/ui/src/alarm_model.cpp | active | 报警中心桥接实现（事件灌入/筛选查询/批量确认/维护日志文本；ITEM-018）
 app/src/ui/src/alarm_model.h | active | 报警中心 QML 桥接接口（query/options/ack 委托 core；ITEM-018）
-app/src/ui/src/main.cpp | active | Qt 应用入口（注入导航/模式位/摄像头/NVR/三联/渲染路径/全摄像/状态区/顶部条/AI调试/报警中心/历史回放/设备维护/权限 railhmiPermissions；加载 qrc:/qml/main.qml）
+app/src/ui/src/health_model.cpp | active | 健康/日志/自恢复桥接实现（ITEM-024）
+app/src/ui/src/health_model.h | active | 健康/日志/自恢复 QML 桥接接口（ITEM-024）
+app/src/ui/src/main.cpp | active | Qt 应用入口（注入导航/模式位/摄像头/NVR/三联/渲染/全摄像/状态区/顶部条/AI调试/报警中心/历史回放/设备维护/权限/健康 railhmiHealth；加载 qrc:/qml/main.qml）
 app/src/ui/src/maintenance_model.cpp | active | 设备维护桥接实现（PTZ 二次确认动作+日志/录像/健康；ITEM-022）
 app/src/ui/src/maintenance_model.h | active | 设备维护 QML 桥接接口（ptzState/ptzAction/recording/health/recentLogs 委托 core；ITEM-022）
 app/src/ui/src/permissions_model.cpp | active | 权限桥接实现（矩阵/门控/敏感动作写日志；ITEM-023）
 app/src/ui/src/permissions_model.h | active | 权限/二次确认 QML 桥接接口（matrix/can*/exportRecording/modifyConfig/recentLogs 委托 core；ITEM-023）
 app/src/ui/src/replay_model.cpp | active | 历史回放桥接实现（时间轴/跳转/同步/来源/时间格式 + 报警选择动态详情 + 真实时钟偏移同步快照；ITEM-020）
 app/src/ui/src/replay_model.h | active | 历史回放 QML 桥接接口（timeline/jumpTargets/sourceStatus + 选择 selectAlarm/selectedDetail/relatedCameras + syncState + playback/setPlaying/setSpeed；ITEM-020）
-app/tests/core/CMakeLists.txt | active | railhmi-core-tests（多源：.../回放/设备维护/权限；注入 RAILHMI_CONFIG_DIR）
-app/tests/core/main.cpp | active | railhmi-core 单元测试入口（.../回放/设备维护/权限十七组；支持 --junit）
+app/tests/core/CMakeLists.txt | active | railhmi-core-tests（多源：.../维护/权限/健康；注入 RAILHMI_CONFIG_DIR）
+app/tests/core/main.cpp | active | railhmi-core 单元测试入口（.../维护/权限/健康十八组；支持 --junit）
 app/tests/core/test_alarm_center.cpp | active | 报警中心测试（ITEM-018：字段派生/默认排序/六维筛选与空态/确认不删事件/维护日志）
 app/tests/core/test_clip.cpp | active | 保护片段/缺口测试（ITEM-019：滚动缓冲/片段时长/finalize/缺口合并/保留优先/原子写盘）
 app/tests/core/test_config.cpp | active | 配置与状态契约测试（TC-CORE-01：合法逐项 + 非法报具体字段 + 流时序阈值断言）
 app/tests/core/test_grid.cpp | active | 全摄像头网格与每格视图测试（ITEM-015：3x2/2x3 形状/稳定槽位/不重叠/每格字段/断流不重排不丢格）
+app/tests/core/test_health.cpp | active | 健康/结构化日志/自恢复测试（ITEM-024）
 app/tests/core/test_inference.cpp | active | 推理服务测试（ITEM-017/021：丢旧帧/优先级/预算/温度守卫/广角排除/不可用语义/调试视图含距离/AI 调试角色可见性）
 app/tests/core/test_layout.cpp | active | 三联布局测试（ITEM-014：两档分辨率顺序/前方最大/P0 可见/横幅不遮前中央/缩放比例保持）
 app/tests/core/test_maintenance.cpp | active | 设备维护测试（ITEM-022：PTZ 容差/动作日志/前方 AI 就绪/维护行质量/录像/健康）
@@ -147,10 +156,11 @@ app/tests/core/test_util.cpp | active | 测试 harness 实现（pass/fail 计数
 app/tests/core/test_util.h | active | 测试 harness 声明（断言记录与 write_junit）
 app/tests/run_core_tests.sh | active | core 单命令测试入口（构建+运行+归档日志/JUnit XML+退出码；ITEM-008 交付，验证轮独立复现 243/243）
 app/third_party/sqlite/sqlite3_min.h | active | 最小 SQLite C API 声明（无系统 sqlite3.h 时使用；存在系统头则优先系统头）
-app/tools/board_build.py | active | 板端构建/测试运行器（TestRun：core 单测 + tokens selftest + ui-scan（硬编码+回放/AI调试/维护/权限接线）+ sim-inject + status/ai/alarm/clip/replay/maintenance/permissions 探针；MediaCheck：media + stream/multi/ai-runner）
+app/tools/board_build.py | active | 板端构建/测试运行器（TestRun：core 单测 + tokens selftest + ui-scan（硬编码+回放/AI调试/维护/权限/健康接线）+ sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health 探针；MediaCheck：media + stream/multi/ai-runner）
 app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
 app/tools/board_render_spike.py | active | ITEM-002 板端渲染 spike 运行器（上传/构建 QML spike、无 Qt 核心测量编译运行、gl 构造探测、取回日志/JSON、判据选择；全超时 + known_hosts）
 app/tools/check_ai_debug_wiring.py | active | AI 调试页/司机隔离静态核对（ITEM-021：叠加层四开关默认关/调试令牌 debug_box·debug_roi/距离与延迟字段/司机守卫/无硬编码）
+app/tools/check_health_wiring.py | active | 健康/日志/自恢复静态核对（ITEM-024：恢复浮层/P6 日志与恢复卡/桥接 core/注入）
 app/tools/check_maintenance_wiring.py | active | 设备维护页静态核对（ITEM-022：分区卡片/PTZ 目标vs实际与容差/二次确认/日志/NVR 未配置无自动修改/桥接 core）
 app/tools/check_no_hardcoded_ui.py | active | UI 硬编码静态扫描（禁止 hex 色值/字号）
 app/tools/check_permissions_wiring.py | active | 权限/二次确认静态核对（ITEM-023：P3 导出受权限不渲染+二次确认、P6 矩阵卡、桥接 core、矩阵文档）
@@ -1202,6 +1212,37 @@ docs/hmi/test_evidence/ITEM-023-permissions/offline_selfcheck3.py | active | ITE
 docs/hmi/test_evidence/ITEM-023-permissions/run_verify_round.sh | active | ITEM-023 验证轮驱动（PowerShell User-env 凭据导入 + 指纹锚定 + 默认 stamp VERIFY-20261016-v1，指向实现者 r3 归档）
 docs/hmi/test_evidence/ITEM-023-permissions/verify_perm23_ext.cpp | active | ITEM-023 验证侧 ext 夹具（C++，链接本轮自产 librailhmi_core.a）233 判例：全 13×4 矩阵 off/on 双态（受配置仅翻转 export 行/admin·driver 不受 config）+ permission_matrix 镜像/枚举序/label 契约 + gate 语义全矩阵（denied「权限不足」/unconfirmed「需二次确认」/confirmed 空 reason、非敏感无确认、denied 优先、Count 越界拒绝）+ requires_secondary_confirm 13 权限全扫描（to_string 锚定下标）+ 动作状态机（denied×confirm 任意/cancelled/ok、maintainer 受配置三态、developer/admin 系统级、窗口 [-1,0] 透传）+ build_action_log 列全透传（含 cancelled/denied 日志、config 键=目标）+ 导出动作日志按日滚动（ITEM-022 D-02 耦合回归）
 docs/hmi/test_evidence/ITEM-023-permissions/verify_perm23_fixtures.py | active | ITEM-023 验证夹具运行器（Paramiko 指纹校验；board_build.py TestRun --keep-remote 复跑 + 641 行逐行比对 + JUnit 641/0 判例 21 + permissions-probe §8 派生 oracle（含 driver/maintainer/system-config/export-gate 反伪断言）/跨轮 identical + ext 编译运行 + SCAN_PY 14 项接线扫描（P3 门控/模态/确认执行、P6 矩阵卡、桥接 core、注入、配置、文档、板端管线、无 hex、N2 双观察点）+ 确定性/回归留痕/清理）
+docs/hmi/test_evidence/ITEM-024-health/README.md | active | ITEM-024 健康/结构化日志/自恢复证据（采样评估/日志查询与按日滚动/8 步恢复与降级隔离；板端 663/663 + 健康探针 + 接线扫描 PASS；边界/复现）
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_ai-probe-20261016-ITEM024-r1.log | active | ITEM-024 TestRun(r1) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_alarm-probe-20261016-ITEM024-r1.log | active | ITEM-024 TestRun(r1) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_clip-probe-20261016-ITEM024-r1.log | active | ITEM-024 TestRun(r1) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_core-tests-20261016-ITEM024-r1.log | active | ITEM-024 core 单测逐项输出（663 passed / 0 failed）
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_core-tests-20261016-ITEM024-r1.xml | active | ITEM-024 JUnit XML
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_health-probe-20261016-ITEM024-r1.log | active | ITEM-024 health-probe 输出（留痕：健康/查询与滚动/恢复序列）
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_maintenance-probe-20261016-ITEM024-r1.log | active | ITEM-024 TestRun(r1) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_permissions-probe-20261016-ITEM024-r1.log | active | ITEM-024 TestRun(r1) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_replay-probe-20261016-ITEM024-r1.log | active | ITEM-024 TestRun(r1) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_sim-inject-20261016-ITEM024-r1.json | active | ITEM-024 TestRun(r1) 回归留痕
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_sim-inject-20261016-ITEM024-r1.log | active | ITEM-024 TestRun(r1) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_status-probe-20261016-ITEM024-r1.log | active | ITEM-024 TestRun(r1) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.core-evidence_status-probe-driver-20261016-ITEM024-r1.log | active | ITEM-024 TestRun(r1) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.log | active | ITEM-024 TestRun(r1) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r1.transcript.json | active | ITEM-024 TestRun(r1) transcript
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_ai-probe-20261016-ITEM024-r2.log | active | ITEM-024 TestRun(r2) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_alarm-probe-20261016-ITEM024-r2.log | active | ITEM-024 TestRun(r2) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_clip-probe-20261016-ITEM024-r2.log | active | ITEM-024 TestRun(r2) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_core-tests-20261016-ITEM024-r2.log | active | ITEM-024 core 单测逐项输出（663 passed / 0 failed）
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_core-tests-20261016-ITEM024-r2.xml | active | ITEM-024 JUnit XML
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_health-probe-20261016-ITEM024-r2.log | active | ITEM-024 health-probe 输出（权威轮 PASS：健康/查询与滚动/恢复序列）
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_maintenance-probe-20261016-ITEM024-r2.log | active | ITEM-024 TestRun(r2) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_permissions-probe-20261016-ITEM024-r2.log | active | ITEM-024 TestRun(r2) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_replay-probe-20261016-ITEM024-r2.log | active | ITEM-024 TestRun(r2) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_sim-inject-20261016-ITEM024-r2.json | active | ITEM-024 TestRun(r2) 回归留痕
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_sim-inject-20261016-ITEM024-r2.log | active | ITEM-024 TestRun(r2) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_status-probe-20261016-ITEM024-r2.log | active | ITEM-024 TestRun(r2) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.core-evidence_status-probe-driver-20261016-ITEM024-r2.log | active | ITEM-024 TestRun(r2) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.log | active | ITEM-024 TestRun(r2) 运行日志
+docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-r2.transcript.json | active | ITEM-024 TestRun(r2) transcript
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）

@@ -252,6 +252,71 @@ Rectangle {
                 }
             }
         }
+
+        // 结构化日志卡（ITEM-024）：按级别/来源/关键字结构化查询，按日滚动
+        Rectangle {
+            objectName: "maintLogQueryCard"
+            id: logCard
+            width: (parent.width - Theme.spacing.s3) / 2; height: 260
+            color: Theme.color.surface; border.color: Theme.color.border; border.width: Theme.border.width
+            radius: Theme.radius.card
+            property string fLevel: ""
+            property string fSource: ""
+            property string fKeyword: ""
+            Column {
+                anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
+                Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
+                       text: "结构化日志（按日滚动）" }
+                Row {
+                    spacing: Theme.spacing.s2
+                    FilterChip { objectName: "logFilterAll"; text: "全部"; selected: logCard.fLevel === ""
+                                 onClicked: logCard.fLevel = "" }
+                    FilterChip { objectName: "logFilterWarn"; text: "警告+"; selected: logCard.fLevel === "warn"
+                                 onClicked: logCard.fLevel = "warn" }
+                    FilterChip { objectName: "logFilterError"; text: "错误"; selected: logCard.fLevel === "error"
+                                 onClicked: logCard.fLevel = "error" }
+                }
+                Repeater {
+                    model: (typeof railhmiHealth !== "undefined" && railhmiHealth)
+                           ? railhmiHealth.logs(logCard.fLevel, logCard.fSource, logCard.fKeyword) : []
+                    Text {
+                        objectName: "structuredLogRow"
+                        color: modelData.level === "error" ? Theme.color.error
+                               : (modelData.level === "warn" ? Theme.color.degraded : Theme.color.text_secondary)
+                        font.pixelSize: Theme.typography.scale.caption.size
+                        text: modelData.levelLabel + " [" + modelData.source + "] " + modelData.message + " " + modelData.fields
+                    }
+                }
+            }
+        }
+
+        // 恢复进度卡（ITEM-024）
+        Rectangle {
+            objectName: "maintRecoveryCard"
+            width: (parent.width - Theme.spacing.s3) / 2; height: 260
+            color: Theme.color.surface; border.color: Theme.color.border; border.width: Theme.border.width
+            radius: Theme.radius.card
+            Column {
+                anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
+                Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
+                       text: "启动恢复进度" }
+                Text { objectName: "recoveryProgressText"; color: Theme.color.text_secondary
+                       font.pixelSize: Theme.typography.scale.caption.size
+                       text: (typeof railhmiHealth !== "undefined" && railhmiHealth)
+                             ? (railhmiHealth.recovery().text + " · " + railhmiHealth.recovery().progress + "%") : "—" }
+                Repeater {
+                    model: (typeof railhmiHealth !== "undefined" && railhmiHealth) ? railhmiHealth.recovery().steps : []
+                    Text {
+                        objectName: "recoveryStepRow-" + modelData.step
+                        color: modelData.status === "ok" ? Theme.color.ok
+                               : (modelData.status === "failed" ? Theme.color.error
+                               : (modelData.status === "degraded" ? Theme.color.degraded : Theme.color.text_muted))
+                        font.pixelSize: Theme.typography.scale.caption.size
+                        text: modelData.statusLabel + " · " + modelData.label + " " + modelData.detail
+                    }
+                }
+            }
+        }
     }
 
     // 二次确认模态

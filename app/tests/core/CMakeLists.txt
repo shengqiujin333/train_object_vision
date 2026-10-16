@@ -18,6 +18,7 @@ add_executable(railhmi-core-tests
     test_replay.cpp
     test_maintenance.cpp
     test_permissions.cpp
+    test_health.cpp
 )
 target_link_libraries(railhmi-core-tests PRIVATE railhmi_core railhmi_platform)
 

@@ -25,6 +25,7 @@ void run_clip_tests();
 void run_replay_tests();
 void run_maintenance_tests();
 void run_permissions_tests();
+void run_health_tests();
 
 int main(int argc, char** argv) {
     std::string junit;
@@ -55,6 +56,7 @@ int main(int argc, char** argv) {
     run_replay_tests();
     run_maintenance_tests();
     run_permissions_tests();
+    run_health_tests();
 
     const bool ok = railhmi_test::g_fail == 0;
     std::printf("== %d passed, %d failed ==\n", railhmi_test::g_pass, railhmi_test::g_fail);

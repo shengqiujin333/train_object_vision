@@ -187,7 +187,8 @@ def main() -> int:
                         "python3 tools/check_replay_wiring.py --root src/ui; echo REPLAY_WIRE_EXIT=$?; "
                         "python3 tools/check_ai_debug_wiring.py --root src/ui --tokens design_tokens.yaml; echo AIDBG_WIRE_EXIT=$?; "
                         "python3 tools/check_maintenance_wiring.py --root src/ui; echo MAINT_WIRE_EXIT=$?; "
-                        "python3 tools/check_permissions_wiring.py --root src/ui --matrix PERMISSION_MATRIX.md; echo PERM_WIRE_EXIT=$?" % remote, 60))
+                        "python3 tools/check_permissions_wiring.py --root src/ui --matrix PERMISSION_MATRIX.md; echo PERM_WIRE_EXIT=$?; "
+                        "python3 tools/check_health_wiring.py --root src/ui; echo HEALTH_WIRE_EXIT=$?" % remote, 60))
             sim = rrun(client, "cd %s && ./build-core/tools/railhmi-sim-inject "
                               "--fi 01,02,03,04,05,10 --duration 6000 "
                               "--out core-evidence/sim-inject-%s.log --json core-evidence/sim-inject-%s.json; "
@@ -209,7 +210,9 @@ def main() -> int:
                         "./build-core/tools/railhmi-maintenance-probe "
                         "--out core-evidence/maintenance-probe-%s.log; echo MAINT_EXIT=$?; "
                         "./build-core/tools/railhmi-permissions-probe "
-                        "--out core-evidence/permissions-probe-%s.log; echo PERM_EXIT=$?" % (remote, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp), 60))
+                        "--out core-evidence/permissions-probe-%s.log; echo PERM_EXIT=$?; "
+                        "./build-core/tools/railhmi-health-probe "
+                        "--out core-evidence/health-probe-%s.log; echo HEALTH_EXIT=$?" % (remote, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp, args.stamp), 60))
             sftp = client.open_sftp()
             try:
                 sftp.get_channel().settimeout(args.connect_timeout * 6)
@@ -224,7 +227,8 @@ def main() -> int:
                             "core-evidence/clip-probe-%s.log" % args.stamp,
                             "core-evidence/replay-probe-%s.log" % args.stamp,
                             "core-evidence/maintenance-probe-%s.log" % args.stamp,
-                            "core-evidence/permissions-probe-%s.log" % args.stamp):
+                            "core-evidence/permissions-probe-%s.log" % args.stamp,
+                            "core-evidence/health-probe-%s.log" % args.stamp):
                     local_out = outdir / ("%s.%s" % (tag, rel.replace("/", "_")))
                     try:
                         sftp.get("%s/%s" % (remote, rel), str(local_out))

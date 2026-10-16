@@ -36,7 +36,8 @@
 | ITEM-021 | AI 调试页与司机视图隔离 | **已交付**：P5 展示检测框/ROI/置信度/**距离**/FPS/**端到端延迟**/模型版本/最近结果时间；调试叠加层逐项开关（框/ROI/文字/掩码）**默认全关**；新增令牌 `debug_box=#00E5FF`（框）/`debug_roi=#FFD400`（ROI 虚线，避免与报警红混淆）；司机隔离（导航过滤 + DeniedView + P5 司机无权限占位；`ai_debug_visible` core 判定）。板端 TestRun **586/586 通过**，`check_ai_debug_wiring` PASS，ai-probe 距离/司机隔离 PASS。证据：`docs/hmi/test_evidence/ITEM-021-ai-debug/README.md` |
 | ITEM-022 | 设备维护页 | **已交付**：`railhmi-core` 维护模型（PTZ 目标 vs 实际 + 容差校验/一键归位·重调前方预置位二次确认/维护日志/超差→前方 AI NOT_READY/维护行含质量/录像存储/健康）+ UI 桥接 `RailhmiMaintenanceModel` + QML `P6Maintenance.qml`（分区卡片 + 二次确认模态 + NVR 未配置卡无自动修改）+ `railhmi-maintenance-probe`。板端 TestRun **612/612 通过**，维护探针/接线扫描 PASS。证据：`docs/hmi/test_evidence/ITEM-022-maintenance/README.md` |
 | ITEM-023 | 权限与二次确认 | **已交付**：`railhmi-core` 权限矩阵（13 权限 × 4 角色运行时校验；导出“受配置”）+ 二次确认门控（配置修改/导出；确认后写维护日志）+ 动作模型 + UI 桥接 `RailhmiPermissionsModel` + QML（P3 导出入口受权限控制不渲染 + 二次确认模态；P6 权限矩阵卡）+ 矩阵文档 `docs/hmi/PERMISSION_MATRIX.md` + `railhmi-permissions-probe`。板端 TestRun **641/641 通过**，权限探针/接线扫描 PASS。证据：`docs/hmi/test_evidence/ITEM-023-permissions/README.md` |
-| ITEM-024.. | 健康监控/恢复、打包 | 未实现 |
+| ITEM-024 | 健康监控、结构化日志与断电自恢复 | **已交付**：`railhmi-core` 健康采样/评估（NPU/CPU/温度/网络/磁盘）+ 结构化日志（JSON/条件查询/按日滚动）+ 自恢复序列（8 步/进度/单路降级隔离/关键步存活）+ UI 桥接 `RailhmiHealthModel` + QML `RecoveryOverlay`（启动恢复进度浮层）+ P6 结构化日志与恢复进度卡 + `railhmi-health-probe`。板端 TestRun **663/663 通过**，健康探针/接线扫描 PASS。证据：`docs/hmi/test_evidence/ITEM-024-health/README.md` |
+| ITEM-025.. | 打包/systemd 自启/故障自检 | 未实现 |
 
 > 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 

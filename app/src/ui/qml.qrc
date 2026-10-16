@@ -9,6 +9,7 @@
         <file>qml/components/StatusItem.qml</file>
         <file>qml/components/KeyStatusStrip.qml</file>
         <file>qml/components/FilterChip.qml</file>
+        <file>qml/components/RecoveryOverlay.qml</file>
         <file>qml/components/DetectionBadge.qml</file>
         <file>qml/components/CameraTile.qml</file>
         <file>qml/components/VideoSurface.qml</file>

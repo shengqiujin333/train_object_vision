@@ -20,6 +20,8 @@ add_library(railhmi_core STATIC
     src/replay.cpp
     src/maintenance.cpp
     src/permissions.cpp
+    src/health.cpp
+    src/recovery.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -86,5 +88,12 @@ set_target_properties(railhmi-maintenance-probe PROPERTIES
 add_executable(railhmi-permissions-probe tools/permissions_probe.cpp)
 target_link_libraries(railhmi-permissions-probe PRIVATE railhmi_core)
 set_target_properties(railhmi-permissions-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 健康/结构化日志/自恢复探针（ITEM-024；无 Qt/SQLite）
+add_executable(railhmi-health-probe tools/health_probe.cpp)
+target_link_libraries(railhmi-health-probe PRIVATE railhmi_core)
+set_target_properties(railhmi-health-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

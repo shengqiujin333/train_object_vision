@@ -26,6 +26,7 @@
 #include "replay_model.h"
 #include "maintenance_model.h"
 #include "permissions_model.h"
+#include "health_model.h"
 
 #ifndef RAILHMI_CONFIG_DIR
 #define RAILHMI_CONFIG_DIR "config"
@@ -376,6 +377,34 @@ int main(int argc, char** argv) {
     RailhmiPermissionsModel permsModel;
     permsModel.seed(role, cfg.settings.app.permissions, QString::fromLatin1(railhmi::core::to_string(role)));
     view.rootContext()->setContextProperty("railhmiPermissions", &permsModel);
+
+    // 健康/结构化日志/自恢复（ITEM-024）：采样评估/日志查询/恢复进度委托 core。
+    RailhmiHealthModel healthModel;
+    {
+        railhmi::core::HealthSample hs;
+        hs.ts_wall_ms = 1760000000000LL;
+        hs.npu_load = 42; hs.cpu = 33; hs.temp_c = 58; hs.net_errors = 3;
+        hs.disk_free = 15LL * 1024 * 1024 * 1024; hs.disk_total = 20LL * 1024 * 1024 * 1024;
+        std::vector<railhmi::core::LogRecord> logs;
+        const long long day = hs.ts_wall_ms;
+        logs.push_back(railhmi::core::LogRecord{day, railhmi::core::LogSeverity::Info, "app", "启动完成", {{"role", "driver"}}});
+        logs.push_back(railhmi::core::LogRecord{day + 1000, railhmi::core::LogSeverity::Error, "stream", "CAM-04 断流", {{"cam", "CAM-04"}}});
+        logs.push_back(railhmi::core::LogRecord{day - 2 * 86400000LL, railhmi::core::LogSeverity::Warn, "ptz", "云台超差", {{"delta", "4.0"}}});
+        railhmi::core::RecoveryTracker rec;
+        rec.start(day);
+        const railhmi::core::RecoveryStep seq[8] = {
+            railhmi::core::RecoveryStep::LoadConfig, railhmi::core::RecoveryStep::OpenDatabase,
+            railhmi::core::RecoveryStep::StartRecording, railhmi::core::RecoveryStep::StartStreaming,
+            railhmi::core::RecoveryStep::StartAi, railhmi::core::RecoveryStep::PtzHome,
+            railhmi::core::RecoveryStep::FrontPreset, railhmi::core::RecoveryStep::FrontAiReady};
+        for (int i = 0; i < 8; ++i) {
+            if (seq[i] == railhmi::core::RecoveryStep::StartStreaming) rec.camera_result(true);
+            else rec.complete_step(seq[i], true);
+        }
+        rec.finish(day + 1000);
+        healthModel.seed(hs, railhmi::core::HealthThresholds{}, logs, rec.state());
+    }
+    view.rootContext()->setContextProperty("railhmiHealth", &healthModel);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
     view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
     view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);
