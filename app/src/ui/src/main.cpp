@@ -9,6 +9,7 @@
 #include <QVariantList>
 #include <QVariantMap>
 #include <map>
+#include <string>
 #include <vector>
 
 #include "railhmi/core/camera_registry.h"
@@ -33,16 +34,21 @@
 #define RAILHMI_CONFIG_DIR "config"
 #endif
 
+// 解析部署参数 `--config <dir>`（或 `--config=<dir>`）；未提供时回退编译期缺省。
+// systemd 单元以 `--config /opt/railhmi/config` 启动，故此路径必须真正被消费（ITEM-025 D-02）。
 int main(int argc, char** argv) {
+    const std::string configDir =
+        railhmi::core::parse_config_dir(argc, argv, RAILHMI_CONFIG_DIR);
     QGuiApplication app(argc, argv);
     QCoreApplication::setApplicationName("railhmi");
     QCoreApplication::setApplicationVersion(QString::fromLatin1(railhmi::core::version_string()));
 
     const QString build_desc = QString::fromStdString(railhmi::core::build_description());
     railhmi::platform::Logger::instance().info(build_desc.toStdString());
+    railhmi::platform::Logger::instance().info("config dir: " + configDir);
 
     // 启动即校验配置；非法配置报出具体字段并非零退出（绝不静默使用默认值）。
-    railhmi::core::ConfigLoadResult cfg = railhmi::core::load_config_dir(RAILHMI_CONFIG_DIR);
+    railhmi::core::ConfigLoadResult cfg = railhmi::core::load_config_dir(configDir);
     if (!cfg.ok) {
         railhmi::platform::Logger::instance().error("configuration invalid; refusing to start");
         for (const auto& e : cfg.errors) {

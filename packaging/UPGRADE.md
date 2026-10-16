@@ -4,7 +4,7 @@
 
 ## 版本
 - 当前版本见 `/opt/railhmi/VERSION`（源 `packaging/VERSION`）。
-- 启动前自检入口 `railhmi-version-check`（`bin/` 内），核对版本/依赖并输出摘要。
+- 应用启动时会校验配置与版本并写入 `logs/`（`main.cpp` `--config <dir>` 解析配置目录，缺省回退编译期默认）。
 
 ## 升级
 1. 备份当前版本：`cp -a /opt/railhmi/bin /opt/railhmi/bin.bak.$(date +%Y%m%d%H%M)`；`data`/`logs`/`config` 保留。

@@ -41,18 +41,50 @@ type=acceptance fi_covered=true boot_step=true prompts_nonempty=true result=PASS
 - **故障注入证据**：FI 目录与提示/恢复文案来自 `railhmi-fault-probe`（core 层实跑）；界面显式提示由 P6 自检卡 + ITEM-004/005/009/016/019/022 的状态/占位/缺口/告警语义承载（各该项已板端验证），本轮 QML 运行期未执行（板端缺 Qt5 Quick/Qml 开发包 E-01b）。
 - 真实模型/图标等外部素材：模型由模型职责提供到 `models/`；`install.sh` 缺失时 WARN 不阻断。
 
+## 3bis. 修复轮 fix-r2（响应 VERIFY-ITEM-025 D-01/D-02）
+
+独立验证（`VERIFY-ITEM-025.md`）判定 TEST_FAIL：两处**静态可证伪的部署契约缺陷**会导致真实部署 `Restart=always` 无限 Crash-Loop。修复如下（不改变已验证通过的故障域/目录/版本本体）：
+
+**D-01（ExecStartPre 引用不存在且无人构建/安装的 `railhmi-version-check`）→ 采验证方建议 (b)：移除该行**
+- `packaging/railhmi.service`：删除 `ExecStartPre=/opt/railhmi/bin/railhmi-version-check`，仅保留 `ExecStart=/opt/railhmi/bin/railhmi --config /opt/railhmi/config`。
+- `packaging/UPGRADE.md`：第 7 行第 1 条由“启动前自检入口 `railhmi-version-check`”改为“应用启动时校验配置与版本并写入 `logs/`”，与真实实现一致（版本自检保留为应用内启动步骤，`main.cpp` 已校验配置并落日志，见选项 (c)）。
+- 交付检查器 `app/tools/check_packaging.py` 增补断言：**单元引用的每个 `/opt/railhmi/bin/<name>` 必须在 `install.sh` 中确有安装**（否则 FAIL）。
+
+**D-02（单元传 `--config` 但二进制不解析；配置目录为编译期源码树路径）→ 真正解析该参数（core 单一来源）**
+- 新增 GUI 无关核心函数 `railhmi::core::parse_config_dir(argc, argv, fallback)`（`config.h`/`config.cpp`）：解析 `--config <dir>` 与 `--config=<dir>`；无参数退回编译期缺省；**显式空值/无值也退回缺省，绝不静默使用空路径**。
+- `app/src/ui/src/main.cpp`：`main()` 改为 `const std::string configDir = railhmi::core::parse_config_dir(argc, argv, RAILHMI_CONFIG_DIR);`，并以 `load_config_dir(configDir)` 载入；同时把解析后的目录写入日志（`config dir: ...`）便于现场核对。单元传入的 `/opt/railhmi/config` 因此被真正消费；无参数时行为与旧版一致（主机/板端 TestRun 不受影响）。
+- `app/tests/core/test_config.cpp`：新增 7 条 `parse_config_dir` 用例（空格/等号形式、缺省回退、无值/空值回退、夹在其他参数之间、`argc=0/nullptr`）。
+- 交付检查器增补断言：单元若含 `--config`，则 `main.cpp` 必须出现 `parse_config_dir` 且 `load_config_dir(configDir)`。
+
+**反例自检（证明交付检查器现在能检出这两类缺陷）**：`negcheck_packaging_fix.py` 在临时副本上分别重新注入 D-01/D-02 →
+
+```
+NEG_HEALTHY_EXIT=0 (expect 0)
+NEG_D01_EXIT=1     (expect 1)
+NEG_D02_EXIT=1     (expect 1)
+NEGCHECK_RESULT=PASS
+```
+
+**板端复跑（stamp `20261017-ITEM025-fix-r1`，RK3588）**：`TESTRUN_EXIT=0` / `PACK_EXIT=0` / `FAULT_EXIT=0`；core 单测由 663 → **670 passed / 0 failed**（+7 = `parse_config_dir` 用例，板上编译运行）；`railhmi-fault-probe` 仍 `fi_covered=true boot_step=true prompts_nonempty=true result=PASS`（故障域未回退）。板端 `ui-scan` 中的 `check_packaging.py`（含两条新断言）在板端源码上 PASS。
+
+**未执行项（与验证方边界一致）**：仍未在目标系统执行 `systemctl enable` 或整机重启（ENV-E，需现场授权且涉及重启），故“重启后自动拉起进入可用状态”仍为目标系统级未核验项；D-01/D-02 的修复在 Referenced-binary / Parsed-args 层面为可静态证伪的契约，现已被交付检查器（含反例对照）与板上单测覆盖。
+
 ## 4. 证据文件
 
-- `build-TestRun-...-ITEM025-r1.core-evidence_fault-probe-...-r1.log`（FI 目录 + 自检清单 + PASS）
-- `...-ITEM025-r1.core-evidence_core-tests-...-r1.log` / `.xml`（663 passed / 0 failed）
-- `...-ITEM025-r1.transcript.json` / `.log`（构建 + 单测 + 探针 + 扫描/打包核对 + 取回；含 `upload-packaging`）
+- `build-TestRun-...-ITEM025-fix-r1.core-evidence_fault-probe-...-fix-r1.log`（FI 目录 + 自检清单 + PASS）
+- `...-ITEM025-fix-r1.core-evidence_core-tests-...-fix-r1.log` / `.xml`（**670 passed / 0 failed**）
+- `...-ITEM025-fix-r1.transcript.json` / `.log`（修复轮构建 + 单测 + 探针 + 扫描/打包核对（D-01/D-02 断言）+ 取回；含 `upload-packaging`）
+- `negcheck_packaging_fix.py`（主机反例自检：健康 0 / D-01 1 / D-02 1）
 - 回归留痕：health/status/ai/alarm/clip/replay/maintenance/permissions 探针 + sim-inject
+- 首轮（修复前）证据保留：`...-ITEM025-r1.*`
 
 ## 5. 复现
 
 ```sh
 # 主机：打包/systemd/自检静态核对
 python app/tools/check_packaging.py --root .
+# 主机：反例自检（D-01/D-02 可被检出）
+python docs/hmi/test_evidence/ITEM-025-packaging/negcheck_packaging_fix.py
 # 板端
 bash app/build.sh CoreTests && ./build-core/tests/railhmi-core-tests
 ./build-core/tools/railhmi-fault-probe

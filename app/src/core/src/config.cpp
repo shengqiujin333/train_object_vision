@@ -525,5 +525,21 @@ ConfigLoadResult load_config_dir(const std::string& dir) {
     return load_config_from_strings(c, a, t, r);
 }
 
+std::string parse_config_dir(int argc, const char* const* argv, const std::string& fallback) {
+    const std::string key = "--config";
+    const std::string prefix = key + "=";
+    for (int i = 1; i < argc; ++i) {
+        const std::string a = (argv && argv[i]) ? argv[i] : "";
+        if (a == key) {
+            if (i + 1 < argc && argv[i + 1] && argv[i + 1][0] != '\0') return std::string(argv[i + 1]);
+            return fallback;  // 无值：保持缺省，不静默使用空路径
+        }
+        if (a.compare(0, prefix.size(), prefix) == 0 && a.size() > prefix.size()) {
+            return a.substr(prefix.size());
+        }
+    }
+    return fallback;
+}
+
 }  // namespace core
 }  // namespace railhmi

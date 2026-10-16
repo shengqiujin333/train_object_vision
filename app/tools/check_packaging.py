@@ -55,6 +55,14 @@ def main() -> int:
         code = "\n".join(l.split("#", 1)[0] for l in unit.splitlines())
         if "cpu-performance" in code:
             fails.append("systemd unit references/modifies cpu-performance.service (not allowed)")
+        # D-01: 单元引用的每个 /opt/railhmi/bin/<name> 必须真的会被构建并安装，
+        # 否则 ExecStartPre/ExecStart 非零退出 → Restart=always 无限 Crash-Loop。
+        import re as _re
+        ref_bins = sorted(set(_re.findall(r"/opt/railhmi/bin/([A-Za-z0-9_.\-]+)", code)))
+        installer = read(p(f"{pk}/install.sh")) if os.path.exists(p(f"{pk}/install.sh")) else ""
+        for b in ref_bins:
+            if b not in installer:
+                fails.append("systemd unit executes /opt/railhmi/bin/%s but install.sh never installs it" % b)
 
     if os.path.exists(p(f"{pk}/install.sh")):
         sh = read(p(f"{pk}/install.sh"))
@@ -85,6 +93,11 @@ def main() -> int:
     main_cpp = read(p(f"{app}/ui/src/main.cpp"))
     if "railhmiFaults" not in main_cpp:
         fails.append("main.cpp does not inject railhmiFaults")
+    # D-02: 单元传 `--config <dir>`，二进制必须真正解析该参数（否则部署到 /opt/railhmi 后
+    # 会读到编译期源码树路径并 exit 4 → Crash-Loop）。
+    unit_cfg = os.path.exists(p(f"{pk}/railhmi.service")) and "--config" in read(p(f"{pk}/railhmi.service"))
+    if unit_cfg and ("parse_config_dir" not in main_cpp or "load_config_dir(configDir)" not in main_cpp):
+        fails.append("unit passes --config but main.cpp does not parse/consume it")
 
     print("[check_packaging] systemd unit + install layout + version/upgrade/resources + fault self-check checked")
     if fails:

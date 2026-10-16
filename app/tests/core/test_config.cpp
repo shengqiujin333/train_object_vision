@@ -231,6 +231,43 @@ void test_negative(const Baseline& b) {
     }
 }
 
+// ITEM-025 D-02：部署单元 `--config /opt/railhmi/config` 必须被真正解析。
+void test_config_dir_arg() {
+    const std::string fb = "/opt/railhmi/config";
+    {
+        const char* argv[] = {"railhmi", "--config", "/data/cfg", "--other"};
+        railhmi_test::check(parse_config_dir(4, argv, "config") == "/data/cfg",
+                            "--config <dir> is parsed");
+    }
+    {
+        const char* argv[] = {"railhmi", "--config=/data/cfg2"};
+        railhmi_test::check(parse_config_dir(2, argv, "config") == "/data/cfg2",
+                            "--config=<dir> form is parsed");
+    }
+    {
+        const char* argv[] = {"railhmi"};
+        railhmi_test::check(parse_config_dir(1, argv, fb) == fb,
+                            "absent --config falls back to compile-time default");
+    }
+    {
+        const char* argv[] = {"railhmi", "--config"};  // 无值
+        railhmi_test::check(parse_config_dir(2, argv, fb) == fb,
+                            "--config without value falls back (never empty path)");
+    }
+    {
+        const char* argv[] = {"railhmi", "--config", ""};
+        railhmi_test::check(parse_config_dir(3, argv, fb) == fb,
+                            "--config with empty value falls back");
+    }
+    {
+        const char* argv[] = {"railhmi", "--mode", "x", "--config", "/opt/railhmi/config"};
+        railhmi_test::check(parse_config_dir(5, argv, "config") == "/opt/railhmi/config",
+                            "deployment unit argument is honoured");
+    }
+    railhmi_test::check(parse_config_dir(0, nullptr, fb) == fb,
+                        "no argv falls back safely");
+}
+
 }  // namespace
 
 void run_config_tests() {
@@ -241,4 +278,5 @@ void run_config_tests() {
     }
     test_baseline_ok(b);
     test_negative(b);
+    test_config_dir_arg();
 }

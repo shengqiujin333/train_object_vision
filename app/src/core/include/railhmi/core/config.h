@@ -167,6 +167,10 @@ ConfigLoadResult load_config_from_strings(const std::string& cameras_yaml,
 // 从目录读取 4 个文件；文件缺失记为错误。
 ConfigLoadResult load_config_dir(const std::string& dir);
 
+// 解析命令行 `--config <dir>` / `--config=<dir>`；未提供或无值时回退 fallback。
+// 供部署单元（systemd ExecStart --config /opt/railhmi/config）真正消费该参数。
+std::string parse_config_dir(int argc, const char* const* argv, const std::string& fallback);
+
 // 外部设备（NVR 等）初始集成状态：已登记但缺 protocol/channel_mapping → Unconfigured，
 // 其余待探测 → Unverified。探测/可达/不可达由运行时（ITEM-017）更新。
 IntegrationState initial_integration_state(const IntegrationConfig& cfg);

@@ -12,7 +12,6 @@ User=admin
 Environment=DISPLAY=:0
 Environment=QT_QPA_PLATFORM=xcb
 WorkingDirectory=/opt/railhmi
-ExecStartPre=/opt/railhmi/bin/railhmi-version-check
 ExecStart=/opt/railhmi/bin/railhmi --config /opt/railhmi/config
 # 崩溃/退出后自动拉起（不阻塞其余服务，不触碰 cpu-performance.service）
 Restart=always
