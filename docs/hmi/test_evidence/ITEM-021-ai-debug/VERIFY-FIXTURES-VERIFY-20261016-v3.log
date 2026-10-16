@@ -1,0 +1,167 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 142 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 AIDBG_WIRE_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 REPLAY_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-driver-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_ai-probe-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_alarm-probe-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_clip-probe-VERIFY-20261016-v3.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_replay-probe-VERIFY-20261016-v3.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-021-ai-debug\build-TestRun-192_168_0_103-VERIFY-20261016-v3.transcript.json
+log: docs\hmi\test_evidence\ITEM-021-ai-debug\build-TestRun-192_168_0_103-VERIFY-20261016-v3.log
+
+
+===== [fresh-artifacts] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_ai-probe-VERIFY-20261016-v3.log
+
+===== [log-compare] exit=0 =====
+impl_pass=586 verify_pass=586 identical=True verify_fails=0 expect=586 result=RESULT: PASS passed=586 failed=0
+
+===== [junit-parse] exit=0 =====
+junit tests=586 failures=0 item021_cases=14/14 missing=[]
+
+===== [ai-probe-assert] exit=0 =====
+{"fails": []}
+
+===== [ai-probe-compare] exit=0 =====
+cross-round deterministic reproduction identical=True
+
+===== [mkdir-verify] exit=0 =====
+
+
+===== [mkdir-workdir] exit=0 =====
+
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-021-ai-debug/verify_ai21_ext.cpp
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+== verify ITEM-021 ext (AI debug page & driver isolation fixtures) ==
+RESULT: FAIL passed=39 failed=1
+  FAIL: no-result channel unavailable 等待结果
+EXT_EXIT=1
+
+
+===== [upload-scan] exit=0 =====
+verify_scan21.py
+
+===== [wiring-scan] exit=0 =====
+T1_toggles_default_off= True
+T1_toggle_chips= True
+T1_chip_handlers_wired= True
+T1_all_off_chip= True
+T1_toggles_note_default_close_text= True
+T2_token_yaml= True
+T2_token_json= True
+T2_token_theme= True
+T2_token_tokens_qml= True
+T2_p5_consumes_box_token= True
+T2_p5_consumes_roi_token= True
+T2_distinct_from_alarm_red= True
+T2_no_hexliteral_in_p5= True
+T3_fields= True
+T3_distance_via_boxes_bridge= True
+T4_p5_role_guard= True
+T4_p5_denied_placeholder= True
+T4_p5_row_hidden_for_driver= True
+T4_denied_visible_when_not_allowed= True
+T4_main_routes_routed= True
+T4_main_denied_view= True
+T4_main_nav_filtered= True
+T4_main_role_prop= True
+T5_core_driver_cannot= True
+T5_core_visible_helper= True
+T6_p1_no_debug_overlays= True
+T7_bridge_distance_text= True
+T7_bridge_distance_m= True
+T7_bridge_from_build_ai_debug= True
+T7_bridge_snapshot_fields= True
+T8_board_build_runs_check= True
+T8_board_build_uses_tokens_yaml= True
+T8_checker_covers= True
+SCAN21_EXIT=0
+
+
+===== [wiring-scan-findings] exit=0 =====
+mismatch=[] scan_exit_ok=True raw={"T1_toggles_default_off": "True", "T1_toggle_chips": "True", "T1_chip_handlers_wired": "True", "T1_all_off_chip": "True", "T1_toggles_note_default_close_text": "True", "T2_token_yaml": "True", "T2_token_json": "True", "T2_token_theme": "True", "T2_token_tokens_qml": "True", "T2_p5_consumes_box_token": "True", "T2_p5_consumes_roi_token": "True", "T2_distinct_from_alarm_red": "True", "T2_no_hexliteral_in_p5": "True", "T3_fields": "True", "T3_distance_via_boxes_bridge": "True", "T4_p5_role_guard": "True", "T4_p5_denied_placeholder": "True", "T4_p5_row_hidden_for_driver": "True", "T4_denied_visible_when_not_allowed": "True", "T4_main_routes_routed": "True", "T4_main_denied_view": "True", "T4_main_nav_filtered": "True", "T4_main_role_prop": "True", "T5_core_driver_cannot": "True", "T5_core_visible_helper": "True", "T6_p1_no_debug_overlays": "True", "T7_bridge_distance_text": "True", "T7_bridge_distance_m": "True", "T7_bridge_from_build_ai_debug": "True", "T7_bridge_snapshot_fields": "True", "T8_board_build_runs_check": "True", "T8_board_build_uses_tokens_yaml": "True", "T8_checker_covers": "True"}
+
+===== [ai-probe-negative-arg] exit=0 =====
+NARG_EXIT=2
+unknown arg: --nope
+
+
+===== [ai-probe-help] exit=0 =====
+usage: railhmi-ai-probe [--config DIR] [--frames N] [--out log]
+HELP_EXIT=0
+
+
+===== [ai-probe-rep-run] exit=0 =====
+type=config interval=5 depth=2 budget=4 temp_limit=85 models=4
+type=queue camera=CAM-01 profile=front depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s
+type=queue camera=CAM-04 profile=pantograph depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s
+type=queue camera=CAM-05 profile=wheel_rail depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov8s-seg
+type=queue camera=CAM-06 profile=cab_door depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s
+type=schedule temp=60 run=CAM-01,CAM-05,CAM-04,CAM-06 skipped= guard=false
+type=schedule temp=90 run=CAM-01,CAM-05 skipped=CAM-04,CAM-06 guard=true
+type=ai-status online=运行
+type=debug camera=CAM-01 profile=front available=true model=rknn-2.3.2/yolov5s latency=33 boxes=1 conf=80 distance=9.0 m last=<1 秒前
+type=debug camera=CAM-04 profile=pantograph available=true model=rknn-2.3.2/yolov5s latency=39 boxes=1 conf=80 distance=11.0 m last=<1 秒前
+type=debug camera=CAM-05 profile=wheel_rail available=true model=rknn-2.3.2/yolov8s-seg latency=36 boxes=1 conf=80 distance=10.0 m last=<1 秒前
+type=debug camera=CAM-06 profile=cab_door available=true model=rknn-2.3.2/yolov5s latency=42 boxes=1 conf=80 distance=12.0 m last=<1 秒前
+type=ai-status stopped=AI 不可用
+type=acceptance worker_down_status=AI 不可用 alarm_annotation=AI 不可用 debug_all_unavailable=true temp_guard_degrades=true driver_debug_denied=true wide_angle_excluded=true
+type=result PASS
+AIREP_EXIT=0
+
+
+===== [ai-probe-determinism] exit=0 =====
+IDENTICAL
+
+
+===== [regression-artifacts] exit=0 =====
+ai-probe-VERIFY-20261016-v3.log
+alarm-probe-VERIFY-20261016-v3.log
+clip-probe-VERIFY-20261016-v3.log
+core-tests-VERIFY-20261016-v3.log
+core-tests-VERIFY-20261016-v3.xml
+replay-probe-VERIFY-20261016-v3.log
+sim-inject-VERIFY-20261016-v3.json
+sim-inject-VERIFY-20261016-v3.log
+status-probe-driver-VERIFY-20261016-v3.log
+status-probe-VERIFY-20261016-v3.log
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify021': No such file or directory
+ls: cannot access '/tmp/railhmi_build': No such file or directory
+ls: cannot access '/tmp/railhmi_clips': No such file or directory
+
+
+===== [cleanup-verify] exit=0 =====
+cleanup_ok=True
+
+===== [findings] exit=0 =====
+[{"ITEM-021": "P5 overlay per-item toggles default-off with distinct high-contrast debug stroke tokens (debug_box/debug_roi), distance/end-to-end latency fields bridged, driver isolated (nav filter + DeniedView + P5 guard + no debug overlay in P1); core distance/visibility boundaries held on-board", "confirmed": false}]

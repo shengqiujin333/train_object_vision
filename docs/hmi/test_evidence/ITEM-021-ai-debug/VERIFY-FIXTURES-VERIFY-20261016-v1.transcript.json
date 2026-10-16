@@ -1,0 +1,156 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify021",
+    "cpp": "docs/hmi/test_evidence/ITEM-021-ai-debug/verify_ai21_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-021-ai-debug",
+    "stamp": "VERIFY-20261016-v1",
+    "impl_testrun_log": "docs/hmi/test_evidence/ITEM-021-ai-debug/build-TestRun-192_168_0_103-20261016-ITEM021-r2.core-evidence_core-tests-20261016-ITEM021-r2.log",
+    "impl_aiprobe_log": "docs/hmi/test_evidence/ITEM-021-ai-debug/build-TestRun-192_168_0_103-20261016-ITEM021-r2.core-evidence_ai-probe-20261016-ITEM021-r2.log",
+    "connect_timeout": "10",
+    "timeout_sec": "1500",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "ITEM-021: AI debug page & driver isolation; abort on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir docs\\hmi\\test_evidence\\ITEM-021-ai-debug --stamp VERIFY-20261016-v1 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 34.76,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 142 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 AIDBG_WIRE_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 REPLAY_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_sim-inject-VERIFY-20261016-v1.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_status-probe-driver-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_alarm-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_clip-probe-VERIFY-20261016-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_replay-probe-VERIFY-20261016-v1.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: docs\\hmi\\test_evidence\\ITEM-021-ai-debug\\build-TestRun-192_168_0_103-VERIFY-20261016-v1.transcript.json\nlog: docs\\hmi\\test_evidence\\ITEM-021-ai-debug\\build-TestRun-192_168_0_103-VERIFY-20261016-v1.log\n"
+    },
+    {
+      "step": "fresh-artifacts",
+      "exit": 0,
+      "output": "build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.log build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_core-tests-VERIFY-20261016-v1.xml build-TestRun-192_168_0_103-VERIFY-20261016-v1.core-evidence_ai-probe-VERIFY-20261016-v1.log"
+    },
+    {
+      "step": "log-compare",
+      "exit": 0,
+      "output": "impl_pass=586 verify_pass=586 identical=True verify_fails=0 expect=586 result=RESULT: PASS passed=586 failed=0"
+    },
+    {
+      "step": "junit-parse",
+      "exit": 0,
+      "output": "junit tests=586 failures=0 item021_cases=14/14 missing=[]"
+    },
+    {
+      "step": "ai-probe-assert",
+      "exit": 1,
+      "output": "{\"fails\": [\"debug lines=0 want 4\"]}"
+    },
+    {
+      "step": "ai-probe-compare",
+      "exit": 0,
+      "output": "cross-round deterministic reproduction identical=True"
+    },
+    {
+      "step": "mkdir-verify",
+      "cmd": "mkdir -p /tmp/railhmi_build/verify",
+      "exit": 0,
+      "elapsed_s": 0.04,
+      "output": ""
+    },
+    {
+      "step": "mkdir-workdir",
+      "cmd": "rm -rf /tmp/railhmi_verify021 && mkdir -p /tmp/railhmi_verify021",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": ""
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "docs/hmi/test_evidence/ITEM-021-ai-debug/verify_ai21_ext.cpp"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -DRAILHMI_CONFIG_DIR='\"config\"' -Isrc/core/include -Isrc/platform/include /tmp/railhmi_verify021/verify_ai21_ext.cpp build-core/src/core/librailhmi_core.a build-core/src/platform/librailhmi_platform.a -o /tmp/railhmi_verify021/verify_ai21_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.66,
+      "output": "/tmp/railhmi_verify021/verify_ai21_ext.cpp: In function ‘void {anonymous}::t_distance()’:\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:94:25: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n   94 |     check(c1 != nullptr && c1->available, \"distance: CAM-01 present & available\");\n      |           ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:107:14: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  107 |     check(c4 != nullptr, \"distance min: CAM-04 present\");\n      |           ~~~^~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:117:25: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  117 |     check(c5 != nullptr && c5->available, \"distance unknown: CAM-05 still available\");\n      |           ~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:166:33: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  166 |     check(c5c && c5c->available && c5c->boxes.empty(), \"no-box result still available\");\n      |           ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:173:34: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  173 |     check(c4b && !c4b->available && c4b->unavailable_reason == \"等待结果\",\n      |           ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:175:15: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  175 |     check(c4b && c4b->distance_text.empty(), \"no-result channel distance_text empty (P5 falls back to dash)\");\n      |           ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp: In function ‘void {anonymous}::t_visibility()’:\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:180:11: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  180 |     check(!ai_debug_visible(Role::Driver), \"ai_debug_visible(Driver)=false\");\n      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:181:27: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  181 |     check(ai_debug_visible(Role::Maintainer), \"ai_debug_visible(Maintainer)=true\");\n      |           ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:182:27: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  182 |     check(ai_debug_visible(Role::Developer), \"ai_debug_visible(Developer)=true\");\n      |           ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:183:27: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  183 |     check(ai_debug_visible(Role::Admin), \"ai_debug_visible(Admin)=true\");\n      |           ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:195:11: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  195 |     check(!nav_d.allowed, \"direct ai_debug request denied for driver (resolve_navigation)\");\n      |           ^~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:196:27: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  196 |     check(nav_d.requested == Page::AiDebug, \"denied result carries requested page\");\n      |           ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:198:52: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  198 |         check(resolve_navigation(r, Page::AiDebug).allowed,\n      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:207:11: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  207 |     check(!has_ai, \"driver visible_pages excludes AiDebug\");\n      |           ^~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:208:22: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  208 |     check(vis.size() == 3, \"driver visible set is exactly 3 pages\");\n      |           ~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:211:39: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  211 |         check(visible_pages(r).size() == 6,\n      |               ~~~~~~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:215:41: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  215 |     check(default_page(Role::Developer) == Page::AiDebug, \"developer lands on AI debug\");\n      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp: In function ‘void {anonymous}::t_regression()’:\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:229:16: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  229 |     check(four && all_unavail, \"worker-down: 4 eligible channels, all AI 不可用 (not silent)\");\n      |           ~~~~~^~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:236:11: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  236 |     check(wait, \"alive no-result: all 等待结果\");\n      |           ^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:241:32: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  241 |     check(c1 && !c1->available && c1->unavailable_reason == \"推理陈旧\",\n      |           ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:245:14: error: invalid initialization of reference of type ‘const string&’ {aka ‘const std::__cxx11::basic_string<char>&’} from expression of type ‘bool’\n  245 |     check(c1 && c1->available, \"age == stale_ms boundary still available\");\n      |           ~~~^~~~~~~~~~~~~~~~\n/tmp/railhmi_verify021/verify_ai21_ext.cpp:37:31: note: in passing argument 1 of ‘void {anonymous}::check(const string&, bool)’\n   37 | void check(const std::string& name, bool ok) {\n      |            ~~~~~~~~~~~~~~~~~~~^~~~\nGXX_EXIT=1\n"
+    },
+    {
+      "step": "upload-scan",
+      "exit": 0,
+      "output": "verify_scan21.py"
+    },
+    {
+      "step": "wiring-scan",
+      "cmd": "cd /tmp/railhmi_build && python3 /tmp/railhmi_verify021/verify_scan21.py; echo SCAN21_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.06,
+      "output": "T1_toggles_default_off= True\nT1_toggle_chips= True\nT1_chip_handlers_wired= True\nT1_all_off_chip= True\nT1_toggles_note_default_close_text= True\nT2_token_yaml= False\nT2_token_json= True\nT2_token_theme= True\nT2_token_tokens_qml= True\nT2_p5_consumes_box_token= True\nT2_p5_consumes_roi_token= True\nT2_distinct_from_alarm_red= True\nT2_no_hexliteral_in_p5= False\nT3_fields= True\nT3_distance_via_boxes_bridge= True\nT4_p5_role_guard= True\nT4_p5_denied_placeholder= True\nT4_p5_row_hidden_for_driver= True\nT4_denied_visible_when_not_allowed= True\nT4_main_routes_routed= True\nT4_main_denied_view= True\nT4_main_nav_filtered= True\nT4_main_role_prop= True\nT5_core_driver_cannot= True\nT5_core_visible_helper= True\nT6_p1_no_debug_overlays= True\nT7_bridge_distance_text= True\nT7_bridge_distance_m= True\nT7_bridge_from_build_ai_debug= True\nT7_bridge_snapshot_fields= True\nT8_board_build_runs_check= True\nT8_board_build_uses_tokens_yaml= True\nT8_checker_covers= True\nSCAN21_EXIT=0\n"
+    },
+    {
+      "step": "wiring-scan-findings",
+      "exit": 1,
+      "output": "mismatch=['T2_no_hexliteral_in_p5', 'T2_token_yaml'] scan_exit_ok=True raw={\"T1_toggles_default_off\": \"True\", \"T1_toggle_chips\": \"True\", \"T1_chip_handlers_wired\": \"True\", \"T1_all_off_chip\": \"True\", \"T1_toggles_note_default_close_text\": \"True\", \"T2_token_yaml\": \"False\", \"T2_token_json\": \"True\", \"T2_token_theme\": \"True\", \"T2_token_tokens_qml\": \"True\", \"T2_p5_consumes_box_token\": \"True\", \"T2_p5_consumes_roi_token\": \"True\", \"T2_distinct_from_alarm_red\": \"True\", \"T2_no_hexliteral_in_p5\": \"False\", \"T3_fields\": \"True\", \"T3_distance_via_boxes_bridge\": \"True\", \"T4_p5_role_guard\": \"True\", \"T4_p5_denied_placeholder\": \"True\", \"T4_p5_row_hidden_for_driver\": \"True\", \"T4_denied_visible_when_not_allowed\": \"True\", \"T4_main_routes_routed\": \"True\", \"T4_main_denied_view\": \"True\", \"T4_main_nav_filtered\": \"True\", \"T4_main_role_prop\": \"True\", \"T5_core_driver_cannot\": \"True\", \"T5_core_visible_helper\": \"True\", \"T6_p1_no_debug_overlays\": \"True\", \"T7_bridge_distance_text\": \"True\", \"T7_bridge_distance_m\": \"True\", \"T7_bridge_from_build_ai_debug\": \"True\", \"T7_bridge_snapshot_fields\": \"True\", \"T8_board_build_runs_check\": \"True\", \"T8_board_build_uses_tokens_yaml\": \"True\", \"T8_checker_covers\": \"True\"}"
+    },
+    {
+      "step": "ai-probe-negative-arg",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-ai-probe --nope; echo NARG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.06,
+      "output": "NARG_EXIT=2\nunknown arg: --nope\n"
+    },
+    {
+      "step": "ai-probe-help",
+      "cmd": "cd /tmp/railhmi_build && ./build-core/tools/railhmi-ai-probe --help; echo HELP_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "usage: railhmi-ai-probe [--config DIR] [--frames N] [--out log]\nHELP_EXIT=0\n"
+    },
+    {
+      "step": "ai-probe-rep-run",
+      "cmd": "cd /tmp/railhmi_build && mkdir -p verify && ./build-core/tools/railhmi-ai-probe --config ./config --out verify/ai-probe-rep.log; echo AIREP_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "type=config interval=5 depth=2 budget=4 temp_limit=85 models=4\ntype=queue camera=CAM-01 profile=front depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s\ntype=queue camera=CAM-04 profile=pantograph depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s\ntype=queue camera=CAM-05 profile=wheel_rail depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov8s-seg\ntype=queue camera=CAM-06 profile=cab_door depth=2 dropped=35 inferred=10 requested=10 fps=5 model=rknn-2.3.2/yolov5s\ntype=schedule temp=60 run=CAM-01,CAM-05,CAM-04,CAM-06 skipped= guard=false\ntype=schedule temp=90 run=CAM-01,CAM-05 skipped=CAM-04,CAM-06 guard=true\ntype=ai-status online=运行\ntype=debug camera=CAM-01 profile=front available=true model=rknn-2.3.2/yolov5s latency=33 boxes=1 conf=80 distance=9.0 m last=<1 秒前\ntype=debug camera=CAM-04 profile=pantograph available=true model=rknn-2.3.2/yolov5s latency=39 boxes=1 conf=80 distance=11.0 m last=<1 秒前\ntype=debug camera=CAM-05 profile=wheel_rail available=true model=rknn-2.3.2/yolov8s-seg latency=36 boxes=1 conf=80 distance=10.0 m last=<1 秒前\ntype=debug camera=CAM-06 profile=cab_door available=true model=rknn-2.3.2/yolov5s latency=42 boxes=1 conf=80 distance=12.0 m last=<1 秒前\ntype=ai-status stopped=AI 不可用\ntype=acceptance worker_down_status=AI 不可用 alarm_annotation=AI 不可用 debug_all_unavailable=true temp_guard_degrades=true driver_debug_denied=true wide_angle_excluded=true\ntype=result PASS\nAIREP_EXIT=0\n"
+    },
+    {
+      "step": "ai-probe-determinism",
+      "cmd": "cd /tmp/railhmi_build && diff verify/ai-probe-rep.log core-evidence/ai-probe-VERIFY-20261016-v1.log && echo IDENTICAL",
+      "exit": 0,
+      "elapsed_s": 0.06,
+      "output": "IDENTICAL\n"
+    },
+    {
+      "step": "regression-artifacts",
+      "cmd": "cd /tmp/railhmi_build && ls core-evidence/",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "ai-probe-VERIFY-20261016-v1.log\nalarm-probe-VERIFY-20261016-v1.log\nclip-probe-VERIFY-20261016-v1.log\ncore-tests-VERIFY-20261016-v1.log\ncore-tests-VERIFY-20261016-v1.xml\nreplay-probe-VERIFY-20261016-v1.log\nsim-inject-VERIFY-20261016-v1.json\nsim-inject-VERIFY-20261016-v1.log\nstatus-probe-driver-VERIFY-20261016-v1.log\nstatus-probe-VERIFY-20261016-v1.log\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify021 /tmp/railhmi_build /tmp/railhmi_clips && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify021 /tmp/railhmi_build /tmp/railhmi_clips 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.13,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify021': No such file or directory\nls: cannot access '/tmp/railhmi_build': No such file or directory\nls: cannot access '/tmp/railhmi_clips': No such file or directory\n"
+    },
+    {
+      "step": "cleanup-verify",
+      "exit": 0,
+      "output": "cleanup_ok=True"
+    },
+    {
+      "step": "findings",
+      "exit": 0,
+      "output": "[{\"ITEM-021\": \"P5 overlay per-item toggles default-off with distinct high-contrast debug stroke tokens (debug_box/debug_roi), distance/end-to-end latency fields bridged, driver isolated (nav filter + DeniedView + P5 guard + no debug overlay in P1); core distance/visibility boundaries held on-board\", \"confirmed\": false}]"
+    }
+  ]
+}
