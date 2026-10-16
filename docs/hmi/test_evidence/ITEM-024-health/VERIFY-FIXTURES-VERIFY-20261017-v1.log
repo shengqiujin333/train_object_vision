@@ -1,0 +1,179 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 166 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[upload-perm-matrix] exit=0 PERMISSION_MATRIX.md
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 HEALTH_WIRE_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 HEALTH_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_sim-inject-VERIFY-20261017-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_sim-inject-VERIFY-20261017-v1.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_status-probe-VERIFY-20261017-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_status-probe-driver-VERIFY-20261017-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_ai-probe-VERIFY-20261017-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_alarm-probe-VERIFY-20261017-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_clip-probe-VERIFY-20261017-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_replay-probe-VERIFY-20261017-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_maintenance-probe-VERIFY-20261017-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_permissions-probe-VERIFY-20261017-v1.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_health-probe-VERIFY-20261017-v1.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-024-health\build-TestRun-192_168_0_103-VERIFY-20261017-v1.transcript.json
+log: docs\hmi\test_evidence\ITEM-024-health\build-TestRun-192_168_0_103-VERIFY-20261017-v1.log
+
+
+===== [fresh-artifacts] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.log build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.xml build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_health-probe-VERIFY-20261017-v1.log
+
+===== [log-compare] exit=0 =====
+impl_pass=663 verify_pass=663 identical=True verify_fails=0 expect=663 result=RESULT: PASS passed=663 failed=0
+
+===== [junit-parse] exit=0 =====
+junit tests=663 failures=0 item024_cases=22/22 missing=[]
+
+===== [health-probe-assert] exit=0 =====
+{"fails": []}
+
+===== [health-probe-compare] exit=0 =====
+cross-round deterministic reproduction identical=True
+
+===== [mkdir-workdir] exit=0 =====
+/tmp/railhmi_verify024
+
+===== [upload-verify_health24_ext.cpp] exit=0 =====
+verify_health24_ext.cpp
+
+===== [compile-verify_health24_ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-verify_health24_ext] exit=0 =====
+== verify ITEM-024 ext (health/logs/recovery fixtures) ==
+RESULT: PASS passed=103 failed=0
+EXT_EXIT=0
+
+
+===== [summary-verify_health24_ext] exit=0 =====
+verify_health24_ext passed=103 failed=0
+
+===== [upload-verify_health24_ext_v3.cpp] exit=0 =====
+verify_health24_ext_v3.cpp
+
+===== [compile-verify_health24_ext_v3] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-verify_health24_ext_v3] exit=0 =====
+== verify ITEM-024 ext v3 (demo recovery path / uifix-r1) ==
+RESULT: PASS passed=60 failed=0
+EXT_EXIT=0
+
+
+===== [summary-verify_health24_ext_v3] exit=0 =====
+verify_health24_ext_v3 passed=60 failed=0
+
+===== [upload-scan-neg] exit=0 =====
+verify_scan24_v3.py verify_neg24.py
+
+===== [wiring-scan] exit=0 =====
+T1_overlay_structure= True
+T2_overlay_wired= True
+T3_p6_log_card= True
+T4_p6_recovery_card= True
+T5_bridge_core= True
+T6_main_inject= True
+T7_board= True
+T8_bridge_filter= True
+T9_overlay_gating= True
+T11_overlay_reactive= True
+T12_p6_reactive= True
+T13_demo_path= True
+T14_demo_semantics= True
+N2_degraded_not_failed= True
+T10_no_hex= True
+R1_p6_scrollable= True
+R2_p6_no_anchored_grid= True
+R3_no_one_shot_bindings= True
+R4_demo_reachable= True
+R5_theme_tokens_present= True
+SCAN24_EXIT=0
+
+
+===== [wiring-scan-findings] exit=0 =====
+mismatch=[] scan_exit_ok=True raw={"T1_overlay_structure": "True", "T2_overlay_wired": "True", "T3_p6_log_card": "True", "T4_p6_recovery_card": "True", "T5_bridge_core": "True", "T6_main_inject": "True", "T7_board": "True", "T8_bridge_filter": "True", "T9_overlay_gating": "True", "T11_overlay_reactive": "True", "T12_p6_reactive": "True", "T13_demo_path": "True", "T14_demo_semantics": "True", "N2_degraded_not_failed": "True", "T10_no_hex": "True", "R1_p6_scrollable": "True", "R2_p6_no_anchored_grid": "True", "R3_no_one_shot_bindings": "True", "R4_demo_reachable": "True", "R5_theme_tokens_present": "True"}
+
+===== [negative-control] exit=0 =====
+NEG_HEALTHY_EXIT=0
+NEG_MUTATED_EXIT=1
+neg-fail: [FAIL] P6 missing scrollable card area (D-01) (Flickable)
+neg-fail: [FAIL] P6 missing source query input (D-03) (logSourceInput)
+neg-fail: [FAIL] P6 missing keyword query input (D-03) (logKeywordInput)
+neg-fail: [FAIL] P6 missing recovery progress demo (D-04) (recoveryDemo)
+neg-fail: [FAIL] P6 does not connect railhmiHealth changed() (D-02)
+NEG_DRIVER_EXIT=0
+
+
+===== [negative-control-findings] exit=0 =====
+neg_ok=True
+
+===== [health-probe-rep-run] exit=0 =====
+type=health level=ok text="NPU 42.0% / CPU 33.0% / 温度 58.0°C / 网络错误 3 / 正常" alerts=0
+type=health level=warn alerts=1 first="温度 80.0°C > 75.0°C"
+type=log-json {"ts_ms":1792108801000,"level":"error","source":"stream","message":"CAM-04 断流","fields":{"cam":"CAM-04"}}
+type=log-query by_source=1 by_keyword=1 by_severity=2 day_rolled=2
+type=recovery step=load_config label=加载配置 status=完成 progress=12
+type=recovery step=open_database label=打开数据库 status=完成 progress=25
+type=recovery step=start_recording label=启动录像/存储 status=完成 progress=37
+type=recovery step=start_streaming label=启动相机取流 status=降级 progress=50
+type=recovery step=start_ai label=启动 AI status=完成 progress=62
+type=recovery step=ptz_home label=云台归位 status=完成 progress=75
+type=recovery step=front_preset label=调前方预置位 status=完成 progress=87
+type=recovery step=front_ai_ready label=前方 AI READY status=完成 progress=100
+type=recovery-summary completed=true alive=true degraded_cameras=1 progress=100 text="恢复完成（部分降级）"
+type=recovery-critical config_failed_alive=false progress=25
+type=acceptance health_ok_warn=true log_query_and_rolling=true recovery_completed=true noncritical_isolated=true critical_stops_alive=true result=PASS
+HEALTHREP_EXIT=0
+
+
+===== [health-probe-determinism] exit=0 =====
+IDENTICAL
+
+
+===== [regression-artifacts] exit=0 =====
+ai-probe-VERIFY-20261017-v1.log
+alarm-probe-VERIFY-20261017-v1.log
+clip-probe-VERIFY-20261017-v1.log
+core-tests-VERIFY-20261017-v1.log
+core-tests-VERIFY-20261017-v1.xml
+health-probe-VERIFY-20261017-v1.log
+maintenance-probe-VERIFY-20261017-v1.log
+permissions-probe-VERIFY-20261017-v1.log
+replay-probe-VERIFY-20261017-v1.log
+sim-inject-VERIFY-20261017-v1.json
+sim-inject-VERIFY-20261017-v1.log
+status-probe-driver-VERIFY-20261017-v1.log
+status-probe-VERIFY-20261017-v1.log
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify024': No such file or directory
+ls: cannot access '/tmp/railhmi_build': No such file or directory
+
+
+===== [cleanup-verify] exit=0 =====
+cleanup_ok=True
+
+===== [findings] exit=0 =====
+[{"independent_recheck_uifix_r1": "ITEM-024 D-01..D-04 repair re-verified: deliverable TestRun entry re-run ok, core-tests 663 line-identical to uifix-r1 + JUnit 663/0 (22 cases), health-probe oracle + byte identity + determinism, ext v2 (103) and ext v3 (demo path) green on-board", "confirmed": true}, {"ui_reactive_wiring": "D-02: overlay reload()/Connections/onChanged + cached st property; P6 healthSt/logRows + reloadHealth/reloadLogs + health Connections; one-shot bindings absent (R3)", "present": true}, {"ui_scrollable_cards": "D-01: Flickable + clip + contentHeight present; anchored-Grid pre-fix form absent; delivered checker fails on synthetic pre-fix copy", "present": true}, {"ui_structured_query_inputs": "D-03: source/keyword inputs with onEditingFinished -> reloadLogs", "present": true}, {"ui_demo_recovery_path": "D-04: resetRecovery/advanceRecovery bridge invokables + overlay Timer + P6 chip; ext v3 asserts the full demo state machine", "present": true}]

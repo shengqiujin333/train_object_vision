@@ -1,0 +1,180 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify024",
+    "outdir": "docs/hmi/test_evidence/ITEM-024-health",
+    "stamp": "VERIFY-20261017-v1",
+    "impl_testrun_log": "docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-uifix-r1.core-evidence_core-tests-20261016-ITEM024-uifix-r1.log",
+    "impl_healthprobe_log": "docs/hmi/test_evidence/ITEM-024-health/build-TestRun-192_168_0_103-20261016-ITEM024-uifix-r1.core-evidence_health-probe-20261016-ITEM024-uifix-r1.log",
+    "connect_timeout": "10",
+    "timeout_sec": "1500",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "ITEM-024 re-verification (uifix-r1 D-01..D-04): abort on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir docs\\hmi\\test_evidence\\ITEM-024-health --stamp VERIFY-20261017-v1 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 37.44,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 166 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[upload-perm-matrix] exit=0 PERMISSION_MATRIX.md\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 HEALTH_WIRE_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 HEALTH_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_sim-inject-VERIFY-20261017-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_sim-inject-VERIFY-20261017-v1.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_status-probe-VERIFY-20261017-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_status-probe-driver-VERIFY-20261017-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_ai-probe-VERIFY-20261017-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_alarm-probe-VERIFY-20261017-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_clip-probe-VERIFY-20261017-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_replay-probe-VERIFY-20261017-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_maintenance-probe-VERIFY-20261017-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_permissions-probe-VERIFY-20261017-v1.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_health-probe-VERIFY-20261017-v1.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: docs\\hmi\\test_evidence\\ITEM-024-health\\build-TestRun-192_168_0_103-VERIFY-20261017-v1.transcript.json\nlog: docs\\hmi\\test_evidence\\ITEM-024-health\\build-TestRun-192_168_0_103-VERIFY-20261017-v1.log\n"
+    },
+    {
+      "step": "fresh-artifacts",
+      "exit": 0,
+      "output": "build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.log build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.xml build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_health-probe-VERIFY-20261017-v1.log"
+    },
+    {
+      "step": "log-compare",
+      "exit": 0,
+      "output": "impl_pass=663 verify_pass=663 identical=True verify_fails=0 expect=663 result=RESULT: PASS passed=663 failed=0"
+    },
+    {
+      "step": "junit-parse",
+      "exit": 0,
+      "output": "junit tests=663 failures=0 item024_cases=22/22 missing=[]"
+    },
+    {
+      "step": "health-probe-assert",
+      "exit": 0,
+      "output": "{\"fails\": []}"
+    },
+    {
+      "step": "health-probe-compare",
+      "exit": 0,
+      "output": "cross-round deterministic reproduction identical=True"
+    },
+    {
+      "step": "mkdir-workdir",
+      "exit": 0,
+      "output": "/tmp/railhmi_verify024"
+    },
+    {
+      "step": "upload-verify_health24_ext.cpp",
+      "exit": 0,
+      "output": "verify_health24_ext.cpp"
+    },
+    {
+      "step": "compile-verify_health24_ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include -Isrc/platform/include /tmp/railhmi_verify024/verify_health24_ext.cpp build-core/src/core/librailhmi_core.a build-core/src/platform/librailhmi_platform.a -o /tmp/railhmi_verify024/verify_health24_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.42,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-verify_health24_ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify024/verify_health24_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "== verify ITEM-024 ext (health/logs/recovery fixtures) ==\nRESULT: PASS passed=103 failed=0\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "summary-verify_health24_ext",
+      "exit": 0,
+      "output": "verify_health24_ext passed=103 failed=0"
+    },
+    {
+      "step": "upload-verify_health24_ext_v3.cpp",
+      "exit": 0,
+      "output": "verify_health24_ext_v3.cpp"
+    },
+    {
+      "step": "compile-verify_health24_ext_v3",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include -Isrc/platform/include /tmp/railhmi_verify024/verify_health24_ext_v3.cpp build-core/src/core/librailhmi_core.a build-core/src/platform/librailhmi_platform.a -o /tmp/railhmi_verify024/verify_health24_ext_v3 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.84,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-verify_health24_ext_v3",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify024/verify_health24_ext_v3; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "== verify ITEM-024 ext v3 (demo recovery path / uifix-r1) ==\nRESULT: PASS passed=60 failed=0\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "summary-verify_health24_ext_v3",
+      "exit": 0,
+      "output": "verify_health24_ext_v3 passed=60 failed=0"
+    },
+    {
+      "step": "upload-scan-neg",
+      "exit": 0,
+      "output": "verify_scan24_v3.py verify_neg24.py"
+    },
+    {
+      "step": "wiring-scan",
+      "cmd": "cd /tmp/railhmi_build && python3 /tmp/railhmi_verify024/verify_scan24_v3.py; echo SCAN24_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "T1_overlay_structure= True\nT2_overlay_wired= True\nT3_p6_log_card= True\nT4_p6_recovery_card= True\nT5_bridge_core= True\nT6_main_inject= True\nT7_board= True\nT8_bridge_filter= True\nT9_overlay_gating= True\nT11_overlay_reactive= True\nT12_p6_reactive= True\nT13_demo_path= True\nT14_demo_semantics= True\nN2_degraded_not_failed= True\nT10_no_hex= True\nR1_p6_scrollable= True\nR2_p6_no_anchored_grid= True\nR3_no_one_shot_bindings= True\nR4_demo_reachable= True\nR5_theme_tokens_present= True\nSCAN24_EXIT=0\n"
+    },
+    {
+      "step": "wiring-scan-findings",
+      "exit": 0,
+      "output": "mismatch=[] scan_exit_ok=True raw={\"T1_overlay_structure\": \"True\", \"T2_overlay_wired\": \"True\", \"T3_p6_log_card\": \"True\", \"T4_p6_recovery_card\": \"True\", \"T5_bridge_core\": \"True\", \"T6_main_inject\": \"True\", \"T7_board\": \"True\", \"T8_bridge_filter\": \"True\", \"T9_overlay_gating\": \"True\", \"T11_overlay_reactive\": \"True\", \"T12_p6_reactive\": \"True\", \"T13_demo_path\": \"True\", \"T14_demo_semantics\": \"True\", \"N2_degraded_not_failed\": \"True\", \"T10_no_hex\": \"True\", \"R1_p6_scrollable\": \"True\", \"R2_p6_no_anchored_grid\": \"True\", \"R3_no_one_shot_bindings\": \"True\", \"R4_demo_reachable\": \"True\", \"R5_theme_tokens_present\": \"True\"}"
+    },
+    {
+      "step": "negative-control",
+      "cmd": "cd /tmp/railhmi_build && python3 /tmp/railhmi_verify024/verify_neg24.py; echo NEG_DRIVER_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.19,
+      "output": "NEG_HEALTHY_EXIT=0\nNEG_MUTATED_EXIT=1\nneg-fail: [FAIL] P6 missing scrollable card area (D-01) (Flickable)\nneg-fail: [FAIL] P6 missing source query input (D-03) (logSourceInput)\nneg-fail: [FAIL] P6 missing keyword query input (D-03) (logKeywordInput)\nneg-fail: [FAIL] P6 missing recovery progress demo (D-04) (recoveryDemo)\nneg-fail: [FAIL] P6 does not connect railhmiHealth changed() (D-02)\nNEG_DRIVER_EXIT=0\n"
+    },
+    {
+      "step": "negative-control-findings",
+      "exit": 0,
+      "output": "neg_ok=True"
+    },
+    {
+      "step": "health-probe-rep-run",
+      "cmd": "cd /tmp/railhmi_build && mkdir -p verify && ./build-core/tools/railhmi-health-probe --out verify/health-probe-rep.log; echo HEALTHREP_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "type=health level=ok text=\"NPU 42.0% / CPU 33.0% / 温度 58.0°C / 网络错误 3 / 正常\" alerts=0\ntype=health level=warn alerts=1 first=\"温度 80.0°C > 75.0°C\"\ntype=log-json {\"ts_ms\":1792108801000,\"level\":\"error\",\"source\":\"stream\",\"message\":\"CAM-04 断流\",\"fields\":{\"cam\":\"CAM-04\"}}\ntype=log-query by_source=1 by_keyword=1 by_severity=2 day_rolled=2\ntype=recovery step=load_config label=加载配置 status=完成 progress=12\ntype=recovery step=open_database label=打开数据库 status=完成 progress=25\ntype=recovery step=start_recording label=启动录像/存储 status=完成 progress=37\ntype=recovery step=start_streaming label=启动相机取流 status=降级 progress=50\ntype=recovery step=start_ai label=启动 AI status=完成 progress=62\ntype=recovery step=ptz_home label=云台归位 status=完成 progress=75\ntype=recovery step=front_preset label=调前方预置位 status=完成 progress=87\ntype=recovery step=front_ai_ready label=前方 AI READY status=完成 progress=100\ntype=recovery-summary completed=true alive=true degraded_cameras=1 progress=100 text=\"恢复完成（部分降级）\"\ntype=recovery-critical config_failed_alive=false progress=25\ntype=acceptance health_ok_warn=true log_query_and_rolling=true recovery_completed=true noncritical_isolated=true critical_stops_alive=true result=PASS\nHEALTHREP_EXIT=0\n"
+    },
+    {
+      "step": "health-probe-determinism",
+      "cmd": "cd /tmp/railhmi_build && diff verify/health-probe-rep.log core-evidence/health-probe-VERIFY-20261017-v1.log && echo IDENTICAL",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "IDENTICAL\n"
+    },
+    {
+      "step": "regression-artifacts",
+      "cmd": "cd /tmp/railhmi_build && ls core-evidence/",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "ai-probe-VERIFY-20261017-v1.log\nalarm-probe-VERIFY-20261017-v1.log\nclip-probe-VERIFY-20261017-v1.log\ncore-tests-VERIFY-20261017-v1.log\ncore-tests-VERIFY-20261017-v1.xml\nhealth-probe-VERIFY-20261017-v1.log\nmaintenance-probe-VERIFY-20261017-v1.log\npermissions-probe-VERIFY-20261017-v1.log\nreplay-probe-VERIFY-20261017-v1.log\nsim-inject-VERIFY-20261017-v1.json\nsim-inject-VERIFY-20261017-v1.log\nstatus-probe-driver-VERIFY-20261017-v1.log\nstatus-probe-VERIFY-20261017-v1.log\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify024 /tmp/railhmi_build && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify024 /tmp/railhmi_build 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.1,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify024': No such file or directory\nls: cannot access '/tmp/railhmi_build': No such file or directory\n"
+    },
+    {
+      "step": "cleanup-verify",
+      "exit": 0,
+      "output": "cleanup_ok=True"
+    },
+    {
+      "step": "findings",
+      "exit": 0,
+      "output": "[{\"independent_recheck_uifix_r1\": \"ITEM-024 D-01..D-04 repair re-verified: deliverable TestRun entry re-run ok, core-tests 663 line-identical to uifix-r1 + JUnit 663/0 (22 cases), health-probe oracle + byte identity + determinism, ext v2 (103) and ext v3 (demo path) green on-board\", \"confirmed\": true}, {\"ui_reactive_wiring\": \"D-02: overlay reload()/Connections/onChanged + cached st property; P6 healthSt/logRows + reloadHealth/reloadLogs + health Connections; one-shot bindings absent (R3)\", \"present\": true}, {\"ui_scrollable_cards\": \"D-01: Flickable + clip + contentHeight present; anchored-Grid pre-fix form absent; delivered checker fails on synthetic pre-fix copy\", \"present\": true}, {\"ui_structured_query_inputs\": \"D-03: source/keyword inputs with onEditingFinished -> reloadLogs\", \"present\": true}, {\"ui_demo_recovery_path\": \"D-04: resetRecovery/advanceRecovery bridge invokables + overlay Timer + P6 chip; ext v3 asserts the full demo state machine\", \"present\": true}]"
+    }
+  ]
+}
