@@ -1,0 +1,108 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify025b",
+    "outdir": "E:/work/rail_issue/rk3588_handover/docs/hmi/test_evidence/ITEM-025-packaging",
+    "stamp": "VERIFY-20261017-v2",
+    "connect_timeout": "10",
+    "timeout_sec": "1500",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "ITEM-025 re-run of the two v1-failed fixture steps: ext compile/run (fixed cpp comment block) and negative control (with --app-src src); no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir E:\\work\\rail_issue\\rk3588_handover\\docs\\hmi\\test_evidence\\ITEM-025-packaging --stamp VERIFY-20261017-v2 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 37.96,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 170 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[upload-perm-matrix] exit=0 PERMISSION_MATRIX.md\n[upload-packaging] exit=0 packaging/\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 PACK_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 FAULT_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_core-tests-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_core-tests-VERIFY-20261017-v2.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_sim-inject-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_sim-inject-VERIFY-20261017-v2.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_status-probe-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_status-probe-driver-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_ai-probe-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_alarm-probe-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_clip-probe-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_replay-probe-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_maintenance-probe-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_permissions-probe-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_health-probe-VERIFY-20261017-v2.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v2.core-evidence_fault-probe-VERIFY-20261017-v2.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: E:\\work\\rail_issue\\rk3588_handover\\docs\\hmi\\test_evidence\\ITEM-025-packaging\\build-TestRun-192_168_0_103-VERIFY-20261017-v2.transcript.json\nlog: E:\\work\\rail_issue\\rk3588_handover\\docs\\hmi\\test_evidence\\ITEM-025-packaging\\build-TestRun-192_168_0_103-VERIFY-20261017-v2.log\n"
+    },
+    {
+      "step": "fresh-probe-compare",
+      "exit": 0,
+      "output": "fresh==impl r1: True"
+    },
+    {
+      "step": "upload-ext",
+      "exit": 0,
+      "output": "verify_packaging25_ext.cpp"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -Isrc/core/include -Isrc/platform/include /tmp/railhmi_verify025b/verify_packaging25_ext.cpp build-core/src/core/librailhmi_core.a build-core/src/platform/librailhmi_platform.a -o /tmp/railhmi_verify025b/verify_packaging25_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.28,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify025b/verify_packaging25_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "== verify ITEM-025 ext (fault catalog / self-check / injection) ==\nRESULT: PASS passed=78 failed=0\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-summary",
+      "exit": 0,
+      "output": "passed=78 failed=0"
+    },
+    {
+      "step": "neg-extract",
+      "exit": 0,
+      "output": "verify_neg25.py"
+    },
+    {
+      "step": "negative-control",
+      "cmd": "cd /tmp/railhmi_build && python3 /tmp/railhmi_verify025b/verify_neg25.py; echo NEG_DRIVER_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.18,
+      "output": "NEG_HEALTHY_EXIT=0\nNEG_MUTATED_EXIT=1\nneg-fail: [FAIL] systemd unit missing auto-restart (Restart=always)\nneg-fail: [FAIL] systemd unit references/modifies cpu-performance.service (not allowed)\nNEG_DRIVER_EXIT=0\n"
+    },
+    {
+      "step": "negative-control-findings",
+      "exit": 0,
+      "output": "neg_ok=True"
+    },
+    {
+      "step": "packaging-scan",
+      "cmd": "cd /tmp/railhmi_build && python3 /tmp/railhmi_verify025b/verify_scan25.py --app src; echo SCAN25_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "P1_unit_restart_always=True\nP2_unit_display=True\nP3_no_cpu_performance=True\nP4_install_runtime_dirs=True\nP5_install_enables_unit=True\nP6_version_upgrade_resources=True\nP7_fault_catalog_six_kinds=True\nP8_p6_selfcheck_card=True\nP9_main_injects_faults=True\nP13_unit_named_railhmi=True\nP14_execstart_binary_installed=True\nP15_sim_inject_cli_built=True\nP16_fault_probe_built=True\nD01_execstartpre_provenance=False\nD01b_upgrade_doc_bin_tools=False\nD02_config_arg_consumed=False\nD02_cfg_def:RAILHMI_CONFIG_DIR=\"${CMAKE_SOURCE_DIR}/config\")\nD02_cfg_def:RAILHMI_CONFIG_DIR\nD02_cfg_def:RAILHMI_CONFIG_DIR \"config\"\nD02_cfg_def:RAILHMI_CONFIG_DIR);\nSCAN25_EXIT=0\n"
+    },
+    {
+      "step": "packaging-scan-findings",
+      "exit": 0,
+      "output": "positive_failing=[] d01=False d01b=False d02=False"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify025b /tmp/railhmi_build && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify025b /tmp/railhmi_build 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.1,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify025b': No such file or directory\nls: cannot access '/tmp/railhmi_build': No such file or directory\n"
+    },
+    {
+      "step": "cleanup-verify",
+      "exit": 0,
+      "output": "cleanup_ok=True"
+    },
+    {
+      "step": "findings",
+      "exit": 0,
+      "output": "[{\"v2_fixups\": \"ext fixture compiled+ran on-board (RESULT: PASS, 0 failed); negative control NEG_HEALTHY_EXIT=0/NEG_MUTATED_EXIT=1; packaging scan with D-01/D-01b/D-02 False re-confirmed\", \"confirmed\": true}]"
+    }
+  ]
+}

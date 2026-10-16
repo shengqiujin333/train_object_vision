@@ -1,0 +1,17 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[fingerprint] exit=0 observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[run-testrun-entry] exit=0 log: E:\work\rail_issue\rk3588_handover\docs\hmi\test_evidence\ITEM-025-packaging\build-TestRun-192_168_0_103-VERIFY-20261017-v2.log
+[fresh-probe-compare] exit=0 fresh==impl r1: True
+[upload-ext] exit=0 verify_packaging25_ext.cpp
+[compile-ext] exit=0 GXX_EXIT=0
+[run-ext] exit=0 EXT_EXIT=0
+[ext-summary] exit=0 passed=78 failed=0
+[neg-extract] exit=0 verify_neg25.py
+[negative-control] exit=0 NEG_DRIVER_EXIT=0
+[negative-control-findings] exit=0 neg_ok=True
+[packaging-scan] exit=0 SCAN25_EXIT=0
+[packaging-scan-findings] exit=0 positive_failing=[] d01=False d01b=False d02=False
+[cleanup] exit=2 ls: cannot access '/tmp/railhmi_build': No such file or directory
+[cleanup-verify] exit=0 cleanup_ok=True
+[findings] exit=0 [{"v2_fixups": "ext fixture compiled+ran on-board (RESULT: PASS, 0 failed); negative control NEG_HEALTHY_EXIT=0/NEG_MUTATED_EXIT=1; packaging scan with D-01/D-01b/D-02 False re-confirmed", "confirmed": true}]
+RERUN_RC=0

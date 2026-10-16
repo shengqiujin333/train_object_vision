@@ -1,0 +1,103 @@
+== offline self-check 0 (artifacts + oracle tables) ==
+PASS fault oracle extracted n=16
+PASS 31 case names extracted n=31
+PASS impl core-tests 663/0 pass=663 fail=0
+PASS all 32 case names verbatim in log missing=[]
+PASS junit 663/0 tests=663 failures=0
+PASS junit 31 ITEM-025 exact cases missing=[]
+PASS fault-probe oracle 16 lines on impl log missing=[]
+PASS sim log injection params 
+PASS sim log reconnect@1500 
+PASS sim log offline@2500 
+PASS sim log live@5000 
+PASS sim log summary 
+PASS sim json kinds complete kinds=['ai', 'alarm', 'gap', 'injection', 'ptz', 'storage', 'stream_state', 'summary']
+PASS driver TESTRUN_EXIT=0 
+PASS driver SCAN_EXIT=0 
+PASS driver REPLAY_WIRE_EXIT=0 
+PASS driver AIDBG_WIRE_EXIT=0 
+PASS driver MAINT_WIRE_EXIT=0 
+PASS driver PERM_WIRE_EXIT=0 
+PASS driver HEALTH_WIRE_EXIT=0 
+PASS driver PACK_EXIT=0 
+PASS driver SIM_EXIT=0 
+PASS driver STATUS_EXIT=0 
+PASS driver AI_EXIT=0 
+PASS driver ALARM_EXIT=0 
+PASS driver CLIP_EXIT=0 
+PASS driver REPLAY_EXIT=0 
+PASS driver MAINT_EXIT=0 
+PASS driver PERM_EXIT=0 
+PASS driver HEALTH_EXIT=0 
+PASS driver FAULT_EXIT=0 
+PASS ext check signature 
+PASS ext check_eq signature 
+PASS ext printf RESULT once 
+PASS ext braces balanced 38 vs 38
+PASS ext includes core only ['railhmi/core/fault_catalog.h', 'railhmi/core/simulation.h', 'railhmi/core/retention.h']
+PASS ext no duplicate check names dupes=[]
+PASS scan key P1_unit_restart_always 
+PASS scan key D01_execstartpre_provenance 
+PASS scan key D01b_upgrade_doc_bin_tools 
+PASS scan key D02_config_arg_consumed 
+OFFLINE-0 RESULT: PASS (0 failed)
+{"offline0": "PASS", "failed": []}
+OFFLINE0_RC=0
+== offline self-check 1 (local scan + delivered checker + neg dry-run) ==
+P1_unit_restart_always=True
+P2_unit_display=True
+P3_no_cpu_performance=True
+P4_install_runtime_dirs=True
+P5_install_enables_unit=True
+P6_version_upgrade_resources=True
+P7_fault_catalog_six_kinds=True
+P8_p6_selfcheck_card=True
+P9_main_injects_faults=True
+P13_unit_named_railhmi=True
+P14_execstart_binary_installed=True
+P15_sim_inject_cli_built=True
+P16_fault_probe_built=True
+D01_execstartpre_provenance=False
+D01b_upgrade_doc_bin_tools=False
+D02_config_arg_consumed=False
+D02_cfg_def:RAILHMI_CONFIG_DIR="${CMAKE_SOURCE_DIR}/config")
+D02_cfg_def:RAILHMI_CONFIG_DIR
+D02_cfg_def:RAILHMI_CONFIG_DIR "config"
+D02_cfg_def:RAILHMI_CONFIG_DIR);
+PASS scan emits all keys missing=[]
+PASS scan positives all True failing=[]
+PASS scan D-01 False (ExecStartPre no provenance) got=False
+PASS scan D-01b False (UPGRADE documents nonexistent bin tool) got=False
+PASS scan D-02 False (--config not consumed / no /opt/railhmi compile-time) got=False
+PASS D-02 compile-time definition surfaced defs=['RAILHMI_CONFIG_DIR="${CMAKE_SOURCE_DIR}/config")', 'RAILHMI_CONFIG_DIR', 'RAILHMI_CONFIG_DIR "config"', 'RAILHMI_CONFIG_DIR);']
+PASS delivered check_packaging PASS locally [check_packaging] PASS (ITEM-025 packaging + systemd + fault self-check)
+PASS delivered checker rejects mutated packaging exit=1 fails=['[FAIL] systemd unit missing auto-restart (Restart=always)']
+OFFLINE-1 RESULT: PASS (0 failed)
+OFFLINE1_RC=0
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[fingerprint] exit=0 observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[run-testrun-entry] exit=0 log: E:\work\rail_issue\rk3588_handover\docs\hmi\test_evidence\ITEM-025-packaging\build-TestRun-192_168_0_103-VERIFY-20261017-v1.log
+[fresh-artifacts] exit=0 build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.log build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.xml build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_fault-probe-VERIFY-20261017-v1.log build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_sim-inject-VERIFY-20261017-v1.log build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_sim-inject-VERIFY-20261017-v1.json
+[log-compare] exit=0 impl_pass=663 verify_pass=663 identical=True verify_fails=0 expect=663 result=RESULT: PASS passed=663 failed=0
+[junit-parse] exit=1 junit tests=663 failures=0 item025_cases=28/31 missing=["parse '01'", "parse 'fi-10'", "parse 'freeze'"]
+[fault-probe-assert] exit=0 {"fails": []}
+[fault-probe-compare] exit=0 cross-round byte identity vs implementer r1: identical=True
+[sim-inject-assert] exit=0 {"fails": []}
+[sim-inject-compare] exit=0 cross-round byte identity vs implementer r1: identical=True
+[sim-json-assert] exit=0 {"fails": []}
+[mkdir-workdir] exit=0 /tmp/railhmi_verify025
+[upload-verify_packaging25_ext.cpp] exit=0 verify_packaging25_ext.cpp
+[compile-verify_packaging25_ext] exit=0 GXX_EXIT=1
+[upload-scan-neg] exit=0 verify_scan25.py verify_neg25.py
+[packaging-scan] exit=0 SCAN25_EXIT=0
+[packaging-scan-findings] exit=0 positive_failing=[] d01=False d01b=False d02=False (D-01/D-02 expected False: ExecStartPre railhmi-version-check has no build/install source; --config not consumed, config dir compile-time source-tree path)
+[negative-control] exit=0 NEG_DRIVER_EXIT=1
+[negative-control-findings] exit=1 neg_ok=False
+[fault-probe-rep-run] exit=0 FAULTREP_EXIT=0
+[fault-probe-determinism] exit=0 IDENTICAL
+[regression-artifacts] exit=0 status-probe-VERIFY-20261017-v1.log
+[cleanup] exit=2 ls: cannot access '/tmp/railhmi_build': No such file or directory
+[cleanup-verify] exit=0 cleanup_ok=True
+[findings] exit=0 [{"independent_recheck_r1": "ITEM-025 deliverables re-verified: deliverable TestRun entry re-run ok, core-tests 663 line-identical to implementer r1 + JUnit 663/0 (31 fault/injection cases), fault-probe oracle 16 lines + byte identity + determinism, sim-inject oracle + json + byte identity, ext fixture green on-board", "confirmed": false}, {"fault_catalog_contract": "6 FI entries with non-empty explicit prompts and recovery paths; SC-01..10 inject commands parse via parse_fault; SC-BOOT restarts the enabled unit name railhmi and cites Restart=always", "present": true}, {"fi_model_sequences": "FI-01 reconnect->offline escalation->live, FI-02 frozen, FI-03 AI unavailable + 0 alarms, FI-04 storage low, FI-05 ptz tolerance fail, FI-10 gaps recorded+merged; window [onset,recovery) half-open; recovery<=onset never recovers; determinism byte-identical", "present": true}, {"d01_execstartpre_no_provenance": "D-01: packaging/railhmi.service ExecStartPre=/opt/railhmi/bin/railhmi-version-check references a binary that is neither built by any CMake target nor installed by install.sh; ExecStartPre failure fails the start, and with Restart=always that is a boot crash loop — '重启后应用随系统自动拉起并进入可用状态' would not hold on a real ENV-E deployment; UPGRADE.md also documents the tool", "present": true}, {"d02_config_dir_not_deployment_contract": "D-02: unit passes --config /opt/railhmi/config but main.cpp never parses it; config dir is compile-time RAILHMI_CONFIG_DIR=CMAKE_SOURCE_DIR/config, so the deployed binary resolves config relative to the build-time source tree (e.g. /tmp/railhmi_build) — /opt/railhmi/config is not honored; config load fails -> exit 4 -> Restart=always crash loop", "present": true}, {"delivered_checker_scope": "check_packaging.py is token-based; it does not verify ExecStartPre target existence or --config consumption, which is why PACK_EXIT=0 coexists with D-01/D-02; negative control proves the checker still bites on token-level mutations", "present": false}]
+NOTE: one or more steps returned nonzero or failed assertions; see transcript
+FIXTURES_RC=1

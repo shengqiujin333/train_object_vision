@@ -1315,6 +1315,14 @@ docs/hmi/test_evidence/ITEM-024-health/verify_health24_ext_v3.cpp | active | ITE
 docs/hmi/test_evidence/ITEM-024-health/verify_health24_fixtures.py | active | 验证轮夹具司机（TestRun 复跑/逐行比对/JUnit/oracle/ext/扫描/确定性/回归/清理）
 docs/hmi/test_evidence/ITEM-024-health/verify_health24_fixtures_v2.py | active | ITEM-024 复核轮夹具司机 v2（TestRun 复跑/逐行比对/JUnit/oracle/ext v2+v3/扫描 v3/板端负例/确定性/回归/清理）
 docs/hmi/test_evidence/ITEM-025-packaging/README.md | active | ITEM-025 打包/systemd 自启/故障自检证据（运行目录/单元/版本升级资源/自检目录；板端 663/663 + fault-probe + 打包核对 PASS；边界/复现）
+docs/hmi/test_evidence/ITEM-025-packaging/RUN-RERUN-console.log | active | ITEM-025 v2 驱动控制台（验证方夹具缺陷轮：JUnit &apos;、ext 头注释、NEG 参数三处失败）
+docs/hmi/test_evidence/ITEM-025-packaging/RUN-RERUN3-console.log | active | ITEM-025 v3 终轮驱动控制台（全部步骤 exit=0，RERUN_RC=0）
+docs/hmi/test_evidence/ITEM-025-packaging/RUN-ROUND-console.log | active | ITEM-025 v1 全量驱动控制台（含离线自检 0/1/2 PASS）
+docs/hmi/test_evidence/ITEM-025-packaging/VERIFY-FIXTURES-VERIFY-20261017-v1.log | active | ITEM-025 验证轮 v1 全量步骤输出（指纹、TestRun 复跑、663 逐行比对、JUnit、oracle、字节一致、确定性、扫描板端 D-01/D-02=False、回归留痕、清理）
+docs/hmi/test_evidence/ITEM-025-packaging/VERIFY-FIXTURES-VERIFY-20261017-v1.transcript.json | active | ITEM-025 验证轮 v1 transcript
+docs/hmi/test_evidence/ITEM-025-packaging/VERIFY-FIXTURES-VERIFY-20261017-v3.log | active | ITEM-025 验证轮 v3 终轮输出（ext 夹具 GXX_EXIT=0 RESULT: PASS 78/0；反例 NEG 0/1；扫描 D-01/D-01b/D-02=False；按名清理确认）
+docs/hmi/test_evidence/ITEM-025-packaging/VERIFY-FIXTURES-VERIFY-20261017-v3.transcript.json | active | ITEM-025 验证轮 v3 transcript
+docs/hmi/test_evidence/ITEM-025-packaging/VERIFY-ITEM-025.md | active | ITEM-025 独立验证（software_verification，验证轮 20261017）：对 commit 6d1787b（20261016-ITEM025-r1）不采信实现方自检——指纹 SSH + TestRun 复跑 663 逐行比对 + JUnit 独立解析 + fault-probe/sim-inject 16 行 oracle + 跨轮字节一致 + 确定性 + 验证方 ext C++ 夹具板上编译（RESULT: PASS 78/0：FI 目录六项/自检清单可解析/SC-BOOT 单元名/半开窗口/六故障序列/确定性）+ 部署契约深扫 + 反例对照（交付 checker 新鲜 PASS/畸变 FAIL）；判定 TEST_FAIL —— D-01 ExecStartPre 引用不存在且无人构建/安装的 railhmi-version-check（单元永不 active、Restart=always Crash-Loop）+ D-02 单元 --config 参数不被 main() 解析且配置目录是编译期源码树路径（/opt/railhmi/config 不被读取，load 失败 exit 4）；失败范围=部署可用性契约，故障域内容经复验为真；修复边界见报告 §4
 docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-20261016-ITEM025-r1.core-evidence_ai-probe-20261016-ITEM025-r1.log | active | ITEM-025 TestRun 运行日志
 docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-20261016-ITEM025-r1.core-evidence_alarm-probe-20261016-ITEM025-r1.log | active | ITEM-025 TestRun 运行日志
 docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-20261016-ITEM025-r1.core-evidence_clip-probe-20261016-ITEM025-r1.log | active | ITEM-025 TestRun 运行日志
@@ -1331,6 +1339,50 @@ docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-20261016-I
 docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-20261016-ITEM025-r1.core-evidence_status-probe-driver-20261016-ITEM025-r1.log | active | ITEM-025 TestRun 运行日志
 docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-20261016-ITEM025-r1.log | active | ITEM-025 TestRun 运行日志
 docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-20261016-ITEM025-r1.transcript.json | active | ITEM-025 TestRun transcript（含 upload-packaging）
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_ai-probe-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_alarm-probe-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_clip-probe-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 core 单测逐项输出（663 passed / 0 failed，与 r1 逐行一致）
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_core-tests-VERIFY-20261017-v1.xml | active | ITEM-025 独立复跑 JUnit XML（663/0）
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_fault-probe-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 fault-probe 输出（fi_covered/boot_step/prompts_nonempty PASS）
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_health-probe-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_maintenance-probe-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_permissions-probe-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_replay-probe-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_sim-inject-VERIFY-20261017-v1.json | active | ITEM-025 独立复跑 TestRun(v1) 六故障注入 JSON（与 r1 逐字节一致）
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_sim-inject-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 六故障注入日志（与 r1 逐字节一致）
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_status-probe-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.core-evidence_status-probe-driver-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.log | active | ITEM-025 独立复跑 TestRun(v1) 总日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v1.transcript.json | active | ITEM-025 独立复跑 TestRun(v1) transcript
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_ai-probe-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_alarm-probe-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_clip-probe-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_core-tests-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 core 单测逐项输出（v3 终轮 663 passed / 0 failed）
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_core-tests-VERIFY-20261017-v3.xml | active | ITEM-025 独立复跑 JUnit XML（v3 终轮 663/0）
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_fault-probe-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 fault-probe 输出（v3 终轮）
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_health-probe-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_maintenance-probe-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_permissions-probe-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_replay-probe-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_sim-inject-VERIFY-20261017-v3.json | active | ITEM-025 独立复跑 TestRun(v3 终轮) 六故障注入 JSON
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_sim-inject-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 六故障注入日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_status-probe-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.core-evidence_status-probe-driver-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 运行日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.log | active | ITEM-025 独立复跑 TestRun(v3 终轮) 总日志
+docs/hmi/test_evidence/ITEM-025-packaging/build-TestRun-192_168_0_103-VERIFY-20261017-v3.transcript.json | active | ITEM-025 独立复跑 TestRun(v3 终轮) transcript
+docs/hmi/test_evidence/ITEM-025-packaging/offline_negcheck.py | active | 验证方离线复现：v2 轮 NEG_MUTATED_EXIT=2 异常（定位驱动 fresh_args[:-1] 切片缺陷）
+docs/hmi/test_evidence/ITEM-025-packaging/offline_negcheck_diag.py | active | 验证方离线复现（诊断版）：捕获 argparse stderr 定位 --packaging 丢参根因
+docs/hmi/test_evidence/ITEM-025-packaging/offline_selfcheck0.py | active | 验证方离线自检 0：夹具期望构造预检（oracle 解析/31 用例名/JUnit &apos; 反转义/驱动 EXIT/ext 结构审计）
+docs/hmi/test_evidence/ITEM-025-packaging/offline_selfcheck1.py | active | 验证方离线自检 1：主机扫描矩阵 + 交付 check_packaging.py + 反例干跑
+docs/hmi/test_evidence/ITEM-025-packaging/offline_selfcheck2.py | active | 验证方离线自检 2：板端布局（src/ 顶层）扫描路径解析模拟
+docs/hmi/test_evidence/ITEM-025-packaging/offline_selfcheck3.py | active | 验证方离线自检 3：ext cpp 结构检查（注释残留/反引号/大括号/RESULT 唯一/长破折号注释行）+ NEG_PY 合成布局执行（0/1 与点名 FAIL）
+docs/hmi/test_evidence/ITEM-025-packaging/run_ext_rerun.sh | active | 验证方 ext 终轮 bash 驱动
+docs/hmi/test_evidence/ITEM-025-packaging/run_verify_round.sh | active | 验证方 v1 全量轮 bash 驱动（PowerShell 凭据加载 + 离线自检 + 板夹具）
+docs/hmi/test_evidence/ITEM-025-packaging/verify_packaging25_ext.cpp | active | 验证方 ext C++ 夹具（板上链接本轮静态库：目录/自检契约、注入窗口语义、六故障序列、确定性；RESULT PASS/FAIL）
+docs/hmi/test_evidence/ITEM-025-packaging/verify_packaging25_ext_rerun.py | active | 验证方 ext 终轮夹具驱动（TestRun + 新鲜探针比对 + ext 板上编译 + 反例 + 扫描 + 清理）
+docs/hmi/test_evidence/ITEM-025-packaging/verify_packaging25_fixtures.py | active | 验证方主板夹具驱动（指纹/TestRun 复跑/逐行/JUnit/oracle/ext/NEG_PY 内嵌扫描/清理）
+docs/hmi/test_evidence/ITEM-025-packaging/verify_packaging25_scan.py | active | 验证方部署契约扫描（P1..P16 正向键 + D-01 ExecStartPre 存在性 + D-01b UPGRADE 文档登记 + D-02 --config 消费路径）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）
