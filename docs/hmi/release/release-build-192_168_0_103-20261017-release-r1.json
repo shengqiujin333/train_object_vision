@@ -1,0 +1,96 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "out_dir": "docs/hmi/release",
+    "stamp": "20261017-release-r1",
+    "remote_dir": "/tmp/railhmi_release",
+    "connect_timeout": 10,
+    "command_timeout": 120,
+    "apt_timeout": 900,
+    "build_timeout": 1500,
+    "no_install_deps": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "connected": true,
+  "steps": [
+    {
+      "cmd": "rm -rf /tmp/railhmi_release && mkdir -p /tmp/railhmi_release",
+      "exit": 0,
+      "elapsed_s": 0.23,
+      "output": ""
+    },
+    {
+      "cmd": "ls /usr/lib/aarch64-linux-gnu/cmake/Qt5Quick/Qt5QuickConfig.cmake 2>/dev/null && echo QT_QML=yes || echo QT_QML=no",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "QT_QML=no"
+    },
+    {
+      "cmd": "dpkg-query -W -f='${Package} ${Version}\\n' qtdeclarative5-dev qml-module-qtquick2 qml-module-qtquick-controls2 qml-module-qtquick-window2 2>&1",
+      "exit": 1,
+      "elapsed_s": 0.13,
+      "output": "dpkg-query: no packages found matching qtdeclarative5-dev\ndpkg-query: no packages found matching qml-module-qtquick2\ndpkg-query: no packages found matching qml-module-qtquick-controls2\ndpkg-query: no packages found matching qml-module-qtquick-window2"
+    },
+    {
+      "cmd": "sudo -n env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends qtdeclarative5-dev qml-module-qtquick2 qml-module-qtquick-controls2 qml-module-qtquick-window2",
+      "exit": 0,
+      "elapsed_s": 14.0,
+      "output": "Reading package lists...\nBuilding dependency tree...\nReading state information...\nThe following additional packages will be installed:\n  libqt5qmlworkerscript5 libqt5quickcontrols2-5 libqt5quickparticles5\n  libqt5quickshapes5 libqt5quicktemplates2-5 libqt5quicktest5\n  qml-module-qtquick-templates2 qt5-qmltooling-plugins\n  qtdeclarative5-dev-tools\nThe following NEW packages will be installed:\n  libqt5qmlworkerscript5 libqt5quickcontrols2-5 libqt5quickparticles5\n  libqt5quickshapes5 libqt5quicktemplates2-5 libqt5quicktest5\n  qml-module-qtquick-controls2 qml-module-qtquick-templates2\n  qml-module-qtquick-window2 qml-module-qtquick2 qt5-qmltooling-plugins\n  qtdeclarative5-dev qtdeclarative5-dev-tools\n0 upgraded, 13 newly installed, 0 to remove and 258 not upgraded.\nNeed to get 3,540 kB of archives.\nAfter this operation, 20.4 MB of additional disk space will be used.\nGet:10 http://mirrors.ustc.edu.cn/ubuntu-ports jammy/universe arm64 libqt5quicktemplates2-5 arm64 5.15.3+dfsg-1 [445 kB]\nGet:1 https://wiki.t-firefly.com:443/firefly-ubuntu-repo jammy/main arm64 libqt5qmlworkerscript5 arm64 5.15.3+dfsg-1 [48.2 kB]\nGet:2 https://wiki.t-firefly.com:443/firefly-ubuntu-repo jammy/main arm64 libqt5quickparticles5 arm64 5.15.3+dfsg-1 [232 kB]\nGet:3 https://wiki.t-firefly.com:443/firefly-ubuntu-repo jammy/main arm64 libqt5quickshapes5 arm64 5.15.3+dfsg-1 [114 kB]\nGet:4 https://wiki.t-firefly.com:443/firefly-ubuntu-repo jammy/main arm64 libqt5quicktest5 arm64 5.15.3+dfsg-1 [71.6 kB]\nGet:5 https://wiki.t-firefly.com:443/firefly-ubuntu-repo jammy/main arm64 qml-module-qtquick-window2 arm64 5.15.3+dfsg-1 [40.9 kB]\nGet:6 https://wiki.t-firefly.com:443/firefly-ubuntu-repo jammy/main arm64 qml-module-qtquick2 arm64 5.15.3+dfsg-1 [47.6 kB]\nGet:7 https://wiki.t-firefly.com:443/firefly-ubuntu-repo jammy/main arm64 qt5-qmltooling-plugins arm64 5.15.3+dfsg-1 [210 kB]\nGet:11 http://mirrors.ustc.edu.cn/ubuntu-ports jammy/universe arm64 libqt5quickcontrols2-5 arm64 5.15.3+dfsg-1 [69.1 kB]\nGet:8 https://wiki.t-firefly.com:443/firefly-ubuntu-repo jammy/main arm64 qtdeclarative5-dev-tools arm64 5.15.3+dfsg-1 [715 kB]\nGet:12 http://mirrors.ustc.edu.cn/ubuntu-ports jammy/universe arm64 qml-module-qtquick-templates2 arm64 5.15.3+dfsg-1 [85.2 kB]\nGet:13 http://mirrors.ustc.edu.cn/ubuntu-ports jammy/universe arm64 qml-module-qtquick-controls2 arm64 5.15.3+dfsg-1 [936 kB]\nGet:9 https://wiki.t-firefly.com:443/firefly-ubuntu-repo jammy/main arm64 qtdeclarative5-dev arm64 5.15.3+dfsg-1 [525 kB]\nFetched 3,540 kB in 5s (655 kB/s)\nSelecting previously unselected package libqt5qmlworkerscript5:arm64.\r\n(Reading database ... \r(Reading database ... 5%\r(Reading database ... 10%\r(Reading database ... 15%\r(Reading database ... 20%\r(Reading database ... 25%\r(Reading database ... 30%\r(Reading database ... 35%\r(Reading database ... 40%\r(Reading database ... 45%\r(Reading database ... 50%\r(Reading database ... 55%\r(Reading database ... 60%\r(Reading database ... 65%\r(Reading database ... 70%\r(Reading database ... 75%\r(Reading database ... 80%\r(Reading database ... 85%\r(Reading database ... 90%\r(Reading database ... 95%\r(Reading database ... 100%\r(Reading database ... 154720 files and directories currently installed.)\r\nPreparing to unpack .../00-libqt5qmlworkerscript5_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking libqt5qmlworkerscript5:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package libqt5quicktemplates2-5:arm64.\r\nPreparing to unpack .../01-libqt5quicktemplates2-5_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking libqt5quicktemplates2-5:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package libqt5quickcontrols2-5:arm64.\r\nPreparing to unpack .../02-libqt5quickcontrols2-5_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking libqt5quickcontrols2-5:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package libqt5quickparticles5:arm64.\r\nPreparing to unpack .../03-libqt5quickparticles5_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking libqt5quickparticles5:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package libqt5quickshapes5:arm64.\r\nPreparing to unpack .../04-libqt5quickshapes5_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking libqt5quickshapes5:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package libqt5quicktest5:arm64.\r\nPreparing to unpack .../05-libqt5quicktest5_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking libqt5quicktest5:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package qml-module-qtquick-templates2:arm64.\r\nPreparing to unpack .../06-qml-module-qtquick-templates2_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking qml-module-qtquick-templates2:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package qml-module-qtquick-controls2:arm64.\r\nPreparing to unpack .../07-qml-module-qtquick-controls2_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking qml-module-qtquick-controls2:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package qml-module-qtquick-window2:arm64.\r\nPreparing to unpack .../08-qml-module-qtquick-window2_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking qml-module-qtquick-window2:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package qml-module-qtquick2:arm64.\r\nPreparing to unpack .../09-qml-module-qtquick2_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking qml-module-qtquick2:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package qt5-qmltooling-plugins:arm64.\r\nPreparing to unpack .../10-qt5-qmltooling-plugins_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking qt5-qmltooling-plugins:arm64 (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package qtdeclarative5-dev-tools.\r\nPreparing to unpack .../11-qtdeclarative5-dev-tools_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking qtdeclarative5-dev-tools (5.15.3+dfsg-1) ...\r\nSelecting previously unselected package qtdeclarative5-dev:arm64.\r\nPreparing to unpack .../12-qtdeclarative5-dev_5.15.3+dfsg-1_arm64.deb ...\r\nUnpacking qtdeclarative5-dev:arm64 (5.15.3+dfsg-1) ...\r\nSetting up libqt5quickshapes5:arm64 (5.15.3+dfsg-1) ...\r\nSetting up libqt5quicktest5:arm64 (5.15.3+dfsg-1) ...\r\nSetting up qtdeclarative5-dev-tools (5.15.3+dfsg-1) ...\r\nSetting up qml-module-qtquick-window2:arm64 (5.15.3+dfsg-1) ...\r\nSetting up qt5-qmltooling-plugins:arm64 (5.15.3+dfsg-1) ...\r\nSetting up libqt5qmlworkerscript5:arm64 (5.15.3+dfsg-1) ...\r\nSetting up libqt5quicktemplates2-5:arm64 (5.15.3+dfsg-1) ...\r\nSetting up libqt5quickparticles5:arm64 (5.15.3+dfsg-1) ...\r\nSetting up qml-module-qtquick2:arm64 (5.15.3+dfsg-1) ...\r\nSetting up qml-module-qtquick-templates2:arm64 (5.15.3+dfsg-1) ...\r\nSetting up libqt5quickcontrols2-5:arm64 (5.15.3+dfsg-1) ...\r\nSetting up qtdeclarative5-dev:arm64 (5.15.3+dfsg-1) ...\r\nSetting up qml-module-qtquick-controls2:arm64 (5.15.3+dfsg-1) ...\r\nProcessing triggers for libc-bin (2.35-0ubuntu3.11) ..."
+    },
+    {
+      "cmd": "dpkg-query -W -f='${Package} ${Version}\\n' qtdeclarative5-dev qml-module-qtquick2 qml-module-qtquick-controls2 qml-module-qtquick-window2 2>&1",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "qml-module-qtquick-controls2 5.15.3+dfsg-1\nqml-module-qtquick-window2 5.15.3+dfsg-1\nqml-module-qtquick2 5.15.3+dfsg-1\nqtdeclarative5-dev 5.15.3+dfsg-1"
+    },
+    {
+      "cmd": "ls /usr/lib/aarch64-linux-gnu/cmake/Qt5Quick/Qt5QuickConfig.cmake 2>/dev/null && echo QT_QML=yes || echo QT_QML=no",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "/usr/lib/aarch64-linux-gnu/cmake/Qt5Quick/Qt5QuickConfig.cmake\nQT_QML=yes"
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 177 files"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_release/app && bash build.sh Release 2>&1 | tail -40",
+      "exit": 0,
+      "elapsed_s": 27.27,
+      "output": "In file included from /tmp/railhmi_release/app/src/core/include/railhmi/core/channel_view.h:13,\n                 from /tmp/railhmi_release/app/src/core/include/railhmi/core/maintenance.h:12,\n                 from /tmp/railhmi_release/app/src/ui/src/maintenance_model.h:14,\n                 from /tmp/railhmi_release/app/src/ui/src/maintenance_model.cpp:1:\n/tmp/railhmi_release/app/src/core/include/railhmi/core/stream_state.h:117:30: error: expected ‘)’ before ‘k’\n  117 |     void emit(StreamEventKind k, long long now_ms, const std::string& detail = \"\");\n      |              ~               ^~\n      |                              )\nIn file included from /tmp/railhmi_release/app/src/core/include/railhmi/core/channel_view.h:13,\n                 from /tmp/railhmi_release/app/src/core/include/railhmi/core/maintenance.h:12,\n                 from /tmp/railhmi_release/app/src/ui/src/permissions_model.cpp:3:\n/tmp/railhmi_release/app/src/core/include/railhmi/core/stream_state.h:117:30: error: expected ‘)’ before ‘k’\n  117 |     void emit(StreamEventKind k, long long now_ms, const std::string& detail = \"\");\n      |              ~               ^~\n      |                              )\ngmake[2]: *** [src/ui/CMakeFiles/railhmi.dir/build.make:174: src/ui/CMakeFiles/railhmi.dir/src/permissions_model.cpp.o] Error 1\ngmake[2]: *** Waiting for unfinished jobs....\ngmake[2]: *** [src/ui/CMakeFiles/railhmi.dir/build.make:160: src/ui/CMakeFiles/railhmi.dir/src/maintenance_model.cpp.o] Error 1\nIn file included from /tmp/railhmi_release/app/src/core/include/railhmi/core/channel_view.h:13,\n                 from /tmp/railhmi_release/app/src/core/include/railhmi/core/maintenance.h:12,\n                 from /tmp/railhmi_release/app/build-target/src/ui/railhmi_autogen/UVLADIE3JM/../../../../../src/ui/src/maintenance_model.h:14,\n                 from /tmp/railhmi_release/app/build-target/src/ui/railhmi_autogen/UVLADIE3JM/moc_maintenance_model.cpp:10,\n                 from /tmp/railhmi_release/app/build-target/src/ui/railhmi_autogen/mocs_compilation.cpp:4:\n/tmp/railhmi_release/app/src/core/include/railhmi/core/stream_state.h:117:30: error: expected ‘)’ before ‘k’\n  117 |     void emit(StreamEventKind k, long long now_ms, const std::string& detail = \"\");\n      |              ~               ^~\n      |                              )\n[ 97%] Linking CXX executable ../../tools/railhmi-multi-probe\ngmake[2]: *** [src/ui/CMakeFiles/railhmi.dir/build.make:104: src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/mocs_compilation.cpp.o] Error 1\n[ 97%] Built target railhmi-multi-probe\nIn file included from /tmp/railhmi_release/app/src/core/include/railhmi/core/channel_view.h:13,\n                 from /tmp/railhmi_release/app/src/ui/src/main.cpp:16:\n/tmp/railhmi_release/app/src/core/include/railhmi/core/stream_state.h:117:30: error: expected ‘)’ before ‘k’\n  117 |     void emit(StreamEventKind k, long long now_ms, const std::string& detail = \"\");\n      |              ~               ^~\n      |                              )\ngmake[2]: *** [src/ui/CMakeFiles/railhmi.dir/build.make:118: src/ui/CMakeFiles/railhmi.dir/src/main.cpp.o] Error 1\ngmake[1]: *** [CMakeFiles/Makefile2:634: src/ui/CMakeFiles/railhmi.dir/all] Error 2\ngmake: *** [Makefile:91: all] Error 2\n[build.sh] build failed (mode=target)"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_release/app && ls -l build-target/railhmi 2>/dev/null && file build-target/railhmi && sha256sum build-target/railhmi",
+      "exit": 2,
+      "elapsed_s": 0.07,
+      "output": ""
+    },
+    {
+      "cmd": "rm -rf /tmp/railhmi_release",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": ""
+    }
+  ],
+  "repairs": [
+    {
+      "issue": "missing Qt5 Quick/Qml dev packages",
+      "scope": "development",
+      "action": "apt-get install (non-interactive)",
+      "packages": [
+        "qtdeclarative5-dev",
+        "qml-module-qtquick2",
+        "qml-module-qtquick-controls2",
+        "qml-module-qtquick-window2"
+      ],
+      "before": "dpkg-query: no packages found matching qtdeclarative5-dev\ndpkg-query: no packages found matching qml-module-qtquick2\ndpkg-query: no packages found matching qml-module-qtquick-controls2\ndpkg-query: no packages found matching qml-module-qtquick-window2",
+      "install_exit": 0,
+      "after": "qml-module-qtquick-controls2 5.15.3+dfsg-1\nqml-module-qtquick-window2 5.15.3+dfsg-1\nqml-module-qtquick2 5.15.3+dfsg-1\nqtdeclarative5-dev 5.15.3+dfsg-1"
+    }
+  ],
+  "blocked_reason": "板端 Release 构建失败或未产出 railhmi 二进制"
+}

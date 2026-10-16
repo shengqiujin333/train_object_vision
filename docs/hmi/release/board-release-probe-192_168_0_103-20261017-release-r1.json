@@ -1,0 +1,140 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "connect_timeout_s": 10,
+    "command_timeout_s": 60
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "connected": true,
+  "facts": {
+    "os": {
+      "cmd": "cat /etc/os-release 2>/dev/null | head -4; uname -a",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nLinux admin 6.1.141 #128 SMP Thu Jun 18 09:56:06 CST 2026 aarch64 aarch64 aarch64 GNU/Linux"
+    },
+    "arch": {
+      "cmd": "uname -m; nproc; getconf LONG_BIT",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "aarch64\n8\n64"
+    },
+    "toolchain": {
+      "cmd": "gcc --version 2>/dev/null | head -1; cmake --version 2>/dev/null | head -1",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\ncmake version 3.22.1"
+    },
+    "qt_cmake": {
+      "cmd": "ls -d /usr/lib/*/cmake/Qt5Quick 2>/dev/null; ls -d /usr/lib/*/cmake/Qt5Qml 2>/dev/null; ls -d /usr/lib/*/cmake/Qt5Core 2>/dev/null",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "/usr/lib/aarch64-linux-gnu/cmake/Qt5Core"
+    },
+    "qt_quick_cfg": {
+      "cmd": "cat /usr/lib/aarch64-linux-gnu/cmake/Qt5Quick/Qt5QuickConfig.cmake 2>/dev/null | head -3",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": ""
+    },
+    "qt_pkgs": {
+      "cmd": "dpkg-query -W -f='${Package} ${Version} ${Status}\\n' qtbase5-dev qtdeclarative5-dev qml-module-qtquick2 qml-module-qtquick-controls2 libqt5svg5-dev 2>&1",
+      "exit": 1,
+      "elapsed_s": 0.11,
+      "output": "dpkg-query: no packages found matching qtdeclarative5-dev\ndpkg-query: no packages found matching qml-module-qtquick2\ndpkg-query: no packages found matching qml-module-qtquick-controls2\ndpkg-query: no packages found matching libqt5svg5-dev\nqtbase5-dev 5.15.3+dfsg-2ubuntu0.2 install ok installed"
+    },
+    "gst": {
+      "cmd": "gst-inspect-1.0 --version 2>/dev/null | head -1; pkg-config --modversion gstreamer-1.0 2>/dev/null",
+      "exit": 0,
+      "elapsed_s": 0.13,
+      "output": "gst-inspect-1.0 version 1.20.3\n1.20.3"
+    },
+    "gst_plugins": {
+      "cmd": "gst-inspect-1.0 2>/dev/null | head -5",
+      "exit": 0,
+      "elapsed_s": 0.13,
+      "output": "1394:  dv1394src: Firewire (1394) DV video source\n1394:  hdv1394src: Firewire (1394) HDV video source\na52dec:  a52dec: ATSC A/52 audio decoder\naasink:  aasink: ASCII art video sink\naasink:  aatv: aaTV effect"
+    },
+    "gst_elems": {
+      "cmd": "for e in rtspsrc mppvideodec glupload appsink; do printf '%s=' $e; gst-inspect-1.0 $e >/dev/null 2>&1 && echo yes || echo no; done",
+      "exit": 0,
+      "elapsed_s": 0.24,
+      "output": "rtspsrc=yes\nmppvideodec=yes\nglupload=yes\nappsink=yes"
+    },
+    "rga": {
+      "cmd": "pkg-config --modversion librga 2>/dev/null; ls /usr/include/rga/im2d.h /usr/local/include/rga/im2d.h 2>/dev/null",
+      "exit": 2,
+      "elapsed_s": 0.09,
+      "output": "2.1.0\n/usr/include/rga/im2d.h"
+    },
+    "rknn": {
+      "cmd": "ls /usr/lib/librknnrt.so /usr/lib/aarch64-linux-gnu/librknnrt.so 2>/dev/null; cat /sys/kernel/debug/rknpu/version 2>/dev/null",
+      "exit": 1,
+      "elapsed_s": 0.09,
+      "output": "/usr/lib/librknnrt.so"
+    },
+    "sqlite": {
+      "cmd": "ldconfig -p 2>/dev/null | fgrep libsqlite3 || true; ls /usr/include/sqlite3.h 2>/dev/null",
+      "exit": 2,
+      "elapsed_s": 0.14,
+      "output": "libsqlite3.so.0 (libc6,AArch64) => /lib/aarch64-linux-gnu/libsqlite3.so.0"
+    },
+    "display": {
+      "cmd": "printenv DISPLAY; ls /tmp/.X11-unix 2>/dev/null; systemctl is-active graphical.target 2>/dev/null",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "X0\nX1001\nactive"
+    },
+    "systemd": {
+      "cmd": "systemctl --version 2>/dev/null | head -1; ls /etc/systemd/system/railhmi.service 2>/dev/null || echo 'railhmi.service: not-installed'",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "systemd 249 (249.11-0ubuntu4.16)\nrailhmi.service: not-installed"
+    },
+    "cpu_service": {
+      "cmd": "systemctl is-enabled cpu-performance.service 2>/dev/null; systemctl is-active cpu-performance.service 2>/dev/null",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "enabled\nactive"
+    },
+    "apt_reach": {
+      "cmd": "python3 -c \"import socket;socket.create_connection(('archive.ubuntu.com',80),5);print('apt-reachable')\" 2>&1",
+      "exit": 0,
+      "elapsed_s": 0.62,
+      "output": "apt-reachable"
+    },
+    "apt_policy": {
+      "cmd": "apt-cache policy qtdeclarative5-dev 2>&1 | head -6",
+      "exit": 0,
+      "elapsed_s": 0.23,
+      "output": "qtdeclarative5-dev:\n  Installed: (none)\n  Candidate: 5.15.3+dfsg-1\n  Version table:\n     5.15.3+dfsg-1 900\n        900 http://wiki.t-firefly.com/firefly-ubuntu-repo jammy/main arm64 Packages"
+    },
+    "sudo": {
+      "cmd": "sudo -n true 2>&1 && echo 'sudo-nopass-ok' || echo 'sudo-nopass-fail'",
+      "exit": 0,
+      "elapsed_s": 0.14,
+      "output": "sudo-nopass-ok"
+    },
+    "disk": {
+      "cmd": "df -h /tmp / 2>/dev/null",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/root        57G   24G   31G  44% /\n/dev/root        57G   24G   31G  44% /"
+    },
+    "models_dir": {
+      "cmd": "ls /home/admin/rknn_model_zoo/install/rk3588_linux_aarch64/rknn_yolov8_seg_demo/model 2>/dev/null || echo 'models: not-found'",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "bus.jpg\ncoco_80_labels_list.txt\nrail_labels.txt\nyolov5s.rknn\nyolov8s-seg.rknn"
+    },
+    "repo_dir": {
+      "cmd": "ls -d /opt/railhmi 2>/dev/null || echo '/opt/railhmi: absent'",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "/opt/railhmi: absent"
+    }
+  }
+}

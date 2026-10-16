@@ -1,0 +1,45 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "out_dir": "docs/hmi/release",
+    "stamp": "20261017-release-r1",
+    "remote_dir": "/tmp/railhmi_qmllint",
+    "connect_timeout": 10,
+    "command_timeout": 120
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "cmd": "rm -rf /tmp/railhmi_qmllint && mkdir -p /tmp/railhmi_qmllint/qml",
+      "exit": 0,
+      "elapsed_s": 0.22,
+      "output": ""
+    },
+    {
+      "cmd": "command -v qmllint && qmllint --version 2>&1 | head -1",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "/usr/bin/qmllint\nqmllint 1.0"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_qmllint && for f in qml/*.qml qml/components/*.qml qml/pages/*.qml; do echo \"===== $f\"; qmllint \"$f\" 2>&1; done",
+      "exit": 0,
+      "elapsed_s": 0.31,
+      "output": "===== qml/main.qml\n===== qml/Theme.qml\n===== qml/Tokens.qml\n===== qml/components/CameraTile.qml\n===== qml/components/DetectionBadge.qml\n===== qml/components/DeviceCard.qml\n===== qml/components/FilterChip.qml\n===== qml/components/KeyStatusStrip.qml\n===== qml/components/NavBar.qml\n===== qml/components/RecoveryOverlay.qml\n===== qml/components/StatusItem.qml\n===== qml/components/TopStatusBar.qml\n===== qml/components/VideoSurface.qml\n===== qml/pages/DeniedView.qml\n===== qml/pages/P1Realtime.qml\n===== qml/pages/P2AlarmCenter.qml\n===== qml/pages/P3Replay.qml\n===== qml/pages/P4AllCameras.qml\n===== qml/pages/P5AiDebug.qml\n===== qml/pages/P6Maintenance.qml\n===== qml/pages/PageView.qml"
+    },
+    {
+      "cmd": "rm -rf /tmp/railhmi_qmllint",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": ""
+    }
+  ],
+  "summary": {
+    "lines": 21,
+    "issues": [],
+    "uppercase_property_findings": 0
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "out_dir": "docs/hmi/release",
+    "stamp": "20261017-release-diag2",
+    "remote_dir": "/tmp/railhmi_release",
+    "connect_timeout": 10,
+    "command_timeout": 120,
+    "apt_timeout": 900,
+    "build_timeout": 1500,
+    "no_install_deps": true,
+    "diag_rename_emit": true
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "connected": true,
+  "steps": [
+    {
+      "cmd": "rm -rf /tmp/railhmi_release && mkdir -p /tmp/railhmi_release",
+      "exit": 0,
+      "elapsed_s": 0.18,
+      "output": ""
+    },
+    {
+      "cmd": "ls /usr/lib/aarch64-linux-gnu/cmake/Qt5Quick/Qt5QuickConfig.cmake 2>/dev/null && echo QT_QML=yes || echo QT_QML=no",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "/usr/lib/aarch64-linux-gnu/cmake/Qt5Quick/Qt5QuickConfig.cmake\nQT_QML=yes"
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 177 files"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_release/app && sed -i 's/\\bemit\\b/emit_event/g' src/core/include/railhmi/core/stream_state.h src/core/src/stream_state.cpp && echo diag-patched",
+      "exit": 0,
+      "elapsed_s": 0.02,
+      "output": "diag-patched"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_release/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -60'",
+      "exit": 0,
+      "elapsed_s": 32.75,
+      "output": "[ 45%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o\n[ 47%] Linking CXX executable ../../tools/railhmi-sim-inject\n[ 47%] Built target railhmi-sim-inject\n[ 48%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o\n[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o\n[ 51%] Linking CXX executable ../../tools/railhmi-config-check\n[ 51%] Built target railhmi-config-check\n[ 52%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o\n[ 54%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o\n[ 55%] Linking CXX executable ../../tools/railhmi-permissions-probe\n[ 55%] Built target railhmi-permissions-probe\n[ 56%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o\n[ 58%] Linking CXX executable ../../tools/railhmi-maintenance-probe\n[ 58%] Built target railhmi-maintenance-probe\n[ 59%] Linking CXX executable ../../tools/railhmi-status-probe\n[ 59%] Built target railhmi-status-probe\n[ 60%] Linking CXX executable ../../tools/railhmi-alarm-probe\n[ 62%] Linking CXX executable ../../tools/railhmi-fault-probe\n[ 62%] Built target railhmi-alarm-probe\n[ 62%] Built target railhmi-fault-probe\n[ 63%] Linking CXX executable ../../tools/railhmi-replay-probe\n[ 63%] Built target railhmi-replay-probe\n[ 64%] Linking CXX executable ../../tools/railhmi-health-probe\n[ 64%] Built target railhmi-health-probe\n[ 66%] Linking CXX static library librailhmi_platform.a\n[ 66%] Built target railhmi_platform\n[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o\n[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o\n[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o\n[ 71%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o\n[ 72%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o\n[ 74%] Linking CXX executable ../../tools/railhmi-ai-probe\n[ 74%] Built target railhmi-ai-probe\n[ 75%] Linking CXX executable ../../tools/railhmi-clip-probe\n[ 75%] Built target railhmi-clip-probe\n[ 77%] Linking CXX static library librailhmi_media.a\n[ 77%] Built target railhmi_media\n[ 78%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o\n[ 79%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o\n[ 81%] Automatic MOC for target railhmi\n[ 82%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o\n[ 82%] Built target railhmi_autogen\n[ 83%] Automatic RCC for qml.qrc\n[ 85%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/alarm_model.cpp.o\n[ 86%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/mocs_compilation.cpp.o\n[ 87%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/replay_model.cpp.o\n[ 89%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/main.cpp.o\n[ 90%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/maintenance_model.cpp.o\n[ 91%] Linking CXX executable ../../tools/railhmi-ai-runner\n[ 93%] Linking CXX executable ../../tools/railhmi-stream-probe\n[ 93%] Built target railhmi-stream-probe\n[ 94%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/permissions_model.cpp.o\n[ 94%] Built target railhmi-ai-runner\n[ 95%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/health_model.cpp.o\n[ 97%] Linking CXX executable ../../tools/railhmi-multi-probe\n[ 97%] Built target railhmi-multi-probe\n[ 98%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/EWIEGA46WW/qrc_qml.cpp.o\n[100%] Linking CXX executable railhmi\n[100%] Built target railhmi\n[build.sh] build OK (mode=target); artifacts under /tmp/railhmi_release/app/build-target"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_release/app && for p in build-target/railhmi build-target/src/ui/railhmi; do [ -x \"$p\" ] && { echo BIN:$p; ls -l \"$p\"; file \"$p\" 2>/dev/null || true; sha256sum \"$p\"; }; done",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "BIN:build-target/src/ui/railhmi\n-rwxrwxr-x 1 admin admin 944016 Oct 17 03:12 build-target/src/ui/railhmi\nbuild-target/src/ui/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=ac7f43213bda09210f0d6276b59145da3be98b98, for GNU/Linux 3.7.0, not stripped\n5b68a3d6d88ce1f7084d32466365eb32b2e1d5cc8380413e745a364e0b0094f8  build-target/src/ui/railhmi"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_release/app && QT_QPA_PLATFORM=offscreen timeout 12 ./build-target/src/ui/railhmi --config /tmp/railhmi_release/app/config > /tmp/railhmi_release/smoke.log 2>&1; echo smoke_exit=$?; tail -25 /tmp/railhmi_release/smoke.log",
+      "exit": 0,
+      "elapsed_s": 0.26,
+      "output": "smoke_exit=3\n2026-10-17T03:12:50.843 INFO  railhmi 0.1.0 [mode=Target, simulation=off]\n2026-10-17T03:12:50.843 INFO  config dir: /tmp/railhmi_release/app/config\n2026-10-17T03:12:50.844 INFO  configuration OK: 6 cameras\n2026-10-17T03:12:50.844 INFO  render path: cpu\nqrc:/qml/main.qml:98:17: DeniedView is not a type \n                     DeniedView { \n                     ^\n2026-10-17T03:12:50.893 ERROR QML load failed (qrc:/qml/main.qml)"
+    },
+    {
+      "cmd": "rm -rf /tmp/railhmi_release",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": ""
+    }
+  ],
+  "repairs": [],
+  "diag": {
+    "rename_emit": true,
+    "note": "仅目标 /tmp 副本，诊断用；项目源码未修改",
+    "build_exit": 0,
+    "smoke": "smoke_exit=3\n2026-10-17T03:12:50.843 INFO  railhmi 0.1.0 [mode=Target, simulation=off]\n2026-10-17T03:12:50.843 INFO  config dir: /tmp/railhmi_release/app/config\n2026-10-17T03:12:50.844 INFO  configuration OK: 6 cameras\n2026-10-17T03:12:50.844 INFO  render path: cpu\nqrc:/qml/main.qml:98:17: DeniedView is not a type \n                     DeniedView { \n                     ^\n2026-10-17T03:12:50.893 ERROR QML load failed (qrc:/qml/main.qml)",
+    "conclusion": "single-fix sufficient: Qt target build OK"
+  }
+}
