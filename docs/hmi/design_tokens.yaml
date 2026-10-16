@@ -57,7 +57,7 @@ color:
 
 alarm:
   # 报警级别：颜色 + 形状 + 文字 三重编码，颜色非唯一判据
-  L1:
+  level1:
     label: "一级"
     glyph: "triangle"          # ▲ 实心三角
     accent: "#FF6B6B"          # 图标/边框/文字强调
@@ -68,7 +68,7 @@ alarm:
     sound: required            # 持续到确认
     pulse_hz: 1.5              # 脉冲，≤3Hz
     persist: until_ack
-  L2:
+  level2:
     label: "二级"
     glyph: "circle"            # ● 实心圆
     accent: "#F0883E"
@@ -79,7 +79,7 @@ alarm:
     sound: short
     pulse_hz: 0
     persist: until_dismiss_or_ack
-  L3:
+  level3:
     label: "三级"
     glyph: "diamond"           # ◆ 实心菱形
     accent: "#E3B341"

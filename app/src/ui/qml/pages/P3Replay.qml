@@ -11,7 +11,7 @@ Rectangle {
     id: page
     color: Theme.color.bg_base
 
-    readonly property var R: (typeof railhmiReplay !== "undefined") ? railhmiReplay : null
+    readonly property var replay: (typeof railhmiReplay !== "undefined") ? railhmiReplay : null
     readonly property var allCams: (typeof railhmiCameras !== "undefined") ? railhmiCameras : []
     property string date: "2026-10-16"
     property string dateError: ""
@@ -41,17 +41,17 @@ Rectangle {
     function dayStart() { return tl.dayStartMs !== undefined ? tl.dayStartMs : 0 }
     function dayMs() { return tl.durationMs !== undefined ? tl.durationMs : 86400000 }
     function xOf(ts) { return (ts - dayStart()) / dayMs() * track.width }
-    function selectedTs() { return R ? R.selectedAlarmTs() : 0 }
+    function selectedTs() { return replay ? replay.selectedAlarmTs() : 0 }
     function levelColorOf(lvl) {
-        if (lvl === 1) return Theme.alarm.L1.accent
-        if (lvl === 2) return Theme.alarm.L2.accent
-        if (lvl === 3) return Theme.alarm.L3.accent
+        if (lvl === 1) return Theme.alarm.level1.accent
+        if (lvl === 2) return Theme.alarm.level2.accent
+        if (lvl === 3) return Theme.alarm.level3.accent
         return Theme.color.neutral
     }
     function levelTintOf(lvl) {
-        if (lvl === 1) return Theme.alarm.L1.tint_bg
-        if (lvl === 2) return Theme.alarm.L2.tint_bg
-        if (lvl === 3) return Theme.alarm.L3.tint_bg
+        if (lvl === 1) return Theme.alarm.level1.tint_bg
+        if (lvl === 2) return Theme.alarm.level2.tint_bg
+        if (lvl === 3) return Theme.alarm.level3.tint_bg
         return Theme.color.neutral_bg
     }
     function sampleKeyframes(list) {
@@ -62,12 +62,12 @@ Rectangle {
         return out
     }
     function reload() {
-        if (!R) { tl = {}; detail = {}; return }
-        var cam = R.selectedCameraId()
+        if (!replay) { tl = {}; detail = {}; return }
+        var cam = replay.selectedCameraId()
         if (cam && cam.length > 0) activeCam = cam
-        lockedCams = R.relatedCameras()
-        detail = R.selectedDetail()
-        var res = R.timeline(activeCam, date)
+        lockedCams = replay.relatedCameras()
+        detail = replay.selectedDetail()
+        var res = replay.timeline(activeCam, date)
         if (res.valid === false) { dateError = "日期无效（YYYY-MM-DD）"; return }   // D-08：不静默
         dateError = ""
         tl = res
@@ -77,7 +77,7 @@ Rectangle {
     }
     function reloadCam(camId) {
         activeCam = camId
-        var res = R.timeline(camId, date)
+        var res = replay.timeline(camId, date)
         if (res.valid === false) { dateError = "日期无效（YYYY-MM-DD）"; return }
         dateError = ""
         tl = res
@@ -85,26 +85,26 @@ Rectangle {
         refreshSync()
     }
     function refreshSync() {
-        if (!R) return
-        syncInfo = R.syncState(cursor)
+        if (!replay) return
+        syncInfo = replay.syncState(cursor)
     }
     function doJump(which) {
-        if (!R) return
+        if (!replay) return
         var base = selectedTs() > 0 ? selectedTs() : cursor
-        var j = R.jumpTargets(base)
+        var j = replay.jumpTargets(base)
         cursor = j[which]
         refreshSync()
     }
-    function togglePlay() { if (R) R.setPlaying(!page.playState.playing); }
-    function setSpeed(s) { if (R) R.setSpeed(s); }
+    function togglePlay() { if (replay) replay.setPlaying(!page.playState.playing); }
+    function setSpeed(s) { if (replay) replay.setSpeed(s); }
     function seekTo(ts) { cursor = ts; refreshSync() }
-    function selectAlarmAt(ts) { if (R) { R.selectAlarm(page.activeCam, ts) } }
+    function selectAlarmAt(ts) { if (replay) { replay.selectAlarm(page.activeCam, ts) } }
 
-    Component.onCompleted: { if (R) playState = R.playback(); reload() }
+    Component.onCompleted: { if (replay) playState = replay.playback(); reload() }
     Connections {
-        target: page.R
+        target: page.replay
         function onSelectionChanged() { page.reload() }
-        function onPlaybackChanged() { page.playState = page.R.playback() }
+        function onPlaybackChanged() { page.playState = page.replay.playback() }
     }
 
     Column {
@@ -150,11 +150,11 @@ Rectangle {
             spacing: Theme.spacing.s2
             Text {
                 anchors.verticalCenter: parent.verticalCenter
-                visible: page.R ? !page.R.sourceStatus().usable || page.R.sourceStatus().note.length > 0 : false
+                visible: page.replay ? !page.replay.sourceStatus().usable || page.replay.sourceStatus().note.length > 0 : false
                 color: Theme.color.degraded
                 font.pixelSize: Theme.typography.scale.caption.size
-                text: page.R ? ("来源：" + page.R.sourceStatus().label +
-                                (page.R.sourceStatus().note.length > 0 ? "（" + page.R.sourceStatus().note + "）" : "")) : ""
+                text: page.replay ? ("来源：" + page.replay.sourceStatus().label +
+                                (page.replay.sourceStatus().note.length > 0 ? "（" + page.replay.sourceStatus().note + "）" : "")) : ""
             }
             Text {
                 objectName: "syncStatusText"
@@ -189,7 +189,7 @@ Rectangle {
                     Text { anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.margins: Theme.spacing.s2
                            color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
                            font.family: Theme.typography.family.mono
-                           text: page.R ? page.R.formatTime(page.cursor) : "" }
+                           text: page.replay ? page.replay.formatTime(page.cursor) : "" }
                 }
             }
         }
@@ -209,7 +209,7 @@ Rectangle {
                 color: Theme.color.text_primary
                 font.family: Theme.typography.family.mono
                 font.pixelSize: Theme.typography.scale.caption.size
-                text: "当前 " + (page.R ? page.R.formatTime(page.cursor) : "")
+                text: "当前 " + (page.replay ? page.replay.formatTime(page.cursor) : "")
             }
             Rectangle {
                 id: track

@@ -41,9 +41,9 @@ Rectangle {
         if (ids.length > 0) { model.ack(ids); refresh() }
     }
     function levelColor(l) {
-        if (l === "L1") return Theme.alarm.L1.accent
-        if (l === "L2") return Theme.alarm.L2.accent
-        return Theme.alarm.L3.accent
+        if (l === "L1") return Theme.alarm.level1.accent
+        if (l === "L2") return Theme.alarm.level2.accent
+        return Theme.alarm.level3.accent
     }
     function levelGlyph(l) {
         if (l === "L1") return "\u25B2"
@@ -51,9 +51,9 @@ Rectangle {
         return "\u25C6"
     }
     function levelTint(l) {
-        if (l === "L1") return Theme.alarm.L1.tint_bg
-        if (l === "L2") return Theme.alarm.L2.tint_bg
-        return Theme.alarm.L3.tint_bg
+        if (l === "L1") return Theme.alarm.level1.tint_bg
+        if (l === "L2") return Theme.alarm.level2.tint_bg
+        return Theme.alarm.level3.tint_bg
     }
 
     Component.onCompleted: { if (model) opts = model.options(); refresh() }

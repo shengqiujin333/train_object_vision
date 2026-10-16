@@ -13,12 +13,12 @@ Rectangle {
     // 关键状态区异常项点击：冒泡给外壳（允许则跳转详情，不允许则显示无权限）。
     signal statusNavigate(string pageId, bool allowed)
 
-    readonly property var L: (typeof railhmiLayout !== "undefined") ? railhmiLayout : ({
+    readonly property var layout: (typeof railhmiLayout !== "undefined") ? railhmiLayout : ({
             leftRatio: 0.26, frontRatio: 0.48, rightRatio: 0.26,
             statusStripHeight: 64, alarmBarHeight: 64, marginNarrow: 16, marginWide: 24
         })
     readonly property int gap: Theme.spacing.s3
-    readonly property int margin: (page.height >= 1080) ? page.L.marginWide : page.L.marginNarrow
+    readonly property int margin: (page.height >= 1080) ? page.layout.marginWide : page.layout.marginNarrow
 
     function camByPosition(pos) {
         for (var i = 0; i < railhmiCameras.length; ++i)
@@ -41,7 +41,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        height: page.L.alarmBarHeight
+        height: page.layout.alarmBarHeight
         color: Theme.color.bg_sunken
         border.color: Theme.color.border
         border.width: Theme.border.width
@@ -64,7 +64,7 @@ Rectangle {
         anchors.right: parent.right
         anchors.bottom: alarmBar.top
         anchors.margins: page.margin
-        height: page.L.statusStripHeight
+        height: page.layout.statusStripHeight
         color: Theme.color.bg_sunken
         border.color: Theme.color.border
         border.width: Theme.border.width
@@ -94,7 +94,7 @@ Rectangle {
 
             CameraTile {
                 objectName: "tileLeft"
-                width: (row.width - 2 * page.gap) * page.L.leftRatio
+                width: (row.width - 2 * page.gap) * page.layout.leftRatio
                 height: row.height
                 title: page.camName("left", "左侧")
                 state: page.camState("left")
@@ -103,7 +103,7 @@ Rectangle {
             }
             CameraTile {
                 objectName: "tileFront"
-                width: (row.width - 2 * page.gap) * page.L.frontRatio
+                width: (row.width - 2 * page.gap) * page.layout.frontRatio
                 height: row.height
                 title: page.camName("primary", "前方")
                 state: page.camState("primary")
@@ -112,7 +112,7 @@ Rectangle {
             }
             CameraTile {
                 objectName: "tileRight"
-                width: (row.width - 2 * page.gap) * page.L.rightRatio
+                width: (row.width - 2 * page.gap) * page.layout.rightRatio
                 height: row.height
                 title: page.camName("right", "右侧")
                 state: page.camState("right")

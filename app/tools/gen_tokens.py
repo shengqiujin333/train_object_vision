@@ -48,6 +48,13 @@ def ident(key: str) -> str:
         s = "_"
     if s[0].isdigit():
         s = "_" + s
+    # QML 属性名必须小写开头；大写开头会在装载时报
+    # "Property names cannot begin with an upper case letter"。此处生成期显式拒绝，
+    # 避免产出无法装载的 QML（而非静默改名产生歧义）。
+    if s[0].isupper():
+        raise ValueError(
+            "token key %r -> %r starts with an upper-case letter; "
+            "QML property names must start lower-case" % (key, s))
     if s in QML_KEYWORDS:
         s += "_"
     return s
@@ -145,7 +152,7 @@ def check_required(tokens: dict) -> list:
         if g not in tokens:
             errs.append("missing token group: %s" % g)
     alarm = tokens.get("alarm") or {}
-    for lv in ("L1", "L2", "L3"):
+    for lv in ("level1", "level2", "level3"):
         if lv not in alarm:
             errs.append("missing alarm.%s" % lv)
     return errs
@@ -174,12 +181,19 @@ def selftest(yaml_path: str) -> int:
         loaded = json.load(open(j1, encoding="utf-8"))
         print("[%s] tokens.json parseable" % ("PASS" if isinstance(loaded, dict) else "FAIL"))
         theme = open(os.path.join(d1, "Theme.qml"), encoding="utf-8").read()
-        for probe in ("property color bg_base", "QtObject L1", "property QtObject stream_state",
+        for probe in ("property color bg_base", "QtObject level1", "property QtObject stream_state",
                       "property QtObject integration_state", "property QtObject detection_badge"):
             ok = probe in theme
             print("[%s] Theme.qml contains %r" % ("PASS" if ok else "FAIL", probe))
             if not ok:
                 return 3
+        # 非法令牌键（大写开头）必须在生成期被拒绝，不得产出不可装载的 QML
+        try:
+            write_outputs({"color": {"Bad": "#000000"}}, os.path.join(d1, "bad.json"), d1)
+            print("[FAIL] upper-case token key was accepted")
+            return 3
+        except ValueError:
+            print("[PASS] rejects upper-case token key")
         # 变更传播：改一个颜色后输出不同
         import copy
         changed = copy.deepcopy(base)

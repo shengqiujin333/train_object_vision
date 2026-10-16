@@ -10,11 +10,11 @@ Rectangle {
     id: page
     color: Theme.color.bg_base
 
-    readonly property var G: (typeof railhmiGrid !== "undefined") ? railhmiGrid : ({
+    readonly property var gridCfg: (typeof railhmiGrid !== "undefined") ? railhmiGrid : ({
             wideColumns: 3, wideRows: 2, tallColumns: 2, tallRows: 3
         })
-    readonly property int cols: (width >= height) ? page.G.wideColumns : page.G.tallColumns
-    readonly property int rows: (width >= height) ? page.G.wideRows : page.G.tallRows
+    readonly property int cols: (width >= height) ? page.gridCfg.wideColumns : page.gridCfg.tallColumns
+    readonly property int rows: (width >= height) ? page.gridCfg.wideRows : page.gridCfg.tallRows
     readonly property int gap: Theme.spacing.s3
 
     Grid {

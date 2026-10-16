@@ -53,7 +53,7 @@ QualityFlags classify_quality(const FrameStats& s, const QualityThresholds& t) {
 StreamStateMachine::StreamStateMachine(std::string camera_id, StreamThresholds thresholds)
     : camera_id_(std::move(camera_id)), th_(thresholds) {}
 
-void StreamStateMachine::emit(StreamEventKind k, long long now_ms, const std::string& detail) {
+void StreamStateMachine::emit_event(StreamEventKind k, long long now_ms, const std::string& detail) {
     StreamEvent e;
     e.camera_id = camera_id_;
     e.kind = k;
@@ -71,7 +71,7 @@ void StreamStateMachine::enter(StreamState s, long long now_ms) {
 void StreamStateMachine::start(long long now_ms) {
     reconnect_count_ = 0;
     enter(StreamState::Connecting, now_ms);
-    emit(StreamEventKind::Started, now_ms);
+    emit_event(StreamEventKind::Started, now_ms);
 }
 
 void StreamStateMachine::on_frame(long long now_ms, const QualityFlags& quality) {
@@ -80,24 +80,24 @@ void StreamStateMachine::on_frame(long long now_ms, const QualityFlags& quality)
     reconnect_count_ = 0;
     if (quality.any()) {
         enter(StreamState::Degraded, now_ms);
-        emit(StreamEventKind::QualityDegraded, now_ms, quality.describe());
+        emit_event(StreamEventKind::QualityDegraded, now_ms, quality.describe());
     } else {
         enter(StreamState::Live, now_ms);
     }
     if (prev == StreamState::Connecting) {
-        emit(StreamEventKind::FirstFrame, now_ms);
+        emit_event(StreamEventKind::FirstFrame, now_ms);
     } else if (prev == StreamState::Reconnecting || prev == StreamState::Frozen ||
                prev == StreamState::Offline) {
-        emit(StreamEventKind::Recovered, now_ms);
+        emit_event(StreamEventKind::Recovered, now_ms);
     }
 }
 
 void StreamStateMachine::begin_reconnect(long long now_ms, const std::string& detail) {
     ++reconnect_count_;
-    emit(StreamEventKind::ReconnectAttempt, now_ms, detail);
+    emit_event(StreamEventKind::ReconnectAttempt, now_ms, detail);
     if (reconnect_count_ >= th_.reconnect_threshold) {
         enter(StreamState::Offline, now_ms);
-        emit(StreamEventKind::Escalated, now_ms,
+        emit_event(StreamEventKind::Escalated, now_ms,
              "reconnect threshold reached (" + std::to_string(reconnect_count_) + ")");
     } else {
         enter(StreamState::Reconnecting, now_ms);
@@ -105,7 +105,7 @@ void StreamStateMachine::begin_reconnect(long long now_ms, const std::string& de
 }
 
 void StreamStateMachine::on_source_error(long long now_ms, const std::string& detail) {
-    emit(StreamEventKind::SourceError, now_ms, detail);
+    emit_event(StreamEventKind::SourceError, now_ms, detail);
     begin_reconnect(now_ms, detail);
 }
 
@@ -129,7 +129,7 @@ void StreamStateMachine::tick(long long now_ms) {
         case StreamState::Degraded:
             if (last_frame_ms_ >= 0 && now_ms - last_frame_ms_ >= th_.freeze_timeout_ms) {
                 enter(StreamState::Frozen, now_ms);
-                emit(StreamEventKind::Freeze, now_ms);
+                emit_event(StreamEventKind::Freeze, now_ms);
             }
             break;
         case StreamState::Frozen:

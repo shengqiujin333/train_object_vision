@@ -5,7 +5,7 @@ import ".."
 // 恢复未完成时显示顺序步骤与进度；完成（或部分降级）后隐藏。任一关键步失败 -> alive=false 显式提示。
 Rectangle {
     id: overlay
-    readonly property var R: (typeof railhmiHealth !== "undefined") ? railhmiHealth : null
+    readonly property var health: (typeof railhmiHealth !== "undefined") ? railhmiHealth : null
     property var st: ({ completed: true, steps: [] })
     anchors.fill: parent
     visible: st.completed === false
@@ -13,20 +13,20 @@ Rectangle {
     objectName: "recoveryOverlay"
 
     function reload() {
-        overlay.st = overlay.R ? overlay.R.recovery() : ({ completed: true, steps: [] })
+        overlay.st = overlay.health ? overlay.health.recovery() : ({ completed: true, steps: [] })
     }
     Component.onCompleted: reload()
     // 订阅模型变更：恢复进度/步骤/完成后隐藏（D-02）
     Connections {
-        target: overlay.R
+        target: overlay.health
         function onChanged() { overlay.reload() }
     }
     // 演示模式：未完成时逐步推进（配合 D-04）
     Timer {
         interval: 600
-        running: overlay.visible && overlay.R
+        running: overlay.visible && overlay.health
         repeat: true
-        onTriggered: overlay.R.advanceRecovery()
+        onTriggered: overlay.health.advanceRecovery()
     }
 
     Rectangle {

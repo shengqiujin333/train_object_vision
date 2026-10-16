@@ -69,6 +69,8 @@ def main() -> int:
     ap.add_argument("--build-timeout", type=int, default=1500)
     ap.add_argument("--no-install-deps", action="store_true",
                     help="只探测/构建，不补装系统依赖（用于无授权场景）")
+    ap.add_argument("--no-bundle", action="store_true",
+                    help="只构建并冒烟，不组装/下载 tar.gz（用于实现/修复轮的构建运行证据）")
     ap.add_argument("--diag-rename-emit", action="store_true",
                     help="诊断专用：仅在目标临时副本把 core 的 Qt 关键字同名方法 emit 改名为 emit_event，"
                          "用于确认该碰撞是否为唯一板端 Qt 编译阻碍（不修改项目源码、不产出正式发布包）")
@@ -237,6 +239,26 @@ def main() -> int:
                                                if build.get("exit") == 0 else "more blockers remain")
             flush()
             log("[diag] conclusion: %s" % transcript["diag"]["conclusion"])
+            return 0 if build.get("exit") == 0 else 3
+
+        if args.no_bundle:
+            # 只保留构建/运行证据：回取 smoke 日志并结束（不产出发布包）
+            sftp = client.open_sftp()
+            sftp.get_channel().settimeout(args.command_timeout)
+            try:
+                sftp.get("%s/smoke.log" % rd, str(out_dir / ("smoke-%s.log" % args.stamp)))
+            except IOError:
+                pass
+            finally:
+                sftp.close()
+            transcript["bundle"] = None
+            transcript["artifact"] = {"path": bin_rel, "detail": art.get("output")}
+            transcript["smoke_exit_parsed"] = next(
+                (int(l.split("=", 1)[1]) for l in (smoke.get("output") or "").splitlines()
+                 if l.startswith("smoke_exit=")), None)
+            flush()
+            log("[no-bundle] conducted build + smoke only; bin=%s smoke_exit=%s"
+                % (bin_rel, transcript["smoke_exit_parsed"]))
             return 0 if build.get("exit") == 0 else 3
 
         # 6) 组装发布包

@@ -11,7 +11,7 @@ Rectangle {
     id: page
     color: Theme.color.bg_base
 
-    readonly property var M: (typeof railhmiMaintenance !== "undefined") ? railhmiMaintenance : null
+    readonly property var maint: (typeof railhmiMaintenance !== "undefined") ? railhmiMaintenance : null
     property var ptz: ({})
     property var ptzResult: ({})
     property string pendingKind: ""
@@ -31,19 +31,19 @@ Rectangle {
     }
 
     function doReconnect(cameraId) {
-        if (!M) return
-        var r = M.reconnect(cameraId)
+        if (!maint) return
+        var r = maint.reconnect(cameraId)
         page.reconnectNotice = cameraId + " 重连中（已重连 " + r.reconnectCount + " 次）"
     }
 
     function reload() {
-        if (M) ptz = M.ptzState()
+        if (maint) ptz = maint.ptzState()
         reloadHealth()
         reloadLogs()
     }
     function askPtz(kind) { page.pendingKind = kind }
     function confirmPtz() {
-        if (M && page.pendingKind.length > 0) page.ptzResult = M.ptzAction(page.pendingKind)
+        if (maint && page.pendingKind.length > 0) page.ptzResult = maint.ptzAction(page.pendingKind)
         page.pendingKind = ""
         reload()
     }
@@ -56,7 +56,7 @@ Rectangle {
     }
 
     Component.onCompleted: reload()
-    Connections { target: page.M; function onChanged() { page.reload() } }
+    Connections { target: page.maint; function onChanged() { page.reload() } }
     // 健康/日志/恢复变更刷新（ITEM-024 D-02）
     Connections {
         target: (typeof railhmiHealth !== "undefined") ? railhmiHealth : null
@@ -150,8 +150,8 @@ Rectangle {
                 Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size; text: "录像与存储" }
                 Text { objectName: "recordingState"; color: Theme.color.text_secondary
                        font.pixelSize: Theme.typography.scale.caption.size
-                       text: page.M ? (page.M.recording().stateText + " · 剩余 " + page.M.recording().freeText +
-                                       " · 已用 " + page.M.recording().usedPct + "%") : "—" }
+                       text: page.maint ? (page.maint.recording().stateText + " · 剩余 " + page.maint.recording().freeText +
+                                       " · 已用 " + page.maint.recording().usedPct + "%") : "—" }
             }
         }
 
@@ -166,7 +166,7 @@ Rectangle {
                 Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size; text: "网络与温度" }
                 Text { objectName: "healthText"; color: Theme.color.text_secondary
                        font.pixelSize: Theme.typography.scale.caption.size
-                       text: page.M ? page.M.health().text : "—" }
+                       text: page.maint ? page.maint.health().text : "—" }
             }
         }
 
@@ -209,7 +209,7 @@ Rectangle {
                 anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
                 Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size; text: "维护日志（按日滚动）" }
                 Repeater {
-                    model: page.M ? page.M.logsByDay(7) : []
+                    model: page.maint ? page.maint.logsByDay(7) : []
                     Column {
                         Text { objectName: "maintLogDay"
                                color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.caption.size

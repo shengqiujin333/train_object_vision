@@ -201,6 +201,7 @@ def main() -> int:
                         "python3 tools/check_maintenance_wiring.py --root src/ui; echo MAINT_WIRE_EXIT=$?; "
                         "python3 tools/check_permissions_wiring.py --root src/ui --matrix PERMISSION_MATRIX.md; echo PERM_WIRE_EXIT=$?; "
                         "python3 tools/check_health_wiring.py --root src/ui; echo HEALTH_WIRE_EXIT=$?; "
+                        "python3 tools/check_qml_qt_validity.py --root src/ui --headers src/core/include src/platform/include; echo QML_VALID_EXIT=$?; "
                         "python3 tools/check_packaging.py --root . --app-src src --packaging packaging; echo PACK_EXIT=$?" % remote, 60))
             sim = rrun(client, "cd %s && ./build-core/tools/railhmi-sim-inject "
                               "--fi 01,02,03,04,05,10 --duration 6000 "

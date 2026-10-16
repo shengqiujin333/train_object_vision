@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import "."
 import "components"
+import "pages"
 
 // 应用外壳（ITEM-011/012）：单窗口 + 顶部全局状态条 + 角色化固定导航 + 页面宿主。
 // 可见导航项（railhmiNav）由 C++ 按角色过滤；受限直达页由 DeniedView 显示“无权限 + 返回”。

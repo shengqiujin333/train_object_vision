@@ -39,6 +39,12 @@
 | ITEM-024 | 健康监控、结构化日志与断电自恢复 | **已交付**：`railhmi-core` 健康采样/评估（NPU/CPU/温度/网络/磁盘）+ 结构化日志（JSON/条件查询/按日滚动）+ 自恢复序列（8 步/进度/单路降级隔离/关键步存活）+ UI 桥接 `RailhmiHealthModel` + QML `RecoveryOverlay`（启动恢复进度浮层）+ P6 结构化日志与恢复进度卡 + `railhmi-health-probe`。板端 TestRun **663/663 通过**，健康探针/接线扫描 PASS。证据：`docs/hmi/test_evidence/ITEM-024-health/README.md` |
 | ITEM-025 | 目标运行包、systemd 自启与故障自检 | **已交付（含 fix-r2）**：`packaging/`（`railhmi.service`：`Restart=always`+`DISPLAY`，不改 `cpu-performance.service`；`install.sh` 创建 `/opt/railhmi/{bin,config,models,resources,data,logs}`；`VERSION`/`UPGRADE.md`/`RESOURCES.md`）+ `railhmi-core` 故障自检目录（FI-01..05/10 显式提示 + 恢复路径；7 步自检含重启恢复）+ 维护页自检卡 + `railhmi-fault-probe` + `check_packaging.py`。**fix-r2（响应独立验证 D-01/D-02）**：移除引用不存在二进制的 `ExecStartPre` 并同步 `UPGRADE.md`；新增 core `parse_config_dir()` 使单元 `--config /opt/railhmi/config` 被真正消费（`main.cpp` 单一来源，缺省回退编译期值）；`check_packaging.py` 增补“ExecStart* 目标必须被安装”“`--config` 必须被解析”两条断言，并由 `negcheck_packaging_fix.py` 反例对照证明可检出。板端 TestRun **670/670 通过**（+7 config-arg 用例），探针/打包核对 PASS。证据：`docs/hmi/test_evidence/ITEM-025-packaging/README.md` |
 
+> **发布阻塞修复（2026-10-17，修复轮 `20261017-repair-r1/r2`，响应 `desktop_release` 的 WORK_FAILED）**：目标 Qt 构建/装载链路暴露三处缺陷，已修复并**目标实测**通过 ——
+> **B-01** core `StreamStateMachine::emit()` 与 Qt 关键字宏冲突（目标 Qt 编译失败）→ 改名 `emit_event`；
+> **B-02** `main.qml` 缺 `import "pages"`（`DeniedView is not a type`）→ 补导入；
+> **B-03** QML 属性名大写开头非法（令牌 `alarm.L1..L3` + 手写 `property var L/R/G/M`）→ 令牌键改 `level1..3`、生成器新增非法键拒绝、QML 别名改小写（设计取值/文案不变）。
+> 新增通用守卫 `tools/check_qml_qt_validity.py`（已接入 `board_build.py` 的 ui-scan）并配反例自检。目标 `bash build.sh Release` **构建成功**，`QT_QPA_PLATFORM=offscreen` 装载冒烟 **exit=124**（持续存活、无 QML 错误）；板端 TestRun **670/670** + 令牌/接线/合法性扫描全 PASS。证据：`docs/hmi/test_evidence/REPAIR-n008-release-qt/README.md`。
+
 > 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 
 ---
@@ -64,6 +70,10 @@ app/
     run_env_check.sh      # 探针运行入口（输出 md/raw/json 到 test_evidence）
     board_env_probe.py    # 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 全超时）
     board_build.py        # 经登记 SSH 入口的板端构建运行器（上传 app/ + build.sh 三档）
+    board_release_build.py# 发布包目标构建/打包器（含 --no-bundle 只构建+冒烟）
+    board_release_probe.py# 发布包板端只读资源/支持范围探针
+    board_qmllint.py      # 板端 QML 静态检查（qmllint）
+    check_qml_qt_validity.py # QML/Qt 合法性守卫（大写属性名 / Qt 关键字同名标识符）
   spikes/render_path/     # ITEM-002 渲染路径选型 spike
     main.cpp GlView.qml CpuView.qml qml.qrc
     CMakeLists.txt        # 板端本机构建（Qt5 + GStreamer + librga）

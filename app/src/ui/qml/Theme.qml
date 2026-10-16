@@ -48,7 +48,7 @@ QtObject {
         property color debug_roi: "#FFD400"
     }
     property QtObject alarm: QtObject {
-        property QtObject L1: QtObject {
+        property QtObject level1: QtObject {
             property string label: "一级"
             property string glyph: "triangle"
             property color accent: "#FF6B6B"
@@ -60,7 +60,7 @@ QtObject {
             property real pulse_hz: 1.5
             property string persist: "until_ack"
         }
-        property QtObject L2: QtObject {
+        property QtObject level2: QtObject {
             property string label: "二级"
             property string glyph: "circle"
             property color accent: "#F0883E"
@@ -72,7 +72,7 @@ QtObject {
             property int pulse_hz: 0
             property string persist: "until_dismiss_or_ack"
         }
-        property QtObject L3: QtObject {
+        property QtObject level3: QtObject {
             property string label: "三级"
             property string glyph: "diamond"
             property color accent: "#E3B341"

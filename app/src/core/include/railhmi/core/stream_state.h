@@ -114,7 +114,7 @@ public:
     StreamThresholds thresholds() const { return th_; }
 
 private:
-    void emit(StreamEventKind k, long long now_ms, const std::string& detail = "");
+    void emit_event(StreamEventKind k, long long now_ms, const std::string& detail = "");
     void begin_reconnect(long long now_ms, const std::string& detail);  // 计数 +1，必要时升级
     void enter(StreamState s, long long now_ms);
 

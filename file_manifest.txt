@@ -3,13 +3,13 @@
 PROJECT_GUIDE.md | existing | 铁轨异物检测项目总纲（历史，数据集/训练/转换/部署流程）
 README.md | existing | RK3588 交接文档，记录硬件/网络/摄像头/程序现状与已知坑（2026-10-13）
 app/CMakeLists.txt | active | 分层 CMake 工程（ITEM-003）：RAILHMI_BUILD_{TARGET,PREVIEW,CORE_TESTS,MEDIA} 开关；core/platform/media/ui 子目录
-app/README.md | active | 桌面应用工程构建/运行入口说明：ITEM-001..020 + ITEM-021 AI 调试页/司机隔离；ITEM-025 含 fix-r2（D-01/D-02 部署契约修复，板端 670/670）
+app/README.md | active | 桌面应用工程构建/运行入口说明：ITEM-001..020 + ITEM-021 AI 调试页/司机隔离；ITEM-025 含 fix-r2（D-01/D-02 部署契约修复，板端 670/670）；修复轮 B-01..B-03 + 目标 Qt 构建/装载冒烟证据说明
 app/build.sh | active | 构建入口（ITEM-003）：Release|Preview|CoreTests|MediaCheck|check；依赖缺失时逐项报错退出 1，不静默失败
 app/config/app.yaml | active | 应用配置基线（mode=visible/render_path=cpu/recording_source=both/storage/NVR 登记未配置 + app.permissions.export_ops_allowed + app.ai 推理调度）
 app/config/cameras.yaml | active | 摄像头注册表基线（6 路可见光；ai_enabled/ai_profile 驱动职责；凭据经 credential_env）
 app/config/roi.yaml | active | ROI 配置基线（归一化矩形；camera 引用注册表 id）
 app/config/thresholds.yaml | active | 阈值配置基线（多帧确认/危险区/抑制/首帧超时/冻结重连退避/录像片段/回放同步阈值）
-app/resources/tokens.json | active | 生成的设计令牌 JSON（由 design_tokens.yaml 生成）
+app/resources/tokens.json | active | 生成的设计令牌 JSON（由 design_tokens.yaml 生成）；重新生成（alarm.level1..3；修复 B-03）
 app/spikes/render_path/CMakeLists.txt | active | spike 板端本机构建（Qt5 + GStreamer + librga）
 app/spikes/render_path/CpuView.qml | active | CPU 回退路径 QML 场景（FrameItem）
 app/spikes/render_path/GlView.qml | active | GL 路径 QML 场景（GstGLVideoItem）
@@ -40,7 +40,7 @@ app/src/core/include/railhmi/core/retention.h | active | 保留策略与录像�
 app/src/core/include/railhmi/core/rules.h | active | 检测职责与报警规则/事件层接口（ai_profile 分派/多帧确认/抑制/级别映射/ack/ROI/设备类别映射）
 app/src/core/include/railhmi/core/simulation.h | active | 模拟输入/故障注入接口（FI-01..05/FI-10、模拟检测、结构化 Observation）
 app/src/core/include/railhmi/core/status.h | active | 关键状态区/顶部条接口（StatusLevel 三重编码、七类状态、顶部项、点击权限；ITEM-016）
-app/src/core/include/railhmi/core/stream_state.h | active | 流状态机与质量判定接口（六态/质量标志/classify_quality/事件/非 LIVE 禁止旧帧接口）
+app/src/core/include/railhmi/core/stream_state.h | active | 流状态机与质量判定接口（六态/质量标志/classify_quality/事件/非 LIVE 禁止旧帧接口）；修复 B-01：emit → emit_event（Qt 关键字冲突）
 app/src/core/include/railhmi/core/timebase.h | active | 统一时间基准接口（UTC 毫秒 ↔ 单调微秒）
 app/src/core/include/railhmi/core/version.h | active | 版本/构建档位/模拟开关接口（core 无 Qt/GStreamer/相机/SQLite 依赖）
 app/src/core/include/railhmi/core/yaml.h | active | 无依赖 YAML 子集解析器接口（块映射/序列/流序列/标量，含行号错误）
@@ -64,7 +64,7 @@ app/src/core/src/retention.cpp | active | 保留淘汰顺序与缺口合并实�
 app/src/core/src/rules.cpp | active | 规则/事件层实现（PRD §8.2 级别、跟踪 ID 与抑制窗口、ack 不删事件、device_category_from_position）
 app/src/core/src/simulation.cpp | active | 模拟运行器实现（确定性节拍、按 ai_profile 注入、故障/恢复、结构化日志）
 app/src/core/src/status.cpp | active | 状态模型实现（五级三重编码、七类状态构建、顶部条、点击权限解析；ITEM-016）
-app/src/core/src/stream_state.cpp | active | 流状态机实现（首帧超时/冻结/重连退避/阈值升级/降级/恢复）
+app/src/core/src/stream_state.cpp | active | 流状态机实现（首帧超时/冻结/重连退避/阈值升级/降级/恢复）；修复 B-01：emit → emit_event（Qt 关键字冲突）
 app/src/core/src/timebase.cpp | active | 时间基准实现
 app/src/core/src/version.cpp | active | 版本与构建描述实现
 app/src/core/src/yaml.cpp | active | YAML 子集解析器实现
@@ -102,26 +102,26 @@ app/src/platform/src/repository.cpp | active | SqliteRepository 实现（预编�
 app/src/platform/src/sqlite_store.cpp | active | SqliteStore WAL/执行/查询实现（经 sqlite3_min.h）
 app/src/ui/CMakeLists.txt | active | railhmi Qt/QML 可执行（AUTOMOC；含报警中心/历史回放/设备维护/权限/健康桥接；构建期 railhmi_tokens）
 app/src/ui/qml.qrc | active | QML 资源清单（main.qml + 生成 Theme/Tokens.qml + qmldir + components(NavBar/TopStatusBar/StatusItem/KeyStatusStrip/FilterChip/DetectionBadge/CameraTile/VideoSurface/DeviceCard) + pages(PageView/DeniedView/P1/P2/P3/P4/P5/P6)）
-app/src/ui/qml/Theme.qml | active | 生成的 Theme QML 单例（运行时主题外观；由 gen_tokens.py 生成，勿手改）
-app/src/ui/qml/Tokens.qml | active | 生成的令牌 QML 单例（令牌数据；由 gen_tokens.py 生成）
+app/src/ui/qml/Theme.qml | active | 生成的 Theme QML 单例（运行时主题外观；由 gen_tokens.py 生成，勿手改）；重新生成（alarm.level1..3；修复 B-03 大写属性名）
+app/src/ui/qml/Tokens.qml | active | 生成的令牌 QML 单例（令牌数据；由 gen_tokens.py 生成）；重新生成（alarm.level1..3；修复 B-03 大写属性名）
 app/src/ui/qml/components/CameraTile.qml | active | 摄像头格（位置名/连接状态/可选检测职责徽标；内嵌 VideoSurface 渲染面，消费 live/state；显示 fps/最近帧/重连；ITEM-015）
 app/src/ui/qml/components/DetectionBadge.qml | active | 检测职责徽标（取值来自注册表 ai_profile；作用域由承载页决定）
 app/src/ui/qml/components/DeviceCard.qml | active | 设备卡片（NVR 等集成项：地址/已登记/状态/通道映射）
 app/src/ui/qml/components/FilterChip.qml | active | 过滤选项 chip（选中高亮；触控≥touch_target_min、activeFocusOnTab + Enter/Space；ITEM-018/020）
 app/src/ui/qml/components/KeyStatusStrip.qml | active | 关键状态区七项（受电弓/轮轨/车门/摄像头/AI/录像/存储；异常点击冒泡；ITEM-016）
 app/src/ui/qml/components/NavBar.qml | active | 固定导航（仅渲染角色可见页 entries）
-app/src/ui/qml/components/RecoveryOverlay.qml | active | 启动自恢复进度浮层（步骤/进度/关键失败提示；Connections 接 changed() 刷新 + 完成隐藏；演示定时推进；ITEM-024）
+app/src/ui/qml/components/RecoveryOverlay.qml | active | 启动自恢复进度浮层（步骤/进度/关键失败提示；Connections 接 changed() 刷新 + 完成隐藏；演示定时推进；ITEM-024）；修复 B-03：属性别名 R → health
 app/src/ui/qml/components/StatusItem.qml | active | 状态项（颜色+形状字形+文字三重编码；正常简洁/异常突出；异常可点击；ITEM-016）
 app/src/ui/qml/components/TopStatusBar.qml | active | 顶部全局状态条（ITEM-016：时间/模式·红外未接入/录像/AI/系统健康/未接入项；三重编码；无切换控件）
 app/src/ui/qml/components/VideoSurface.qml | active | 视频渲染面（按配置渲染路径 cpu/gl 选择实现；非 LIVE 占位层，旧帧不当实时；右下显示 render 路径）
-app/src/ui/qml/main.qml | active | 应用外壳（顶部状态条+角色导航+页面分发 P2/P3/P5+受限页+状态点击+报警卡跳回放；含启动自恢复浮层 RecoveryOverlay；颜色/字号来自 Theme）
+app/src/ui/qml/main.qml | active | 应用外壳（顶部状态条+角色导航+页面分发 P2/P3/P5+受限页+状态点击+报警卡跳回放；含启动自恢复浮层 RecoveryOverlay；颜色/字号来自 Theme）；修复 B-02：增 import "pages"
 app/src/ui/qml/pages/DeniedView.qml | active | 受限页视图（无权限说明 + 返回）
-app/src/ui/qml/pages/P1Realtime.qml | active | P1 实时监控三联（比例来自 railhmiLayout；左-前-右，前方最大；关键状态区 KeyStatusStrip + 当前报警条；司机页不显示徽标；ITEM-016 状态点击冒泡）
-app/src/ui/qml/pages/P2AlarmCenter.qml | active | P2 报警中心（ITEM-018：筛选栏/列表字段/默认排序/行内录像标注/确认·批量确认·查看录像·查看快照/空态）
-app/src/ui/qml/pages/P3Replay.qml | active | P3 历史回放（ITEM-020 时间轴/四跳/三联同步/详情/缺口斜纹/关键帧；ITEM-023 导出录像受权限控制不渲染 + 二次确认）
-app/src/ui/qml/pages/P4AllCameras.qml | active | P4 全摄像头（ITEM-015：3x2/2x3 固定槽位网格；每格名/状态标签/fps/最近帧/重连/徽标；断流不重排不丢格）
+app/src/ui/qml/pages/P1Realtime.qml | active | P1 实时监控三联（比例来自 railhmiLayout；左-前-右，前方最大；关键状态区 KeyStatusStrip + 当前报警条；司机页不显示徽标；ITEM-016 状态点击冒泡）；修复 B-03：属性别名 L → layout
+app/src/ui/qml/pages/P2AlarmCenter.qml | active | P2 报警中心（ITEM-018：筛选栏/列表字段/默认排序/行内录像标注/确认·批量确认·查看录像·查看快照/空态）；修复 B-03：Theme.alarm.level1..3
+app/src/ui/qml/pages/P3Replay.qml | active | P3 历史回放（ITEM-020 时间轴/四跳/三联同步/详情/缺口斜纹/关键帧；ITEM-023 导出录像受权限控制不渲染 + 二次确认）；修复 B-03：R → replay + Theme.alarm.level1..3
+app/src/ui/qml/pages/P4AllCameras.qml | active | P4 全摄像头（ITEM-015：3x2/2x3 固定槽位网格；每格名/状态标签/fps/最近帧/重连/徽标；断流不重排不丢格）；修复 B-03：属性别名 G → gridCfg
 app/src/ui/qml/pages/P5AiDebug.qml | active | P5 AI 调试（ITEM-017/021：检测框/ROI/置信度/距离/FPS/端到端延迟/模型版本/最近结果；叠加层框·ROI·文字·掩码逐项开关默认全关；调试高对比描边 debug_box/debug_roi；司机无权限占位）
-app/src/ui/qml/pages/P6Maintenance.qml | active | P6 设备维护（ITEM-022 分区卡/PTZ/重连/日志/NVR；ITEM-023 权限矩阵卡；ITEM-024 Flickable 卡区+结构化日志查询+恢复进度；ITEM-025 故障自检卡）
+app/src/ui/qml/pages/P6Maintenance.qml | active | P6 设备维护（ITEM-022 分区卡/PTZ/重连/日志/NVR；ITEM-023 权限矩阵卡；ITEM-024 Flickable 卡区+结构化日志查询+恢复进度；ITEM-025 故障自检卡）；修复 B-03：属性别名 M → maint
 app/src/ui/qml/pages/PageView.qml | active | 通用页面骨架（标题/角色/模式）
 app/src/ui/qml/qmldir | active | QML 模块清单（singleton Theme/Tokens；由 gen_tokens.py 生成）
 app/src/ui/src/alarm_model.cpp | active | 报警中心桥接实现（事件灌入/筛选查询/批量确认/维护日志文本；ITEM-018）
@@ -159,10 +159,10 @@ app/tests/core/test_util.cpp | active | 测试 harness 实现（pass/fail 计数
 app/tests/core/test_util.h | active | 测试 harness 声明（断言记录与 write_junit）
 app/tests/run_core_tests.sh | active | core 单命令测试入口（构建+运行+归档日志/JUnit XML+退出码；ITEM-008 交付，验证轮独立复现 243/243）
 app/third_party/sqlite/sqlite3_min.h | active | 最小 SQLite C API 声明（无系统 sqlite3.h 时使用；存在系统头则优先系统头）
-app/tools/board_build.py | active | 板端构建/测试运行器（TestRun：core 单测 + tokens selftest + ui-scan（硬编码+各接线+打包核对）+ sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针；上传 app/ + 权限矩阵 + packaging/）
+app/tools/board_build.py | active | 板端构建/测试运行器（TestRun：core 单测 + tokens selftest + ui-scan（硬编码+各接线+打包核对）+ sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针；上传 app/ + 权限矩阵 + packaging/）；ui-scan 增 check_qml_qt_validity（QML_VALID_EXIT）
 app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
 app/tools/board_qmllint.py | active | 发布包板端 QML 静态检查（qmllint 逐文件；n008 证据，5.15 不覆盖大写属性名）
-app/tools/board_release_build.py | active | 发布包目标构建/打包器（授权内补装 Qt 开发依赖→板端 Release 构建→冒烟→tar.gz+sha256；含只作用于目标 /tmp 副本的诊断开关；n008）
+app/tools/board_release_build.py | active | 发布包目标构建/打包器（授权内补装 Qt 开发依赖→板端 Release 构建→冒烟→tar.gz+sha256；含只作用于目标 /tmp 副本的诊断开关；n008）；增 --no-bundle（只构建+冒烟，不产出发布包）
 app/tools/board_release_probe.py | active | 发布包板端只读资源/支持范围探针（OS/Qt/GStreamer/librga/rknn/sqlite/显示/systemd/apt 可达性；ITEM n008）
 app/tools/board_render_spike.py | active | ITEM-002 板端渲染 spike 运行器（上传/构建 QML spike、无 Qt 核心测量编译运行、gl 构造探测、取回日志/JSON、判据选择；全超时 + known_hosts）
 app/tools/check_ai_debug_wiring.py | active | AI 调试页/司机隔离静态核对（ITEM-021：叠加层四开关默认关/调试令牌 debug_box·debug_roi/距离与延迟字段/司机守卫/无硬编码）
@@ -171,9 +171,10 @@ app/tools/check_maintenance_wiring.py | active | 设备维护页静态核对（I
 app/tools/check_no_hardcoded_ui.py | active | UI 硬编码静态扫描（禁止 hex 色值/字号）
 app/tools/check_packaging.py | active | 打包/systemd/自检静态核对（ITEM-025：Restart=always+DISPLAY、不改 cpu-performance、运行目录、VERSION/UPGRADE/RESOURCES、自检卡）；ITEM-025 fix-r2 增两条断言（ExecStart* 目标必须被 install.sh 安装；单元含 --config 时 main.cpp 必须解析）
 app/tools/check_permissions_wiring.py | active | 权限/二次确认静态核对（ITEM-023：P3 导出受权限不渲染+二次确认、P6 矩阵卡、桥接 core、矩阵文档）
+app/tools/check_qml_qt_validity.py | active | QML/Qt 合法性守卫：QML 大写属性名/id + core·platform 头文件 Qt 关键字同名标识符；接入 board_build ui-scan（修复 B-01/B-03 回归）
 app/tools/check_replay_wiring.py | active | 回放接线静态核对（ITEM-020：v1 D-01 选择锁定/v1 D-02 动态同步 + D-01 关键帧/D-02 斜纹/D-03 播放倍速/D-04 级别/D-05 点选/D-06 全摄像/D-07 录像黄条/D-08 日期与44px/D-09 尺寸）
 app/tools/env_probe.py | active | 桌面应用依赖/环境只读探针（标准库；目标板与主机均可跑，生成 md/raw/json；支持 --skip-slow 与 QML/Quick 库、qml 目录核验）
-app/tools/gen_tokens.py | active | 设计令牌生成器（design_tokens.yaml → tokens.json/Theme.qml/Tokens.qml/qmldir，含 --selftest）
+app/tools/gen_tokens.py | active | 设计令牌生成器（design_tokens.yaml → tokens.json/Theme.qml/Tokens.qml/qmldir，含 --selftest）；修复 B-03：令牌键大写拒绝 + selftest 断言/负例
 app/tools/run_env_check.sh | active | 依赖探针运行入口脚本（输出到 docs/hmi/test_evidence/ENV-B-dependency）
 code/librga.so | existing | 板端 RGA 库备份
 code/librknnrt.so | existing | 板端 NPU 运行时库备份
@@ -215,6 +216,8 @@ docs/hmi/release/release-build-192_168_0_103-20261017-release-diag.json | active
 docs/hmi/release/release-build-192_168_0_103-20261017-release-diag2.json | active | 诊断轮：emit 改名→Release 构建 OK + railhmi 二进制(size/sha256/ELF) + 冒烟暴露 B-02（DeniedView 未导入）
 docs/hmi/release/release-build-192_168_0_103-20261017-release-diag3.json | active | 诊断轮：emit 改名 + import pages → 冒烟暴露 B-03（QML 大写属性名 Theme 非法）
 docs/hmi/release/release-build-192_168_0_103-20261017-release-r1.json | active | 目标发布构建首轮：B-01（core emit 与 Qt 关键字冲突）编译失败 + Qt 开发依赖补装记录
+docs/hmi/release/release-build-192_168_0_103-20261017-repair-r1.json | active | 修复轮目标 Qt Release 构建 + offscreen 装载冒烟 transcript（构建成功、smoke_exit=124、无 QML 错误）
+docs/hmi/release/smoke-20261017-repair-r1.log | active | 修复轮 offscreen 冒烟日志（railhmi 0.1.0 / 6 cameras / render path cpu / 无 QML 错误）
 docs/hmi/render_path_spike.md | active | 渲染路径选型 spike 程序与判据（ITEM-002）：路径定义/判据/运行；状态=板端实测选定 cpu，gl 不可用（Qt5Quick/qmlglsink 缺失）
 docs/hmi/test_evidence/ENV-B-dependency/VERIFY-ITEM-001.md | active | ITEM-001 交付物 TestEvidence（ITER2 重写，TEST_PASS：commit 06b6f9f 板端实测证据独立复现一致、判据逐条满足；偏差 R-1..R-7 记录在案）
 docs/hmi/test_evidence/ENV-B-dependency/board-env-probe-192_168_0_103-20261015-board-r1.commands.json | active | 板端探针首次运行命令日志（SSH 主机指纹/逐条命令退出码与时延）
@@ -1437,6 +1440,40 @@ docs/hmi/test_evidence/ITEM-025-packaging/verify_packaging25_fixround.py | activ
 docs/hmi/test_evidence/ITEM-025-packaging/verify_packaging25_fixtures.py | active | 验证方主板夹具驱动（指纹/TestRun 复跑/逐行/JUnit/oracle/ext/NEG_PY 内嵌扫描/清理）
 docs/hmi/test_evidence/ITEM-025-packaging/verify_packaging25_negfix_only.py | active | 验证方 v4b 负控制补证驱动（最小文件集上传 + 修复版 NEG_FIX_PY + 按名清理）
 docs/hmi/test_evidence/ITEM-025-packaging/verify_packaging25_scan.py | active | 验证方部署契约扫描（P1..P16 正向键 + D-01 ExecStartPre 存在性 + D-01b UPGRADE 文档登记（无登记=无缺陷） + D-02 --config 消费路径（修复后=D02_parses_arg）；v4 键语义更新）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/README.md | active | 修复证据：B-01(emit→emit_event)/B-02(import pages)/B-03(QML 大写属性名+令牌 level1..3) 修复 + 通用守卫 + 目标构建/冒烟/板端 TestRun 670/0
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_ai-probe-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_alarm-probe-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_clip-probe-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_core-tests-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_core-tests-20261017-repair-r1.xml | active | 修复轮 repair-r1 板端回归留痕（core-tests/JUnit/sim-inject/各探针）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_fault-probe-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_health-probe-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_maintenance-probe-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_permissions-probe-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_replay-probe-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_sim-inject-20261017-repair-r1.json | active | 修复轮 repair-r1 板端回归留痕（core-tests/JUnit/sim-inject/各探针）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_sim-inject-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_status-probe-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.core-evidence_status-probe-driver-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.log | active | 修复轮 repair-r1 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r1.transcript.json | active | 修复轮 repair-r1 板端 TestRun transcript
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_ai-probe-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_alarm-probe-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_clip-probe-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_core-tests-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_core-tests-20261017-repair-r2.xml | active | 修复轮 repair-r2 板端回归留痕（core-tests/JUnit/sim-inject/各探针）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_fault-probe-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_health-probe-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_maintenance-probe-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_permissions-probe-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_replay-probe-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_sim-inject-20261017-repair-r2.json | active | 修复轮 repair-r2 板端回归留痕（core-tests/JUnit/sim-inject/各探针）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_sim-inject-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_status-probe-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.core-evidence_status-probe-driver-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.log | active | 修复轮 repair-r2 板端 TestRun 总日志（670/0 + 令牌/接线/合法性扫描全 PASS）
+docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-20261017-repair-r2.transcript.json | active | 修复轮 repair-r2 板端 TestRun transcript
+docs/hmi/test_evidence/REPAIR-n008-release-qt/negcheck_qml_qt_validity.py | active | 反例自检：证明 check_qml_qt_validity 可检出 B-01/B-03（健康 0 / B01 1 / B03 1）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）
