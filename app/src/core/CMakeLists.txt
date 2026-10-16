@@ -18,6 +18,7 @@ add_library(railhmi_core STATIC
     src/alarm_center.cpp
     src/clip.cpp
     src/replay.cpp
+    src/maintenance.cpp
 )
 target_include_directories(railhmi_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -70,5 +71,12 @@ set_target_properties(railhmi-clip-probe PROPERTIES
 add_executable(railhmi-replay-probe tools/replay_probe.cpp)
 target_link_libraries(railhmi-replay-probe PRIVATE railhmi_core)
 set_target_properties(railhmi-replay-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 设备维护模型探针（ITEM-022；无 Qt/SQLite）
+add_executable(railhmi-maintenance-probe tools/maintenance_probe.cpp)
+target_link_libraries(railhmi-maintenance-probe PRIVATE railhmi_core)
+set_target_properties(railhmi-maintenance-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

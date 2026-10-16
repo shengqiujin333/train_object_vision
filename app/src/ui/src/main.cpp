@@ -24,6 +24,7 @@
 
 #include "alarm_model.h"
 #include "replay_model.h"
+#include "maintenance_model.h"
 
 #ifndef RAILHMI_CONFIG_DIR
 #define RAILHMI_CONFIG_DIR "config"
@@ -324,6 +325,51 @@ int main(int argc, char** argv) {
         replayModel.seed({}, {}, {}, false, false);
     }
     view.rootContext()->setContextProperty("railhmiReplay", &replayModel);
+
+    // 设备维护（ITEM-022）：云台容差/归位/预置位（二次确认）/日志/录像/健康委托 core。
+    RailhmiMaintenanceModel maintModel;
+    QVariantList maintCams;
+    if (cfg.settings.app.simulation) {
+        const long long tnow = 1760000000000LL;
+        std::vector<railhmi::core::CamRuntime> rt(registry.size());
+        for (std::size_t i = 0; i < rt.size(); ++i) {
+            rt[i].has_stream = true;
+            rt[i].state = railhmi::core::StreamState::Live;
+            rt[i].fps = 25.0;
+            rt[i].last_frame_ms = tnow - 400;
+        }
+        if (rt.size() > 1) {
+            rt[1].state = railhmi::core::StreamState::Frozen;
+            rt[1].fps = 0.0;
+            rt[1].last_frame_ms = tnow - 10000;
+            rt[1].quality.too_dark = true;
+        }
+        if (rt.size() > 3) rt[3].reconnect_count = 2;
+        for (const auto& r : railhmi::core::build_maintenance_cameras(registry, rt, tnow)) {
+            QVariantMap m;
+            m["id"] = QString::fromStdString(r.id);
+            m["name"] = QString::fromUtf8(r.name.c_str());
+            m["position"] = QString::fromStdString(r.position);
+            m["online"] = r.online;
+            m["stateLabel"] = QString::fromUtf8(r.state_label.c_str());
+            m["fpsText"] = QString::fromStdString(r.fps_text);
+            m["lastFrameText"] = QString::fromUtf8(r.last_frame_text.c_str());
+            m["qualityLabel"] = QString::fromUtf8(r.quality_label.c_str());
+            m["reconnectText"] = QString::fromUtf8(r.reconnect_text.c_str());
+            maintCams.append(m);
+        }
+        railhmi::core::PtzState ptz;
+        ptz.pan_target = 0; ptz.pan_actual = 15;   // 初始超差 -> 前方 AI NOT_READY
+        ptz.tilt_target = 0; ptz.tilt_actual = 8;
+        ptz.zoom_target = 1; ptz.zoom_actual = 2;
+        railhmi::core::HealthSnapshot hs;
+        hs.npu_load = 42; hs.cpu = 33; hs.temp_c = 58; hs.net_errors = 3;
+        railhmi::core::RecordingStatus rs = railhmi::core::recording_status(
+            true, 5LL * 1024 * 1024 * 1024, 20LL * 1024 * 1024 * 1024);
+        maintModel.seed(ptz, railhmi::core::PtzTolerance{}, true, hs, rs, "maintainer");
+    }
+    view.rootContext()->setContextProperty("railhmiMaintenance", &maintModel);
+    view.rootContext()->setContextProperty("railhmiMaintenanceCameras", maintCams);
     view.rootContext()->setContextProperty("railhmiIntegrations", intList);
     view.rootContext()->setContextProperty("railhmiLayout", layoutMap);
     view.rootContext()->setContextProperty("railhmiRenderPath", renderPath);

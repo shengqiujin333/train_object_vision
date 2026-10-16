@@ -16,6 +16,7 @@ add_executable(railhmi-core-tests
     test_alarm_center.cpp
     test_clip.cpp
     test_replay.cpp
+    test_maintenance.cpp
 )
 target_link_libraries(railhmi-core-tests PRIVATE railhmi_core railhmi_platform)
 
