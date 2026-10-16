@@ -44,6 +44,8 @@ QtObject {
         property color error_bg: "#331114"
         property color neutral: "#8B949E"
         property color neutral_bg: "#1B2027"
+        property color debug_box: "#00E5FF"
+        property color debug_roi: "#FFD400"
     }
     property QtObject alarm: QtObject {
         property QtObject L1: QtObject {

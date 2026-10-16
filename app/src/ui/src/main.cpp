@@ -226,11 +226,13 @@ int main(int argc, char** argv) {
         m["lastResultText"] = QString::fromUtf8(d.last_result_text.c_str());
         m["confidenceText"] = d.boxes.empty() ? QString::fromUtf8("—")
                                                : QString::number(d.max_confidence * 100, 'f', 0) + "%";
+        m["distanceText"] = QString::fromUtf8(d.distance_text.c_str());
         QVariantList boxes;
         for (const auto& b : d.boxes) {
             QVariantMap bm;
             bm["x"] = b.x; bm["y"] = b.y; bm["w"] = b.w; bm["h"] = b.h;
             bm["confidence"] = b.confidence; bm["label"] = QString::fromStdString(b.label);
+            bm["distanceM"] = static_cast<double>(b.distance_m);
             boxes.append(bm);
         }
         m["boxes"] = boxes;

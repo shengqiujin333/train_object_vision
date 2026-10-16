@@ -176,7 +176,8 @@ def main() -> int:
                         "echo TOKENS_EXIT=$?" % remote, 120))
             note("ui-scan", rrun(
                 client, "cd %s && python3 tools/check_no_hardcoded_ui.py --root src/ui; echo SCAN_EXIT=$?; "
-                        "python3 tools/check_replay_wiring.py --root src/ui; echo REPLAY_WIRE_EXIT=$?" % remote, 60))
+                        "python3 tools/check_replay_wiring.py --root src/ui; echo REPLAY_WIRE_EXIT=$?; "
+                        "python3 tools/check_ai_debug_wiring.py --root src/ui --tokens design_tokens.yaml; echo AIDBG_WIRE_EXIT=$?" % remote, 60))
             sim = rrun(client, "cd %s && ./build-core/tools/railhmi-sim-inject "
                               "--fi 01,02,03,04,05,10 --duration 6000 "
                               "--out core-evidence/sim-inject-%s.log --json core-evidence/sim-inject-%s.json; "

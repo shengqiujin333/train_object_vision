@@ -1,6 +1,7 @@
 #include "railhmi/core/inference.h"
 
 #include <algorithm>
+#include <cstdio>
 
 #include "railhmi/core/channel_view.h"   // format_last_frame
 
@@ -139,6 +140,17 @@ std::vector<AiDebugChannel> build_ai_debug(const std::vector<CameraSlot>& regist
                 break;
             }
         }
+        // 目标距离：取最近的有效距离（PRD §4.2）。
+        float mind = -1.0f;
+        for (const auto& b : d.boxes)
+            if (b.distance_m >= 0 && (mind < 0 || b.distance_m < mind)) mind = b.distance_m;
+        if (mind >= 0) {
+            char dbuf[32];
+            std::snprintf(dbuf, sizeof(dbuf), "%.1f m", mind);
+            d.distance_text = dbuf;
+        } else {
+            d.distance_text = "—";
+        }
         if (!rt.worker_alive) {
             d.available = false;
             d.unavailable_reason = "AI 不可用";
@@ -154,6 +166,8 @@ std::vector<AiDebugChannel> build_ai_debug(const std::vector<CameraSlot>& regist
     }
     return out;
 }
+
+bool ai_debug_visible(Role role) { return role_can_access(role, Page::AiDebug); }
 
 }  // namespace core
 }  // namespace railhmi

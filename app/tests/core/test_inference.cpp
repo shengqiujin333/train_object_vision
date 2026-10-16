@@ -152,6 +152,7 @@ void test_ai_debug_view() {
     r.max_confidence = 0.87f;
     DetectionBox b;
     b.x = 0.4f; b.y = 0.5f; b.w = 0.1f; b.h = 0.2f; b.confidence = 0.87f; b.label = "person"; b.in_roi = true;
+    b.distance_m = 12.34f;
     r.boxes.push_back(b);
 
     const std::vector<AiDebugChannel> dbg = build_ai_debug(reg, rt, {r}, 10000);
@@ -163,12 +164,20 @@ void test_ai_debug_view() {
     railhmi_test::check(dbg[0].latency_ms == 38, "latency from latest result");
     railhmi_test::check(dbg[0].last_result_age_ms == 500, "last result age");
     railhmi_test::check(dbg[0].profile_label == detection_badge_for(AiProfile::Front), "profile label");
+    railhmi_test::check(dbg[0].distance_text == "12.3 m", "debug distance from box (ITEM-021)");
 
     rt.worker_alive = false;
     const std::vector<AiDebugChannel> down = build_ai_debug(reg, rt, {r}, 10000);
     bool all_unavail = true;
     for (const auto& c : down) if (c.available || c.unavailable_reason != "AI 不可用") all_unavail = false;
     railhmi_test::check(all_unavail, "worker stopped -> every AI channel marked unavailable (not silent)");
+}
+
+void test_ai_debug_visibility() {
+    railhmi_test::check(!ai_debug_visible(Role::Driver), "driver cannot see AI debug/overlay (ITEM-021)");
+    railhmi_test::check(ai_debug_visible(Role::Maintainer) && ai_debug_visible(Role::Developer) &&
+                            ai_debug_visible(Role::Admin),
+                        "maintainer/developer/admin can see AI debug");
 }
 
 }  // namespace
@@ -181,4 +190,5 @@ void run_inference_tests() {
     test_worker_down_no_schedule();
     test_ai_unavailable_semantics();
     test_ai_debug_view();
+    test_ai_debug_visibility();
 }

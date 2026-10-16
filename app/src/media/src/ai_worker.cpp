@@ -31,6 +31,7 @@ railhmi::core::DetectionResult SimDetector::infer(const railhmi::core::FrameRef&
     b.class_id = 0;
     b.label = "sim-target";
     b.in_roi = true;
+    b.distance_m = 8.0f + static_cast<float>(ai_priority(profile));   // 确定性距离（替代输入）
     r.boxes.push_back(b);
     r.max_confidence = b.confidence;
     return r;

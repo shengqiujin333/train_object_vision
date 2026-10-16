@@ -24,6 +24,7 @@ struct DetectionBox {
     int class_id = 0;
     std::string label;
     bool in_roi = false;         // 是否落在职责 ROI 内
+    float distance_m = -1.0f;    // 目标距离（-1=未知；PRD §4.2）
 };
 
 // 一次推理结果（相机/职责/时间/耗时/版本/框）。
@@ -129,12 +130,16 @@ struct AiDebugChannel {
     std::string last_result_text;         // “N 秒前”/“—”
     std::vector<DetectionBox> boxes;      // 最近结果框
     float max_confidence = 0;
+    std::string distance_text;            // 目标距离（HLT-004/PRD §4.2）
 };
 std::vector<AiDebugChannel> build_ai_debug(const std::vector<CameraSlot>& registry,
                                            const AiRuntime& rt,
                                            const std::vector<DetectionResult>& latest,
                                            long long now_ms,
                                            int stale_ms = 3000);
+
+// AI 调试页/调试叠加的可见性（司机不可见，与导航权限一致）。
+bool ai_debug_visible(Role role);
 
 }  // namespace core
 }  // namespace railhmi

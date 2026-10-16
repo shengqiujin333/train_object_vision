@@ -158,6 +158,7 @@ int main(int argc, char** argv) {
         r.max_confidence = 0.8f;
         DetectionBox b;
         b.x = 0.4f; b.y = 0.5f; b.w = 0.1f; b.h = 0.2f; b.confidence = 0.8f; b.label = "target"; b.in_roi = true;
+        b.distance_m = 8.0f + static_cast<float>(ai_priority(c.profile));
         r.boxes.push_back(b);
         latest.push_back(r);
     }
@@ -169,6 +170,7 @@ int main(int argc, char** argv) {
              " latency=" + std::to_string(d.latency_ms) +
              " boxes=" + std::to_string(d.boxes.size()) +
              " conf=" + std::to_string(static_cast<int>(d.max_confidence * 100 + 0.5)) +
+             " distance=" + d.distance_text +
              " last=" + d.last_result_text);
     }
 
@@ -184,11 +186,13 @@ int main(int argc, char** argv) {
          " alarm_annotation=" + ai_alarm_annotation(false) +
          " debug_all_unavailable=" + (all_unavail ? "true" : "false") +
          " temp_guard_degrades=" + (d90.temperature_guard && !d90.run.empty() ? "true" : "false") +
+         " driver_debug_denied=" + (!ai_debug_visible(Role::Driver) ? "true" : "false") +
          " wide_angle_excluded=" +
          (d60.run.end() == std::find(d60.run.begin(), d60.run.end(), "CAM-02") ? "true" : "false"));
 
     const bool ok = (stopped == "AI 不可用") && annot_ok && all_unavail &&
-                    d90.temperature_guard && !d90.run.empty() && d60.run.size() == 4;
+                    d90.temperature_guard && !d90.run.empty() && d60.run.size() == 4 &&
+                    !ai_debug_visible(Role::Driver) && ai_debug_visible(Role::Maintainer);
     emit(std::string("type=result ") + (ok ? "PASS" : "FAIL"));
     return ok ? 0 : 1;
 }

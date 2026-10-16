@@ -51,6 +51,9 @@ color:
   error_bg:       "#331114"
   neutral:        "#8B949E"   # 未知/不适用
   neutral_bg:     "#1B2027"
+  # ---- 调试叠加（VISUAL §8.5：独立高对比描边，避免与报警红混淆）----
+  debug_box:      "#00E5FF"   # 检测框描边（青）
+  debug_roi:      "#FFD400"   # ROI 虚线描边（黄）
 
 alarm:
   # 报警级别：颜色 + 形状 + 文字 三重编码，颜色非唯一判据
