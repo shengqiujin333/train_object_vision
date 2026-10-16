@@ -1,0 +1,13 @@
+type=ptz-check result_ok=ok text="Pan Δ0.20° Tilt Δ0.30° Zoom Δ0.05 → 容差内"
+type=ptz-check result_bad=out_of_tolerance text="Pan Δ0.20° Tilt Δ4.00° Zoom Δ0.05 → 超差"
+type=action kind=home confirm=true applied=true result=ok
+type=action kind=preset_front confirm=true applied=true result=ok
+type=maint-log action=home user=maintainer result=ok detail="一键归位 Pan Δ0.20° Tilt Δ0.30° Zoom Δ0.05 → 容差内"
+type=action kind=preset_front result=out_of_tolerance
+type=maint-log action=preset_front result=out_of_tolerance detail="重调前方预置位 Pan Δ0.20° Tilt Δ4.00° Zoom Δ0.05 → 超差"
+type=front-ai ptz_ok=READY ptz_over=NOT_READY
+type=cam id=CAM-01 online=true state=实时 fps=25.0 fps last=<1 秒前 quality=正常
+type=cam id=CAM-02 online=false state=画面冻结 fps=— last=10 秒前 quality=过暗
+type=recording running=true used_pct=75 free=5.0 GB state=录像中
+type=health text="NPU 42% / CPU 33% / 温度 58°C / 网络错误 3"
+type=acceptance ptz_within_ok=true ptz_over_detected=true home_logged=true over_tolerance_blocks_front_ai=true result=PASS

@@ -1,0 +1,159 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": "22",
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "workdir": "/tmp/railhmi_verify022",
+    "cpp": "docs/hmi/test_evidence/ITEM-022-maintenance/verify_maint22_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/ITEM-022-maintenance",
+    "stamp": "VERIFY-20261016-v3",
+    "impl_testrun_log": "docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-r1.core-evidence_core-tests-20261016-ITEM022-r1.log",
+    "impl_maintprobe_log": "docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-r1.core-evidence_maintenance-probe-20261016-ITEM022-r1.log",
+    "connect_timeout": "10",
+    "timeout_sec": "1500",
+    "app_root": "E:\\work\\rail_issue\\rk3588_handover\\app"
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "ITEM-022: device maintenance page; abort on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "run-testrun-entry",
+      "cmd": "C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe E:\\work\\rail_issue\\rk3588_handover\\app\\tools\\board_build.py --host 192.168.0.103 --user admin --credential-env TRAIN_RK3588_SSH_CREDENTIAL --mode TestRun --outdir docs\\hmi\\test_evidence\\ITEM-022-maintenance --stamp VERIFY-20261016-v3 --keep-remote",
+      "exit": 0,
+      "elapsed_s": 57.62,
+      "output": "host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU\n[mkdir] exit=0 \n[upload] exit=0 uploaded 149 files from E:\\work\\rail_issue\\rk3588_handover\\app\n[upload-tokens] exit=0 design_tokens.yaml\n[testrun] exit=0 TESTRUN_EXIT=0\n[tokens-selftest] exit=0 TOKENS_EXIT=0\n[ui-scan] exit=0 MAINT_WIRE_EXIT=0\n[sim-inject] exit=0 SIM_EXIT=0\n[status-probe] exit=0 MAINT_EXIT=0\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_sim-inject-VERIFY-20261016-v3.json\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-driver-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_ai-probe-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_alarm-probe-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_clip-probe-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_replay-probe-VERIFY-20261016-v3.log\n[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_maintenance-probe-VERIFY-20261016-v3.log\n[artifacts] exit=0 (check mode: no artifacts)\ntranscript: docs\\hmi\\test_evidence\\ITEM-022-maintenance\\build-TestRun-192_168_0_103-VERIFY-20261016-v3.transcript.json\nlog: docs\\hmi\\test_evidence\\ITEM-022-maintenance\\build-TestRun-192_168_0_103-VERIFY-20261016-v3.log\n"
+    },
+    {
+      "step": "fresh-artifacts",
+      "exit": 0,
+      "output": "build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.log build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_core-tests-VERIFY-20261016-v3.xml build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_maintenance-probe-VERIFY-20261016-v3.log"
+    },
+    {
+      "step": "log-compare",
+      "exit": 0,
+      "output": "impl_pass=612 verify_pass=612 identical=True verify_fails=0 expect=612 result=RESULT: PASS passed=612 failed=0"
+    },
+    {
+      "step": "junit-parse",
+      "exit": 0,
+      "output": "junit tests=612 failures=0 item022_cases=11/11 missing=[]"
+    },
+    {
+      "step": "maint-probe-assert",
+      "exit": 0,
+      "output": "{\"fails\": []}"
+    },
+    {
+      "step": "maint-probe-compare",
+      "exit": 0,
+      "output": "cross-round deterministic reproduction identical=True"
+    },
+    {
+      "step": "mkdir-verify",
+      "cmd": "mkdir -p /tmp/railhmi_build/verify",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": ""
+    },
+    {
+      "step": "mkdir-workdir",
+      "cmd": "rm -rf /tmp/railhmi_verify022 && mkdir -p /tmp/railhmi_verify022",
+      "exit": 0,
+      "elapsed_s": 0.14,
+      "output": ""
+    },
+    {
+      "step": "upload-fixture",
+      "exit": 0,
+      "output": "docs/hmi/test_evidence/ITEM-022-maintenance/verify_maint22_ext.cpp"
+    },
+    {
+      "step": "compile-ext",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O1 -Wall -Wextra -DRAILHMI_CONFIG_DIR='\"config\"' -Isrc/core/include -Isrc/platform/include /tmp/railhmi_verify022/verify_maint22_ext.cpp build-core/src/core/librailhmi_core.a build-core/src/platform/librailhmi_platform.a -o /tmp/railhmi_verify022/verify_maint22_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.27,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify022/verify_maint22_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "== verify ITEM-022 ext (device maintenance page fixtures) ==\nRESULT: PASS passed=83 failed=0\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-summary",
+      "exit": 0,
+      "output": "ext passed=83 failed=0"
+    },
+    {
+      "step": "upload-scan",
+      "exit": 0,
+      "output": "verify_scan22.py"
+    },
+    {
+      "step": "wiring-scan",
+      "cmd": "cd /tmp/railhmi_build && python3 /tmp/railhmi_verify022/verify_scan22.py; echo SCAN22_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.13,
+      "output": "T1_cards= True\nT2_ptz_values_display= True\nT2_ptz_check_text= True\nT2_front_ai_text= True\nT3_controls= True\nT3_calls= True\nT3_modal= True\nT3_confirm_buttons= True\nT3_confirm_executes= True\nT3_reload_after= True\nT4_recent_logs= True\nT5_nvr_card= True\nT5_no_auto_modify= True\nT6_camera_fields= True\nT7_ai_fields= True\nT8_reconnect_text_bridged_in_main= True\nT8_reconnect_text_consumed_in_p6= False\nT9_bridge_core_calls= True\nT9_main_injects= True\nT10_board_build= True\nT10_checker_covers= True\nT11_no_hexliteral_in_p6= True\nT11_theme_usage= True\nD1_manual_reconnect_entry_present= False\nD2_log_day_rolling_present= False\nSCAN22_EXIT=0\n"
+    },
+    {
+      "step": "wiring-scan-findings",
+      "exit": 0,
+      "output": "mismatch=[] scan_exit_ok=True raw={\"T1_cards\": \"True\", \"T2_ptz_values_display\": \"True\", \"T2_ptz_check_text\": \"True\", \"T2_front_ai_text\": \"True\", \"T3_controls\": \"True\", \"T3_calls\": \"True\", \"T3_modal\": \"True\", \"T3_confirm_buttons\": \"True\", \"T3_confirm_executes\": \"True\", \"T3_reload_after\": \"True\", \"T4_recent_logs\": \"True\", \"T5_nvr_card\": \"True\", \"T5_no_auto_modify\": \"True\", \"T6_camera_fields\": \"True\", \"T7_ai_fields\": \"True\", \"T8_reconnect_text_bridged_in_main\": \"True\", \"T9_bridge_core_calls\": \"True\", \"T9_main_injects\": \"True\", \"T10_board_build\": \"True\", \"T10_checker_covers\": \"True\", \"T11_no_hexliteral_in_p6\": \"True\", \"T11_theme_usage\": \"True\"}"
+    },
+    {
+      "step": "defect-probes",
+      "exit": 0,
+      "output": "D1_manual_reconnect_entry_present=False D2_log_day_rolling_present=False"
+    },
+    {
+      "step": "maint-probe-rep-run",
+      "cmd": "cd /tmp/railhmi_build && mkdir -p verify && ./build-core/tools/railhmi-maintenance-probe --out verify/maintenance-probe-rep.log; echo MAINTREP_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.18,
+      "output": "type=ptz-check result_ok=ok text=\"Pan Δ0.20° Tilt Δ0.30° Zoom Δ0.05 → 容差内\"\ntype=ptz-check result_bad=out_of_tolerance text=\"Pan Δ0.20° Tilt Δ4.00° Zoom Δ0.05 → 超差\"\ntype=action kind=home confirm=true applied=true result=ok\ntype=action kind=preset_front confirm=true applied=true result=ok\ntype=maint-log action=home user=maintainer result=ok detail=\"一键归位 Pan Δ0.20° Tilt Δ0.30° Zoom Δ0.05 → 容差内\"\ntype=action kind=preset_front result=out_of_tolerance\ntype=maint-log action=preset_front result=out_of_tolerance detail=\"重调前方预置位 Pan Δ0.20° Tilt Δ4.00° Zoom Δ0.05 → 超差\"\ntype=front-ai ptz_ok=READY ptz_over=NOT_READY\ntype=cam id=CAM-01 online=true state=实时 fps=25.0 fps last=<1 秒前 quality=正常\ntype=cam id=CAM-02 online=false state=画面冻结 fps=— last=10 秒前 quality=过暗\ntype=recording running=true used_pct=75 free=5.0 GB state=录像中\ntype=health text=\"NPU 42% / CPU 33% / 温度 58°C / 网络错误 3\"\ntype=acceptance ptz_within_ok=true ptz_over_detected=true home_logged=true over_tolerance_blocks_front_ai=true result=PASS\nMAINTREP_EXIT=0\n"
+    },
+    {
+      "step": "maint-probe-determinism",
+      "cmd": "cd /tmp/railhmi_build && diff verify/maintenance-probe-rep.log core-evidence/maintenance-probe-VERIFY-20261016-v3.log && echo IDENTICAL",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "IDENTICAL\n"
+    },
+    {
+      "step": "regression-artifacts",
+      "cmd": "cd /tmp/railhmi_build && ls core-evidence/",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "ai-probe-VERIFY-20261016-v3.log\nalarm-probe-VERIFY-20261016-v3.log\nclip-probe-VERIFY-20261016-v3.log\ncore-tests-VERIFY-20261016-v3.log\ncore-tests-VERIFY-20261016-v3.xml\nmaintenance-probe-VERIFY-20261016-v3.log\nreplay-probe-VERIFY-20261016-v3.log\nsim-inject-VERIFY-20261016-v3.json\nsim-inject-VERIFY-20261016-v3.log\nstatus-probe-driver-VERIFY-20261016-v3.log\nstatus-probe-VERIFY-20261016-v3.log\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify022 /tmp/railhmi_build /tmp/railhmi_clips && echo fixture_cleanup_done && echo LEFT_LIST && ls -d /tmp/railhmi_verify022 /tmp/railhmi_build /tmp/railhmi_clips 2>&1",
+      "exit": 2,
+      "elapsed_s": 0.1,
+      "output": "fixture_cleanup_done\nLEFT_LIST\nls: cannot access '/tmp/railhmi_verify022': No such file or directory\nls: cannot access '/tmp/railhmi_build': No such file or directory\nls: cannot access '/tmp/railhmi_clips': No such file or directory\n"
+    },
+    {
+      "step": "cleanup-verify",
+      "exit": 0,
+      "output": "cleanup_ok=True"
+    },
+    {
+      "step": "findings",
+      "exit": 0,
+      "output": "[{\"independent_recheck\": \"deliverable TestRun entry re-run ok, core-tests line-identical + JUnit 612/0, maintenance-probe formula oracle + determinism, ext fixtures and wiring scan both green on-board\", \"confirmed\": true}, {\"D-01_P2\": \"P6 lacks the required manual reconnect entry: no reconnect control/bridge anywhere in P6Maintenance/maintenance_model/main.cpp (reconnectText is display-only); task text and interaction v2 §5.6 require 手动重连\", \"present\": false}, {\"D-02_P3\": \"maintenance log in the bridge is a plain 500-cap in-memory list (push_back + erase(begin)) with NO day rolling and no maintenance_log SQLite insertion; task text requires 按日滚动\", \"present\": false}]"
+    }
+  ]
+}
