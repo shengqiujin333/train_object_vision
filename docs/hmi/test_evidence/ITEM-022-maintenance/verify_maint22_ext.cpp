@@ -19,15 +19,25 @@
 //   * recording_status: exact used_pct integer math, GB/MB formatting
 //     boundary (exactly 1 GiB -> "1.0 GB"; 0 bytes -> "0 MB"), stopped text
 //   * health_text: -1 placeholders for NPU/CPU/temp, net_errors passthrough
-//   * regression of ITEM-005 stream semantics the maintenance row consumes:
-//     channel_state_label six-state mapping, format_fps epsilon, format_last_frame
-//     0s/59s/60s/119s/3600s boundaries
+//   * channel_view helper regression (channel_state_label six-state mapping,
+//     format_fps epsilon, format_last_frame boundaries)
+// Fix-round additions (v3 TEST_FAIL D-01/D-02 re-verify):
+//   * build_maintenance_log generic row contract (action/target/result/detail
+//     passthrough, no invention), reconnect row shape
+//   * log_day_key: UTC YYYY-MM-DD via independent date math (not trusting
+//     format_time_text); 1760000000000 ms -> 2025-10-09; t<=0 dash remains
+//     dash and substr(0,10) of the dash placeholder -> "—" day key
+//   * roll_logs_by_day: keeps latest max_days distinct days, max_days=0 keeps
+//     all, drops whole oldest day (not oldest rows), preserves time order,
+//     day boundary inclusivity (ms inside day), single-day input
 // Pure logic, no Qt/RKNN — like the delivered probes.
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <string>
 #include <vector>
 
+#include "railhmi/core/alarm_center.h"   // parse_date_utc_ms (verifier day math)
 #include "railhmi/core/channel_view.h"
 #include "railhmi/core/maintenance.h"
 #include "railhmi/core/stream_state.h"
@@ -305,8 +315,7 @@ void t_health() {
 }
 
 // --- 7. format helpers regression (channel view consumed by rows) ------------
-void t_format_regression() {
-    check_eq("fps epsilon: 0 -> dash", format_fps(0.0), "\xE2\x80\x94");
+void t_format_regression() {    check_eq("fps epsilon: 0 -> dash", format_fps(0.0), "\xE2\x80\x94");
     check_eq("fps 24.96 below epsilon behaves", format_fps(24.96), "25.0 fps");
     check_eq("last frame 999ms", format_last_frame(999), "<1 \xE7\xA7\x92\xE5\x89\x8D");
     check_eq("last frame 60s -> 1 分 0 秒", format_last_frame(60000), "1 \xE5\x88\x86 0 \xE7\xA7\x92\xE5\x89\x8D");
@@ -324,6 +333,165 @@ void t_format_regression() {
 
 }  // namespace
 
+// --- 8. D-01 generic maintenance log (fix round) -----------------------------
+void t_generic_maintenance_log() {
+    // reconnect row: full column passthrough, no invented fields
+    const MaintenanceLogRow rc = build_maintenance_log(
+        "reconnect", "CAM-02", "ok", "\xE6\x89\x8B\xE5\x8A\xA8\xE9\x87\x8D\xE8\xBF\x9E",
+        "operator", 1760000000000LL, 7);
+    check_eq("D-01 generic log action", rc.action, "reconnect");
+    check_eq("D-01 generic log target passthrough", rc.target, "CAM-02");
+    check_eq("D-01 generic log result passthrough", rc.result, "ok");
+    check_eq("D-01 generic log detail passthrough",
+             rc.detail, "\xE6\x89\x8B\xE5\x8A\xA8\xE9\x87\x8D\xE8\xBF\x9E");
+    check_eq("D-01 generic log user passthrough", rc.user, "operator");
+    check(rc.ts_wall_ms == 1760000000000LL && rc.ts_mono_us == 7,
+          "D-01 generic log timestamps passthrough");
+
+    // non-reconnect generic rows must not be rewritten by the build layer
+    const MaintenanceLogRow param = build_maintenance_log(
+        "param_change", "CAM-05", "unverified", "\xE8\xAE\xBE\xE7\xBD\xAE\xE6\x9C\xAA\xE6\xA0\xB8\xE9\xAA\x8C",
+        "", 5, 0);
+    check_eq("generic log keys not rewritten (param_change)", param.action, "param_change");
+    check_eq("generic result not rewritten", param.result, "unverified");
+    check_eq("generic empty user stays empty", param.user, "");
+
+    // build_maintenance_log and build_ptz_log agree on the shared columns
+    const PtzTolerance tol;
+    PtzState before; before.pan_target = 0; before.pan_actual = 15;
+    PtzState after = before; after.pan_actual = 0.2; after.tilt_actual = -0.3;
+    after.zoom_target = 1; after.zoom_actual = 1.05;
+    const PtzAction home = ptz_home(before, after, tol);
+    const MaintenanceLogRow via_ptz = build_ptz_log(home, "maintainer", 99, 3);
+    const MaintenanceLogRow via_generic = build_maintenance_log(
+        home.kind, "ptz", home.check.ok ? "ok" : to_string(home.check.result),
+        home.label + " " + home.check.text, "maintainer", 99, 3);
+    check(via_ptz.action == via_generic.action && via_ptz.target == via_generic.target &&
+              via_ptz.result == via_generic.result && via_ptz.detail == via_generic.detail &&
+              via_ptz.user == via_generic.user,
+          "build_ptz_log == generic implementation of the same row (equivalence)");
+}
+
+// --- 9. D-02 log_day_key (verifier-side UTC math, not format_time_text) ------
+void t_log_day_key() {
+    // verifier's own civil-from-days (Howard Hinnant's algorithm) so the
+    // expected day strings do not come from the delivered formatter
+    auto days_from_civil = [](int y, unsigned m, unsigned d) -> long long {
+        y -= m <= 2;
+        const int era = (y >= 0 ? y : y - 399) / 400;
+        const unsigned yoe = static_cast<unsigned>(y - era * 400);
+        const unsigned doy = (153 * (m + (m > 2 ? -3 : 9)) + 2) / 5 + d - 1;
+        const unsigned doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+        return era * 146097LL + doe - 719468;
+    };
+    auto ms = [&](int y, unsigned m, unsigned d) -> long long {
+        return (days_from_civil(y, m, d)) * 86400000LL;
+    };
+
+    check_eq("day key 1760000000000 -> 2025-10-09",
+             log_day_key(1760000000000LL), "2025-10-09");
+    check_eq("day key at 2026-10-16 00:00 UTC",
+             log_day_key(ms(2026, 10, 16)), "2026-10-16");
+    check_eq("day key last ms of 2026-10-15 (23:59:59.999)",
+             log_day_key(ms(2026, 10, 16) - 1), "2026-10-15");
+    check_eq("day key first ms of 2026-10-16",
+             log_day_key(ms(2026, 10, 16)), "2026-10-16");
+    check_eq("day key leap day 2024-02-29",
+             log_day_key(ms(2024, 2, 29)), "2024-02-29");
+    check_eq("day key year boundary 2025-12-31/2026-01-01",
+             log_day_key(ms(2026, 1, 1)), "2026-01-01");
+    // ts<=0 falls into the dash placeholder: substr(0,10) of "—" yields the
+    // dash itself (documented placeholder, same convention as time_text)
+    check_eq("day key ts<=0 placeholder", log_day_key(0), "\xE2\x80\x94");
+
+    // day_key/ms round-trip consistency with the delivered parser
+    const long long d0 = parse_date_utc_ms("2026-10-16");
+    const long long inside = d0 + 3600000;               // 01:00:00 UTC same day
+    check_eq("round trip day key (date parser -> day key)",
+             log_day_key(inside), "2026-10-16");
+}
+
+// --- 10. D-02 roll_logs_by_day (keep-latest-days semantics) ------------------
+void t_roll_logs_by_day() {
+    // verifier-side day list: 4 distinct days around 2026-10-16
+    const long long d13 = parse_date_utc_ms("2026-10-13");
+    const long long d14 = parse_date_utc_ms("2026-10-14");
+    const long long d15 = parse_date_utc_ms("2026-10-15");
+    const long long d16 = parse_date_utc_ms("2026-10-16");
+    const MaintenanceLogRow old1 = build_maintenance_log("home", "ptz", "ok", "d13a", "u", d13, 1);
+    const MaintenanceLogRow old2 = build_maintenance_log("home", "ptz", "ok", "d13b", "u", d13 + 1, 2);
+    const MaintenanceLogRow mid = build_maintenance_log("home", "ptz", "ok", "d14", "u", d14, 3);
+    const MaintenanceLogRow recent = build_maintenance_log("home", "ptz", "ok", "d15", "u", d15, 4);
+    const MaintenanceLogRow today1 = build_maintenance_log("reconnect", "CAM-01", "ok", "d16a", "u", d16, 5);
+    const MaintenanceLogRow today2 = build_maintenance_log("home", "ptz", "ok", "d16b", "u", d16 + 5, 6);
+    const std::vector<MaintenanceLogRow> logs = {old1, old2, mid, recent, today1, today2};
+
+    // max_days=2 keeps whole days 15 and 16: day15 has 1 row, day16 has 2
+    // rows -> 3 rows; drops the whole 13/14 days (no partial-day drop)
+    const std::vector<MaintenanceLogRow> r2 = roll_logs_by_day(logs, 2);
+    check(r2.size() == 3, "roll 6 logs/4 days max_days=2 -> 3 rows (1+2)");
+    check(r2[0].detail == "d15" && r2[1].detail == "d16a" && r2[2].detail == "d16b",
+          "roll keeps days 15/16 in time order");
+    // verifier-side filter: all kept rows must carry one of the two latest days
+    for (const auto& r : r2) {
+        const std::string d = log_day_key(r.ts_wall_ms);
+        check(d == "2026-10-15" || d == "2026-10-16",
+              "kept row in a dropped day: " + d + " " + r.detail);
+    }
+    check(std::find_if(r2.begin(), r2.end(), [](const MaintenanceLogRow& r) {
+              return log_day_key(r.ts_wall_ms) == "2026-10-13";
+          }) == r2.end(), "day 13 rows fully dropped");
+    check(std::find_if(r2.begin(), r2.end(), [](const MaintenanceLogRow& r) {
+              return log_day_key(r.ts_wall_ms) == "2026-10-14";
+          }) == r2.end(), "day 14 rows fully dropped");
+    check(log_day_key(r2.front().ts_wall_ms) == "2026-10-15" &&
+              log_day_key(r2.back().ts_wall_ms) == "2026-10-16",
+          "kept order oldest-first within kept days");
+
+    // max_days=1 keeps only today's rows
+    const std::vector<MaintenanceLogRow> r1 = roll_logs_by_day(logs, 1);
+    check(r1.size() == 2 && r1[0].detail == "d16a" && r1[1].detail == "d16b",
+          "roll max_days=1 -> only the latest day (2 rows)");
+
+    // max_days=0 keeps all (documented sentinel)
+    check(roll_logs_by_day(logs, 0).size() == logs.size(),
+          "max_days=0 sentinel keeps all rows");
+    check(roll_logs_by_day(logs, -1).size() == logs.size(),
+          "non-positive max_days treated as keep-all (no accidental wipe)");
+
+    // day-boundary inclusivity: a row exactly at 00:00:00.000 belongs to that day
+    const std::vector<MaintenanceLogRow> edge = {
+        build_maintenance_log("home", "ptz", "ok", "e_prev", "", d16 - 1, 1),
+        build_maintenance_log("home", "ptz", "ok", "e_exact", "", d16, 2),
+        build_maintenance_log("home", "ptz", "ok", "e_last", "", d16 + 86399999, 3),
+    };
+    const std::vector<MaintenanceLogRow> re1 = roll_logs_by_day(edge, 1);
+    check(re1.size() == 2 && re1[0].detail == "e_exact" && re1[1].detail == "e_last",
+          "00:00.000 belongs to the new day; last ms of the day kept with it");
+
+    // five distinct days with 1 kept day drops the single 2026-10-09 row of
+    // the probe scenario shape (mirrors the delivered probe inputs)
+    std::vector<MaintenanceLogRow> probe_shape = {
+        build_maintenance_log("home", "ptz", "ok", "now1", "", 1760000000000LL, 1),
+        build_maintenance_log("preset_front", "ptz", "out_of_tolerance", "now2", "",
+                              1760000000000LL, 2),
+        build_maintenance_log("reconnect", "CAM-02", "ok", "now3", "", 1760000000000LL, 3),
+        build_maintenance_log("home", "ptz", "ok", "old", "",
+                              1760000000000LL - 5LL * 86400000LL, 4),
+    };
+    const std::vector<MaintenanceLogRow> probe_rolled = roll_logs_by_day(probe_shape, 1);
+    check(probe_rolled.size() == 3 &&
+              probe_rolled[probe_rolled.size() - 1].detail == "now3",
+          "probe scenario: 4 logs (3 on 2025-10-09 + 1 on 2025-10-04) max_days=1 -> 3");
+    check(log_day_key(probe_shape[0].ts_wall_ms) == "2025-10-09",
+          "probe scenario day key 2025-10-09 (verifier math)");
+
+    // single-day input is untouched
+    const std::vector<MaintenanceLogRow> one_day = {today1, today2};
+    check(roll_logs_by_day(one_day, 3).size() == 2,
+          "single-day input survives any max_days");
+}
+
 int main() {
     std::printf("== verify ITEM-022 ext (device maintenance page fixtures) ==\n");
     t_tolerance();
@@ -333,6 +501,9 @@ int main() {
     t_recording();
     t_health();
     t_format_regression();
+    t_generic_maintenance_log();
+    t_log_day_key();
+    t_roll_logs_by_day();
     std::printf("RESULT: %s passed=%d failed=%d\n",
                 g_failed == 0 ? "PASS" : "FAIL", g_passed, g_failed);
     for (const auto& n : g_notes) std::printf("  %s\n", n.c_str());

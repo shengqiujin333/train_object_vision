@@ -2,8 +2,17 @@
 """ITEM-022 verification round — independent board-side re-run (verifier-owned).
 
 Work item: 设备维护页 (ITEM-022).
-Subject: implementer commit 20a192b, authoritative round stamp
-20261016-ITEM022-r1 (612/0 core-tests + maintenance-probe PASS + wiring scan).
+Subject: implementer fix round commit f6acafb, stamp
+20261016-ITEM022-fix-r1 (617/0 core-tests incl. D-01 reconnect log +
+D-02 day-key/rolling assertions, maintenance-probe PASS with
+type=maint-log action=reconnect + type=log-days, wiring scan).
+
+Re-verifies the v3 TEST_FAIL findings:
+  D-01 manual reconnect entry (per-camera reconnect control +
+  Q_INVOKABLE reconnect that executes, counts and writes a
+  action=reconnect maintenance log row).
+  D-02 day-rolling maintenance logs (core log_day_key / roll_logs_by_day,
+  bridge logsByDay grouping, P6 day-grouped log card).
 
 Steps (all finite timeouts):
   1. Re-run the deliverable board_build.py --mode TestRun entry as a child
@@ -200,7 +209,7 @@ def main() -> int:
                  "output": tl.name + " " + tx.name + " " + pl.name})
 
         # 2. line-by-line [PASS] comparison + independent JUnit parse
-        expected_pass = 612
+        expected_pass = 617
         if tl.is_file():
             impl = parse_core_tests_log(Path(args.impl_testrun_log).read_text(
                 encoding="utf-8", errors="replace"))
@@ -223,7 +232,7 @@ def main() -> int:
                          for n2 in names_all]
             found = [c for c in ITEM022_CASES if c in names_all]
             missing = [c for c in ITEM022_CASES if c not in names_all]
-            junit_ok = (n_tests == "612" and n_fail == "0"
+            junit_ok = (n_tests == "617" and n_fail == "0"
                         and len(found) == len(ITEM022_CASES))
             note("junit-parse", {"exit": 0 if junit_ok else 1,
                  "output": "junit tests=%s failures=%s item022_cases=%d/%d missing=%s"
@@ -338,19 +347,21 @@ def main() -> int:
             ok = False
 
         findings = [
-            {"independent_recheck": ("deliverable TestRun entry re-run ok, core-tests "
-                                     "line-identical + JUnit 612/0, maintenance-probe "
+            {"independent_recheck": ("fix-round re-verify: deliverable TestRun entry "
+                                     "re-run ok, core-tests 617 line-identical + JUnit "
+                                     "617/0 (16 ITEM-022 cases), maintenance-probe "
                                      "formula oracle + determinism, ext fixtures and "
-                                     "wiring scan both green on-board"),
+                                     "wiring scan both green on-board; v3 D-01/D-02 "
+                                     "re-examined below"),
              "confirmed": ok},
-            {"D-01_P2": ("P6 lacks the required manual reconnect entry: no reconnect "
-                         "control/bridge anywhere in P6Maintenance/maintenance_model/"
-                         "main.cpp (reconnectText is display-only); task text and "
-                         "interaction v2 §5.6 require 手动重连"),
+            {"D-01_P2": ("fix: per-camera 重连 control (reconnect-<id> -> "
+                         "doReconnect -> Q_INVOKABLE reconnect) executing, counting "
+                         "and writing an action=reconnect maintenance log row; "
+                         "reconnectText consumed in P6"),
              "present": d1 == "True"},
-            {"D-02_P3": ("maintenance log in the bridge is a plain 500-cap in-memory "
-                         "list (push_back + erase(begin)) with NO day rolling and no "
-                         "maintenance_log SQLite insertion; task text requires 按日滚动"),
+            {"D-02_P3": ("fix: core log_day_key (UTC YYYY-MM-DD) + roll_logs_by_day "
+                         "keep-latest-N-days, bridge logsByDay(7) grouped rows, P6 "
+                         "day-grouped log card (maintLogDay + entries)"),
              "present": d2 == "True"},
         ]
         note("findings", {"exit": 0, "output": json.dumps(findings, ensure_ascii=False)})
@@ -403,6 +414,13 @@ def assert_maintenance_probe(text: str) -> list:
               r'detail="一键归位 Pan Δ0\.20° Tilt Δ0\.30° Zoom Δ0\.05 → 容差内"$')
     want_line(r'^type=maint-log action=preset_front result=out_of_tolerance '
               r'detail="重调前方预置位 Pan Δ0\.20° Tilt Δ4\.00° Zoom Δ0\.05 → 超差"$')
+    # fix round (D-01/D-02), expectations derived from the probe source:
+    #   generic log row action=reconnect/target=CAM-02/result=ok/detail=手动重连
+    want_line(r'^type=maint-log action=reconnect target=CAM-02 result=ok detail="手动重连"$')
+    #   day rolling: 4 logs total; ts 1760000000000 ms -> UTC 2025-10-09 (3 rows:
+    #   home/preset_front/reconnect), the 5-day-old row -> 2025-10-04; with
+    #   max_days=1 only 2025-10-09 (3 rows) survives, so total=4 rolled=3
+    want_line(r'^type=log-days total=4 rolled=3 max_days=1 day_key=2025-10-09$')
     # front AI readiness: PTZ ok -> READY; over-tolerance -> NOT_READY (交互 §5.6)
     want_line(r'^type=front-ai ptz_ok=READY ptz_over=NOT_READY$')
 
@@ -440,9 +458,17 @@ def assert_maintenance_probe(text: str) -> list:
     want_line(r"^type=recording running=true used_pct=75 free=5\.0 GB state=录像中$")
     # health text with the four probe values
     want_line(r'^type=health text="NPU 42% / CPU 33% / 温度 58°C / 网络错误 3"$')
-    # acceptance flags (four observable booleans) + PASS
+    # acceptance flags (five observable booleans incl. fix-round ones) + PASS
     want_line(r"^type=acceptance ptz_within_ok=true ptz_over_detected=true home_logged=true "
+              r"reconnect_logged=true log_day_rolling=true "
               r"over_tolerance_blocks_front_ai=true result=PASS$")
+    # inverse guard: a fresh log set that did NOT roll (dropping the 2025-10-04
+    # row) would show rolled=4 -> the delivered rolling gate must exclude the
+    # old day; assert the exact sibling line absent to catch a no-op rolling.
+    if re.search(r"^type=log-days total=4 rolled=4\b", text, re.M):
+        fails.append("rolling no-op: rolled=4 observed (old day not dropped)")
+    if re.search(r"^type=acceptance\b.*\breconnect_logged=false\b", text, re.M):
+        fails.append("reconnect not logged (reconnect_logged=false)")
     return fails
 
 
@@ -458,6 +484,12 @@ ITEM022_CASES = [
     "frozen + quality flags",
     "recording used pct",
     "health text",
+    # fix round (D-01/D-02) new cases from the delivered test_maintenance.cpp
+    "log day key (D-02)",
+    "roll keeps latest 2 days (D-02)",
+    "rolled entries are the most recent days",
+    "max_days=0 keeps all",
+    "generic maintenance log (reconnect)",
 ]
 
 
@@ -510,9 +542,13 @@ print('T3_confirm_executes=',
 print('T3_reload_after=', re.search(
     r'function confirmPtz\(\)[\s\S]*?page\.pendingKind = ""[\s\S]*?reload\(\)', p6) is not None)
 
-# T4 maintenance log list consumes recentLogs and shows each column
-print('T4_recent_logs=', 'recentLogs(' in p6 and 'modelData.action' in p6 and
-      'modelData.user' in p6 and 'modelData.result' in p6 and 'modelData.detail' in p6)
+# T4 maintenance log list consumes logsByDay (fix D-02): day-grouped card with
+# day heading (maintLogDay with day+count) and per-entry column rendering.
+print('T4_recent_logs=', 'logsByDay(' in p6 and 'maintLogDay' in p6 and
+      'modelData.day' in p6 and 'modelData.count' in p6 and
+      'modelData.entries' in p6 and 'modelData.action' in p6 and
+      'modelData.user' in p6 and 'modelData.result' in p6 and
+      'modelData.detail' in p6)
 
 # T5 NVR card: registered/state/channel mapping shown; NO auto-modify entry
 print('T5_nvr_card=', 'maintNvrCard' in p6 and 'channelMapping' in p6 and
@@ -534,11 +570,9 @@ print('T7_ai_fields=', 'railhmiAiDebug' in p6 and
       'modelData.modelVersion' in p6 and 'modelData.fpsText' in p6 and
       'modelData.lastResultText' in p6 and 'modelData.available' in p6)
 
-# T8 reconnect count bridged for display in main.cpp — BUT not consumed by P6
-# (offline self-check: reconnectText absent from P6Maintenance.qml). Recorded
-# here as an observed source-level fact for the findings section, not asserted
-# as expected-True: the true expected value is True only if the field is both
-# bridged and displayed.
+# T8 reconnect count bridged in main.cpp AND consumed by P6 (fix D-01): the
+# v3 round recorded consumed_in_p6=False as the D-01 companion observation;
+# the fix must flip it to True.
 print('T8_reconnect_text_bridged_in_main=', 'reconnectText' in mc)
 print('T8_reconnect_text_consumed_in_p6=', 'reconnectText' in p6)
 
@@ -555,24 +589,27 @@ print('T10_board_build=', 'check_maintenance_wiring.py' in bb and
       'MAINT_WIRE_EXIT' in bb and 'railhmi-maintenance-probe' in bb and
       'MAINT_EXIT' in bb)
 print('T10_checker_covers=', all(x in check_tools for x in (
-    'ptzCheckText', 'ptzConfirmModal', 'channelMapping', 'recentLogs')))
+    'ptzCheckText', 'ptzConfirmModal', 'channelMapping', 'logsByDay',
+    'reconnect-')))
 
 # T11 tokens-only colors: P6 has no hardcoded hex in code (strip same as checker)
 print('T11_no_hexliteral_in_p6=', any(
     re.search(r'#[0-9a-fA-F]{3,8}\b', line) for line in code_lines) is False)
 print('T11_theme_usage=', 'Theme.color.' in p6)
 
-# D-probe 1 (D-01): manual reconnect control/bridge exists for P6? A control is
-# an objectName'd control OR an invokable bridge method; passive display of a
-# reconnect count text does not count (word 'reconnectText' alone is display).
-reconnect_ctl = ((re.search(r'objectName:\s*"[^"]*[Rr]econnect', p6) is not None) or
-                 re.search(r'Q_INVOKABLE[^\n]*reconnect|reconnect[A-Z]\w*\s*\(', bridge) is not None)
+# D-probe 1 (D-01, fix round): manual reconnect must now be a REAL entry — a
+# per-camera named control (reconnect-<id>) wired to a bridge reconnect
+# invokable. Passive display of reconnectText alone does not count.
+reconnect_ctl = ((re.search(r'objectName:\s*"reconnect-"\s*\+\s*modelData\.id', p6) is not None) and
+                 re.search(r'function\s+doReconnect\s*\(', p6) is not None and
+                 re.search(r'Q_INVOKABLE[^\n]*reconnect\s*\(', bridge_h) is not None)
 print('D1_manual_reconnect_entry_present=', reconnect_ctl)
 
-# D-probe 2 (D-02): log day-rolling (day-keyed/grouped retention or SQLite
-# insert of maintenance logs reachable from the bridge)?
-day_roll = (re.search(r'day[A-Z_]|by_day|date_key|dayKey|按日', bridge + bridge_h) is not None
-            or 'insert_maintenance' in bridge)
+# D-probe 2 (D-02, fix round): day-rolling must be delivered in core AND
+# shown by the page: core roll_logs_by_day + bridge logsByDay grouped display.
+day_roll = (re.search(r'roll_logs_by_day|log_day_key', bridge) is not None
+            and 'logsByDay' in bridge_h and 'logsByDay(' in p6
+            and 'maintLogDay' in p6)
 print('D2_log_day_rolling_present=', day_roll)
 '''
 
@@ -582,9 +619,11 @@ SCAN_KEYS = [
     "T3_confirm_executes", "T3_reload_after",
     "T4_recent_logs", "T5_nvr_card", "T5_no_auto_modify", "T6_camera_fields",
     "T7_ai_fields", "T8_reconnect_text_bridged_in_main",
+    "T8_reconnect_text_consumed_in_p6",
     "T9_bridge_core_calls",
     "T9_main_injects", "T10_board_build", "T10_checker_covers",
     "T11_no_hexliteral_in_p6", "T11_theme_usage",
+    "D1_manual_reconnect_entry_present", "D2_log_day_rolling_present",
 ]
 
 

@@ -1,0 +1,155 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 149 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 MAINT_WIRE_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 MAINT_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_sim-inject-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_sim-inject-VERIFY-20261016-v4.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_status-probe-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_status-probe-driver-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_ai-probe-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_alarm-probe-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_clip-probe-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_replay-probe-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_maintenance-probe-VERIFY-20261016-v4.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-022-maintenance\build-TestRun-192_168_0_103-VERIFY-20261016-v4.transcript.json
+log: docs\hmi\test_evidence\ITEM-022-maintenance\build-TestRun-192_168_0_103-VERIFY-20261016-v4.log
+
+
+===== [fresh-artifacts] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.log build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.xml build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_maintenance-probe-VERIFY-20261016-v4.log
+
+===== [log-compare] exit=0 =====
+impl_pass=617 verify_pass=617 identical=True verify_fails=0 expect=617 result=RESULT: PASS passed=617 failed=0
+
+===== [junit-parse] exit=0 =====
+junit tests=617 failures=0 item022_cases=16/16 missing=[]
+
+===== [maint-probe-assert] exit=0 =====
+{"fails": []}
+
+===== [maint-probe-compare] exit=0 =====
+cross-round deterministic reproduction identical=True
+
+===== [mkdir-verify] exit=0 =====
+
+
+===== [mkdir-workdir] exit=0 =====
+
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-022-maintenance/verify_maint22_ext.cpp
+
+===== [compile-ext] exit=0 =====
+/tmp/railhmi_verify022/verify_maint22_ext.cpp: In function ‘void t_log_day_key()’:
+/tmp/railhmi_verify022/verify_maint22_ext.cpp:407:26: error: ‘parse_date_utc_ms’ was not declared in this scope
+  407 |     const long long d0 = parse_date_utc_ms("2026-10-16");
+      |                          ^~~~~~~~~~~~~~~~~
+/tmp/railhmi_verify022/verify_maint22_ext.cpp: In function ‘void t_roll_logs_by_day()’:
+/tmp/railhmi_verify022/verify_maint22_ext.cpp:416:27: error: ‘parse_date_utc_ms’ was not declared in this scope
+  416 |     const long long d13 = parse_date_utc_ms("2026-10-13");
+      |                           ^~~~~~~~~~~~~~~~~
+GXX_EXIT=1
+
+
+===== [upload-scan] exit=0 =====
+verify_scan22.py
+
+===== [wiring-scan] exit=0 =====
+T1_cards= True
+T2_ptz_values_display= True
+T2_ptz_check_text= True
+T2_front_ai_text= True
+T3_controls= True
+T3_calls= True
+T3_modal= True
+T3_confirm_buttons= True
+T3_confirm_executes= True
+T3_reload_after= True
+T4_recent_logs= True
+T5_nvr_card= True
+T5_no_auto_modify= True
+T6_camera_fields= True
+T7_ai_fields= True
+T8_reconnect_text_bridged_in_main= True
+T8_reconnect_text_consumed_in_p6= True
+T9_bridge_core_calls= True
+T9_main_injects= True
+T10_board_build= True
+T10_checker_covers= True
+T11_no_hexliteral_in_p6= True
+T11_theme_usage= True
+D1_manual_reconnect_entry_present= True
+D2_log_day_rolling_present= True
+SCAN22_EXIT=0
+
+
+===== [wiring-scan-findings] exit=0 =====
+mismatch=[] scan_exit_ok=True raw={"T1_cards": "True", "T2_ptz_values_display": "True", "T2_ptz_check_text": "True", "T2_front_ai_text": "True", "T3_controls": "True", "T3_calls": "True", "T3_modal": "True", "T3_confirm_buttons": "True", "T3_confirm_executes": "True", "T3_reload_after": "True", "T4_recent_logs": "True", "T5_nvr_card": "True", "T5_no_auto_modify": "True", "T6_camera_fields": "True", "T7_ai_fields": "True", "T8_reconnect_text_bridged_in_main": "True", "T8_reconnect_text_consumed_in_p6": "True", "T9_bridge_core_calls": "True", "T9_main_injects": "True", "T10_board_build": "True", "T10_checker_covers": "True", "T11_no_hexliteral_in_p6": "True", "T11_theme_usage": "True", "D1_manual_reconnect_entry_present": "True", "D2_log_day_rolling_present": "True"}
+
+===== [defect-probes] exit=0 =====
+D1_manual_reconnect_entry_present=True D2_log_day_rolling_present=True
+
+===== [maint-probe-rep-run] exit=0 =====
+type=ptz-check result_ok=ok text="Pan Δ0.20° Tilt Δ0.30° Zoom Δ0.05 → 容差内"
+type=ptz-check result_bad=out_of_tolerance text="Pan Δ0.20° Tilt Δ4.00° Zoom Δ0.05 → 超差"
+type=action kind=home confirm=true applied=true result=ok
+type=action kind=preset_front confirm=true applied=true result=ok
+type=maint-log action=home user=maintainer result=ok detail="一键归位 Pan Δ0.20° Tilt Δ0.30° Zoom Δ0.05 → 容差内"
+type=action kind=preset_front result=out_of_tolerance
+type=maint-log action=preset_front result=out_of_tolerance detail="重调前方预置位 Pan Δ0.20° Tilt Δ4.00° Zoom Δ0.05 → 超差"
+type=maint-log action=reconnect target=CAM-02 result=ok detail="手动重连"
+type=log-days total=4 rolled=3 max_days=1 day_key=2025-10-09
+type=front-ai ptz_ok=READY ptz_over=NOT_READY
+type=cam id=CAM-01 online=true state=实时 fps=25.0 fps last=<1 秒前 quality=正常
+type=cam id=CAM-02 online=false state=画面冻结 fps=— last=10 秒前 quality=过暗
+type=recording running=true used_pct=75 free=5.0 GB state=录像中
+type=health text="NPU 42% / CPU 33% / 温度 58°C / 网络错误 3"
+type=acceptance ptz_within_ok=true ptz_over_detected=true home_logged=true reconnect_logged=true log_day_rolling=true over_tolerance_blocks_front_ai=true result=PASS
+MAINTREP_EXIT=0
+
+
+===== [maint-probe-determinism] exit=0 =====
+IDENTICAL
+
+
+===== [regression-artifacts] exit=0 =====
+ai-probe-VERIFY-20261016-v4.log
+alarm-probe-VERIFY-20261016-v4.log
+clip-probe-VERIFY-20261016-v4.log
+core-tests-VERIFY-20261016-v4.log
+core-tests-VERIFY-20261016-v4.xml
+maintenance-probe-VERIFY-20261016-v4.log
+replay-probe-VERIFY-20261016-v4.log
+sim-inject-VERIFY-20261016-v4.json
+sim-inject-VERIFY-20261016-v4.log
+status-probe-driver-VERIFY-20261016-v4.log
+status-probe-VERIFY-20261016-v4.log
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify022': No such file or directory
+ls: cannot access '/tmp/railhmi_build': No such file or directory
+ls: cannot access '/tmp/railhmi_clips': No such file or directory
+
+
+===== [cleanup-verify] exit=0 =====
+cleanup_ok=True
+
+===== [findings] exit=0 =====
+[{"independent_recheck": "fix-round re-verify: deliverable TestRun entry re-run ok, core-tests 617 line-identical + JUnit 617/0 (16 ITEM-022 cases), maintenance-probe formula oracle + determinism, ext fixtures and wiring scan both green on-board; v3 D-01/D-02 re-examined below", "confirmed": false}, {"D-01_P2": "fix: per-camera 重连 control (reconnect-<id> -> doReconnect -> Q_INVOKABLE reconnect) executing, counting and writing an action=reconnect maintenance log row; reconnectText consumed in P6", "present": true}, {"D-02_P3": "fix: core log_day_key (UTC YYYY-MM-DD) + roll_logs_by_day keep-latest-N-days, bridge logsByDay(7) grouped rows, P6 day-grouped log card (maintLogDay + entries)", "present": true}]

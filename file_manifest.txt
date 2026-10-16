@@ -1009,7 +1009,13 @@ docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v2.l
 docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v2.transcript.json | active | ITEM-022 验证过程轮 v2 transcript
 docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v3.log | active | ITEM-022 验证权威轮 v3 FIXTURES 日志（FIXTURES_RC=0：TestRun 复跑 612/0 逐行一致 + JUnit 612/0 + 探针公式/字节一致 + ext 83/83 + 接线扫描 22 项 + D-探测 D1/D2=False + 确定性 + 清理）
 docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v3.transcript.json | active | ITEM-022 验证权威轮 v3 transcript
-docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-ITEM-022.md | active | ITEM-022 软件验证报告（VERIFY-20261016-v3 权威轮 TEST_FAIL：core/probe/ext 83/83/接线扫描全绿；D-01 P6 缺手动重连入口、D-02 维护日志未按日滚动，交回实现；v1/v2 过程轮为验证侧夹具预期构造错）| evidence | TestEvidence
+docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v4.log | active | ITEM-022 修复复核过程轮 v4 FIXTURES 日志（ext 新函数漏 include alarm_center.h 板端 GXX_EXIT=1；其余步骤全绿）
+docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v4.transcript.json | active | ITEM-022 修复复核过程轮 v4 transcript
+docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v5.log | active | ITEM-022 修复复核过程轮 v5 FIXTURES 日志（ext 116/1：max_days=2 保留行数验证侧算错 4 应为 3；其余全绿）
+docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v5.transcript.json | active | ITEM-022 修复复核过程轮 v5 transcript
+docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v6.log | active | ITEM-022 修复复核权威轮 v6 FIXTURES 日志（FIXTURES_RC=0：TestRun 复跑 617/617 逐行一致 + JUnit 617/0 16 判例 + 探针公式/字节一致 + 确定性 + ext 116/116 + 接线扫描 25 项 + D1/D2=True + 清理）
+docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v6.transcript.json | active | ITEM-022 修复复核权威轮 v6 transcript
+docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-ITEM-022.md | active | ITEM-022 软件验证报告（VERIFY-20261016-v6 权威轮 TEST_PASS：v3 两条缺陷 D-01 手动重连入口/D-02 按日滚动日志经实现 fix 轮（commit f6acafb）修复后独立板端复跑 617/617 逐行一致 + JUnit 617/0 16 判例 + 探针公式/字节一致 + 确定性 + ext 116/116（v3 83 项回归 + 33 项修复复核）+ 接线扫描 25 项 mismatch=[] + D1/D2=True；v4/v5 过程轮为验证侧 ext 夹具错（漏 include alarm_center.h、max_days=2 行数 3 误写 4），非产品缺陷）| evidence | TestEvidence
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_ai-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_alarm-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_clip-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
@@ -1075,12 +1081,52 @@ docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-2
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v3.core-evidence_status-probe-driver-VERIFY-20261016-v3.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v3.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v3.transcript.json | active | 验证权威轮 v3 TestRun transcript（board_build.py --keep-remote）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_ai-probe-VERIFY-20261016-v4.log | active | 验证轮 v4 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_alarm-probe-VERIFY-20261016-v4.log | active | 验证轮 v4 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_clip-probe-VERIFY-20261016-v4.log | active | 验证轮 v4 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.log | active | 验证轮 v4 独立复跑 core-tests 归档（617/0，与 impl fix-r1 逐行一致）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.xml | active | 验证轮 v4 JUnit XML（tests=617 failures=0）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_maintenance-probe-VERIFY-20261016-v4.log | active | 验证轮 v4 maintenance-probe 归档（与 impl fix-r1 逐字节一致）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_replay-probe-VERIFY-20261016-v4.log | active | 验证轮 v4 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_sim-inject-VERIFY-20261016-v4.json | active | 验证轮 v4 回归留痕
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_sim-inject-VERIFY-20261016-v4.log | active | 验证轮 v4 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_status-probe-VERIFY-20261016-v4.log | active | 验证轮 v4 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_status-probe-driver-VERIFY-20261016-v4.log | active | 验证轮 v4 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.log | active | 验证轮 v4 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v4.transcript.json | active | 验证轮 v4 TestRun transcript（board_build.py --keep-remote）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_ai-probe-VERIFY-20261016-v5.log | active | 验证轮 v5 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_alarm-probe-VERIFY-20261016-v5.log | active | 验证轮 v5 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_clip-probe-VERIFY-20261016-v5.log | active | 验证轮 v5 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_core-tests-VERIFY-20261016-v5.log | active | 验证轮 v5 独立复跑 core-tests 归档（617/0，与 impl fix-r1 逐行一致）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_core-tests-VERIFY-20261016-v5.xml | active | 验证轮 v5 JUnit XML（tests=617 failures=0）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_maintenance-probe-VERIFY-20261016-v5.log | active | 验证轮 v5 maintenance-probe 归档（与 impl fix-r1 逐字节一致）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_replay-probe-VERIFY-20261016-v5.log | active | 验证轮 v5 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_sim-inject-VERIFY-20261016-v5.json | active | 验证轮 v5 回归留痕
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_sim-inject-VERIFY-20261016-v5.log | active | 验证轮 v5 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_status-probe-VERIFY-20261016-v5.log | active | 验证轮 v5 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.core-evidence_status-probe-driver-VERIFY-20261016-v5.log | active | 验证轮 v5 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.log | active | 验证轮 v5 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v5.transcript.json | active | 验证轮 v5 TestRun transcript（board_build.py --keep-remote）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_ai-probe-VERIFY-20261016-v6.log | active | 验证权威轮 v6 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_alarm-probe-VERIFY-20261016-v6.log | active | 验证权威轮 v6 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_clip-probe-VERIFY-20261016-v6.log | active | 验证权威轮 v6 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_core-tests-VERIFY-20261016-v6.log | active | 验证权威轮 v6 独立复跑 core-tests 归档（617/0，与 impl fix-r1 逐行一致）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_core-tests-VERIFY-20261016-v6.xml | active | 验证权威轮 v6 JUnit XML（tests=617 failures=0）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_maintenance-probe-VERIFY-20261016-v6.log | active | 验证权威轮 v6 maintenance-probe 归档（与 impl fix-r1 逐字节一致；含 reconnect/log-days 行）
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_replay-probe-VERIFY-20261016-v6.log | active | 验证权威轮 v6 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_sim-inject-VERIFY-20261016-v6.json | active | 验证权威轮 v6 回归留痕
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_sim-inject-VERIFY-20261016-v6.log | active | 验证权威轮 v6 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_status-probe-VERIFY-20261016-v6.log | active | 验证权威轮 v6 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.core-evidence_status-probe-driver-VERIFY-20261016-v6.log | active | 验证权威轮 v6 独立复跑修复轮归档
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.log | active | 验证权威轮 v6 TestRun 运行日志
+docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-VERIFY-20261016-v6.transcript.json | active | 验证权威轮 v6 TestRun transcript（board_build.py --keep-remote）
 docs/hmi/test_evidence/ITEM-022-maintenance/offline_selfcheck.py | active | ITEM-022 离线自查（无板）：maintenance-probe oracle vs impl r1 归档、core-tests 解析 612、junit 判例集、SCAN_PY 本地 remap exec（22 项全 True + D 探测 False 防掩盖）
 docs/hmi/test_evidence/ITEM-022-maintenance/offline_selfcheck2.py | active | ITEM-022 ext 夹具静态审计：贪婪十六进制转义风险（\xB0C 教训）、FP 边界字面量、mojibake 字节、check_eq/check_contains arity、重复符号声明
 docs/hmi/test_evidence/ITEM-022-maintenance/offline_selfcheck3.py | active | ITEM-022 ext 夹具贪婪十六进制转义专项审计（\xHH 后跟十六进制字面量）
-docs/hmi/test_evidence/ITEM-022-maintenance/run_verify_round.sh | active | ITEM-022 验证轮驱动（PowerShell User-env 凭据导入 + 指纹锚定 + 指向 r1 归档的 --impl-testrun-log/--impl-maintprobe-log）
-docs/hmi/test_evidence/ITEM-022-maintenance/verify_maint22_ext.cpp | active | ITEM-022 验证侧 ext 夹具（C++，链接本轮自产 librailhmi_core.a）：ptz_check 容差边界（<= 包含/二进制精确 delta/验证侧独立复算相等/unverified 恒优先）+ ptz_home/ptz_recall_front_preset 动作字段 + build_ptz_log 三态结果映射与列契约 + front_ai_ready 真值表 + build_maintenance_cameras（stale 边界 age>stale 降级/==stale 保持、缺 runtime→未启动、Degraded 计在线、重连文本 0 次为空、质量组合顺序、位置字段逐 index 配对）+ recording_status（used_pct 整数除法/GB 与 MB 边界/1GiB 恰 1.0 GB）+ health_text（四舍五入 33.5→34/-1 占位/°C）+ channel_view 助手回归（format_fps/format_last_frame 全边界/channel_state_label 六态与未知透传）83 判例
-docs/hmi/test_evidence/ITEM-022-maintenance/verify_maint22_fixtures.py | active | ITEM-022 验证夹具运行器（Paramiko 指纹校验；交付 board_build.py TestRun --keep-remote 复跑 + 612 行逐行比对 + JUnit 612/0 判例 11 + maintenance-probe 公式断言/跨轮 identical + ext 编译运行 + SCAN_PY 22 项接线扫描 + D1/D2 源码级缺陷探测（重连入口/按日滚动）+ 确定性/回归留痕/清理）
+docs/hmi/test_evidence/ITEM-022-maintenance/offline_selfcheck4.py | active | ITEM-022 修复复核轮离线自查（无板）：oracle 接受 fix-r1 归档 probe、对 pre-fix r1 负例 3 处 missing line 反证、SCAN_PY 本地 remap dry-run 25 键全 True（含 D1/D2）、ext 贪婪十六进制转义再审计
+docs/hmi/test_evidence/ITEM-022-maintenance/run_verify_round.sh | active | ITEM-022 验证轮驱动（PowerShell User-env 凭据导入 + 指纹锚定 + 默认 stamp VERIFY-20261016-v4，指向 fix-r1 归档的 --impl-testrun-log/--impl-maintprobe-log）
+docs/hmi/test_evidence/ITEM-022-maintenance/verify_maint22_ext.cpp | active | ITEM-022 验证侧 ext 夹具（C++，链接本轮自产 librailhmi_core.a）：v3 83 判例（ptz_check 容差边界 <= 包含/二进制精确 delta/验证侧独立复算相等/unverified 恒优先 + 动作字段与日志三态映射 + front_ai_ready 真值表 + 维护行 stale/缺 runtime/Degraded/重连文本/质量组合 + recording GB/MB 边界 + health 四舍五入与占位 + channel_view 助手回归）+ 修复复核 33 判例（build_maintenance_log 通用列契约/不篡改/与 build_ptz_log 等价、log_day_key 验证侧独立 civil-from-days 历法复算（闰日/年界/日首尾毫秒/ts<=0 占位/parse 回程）、roll_logs_by_day 整日滚动（max_days=2→3 行/整日剔除/时间序/1 与 0/-1 全保留/00:00.000 日界归属/probe 场景同构））116 判例
+docs/hmi/test_evidence/ITEM-022-maintenance/verify_maint22_fixtures.py | active | ITEM-022 验证夹具运行器（Paramiko 指纹校验；交付 board_build.py TestRun --keep-remote 复跑 + 617 行逐行比对 + JUnit 617/0 判例 16 + maintenance-probe 公式断言（含 reconnect/log-days 行与 rolled=4、reconnect_logged=false 反伪守卫）/跨轮 identical + ext 编译运行 + SCAN_PY 25 项接线扫描（v3 22 项回归 + T4 logsByDay 分组 + T8 consumed 门控 + D1/D2 门控）+ 确定性/回归留痕/清理）
 docs/hmi/ui_review/REVIEW-ITEM-001.md | active | UI 实现评审证据（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）（UIImplementationReviewEvidence）ITER2：对 commit 06b6f9f 的 ITEM-001 交付物做主机独立复跑、归档完整性核对（md==raw、r2 与复跑一致）与判据逐条核对；偏差 D-01..D-04 与修复要求（TEST_PASS，范围限 ITEM-001，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-002.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ca5373c 的 ITEM-002 渲染路径 spike 做主机独立复现（判据自检 6/6 + 用归档 JSON 重算 selection）、源码/证据核对；偏差 D-01..D-05（含色彩判据无法检测 BGR 通道颠倒）与修复要求（TEST_PASS，范围限 ITEM-002，无 UI 结论）
 docs/hmi/ui_review/REVIEW-ITEM-003.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 5e7746a 的 ITEM-003 分层 CMake 骨架做主机复跑（build.sh 无工具链路径）、源码/证据核对；偏差 D-01..D-05（未知模式提示漏 MediaCheck、Qt 安装提示缺 Controls2/Layouts、Preview 未在 x86_64 运行）与修复要求（TEST_PASS，范围限 ITEM-003，无 UI 结论）
