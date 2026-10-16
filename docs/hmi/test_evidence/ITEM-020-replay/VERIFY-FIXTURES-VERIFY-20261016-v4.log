@@ -1,0 +1,195 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [fingerprint] exit=0 =====
+observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [run-testrun-entry] exit=0 =====
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 141 files from E:\work\rail_issue\rk3588_handover\app
+[upload-tokens] exit=0 design_tokens.yaml
+[testrun] exit=0 TESTRUN_EXIT=0
+[tokens-selftest] exit=0 TOKENS_EXIT=0
+[ui-scan] exit=0 REPLAY_WIRE_EXIT=0
+[sim-inject] exit=0 SIM_EXIT=0
+[status-probe] exit=0 REPLAY_EXIT=0
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.xml
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_sim-inject-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_sim-inject-VERIFY-20261016-v4.json
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_status-probe-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_status-probe-driver-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_ai-probe-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_alarm-probe-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_clip-probe-VERIFY-20261016-v4.log
+[download] exit=0 build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_replay-probe-VERIFY-20261016-v4.log
+[artifacts] exit=0 (check mode: no artifacts)
+transcript: docs\hmi\test_evidence\ITEM-020-replay\build-TestRun-192_168_0_103-VERIFY-20261016-v4.transcript.json
+log: docs\hmi\test_evidence\ITEM-020-replay\build-TestRun-192_168_0_103-VERIFY-20261016-v4.log
+
+
+===== [fresh-artifacts] exit=0 =====
+build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.log build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.xml build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_replay-probe-VERIFY-20261016-v4.log
+
+===== [log-compare] exit=0 =====
+impl=build-TestRun-192_168_0_103-20261016-ITEM020-uifix-r2.core-evidence_core-tests-20261016-ITEM020-uifix-r2.log verify=build-TestRun-192_168_0_103-VERIFY-20261016-v4.core-evidence_core-tests-VERIFY-20261016-v4.log impl_pass=583 verify_pass=583 identical=True verify_fails=0 expect=583 result=RESULT: PASS passed=583 failed=0
+
+===== [junit-parse] exit=0 =====
+junit tests=583 failures=0 item020_cases=45/45 missing=[]
+
+===== [replay-probe-assert] exit=0 =====
+{"fails": []}
+
+===== [replay-probe-compare] exit=0 =====
+deterministic reproduction identical=True
+
+===== [mkdir-verify] exit=0 =====
+
+
+===== [mkdir-workdir] exit=0 =====
+
+
+===== [upload-fixture] exit=0 =====
+docs/hmi/test_evidence/ITEM-020-replay/verify_replay20_ext_v4.cpp
+
+===== [compile-ext] exit=0 =====
+GXX_EXIT=0
+
+
+===== [run-ext] exit=0 =====
+== 115 passed, 0 failed ==
+RESULT: PASS passed=115 failed=0
+EXT_EXIT=0
+
+
+===== [ext-summary] exit=0 =====
+ext passed=115 failed=0
+
+===== [upload-scan] exit=0 =====
+verify_scan_v4.py
+
+===== [qml-scan] exit=0 =====
+W1_emit_declaration= True
+W1_emission= True
+W1_handler_params_used_camera= True
+W1_handler_params_used_ts= True
+W1_handler_calls_selectAlarm= True
+W1_startup_selectAlarm= True
+W1_seedAlarms= True
+W1_offsets_injected= True
+W2_cursor_positions_literal= False
+W2_syncState_consumed= True
+W2_unavailable_state= True
+V2_objectnames= True
+V2_jump_chips= True
+V2_detail_fields= True
+V2_source_note_ui= True
+V2_selection_consumed= True
+V3_bridge_keyframes= True
+V3_p3_thumb_repeater= True
+V3_thumb_ts_positioned= True
+V3_thumb_strip_64= True
+V3_sample_keyframes= True
+V3_gap_hatch_canvas= True
+V3_bridge_playback= True
+V3_bridge_setplaying= True
+V3_bridge_setspeed= True
+V3_p3_playback_toggle= True
+V3_p3_speed_chips= True
+V3_p3_playback_state= True
+V3_bridge_seg_level= True
+V3_bridge_marker_level= True
+V3_p3_level_color_fn= True
+V3_p3_level_theme= True
+V3_p3_seg_uses_level= True
+V3_p3_marker_uses_level= True
+V3_seg_click= True
+V3_gap_click= True
+V3_marker_click= True
+V3_full_camera_list= True
+V3_detail_record_bar= True
+V3_record_bar_degraded= True
+V3_date_error_path= True
+V3_chip_touch_target= True
+V3_chip_keyboard= True
+V3_track_32= True
+V3_cursor_top= True
+V3_reload_handles_invalid= True
+V4_bridge_marks_from_rows= True
+V4_bridge_marks_overload_used= True
+V4_bridge_fallback_kept= True
+V4_core_helper_declared= True
+V4_core_helper_defined= True
+V4_core_helper_uses_row_level= True
+V4_cursor_follow_explicit= True
+V4_cursor_left_anchor_absent= True
+V4_cursor_labelled_current= True
+V4_panel_chip_name= True
+V4_panel_id_suffix= True
+V4_old_bare_label_absent= True
+SCANV4_EXIT=0
+
+
+===== [wiring-scan-findings] exit=0 =====
+UI-fix state: v1/v2 persisted (selection=True literal-triple-absent=False syncState=True) | v3 D-01/09 persisted (keyframes=True hatch=True playback=True levels=True record_bar=True sizes=True) | v4 D-01 (bridge_marks_from_rows=True marks_overload=True fallback_kept=True helper_decl=True helper_def=True helper_uses_row_level=True) | v4 D-02 (cursor_follow=True left_anchor_absent=True labelled_current=True) | v4 D-03 (panel_chip_name=True id_suffix=True bare_label_absent=True) | mismatch=[] raw={"W1_emit_declaration": "True", "W1_emission": "True", "W1_handler_params_used_camera": "True", "W1_handler_params_used_ts": "True", "W1_handler_calls_selectAlarm": "True", "W1_startup_selectAlarm": "True", "W1_seedAlarms": "True", "W1_offsets_injected": "True", "W2_cursor_positions_literal": "False", "W2_syncState_consumed": "True", "W2_unavailable_state": "True", "V2_objectnames": "True", "V2_jump_chips": "True", "V2_detail_fields": "True", "V2_source_note_ui": "True", "V2_selection_consumed": "True", "V3_bridge_keyframes": "True", "V3_p3_thumb_repeater": "True", "V3_thumb_ts_positioned": "True", "V3_thumb_strip_64": "True", "V3_sample_keyframes": "True", "V3_gap_hatch_canvas": "True", "V3_bridge_playback": "True", "V3_bridge_setplaying": "True", "V3_bridge_setspeed": "True", "V3_p3_playback_toggle": "True", "V3_p3_speed_chips": "True", "V3_p3_playback_state": "True", "V3_bridge_seg_level": "True", "V3_bridge_marker_level": "True", "V3_p3_level_color_fn": "True", "V3_p3_level_theme": "True", "V3_p3_seg_uses_level": "True", "V3_p3_marker_uses_level": "True", "V3_seg_click": "True", "V3_gap_click": "True", "V3_marker_click": "True", "V3_full_camera_list": "True", "V3_detail_record_bar": "True", "V3_record_bar_degraded": "True", "V3_date_error_path": "True", "V3_chip_touch_target": "True", "V3_chip_keyboard": "True", "V3_track_32": "True", "V3_cursor_top": "True", "V3_reload_handles_invalid": "True", "V4_bridge_marks_from_rows": "True", "V4_bridge_marks_overload_used": "True", "V4_bridge_fallback_kept": "True", "V4_core_helper_declared": "True", "V4_core_helper_defined": "True", "V4_core_helper_uses_row_level": "True", "V4_cursor_follow_explicit": "True", "V4_cursor_left_anchor_absent": "True", "V4_cursor_labelled_current": "True", "V4_panel_chip_name": "True", "V4_panel_id_suffix": "True", "V4_old_bare_label_absent": "True"}
+
+===== [replay-probe-negative-arg] exit=0 =====
+NARG_EXIT=2
+unknown arg: --nope
+
+
+===== [replay-probe-help] exit=0 =====
+usage: railhmi-replay-probe [--out log]
+HELP_EXIT=0
+
+
+===== [replay-probe-rep-run] exit=0 =====
+type=timeline cam=CAM-01 day=1792108800000 duration_ms=86400000 segments=3 gaps=1 alarms=1 keyframes=1440
+seg kind=continuous level=0 t0=1792108810000 t1=1792108880000 label=连续录像
+seg kind=critical level=1 t0=1792108890000 t1=1792109000000 label=报警保护片段
+seg kind=continuous level=0 t0=1792109060000 t1=1792109100000 label=连续录像
+gap t0=1792109010000 t1=1792109050000 reason=recording_interrupted
+flags has_alarm_segment=true has_gap=true alarm_marker_level=1 keyframe_thumb=thumb/CAM-01/1792108800000.bmp
+type=jumps minus30=1792108890000 alarm=1792108920000 plus30=1792108950000 plus60=1792108980000
+type=seek pos=1792108920000
+type=jump plus30 pos=1792108950000
+type=sync in_sync=true dev=200 | deviation=true dev=900 prompt=同步偏差 900 ms（阈值 300 ms）
+type=lock alarm_cam=CAM-01 locked=CAM-02,CAM-01,CAM-03
+type=sync-snapshot in_sync_available=true dev=200 | deviation_prompt=同步偏差 900 ms（阈值 300 ms） | no_clock=同步状态不可用
+type=source source=local_clips label=本机片段 usable=true note=NVR 录像不可用，回放本机片段
+type=detail time=2026-10-16 00:02:00 type=前方轨道人员 level=一级 distance=12.3 m confidence=87% ack=已确认 record=可回放 record_ok=true
+type=level-e2e alarm_level=1 segment_level=1 marker_level=1
+type=acceptance alarm_segment=true gap=true jumps_ok=true sync_prompt_on_deviation=true lock_related_cameras=true sync_unavailable_without_clock=true level_e2e=true nvr_fallback_local=true result=PASS
+REPL_EXIT=0
+
+
+===== [replay-probe-determinism] exit=0 =====
+IDENTICAL
+
+
+===== [regression-artifacts] exit=0 =====
+ai-probe-VERIFY-20261016-v4.log
+alarm-probe-VERIFY-20261016-v4.log
+clip-probe-VERIFY-20261016-v4.log
+core-tests-VERIFY-20261016-v4.log
+core-tests-VERIFY-20261016-v4.xml
+replay-probe-VERIFY-20261016-v4.log
+sim-inject-VERIFY-20261016-v4.json
+sim-inject-VERIFY-20261016-v4.log
+status-probe-driver-VERIFY-20261016-v4.log
+status-probe-VERIFY-20261016-v4.log
+
+
+===== [cleanup] exit=2 =====
+fixture_cleanup_done
+LEFT_LIST
+ls: cannot access '/tmp/railhmi_verify020': No such file or directory
+ls: cannot access '/tmp/railhmi_build': No such file or directory
+ls: cannot access '/tmp/railhmi_clips': No such file or directory
+
+
+===== [cleanup-verify] exit=0 =====
+cleanup_ok=True
+
+===== [findings] exit=0 =====
+[{"UI-review-v2 D-01/D-02/D-03": "bridge derives real-level marks from rows (alarm_marks_from_rows; ts-only L3 fallback retained); P3 cursorTime follows cursor x labelled 当前 with the left-edge anchor gone; panel title chipName(modelData)+id; v3 UI-fix and v1/v2 state persisted", "confirmed": true}]
