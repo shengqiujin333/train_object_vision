@@ -7,6 +7,7 @@
 // （stats / 最新租约 / presentable）。重建/断流/冻结请求由 worker 线程执行，
 // 保证 CameraStream 只在 worker 线程被访问。
 
+#include <functional>
 #include <memory>
 #include <string>
 
@@ -48,6 +49,10 @@ public:
 
     // 三类消费者有界队列（显示/推理/录像）（视频 ITEM-008）；线程安全。
     FrameDispatcher& dispatcher();
+
+    // 每帧回调（取流 worker 线程调用）：租约 + presentable（视频 ITEM-009 显示分发用）。
+    using FrameCallback = std::function<void(const FrameLease&, bool presentable)>;
+    void set_frame_callback(FrameCallback cb);
 
 private:
     struct Impl;

@@ -24,6 +24,8 @@ add_library(railhmi_media STATIC
     src/rga_convert.cpp
     src/camera_worker.cpp
     src/frame_dispatcher.cpp
+    src/display_distributor.cpp
+    src/display_registry.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -90,5 +92,12 @@ set_target_properties(railhmi-camera-worker PROPERTIES
 add_executable(railhmi-backpressure tools/backpressure_probe.cpp)
 target_link_libraries(railhmi-backpressure PRIVATE railhmi_media)
 set_target_properties(railhmi-backpressure PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 显示分发与纹理交接探针（视频 ITEM-009）
+add_executable(railhmi-display tools/display_probe.cpp)
+target_link_libraries(railhmi-display PRIVATE railhmi_media)
+set_target_properties(railhmi-display PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

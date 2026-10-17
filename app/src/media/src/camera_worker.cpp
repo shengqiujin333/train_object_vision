@@ -33,6 +33,7 @@ struct CameraWorker::Impl {
     long long reconnect_attempts = 0;
     long long escalations = 0;
     long long recoveries = 0;
+    FrameCallback frame_cb;
 
     void loop() {
         while (running.load()) {
@@ -62,16 +63,21 @@ struct CameraWorker::Impl {
             const bool pres = stream->presentable_now();
             FrameLease l = stream->latest_frame();
 
-            std::lock_guard<std::mutex> lk(mtx);
-            snap = s;
-            lease = l;
-            presentable = pres;
-            ++iterations;
-            events_total += static_cast<long long>(evs.size());
-            freezes += fz;
-            reconnect_attempts += ra;
-            escalations += esc;
-            recoveries += rec;
+            FrameCallback cb;
+            {
+                std::lock_guard<std::mutex> lk(mtx);
+                snap = s;
+                lease = l;
+                presentable = pres;
+                ++iterations;
+                events_total += static_cast<long long>(evs.size());
+                freezes += fz;
+                reconnect_attempts += ra;
+                escalations += esc;
+                recoveries += rec;
+                cb = frame_cb;
+            }
+            if (cb && l.valid()) cb(l, pres);
         }
     }
 };
@@ -159,6 +165,11 @@ long long CameraWorker::bus_state_changes() const {
 int CameraWorker::pull_timeout_ms() const { return impl_->pull_ms; }
 
 FrameDispatcher& CameraWorker::dispatcher() { return impl_->stream->dispatcher(); }
+
+void CameraWorker::set_frame_callback(FrameCallback cb) {
+    std::lock_guard<std::mutex> lk(impl_->mtx);
+    impl_->frame_cb = std::move(cb);
+}
 
 }  // namespace media
 }  // namespace railhmi

@@ -93,5 +93,9 @@ int MultiStreamManager::index_of(const std::string& camera_id) const {
     return -1;
 }
 
+CameraWorker* MultiStreamManager::worker(std::size_t index) const {
+    return valid(index) ? workers_[index].get() : nullptr;
+}
+
 }  // namespace media
 }  // namespace railhmi

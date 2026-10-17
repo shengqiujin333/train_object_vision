@@ -1,0 +1,224 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 212 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [build-media] exit=0 =====
+[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_display' -B '/tmp/railhmi_display/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = MediaCheck
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'
+--   Found gstreamer-1.0, version 1.20.3
+--   Found gstreamer-app-1.0, version 1.20.1
+--   Found gstreamer-video-1.0, version 1.20.1
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_display/build-media
+[build.sh] building: cmake --build '/tmp/railhmi_display/build-media' -j8
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o
+[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/maintenance.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery.cpp.o
+[ 30%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o
+[ 32%] Linking CXX static library librailhmi_core.a
+[ 32%] Built target railhmi_core
+[ 34%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
+[ 34%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
+[ 38%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 38%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 40%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 41%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o
+[ 42%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 44%] Linking CXX executable ../../tools/railhmi-config-check
+[ 45%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 45%] Built target railhmi-sim-inject
+[ 46%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
+[ 46%] Built target railhmi-config-check
+[ 47%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
+[ 48%] Linking CXX executable ../../tools/railhmi-permissions-probe
+[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 50%] Built target railhmi-permissions-probe
+[ 51%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
+[ 52%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 53%] Linking CXX executable ../../tools/railhmi-maintenance-probe
+[ 53%] Built target railhmi-maintenance-probe
+[ 54%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 54%] Built target railhmi-status-probe
+[ 55%] Linking CXX executable ../../tools/railhmi-alarm-probe
+[ 55%] Built target railhmi-alarm-probe
+[ 57%] Linking CXX executable ../../tools/railhmi-health-probe
+[ 58%] Linking CXX executable ../../tools/railhmi-replay-probe
+[ 58%] Built target railhmi-health-probe
+[ 59%] Linking CXX executable ../../tools/railhmi-ai-probe
+[ 59%] Built target railhmi-replay-probe
+[ 59%] Built target railhmi-ai-probe
+[ 60%] Linking CXX executable ../../tools/railhmi-fault-probe
+[ 60%] Built target railhmi-fault-probe
+[ 61%] Linking CXX static library librailhmi_platform.a
+[ 61%] Built target railhmi_platform
+[ 63%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+[ 66%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rga_convert.cpp.o
+[ 66%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/video_capability.cpp.o
+[ 66%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o
+[ 67%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_lease.cpp.o
+[ 69%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o
+[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o
+[ 71%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o
+[ 72%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_worker.cpp.o
+[ 73%] Linking CXX executable ../../tools/railhmi-clip-probe
+[ 73%] Built target railhmi-clip-probe
+[ 75%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_dispatcher.cpp.o
+[ 76%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/display_distributor.cpp.o
+[ 77%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/display_registry.cpp.o
+[ 78%] Linking CXX static library librailhmi_media.a
+[ 78%] Built target railhmi_media
+[ 82%] Building CXX object src/media/CMakeFiles/railhmi-video-capability.dir/tools/video_capability_tool.cpp.o
+[ 82%] Building CXX object src/media/CMakeFiles/railhmi-camera-worker.dir/tools/camera_worker_probe.cpp.o
+[ 82%] Building CXX object src/media/CMakeFiles/railhmi-rga-convert.dir/tools/rga_convert_probe.cpp.o
+[ 83%] Building CXX object src/media/CMakeFiles/railhmi-frame-lease.dir/tools/frame_lease_probe.cpp.o
+[ 84%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o
+[ 85%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o
+[ 86%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o
+[ 88%] Building CXX object src/media/CMakeFiles/railhmi-backpressure.dir/tools/backpressure_probe.cpp.o
+[ 89%] Linking CXX executable ../../tools/railhmi-frame-lease
+[ 90%] Linking CXX executable ../../tools/railhmi-rga-convert
+[ 90%] Built target railhmi-frame-lease
+[ 91%] Building CXX object src/media/CMakeFiles/railhmi-display.dir/tools/display_probe.cpp.o
+[ 91%] Built target railhmi-rga-convert
+[ 92%] Linking CXX executable ../../tools/railhmi-video-capability
+[ 94%] Linking CXX executable ../../tools/railhmi-ai-runner
+[ 94%] Built target railhmi-ai-runner
+[ 94%] Built target railhmi-video-capability
+[ 95%] Linking CXX executable ../../tools/railhmi-backpressure
+[ 95%] Built target railhmi-backpressure
+[ 96%] Linking CXX executable ../../tools/railhmi-camera-worker
+[ 97%] Linking CXX executable ../../tools/railhmi-stream-probe
+[ 98%] Linking CXX executable ../../tools/railhmi-display
+[ 98%] Built target railhmi-stream-probe
+[ 98%] Built target railhmi-camera-worker
+[ 98%] Built target railhmi-display
+[100%] Linking CXX executable ../../tools/railhmi-multi-probe
+[100%] Built target railhmi-multi-probe
+[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_display/build-media
+[build.sh] media layer: /tmp/railhmi_display/build-media/src/media/librailhmi_media.a
+BUILD_MEDIA_EXIT=0
+
+
+===== [selftest] exit=0 =====
+selftest PASS cpu_path_available
+selftest PASS gl_status_explicit
+selftest OK (0 failure(s))
+SELFTEST_EXIT=0
+
+
+===== [run-display] exit=0 =====
+type=render_path path=cpu available=true reason=-
+type=render_path path=gl available=false reason=missing:qmlglsink
+type=multi source=test channels=6 started=6
+rga_api version 1.10.1_[0]
+type=phase phase=P1 cameras=3 polls=78 probe=CAM-01 snapshot_valid=true presentable=true seq=42 generation=1 updates=42 format=BGR888 size=1280x720 view=left-front-right
+ RgaBlit(1513) RGA_BLIT fail: Invalid argument
+ RgaBlit(1514) RGA_BLIT fail: Invalid argument
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f453e0220, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 2560, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f48548df0, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 1792, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+2006 im2d_rga_impl rga_task_submit(2171): Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
+2006 im2d_rga_impl rga_dump_channel_info(1500): src_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, nv12]
+  buffer[handle,fd,va,pa] = [0, 0, 7f453e0220, 0]
+  color_space = 0x0, global_alpha = 0xff, rd_mode = 0x1
+
+2006 im2d_rga_impl rga_dump_channel_info(1500): dst_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, bgr888]
+  buffer[handle,fd,va,pa] = [0, 0, 7f48548df0, 0]
+  color_space = 0x2, global_alpha = 0xff, rd_mode = 0x1
+
+2006 im2d_rga_impl rga_dump_opt(1550): opt version[0x0]:
+
+2006 im2d_rga_impl rga_dump_opt(1551): set_core[0x0], priority[0]
+
+2006 im2d_rga_impl rga_task_submit(2180): acquir_fence[-1], release_fence_ptr[0x0], usage[0x80000]
+
+ RgaBlit(1513) RGA_BLIT fail: Invalid argument
+ RgaBlit(1514) RGA_BLIT fail: Invalid argument
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f44d48700, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 2560, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f48548df0, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 1792, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+3085 im2d_rga_impl rga_task_submit(2171): Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
+3085 im2d_rga_impl rga_dump_channel_info(1500): src_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, nv12]
+  buffer[handle,fd,va,pa] = [0, 0, 7f44d48700, 0]
+  color_space = 0x0, global_alpha = 0xff, rd_mode = 0x1
+
+3085 im2d_rga_impl rga_dump_channel_info(1500): dst_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, bgr888]
+  buffer[handle,fd,va,pa] = [0, 0, 7f48548df0, 0]
+  color_space = 0x2, global_alpha = 0xff, rd_mode = 0x1
+
+3085 im2d_rga_impl rga_dump_opt(1550): opt version[0x0]:
+
+3085 im2d_rga_impl rga_dump_opt(1551): set_core[0x0], priority[0]
+
+3085 im2d_rga_impl rga_task_submit(2180): acquir_fence[-1], release_fence_ptr[0x0], usage[0x80000]
+
+type=phase phase=P4 cameras=6 polls=138 probe=CAM-01 snapshot_valid=true presentable=true seq=83 generation=1 updates=83 format=BGR888 size=1280x720 view=all-cameras
+type=phase phase=P5 cameras=1 polls=23 probe=CAM-01 snapshot_valid=true presentable=true seq=118 generation=1 updates=118 format=BGR888 size=1280x720 view=ai-debug
+type=summary channels=6 page_switch_no_rebuild=true snapshots_valid=true single_source=true gl_status_explicit=true
+type=acceptance result=PASS
+DISPLAY_EXIT=0
+
+
+===== [download] exit=0 =====
+display-192_168_0_103-20261017-item009-r2.core-evidence_display-20261017-item009-r2.log
+
+===== [download] exit=0 =====
+display-192_168_0_103-20261017-item009-r2.core-evidence_display-20261017-item009-r2.json
+
+===== [cleanup] exit=0 =====
+cleaned
+

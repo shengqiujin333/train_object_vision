@@ -1,0 +1,8 @@
+type=render_path path=cpu available=true reason=-
+type=render_path path=gl available=false reason=missing:qmlglsink
+type=multi source=test channels=6 started=6
+type=phase phase=P1 cameras=3 polls=78 probe=CAM-01 snapshot_valid=true presentable=true seq=42 generation=1 updates=42 format=BGR888 size=1280x720 view=left-front-right
+type=phase phase=P4 cameras=6 polls=138 probe=CAM-01 snapshot_valid=true presentable=true seq=83 generation=1 updates=83 format=BGR888 size=1280x720 view=all-cameras
+type=phase phase=P5 cameras=1 polls=23 probe=CAM-01 snapshot_valid=true presentable=true seq=118 generation=1 updates=118 format=BGR888 size=1280x720 view=ai-debug
+type=summary channels=6 page_switch_no_rebuild=true snapshots_valid=true single_source=true gl_status_explicit=true
+type=acceptance result=PASS

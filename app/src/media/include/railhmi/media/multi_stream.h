@@ -57,6 +57,7 @@ public:
     std::size_t size() const { return workers_.size(); }
     const std::vector<std::string>& ids() const { return ids_; }
     int index_of(const std::string& camera_id) const;  // -1 = 未找到
+    CameraWorker* worker(std::size_t index) const;      // 逐路 worker（可空）
 
     static long long now_ms() { return CameraStream::now_ms(); }
 

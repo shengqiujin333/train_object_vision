@@ -1,0 +1,3 @@
+{
+  "channels": 6, "page_switch_no_rebuild": true, "snapshots_valid": true, "single_source": true, "gl_available": false, "gl_reason": "missing:qmlglsink", "acceptance": true
+}
