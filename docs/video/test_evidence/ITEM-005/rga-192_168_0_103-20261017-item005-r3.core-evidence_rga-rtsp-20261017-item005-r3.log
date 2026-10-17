@@ -1,0 +1,7 @@
+type=synthetic_padded ok=true err= width=1280 height=720 b=200 g=200 r=200 spread=0 min_px=200 max_px=200 padding_not_leaked=true
+type=synthetic_blue ok=true err= b=239 g=15 r=15 blue_dominant=true
+type=failure_paths null_rejected=true(null_arg) odd_rejected=true(odd_dimensions) notready_rejected=true(NOT_READY)
+type=injection source=rtsp camera=CAM-01 duration_s=3 session_id=s1a148a5f046-9962a2-0
+type=worker_convert published=72 bgr_converted=72 bgr_failed=0 last_error= bgr_means=119/111/106 spread=12 width=1280 height=720
+type=fail_keep_frames published_before=72 published_after=81 still_producing=true
+type=summary bgr_converted=81 bgr_failed=0 published=81 rejected=0

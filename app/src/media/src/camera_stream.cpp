@@ -94,6 +94,10 @@ struct CameraStream::Impl {
     railhmi::core::FrameMeta last_meta;
     long long frames_emitted = 0;
     std::unique_ptr<FrameStore> store;
+    BgrImage last_bgr;
+    long long bgr_converted = 0;
+    long long bgr_failed = 0;
+    std::string bgr_error;
 
     std::string scrub(const std::string& t) const { return redact_secret(t, redact_src); }
 
@@ -255,6 +259,20 @@ bool CameraStream::pump(int timeout_ms) {
                 std::string why;
                 impl_->store->publish(s, impl_->last_meta, "", origin_of(impl_->cfg.source), &why);
             }
+            // 取流 worker 内 NV12→BGR（librga BT601_FULL）；失败只记错误，不丢帧。
+            if (impl_->cfg.convert_bgr && impl_->store) {
+                FrameLease lease = impl_->store->latest();
+                BgrImage img;
+                std::string cerr;
+                if (nv12_to_bgr(lease, &img, &cerr)) {
+                    impl_->last_bgr = std::move(img);
+                    ++impl_->bgr_converted;
+                    impl_->bgr_error.clear();
+                } else {
+                    ++impl_->bgr_failed;
+                    impl_->bgr_error = impl_->scrub(cerr);
+                }
+            }
             if (impl_->machine) impl_->machine->on_frame(now, q);
             impl_->last_frame_ms = now;
             impl_->frame_times.push_back(now);
@@ -307,6 +325,18 @@ FrameLease CameraStream::latest_frame() const {
 }
 
 FrameStore& CameraStream::frame_store() { return *impl_->store; }
+
+const BgrImage& CameraStream::last_bgr() const {
+    static const BgrImage kEmpty;
+    return impl_ ? impl_->last_bgr : kEmpty;
+}
+
+long long CameraStream::bgr_converted() const { return impl_ ? impl_->bgr_converted : 0; }
+long long CameraStream::bgr_failed() const { return impl_ ? impl_->bgr_failed : 0; }
+const std::string& CameraStream::bgr_last_error() const {
+    static const std::string kEmpty;
+    return impl_ ? impl_->bgr_error : kEmpty;
+}
 
 }  // namespace media
 }  // namespace railhmi

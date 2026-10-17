@@ -21,6 +21,7 @@ add_library(railhmi_media STATIC
     src/ai_worker.cpp
     src/video_capability.cpp
     src/frame_lease.cpp
+    src/rga_convert.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -66,5 +67,12 @@ set_target_properties(railhmi-video-capability PROPERTIES
 add_executable(railhmi-frame-lease tools/frame_lease_probe.cpp)
 target_link_libraries(railhmi-frame-lease PRIVATE railhmi_media)
 set_target_properties(railhmi-frame-lease PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# NV12→BGR 格式转换探针（视频 ITEM-005）
+add_executable(railhmi-rga-convert tools/rga_convert_probe.cpp)
+target_link_libraries(railhmi-rga-convert PRIVATE railhmi_media)
+set_target_properties(railhmi-rga-convert PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

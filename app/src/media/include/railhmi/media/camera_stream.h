@@ -15,6 +15,7 @@
 #include "railhmi/media/frame_lease.h"
 #include "railhmi/media/frame_store.h"
 #include "railhmi/media/pipeline_factory.h"
+#include "railhmi/media/rga_convert.h"
 
 namespace railhmi {
 namespace media {
@@ -38,6 +39,7 @@ struct CameraStreamConfig {
     int test_fps = 25;
     const railhmi::core::TimeBase* timebase = nullptr;  // 用于 capture_wall_ms；空/未校准则 -1
     std::string session_id;         // 应用启动不透明串；空则自动生成（跨相机共享）
+    bool convert_bgr = false;       // 在取流 worker 内做 NV12→BGR（librga BT601_FULL）
     railhmi::core::StreamThresholds thresholds;
     railhmi::core::QualityThresholds quality;
 };
@@ -86,6 +88,12 @@ public:
     FrameLease latest_frame() const;
     // 最新帧仓库：供上层设置 release 回调与读取发布/拒绝计数。
     FrameStore& frame_store();
+
+    // 最近一次 NV12→BGR 转换结果（视频 ITEM-005，需 cfg.convert_bgr）。失败不丢帧。
+    const BgrImage& last_bgr() const;
+    long long bgr_converted() const;
+    long long bgr_failed() const;
+    const std::string& bgr_last_error() const;
 
     static long long now_ms();
 
