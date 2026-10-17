@@ -1,0 +1,8 @@
+{
+  "clips": [
+    {"id": "evt-100-CAM-01", "availability": "complete", "size_bytes": 1332168, "path": "core-evidence/clips/CAM-01_evt-100-CAM-01.ts", "actual_t0_ms": 3600001000, "actual_t1_ms": 3600005960, "published": true},
+    {"id": "evt-101-CAM-01", "availability": "incomplete", "has_gap": true},
+    {"id": "evt-102-CAM-01", "availability": "unavailable", "has_gap": true}
+  ],
+  "acceptance": true
+}

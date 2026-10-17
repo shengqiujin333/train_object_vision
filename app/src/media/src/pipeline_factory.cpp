@@ -189,8 +189,14 @@ std::string build_pipeline_description(const CameraPipelineSpec& spec) {
                  "! appsink name=frame_sink drop=1 max-buffers=1 sync=false ";
         }
         // 压缩分支：有界队列（按包数）；appsink 不阻塞、不丢（由 RecordingTap 按字节/时长淘汰）。
-        s << "enc. ! queue leaky=downstream max-size-buffers=" << spec.recording_tap_buffers
-          << " ! appsink name=record_sink sync=false";
+        // 显式解码时归一化到 byte-stream/au（供片段直通封装；mppvideodec 同样接受 byte-stream）。
+        s << "enc. ! queue leaky=downstream max-size-buffers=" << spec.recording_tap_buffers;
+        if (spec.decode == DecodeMode::ExplicitH265) {
+            s << " ! video/x-h265,stream-format=byte-stream,alignment=au";
+        } else if (spec.decode == DecodeMode::ExplicitH264) {
+            s << " ! video/x-h264,stream-format=byte-stream,alignment=au";
+        }
+        s << " ! appsink name=record_sink sync=false";
         return s.str();
     }
 

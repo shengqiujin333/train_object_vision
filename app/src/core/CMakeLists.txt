@@ -21,6 +21,7 @@ add_library(railhmi_core STATIC
     src/inference.cpp
     src/alarm_center.cpp
     src/clip.cpp
+    src/clip_request.cpp
     src/replay.cpp
     src/maintenance.cpp
     src/permissions.cpp

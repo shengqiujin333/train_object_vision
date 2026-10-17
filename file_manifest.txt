@@ -19,12 +19,13 @@ app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
 app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
-app/src/core/CMakeLists.txt | active | railhmi_core 静态库（含帧身份 frame_identity、帧布局 frame_layout、压缩滚动缓冲 compressed_ring、录像来源 recording_source）+ config-check + sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针
+app/src/core/CMakeLists.txt | active | railhmi_core 静态库（含帧身份 frame_identity、帧布局 frame_layout、压缩滚动缓冲 compressed_ring、录像来源 recording_source、片段请求 clip_request）+ config-check + sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针
 app/src/core/include/railhmi/core/alarm_center.h | active | 报警中心模型接口（字段派生/默认排序/六维筛选/确认与维护日志/录像三态；ITEM-018）
 app/src/core/include/railhmi/core/bounded_queue.h | active | 有界丢最旧队列（视频 ITEM-008）：线程安全、非阻塞、条数+字节上限、pushed/dropped/popped 计数；纯标准库模板
 app/src/core/include/railhmi/core/camera_registry.h | active | 配置驱动摄像头注册表/检测职责徽标/NVR 集成项接口
 app/src/core/include/railhmi/core/channel_view.h | active | 全摄像头页每格视图接口（名/状态中文标签/fps/最近帧/重连/徽标；顺序=注册表，断流不重排；ITEM-015）
 app/src/core/include/railhmi/core/clip.h | active | 保护片段/缺口接口（有界滚动缓冲/报警固化 pre-post/finalize/保留优先/缺口；ITEM-019）
+app/src/core/include/railhmi/core/clip_request.h | active | 保护片段请求/幂等键/可用性接口（视频 ITEM-012）：ClipRequest/make_clip_request/ClipRequestRegistry/ClipAvailability/ClipResult；纯标准库
 app/src/core/include/railhmi/core/compressed_ring.h | active | 压缩包滚动缓冲纯逻辑（视频 ITEM-011）：CompressedPacket/CompressedRingStats/CompressedRingBuffer（字节+时长双上限、最旧淘汰、关键帧对齐、窗口收集）；纯标准库
 app/src/core/include/railhmi/core/config.h | active | 配置与状态契约模型/枚举（含 ai_profile/integration_state/mode/recording_source）+ 流时序阈值字段与 AI 推理调度（inference_interval/queue_depth/npu_budget/temp_limit_c/models）+ 回放同步阈值 + 校验入口；ITEM-025 fix-r2 增 parse_config_dir()（部署 --config 解析）
 app/src/core/include/railhmi/core/fault_catalog.h | active | 故障自检目录接口（FI-01..10 显式提示+恢复路径；自检清单；ITEM-025）
@@ -53,6 +54,7 @@ app/src/core/src/alarm_center.cpp | active | 报警中心模型实现（排序/�
 app/src/core/src/camera_registry.cpp | active | 注册表/徽标/集成项实现（槽位按配置顺序；徽标仅 P4/P6；NVR 通道映射=未配置）
 app/src/core/src/channel_view.cpp | active | 每格视图实现（状态标签/fps 文本/最近帧时间格式/重连文本；缺省未启动占位；ITEM-015）
 app/src/core/src/clip.cpp | active | 保护片段/缺口实现（滚动缓冲/片段生命周期/清单 JSON/保留优先/缺口合并；ITEM-019）
+app/src/core/src/clip_request.cpp | active | 片段请求窗口/幂等 Added·Duplicate·Conflict/可用性三态实现（视频 ITEM-012）
 app/src/core/src/compressed_ring.cpp | active | 压缩包滚动缓冲实现（视频 ITEM-011）：最旧淘汰/双上限计数/关键帧对齐/collect
 app/src/core/src/config.cpp | active | 配置加载与校验实现（报具体字段路径，不静默默认；applied_defaults 记录可选默认；含流时序阈值/app.ai 推理调度/回放同步阈值校验）；ITEM-025 fix-r2 增 parse_config_dir() 实现（--config<dir>/--config=<dir>，缺省回退，空值不生效）
 app/src/core/src/fault_catalog.cpp | active | 故障自检目录实现（ITEM-025）
@@ -88,11 +90,12 @@ app/src/core/tools/permissions_probe.cpp | active | 权限矩阵/二次确认探
 app/src/core/tools/replay_probe.cpp | active | 历史回放模型探针 CLI（railhmi-replay-probe；时间轴/跳转/同步偏差/来源回退/详情；ITEM-020）
 app/src/core/tools/sim_inject.cpp | active | 模拟/故障注入 CLI（railhmi-sim-inject；无 Qt；输出 log/JSON）
 app/src/core/tools/status_probe.cpp | active | 关键状态区/顶部条探针 CLI（railhmi-status-probe；三重编码 + 点击权限；无 Qt；ITEM-016）
-app/src/media/CMakeLists.txt | active | railhmi_media 静态库（target 专用；pkg-config gstreamer + librga；含 video_capability/frame_lease/rga_convert/camera_worker/frame_dispatcher/display_distributor/display_registry/ai_dispatcher/recording_tap）+ railhmi-stream-probe + railhmi-multi-probe + railhmi-ai-runner（含 ai_worker）+ railhmi-video-capability（ITEM-001）+ railhmi-frame-lease（ITEM-004）+ railhmi-rga-convert（ITEM-005）+ railhmi-camera-worker（ITEM-006）+ railhmi-backpressure（ITEM-008）+ railhmi-display（ITEM-009）+ railhmi-ai-dispatch（ITEM-010）+ railhmi-recording-tap（ITEM-011）
+app/src/media/CMakeLists.txt | active | railhmi_media 静态库（target 专用；pkg-config gstreamer + librga；含 video_capability/frame_lease/rga_convert/camera_worker/frame_dispatcher/display_distributor/display_registry/ai_dispatcher/recording_tap/clip_writer）+ railhmi-stream-probe + railhmi-multi-probe + railhmi-ai-runner（含 ai_worker）+ railhmi-video-capability（ITEM-001）+ railhmi-frame-lease（ITEM-004）+ railhmi-rga-convert（ITEM-005）+ railhmi-camera-worker（ITEM-006）+ railhmi-backpressure（ITEM-008）+ railhmi-display（ITEM-009）+ railhmi-ai-dispatch（ITEM-010）+ railhmi-recording-tap（ITEM-011）+ railhmi-clip-solidify（ITEM-012）
 app/src/media/include/railhmi/media/ai_dispatcher.h | active | AI 帧派发边界接口（视频 ITEM-010）：AiFrame（含 session_id/camera_id/generation/seq 关联键 + FrameLease）/AiCameraSpec/AiFrameRouter（按 ai_enabled/ai_profile 选择、按 inference_interval 降频、有界丢最旧并计数；仅媒体侧派发，不含推理）
 app/src/media/include/railhmi/media/ai_worker.h | active | 推理工作线程接口（可插拔 Detector/SimDetector；有界队列消费/遥测/start-stop；ITEM-017）
 app/src/media/include/railhmi/media/camera_stream.h | active | 单路取流与状态机接入接口（六态/质量/统计/presentable/断流注入）；ITEM-002 增 username/password/timeout_us/decode/test_* 配置并改用 pipeline_factory 构建；ITEM-003 增 timebase/session_id 与 StreamStats 身份/时间字段及 last_frame_meta/generation/frames_emitted；ITEM-004 增 latest_frame()/frame_store()；ITEM-005 增 convert_bgr 与 last_bgr/bgr_converted/bgr_failed/bgr_last_error；ITEM-006 增 simulate_freeze/resume、drain_events、presentable_now/lease_presentable、bus_state_changes、quality_flags；ITEM-011 增 recording_tap/clip_pre_seconds/record_max_bytes/recording_tap_buffers 配置与 recording_tap() 访问器
 app/src/media/include/railhmi/media/camera_worker.h | active | 每相机取流 worker 接口（视频 ITEM-006）：专用线程/请求(restart/cut/freeze/resume)/线程安全快照(stats/lease/presentable/事件计数)；ITEM-008 增 dispatcher()；ITEM-009 增 FrameCallback/set_frame_callback
+app/src/media/include/railhmi/media/clip_writer.h | active | 保护片段固化与原子发布接口（视频 ITEM-012）：ClipWriter/ClipWriterConfig/ClipPublisher（直通封装+校验+fsync+rename+发布；公开头无 GStreamer）
 app/src/media/include/railhmi/media/display_distributor.h | active | 显示分发接口（视频 ITEM-009）：FrameSnapshot/RenderPathStatus/probe_render_path/DisplayDistributor（不可变 BGR 快照 + presentable + 渲染路径能力）
 app/src/media/include/railhmi/media/display_registry.h | active | 多路显示分发注册表（视频 ITEM-009）：每相机单一来源；按 camera_id 查询快照/presentable/updates/generation
 app/src/media/include/railhmi/media/frame_dispatcher.h | active | 三类消费者分发接口（视频 ITEM-008）：显示 latest-only/推理有界丢旧/录像独立有界 + display_dropped/ai_dropped/recording_overflow 计数
@@ -107,12 +110,13 @@ app/src/media/src/ai_dispatcher.cpp | active | AI 帧派发边界实现（视频
 app/src/media/src/ai_worker.cpp | active | 推理工作线程实现（std::thread 生命周期/有界队列/帧间隔/遥测；SimDetector 含距离；ITEM-017/021）
 app/src/media/src/camera_stream.cpp | active | 原生 GStreamer 取流实现（接入 core 六态）；ITEM-002 改由 pipeline_factory 统一构建、错误整串脱敏、file 源 EOS 循环；ITEM-003 每帧生成身份+时间（mono/wall/pts）、真实重建时 generation+1；ITEM-004 每帧发布到 FrameStore（origin=live/file/simulation）；ITEM-005 worker 内 NV12→BGR（失败不丢帧）；ITEM-006 drain STATE_CHANGED、冻结不忙等、重建清标志/统计、presentable 代际判定；ITEM-011 拉取 record_sink 压缩包 → RecordingTap（独立于显示/推理）
 app/src/media/src/camera_worker.cpp | active | 每相机取流 worker 实现（视频 ITEM-006）：有限等待拉帧、drain bus/事件、驱动六态机、线程安全快照；ITEM-008 增 dispatcher() 转发；ITEM-009 每帧回调
+app/src/media/src/clip_writer.cpp | active | 片段固化实现（视频 ITEM-012）：appsrc 直通封装 MPEG-TS/Matroska→tsdemux 校验→fsync→rename→fsync 目录→发布；缺口/三态
 app/src/media/src/display_distributor.cpp | active | 显示分发实现（视频 ITEM-009）：渲染路径能力探测（gst 工厂）+ 每帧 NV12→BGR 深拷贝快照 + presentable/计数
 app/src/media/src/display_registry.cpp | active | 显示分发注册表实现（视频 ITEM-009）：worker 帧回调 → 每相机 DisplayDistributor；按 id 查询
 app/src/media/src/frame_dispatcher.cpp | active | 三类消费者分发实现（视频 ITEM-008）：三个 BoundedQueue + 独立计数
 app/src/media/src/frame_lease.cpp | active | GStreamer-backed FrameBuffer（GstSample ref 共享 + GstVideoFrame 映射）与 FrameStore 实现（视频 ITEM-004）；末个租约释放时 unmap/unref 并触发回调
 app/src/media/src/multi_stream.cpp | active | 多路并发管理器实现（视频 ITEM-007）：每路一个 worker 线程；start_all 单路失败隔离；stats/latest_frame/is_presentable/start_error；取代旧顺序 pump_all；ITEM-009 增 worker(index)
-app/src/media/src/pipeline_factory.cpp | active | 管线工厂实现（ITEM-002）：三类源统一 NV12、rtsp 强制 UDP+RTP 视频过滤+认证属性、auto/显式 depay 路径、脱敏、file 循环；渲染路径/GStreamer 版本；ITEM-011 解码前 tee name=enc → record_sink（显式 parse 之后 / auto RTP 层）
+app/src/media/src/pipeline_factory.cpp | active | 管线工厂实现（ITEM-002）：三类源统一 NV12、rtsp 强制 UDP+RTP 视频过滤+认证属性、auto/显式 depay 路径、脱敏、file 循环；渲染路径/GStreamer 版本；ITEM-011 解码前 tee name=enc → record_sink（显式 parse 之后 / auto RTP 层）；ITEM-012 tap 归一化 byte-stream/alignment=au（片段直通封装）
 app/src/media/src/recording_tap.cpp | active | RecordingTap 实现（视频 ITEM-011）
 app/src/media/src/rga_convert.cpp | active | librga imcvtcolor(BT601_FULL) NV12→BGR 实现（视频 ITEM-005）：stride/uv_offset/hstride padding、双成功码、显式拒绝
 app/src/media/src/video_capability.cpp | active | 能力探测实现：直接 gst-inspect 探测（不用 --exists）、librga/librknnrt 版本、凭据只判存在性、有界 RTSP 协商 caps 探测（含瞬时重试与凭据擦除/脱敏）、JSON/文本输出
@@ -120,6 +124,7 @@ app/src/media/tools/ai_dispatch_probe.cpp | active | AI 帧派发边界探针 CL
 app/src/media/tools/ai_runner.cpp | active | 推理工作线程运行器 CLI（railhmi-ai-runner；运行→停止验证 AI 不可用；ITEM-017）
 app/src/media/tools/backpressure_probe.cpp | active | 三类消费者背压探针 CLI（railhmi-backpressure；视频 ITEM-008）：慢显示/慢 AI/停录像消费者、计数与验收判定、--selftest
 app/src/media/tools/camera_worker_probe.cpp | active | 每路取流 worker 探针 CLI（railhmi-camera-worker；视频 ITEM-006）：六态/freeze/cut/restart/resume、presentable、bus STATE_CHANGED、--selftest
+app/src/media/tools/clip_solidify_probe.cpp | active | 保护片段固化探针 CLI（railhmi-clip-solidify；视频 ITEM-012）：填滚动缓冲→触发 ClipRequest→关键帧对齐→真实片段封装/校验/发布→三态/幂等/缺口/失败路径、--selftest
 app/src/media/tools/display_probe.cpp | active | 显示分发探针 CLI（railhmi-display；视频 ITEM-009）：P1/P4/P5 页面切换、单一来源、不重建、gl 显式状态、--selftest
 app/src/media/tools/frame_lease_probe.cpp | active | 不可变帧租约探针 CLI（railhmi-frame-lease；视频 ITEM-004）：NOT_READY/descriptor/planes、多消费者并发、共享租约 release 回调、--selftest
 app/src/media/tools/multi_probe.cpp | active | 多路并发取流探针 CLI（railhmi-multi-probe；视频 ITEM-007）：worker 化逐格状态 + 网格汇总 + cut/启动失败隔离验收判定 + --selftest + --fail-index
@@ -171,11 +176,12 @@ app/src/ui/src/permissions_model.cpp | active | 权限桥接实现（矩阵/门�
 app/src/ui/src/permissions_model.h | active | 权限/二次确认 QML 桥接接口（matrix/can*/exportRecording/modifyConfig/recentLogs 委托 core；ITEM-023）
 app/src/ui/src/replay_model.cpp | active | 历史回放桥接实现（时间轴/跳转/同步/来源/时间格式 + 报警选择动态详情 + 真实时钟偏移同步快照；ITEM-020）
 app/src/ui/src/replay_model.h | active | 历史回放 QML 桥接接口（timeline/jumpTargets/sourceStatus + 选择 selectAlarm/selectedDetail/relatedCameras + syncState + playback/setPlaying/setSpeed；ITEM-020）
-app/tests/core/CMakeLists.txt | active | railhmi-core-tests（多源：.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source；注入 RAILHMI_CONFIG_DIR）
-app/tests/core/main.cpp | active | railhmi-core 单元测试入口（.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source 二十三组；支持 --junit）
+app/tests/core/CMakeLists.txt | active | railhmi-core-tests（多源：.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request；注入 RAILHMI_CONFIG_DIR）
+app/tests/core/main.cpp | active | railhmi-core 单元测试入口（.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request 二十四组；支持 --junit）
 app/tests/core/test_alarm_center.cpp | active | 报警中心测试（ITEM-018：字段派生/默认排序/六维筛选与空态/确认不删事件/维护日志）
 app/tests/core/test_bounded_queue.cpp | active | 有界丢最旧队列测试（视频 ITEM-008：容量 1 latest-only/有界丢旧/字节预算/计数/空语义）
 app/tests/core/test_clip.cpp | active | 保护片段/缺口测试（ITEM-019：滚动缓冲/片段时长/finalize/缺口合并/保留优先/原子写盘）
+app/tests/core/test_clip_request.cpp | active | 片段请求/幂等/可用性测试（视频 ITEM-012：窗口计算/同参判定/Added·Duplicate·Conflict/可用性往返/默认值）
 app/tests/core/test_compressed_ring.cpp | active | 压缩滚动缓冲测试（视频 ITEM-011：时长/字节/双上限、超宽单包、关键帧对齐、collect、set_limits 收缩）
 app/tests/core/test_config.cpp | active | 配置与状态契约测试（TC-CORE-01：合法逐项 + 非法报具体字段 + 流时序阈值断言）；ITEM-025 fix-r2 增 parse_config_dir 7 用例
 app/tests/core/test_frame_identity.cpp | active | 帧身份与跨重连代际测试（视频 ITEM-003：seq 同代严格递增/重建代际+seq 归零/接纳拒绝旧 session·generation·重复·乱序/时间字段语义）
@@ -204,6 +210,7 @@ app/tools/board_ai_dispatch_check.py | active | 视频 ITEM-010 板端执行入�
 app/tools/board_backpressure_check.py | active | 视频 ITEM-008 板端执行入口（上传→CoreTests+MediaCheck→backpressure selftest→慢显示/慢AI/停录像背压运行→取回证据→清理）
 app/tools/board_build.py | active | 板端构建/测试运行器（TestRun：core 单测 + tokens selftest + ui-scan（硬编码+各接线+打包核对）+ sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针；上传 app/ + 权限矩阵 + packaging/）；ui-scan 增 check_qml_qt_validity（QML_VALID_EXIT）
 app/tools/board_camera_worker_check.py | active | 视频 ITEM-006 板端执行入口（上传→MediaCheck→camera-worker selftest→test freeze/cut/resume+rtsp 运行→取回证据→清理；凭据经 0600 临时 env 文件注入并删除）
+app/tools/board_clip_solidify_check.py | active | 视频 ITEM-012 板端执行入口（上传→CoreTests+core-tests→MediaCheck→clip-solidify selftest→真实压缩管线固化三态/幂等/失败→取回日志与真实 .ts→清理）
 app/tools/board_display_check.py | active | 视频 ITEM-009 板端执行入口（上传→MediaCheck→display selftest→六路 P1/P4/P5 页面切换与 gl 状态运行→取回证据→清理）
 app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
 app/tools/board_frame_identity_check.py | active | 视频 ITEM-003 板端执行入口（上传→CoreTests 单测→MediaCheck selftest→test 源 --rebuild-after 重建运行→取回证据→清理）
@@ -1714,6 +1721,7 @@ docs/video/implementation/ITEM-008_BACKPRESSURE.md | active | VideoSystemImpleme
 docs/video/implementation/ITEM-009_DISPLAY_HANDOFF.md | active | VideoSystemImplementation：视频 ITEM-009 交付清单（不可变显示快照、presentable、单一来源、页面切换不重建、渲染路径能力显式报告、digest、板端验证、边界）
 docs/video/implementation/ITEM-010_AI_DISPATCH.md | active | VideoSystemImplementation：视频 ITEM-010 交付清单（AI 派发边界：ai_enabled/ai_profile 选择、inference_interval 降频、session/generation/seq 关联键+租约、有界丢最旧计数、配置驱动、digest、板端验证、与 core inference/AiWorker 关系、边界）
 docs/video/implementation/ITEM-011_RECORDING_TAP.md | active | VideoSystemImplementation：视频 ITEM-011 交付清单（解码前压缩 tap、字节+时长双上限滚动缓冲、独立于显示/AI 丢帧、关键帧对齐、recording_source 回落本机显式状态、digest、板端验证、边界）
+docs/video/implementation/ITEM-012_CLIP_SOLIDIFY.md | active | VideoSystemImplementation：视频 ITEM-012 交付清单（幂等 ClipRequest、关键帧对齐、真实 MPEG-TS 直通封装、临时→校验→fsync→rename→fsync 目录→发布、缺口与可用性三态、tap byte-stream 归一化、digest、板端验证、边界）
 docs/video/test_evidence/ITEM-001/ITEM-001-ENV-B-20261017-r1.md | active | VideoExecutionEvidence：ITEM-001 源类型范围与链路测量记录（六路真实 RTSP 协商 caps=H265/NV12/1280x720/25、元素探测、库版本、凭据缺失路径、安全脱敏、原始证据索引；ENV-B 档）
 docs/video/test_evidence/ITEM-001/VERIFY-ITEM-001.md | active | TestEvidence（software_verification 独立复验）：VERIFY-20261017-v1 对实现 dc70856 的独立板端复跑（build/selftest 8/8/nocred/caps 6 路 measured 与 r5 字段级 identical）、TC-V-CAP-01..05 判据映射、EXT-01..06 扩展夹具（exit 3 元素缺失显式报缺/exit2 负例/--exists 假否独立复现/凭据泄漏 0 命中）、观察项 O-1 单路瞬时探测波动（音频 PCMA depay 竞态）/O-2 caps 确定性判据未闭环/O-3 eth1 100Mbps；TEST_PASS 范围限能力探测与配置绑定，不外推持续吞吐/多路并发/录像回放
 docs/video/test_evidence/ITEM-001/_verify_det2.py | active | 验证侧 caps 确定性夹具 v2（CAM-01 3 轮单路探测，判据=成功 run 的 caps 字段恒等；O-1 影响 0/3 成功如实记录不闭环）
@@ -1910,6 +1918,12 @@ docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.c
 docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.log | active | 验证轮板端交付入口独立复跑全步骤 stdout（783/0 + selftest 9/9 + 双阶段 acceptance PASS）
 docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹一致/逐条命令/退出码）
 docs/video/test_evidence/ITEM-011/rec-ext-192_168_0_103-20261017-item011-verify-v1.json | active | ITEM-011 EXT 夹具结构化结果（12/12 PASS，EX-C 34 判例含驻留 keyframe 终态精确预言）
+docs/video/test_evidence/ITEM-012/ITEM-012-ENV-A0-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-012 core 802/0 + clip-selftest 8/8 + recording-tap 回归 selftest 9/9 + 板端真实管线（complete 1332168B 真实 MPEG-TS/tsdemux 校验/关键帧对齐/发布后于 rename；incomplete POST_ROLL_SHORTAGE；unavailable NO_MEDIA/MKDIR_FAILED；幂等 added·duplicate·conflict；acceptance PASS）
+docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-r5.core-evidence_clip-solidify-20261017-item012-r5.json | active | ITEM-012 片段三态汇总 JSON
+docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-r5.core-evidence_clip-solidify-20261017-item012-r5.log | active | ITEM-012 配置/缓冲/幂等/三态固化/acceptance 日志
+docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-r5.core-evidence_clips_CAM-01_evt-100-CAM-01.ts | active | ITEM-012 真实 MPEG-TS 保护片段（1332168 B；同步字节 47 40 00 31；未经转码只读归档）
+docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-r5.log | active | ITEM-012 板端执行人类可读 transcript（build-core/core-tests/build-media/clip selftest/recording-tap 回归 selftest/run-clip）
+docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-r5.transcript.json | active | ITEM-012 板端执行结构化 transcript（命令+退出码+输出）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

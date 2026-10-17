@@ -1,0 +1,8 @@
+type=config config_pre_seconds=30 config_post_seconds=60 effective_pre_seconds=3 effective_post_seconds=2 buffer_seconds=7 outdir=core-evidence/clips
+type=buffer packets=176 span_ms=7000 last_ts_ms=3600007960 display_frames=40 trigger_ts_ms=3600003960
+type=idempotency first=added repeat=duplicate different_params=conflict
+type=clip case=complete requested=[3600000960,3600005960) actual=[3600001000,3600005960] packets=125 keyframe_aligned=true availability=complete size_bytes=1332168 published=true path=core-evidence/clips/CAM-01_evt-100-CAM-01.ts reason=
+type=clip case=incomplete requested=[3600000960,3600035960) actual=[3600001000,3600007960] availability=incomplete has_gap=true gap_reason=POST_ROLL_SHORTAGE gap=[3600007960,3600035960)
+type=clip case=unavailable packets=0 availability=unavailable has_gap=true reason=NO_MEDIA
+type=clip case=mux_failed availability=unavailable has_gap=true reason=MKDIR_FAILED
+type=acceptance real_media=true coverage_matches=true keyframe_aligned=true gap_recorded=true availability_tristate=true idempotent=true publish_after_rename=true no_stray_temp=true result=PASS
