@@ -158,3 +158,12 @@ target_link_libraries(railhmi-diagnostics PRIVATE railhmi_media)
 set_target_properties(railhmi-diagnostics PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
+
+# 预算测量装置探针（视频 ITEM-017）
+add_executable(railhmi-measure tools/measure_probe.cpp)
+target_include_directories(railhmi-measure PRIVATE ${GST_INCLUDE_DIRS})
+target_compile_options(railhmi-measure PRIVATE ${GST_CFLAGS_OTHER})
+target_link_libraries(railhmi-measure PRIVATE railhmi_media)
+set_target_properties(railhmi-measure PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)

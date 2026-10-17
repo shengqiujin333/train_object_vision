@@ -27,6 +27,7 @@ add_library(railhmi_core STATIC
     src/replay.cpp
     src/replay_sync.cpp
     src/maintenance.cpp
+    src/metrics.cpp
     src/permissions.cpp
     src/health.cpp
     src/recovery.cpp
