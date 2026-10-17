@@ -19,6 +19,7 @@ add_library(railhmi_media STATIC
     src/camera_stream.cpp
     src/multi_stream.cpp
     src/ai_worker.cpp
+    src/video_capability.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -50,5 +51,12 @@ set_target_properties(railhmi-multi-probe PROPERTIES
 add_executable(railhmi-ai-runner tools/ai_runner.cpp)
 target_link_libraries(railhmi-ai-runner PRIVATE railhmi_media)
 set_target_properties(railhmi-ai-runner PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 视频源能力探测与配置绑定（视频 ITEM-001；元素/库版本/凭据/协商 caps）
+add_executable(railhmi-video-capability tools/video_capability_tool.cpp)
+target_link_libraries(railhmi-video-capability PRIVATE railhmi_media)
+set_target_properties(railhmi-video-capability PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

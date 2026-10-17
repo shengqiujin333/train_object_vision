@@ -79,18 +79,21 @@ app/src/core/tools/permissions_probe.cpp | active | 权限矩阵/二次确认探
 app/src/core/tools/replay_probe.cpp | active | 历史回放模型探针 CLI（railhmi-replay-probe；时间轴/跳转/同步偏差/来源回退/详情；ITEM-020）
 app/src/core/tools/sim_inject.cpp | active | 模拟/故障注入 CLI（railhmi-sim-inject；无 Qt；输出 log/JSON）
 app/src/core/tools/status_probe.cpp | active | 关键状态区/顶部条探针 CLI（railhmi-status-probe；三重编码 + 点击权限；无 Qt；ITEM-016）
-app/src/media/CMakeLists.txt | active | railhmi_media 静态库（target 专用；pkg-config gstreamer + librga）+ railhmi-stream-probe + railhmi-multi-probe + railhmi-ai-runner（含 ai_worker）
+app/src/media/CMakeLists.txt | active | railhmi_media 静态库（target 专用；pkg-config gstreamer + librga）+ railhmi-stream-probe + railhmi-multi-probe + railhmi-ai-runner（含 ai_worker）+ railhmi-video-capability（视频 ITEM-001 能力探测；含 video_capability.cpp）
 app/src/media/include/railhmi/media/ai_worker.h | active | 推理工作线程接口（可插拔 Detector/SimDetector；有界队列消费/遥测/start-stop；ITEM-017）
 app/src/media/include/railhmi/media/camera_stream.h | active | 单路取流与状态机接入接口（六态/质量/统计/presentable/断流注入）
 app/src/media/include/railhmi/media/multi_stream.h | active | 六路并发取流管理接口（逐路独立六态；单路失败不影响其余；ITEM-015）
 app/src/media/include/railhmi/media/pipeline_factory.h | active | 渲染路径枚举与管线描述接口
+app/src/media/include/railhmi/media/video_capability.h | active | 视频源能力探测与配置绑定接口（视频 ITEM-001）：元素探测/库版本/凭据状态/就绪性/协商 caps 记录 + 纯逻辑辅助（可单测）
 app/src/media/src/ai_worker.cpp | active | 推理工作线程实现（std::thread 生命周期/有界队列/帧间隔/遥测；SimDetector 含距离；ITEM-017/021）
 app/src/media/src/camera_stream.cpp | active | 原生 GStreamer 取流实现（强制 UDP；test/file/rtsp；接入 core 六态）
 app/src/media/src/multi_stream.cpp | active | 多路并发管理器实现（start/pump/cut/stats/stop；ITEM-015）
 app/src/media/src/pipeline_factory.cpp | active | 管线描述/渲染路径解析/GStreamer 版本实现
+app/src/media/src/video_capability.cpp | active | 能力探测实现：直接 gst-inspect 探测（不用 --exists）、librga/librknnrt 版本、凭据只判存在性、有界 RTSP 协商 caps 探测（含瞬时重试与凭据擦除/脱敏）、JSON/文本输出
 app/src/media/tools/ai_runner.cpp | active | 推理工作线程运行器 CLI（railhmi-ai-runner；运行→停止验证 AI 不可用；ITEM-017）
 app/src/media/tools/multi_probe.cpp | active | 六路并发取流探针 CLI（railhmi-multi-probe；逐格状态 + 网格汇总 + 断流验收判定；ITEM-015）
 app/src/media/tools/stream_probe.cpp | active | 单路取流/状态机探针 CLI（railhmi-stream-probe）
+app/src/media/tools/video_capability_tool.cpp | active | 运行入口 railhmi-video-capability（--config/--json/--out/--probe-caps/--camera/--selftest；缺凭据/缺元素显式报错）
 app/src/platform/CMakeLists.txt | active | railhmi_platform 静态库；SQLite 优先 dev 包，否则运行时 libsqlite3.so.0 + 项目 shim 头；编译 SqliteStore/Repository
 app/src/platform/include/railhmi/platform/file_store.h | active | 原子文件存储接口（临时文件+rename，断电保护）
 app/src/platform/include/railhmi/platform/log.h | active | 结构化日志与 URL 凭据脱敏接口
@@ -165,6 +168,7 @@ app/tools/board_qmllint.py | active | 发布包板端 QML 静态检查（qmllint
 app/tools/board_release_build.py | active | 发布包目标构建/打包器（授权内补装 Qt 开发依赖→板端 Release 构建→冒烟→tar.gz+sha256；含只作用于目标 /tmp 副本的诊断开关；n008）；增 --no-bundle（只构建+冒烟，不产出发布包）；修复 stage 组装 format 占位符计数（打包 tar.gz 首次实跑）
 app/tools/board_release_probe.py | active | 发布包板端只读资源/支持范围探针（OS/Qt/GStreamer/librga/rknn/sqlite/显示/systemd/apt 可达性；ITEM n008）
 app/tools/board_render_spike.py | active | ITEM-002 板端渲染 spike 运行器（上传/构建 QML spike、无 Qt 核心测量编译运行、gl 构造探测、取回日志/JSON、判据选择；全超时 + known_hosts）
+app/tools/board_video_capability.py | active | 视频 ITEM-001 板端执行入口（上传 app/→build.sh MediaCheck→selftest/可达性/无凭据/有界 caps 探测→取回证据→清理；凭据经 0600 临时 env 文件注入并删除，命令串与日志不含凭据）
 app/tools/check_ai_debug_wiring.py | active | AI 调试页/司机隔离静态核对（ITEM-021：叠加层四开关默认关/调试令牌 debug_box·debug_roi/距离与延迟字段/司机守卫/无硬编码）
 app/tools/check_health_wiring.py | active | 健康/日志/自恢复静态核对（ITEM-024：恢复浮层/P6 日志与恢复卡/桥接 core/注入）
 app/tools/check_maintenance_wiring.py | active | 设备维护页静态核对（ITEM-022：分区卡片/PTZ 目标vs实际与容差/二次确认/日志/NVR 未配置无自动修改/桥接 core）
@@ -1651,6 +1655,14 @@ docs/interfaces/validate_contract.py | active | 接口架构自校验工具：�
 docs/video/VIDEO_E2E_PLAN.md | active | E2EPlan：视频端到端测试计划 v1——六条 E2E 旅程（单路取流到呈现/六路并发与隔离/保护片段闭环/故障注入马拉松/回放时延与同步分布/脱敏审计），升降级门与证据分层（前一档全绿才进下一档；ENV-D 待凭据核验）
 docs/video/VIDEO_SYSTEM_DESIGN.md | active | VideoSystemDesignArtifact v1：六路可见光视频系统设计——视频源/协议/编码/时间戳确认、帧描述符与不可变 FrameLease 所有权、每路管线与线程/队列边界、背压与丢帧策略、实时/录像/推理三条时间线与软件同步口径、异常恢复与真实重建、本机保护片段与回放 media provider、吞吐/延迟/同步/存储/断流预算与测量方法、库与加速路径对比（原生 GStreamer+MPP+librga 选用、OpenCV/rgaconvert 否决、gl 保留）、接口职责边界、配置与待实测项；含本轮板端只读 GStreamer 栈核对（qmlglsink 缺失、mppvideodec 存在、--exists 不可靠）
 docs/video/VIDEO_TEST_DESIGN.md | active | TestDesignArtifact：视频系统软件测试设计 v1——五层测试环境（ENV-A0 主机单元/A 主机模拟/B 板端真库离线媒体/C 板端 file·test 源/D 板端真实 RTSP）、视频故障注入目录 FI-V-01..10、G1..G7 功能域 37 条用例（能力探测/管线工厂/帧身份/租约/RGA 转换/状态机与多路隔离/录像回放/脱敏日志/预算仪器）、P0 冒烟 5 条、ITEM-001..017 需求覆盖矩阵、证据分层与三源（真实/文件/模拟）不合并规则
+docs/video/implementation/ITEM-001_VIDEO_SOURCE_CAPABILITY.md | active | VideoSystemImplementation：视频 ITEM-001 交付清单（新增/修改文件与 digest、配置绑定与探测行为、运行入口、验证结果、调试修复历史、边界与移交）
+docs/video/test_evidence/ITEM-001/ITEM-001-ENV-B-20261017-r1.md | active | VideoExecutionEvidence：ITEM-001 源类型范围与链路测量记录（六路真实 RTSP 协商 caps=H265/NV12/1280x720/25、元素探测、库版本、凭据缺失路径、安全脱敏、原始证据索引；ENV-B 档）
+docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-r5.core-evidence_capability-caps-20261017-item001-r5.json | active | ITEM-001 协商 caps 报告 JSON（六路 measured）
+docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-r5.core-evidence_capability-caps-20261017-item001-r5.log | active | ITEM-001 协商 caps 报告文本
+docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-r5.core-evidence_capability-nocred-20261017-item001-r5.json | active | ITEM-001 无凭据报告 JSON（六路 blocked_credential_missing）
+docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-r5.core-evidence_capability-nocred-20261017-item001-r5.log | active | ITEM-001 无凭据报告文本
+docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-r5.log | active | ITEM-001 板端执行人类可读 transcript（build/selftest/reachability/nocred/caps 全流程）
+docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-r5.transcript.json | active | ITEM-001 板端执行结构化 transcript（命令+退出码+输出）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

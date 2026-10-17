@@ -1,0 +1,103 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "camera_credential_envs": "TRAIN_FRONT_RTSP_CREDENTIAL,TRAIN_SIDE_RTSP_CREDENTIAL",
+    "local_dir": "E:\\work\\rail_issue\\rk3588_handover\\app",
+    "remote_dir": "/tmp/railhmi_video",
+    "outdir": "docs/video/test_evidence/ITEM-001",
+    "stamp": "20261017-item001-r5",
+    "connect_timeout": 10,
+    "build_timeout": 900,
+    "caps_timeout_ms": 12000,
+    "cameras": "",
+    "no_caps": false,
+    "keep_remote": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_video",
+      "exit": 0,
+      "elapsed_s": 0.22,
+      "output": ""
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 178 files from E:\\work\\rail_issue\\rk3588_handover\\app"
+    },
+    {
+      "step": "build",
+      "cmd": "cd /tmp/railhmi_video && bash build.sh MediaCheck; echo BUILD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 24.73,
+      "output": "[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1\n[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no\n[build.sh] configuring: cmake -S '/tmp/railhmi_video' -B '/tmp/railhmi_video/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- railhmi: build mode = MediaCheck\n-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled\n-- Found PkgConfig: /usr/bin/pkg-config (found version \"0.29.2\") \n-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'\n--   Found gstreamer-1.0, version 1.20.3\n--   Found gstreamer-app-1.0, version 1.20.1\n--   Found gstreamer-video-1.0, version 1.20.1\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/railhmi_video/build-media\n[build.sh] building: cmake --build '/tmp/railhmi_video/build-media' -j8\n[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o\n[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o\n[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o\n[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o\n[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o\n[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o\n[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o\n[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o\n[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o\n[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o\n[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o\n[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o\n[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o\n[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o\n[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o\n[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o\n[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o\n[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o\n[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay.cpp.o\n[ 30%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/maintenance.cpp.o\n[ 31%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o\n[ 33%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o\n[ 34%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery.cpp.o\n[ 36%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o\n[ 37%] Linking CXX static library librailhmi_core.a\n[ 37%] Built target railhmi_core\n[ 39%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o\n[ 40%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o\n[ 42%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o\n[ 43%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o\n[ 45%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o\n[ 46%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o\n[ 48%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o\n[ 50%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o\n[ 51%] Linking CXX executable ../../tools/railhmi-config-check\n[ 53%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o\n[ 53%] Built target railhmi-config-check\n[ 54%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o\n[ 56%] Linking CXX executable ../../tools/railhmi-permissions-probe\n[ 56%] Built target railhmi-permissions-probe\n[ 57%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o\n[ 59%] Linking CXX executable ../../tools/railhmi-status-probe\n[ 59%] Built target railhmi-status-probe\n[ 60%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o\n[ 62%] Linking CXX executable ../../tools/railhmi-sim-inject\n[ 63%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o\n[ 63%] Built target railhmi-sim-inject\n[ 65%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o\n[ 66%] Linking CXX executable ../../tools/railhmi-maintenance-probe\n[ 66%] Built target railhmi-maintenance-probe\n[ 68%] Linking CXX executable ../../tools/railhmi-fault-probe\n[ 68%] Built target railhmi-fault-probe\n[ 69%] Linking CXX executable ../../tools/railhmi-health-probe\n[ 71%] Linking CXX executable ../../tools/railhmi-ai-probe\n[ 71%] Built target railhmi-health-probe\n[ 72%] Linking CXX executable ../../tools/railhmi-alarm-probe\n[ 72%] Built target railhmi-ai-probe\n[ 72%] Built target railhmi-alarm-probe\n[ 74%] Linking CXX executable ../../tools/railhmi-replay-probe\n[ 74%] Built target railhmi-replay-probe\n[ 75%] Linking CXX static library librailhmi_platform.a\n[ 75%] Built target railhmi_platform\n[ 78%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/video_capability.cpp.o\n[ 78%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o\n[ 80%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o\n[ 81%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o\n[ 83%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o\n[ 84%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o\n[ 86%] Linking CXX executable ../../tools/railhmi-clip-probe\n[ 86%] Built target railhmi-clip-probe\n[ 87%] Linking CXX static library librailhmi_media.a\n[ 87%] Built target railhmi_media\n[ 89%] Building CXX object src/media/CMakeFiles/railhmi-video-capability.dir/tools/video_capability_tool.cpp.o\n[ 93%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o\n[ 93%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o\n[ 93%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o\n[ 95%] Linking CXX executable ../../tools/railhmi-stream-probe\n[ 95%] Built target railhmi-stream-probe\n[ 96%] Linking CXX executable ../../tools/railhmi-ai-runner\n[ 98%] Linking CXX executable ../../tools/railhmi-video-capability\n[ 98%] Built target railhmi-ai-runner\n[ 98%] Built target railhmi-video-capability\n[100%] Linking CXX executable ../../tools/railhmi-multi-probe\n[100%] Built target railhmi-multi-probe\n[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_video/build-media\n[build.sh] media layer: /tmp/railhmi_video/build-media/src/media/librailhmi_media.a\nBUILD_EXIT=0\n"
+    },
+    {
+      "step": "selftest",
+      "cmd": "cd /tmp/railhmi_video && ./build-media/tools/railhmi-video-capability --selftest; echo SELFTEST_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.14,
+      "output": "selftest PASS parse_present\nselftest PASS parse_long_name\nselftest PASS parse_absent\nselftest PASS parse_absent_detail\nselftest PASS readiness_credential_missing\nselftest PASS readiness_element_missing\nselftest PASS readiness_ready\nselftest PASS required_elements\nselftest OK (0 failure(s))\nSELFTEST_EXIT=0\n"
+    },
+    {
+      "step": "reachability",
+      "cmd": "for ip in 192.168.1.65 192.168.1.160 192.168.1.162 192.168.1.163 192.168.1.165 192.168.1.167; do if timeout 3 bash -c \"echo > /dev/tcp/$ip/554\" 2>/dev/null; then echo \"$ip:554=open\"; else echo \"$ip:554=closed\"; fi; done; ip -4 addr show eth1 | sed -n 's/.*inet //p'; echo link_speed_mbps=$(cat /sys/class/net/eth1/speed 2>/dev/null)",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "192.168.1.65:554=open\n192.168.1.160:554=open\n192.168.1.162:554=open\n192.168.1.163:554=open\n192.168.1.165:554=open\n192.168.1.167:554=open\n192.168.1.200/24 brd 192.168.1.255 scope global noprefixroute eth1\nlink_speed_mbps=100\n"
+    },
+    {
+      "step": "capability-nocred",
+      "cmd": "cd /tmp/railhmi_video && mkdir -p core-evidence && ./build-media/tools/railhmi-video-capability --config ./config --json core-evidence/capability-nocred-20261017-item001-r5.json --out core-evidence/capability-nocred-20261017-item001-r5.log; echo CAP_NOCRED_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 2.52,
+      "output": "type=capability_report config_ok=true render_path=cpu recording_source=both\nversions gstreamer=1.20.3 librga=\"rga_api version 1.10.1_[0]\" librknnrt=\"2.3.2 (429f97ae6b@2025-04-09T09:09:27)\"\nrequired_elements_present=true\nelement rtspsrc status=present long_name=\"RTSP packet receiver\"\nelement rtph265depay status=present long_name=\"RTP H265 depayloader\"\nelement h265parse status=present long_name=\"H.265 parser\"\nelement rtph264depay status=present long_name=\"RTP H264 depayloader\"\nelement h264parse status=present long_name=\"H.264 parser\"\nelement decodebin status=present long_name=\"Decoder Bin\"\nelement mppvideodec status=present long_name=\"Rockchip's MPP video decoder\"\nelement tee status=present long_name=\"Tee pipe fitting\"\nelement queue status=present long_name=\"Queue\"\nelement appsink status=present long_name=\"AppSink\"\nelement fakesink status=present long_name=\"Fake Sink\"\ncamera CAM-01 name=\"车头前方\" position=primary spectrum=visible ai_enabled=true ai_profile=front display_fps=25\n  rtsp_url=\"rtsp://192.168.1.65:554/cam/realmonitor?channel=1&subtype=0\" credential_env=TRAIN_FRONT_RTSP_CREDENTIAL credential=missing readiness=blocked_credential_missing\n  caps status=to_be_measured\ncamera CAM-02 name=\"车辆左侧\" position=left spectrum=visible ai_enabled=false ai_profile=none display_fps=15\n  rtsp_url=\"rtsp://192.168.1.160:554/h264/ch1/main/av_stream\" credential_env=TRAIN_SIDE_RTSP_CREDENTIAL credential=missing readiness=blocked_credential_missing\n  caps status=to_be_measured\ncamera CAM-03 name=\"车辆右侧\" position=right spectrum=visible ai_enabled=false ai_profile=none display_fps=15\n  rtsp_url=\"rtsp://192.168.1.162:554/h264/ch1/main/av_stream\" credential_env=TRAIN_SIDE_RTSP_CREDENTIAL credential=missing readiness=blocked_credential_missing\n  caps status=to_be_measured\ncamera CAM-04 name=\"车顶受电弓\" position=roof spectrum=visible ai_enabled=true ai_profile=pantograph display_fps=15\n  rtsp_url=\"rtsp://192.168.1.163:554/h264/ch1/main/av_stream\" credential_env=TRAIN_SIDE_RTSP_CREDENTIAL credential=missing readiness=blocked_credential_missing\n  caps status=to_be_measured\ncamera CAM-05 name=\"车底轮轨\" position=underfloor spectrum=visible ai_enabled=true ai_profile=wheel_rail display_fps=15\n  rtsp_url=\"rtsp://192.168.1.165:554/h264/ch1/main/av_stream\" credential_env=TRAIN_SIDE_RTSP_CREDENTIAL credential=missing readiness=blocked_credential_missing\n  caps status=to_be_measured\ncamera CAM-06 name=\"司机室车门\" position=cab spectrum=visible ai_enabled=true ai_profile=cab_door display_fps=15\n  rtsp_url=\"rtsp://192.168.1.167:554/h264/ch1/main/av_stream\" credential_env=TRAIN_SIDE_RTSP_CREDENTIAL credential=missing readiness=blocked_credential_missing\n  caps status=to_be_measured\nCAP_NOCRED_EXIT=0\n"
+    },
+    {
+      "step": "capability-caps",
+      "cmd": "cd /tmp/railhmi_video && set -a && . ./.cam_env.sh && set +a && ./build-media/tools/railhmi-video-capability --config ./config --probe-caps --caps-timeout-ms 12000 --json core-evidence/capability-caps-20261017-item001-r5.json --out core-evidence/capability-caps-20261017-item001-r5.log; rc=$?; rm -f ./.cam_env.sh; echo CAP_CAPS_EXIT=$rc",
+      "exit": 0,
+      "elapsed_s": 8.83,
+      "output": "type=capability_report config_ok=true render_path=cpu recording_source=both\nversions gstreamer=1.20.3 librga=\"rga_api version 1.10.1_[0]\" librknnrt=\"2.3.2 (429f97ae6b@2025-04-09T09:09:27)\"\nrequired_elements_present=true\nelement rtspsrc status=present long_name=\"RTSP packet receiver\"\nelement rtph265depay status=present long_name=\"RTP H265 depayloader\"\nelement h265parse status=present long_name=\"H.265 parser\"\nelement rtph264depay status=present long_name=\"RTP H264 depayloader\"\nelement h264parse status=present long_name=\"H.264 parser\"\nelement decodebin status=present long_name=\"Decoder Bin\"\nelement mppvideodec status=present long_name=\"Rockchip's MPP video decoder\"\nelement tee status=present long_name=\"Tee pipe fitting\"\nelement queue status=present long_name=\"Queue\"\nelement appsink status=present long_name=\"AppSink\"\nelement fakesink status=present long_name=\"Fake Sink\"\ncamera CAM-01 name=\"车头前方\" position=primary spectrum=visible ai_enabled=true ai_profile=front display_fps=25\n  rtsp_url=\"rtsp://192.168.1.65:554/cam/realmonitor?channel=1&subtype=0\" credential_env=TRAIN_FRONT_RTSP_CREDENTIAL credential=present readiness=ready\n  caps status=measured codec=H265 format=NV12 size=1280x720 fps=25/1 colorimetry=2:4:16:3\ncamera CAM-02 name=\"车辆左侧\" position=left spectrum=visible ai_enabled=false ai_profile=none display_fps=15\n  rtsp_url=\"rtsp://192.168.1.160:554/h264/ch1/main/av_stream\" credential_env=TRAIN_SIDE_RTSP_CREDENTIAL credential=present readiness=ready\n  caps status=measured codec=H265 format=NV12 size=1280x720 fps=25/1 colorimetry=bt709\ncamera CAM-03 name=\"车辆右侧\" position=right spectrum=visible ai_enabled=false ai_profile=none display_fps=15\n  rtsp_url=\"rtsp://192.168.1.162:554/h264/ch1/main/av_stream\" credential_env=TRAIN_SIDE_RTSP_CREDENTIAL credential=present readiness=ready\n  caps status=measured codec=H265 format=NV12 size=1280x720 fps=25/1 colorimetry=bt709\ncamera CAM-04 name=\"车顶受电弓\" position=roof spectrum=visible ai_enabled=true ai_profile=pantograph display_fps=15\n  rtsp_url=\"rtsp://192.168.1.163:554/h264/ch1/main/av_stream\" credential_env=TRAIN_SIDE_RTSP_CREDENTIAL credential=present readiness=ready\n  caps status=measured codec=H265 format=NV12 size=1280x720 fps=25/1 colorimetry=bt709\ncamera CAM-05 name=\"车底轮轨\" position=underfloor spectrum=visible ai_enabled=true ai_profile=wheel_rail display_fps=15\n  rtsp_url=\"rtsp://192.168.1.165:554/h264/ch1/main/av_stream\" credential_env=TRAIN_SIDE_RTSP_CREDENTIAL credential=present readiness=ready\n  caps status=measured codec=H265 format=NV12 size=1280x720 fps=25/1 colorimetry=bt709\ncamera CAM-06 name=\"司机室车门\" position=cab spectrum=visible ai_enabled=true ai_profile=cab_door display_fps=15\n  rtsp_url=\"rtsp://192.168.1.167:554/h264/ch1/main/av_stream\" credential_env=TRAIN_SIDE_RTSP_CREDENTIAL credential=present readiness=ready\n  caps status=measured codec=H265 format=NV12 size=1280x720 fps=25/1 colorimetry=bt709\nCAP_CAPS_EXIT=0\n"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "video-cap-192_168_0_103-20261017-item001-r5.core-evidence_capability-nocred-20261017-item001-r5.json"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "video-cap-192_168_0_103-20261017-item001-r5.core-evidence_capability-nocred-20261017-item001-r5.log"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "video-cap-192_168_0_103-20261017-item001-r5.core-evidence_capability-caps-20261017-item001-r5.json"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "video-cap-192_168_0_103-20261017-item001-r5.core-evidence_capability-caps-20261017-item001-r5.log"
+    },
+    {
+      "step": "artifacts",
+      "cmd": "cd /tmp/railhmi_video; ls -l build-media/tools/railhmi-video-capability build-media/src/media/librailhmi_media.a 2>&1",
+      "exit": 0,
+      "elapsed_s": 0.04,
+      "output": "-rw-rw-r-- 1 admin admin 219170 Oct 17 12:30 build-media/src/media/librailhmi_media.a\n-rwxrwxr-x 1 admin admin 215376 Oct 17 12:30 build-media/tools/railhmi-video-capability\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_video && echo cleaned",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "cleaned\n"
+    }
+  ]
+}
