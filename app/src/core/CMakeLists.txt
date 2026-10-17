@@ -24,6 +24,7 @@ add_library(railhmi_core STATIC
     src/clip_request.cpp
     src/recording_provider.cpp
     src/replay.cpp
+    src/replay_sync.cpp
     src/maintenance.cpp
     src/permissions.cpp
     src/health.cpp
@@ -54,6 +55,13 @@ set_target_properties(railhmi-sim-inject PROPERTIES
 add_executable(railhmi-status-probe tools/status_probe.cpp)
 target_link_libraries(railhmi-status-probe PRIVATE railhmi_core)
 set_target_properties(railhmi-status-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 时间基准与回放同步探针（视频 ITEM-015；无 Qt/相机/GStreamer）
+add_executable(railhmi-timebase-sync tools/timebase_sync_probe.cpp)
+target_link_libraries(railhmi-timebase-sync PRIVATE railhmi_core)
+set_target_properties(railhmi-timebase-sync PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
 

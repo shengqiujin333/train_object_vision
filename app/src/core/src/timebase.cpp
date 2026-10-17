@@ -16,6 +16,12 @@ long long TimeBase::to_wall_ms(long long mono_us) const {
     return ref_wall_ms_ + (mono_us - ref_mono_us_) / 1000;
 }
 
+bool TimeBase::try_to_wall_ms(long long mono_us, long long* wall_ms) const {
+    if (!calibrated_) return false;
+    if (wall_ms) *wall_ms = ref_wall_ms_ + (mono_us - ref_mono_us_) / 1000;
+    return true;
+}
+
 long long TimeBase::to_mono_us(long long wall_ms) const {
     if (!calibrated_) return wall_ms * 1000;
     return ref_mono_us_ + (wall_ms - ref_wall_ms_) * 1000;

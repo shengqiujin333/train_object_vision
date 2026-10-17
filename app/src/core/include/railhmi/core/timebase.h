@@ -20,6 +20,11 @@ public:
     // 单调微秒 -> UTC 毫秒（需已校准；未校准时返回 mono_us/1000 的退化值）。
     long long to_wall_ms(long long mono_us) const;
 
+    // 未校准时返回 false 且不写 *wall_ms：调用方据此**禁止写入 UTC 业务事件**（不合规不静默）。
+    bool try_to_wall_ms(long long mono_us, long long* wall_ms) const;
+    // 是否允许写入 UTC 业务事件（等价于已校准）。
+    bool can_write_utc() const { return calibrated_; }
+
     // UTC 毫秒 -> 单调微秒。
     long long to_mono_us(long long wall_ms) const;
 

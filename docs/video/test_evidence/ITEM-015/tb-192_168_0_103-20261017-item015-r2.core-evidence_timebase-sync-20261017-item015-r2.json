@@ -1,0 +1,8 @@
+{
+  "threshold_ms": 300,
+  "sync_real": {"in_sync": true, "max_deviation_ms": 10},
+  "sync_skewed": {"in_sync": false, "max_deviation_ms": 800},
+  "missing_clock": "MISSING_CLOCK",
+  "seek": {"gen1": 1, "gen2": 2, "stale_discarded": true, "reached": true},
+  "acceptance": true
+}

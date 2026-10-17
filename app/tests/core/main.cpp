@@ -28,6 +28,7 @@ void run_recording_source_tests();
 void run_clip_request_tests();
 void run_recording_provider_tests();
 void run_recovery_policy_tests();
+void run_replay_sync_tests();
 void run_alarm_center_tests();
 void run_clip_tests();
 void run_replay_tests();
@@ -67,6 +68,7 @@ int main(int argc, char** argv) {
     run_clip_request_tests();
     run_recording_provider_tests();
     run_recovery_policy_tests();
+    run_replay_sync_tests();
     run_alarm_center_tests();
     run_clip_tests();
     run_replay_tests();
