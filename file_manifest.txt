@@ -162,7 +162,7 @@ app/third_party/sqlite/sqlite3_min.h | active | 最小 SQLite C API 声明（无
 app/tools/board_build.py | active | 板端构建/测试运行器（TestRun：core 单测 + tokens selftest + ui-scan（硬编码+各接线+打包核对）+ sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针；上传 app/ + 权限矩阵 + packaging/）；ui-scan 增 check_qml_qt_validity（QML_VALID_EXIT）
 app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
 app/tools/board_qmllint.py | active | 发布包板端 QML 静态检查（qmllint 逐文件；n008 证据，5.15 不覆盖大写属性名）
-app/tools/board_release_build.py | active | 发布包目标构建/打包器（授权内补装 Qt 开发依赖→板端 Release 构建→冒烟→tar.gz+sha256；含只作用于目标 /tmp 副本的诊断开关；n008）；增 --no-bundle（只构建+冒烟，不产出发布包）
+app/tools/board_release_build.py | active | 发布包目标构建/打包器（授权内补装 Qt 开发依赖→板端 Release 构建→冒烟→tar.gz+sha256；含只作用于目标 /tmp 副本的诊断开关；n008）；增 --no-bundle（只构建+冒烟，不产出发布包）；修复 stage 组装 format 占位符计数（打包 tar.gz 首次实跑）
 app/tools/board_release_probe.py | active | 发布包板端只读资源/支持范围探针（OS/Qt/GStreamer/librga/rknn/sqlite/显示/systemd/apt 可达性；ITEM n008）
 app/tools/board_render_spike.py | active | ITEM-002 板端渲染 spike 运行器（上传/构建 QML spike、无 Qt 核心测量编译运行、gl 构造探测、取回日志/JSON、判据选择；全超时 + known_hosts）
 app/tools/check_ai_debug_wiring.py | active | AI 调试页/司机隔离静态核对（ITEM-021：叠加层四开关默认关/调试令牌 debug_box·debug_roi/距离与延迟字段/司机守卫/无硬编码）
@@ -207,16 +207,20 @@ docs/hmi/mockups/p3_replay.svg | active | P3 历史录像与回放页面示意
 docs/hmi/mockups/p4_all_cameras.svg | active | P4 全摄像头页面示意
 docs/hmi/mockups/p5_ai_debug.svg | active | P5 AI 调试页面示意
 docs/hmi/mockups/p6_maintenance.svg | active | P6 设备维护页面示意
-docs/hmi/release/RELEASE-PACKAGE.md | active | DesktopReleasePackage 构建资源与支持范围清单 + 发布判定 WORK_FAILED 与 B-01/B-02/B-03 阻塞缺陷/修复方向（n008 desktop_release）
+docs/hmi/release/RELEASE-PACKAGE.md | active | DesktopReleasePackage 构建资源与支持范围清单 + 发布判定 WORK_FAILED 与 B-01/B-02/B-03 阻塞缺陷/修复方向（n008 desktop_release）；RELEASE_READY（repair_n008 delivery：impl a92d008 + 软件验证/UI 评审 v2 双 PASS；含发布包 tar.gz + 支持范围/操作说明）
 docs/hmi/release/board-release-probe-192_168_0_103-20261017-release-r1.json | active | 板端资源探针原始 JSON（命令/退出码/输出）
 docs/hmi/release/board-release-probe-192_168_0_103-20261017-release-r1.md | active | 板端构建资源/支持范围探针（Markdown；20 项事实）
 docs/hmi/release/qmllint-192_168_0_103-20261017-release-r1.json | active | 板端 qmllint 运行 transcript
 docs/hmi/release/qmllint-192_168_0_103-20261017-release-r1.log | active | 板端 qmllint 逐文件输出（0 发现：证明 5.15 qmllint 不覆盖 B-03）
+docs/hmi/release/railhmi-0.1.0-rk3588-aarch64.tar.gz | active | 桌面发布包（真实程序内容：bin/railhmi + app 源码 + config + packaging + VERSION + RELEASE-INFO；665377 B）
+docs/hmi/release/railhmi-0.1.0-rk3588-aarch64.tar.gz.sha256 | active | 发布包校验和（sha256 637d82c0…a343f01d）
 docs/hmi/release/release-build-192_168_0_103-20261017-release-diag.json | active | 诊断轮（口径修正前）：仅 emit 改名后构建转成功
 docs/hmi/release/release-build-192_168_0_103-20261017-release-diag2.json | active | 诊断轮：emit 改名→Release 构建 OK + railhmi 二进制(size/sha256/ELF) + 冒烟暴露 B-02（DeniedView 未导入）
 docs/hmi/release/release-build-192_168_0_103-20261017-release-diag3.json | active | 诊断轮：emit 改名 + import pages → 冒烟暴露 B-03（QML 大写属性名 Theme 非法）
 docs/hmi/release/release-build-192_168_0_103-20261017-release-r1.json | active | 目标发布构建首轮：B-01（core emit 与 Qt 关键字冲突）编译失败 + Qt 开发依赖补装记录
+docs/hmi/release/release-build-192_168_0_103-20261017-release-r2.json | active | 发布轮目标 Qt Release 构建 + offscreen 冒烟 + 打包 transcript（build_ok / smoke_exit=124 / bundle sha256）
 docs/hmi/release/release-build-192_168_0_103-20261017-repair-r1.json | active | 修复轮目标 Qt Release 构建 + offscreen 装载冒烟 transcript（构建成功、smoke_exit=124、无 QML 错误）
+docs/hmi/release/release-smoke-20261017-release-r2.log | active | 发布轮 offscreen 冒烟日志（6 cameras / render path cpu / 无 QML 错误）
 docs/hmi/release/smoke-20261017-repair-r1.log | active | 修复轮 offscreen 冒烟日志（railhmi 0.1.0 / 6 cameras / render path cpu / 无 QML 错误）
 docs/hmi/render_path_spike.md | active | 渲染路径选型 spike 程序与判据（ITEM-002）：路径定义/判据/运行；状态=板端实测选定 cpu，gl 不可用（Qt5Quick/qmlglsink 缺失）
 docs/hmi/test_evidence/ENV-B-dependency/VERIFY-ITEM-001.md | active | ITEM-001 交付物 TestEvidence（ITER2 重写，TEST_PASS：commit 06b6f9f 板端实测证据独立复现一致、判据逐条满足；偏差 R-1..R-7 记录在案）

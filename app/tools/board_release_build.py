@@ -267,7 +267,7 @@ def main() -> int:
                 "cp %s/app/config/*.yaml %s/stage/config/ && " \
                 "cp -r %s/packaging/. %s/stage/packaging/ && " \
                 "(cd %s && tar czf %s/stage/src/railhmi-src.tar.gz --exclude=build-target --exclude=build-preview app) && " \
-                "cp %s/packaging/VERSION %s/stage/VERSION" % (rd, rd, rd, bin_rel, rd, rd, rd, rd, rd, rd, rd, rd)
+                "cp %s/packaging/VERSION %s/stage/VERSION" % (rd, rd, rd, bin_rel, rd, rd, rd, rd, rd, rd, rd, rd, rd)
         run(stage, args.command_timeout)
         info = ("(cd %s/stage && { echo 'railhmi target release'; echo \"build_stamp=%s\"; "
                 "uname -a; gcc --version | head -1; cmake --version | head -1; "
