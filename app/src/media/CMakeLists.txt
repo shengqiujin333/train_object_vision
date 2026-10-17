@@ -30,6 +30,7 @@ add_library(railhmi_media STATIC
     src/recording_tap.cpp
     src/clip_writer.cpp
     src/media_provider.cpp
+    src/recovery_controller.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -137,5 +138,14 @@ target_include_directories(railhmi-media-provider PRIVATE ${GST_INCLUDE_DIRS})
 target_compile_options(railhmi-media-provider PRIVATE ${GST_CFLAGS_OTHER})
 target_link_libraries(railhmi-media-provider PRIVATE railhmi_media)
 set_target_properties(railhmi-media-provider PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 异常恢复控制器探针（视频 ITEM-014）
+add_executable(railhmi-recovery tools/recovery_probe.cpp)
+target_include_directories(railhmi-recovery PRIVATE ${GST_INCLUDE_DIRS})
+target_compile_options(railhmi-recovery PRIVATE ${GST_CFLAGS_OTHER})
+target_link_libraries(railhmi-recovery PRIVATE railhmi_media)
+set_target_properties(railhmi-recovery PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

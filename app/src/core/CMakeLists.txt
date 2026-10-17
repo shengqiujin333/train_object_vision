@@ -28,6 +28,7 @@ add_library(railhmi_core STATIC
     src/permissions.cpp
     src/health.cpp
     src/recovery.cpp
+    src/recovery_policy.cpp
     src/fault_catalog.cpp
 )
 target_include_directories(railhmi_core PUBLIC
