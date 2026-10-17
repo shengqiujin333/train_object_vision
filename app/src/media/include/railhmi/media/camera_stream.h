@@ -57,6 +57,8 @@ struct StreamStats {
     unsigned long long last_seq = 0;
     long long capture_wall_ms = -1;   // 已校准 UTC；-1=不可用
     long long pts_ns = -1;            // 相机 PTS；-1=无/无效
+    std::string quality_flags;        // 最近帧质量标志 describe()
+    long long bus_state_changes = 0;  // GstBus STATE_CHANGED 计数
 };
 
 // 单路取流：start() 建管线进入 PLAYING；pump() 推进（拉帧/驱动状态机）；stop() 收尾。
@@ -74,10 +76,24 @@ public:
     // 模拟断流（FI-01）：停发新帧并触发一次源错误，交由六态机进入 FROZEN/RECONNECTING/升级。
     void simulate_cut();
 
+    // 模拟冻结（FI-02）：暂停管线停发新帧且不报源错误，交由 tick 判定 FROZEN。
+    void simulate_freeze();
+
+    // 解除冻结：恢复管线 PLAYING；同一会话内出帧后应触发 Recovered 且计数清零。
+    void simulate_resume();
+
     // 推进一次：有限等待拉帧、处理 bus 错误、驱动时间相关状态转换。返回本次是否收到帧。
     bool pump(int timeout_ms = 200);
 
     StreamStats stats() const;
+
+    // 降级/状态事件（由六态机累积）；worker 每轮 drain 并统计。
+    std::vector<railhmi::core::StreamEvent> drain_events();
+
+    // 渲染前判定：非 LIVE 且没有新鲜帧、或租约不属于当前 generation 时不得当实时。
+    bool presentable_now() const;
+    bool lease_presentable(const FrameLease& lease) const;
+    long long bus_state_changes() const;
 
     // 最近一帧的身份+时间（视频 ITEM-003）；未出帧时 session/generation 已就绪、seq=0。
     railhmi::core::FrameMeta last_frame_meta() const;

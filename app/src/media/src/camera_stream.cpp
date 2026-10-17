@@ -8,6 +8,7 @@
 #include <cmath>
 #include <memory>
 #include <sstream>
+#include <thread>
 
 namespace railhmi {
 namespace media {
@@ -87,7 +88,10 @@ struct CameraStream::Impl {
     unsigned long long frames_source = 0;
     long long last_frame_ms = 0;
     bool cut = false;
+    bool frozen = false;
     bool started = false;
+    long long bus_state_changes = 0;
+    railhmi::core::QualityFlags last_quality;
     std::string last_error;
     std::string redact_src;   // 用于错误日志脱敏的凭据（仅内存）
     std::unique_ptr<railhmi::core::FrameSequencer> sequencer;
@@ -142,6 +146,14 @@ bool CameraStream::start(std::string* err) {
     if (impl_->started) return true;
     gst_init(nullptr, nullptr);
     impl_->machine = new railhmi::core::StreamStateMachine(impl_->cfg.camera_id, impl_->cfg.thresholds);
+
+    // 新会话：清除上次断流/冻结标志与统计，避免重建后不再拉帧或忙等。
+    impl_->cut = false;
+    impl_->frozen = false;
+    impl_->last_error.clear();
+    impl_->frame_times.clear();
+    impl_->last_frame_ms = 0;
+    impl_->last_quality = railhmi::core::QualityFlags{};
 
     // 帧身份：session 跨相机共享；每次真正重建（本次 start）generation+1、seq 归零。
     if (!impl_->sequencer) {
@@ -201,6 +213,20 @@ void CameraStream::simulate_cut() {
     if (impl_->pipeline) gst_element_set_state(impl_->pipeline, GST_STATE_NULL);
 }
 
+void CameraStream::simulate_freeze() {
+    if (!impl_) return;
+    impl_->frozen = true;
+    impl_->last_error = "simulated stream freeze (FI-02)";
+    if (impl_->pipeline) gst_element_set_state(impl_->pipeline, GST_STATE_PAUSED);
+}
+
+void CameraStream::simulate_resume() {
+    if (!impl_) return;
+    impl_->frozen = false;
+    impl_->last_error.clear();
+    if (impl_->pipeline) gst_element_set_state(impl_->pipeline, GST_STATE_PLAYING);
+}
+
 bool CameraStream::pump(int timeout_ms) {
     if (!impl_ || !impl_->started) return false;
     const long long now = now_ms();
@@ -209,8 +235,12 @@ bool CameraStream::pump(int timeout_ms) {
     if (impl_->bus) {
         GstMessage* msg = nullptr;
         while ((msg = gst_bus_pop_filtered(
-                    impl_->bus, static_cast<GstMessageType>(GST_MESSAGE_ERROR | GST_MESSAGE_EOS))) != nullptr) {
-            if (GST_MESSAGE_TYPE(msg) == GST_MESSAGE_ERROR) {
+                    impl_->bus, static_cast<GstMessageType>(GST_MESSAGE_ERROR | GST_MESSAGE_EOS |
+                                                           GST_MESSAGE_STATE_CHANGED))) != nullptr) {
+            const GstMessageType mt = GST_MESSAGE_TYPE(msg);
+            if (mt == GST_MESSAGE_STATE_CHANGED) {
+                ++impl_->bus_state_changes;
+            } else if (mt == GST_MESSAGE_ERROR) {
                 GError* e = nullptr;
                 gchar* dbg = nullptr;
                 gst_message_parse_error(msg, &e, &dbg);
@@ -231,7 +261,7 @@ bool CameraStream::pump(int timeout_ms) {
         }
     }
 
-    if (!impl_->cut && impl_->frame_sink) {
+    if (!impl_->cut && !impl_->frozen && impl_->frame_sink) {
         GstSample* s = gst_app_sink_try_pull_sample(GST_APP_SINK(impl_->frame_sink),
                                                     static_cast<GstClockTime>(timeout_ms) * GST_MSECOND);
         if (s) {
@@ -274,11 +304,16 @@ bool CameraStream::pump(int timeout_ms) {
                 }
             }
             if (impl_->machine) impl_->machine->on_frame(now, q);
+            impl_->last_quality = q;
             impl_->last_frame_ms = now;
             impl_->frame_times.push_back(now);
             got = true;
             gst_sample_unref(s);
         }
+    } else if (impl_->cut || impl_->frozen) {
+        // 断流/冻结时不做 pull，按有限时长休眠避免 worker 忙等（保持状态机 tick 节拍）。
+        const int wait_ms = timeout_ms > 0 ? timeout_ms : 200;
+        std::this_thread::sleep_for(std::chrono::milliseconds(wait_ms));
     }
 
     if (impl_->machine) impl_->machine->tick(now);
@@ -303,7 +338,35 @@ StreamStats CameraStream::stats() const {
     st.last_seq = impl_->last_meta.id.seq;
     st.capture_wall_ms = impl_->last_meta.capture_wall_ms;
     st.pts_ns = impl_->last_meta.pts_ns;
+    st.quality_flags = impl_->last_quality.describe();
+    st.bus_state_changes = impl_->bus_state_changes;
     return st;
+}
+
+std::vector<railhmi::core::StreamEvent> CameraStream::drain_events() {
+    if (!impl_ || !impl_->machine) return {};
+    return impl_->machine->drain_events();
+}
+
+bool CameraStream::presentable_now() const {
+    if (!impl_ || !impl_->machine) return false;
+    const long long now = now_ms();
+    if (!impl_->machine->may_present_as_live(now)) return false;
+    if (!impl_->store) return false;
+    FrameLease lease = impl_->store->latest();
+    if (!lease.valid()) return false;
+    return lease.descriptor().generation == generation();
+}
+
+bool CameraStream::lease_presentable(const FrameLease& lease) const {
+    if (!impl_ || !impl_->machine) return false;
+    if (!lease.valid()) return false;
+    if (lease.descriptor().generation != generation()) return false;
+    return impl_->machine->may_present_as_live(now_ms());
+}
+
+long long CameraStream::bus_state_changes() const {
+    return impl_ ? impl_->bus_state_changes : 0;
 }
 
 railhmi::core::FrameMeta CameraStream::last_frame_meta() const {

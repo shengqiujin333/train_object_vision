@@ -1,0 +1,27 @@
+type=injection source=test camera=CAM-01 duration_s=6 freeze_after_s=-1 cut_after_s=1 restart_after_s=-1 resume_after_s=-1 pull_ms=200 session_id=s1a148c1c422-4cf688-0
+t=0 type=worker_state state=live presentable=true fps=2 reconnect_count=0 generation=1 seq=3 quality=- last_frame_ms=350917363 wall_ms=1792222020751 bus_state_changes=27
+t=300 type=worker_state state=live presentable=true fps=5 reconnect_count=0 generation=1 seq=10 quality=- last_frame_ms=350917642 wall_ms=1792222021031 bus_state_changes=27
+t=500 type=worker_state state=live presentable=true fps=8 reconnect_count=0 generation=1 seq=15 quality=- last_frame_ms=350917842 wall_ms=1792222021231 bus_state_changes=27
+t=800 type=worker_state state=live presentable=true fps=12 reconnect_count=0 generation=1 seq=23 quality=- last_frame_ms=350918163 wall_ms=1792222021551 bus_state_changes=27
+t=1000 type=injection cut=FI-01
+t=1000 type=worker_state state=live presentable=true fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27
+t=1300 type=worker_state state=reconnecting presentable=false fps=13 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=1501 type=worker_state state=connecting presentable=false fps=13 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=1801 type=worker_state state=connecting presentable=false fps=13 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=2001 type=worker_state state=reconnecting presentable=false fps=13 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=2301 type=worker_state state=connecting presentable=false fps=12 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=2501 type=worker_state state=connecting presentable=false fps=10 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=2801 type=worker_state state=offline presentable=false fps=5 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=3002 type=worker_state state=offline presentable=false fps=2 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=3302 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=3502 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=3802 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=4002 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=4303 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=4503 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=4803 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=5004 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=5304 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=5504 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=5804 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=350918282 wall_ms=1792222021671 bus_state_changes=27 error=simulated stream cut (FI-01)
+type=summary final_state=offline iterations=50 events_total=7 freezes=0 reconnect_attempts=3 escalations=1 recoveries=0 bus_state_changes=27 state_transitions=6 nonlive_presentable=0 final_generation=1

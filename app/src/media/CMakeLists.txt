@@ -22,6 +22,7 @@ add_library(railhmi_media STATIC
     src/video_capability.cpp
     src/frame_lease.cpp
     src/rga_convert.cpp
+    src/camera_worker.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -74,5 +75,12 @@ set_target_properties(railhmi-frame-lease PROPERTIES
 add_executable(railhmi-rga-convert tools/rga_convert_probe.cpp)
 target_link_libraries(railhmi-rga-convert PRIVATE railhmi_media)
 set_target_properties(railhmi-rga-convert PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 每路取流 worker 与状态机探针（视频 ITEM-006）
+add_executable(railhmi-camera-worker tools/camera_worker_probe.cpp)
+target_link_libraries(railhmi-camera-worker PRIVATE railhmi_media)
+set_target_properties(railhmi-camera-worker PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
