@@ -1,0 +1,104 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [EXA-run] exit=0 =====
+rga_api version 1.10.1_[0]
+type=measure source=file {"source_class":"file","status":"recorded","reason":"","label":"filesrc/tsdemux(/tmp/vexa_measure/MEASURE_measure-clip.ts)","window_s":2.000000,"throughput":{"source_fps":37.471330,"display_fps":37.471330,"cpu_pct":38.470566,"rss_kb":87180,"npu_pct":-1,"temp_c":38.846000,"npu_note":"unavailable:needs_privileged_rknpu_load"},"latency":{"arrival_decode":{"n":75,"min":39,"p50":26806,"p90":82693,"p99":92267,"max":92267,"mean":35949.186667},"decode_convert":{"n":75,"min":1973,"p50":2320,"p90":3938,"p99":14627,"max":14627,"mean":2876.360000},"convert_present":{"n":75,"min":263,"p50":397,"p90":674,"p99":2163,"max":2163,"mean":468.253333},"end_to_end":{"n":75,"min":2491,"p50":29336,"p90":86983,"p99":94763,"max":94763,"mean":39312.813333}},"sync":{"available":false,"in_sync":false,"max_deviation_ms":0},"storage":{"measured_bitrate_bps":3475340.964498,"clip_bytes":869500,"free_bytes":33086828544,"total_bytes":61127745536},"recovery":{"attempts":0,"last_recovery_ms":-1}}
+type=measure source=rtsp {"source_class":"rtsp","status":"to_be_executed","reason":"CREDENTIAL_MISSING","label":"front_camera_rtsp(registered)","window_s":0.000000,"throughput":{"source_fps":0.000000,"display_fps":0.000000,"cpu_pct":-1,"rss_kb":-1,"npu_pct":-1,"temp_c":-1,"npu_note":""},"latency":{"arrival_decode":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"decode_convert":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"convert_present":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"end_to_end":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1}},"sync":{"available":false,"in_sync":false,"max_deviation_ms":0},"storage":{"measured_bitrate_bps":-1,"clip_bytes":0,"free_bytes":-1,"total_bytes":-1},"recovery":{"attempts":0,"last_recovery_ms":-1}}
+type=measure source=simulation {"source_class":"simulation","status":"recorded","reason":"","label":"videotestsrc/x264enc(h264)","window_s":3.000000,"throughput":{"source_fps":24.983176,"display_fps":24.650067,"cpu_pct":84.609690,"rss_kb":58884,"npu_pct":-1,"temp_c":39.769000,"npu_note":"unavailable:needs_privileged_rknpu_load"},"latency":{"arrival_decode":{"n":74,"min":10,"p50":6182,"p90":12446,"p99":14392,"max":14392,"mean":7446.918919},"decode_convert":{"n":74,"min":2845,"p50":3290,"p90":4677,"p99":7114,"max":7114,"mean":3699.581081},"convert_present":{"n":74,"min":1044,"p50":1234,"p90":2048,"p99":2576,"max":2576,"mean":1427.810811},"end_to_end":{"n":74,"min":4261,"p50":10808,"p90":18787,"p99":19994,"max":19994,"mean":12601.729730}},"sync":{"available":true,"in_sync":true,"max_deviation_ms":7},"storage":{"measured_bitrate_bps":2317106.307198,"clip_bytes":869500,"free_bytes":33087700992,"total_bytes":61127745536},"recovery":{"attempts":1,"last_recovery_ms":663}}
+type=acceptance simulation_recorded=true file_recorded=true rtsp_to_be_executed=true three_source_classes=true latency_percentiles=true storage_measured=true recovery_measured=true sync_instrument=true result=PASS
+EXA_EXIT=0
+
+
+===== [EXA-fetch] exit=0 =====
+type=measure source=file {"source_class":"file","status":"recorded","reason":"","label":"filesrc/tsdemux(/tmp/vexa_measure/MEASURE_measure-clip.ts)","window_s":2.000000,"throughput":{"source_fps":37.471330,"display_fps":37.471330,"cpu_pct":38.470566,"rss_kb":87180,"npu_pct":-1,"temp_c":38.846000,"npu_note":"unavailable:needs_privileged_rknpu_load"},"latency":{"arrival_decode":{"n":75,"min":39,"p50":26806,"p90":82693,"p99":92267,"max":92267,"mean":35949.186667},"decode_convert":{"n":75,"min":1973,"p50":2320,"p90":3938,"p99":14627,"max":14627,"mean":2876.360000},"convert_present":{"n":75,"min":263,"p50":397,"p90":674,"p99":2163,"max":2163,"mean":468.253333},"end_to_end":{"n":75,"min":2491,"p50":29336,"p90":86983,"p99":94763,"max":94763,"mean":39312.813333}},"sync":{"available":false,"in_sync":false,"max_deviation_ms":0},"storage":{"measured_bitrate_bps":3475340.964498,"clip_bytes":869500,"free_bytes":33086828544,"total_bytes":61127745536},"recovery":{"attempts":0,"last_recovery_ms":-1}}
+type=measure source=rtsp {"source_class":"rtsp","status":"to_be_executed","reason":"CREDENTIAL_MISSING","label":"front_camera_rtsp(registered)","window_s":0.000000,"throughput":{"source_fps":0.000000,"display_fps":0.000000,"cpu_pct":-1,"rss_kb":-1,"npu_pct":-1,"temp_c":-1,"npu_note":""},"latency":{"arrival_decode":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"decode_convert":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"convert_present":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"end_to_end":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1}},"sync":{"available":false,"in_sync":false,"max_deviation_ms":0},"storage":{"measured_bitrate_bps":-1,"clip_bytes":0,"free_bytes":-1,"total_bytes":-1},"recovery":{"attempts":0,"last_recovery_ms":-1}}
+type=measure source=simulation {"source_class":"simulation","status":"recorded","reason":"","label":"videotestsrc/x264enc(h264)","window_s":3.000000,"throughput":{"source_fps":24.983176,"display_fps":24.650067,"cpu_pct":84.609690,"rss_kb":58884,"npu_pct":-1,"temp_c":39.769000,"npu_note":"unavailable:needs_privileged_rknpu_load"},"latency":{"arrival_decode":{"n":74,"min":10,"p50":6182,"p90":12446,"p99":14392,"max":14392,"mean":7446.918919},"decode_convert":{"n":74,"min":2845,"p50":3290,"p90":4677,"p99":7114,"max":7114,"mean":3699.581081},"convert_present":{"n":74,"min":1044,"p50":1234,"p90":2048,"p99":2576,"max":2576,"mean":1427.810811},"end_to_end":{"n":74,"min":4261,"p50":10808,"p90":18787,"p99":19994,"max":19994,"mean":12601.729730}},"sync":{"available":true,"in_sync":true,"max_deviation_ms":7},"storage":{"measured_bitrate_bps":2317106.307198,"clip_bytes":869500,"free_bytes":33087700992,"total_bytes":61127745536},"recovery":{"attempts":1,"last_recovery_ms":663}}
+type=acceptance simulation_recorded=true file_recorded=true rtsp_to_be_executed=true three_source_classes=true latency_percentiles=true storage_measured=true recovery_measured=true sync_instrument=true result=PASS
+---JSON---
+{"schema":"railhmi.measure.v1","records":[{"source_class":"simulation","status":"recorded","reason":"","label":"videotestsrc/x264enc(h264)","window_s":3.000000,"throughput":{"source_fps":24.983176,"display_fps":24.650067,"cpu_pct":84.609690,"rss_kb":58884,"npu_pct":-1,"temp_c":39.769000,"npu_note":"unavailable:needs_privileged_rknpu_load"},"latency":{"arrival_decode":{"n":74,"min":10,"p50":6182,"p90":12446,"p99":14392,"max":14392,"mean":7446.918919},"decode_convert":{"n":74,"min":2845,"p50":3290,"p90":4677,"p99":7114,"max":7114,"mean":3699.581081},"convert_present":{"n":74,"min":1044,"p50":1234,"p90":2048,"p99":2576,"max":2576,"mean":1427.810811},"end_to_end":{"n":74,"min":4261,"p50":10808,"p90":18787,"p99":19994,"max":19994,"mean":12601.729730}},"sync":{"available":true,"in_sync":true,"max_deviation_ms":7},"storage":{"measured_bitrate_bps":2317106.307198,"clip_bytes":869500,"free_bytes":33087700992,"total_bytes":61127745536},"recovery":{"attempts":1,"last_recovery_ms":663}},{"source_class":"file","status":"recorded","reason":"","label":"filesrc/tsdemux(/tmp/vexa_measure/MEASURE_measure-clip.ts)","window_s":2.000000,"throughput":{"source_fps":37.471330,"display_fps":37.471330,"cpu_pct":38.470566,"rss_kb":87180,"npu_pct":-1,"temp_c":38.846000,"npu_note":"unavailable:needs_privileged_rknpu_load"},"latency":{"arrival_decode":{"n":75,"min":39,"p50":26806,"p90":82693,"p99":92267,"max":92267,"mean":35949.186667},"decode_convert":{"n":75,"min":1973,"p50":2320,"p90":3938,"p99":14627,"max":14627,"mean":2876.360000},"convert_present":{"n":75,"min":263,"p50":397,"p90":674,"p99":2163,"max":2163,"mean":468.253333},"end_to_end":{"n":75,"min":2491,"p50":29336,"p90":86983,"p99":94763,"max":94763,"mean":39312.813333}},"sync":{"available":false,"in_sync":false,"max_deviation_ms":0},"storage":{"measured_bitrate_bps":3475340.964498,"clip_bytes":869500,"free_bytes":33086828544,"total_bytes":61127745536},"recovery":{"attempts":0,"last_recovery_ms":-1}},{"source_class":"rtsp","status":"to_be_executed","reason":"CREDENTIAL_MISSING","label":"front_camera_rtsp(registered)","window_s":0.000000,"throughput":{"source_fps":0.000000,"display_fps":0.000000,"cpu_pct":-1,"rss_kb":-1,"npu_pct":-1,"temp_c":-1,"npu_note":""},"latency":{"arrival_decode":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"decode_convert":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"convert_present":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"end_to_end":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1}},"sync":{"available":false,"in_sync":false,"max_deviation_ms":0},"storage":{"measured_bitrate_bps":-1,"clip_bytes":0,"free_bytes":-1,"total_bytes":-1},"recovery":{"attempts":0,"last_recovery_ms":-1}}]}
+
+
+===== [EXD-run2] exit=0 =====
+rga_api version 1.10.1_[0]
+type=measure source=file {"source_class":"file","status":"recorded","reason":"","label":"filesrc/tsdemux(/tmp/vexd_measure/MEASURE_measure-clip.ts)","window_s":2.000000,"throughput":{"source_fps":37.487315,"display_fps":37.487315,"cpu_pct":40.986131,"rss_kb":84844,"npu_pct":-1,"temp_c":38.846000,"npu_note":"unavailable:needs_privileged_rknpu_load"},"latency":{"arrival_decode":{"n":75,"min":46,"p50":81953,"p90":103506,"p99":110810,"max":110810,"mean":76116.973333},"decode_convert":{"n":75,"min":1902,"p50":2342,"p90":3845,"p99":8469,"max":8469,"mean":2715.706667},"convert_present":{"n":75,"min":272,"p50":395,"p90":659,"p99":1416,"max":1416,"mean":459.026667},"end_to_end":{"n":75,"min":5776,"p50":85708,"p90":106652,"p99":113099,"max":113099,"mean":79309.733333}},"sync":{"available":false,"in_sync":false,"max_deviation_ms":0},"storage":{"measured_bitrate_bps":3449760.652742,"clip_bytes":862732,"free_bytes":33085964288,"total_bytes":61127745536},"recovery":{"attempts":0,"last_recovery_ms":-1}}
+type=measure source=rtsp {"source_class":"rtsp","status":"to_be_executed","reason":"CREDENTIAL_MISSING","label":"front_camera_rtsp(registered)","window_s":0.000000,"throughput":{"source_fps":0.000000,"display_fps":0.000000,"cpu_pct":-1,"rss_kb":-1,"npu_pct":-1,"temp_c":-1,"npu_note":""},"latency":{"arrival_decode":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"decode_convert":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"convert_present":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1},"end_to_end":{"n":0,"min":-1,"p50":-1,"p90":-1,"p99":-1,"max":-1,"mean":-1}},"sync":{"available":false,"in_sync":false,"max_deviation_ms":0},"storage":{"measured_bitrate_bps":-1,"clip_bytes":0,"free_bytes":-1,"total_bytes":-1},"recovery":{"attempts":0,"last_recovery_ms":-1}}
+type=measure source=simulation {"source_class":"simulation","status":"recorded","reason":"","label":"videotestsrc/x264enc(h264)","window_s":3.000000,"throughput":{"source_fps":24.970484,"display_fps":24.970484,"cpu_pct":87.230225,"rss_kb":58912,"npu_pct":-1,"temp_c":39.769000,"npu_note":"unavailable:needs_privileged_rknpu_load"},"latency":{"arrival_decode":{"n":75,"min":11,"p50":12332,"p90":12759,"p99":14500,"max":14500,"mean":9162.266667},"decode_convert":{"n":75,"min":2780,"p50":3393,"p90":4666,"p99":5639,"max":5639,"mean":3645.133333},"convert_present":{"n":75,"min":1063,"p50":1353,"p90":2083,"p99":2706,"max":2706,"mean":1550.106667},"end_to_end":{"n":75,"min":4284,"p50":16692,"p90":18901,"p99":20878,"max":20878,"mean":14385.706667}},"sync":{"available":true,"in_sync":true,"max_deviation_ms":6},"storage":{"measured_bitrate_bps":2297902.482357,"clip_bytes":862732,"free_bytes":33086828544,"total_bytes":61127745536},"recovery":{"attempts":1,"last_recovery_ms":643}}
+type=acceptance simulation_recorded=true file_recorded=true rtsp_to_be_executed=true three_source_classes=true latency_percentiles=true storage_measured=true recovery_measured=true sync_instrument=true result=PASS
+EXD_EXIT=0
+
+
+===== [EXB-unknown] exit=0 =====
+EXB_EXIT=2
+unknown arg: --bogus-flag
+
+
+===== [EXB-help] exit=0 =====
+usage: railhmi-measure [--config dir] [--duration s] [--outdir dir] [--out log] [--json json] [--selftest]
+EXB_EXIT=0
+
+
+===== [tree-check] exit=0 =====
+/tmp/railhmi_measure/build-media/tools/railhmi-measure
+TREE_OK
+
+
+===== [EXC-upload] exit=0 =====
+-rw-rw-r-- 1 admin admin 11243 Oct 18 01:26 /tmp/railhmi_measure/vext17.cpp
+
+
+===== [EXC-build] exit=0 =====
+VEXT_BUILD_OK
+
+
+===== [EXC-run] exit=0 =====
+v17 PASS h01_odd7_minmax
+v17 PASS h02_odd7_p50_middle
+v17 PASS h03_odd7_p90_ceil0.9*7=6.3->7
+v17 PASS h04_odd7_p99_max
+v17 PASS h05_bounds_minmax
+v17 PASS h06_negative_p_maps_min
+v17 PASS h07_over100_maps_max
+v17 PASS h08_odd7_p25_rank1.75->2
+v17 PASS h09_odd7_p60_rank4.2->5
+v17 PASS h10_even8_p50_lower_mid
+v17 PASS h11_even8_p90
+v17 PASS h12_even8_p12.5_rank1
+v17 PASS h13_even8_p87.5_rank7
+v17 PASS h14_even8_p1_p99
+v17 PASS h15_capped4
+v17 PASS h16_out_of_order_cap4_window_upper4
+v17 PASS h17_out_of_order_cap4_percentiles
+v17 PASS h18_monotonic_newest_kept
+v17 PASS h18b_monotonic_p50
+v17 PASS h18c_clear_resets_all
+v17 PASS h19_all_equal_constant
+v17 PASS h19b_dupe_cap_window
+v17 PASS h20_1e9_max_stored
+v17 PASS h21_mean_large_no_overflow
+v17 PASS h22_negative_sample_stored
+v17 PASS h22b_negative_p50_p90
+v17 PASS h23_mean_updates_add
+v17 PASS j01_recorded_fields
+v17 PASS j02_latency_nest
+v17 PASS j03_sync_true_block
+v17 PASS j04_storage_block
+v17 PASS j05_recovery_block
+v17 PASS j06_window_6dp
+v17 PASS j07_source_tokens
+v17 PASS j08_status_tokens
+v17 PASS j09_tbe_credential_reason
+v17 PASS j10_not_applicable_token
+v17 PASS j11_empty_archive_exact
+v17 PASS j12_two_records_order
+v17 PASS j13_three_records_count
+v17 SUMMARY fails=0
+VEXT_EXIT=0
+
+
+===== [cleanup-ext] exit=0 =====
+EXT_CLEANED
+
+
+===== [cleanup-tree] exit=0 =====
+BOARD_CLEAN_DONE
+

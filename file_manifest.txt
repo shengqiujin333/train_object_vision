@@ -2065,11 +2065,26 @@ docs/video/test_evidence/ITEM-016/diag-ext-192_168_0_103-20261017-item016-verify
 docs/video/test_evidence/ITEM-016/verify16-compare-v1.log | active | ITEM-016 91 项独立语义比对全 PASS 留痕
 docs/video/test_evidence/ITEM-016/verify16-run-driver-tail.log | active | ITEM-016 验证轮复跑驱动 stdout 摘要（build/core-tests/selftest/run-diag 全 exit=0）
 docs/video/test_evidence/ITEM-017/ITEM-017-ENV-A0-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-017 core 918/0 + selftest 5/5 + 三类源（simulation recorded fps24.99 e2e p50 10.9ms clip1668500 sync6ms recovery663ms；file recorded fps74.99；rtsp to_be_executed CREDENTIAL_MISSING）；acceptance PASS
+docs/video/test_evidence/ITEM-017/VERIFY-ITEM-017.md | active | TestEvidence：ITEM-017 验证轮 TEST_PASS（VERIFY-20261018-v1：交付入口独立复跑 918/0+selftest 5/5 + 8s fresh 三类源记录；EXA/EXD/EXB/EXC/EXE 31 checks 全 PASS 含 vext 40 判例与 MPEG-TS 字节面独立下载校验；语义预言机 r3+fresh 79 判例全 PASS；离线自检 23/23；O-1 夹具路径修正留痕）
+docs/video/test_evidence/ITEM-017/_selfcheck17_preflight.py | active | ITEM-017 验证侧离线自检（驱动 py_compile + r3 预言机预热 + vext 判例对账/花括号平衡 + stamp 一致性）
+docs/video/test_evidence/ITEM-017/_verify17_compare.py | active | ITEM-017 验证侧独立语义预言机（C1..C9 r3+fresh 双归档 79 判例，不采信 acceptance 行）
+docs/video/test_evidence/ITEM-017/_verify17_ext.py | active | ITEM-017 验证侧 EXT 驱动（EXA 独立 3s 参数轮+TS 字节面下载校验/EXD 同参稳定性/EXB CLI 负例/EXC vext 板端直编/EXE 泄漏扫描/板端清理）
+docs/video/test_evidence/ITEM-017/_verify17_run.py | active | ITEM-017 验证侧板端独立复跑驱动（交付 runner --keep-remote，stamp verify-v1，duration 8 独立窗口）
+docs/video/test_evidence/ITEM-017/_verify17_vext.cpp | active | ITEM-017 验证侧自有 C++ 夹具（40 check：最近秩分位奇偶逐点/乱序 cap 丢最小值语义/负样本/大值域 mean/JSON 全嵌套/三态 token 完整面/归档序；链接交付 librailhmi_core.a）
 docs/video/test_evidence/ITEM-017/measure-192_168_0_103-20261017-item017-r3.core-evidence_measure-20261017-item017-r3.json | active | ITEM-017 归档 JSON（railhmi.measure.v1 三类记录）
 docs/video/test_evidence/ITEM-017/measure-192_168_0_103-20261017-item017-r3.core-evidence_measure-20261017-item017-r3.log | active | ITEM-017 三类源测量记录 + acceptance 日志
 docs/video/test_evidence/ITEM-017/measure-192_168_0_103-20261017-item017-r3.core-evidence_measure_MEASURE_measure-clip.ts | active | ITEM-017 实测生成的真实 MPEG-TS 片段（1668500 B）
 docs/video/test_evidence/ITEM-017/measure-192_168_0_103-20261017-item017-r3.log | active | ITEM-017 板端执行人类可读 transcript（build-core/core-tests/build-media/selftest/run-measure）
 docs/video/test_evidence/ITEM-017/measure-192_168_0_103-20261017-item017-r3.transcript.json | active | ITEM-017 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-017/measure-192_168_0_103-20261018-item017-verify-v1.core-evidence_measure-20261018-item017-verify-v1.json | active | ITEM-017 验证轮 fresh 归档 JSON（railhmi.measure.v1 三类记录，8s 窗）
+docs/video/test_evidence/ITEM-017/measure-192_168_0_103-20261018-item017-verify-v1.core-evidence_measure-20261018-item017-verify-v1.log | active | ITEM-017 验证轮 fresh 三类源测量记录 + acceptance 日志
+docs/video/test_evidence/ITEM-017/measure-192_168_0_103-20261018-item017-verify-v1.core-evidence_measure_MEASURE_measure-clip.ts | active | ITEM-017 验证轮实测生成的真实 MPEG-TS 片段（2205428 B）
+docs/video/test_evidence/ITEM-017/measure-192_168_0_103-20261018-item017-verify-v1.log | active | ITEM-017 验证轮板端执行人类可读 transcript（build-core 918/0/selftest 5/5/run-measure，keep-remote）
+docs/video/test_evidence/ITEM-017/measure-192_168_0_103-20261018-item017-verify-v1.transcript.json | active | ITEM-017 验证轮板端执行结构化 transcript（指纹与实现轮一致）
+docs/video/test_evidence/ITEM-017/measure-ext-192_168_0_103-20261018-item017-verify-v1.checks.json | active | ITEM-017 EXT 结构化逐判例明细（31 checks 0 failed）
+docs/video/test_evidence/ITEM-017/measure-ext-192_168_0_103-20261018-item017-verify-v1.log | active | ITEM-017 EXT 全 transcript（EXA/B/C/D/E + vext 40 PASS 留痕 + 指纹）
+docs/video/test_evidence/ITEM-017/measure-ext-192_168_0_103-20261018-item017-verify-v1.transcript.json | active | ITEM-017 EXT 结构化 transcript（指纹/逐命令/退出码）
+docs/video/test_evidence/ITEM-017/verify17-compare-v1.log | active | ITEM-017 验证侧语义预言机 r3+fresh 双归档 79 判例全 PASS 留痕
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

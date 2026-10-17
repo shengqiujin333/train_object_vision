@@ -1,0 +1,161 @@
+{
+  "stamp": "20261018-item017-verify-v1",
+  "checks": [
+    {
+      "name": "EX-A run done",
+      "ok": true,
+      "detail": "n_recorded=true file_recorded=true rtsp_to_be_executed=true three_source_classes=true latency_percentiles=true storage_measured=true recovery_measured=true sync_instrument=true result=PASS\nEXA_EXIT=0\n"
+    },
+    {
+      "name": "EX-A three records parsed",
+      "ok": true,
+      "detail": "records=['file', 'rtsp', 'simulation']"
+    },
+    {
+      "name": "EX-A sim recorded",
+      "ok": true,
+      "detail": "recorded"
+    },
+    {
+      "name": "EX-A file recorded",
+      "ok": true,
+      "detail": "recorded"
+    },
+    {
+      "name": "EX-A rtsp to_be_executed+CREDS",
+      "ok": true,
+      "detail": "to_be_executed"
+    },
+    {
+      "name": "EX-A sim window_s matches injected",
+      "ok": true,
+      "detail": "3.0 vs 3.0"
+    },
+    {
+      "name": "EX-A sim source_fps band",
+      "ok": true,
+      "detail": "24.983176"
+    },
+    {
+      "name": "EX-A sim display_fps >0",
+      "ok": true,
+      "detail": "24.650067"
+    },
+    {
+      "name": "EX-A sim cpu in 0..100",
+      "ok": true,
+      "detail": "84.60969"
+    },
+    {
+      "name": "EX-A sim clip 188-granularity positive",
+      "ok": true,
+      "detail": "869500"
+    },
+    {
+      "name": "EX-A sim bitrate arithmetic",
+      "ok": true,
+      "detail": "2317106.307198 vs 2318666.6666666665"
+    },
+    {
+      "name": "EX-A sim sync available",
+      "ok": true,
+      "detail": "{'available': True, 'in_sync': True, 'max_deviation_ms': 7}"
+    },
+    {
+      "name": "EX-A sim dev < 300",
+      "ok": true,
+      "detail": "{'available': True, 'in_sync': True, 'max_deviation_ms': 7}"
+    },
+    {
+      "name": "EX-A sim recovery real",
+      "ok": true,
+      "detail": "{'attempts': 1, 'last_recovery_ms': 663}"
+    },
+    {
+      "name": "EX-A sim e2e samples",
+      "ok": true,
+      "detail": "{'n': 74, 'min': 4261, 'p50': 10808, 'p90': 18787, 'p99': 19994, 'max': 19994, 'mean': 12601.72973}"
+    },
+    {
+      "name": "EX-A sim e2e monotonic",
+      "ok": true,
+      "detail": "{'n': 74, 'min': 4261, 'p50': 10808, 'p90': 18787, 'p99': 19994, 'max': 19994, 'mean': 12601.72973}"
+    },
+    {
+      "name": "EX-A acceptance result=PASS",
+      "ok": true,
+      "detail": "{'simulation_recorded': 'true', 'file_recorded': 'true', 'rtsp_to_be_executed': 'true', 'three_source_classes': 'true', 'latency_percentiles': 'true', 'storage_measured': 'true', 'recovery_measured': 'true', 'sync_instrument': 'true', 'result': 'PASS'}"
+    },
+    {
+      "name": "EX-A clip real MPEG-TS sync",
+      "ok": true,
+      "detail": "segs=4625 total=4625 size=869500"
+    },
+    {
+      "name": "EX-A clip matches JSON clip_bytes",
+      "ok": true,
+      "detail": "869500 vs {'measured_bitrate_bps': 2317106.307198, 'clip_bytes': 869500, 'free_bytes': 33087700992, 'total_bytes': 61127745536}"
+    },
+    {
+      "name": "EX-D run2 done",
+      "ok": true,
+      "detail": "to_be_executed=true three_source_classes=true latency_percentiles=true storage_measured=true recovery_measured=true sync_instrument=true result=PASS\nEXD_EXIT=0\n"
+    },
+    {
+      "name": "EX-D acceptance keyset identical",
+      "ok": true,
+      "detail": "exa=['file_recorded', 'latency_percentiles', 'recovery_measured', 'result', 'rtsp_to_be_executed', 'simulation_recorded', 'storage_measured', 'sync_instrument', 'three_source_classes'] exd=['file_recorded', 'latency_percentiles', 'recovery_measured', 'result', 'rtsp_to_be_executed', 'simulation_reco"
+    },
+    {
+      "name": "EX-D result PASS both",
+      "ok": true,
+      "detail": "{'simulation_recorded': 'true', 'file_recorded': 'true', 'rtsp_to_be_executed': 'true', 'three_source_classes': 'true', 'latency_percentiles': 'true', 'storage_measured': 'true', 'recovery_measured': 'true', 'sync_instrument': 'true', 'result': 'PASS'}"
+    },
+    {
+      "name": "EX-D structural tokens stable",
+      "ok": true,
+      "detail": "[('file', 'recorded', ''), ('rtsp', 'to_be_executed', 'CREDENTIAL_MISSING'), ('simulation', 'recorded', '')] vs [('file', 'recorded', ''), ('rtsp', 'to_be_executed', 'CREDENTIAL_MISSING'), ('simulation', 'recorded', '')]"
+    },
+    {
+      "name": "EX-B unknown arg exit2",
+      "ok": true,
+      "detail": "EXB_EXIT=2\nunknown arg: --bogus-flag\n"
+    },
+    {
+      "name": "EX-B help exit0 + usage",
+      "ok": true,
+      "detail": "usage: railhmi-measure [--config dir] [--duration s] [--outdir dir] [--out log] [--json json] [--selftest]\nEXB_EXIT=0\n"
+    },
+    {
+      "name": "EX-C build ok",
+      "ok": true,
+      "detail": "VEXT_BUILD_OK\n"
+    },
+    {
+      "name": "EX-C vext all pass",
+      "ok": true,
+      "detail": "pass=40 fails=[]"
+    },
+    {
+      "name": "EX-C vext PASS line count == check() calls",
+      "ok": true,
+      "detail": "40 vs 40"
+    },
+    {
+      "name": "EX-E credential leak scan clean",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "EX-E secrets nondegenerate",
+      "ok": true,
+      "detail": "loaded=3"
+    },
+    {
+      "name": "cleanup tree done",
+      "ok": true,
+      "detail": "BOARD_CLEAN_DONE\n"
+    }
+  ],
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+}
