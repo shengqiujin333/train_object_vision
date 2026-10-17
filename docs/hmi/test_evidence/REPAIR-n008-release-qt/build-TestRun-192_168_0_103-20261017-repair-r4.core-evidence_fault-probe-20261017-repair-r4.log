@@ -1,0 +1,16 @@
+type=fault-catalog count=6
+fault id=FI-01 label=断流 prompt="画面占位：重连中（显示已重连次数与最近帧时间），旧帧不作为实时" recovery="等待自动重连（退避）或维护页手动重连；达阈值升级为设备报警"
+fault id=FI-02 label=画面冻结 prompt="画面冻结：叠加占位层，最近帧时间停止推进" recovery="确认摄像头/网络后重连；恢复出帧自动转在线"
+fault id=FI-03 label=AI 退出 prompt="状态区 AI 项转“AI 不可用”，相关检测类报警标注“AI 不可用”（不静默）" recovery="重启推理线程/服务；恢复后 AI 项转“运行”，前方 AI READY"
+fault id=FI-04 label=磁盘不足 prompt="存储项提前告警；录像写入标注容量不足" recovery="按保留策略淘汰普通片段（保护片段优先）；扩容或清理后恢复"
+fault id=FI-05 label=云台超差 prompt="云台卡显示目标值 vs 实际值 + 容差校验失败（超差），前方 AI 进入 NOT_READY" recovery="一键归位 / 重调前方预置位（二次确认）后复校；成功转 READY"
+fault id=FI-10 label=录像中断 prompt="时间轴出现录像缺口标记，事件标注“录像不完整/不可用”（不静默）" recovery="恢复录像进程/存储；缺口记录保留可检索"
+type=self-check count=7
+step id=SC-01 inject="railhmi-sim-inject --fi 01（断流）" prompt="该路画面占位 + 重连中 + 重连次数/最近帧时间" recovery="自动重连或手动重连；恢复出帧转在线"
+step id=SC-02 inject="railhmi-sim-inject --fi 02（冻结）" prompt="画面冻结占位，最近帧时间停更" recovery="重连恢复；出帧自动转在线"
+step id=SC-03 inject="railhmi-sim-inject --fi 03（AI 退出）" prompt="状态区 AI 项“AI 不可用”，关联报警标注" recovery="重启推理；恢复后 AI 运行/READY"
+step id=SC-04 inject="railhmi-sim-inject --fi 04（磁盘不足）" prompt="存储项告警 + 录像容量不足标注" recovery="保留淘汰/清理后恢复"
+step id=SC-05 inject="railhmi-sim-inject --fi 05（云台超差）" prompt="云台卡超差 + 前方 AI NOT_READY" recovery="归位/预置位二次确认后复校"
+step id=SC-10 inject="railhmi-sim-inject --fi 10（录像中断）" prompt="时间轴缺口标记 + 事件“录像不可用”" recovery="恢复录像进程/存储"
+step id=SC-BOOT inject="systemctl restart railhmi（或断电重启）" prompt="显示启动恢复进度（8 步），完成后进入可用状态" recovery="systemd Restart=always 自动拉起；失败查日志"
+type=acceptance fi_covered=true boot_step=true prompts_nonempty=true result=PASS

@@ -61,6 +61,22 @@ Rectangle {
         for (var i = 0; i < list.length; i += step) out.push(list[i])
         return out
     }
+    // F-01：三联回放画面标题（配置驱动：摄像头 id → 名称；未知回退 id，绝不产生 TypeError）
+    function chipName(camId) {
+        for (var i = 0; i < allCams.length; ++i)
+            if (allCams[i].id === camId && allCams[i].name) return allCams[i].name
+        return "" + camId
+    }
+    // F-02：关键帧缩略图由媒体层生成；缺失或非绝对/资源基址时返回空串，避免相对路径被
+    // 解析为 qrc:/qml/pages/... 而反复报 Image 打不开（缺失时显示占位方框）。
+    function thumbSource(t) {
+        if (!t || !t.thumb) return ""
+        var s = "" + t.thumb
+        if (s.length === 0) return ""
+        if (s.indexOf("image://") === 0 || s.indexOf("file://") === 0 || s.indexOf("qrc:/") === 0) return s
+        if (s.charAt(0) === "/") return "file://" + s
+        return ""
+    }
     function reload() {
         if (!replay) { tl = {}; detail = {}; return }
         var cam = replay.selectedCameraId()
@@ -305,7 +321,12 @@ Rectangle {
                         x: page.xOf(modelData.ts); width: 24; height: parent.height
                         color: Theme.color.surface_hover
                         border.color: Theme.color.border; border.width: 1
-                        Image { anchors.fill: parent; source: modelData.thumb; fillMode: Image.PreserveAspectFit }
+                        Image { anchors.fill: parent; source: page.thumbSource(modelData)
+                                visible: page.thumbSource(modelData).length > 0
+                                fillMode: Image.PreserveAspectFit }
+                        Text { anchors.centerIn: parent; visible: page.thumbSource(modelData).length === 0
+                               color: Theme.color.text_muted; font.pixelSize: Theme.typography.scale.caption.size
+                               text: "—" }
                         MouseArea { anchors.fill: parent; onClicked: page.seekTo(modelData.ts) }
                     }
                 }

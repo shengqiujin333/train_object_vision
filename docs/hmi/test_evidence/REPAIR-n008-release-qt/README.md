@@ -4,6 +4,7 @@
 - 修复范围来源: `n008_embedded_linux_engineer_desktop_release` 的 WORK_FAILED 报告
   `docs/hmi/release/RELEASE-PACKAGE.md`（§5 阻塞缺陷 B-01/B-02/B-03）
 - 修复轮 stamp: `20261017-repair-r1`（Qt 目标构建+冒烟）、`20261017-repair-r2`（板端全量 TestRun）
+- 修复轮 2 stamp: `20261017-repair-r3`（目标 Qt 构建 + Xvfb 六页导航截屏）、`20261017-repair-r4`（板端全量回归）
 - 保留既有工作项 ITEM-001..025 产物；本轮只修所属缺陷，不重做任务队列
 - 结果: **IMPLEMENTED**（目标 Qt 应用可构建、可装载运行）
 
@@ -119,3 +120,52 @@ python app/tools/board_build.py --mode TestRun --host 192.168.0.103 --user admin
   “目标 Qt `Release` 构建 + QML 装载冒烟”纳入验证范围（依赖已就绪；`qmllint` 5.15 不足，
   需真实装载冒烟，见 `docs/hmi/release/RELEASE-PACKAGE.md` §5 B-03）。
 - 两项 PASS 后由 `desktop_release` 重跑 `board_release_build.py`（不加 `--no-bundle`）产出正式发布包。
+
+---
+
+## 6. 修复轮 2（响应 UI 实现评审 `REVIEW-REPAIR-n008.md` F-01/F-02）
+
+UI 评审以 Xvfb + xdotool **实际导航六页**，判定 TEST_FAIL：B-01/B-02/B-03 已修复、六页均可渲染，
+但 P3 历史回放页存在两处运行期缺陷（前述 offscreen 冒烟只加载默认页，未导航到 P3，故未暴露）。
+
+### F-01（阻塞）`P3Replay.qml` 调用未定义的 `chipName`（运行期 TypeError，三联标题渲染失败）
+- 根因：`cbd0a93` 把标题改为 `page.chipName(modelData)`，但**从未定义该函数**（`git log -S` 确认）；
+  因 QML 从未运行而长期未暴露。
+- 修复（`app/src/ui/qml/pages/P3Replay.qml`）：新增**配置驱动**的 `function chipName(camId)`——
+  按 `railhmiCameras`（注册表 id→name）返回名称，未知回退 `camId`（不硬编码地址/名称）。
+
+### F-02（中）关键帧缩略图 `Image` 打不开且相对基址错误（48 次刷屏）
+- 根因：`Image { source: modelData.thumb }`，`thumb` 为媒体层相对引用，被解析为 `qrc:/qml/pages/thumb/...`。
+- 修复：新增 `function thumbSource(t)`——仅在绝对路径（转 `file://`）或 `image://`/`file://`/`qrc:/` 前缀时返回；
+  否则返回空串（`Image.visible=false`，显示占位方框 `—`），**媒体缺失时不再报错**；将来接入真实缩略图时基址正确。
+
+### 通用守卫（防同类回归）
+- `app/tools/check_qml_qt_validity.py` 新增：**根元素 id 上调用未定义成员**（`page.X(` 而 X 未在本文件以
+  `function/property/signal/id` 定义）即判失败——正是 F-01 类。反例 `NEG_F01_EXIT=1`。
+
+### 验证（目标实测，评审同方法）
+- **Xvfb 六页导航截屏**（`docs/hmi/ui_review/tools/board_ui_capture.py`，stamp `20261017-repair-r3`，
+  `--repo .`）：`WIN_UP=1`，六页截图均生成（52389/91773/86192/54564/96188/154033 B）；
+  **`app.log` 仅 4 行、0 条 QML 错误**（对照：修复前 P3 有 3×`TypeError chipName` + 48×`Image Cannot open`）。
+  证据：本目录 `20261017-repair-r3-{app.log,p1..p6 png}`、`ui-capture-20261017-repair-r3.{log,transcript.json}`。
+- **板端全量回归**（stamp `20261017-repair-r4`）：`TESTRUN_EXIT=0`，core **670 passed / 0 failed**；
+  `TOKENS_EXIT=0`；`[check_qml_qt_validity] PASS`（含新的未定义成员检查）`QML_VALID_EXIT=0`；其余接线扫描/探针 PASS。
+- **主机**：`check_qml_qt_validity` PASS；反例 `NEG_HEALTHY=0 / NEG_B01=1 / NEG_B03=1 / NEG_F01=1`。
+
+### 边界
+- 仍为 Xvfb 虚拟显示（未占用操作员 X 会话、未做人工视觉确认）；真实 6 路 RTSP/模型/回放缩略图属媒体/取流职责。
+- 启用 `railhmi.service`/断电重启自启属 ENV-E，未执行。
+
+### 复现
+```sh
+# 目标：构建 + 虚拟显示 + 六页导航截屏（约 1 分钟）
+python docs/hmi/ui_review/tools/board_ui_capture.py --host 192.168.0.103 --user admin \
+  --expected-fingerprint SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU \
+  --out-dir docs/hmi/test_evidence/REPAIR-n008-release-qt --stamp <tag> --repo .
+# 目标：全量回归
+python app/tools/board_build.py --mode TestRun --host 192.168.0.103 --user admin \
+  --stamp <tag> --outdir docs/hmi/test_evidence/REPAIR-n008-release-qt
+# 主机：静态守卫 + 反例
+python app/tools/check_qml_qt_validity.py --root app/src/ui --headers app/src/core/include app/src/platform/include
+python docs/hmi/test_evidence/REPAIR-n008-release-qt/negcheck_qml_qt_validity.py
+```

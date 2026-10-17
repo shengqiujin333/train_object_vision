@@ -22,6 +22,8 @@ import sys
 QT_KEYWORDS = ("emit", "signals", "slots", "foreach", "Q_SIGNALS", "Q_SLOTS", "Q_EMIT", "Q_FOREACH")
 PROP_RE = re.compile(r"(?:^|\s)(?:readonly\s+)?property\s+[A-Za-z_][\w.]*\s+([A-Za-z_]\w*)")
 ID_RE = re.compile(r"(?:^|\s)id\s*:\s*([A-Za-z_]\w*)")
+FUNC_RE = re.compile(r"\bfunction\s+([A-Za-z_]\w*)")
+SIGNAL_RE = re.compile(r"\bsignal\s+([A-Za-z_]\w*)")
 
 
 def strip_comments(text: str) -> str:
@@ -62,6 +64,18 @@ def main() -> int:
             name = m.group(1)
             if name[0].isupper():
                 fails.append("%s: id '%s' starts upper-case (QML forbids it)" % (rel, name))
+        # 根元素 id 上的成员调用必须在本文件内有定义（function/property/signal 或 id 本身）。
+        # 捕获 F-01 类：`page.chipName(...)` 而 chipName 未定义 -> 运行期 TypeError。
+        id_matches = list(ID_RE.finditer(src))
+        if id_matches:
+            root_id = id_matches[0].group(1)
+            defined = set(FUNC_RE.findall(src)) | set(PROP_RE.findall(src)) \
+                | set(SIGNAL_RE.findall(src)) | set(m.group(1) for m in id_matches)
+            for m in re.finditer(r"\b" + re.escape(root_id) + r"\.([A-Za-z_]\w*)\s*\(", src):
+                member = m.group(1)
+                if member not in defined:
+                    fails.append("%s: call %s.%s() but '%s' is not defined in this file "
+                                 "(runtime TypeError)" % (rel, root_id, member, member))
 
     hdr_count = 0
     for hroot in args.headers:

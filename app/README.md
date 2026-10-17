@@ -44,6 +44,8 @@
 > **B-02** `main.qml` 缺 `import "pages"`（`DeniedView is not a type`）→ 补导入；
 > **B-03** QML 属性名大写开头非法（令牌 `alarm.L1..L3` + 手写 `property var L/R/G/M`）→ 令牌键改 `level1..3`、生成器新增非法键拒绝、QML 别名改小写（设计取值/文案不变）。
 > 新增通用守卫 `tools/check_qml_qt_validity.py`（已接入 `board_build.py` 的 ui-scan）并配反例自检。目标 `bash build.sh Release` **构建成功**，`QT_QPA_PLATFORM=offscreen` 装载冒烟 **exit=124**（持续存活、无 QML 错误）；板端 TestRun **670/670** + 令牌/接线/合法性扫描全 PASS。证据：`docs/hmi/test_evidence/REPAIR-n008-release-qt/README.md`。
+>
+> **修复轮 2（响应 UI 评审 `REVIEW-REPAIR-n008.md` F-01/F-02）**：UI 评审以 Xvfb 实际导航六页，指出 P3 运行期缺陷 —— **F-01** `P3Replay.qml` 调用未定义的 `chipName`（TypeError，三联标题失败）→ 新增配置驱动 `chipName(camId)`（注册表 id→name，未知回退 id）；**F-02** 关键帧缩略图 `Image` 相对路径被解析为 `qrc:/qml/pages/...` 反复报错 → 新增 `thumbSource()`（仅接受绝对/资源基址，缺失时空串+占位方框）。`check_qml_qt_validity.py` 增“根 id 未定义成员调用”检查（反例 `NEG_F01=1`）。目标 Xvfb 六页导航截屏 `app.log` **0 条 QML 错误**（修复前 3×TypeError + 48×Image 错误）；板端 TestRun **670/670**。证据同目录 (§6)。
 
 > 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
 

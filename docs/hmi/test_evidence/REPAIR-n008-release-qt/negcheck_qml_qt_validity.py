@@ -59,6 +59,16 @@ def main() -> int:
         print("NEG_B03_EXIT=%d (expect 1)" % e)
         if e != 1:
             rc = 1
+    with tempfile.TemporaryDirectory() as tmp:
+        stage(tmp)
+        # F-01 类：根 id 上调用未定义成员
+        p = os.path.join(tmp, "src", "ui", "qml", "pages", "P3Replay.qml")
+        with open(p, "a", encoding="utf-8") as fh:
+            fh.write("\n// injected\nItem { Component.onCompleted: page.thisDoesNotExist(1) }\n")
+        e = run("src/ui", ["src/core/include", "src/platform/include"], tmp)
+        print("NEG_F01_EXIT=%d (expect 1)" % e)
+        if e != 1:
+            rc = 1
     print("NEGCHECK_RESULT=%s" % ("PASS" if rc == 0 else "FAIL"))
     return rc
 
