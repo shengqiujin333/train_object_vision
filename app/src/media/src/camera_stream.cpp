@@ -45,6 +45,8 @@ std::string build_pipeline(const CameraStreamConfig& c) {
     spec.test_height = c.test_height;
     spec.test_fps = c.test_fps;
     spec.path = RenderPath::Cpu;  // 单路探针固定 appsink（cpu）；显示路径由上层选择
+    spec.recording_tap = c.recording_tap;
+    spec.recording_tap_buffers = c.recording_tap_buffers;
     return build_pipeline_description(spec);
 }
 
@@ -103,6 +105,34 @@ struct CameraStream::Impl {
     long long bgr_converted = 0;
     long long bgr_failed = 0;
     std::string bgr_error;
+    GstElement* record_sink = nullptr;
+    std::unique_ptr<RecordingTap> recording;
+
+    void drain_recording() {
+        if (!record_sink || !recording) return;
+        // 每轮有界拉取（非阻塞）；压缩包小、按字节/时长在 RecordingTap 内淘汰。
+        for (int i = 0; i < 16; ++i) {
+            GstSample* s = gst_app_sink_try_pull_sample(GST_APP_SINK(record_sink), 0);
+            if (!s) break;
+            GstBuffer* buf = gst_sample_get_buffer(s);
+            if (buf) {
+                const long long ts_ms = GST_CLOCK_TIME_IS_VALID(GST_BUFFER_PTS(buf))
+                                            ? static_cast<long long>(GST_BUFFER_PTS(buf) / GST_MSECOND)
+                                            : CameraStream::now_ms();
+                const bool key = !GST_BUFFER_FLAG_IS_SET(buf, GST_BUFFER_FLAG_DELTA_UNIT);
+                GstMapInfo mi;
+                if (gst_buffer_map(buf, &mi, GST_MAP_READ)) {
+                    railhmi::core::CompressedPacket p;
+                    p.ts_ms = ts_ms;
+                    p.keyframe = key;
+                    p.data.assign(mi.data, mi.data + mi.size);
+                    recording->push(std::move(p));
+                    gst_buffer_unmap(buf, &mi);
+                }
+            }
+            gst_sample_unref(s);
+        }
+    }
 
     std::string scrub(const std::string& t) const { return redact_secret(t, redact_src); }
 
@@ -114,6 +144,7 @@ struct CameraStream::Impl {
         }
         if (bus) { gst_object_unref(bus); bus = nullptr; }
         if (count_sink) { gst_object_unref(count_sink); count_sink = nullptr; }
+        if (record_sink) { gst_object_unref(record_sink); record_sink = nullptr; }
         if (frame_sink) { gst_object_unref(frame_sink); frame_sink = nullptr; }
         if (pipeline) { gst_object_unref(pipeline); pipeline = nullptr; }
         delete machine;
@@ -200,6 +231,11 @@ bool CameraStream::start(std::string* err) {
         gst_object_unref(pad);
     }
     impl_->frame_sink = gst_bin_get_by_name(GST_BIN(impl_->pipeline), "frame_sink");
+    impl_->record_sink = gst_bin_get_by_name(GST_BIN(impl_->pipeline), "record_sink");
+    if (impl_->cfg.recording_tap && impl_->record_sink) {
+        impl_->recording.reset(new RecordingTap(impl_->cfg.record_max_bytes,
+                                                impl_->cfg.clip_pre_seconds * 1000));
+    }
     impl_->bus = gst_element_get_bus(impl_->pipeline);
 
     impl_->machine->start(now_ms());
@@ -327,6 +363,9 @@ bool CameraStream::pump(int timeout_ms) {
         std::this_thread::sleep_for(std::chrono::milliseconds(wait_ms));
     }
 
+    // 解码前压缩分支滚动缓冲（视频 ITEM-011）；独立于显示/推理不应答。
+    impl_->drain_recording();
+
     if (impl_->machine) impl_->machine->tick(now);
     while (!impl_->frame_times.empty() && now - impl_->frame_times.front() > 2000) {
         impl_->frame_times.pop_front();
@@ -408,6 +447,12 @@ FrameLease CameraStream::latest_frame() const {
 FrameStore& CameraStream::frame_store() { return *impl_->store; }
 
 FrameDispatcher& CameraStream::dispatcher() { return *impl_->dispatcher; }
+
+RecordingTap* CameraStream::recording_tap() { return impl_ ? impl_->recording.get() : nullptr; }
+
+const RecordingTap* CameraStream::recording_tap() const {
+    return impl_ ? impl_->recording.get() : nullptr;
+}
 
 const BgrImage& CameraStream::last_bgr() const {
     static const BgrImage kEmpty;

@@ -1,0 +1,3 @@
+{
+  "records": 199, "expected": 200, "bytes": 777546, "span_ms": 3000, "evicted_duration": 123, "effective_pre_seconds": 3, "acceptance": true
+}

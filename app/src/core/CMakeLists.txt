@@ -7,6 +7,8 @@ add_library(railhmi_core STATIC
     src/timebase.cpp
     src/frame_identity.cpp
     src/frame_layout.cpp
+    src/compressed_ring.cpp
+    src/recording_source.cpp
     src/persistence_model.cpp
     src/retention.cpp
     src/simulation.cpp

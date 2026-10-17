@@ -16,6 +16,8 @@ add_executable(railhmi-core-tests
     test_frame_identity.cpp
     test_frame_layout.cpp
     test_bounded_queue.cpp
+    test_compressed_ring.cpp
+    test_recording_source.cpp
     test_alarm_center.cpp
     test_clip.cpp
     test_replay.cpp

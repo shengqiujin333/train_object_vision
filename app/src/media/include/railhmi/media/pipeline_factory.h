@@ -56,6 +56,12 @@ struct CameraPipelineSpec {
 
     // 显示/分析分支
     RenderPath path = RenderPath::Cpu;
+
+    // 录像压缩分支（视频 ITEM-011）：在解码前 tap 压缩包到 appsink name=record_sink。
+    // 只有存在压缩源的路径才有此分支（rtsp：显式 parse 之后 / auto 时为 RTP 层）；
+    // test/file（raw/容器）无解码前压缩点，不附加。
+    bool recording_tap = false;
+    int recording_tap_buffers = 60;   // 压缩分支 queue 的有界 max-buffers（按包数）
 };
 
 // 把 URL 中的 user:pass@ 拆到 username/password，*location 为不含用户信息的地址。
@@ -65,6 +71,10 @@ bool split_rtsp_userinfo(const std::string& url, std::string* location,
 
 // 生成 "源 → 解码 → video/x-raw,format=NV12" 前缀（不含 tee/sink）。
 std::string build_nv12_prefix(const CameraPipelineSpec& spec);
+
+// 生成 rtsp 源到**压缩点**的前缀（application/x-rtp；显式解码则到 h26xparse 之后）；
+// 供 build_pipeline_description 在 spec.recording_tap=true 时插入 tee name=enc 录像压缩分支。
+std::string build_rtsp_compressed_prefix(const CameraPipelineSpec& spec);
 
 // 生成完整 pipeline 描述串：前缀 + tee + 计数 fakesink + 显示/分析 appsink|glsink。
 // 命名为 frame_sink / count_sink / videosink，供 CameraStream 复用。

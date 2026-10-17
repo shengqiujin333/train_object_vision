@@ -16,6 +16,7 @@
 #include "railhmi/media/frame_dispatcher.h"
 #include "railhmi/media/frame_store.h"
 #include "railhmi/media/pipeline_factory.h"
+#include "railhmi/media/recording_tap.h"
 #include "railhmi/media/rga_convert.h"
 
 namespace railhmi {
@@ -44,6 +45,11 @@ struct CameraStreamConfig {
     int ai_queue_depth = 2;         // 推理有界丢旧帧队列深度（app.ai.queue_depth）
     std::size_t recording_queue_frames = 30;             // 录像分支条数上限
     std::size_t recording_queue_bytes = 0;               // 录像分支字节上限（0=只按条数）
+    // 解码前压缩分支与滚动缓冲（视频 ITEM-011）；仅 rtsp 有压缩源时有效。
+    bool recording_tap = false;                          // 启用 record_sink 压缩 tap
+    int clip_pre_seconds = 30;                           // 滚动保留最近时长（thresholds.clip_pre_seconds）
+    std::size_t record_max_bytes = 32u * 1024u * 1024u;  // 滚动缓冲字节上限
+    int recording_tap_buffers = 60;                      // 压缩分支 queue 有界 max-buffers
     railhmi::core::StreamThresholds thresholds;
     railhmi::core::QualityThresholds quality;
 };
@@ -115,6 +121,10 @@ public:
     FrameStore& frame_store();
     // 三类消费者有界队列（显示/推理/录像）（视频 ITEM-008）。
     FrameDispatcher& dispatcher();
+
+    // 解码前压缩分支滚动缓冲（视频 ITEM-011）；未启用/无可压缩源时返回 nullptr。
+    RecordingTap* recording_tap();
+    const RecordingTap* recording_tap() const;
 
     // 最近一次 NV12→BGR 转换结果（视频 ITEM-005，需 cfg.convert_bgr）。失败不丢帧。
     const BgrImage& last_bgr() const;

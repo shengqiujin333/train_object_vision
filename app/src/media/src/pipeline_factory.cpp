@@ -21,6 +21,31 @@ std::string gst_quote(const std::string& v) {
     return o;
 }
 
+// rtsp 源到 application/x-rtp,media=video（含认证属性、强制 UDP、只选视频 RTP pad）。
+std::string build_rtsp_rtp_source(const CameraPipelineSpec& spec) {
+    std::string loc = spec.url;
+    std::string user = spec.username;
+    std::string pass = spec.password;
+    if (user.empty() && pass.empty()) {
+        std::string u, p;
+        if (split_rtsp_userinfo(spec.url, &loc, &u, &p)) {
+            user = u;
+            pass = p;
+        }
+    }
+    std::ostringstream s;
+    s << "rtspsrc location=\"" << gst_quote(loc) << "\"";
+    // 认证经 rtspsrc 属性传入，不拼接进 URL。
+    if (!user.empty()) s << " user-id=\"" << gst_quote(user) << "\"";
+    if (!pass.empty()) s << " user-pw=\"" << gst_quote(pass) << "\"";
+    s << " latency=" << spec.latency_ms << " timeout=" << spec.timeout_us
+      << " protocols=udp udp-buffer-size=" << spec.udp_buffer_bytes;
+    // 强制 UDP；无 protocols=tcp 回退路径。
+    // 只选视频 RTP pad：RTP 层先过滤 media=video，音频/数据 pad 不进入解码链。
+    s << " ! application/x-rtp,media=video";
+    return s.str();
+}
+
 }  // namespace
 
 RenderPath render_path_from_string(const std::string& s, bool* ok) {
@@ -99,25 +124,8 @@ std::string build_nv12_prefix(const CameraPipelineSpec& spec) {
             return s.str();
         }
         case PipelineSource::Rtsp: {
-            std::string loc = spec.url;
-            std::string user = spec.username;
-            std::string pass = spec.password;
-            if (user.empty() && pass.empty()) {
-                std::string u, p;
-                if (split_rtsp_userinfo(spec.url, &loc, &u, &p)) {
-                    user = u;
-                    pass = p;
-                }
-            }
-            s << "rtspsrc location=\"" << gst_quote(loc) << "\"";
-            // 认证经 rtspsrc 属性传入，不拼接进 URL。
-            if (!user.empty()) s << " user-id=\"" << gst_quote(user) << "\"";
-            if (!pass.empty()) s << " user-pw=\"" << gst_quote(pass) << "\"";
-            s << " latency=" << spec.latency_ms << " timeout=" << spec.timeout_us
-              << " protocols=udp udp-buffer-size=" << spec.udp_buffer_bytes;
-            // 强制 UDP；无 protocols=tcp 回退路径。
-            // 只选视频 RTP pad：RTP 层先过滤 media=video，音频/数据 pad 不进入解码链。
-            s << " ! application/x-rtp,media=video";
+            std::ostringstream s;
+            s << build_rtsp_rtp_source(spec);
             switch (spec.decode) {
                 case DecodeMode::Auto:
                     // decodebin 自适应 H.264/H.265；输入已是纯视频 RTP。
@@ -137,9 +145,55 @@ std::string build_nv12_prefix(const CameraPipelineSpec& spec) {
     return "";
 }
 
+std::string build_rtsp_compressed_prefix(const CameraPipelineSpec& spec) {
+    std::ostringstream s;
+    s << build_rtsp_rtp_source(spec);
+    switch (spec.decode) {
+        case DecodeMode::ExplicitH265:
+            // depay/parse 之后、mppvideodec 之前：压缩 access unit（带关键帧标志）。
+            s << " ! rtph265depay ! h265parse";
+            break;
+        case DecodeMode::ExplicitH264:
+            s << " ! rtph264depay ! h264parse";
+            break;
+        case DecodeMode::Auto:
+            // decodebin 隐藏 parse：在 RTP 层 tap（仍为解码前压缩包）。
+            break;
+    }
+    return s.str();
+}
+
 std::string build_pipeline_description(const CameraPipelineSpec& spec) {
     // 显示/计数分支保持非阻塞（leaky）；file 源循环播放作为解码路径源，非实时时钟基准。
     std::ostringstream s;
+
+    // 录像压缩分支（视频 ITEM-011）：解码前 tap 压缩包到 record_sink，独立于显示/AI 丢帧策略。
+    if (spec.recording_tap && spec.source == PipelineSource::Rtsp) {
+        s << build_rtsp_compressed_prefix(spec) << " ! tee name=enc enc. ! queue ! ";
+        switch (spec.decode) {
+            case DecodeMode::ExplicitH265:
+            case DecodeMode::ExplicitH264:
+                s << "mppvideodec";
+                break;
+            case DecodeMode::Auto:
+                s << "decodebin";
+                break;
+        }
+        s << " ! video/x-raw,format=NV12 ! tee name=t "
+             "t. ! queue leaky=downstream max-size-buffers=1 ! fakesink name=count_sink sync=false ";
+        if (spec.path == RenderPath::Gl) {
+            s << "t. ! queue leaky=downstream max-size-buffers=1 "
+                 "! glupload ! glcolorconvert ! qmlglsink name=videosink ";
+        } else {
+            s << "t. ! queue leaky=downstream max-size-buffers=1 "
+                 "! appsink name=frame_sink drop=1 max-buffers=1 sync=false ";
+        }
+        // 压缩分支：有界队列（按包数）；appsink 不阻塞、不丢（由 RecordingTap 按字节/时长淘汰）。
+        s << "enc. ! queue leaky=downstream max-size-buffers=" << spec.recording_tap_buffers
+          << " ! appsink name=record_sink sync=false";
+        return s.str();
+    }
+
     s << build_nv12_prefix(spec)
       << " ! tee name=t "
          "t. ! queue leaky=downstream max-size-buffers=1 ! fakesink name=count_sink sync=false ";

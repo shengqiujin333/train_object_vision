@@ -27,6 +27,7 @@ add_library(railhmi_media STATIC
     src/display_distributor.cpp
     src/display_registry.cpp
     src/ai_dispatcher.cpp
+    src/recording_tap.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -107,5 +108,14 @@ set_target_properties(railhmi-display PROPERTIES
 add_executable(railhmi-ai-dispatch tools/ai_dispatch_probe.cpp)
 target_link_libraries(railhmi-ai-dispatch PRIVATE railhmi_media)
 set_target_properties(railhmi-ai-dispatch PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 录像压缩分支与滚动缓冲探针（视频 ITEM-011）
+add_executable(railhmi-recording-tap tools/recording_tap_probe.cpp)
+target_include_directories(railhmi-recording-tap PRIVATE ${GST_INCLUDE_DIRS})
+target_compile_options(railhmi-recording-tap PRIVATE ${GST_CFLAGS_OTHER})
+target_link_libraries(railhmi-recording-tap PRIVATE railhmi_media)
+set_target_properties(railhmi-recording-tap PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
