@@ -1,0 +1,106 @@
+{
+  "stamp": "20261017-item005-verify-v1",
+  "steps": [
+    {
+      "step": "extA-rerun",
+      "cmd": "cd /tmp/railhmi_rga && /tmp/railhmi_rga/build-media/tools/railhmi-rga-convert --source test --duration 1 --out /tmp/extA.log; echo A_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.63,
+      "output": "rga_api version 1.10.1_[0]\ntype=synthetic_padded ok=true err= width=1280 height=720 b=200 g=200 r=200 spread=0 min_px=200 max_px=200 padding_not_leaked=true\ntype=synthetic_blue ok=true err= b=239 g=15 r=15 blue_dominant=true\ntype=failure_paths null_rejected=true(null_arg) odd_rejected=true(odd_dimensions) notready_rejected=true(NOT_READY)\ntype=injection source=test camera=CAM-01 duration_s=1 session_id=s1a148b4f8ee-5331d7-0\ntype=worker_convert published=26 bgr_converted=26 bgr_failed=0 last_error= bgr_means=138/123/124 spread=16 width=1280 height=720\ntype=fail_keep_frames published_before=26 published_after=36 still_producing=true\ntype=summary bgr_converted=36 bgr_failed=0 published=36 rejected=0\nA_EXIT=0\n"
+    },
+    {
+      "step": "extB-det-run",
+      "cmd": "cd /tmp/railhmi_rga && /tmp/railhmi_rga/build-media/tools/railhmi-rga-convert --source test --duration 1 --out /tmp/extB.log; echo B_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.55,
+      "output": "rga_api version 1.10.1_[0]\ntype=synthetic_padded ok=true err= width=1280 height=720 b=200 g=200 r=200 spread=0 min_px=200 max_px=200 padding_not_leaked=true\ntype=synthetic_blue ok=true err= b=239 g=15 r=15 blue_dominant=true\ntype=failure_paths null_rejected=true(null_arg) odd_rejected=true(odd_dimensions) notready_rejected=true(NOT_READY)\ntype=injection source=test camera=CAM-01 duration_s=1 session_id=s1a148b4feea-6a9584-0\ntype=worker_convert published=26 bgr_converted=26 bgr_failed=0 last_error= bgr_means=138/123/124 spread=16 width=1280 height=720\ntype=fail_keep_frames published_before=26 published_after=36 still_producing=true\ntype=summary bgr_converted=36 bgr_failed=0 published=36 rejected=0\nB_EXIT=0\n"
+    },
+    {
+      "step": "extC-unknown-arg",
+      "cmd": "cd /tmp/railhmi_rga && /tmp/railhmi_rga/build-media/tools/railhmi-rga-convert --bogus-flag; echo C1_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "C1_EXIT=2\nunknown arg: --bogus-flag\n"
+    },
+    {
+      "step": "extC-help",
+      "cmd": "cd /tmp/railhmi_rga && /tmp/railhmi_rga/build-media/tools/railhmi-rga-convert --help; echo C2_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "usage: railhmi-rga-convert --source test|file|rtsp [--file f] [--url u] [--user u] [--password-env VAR] [--duration s] [--out log] [--selftest]\nC2_EXIT=0\n"
+    },
+    {
+      "step": "extD-compile-run",
+      "cmd": "cd /tmp/railhmi_rga && g++ -std=c++17 -I src/core/include -I src/media/include -I src/platform/include $(pkg-config --cflags gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0) $(pkg-config --cflags librga) -o /tmp/vext_rga_convert vext_rga_convert.cpp src/media/src/rga_convert.cpp src/media/src/frame_lease.cpp build-media/src/core/librailhmi_core.a build-media/src/platform/librailhmi_platform.a $(pkg-config --libs gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0) $(pkg-config --libs librga) 2>&1 | tail -8; if [ -x /tmp/vext_rga_convert ]; then /tmp/vext_rga_convert; echo VEXT_EXIT=$?; else echo VEXT_COMPILE_FAILED; fi",
+      "exit": 0,
+      "elapsed_s": 2.3,
+      "output": "vext PASS v01_hstride_padded_720\nvext PASS v02_hstride_contiguous_720\nvext PASS v03_hstride_1080p\nvext PASS v04_hstride_one_row\nvext PASS v05_non_multiple_rejected\nvext PASS v06_zero_stride_rejected\nvext PASS v07_negative_stride_rejected\nvext PASS v08_zero_uv_offset_rejected\nrga_api version 1.10.1_[0]\nvext PASS v09_red_converts_ok\nvext PASS v10_red_dominant\nvext PASS v11_red_values_in_range\nvext PASS v12_green_converts_ok\nvext PASS v13_green_dominant\nvext PASS v14_green_values_in_range\nvext PASS v15_padded_ff_converts_ok\nvext PASS v16_ff_padding_not_leaked\nvext PASS v17_uv_swap_converts_ok\nvext PASS v18_uv_normal_blue_dominant\nvext PASS v19_uv_swap_round_ok\nvext PASS v20_uv_swap_flips_to_red_dominant\nvext PASS v21_null_rejected\nvext PASS v22_odd_rejected\nvext PASS v23_negative_dim_rejected\nvext PASS v24_stride_too_small_rejected\nvext PASS v25_uv_offset_non_multiple_rejected\nvext PASS v26_empty_lease_not_ready\nvext PASS v28_spread_empty_is_minus1\nvext PASS v29_spread_gray_is_0\nvext OK (0 failure(s))\nVEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-cleanup-tmp",
+      "cmd": "rm -f /tmp/extA.log /tmp/extB.log /tmp/vext_rga_convert /tmp/railhmi_rga/vext_rga_convert.cpp && echo EXT_TMP_CLEANED",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "EXT_TMP_CLEANED\n"
+    }
+  ],
+  "credential_hits": [],
+  "checks": [
+    {
+      "name": "A1_padded_gray_exact_200_spread0_no_padding_leak",
+      "ok": true,
+      "detail": "{\"ok\": \"true\", \"err\": \"\", \"w\": 1280, \"h\": 720, \"b\": 200, \"g\": 200, \"r\": 200, \"spread\": 0, \"min_px\": 200, \"max_px\": 200, \"pad\": \"true\"}"
+    },
+    {
+      "name": "A2_blue_dominant_direction",
+      "ok": true,
+      "detail": "type=synthetic_blue ok=true err= b=239 g=15 r=15 blue_dominant=true"
+    },
+    {
+      "name": "A3_failure_paths_explicit_tokens",
+      "ok": true,
+      "detail": "type=failure_paths null_rejected=true(null_arg) odd_rejected=true(odd_dimensions) notready_rejected=true(NOT_READY)"
+    },
+    {
+      "name": "A4_failure_keeps_frames_publishing",
+      "ok": true,
+      "detail": "type=fail_keep_frames published_before=26 published_after=36 still_producing=true"
+    },
+    {
+      "name": "B_synthetic_padded_deterministic",
+      "ok": true,
+      "detail": "identical"
+    },
+    {
+      "name": "B_synthetic_blue_deterministic",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C_unknown_arg_exit2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C_help_exit0_usage",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "D_vext_rga_convert_all_pass_28",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E_worker_converted_equals_published_no_fail",
+      "ok": true,
+      "detail": "type=worker_convert published=26 bgr_converted=26 bgr_failed=0 last_error= bgr_means=138/123/124 spread=16 width=1280 height=720"
+    },
+    {
+      "name": "F_no_credential_in_evidence",
+      "ok": true,
+      "detail": "hits=[]"
+    }
+  ],
+  "failures": 0
+}

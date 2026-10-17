@@ -1763,10 +1763,18 @@ docs/video/test_evidence/ITEM-004/lease-192_168_0_103-20261017-item004-verify-v1
 docs/video/test_evidence/ITEM-004/lease-192_168_0_103-20261017-item004-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（命令+退出码+输出）
 docs/video/test_evidence/ITEM-004/lease-ext-192_168_0_103-20261017-item004-verify-v1.json | active | 验证侧 ext 夹具结构化结果（A/B/C/D/E/F 10 判例 PASS 含 vext_frame_layout 27/27，v1 夹具构造错修正记录）
 docs/video/test_evidence/ITEM-005/ITEM-005-ENV-B-C-D-20261017-r1.md | active | VideoExecutionEvidence：ITEM-005 selftest 8/8 + 合成 padded 灰图 spread=0 padding 未泄漏 + 纯蓝方向 + 失败路径 + test/rtsp worker 转换（bgr_failed=0）+ 失败不丢帧
+docs/video/test_evidence/ITEM-005/VERIFY-ITEM-005.md | active | ITEM-005 软件验证 TestEvidence（TEST_PASS：独立复跑 verify-v1 全 8 步 exit=0 + selftest 8/8 + 合成判据与 impl r3 逐字段一致 + EXT 11/11 含板端自有 28 判例（红/绿纯色/0xFF padding/UV 交换负对照/hstride 边界）+ worker converted==published + 确定性）
+docs/video/test_evidence/ITEM-005/_verify_ext.py | active | 验证侧扩展夹具（探针独立解析/确定性/CLI 负例/板端 g++ 直编自有向量/凭据泄漏扫描）
+docs/video/test_evidence/ITEM-005/_verify_run.py | active | 验证侧独立复跑驱动（PowerShell 用户级凭据导入 + 交付 runner --keep-remote，stamp 20261017-item005-verify-v1）
 docs/video/test_evidence/ITEM-005/rga-192_168_0_103-20261017-item005-r3.core-evidence_rga-rtsp-20261017-item005-r3.log | active | ITEM-005 合成判据 + 真实 RTSP worker 转换日志
 docs/video/test_evidence/ITEM-005/rga-192_168_0_103-20261017-item005-r3.core-evidence_rga-test-20261017-item005-r3.log | active | ITEM-005 合成判据 + test 源 worker 转换日志
 docs/video/test_evidence/ITEM-005/rga-192_168_0_103-20261017-item005-r3.log | active | ITEM-005 板端执行人类可读 transcript（build-media/selftest/rga-test/rga-rtsp）
 docs/video/test_evidence/ITEM-005/rga-192_168_0_103-20261017-item005-r3.transcript.json | active | ITEM-005 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-005/rga-192_168_0_103-20261017-item005-verify-v1.core-evidence_rga-rtsp-20261017-item005-verify-v1.log | active | 验证轮真实 RTSP CAM-01 worker 转换原始日志（published=73 bgr_converted=73 bgr_failed=0；通道均值自然波动非判据）
+docs/video/test_evidence/ITEM-005/rga-192_168_0_103-20261017-item005-verify-v1.core-evidence_rga-test-20261017-item005-verify-v1.log | active | 验证轮 test 源 worker 转换原始日志（published=76 bgr_converted=76 bgr_failed=0）
+docs/video/test_evidence/ITEM-005/rga-192_168_0_103-20261017-item005-verify-v1.log | active | 验证独立复跑人类可读 transcript（mkdir/upload/build/selftest/rga-test/rga-rtsp/download 全 exit=0）
+docs/video/test_evidence/ITEM-005/rga-192_168_0_103-20261017-item005-verify-v1.transcript.json | active | 验证独立复跑结构化 transcript（指纹与实现 r3 同板同 key）
+docs/video/test_evidence/ITEM-005/rga-ext-192_168_0_103-20261017-item005-verify-v1.json | active | 验证 EXT 夹具结构化结果（11 判据 + 板端命令步骤 + 凭据泄漏 0 命中）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
