@@ -1,0 +1,12 @@
+type=injection source=test camera=CAM-01 duration_s=5 cut_after_s=-1 transport=n/a
+t=0 type=stream_state state=live fps=0.5 last_frame_ms=343231601 reconnect_count=0 presentable=true
+t=536 type=stream_state state=live fps=7.5 last_frame_ms=343232137 reconnect_count=0 presentable=true
+t=1016 type=stream_state state=live fps=13.5 last_frame_ms=343232617 reconnect_count=0 presentable=true
+t=1536 type=stream_state state=live fps=20.0 last_frame_ms=343233137 reconnect_count=0 presentable=true
+t=2016 type=stream_state state=live fps=25.5 last_frame_ms=343233617 reconnect_count=0 presentable=true
+t=2536 type=stream_state state=live fps=25.5 last_frame_ms=343234137 reconnect_count=0 presentable=true
+t=3016 type=stream_state state=live fps=25.5 last_frame_ms=343234617 reconnect_count=0 presentable=true
+t=3536 type=stream_state state=live fps=25.5 last_frame_ms=343235137 reconnect_count=0 presentable=true
+t=4016 type=stream_state state=live fps=25.5 last_frame_ms=343235617 reconnect_count=0 presentable=true
+t=4536 type=stream_state state=live fps=25.5 last_frame_ms=343236137 reconnect_count=0 presentable=true
+type=summary final_state=live reconnect_count=0 last_frame_ms=343236577 presentable=true

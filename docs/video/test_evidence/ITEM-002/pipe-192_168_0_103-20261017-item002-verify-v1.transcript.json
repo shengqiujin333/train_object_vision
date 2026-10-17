@@ -1,0 +1,139 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "camera_credential_envs": "TRAIN_FRONT_RTSP_CREDENTIAL,TRAIN_SIDE_RTSP_CREDENTIAL",
+    "local_dir": "E:\\work\\rail_issue\\rk3588_handover\\app",
+    "remote_dir": "/tmp/railhmi_pipe",
+    "outdir": "docs/video/test_evidence/ITEM-002",
+    "stamp": "20261017-item002-verify-v1",
+    "connect_timeout": 10,
+    "build_timeout": 900,
+    "duration": 5,
+    "rtsp_url": "rtsp://192.168.1.65:554/cam/realmonitor?channel=1&subtype=0",
+    "rtsp_user": "admin",
+    "rtsp_credential_env": "TRAIN_FRONT_RTSP_CREDENTIAL",
+    "no_rtsp": false,
+    "keep_remote": true
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_pipe",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": ""
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 179 files from E:\\work\\rail_issue\\rk3588_handover\\app"
+    },
+    {
+      "step": "build",
+      "cmd": "cd /tmp/railhmi_pipe && bash build.sh MediaCheck; echo BUILD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 26.14,
+      "output": "[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1\n[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no\n[build.sh] configuring: cmake -S '/tmp/railhmi_pipe' -B '/tmp/railhmi_pipe/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- railhmi: build mode = MediaCheck\n-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled\n-- Found PkgConfig: /usr/bin/pkg-config (found version \"0.29.2\") \n-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'\n--   Found gstreamer-1.0, version 1.20.3\n--   Found gstreamer-app-1.0, version 1.20.1\n--   Found gstreamer-video-1.0, version 1.20.1\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/railhmi_pipe/build-media\n[build.sh] building: cmake --build '/tmp/railhmi_pipe/build-media' -j8\n[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o\n[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o\n[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o\n[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o\n[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o\n[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o\n[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o\n[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o\n[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o\n[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o\n[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o\n[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o\n[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o\n[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o\n[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o\n[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o\n[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o\n[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o\n[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay.cpp.o\n[ 30%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/maintenance.cpp.o\n[ 31%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o\n[ 33%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o\n[ 34%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery.cpp.o\n[ 36%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o\n[ 37%] Linking CXX static library librailhmi_core.a\n[ 37%] Built target railhmi_core\n[ 39%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o\n[ 40%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o\n[ 42%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o\n[ 43%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o\n[ 45%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o\n[ 46%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o\n[ 48%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o\n[ 50%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o\n[ 51%] Linking CXX executable ../../tools/railhmi-config-check\n[ 51%] Built target railhmi-config-check\n[ 53%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o\n[ 54%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o\n[ 56%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o\n[ 57%] Linking CXX executable ../../tools/railhmi-maintenance-probe\n[ 59%] Linking CXX executable ../../tools/railhmi-permissions-probe\n[ 59%] Built target railhmi-permissions-probe\n[ 60%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o\n[ 60%] Built target railhmi-maintenance-probe\n[ 62%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o\n[ 63%] Linking CXX executable ../../tools/railhmi-sim-inject\n[ 65%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o\n[ 65%] Built target railhmi-sim-inject\n[ 66%] Linking CXX executable ../../tools/railhmi-alarm-probe\n[ 68%] Linking CXX executable ../../tools/railhmi-status-probe\n[ 69%] Linking CXX executable ../../tools/railhmi-fault-probe\n[ 69%] Built target railhmi-alarm-probe\n[ 69%] Built target railhmi-status-probe\n[ 69%] Built target railhmi-fault-probe\n[ 71%] Linking CXX executable ../../tools/railhmi-health-probe\n[ 72%] Linking CXX executable ../../tools/railhmi-ai-probe\n[ 72%] Built target railhmi-ai-probe\n[ 72%] Built target railhmi-health-probe\n[ 74%] Linking CXX executable ../../tools/railhmi-replay-probe\n[ 74%] Built target railhmi-replay-probe\n[ 75%] Linking CXX static library librailhmi_platform.a\n[ 75%] Built target railhmi_platform\n[ 80%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o\n[ 80%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o\n[ 80%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o\n[ 81%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o\n[ 84%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/video_capability.cpp.o\n[ 84%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o\n[ 86%] Linking CXX executable ../../tools/railhmi-clip-probe\n[ 86%] Built target railhmi-clip-probe\n[ 87%] Linking CXX static library librailhmi_media.a\n[ 87%] Built target railhmi_media\n[ 89%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o\n[ 90%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o\n[ 93%] Building CXX object src/media/CMakeFiles/railhmi-video-capability.dir/tools/video_capability_tool.cpp.o\n[ 93%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o\n[ 95%] Linking CXX executable ../../tools/railhmi-stream-probe\n[ 96%] Linking CXX executable ../../tools/railhmi-ai-runner\n[ 96%] Built target railhmi-stream-probe\n[ 98%] Linking CXX executable ../../tools/railhmi-video-capability\n[ 98%] Built target railhmi-ai-runner\n[ 98%] Built target railhmi-video-capability\n[100%] Linking CXX executable ../../tools/railhmi-multi-probe\n[100%] Built target railhmi-multi-probe\n[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_pipe/build-media\n[build.sh] media layer: /tmp/railhmi_pipe/build-media/src/media/librailhmi_media.a\nBUILD_EXIT=0\n"
+    },
+    {
+      "step": "evidence-dir",
+      "cmd": "mkdir -p /tmp/railhmi_pipe/core-evidence && echo ok",
+      "exit": 0,
+      "elapsed_s": 0.24,
+      "output": "ok\n"
+    },
+    {
+      "step": "selftest",
+      "cmd": "cd /tmp/railhmi_pipe && ./build-media/tools/railhmi-stream-probe --selftest; echo SELFTEST_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.24,
+      "output": "selftest PASS test_videotestsrc\nselftest PASS test_nv12\nselftest PASS file_filesrc\nselftest PASS file_decodebin\nselftest PASS file_nv12\nselftest PASS rtsp_udp\nselftest PASS rtsp_no_tcp\nselftest PASS rtsp_video_only\nselftest PASS rtsp_auto_decodebin\nselftest PASS rtsp_user_prop\nselftest PASS rtsp_pw_prop\nselftest PASS rtsp_no_creds_in_url\nselftest PASS rtsp_explicit_h265\nselftest PASS rtsp_explicit_no_decodebin\nselftest PASS rtsp_explicit_h264\nselftest PASS redact_secret\nselftest OK (0 failure(s))\nSELFTEST_EXIT=0\n"
+    },
+    {
+      "step": "gen-file",
+      "cmd": "rm -f /tmp/railhmi_probe.mp4; if ffmpeg -hide_banner -loglevel error -y -f lavfi -i testsrc=size=1280x720:rate=25 -t 2 -c:v libx264 -pix_fmt yuv420p /tmp/railhmi_probe.mp4 2>/dev/null; then echo GEN=ffmpeg; elif gst-launch-1.0 -q -e videotestsrc num-buffers=50 is-live=false ! video/x-raw,width=1280,height=720,framerate=25/1 ! mpph264enc ! h264parse ! qtmux ! filesink location=/tmp/railhmi_probe.mp4 >/dev/null 2>&1; then echo GEN=mpph264enc; else echo GEN=failed; fi; ls -l /tmp/railhmi_probe.mp4 2>&1",
+      "exit": 0,
+      "elapsed_s": 0.95,
+      "output": "GEN=ffmpeg\n-rw-rw-r-- 1 admin admin 31990 Oct 17 13:18 /tmp/railhmi_probe.mp4\n"
+    },
+    {
+      "step": "run-test",
+      "cmd": "cd /tmp/railhmi_pipe && ./build-media/tools/railhmi-stream-probe --source test --duration 5 --out core-evidence/probe-test-20261017-item002-verify-v1.log --json core-evidence/probe-test-20261017-item002-verify-v1.json; echo TEST_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 5.15,
+      "output": "type=injection source=test camera=CAM-01 duration_s=5 cut_after_s=-1 transport=n/a\nt=0 type=stream_state state=live fps=0.5 last_frame_ms=343231601 reconnect_count=0 presentable=true\nt=536 type=stream_state state=live fps=7.5 last_frame_ms=343232137 reconnect_count=0 presentable=true\nt=1016 type=stream_state state=live fps=13.5 last_frame_ms=343232617 reconnect_count=0 presentable=true\nt=1536 type=stream_state state=live fps=20.0 last_frame_ms=343233137 reconnect_count=0 presentable=true\nt=2016 type=stream_state state=live fps=25.5 last_frame_ms=343233617 reconnect_count=0 presentable=true\nt=2536 type=stream_state state=live fps=25.5 last_frame_ms=343234137 reconnect_count=0 presentable=true\nt=3016 type=stream_state state=live fps=25.5 last_frame_ms=343234617 reconnect_count=0 presentable=true\nt=3536 type=stream_state state=live fps=25.5 last_frame_ms=343235137 reconnect_count=0 presentable=true\nt=4016 type=stream_state state=live fps=25.5 last_frame_ms=343235617 reconnect_count=0 presentable=true\nt=4536 type=stream_state state=live fps=25.5 last_frame_ms=343236137 reconnect_count=0 presentable=true\ntype=summary final_state=live reconnect_count=0 last_frame_ms=343236577 presentable=true\nTEST_EXIT=0\n"
+    },
+    {
+      "step": "run-file",
+      "cmd": "cd /tmp/railhmi_pipe && ./build-media/tools/railhmi-stream-probe --source file --file /tmp/railhmi_probe.mp4 --duration 5 --out core-evidence/probe-file-20261017-item002-verify-v1.log --json core-evidence/probe-file-20261017-item002-verify-v1.json; echo FILE_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 5.16,
+      "output": "type=injection source=file camera=CAM-01 duration_s=5 cut_after_s=-1 transport=n/a\nt=0 type=stream_state state=live fps=0.5 last_frame_ms=343236770 reconnect_count=0 presentable=true\nt=501 type=stream_state state=live fps=140.0 last_frame_ms=343237271 reconnect_count=0 presentable=true\nt=1000 type=stream_state state=live fps=298.0 last_frame_ms=343237771 reconnect_count=0 presentable=true\nt=1500 type=stream_state state=live fps=455.5 last_frame_ms=343238270 reconnect_count=0 presentable=true\nt=2001 type=stream_state state=live fps=614.0 last_frame_ms=343238771 reconnect_count=0 presentable=true\nt=2501 type=stream_state state=live fps=633.5 last_frame_ms=343239271 reconnect_count=0 presentable=true\nt=3000 type=stream_state state=live fps=634.0 last_frame_ms=343239770 reconnect_count=0 presentable=true\nt=3500 type=stream_state state=live fps=636.0 last_frame_ms=343240270 reconnect_count=0 presentable=true\nt=4000 type=stream_state state=live fps=636.5 last_frame_ms=343240770 reconnect_count=0 presentable=true\nt=4502 type=stream_state state=live fps=635.5 last_frame_ms=343241272 reconnect_count=0 presentable=true\ntype=summary final_state=live reconnect_count=0 last_frame_ms=343241767 presentable=true\nFILE_EXIT=0\n"
+    },
+    {
+      "step": "run-rtsp-auto",
+      "cmd": "cd /tmp/railhmi_pipe && set -a && . ./.cam_env.sh && set +a && ./build-media/tools/railhmi-stream-probe --source rtsp --url 'rtsp://192.168.1.65:554/cam/realmonitor?channel=1&subtype=0' --user admin --password-env TRAIN_FRONT_RTSP_CREDENTIAL --decode auto --duration 5 --out core-evidence/probe-rtsp-auto-20261017-item002-verify-v1.log --json core-evidence/probe-rtsp-auto-20261017-item002-verify-v1.json; echo RTSP_AUTO_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 5.17,
+      "output": "type=injection source=rtsp camera=CAM-01 duration_s=5 cut_after_s=-1 transport=udp\nt=0 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=0 presentable=false\nt=600 type=stream_state state=live fps=0.5 last_frame_ms=343242597 reconnect_count=0 presentable=true\nt=1034 type=stream_state state=live fps=7.5 last_frame_ms=343243031 reconnect_count=0 presentable=true\nt=1523 type=stream_state state=live fps=13.5 last_frame_ms=343243520 reconnect_count=0 presentable=true\nt=2004 type=stream_state state=live fps=19.5 last_frame_ms=343244001 reconnect_count=0 presentable=true\nt=2516 type=stream_state state=live fps=26.0 last_frame_ms=343244513 reconnect_count=0 presentable=true\nt=3036 type=stream_state state=live fps=25.0 last_frame_ms=343245034 reconnect_count=0 presentable=true\nt=3532 type=stream_state state=live fps=25.0 last_frame_ms=343245529 reconnect_count=0 presentable=true\nt=4034 type=stream_state state=live fps=25.5 last_frame_ms=343246031 reconnect_count=0 presentable=true\nt=4537 type=stream_state state=live fps=25.0 last_frame_ms=343246534 reconnect_count=0 presentable=true\ntype=summary final_state=live reconnect_count=0 last_frame_ms=343246993 presentable=true\nRTSP_AUTO_EXIT=0\n"
+    },
+    {
+      "step": "run-rtsp-h265",
+      "cmd": "cd /tmp/railhmi_pipe && set -a && . ./.cam_env.sh && set +a && ./build-media/tools/railhmi-stream-probe --source rtsp --url 'rtsp://192.168.1.65:554/cam/realmonitor?channel=1&subtype=0' --user admin --password-env TRAIN_FRONT_RTSP_CREDENTIAL --decode h265 --duration 5 --out core-evidence/probe-rtsp-h265-20261017-item002-verify-v1.log --json core-evidence/probe-rtsp-h265-20261017-item002-verify-v1.json; echo RTSP_H265_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 5.2,
+      "output": "type=injection source=rtsp camera=CAM-01 duration_s=5 cut_after_s=-1 transport=udp\nt=0 type=stream_state state=live fps=0.5 last_frame_ms=343247197 reconnect_count=0 presentable=true\nt=515 type=stream_state state=live fps=5.5 last_frame_ms=343247713 reconnect_count=0 presentable=true\nt=1043 type=stream_state state=live fps=12.0 last_frame_ms=343248241 reconnect_count=0 presentable=true\nt=1522 type=stream_state state=live fps=18.0 last_frame_ms=343248720 reconnect_count=0 presentable=true\nt=2034 type=stream_state state=live fps=24.0 last_frame_ms=343249232 reconnect_count=0 presentable=true\nt=2526 type=stream_state state=live fps=25.0 last_frame_ms=343249724 reconnect_count=0 presentable=true\nt=3004 type=stream_state state=live fps=25.0 last_frame_ms=343250201 reconnect_count=0 presentable=true\nt=3524 type=stream_state state=live fps=25.0 last_frame_ms=343250722 reconnect_count=0 presentable=true\nt=4044 type=stream_state state=live fps=25.0 last_frame_ms=343251241 reconnect_count=0 presentable=true\nt=4515 type=stream_state state=live fps=25.5 last_frame_ms=343251713 reconnect_count=0 presentable=true\ntype=summary final_state=live reconnect_count=0 last_frame_ms=343252193 presentable=true\nRTSP_H265_EXIT=0\n"
+    },
+    {
+      "step": "cleanup-envfile",
+      "cmd": "rm -f /tmp/railhmi_pipe/.cam_env.sh && echo removed",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "removed\n"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-test-20261017-item002-verify-v1.log"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-test-20261017-item002-verify-v1.json"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-file-20261017-item002-verify-v1.log"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-file-20261017-item002-verify-v1.json"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-rtsp-auto-20261017-item002-verify-v1.log"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-rtsp-auto-20261017-item002-verify-v1.json"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-rtsp-h265-20261017-item002-verify-v1.log"
+    },
+    {
+      "step": "download",
+      "exit": 0,
+      "output": "pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-rtsp-h265-20261017-item002-verify-v1.json"
+    }
+  ]
+}

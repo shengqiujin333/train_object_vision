@@ -1,0 +1,69 @@
+{
+  "results": [
+    {
+      "id": "EXT-A/test",
+      "ok": true,
+      "detail": "live_slots=10 last=live summary_live=True"
+    },
+    {
+      "id": "EXT-A/file",
+      "ok": true,
+      "detail": "live_slots=10 last=live summary_live=True"
+    },
+    {
+      "id": "EXT-A/rtsp-auto",
+      "ok": true,
+      "detail": "live_slots=9 last=live summary_live=True"
+    },
+    {
+      "id": "EXT-A/rtsp-h265",
+      "ok": true,
+      "detail": "live_slots=10 last=live summary_live=True"
+    },
+    {
+      "id": "EXT-B",
+      "ok": true,
+      "detail": "slots>=4000ms with frames: 2 (material 2s)"
+    },
+    {
+      "id": "EXT-C",
+      "ok": true,
+      "detail": "exit=0 cut_seen=True non_presentable_slots=12 final_state=connecting err=True no_raw=True"
+    },
+    {
+      "id": "EXT-D",
+      "ok": true,
+      "detail": "exit=2"
+    },
+    {
+      "id": "EXT-E",
+      "ok": true,
+      "detail": "exit=2"
+    },
+    {
+      "id": "EXT-F",
+      "ok": true,
+      "detail": "exit=0 err_lines=6 no_raw=True"
+    },
+    {
+      "id": "EXT-G",
+      "ok": true,
+      "detail": "exit=0 err_lines=7 no_leak=True"
+    },
+    {
+      "id": "EXT-H",
+      "ok": true,
+      "detail": "exit=0 err_lines=9 no_leak=True env_removed=True"
+    },
+    {
+      "id": "EXT-I",
+      "ok": true,
+      "detail": "files=26 secrets=3 cred-semantics hits=none ssh-value-username-form-only_files=6 pass"
+    }
+  ],
+  "pass": 12,
+  "fail": 0,
+  "elapsed_s": 20.3,
+  "board": "192.168.0.103",
+  "remote_tmp": "/tmp/railhmi_ext002"
+}

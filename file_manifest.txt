@@ -1676,6 +1676,11 @@ docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-verif
 docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-verify-v1.transcript.json | active | 验证轮独立板端执行结构化 transcript（命令+退出码+输出）
 docs/video/test_evidence/ITEM-001/video-cap-ext-192_168_0_103-20261017-item001-verify-v1.json | active | 验证侧 ext 夹具结构化结果（EXT-01..06 判据检查 + 板端步骤输出，含元素缺失 exit3/负例 exit2/--exists 假否/凭据泄漏扫描）
 docs/video/test_evidence/ITEM-002/ITEM-002-ENV-B-20261017-r1.md | active | VideoExecutionEvidence：ITEM-002 源类型范围与链路测量记录（test/file/rtsp auto+显式 h265 同工厂出帧、selftest 16/16、脱敏与原始证据索引）
+docs/video/test_evidence/ITEM-002/VERIFY-ITEM-002.md | active | TestEvidence：ITEM-002 独立软件验证（独立板端复跑 + r6 结构一致性 + EXT-A..I 扩展夹具 + 凭据语义零泄漏，TEST_PASS）
+docs/video/test_evidence/ITEM-002/_verify_compare.py | active | 验证侧结构一致性比对夹具（impl r6 vs verify v1，time 归一口径）
+docs/video/test_evidence/ITEM-002/_verify_ext.py | active | 验证侧可复现扩展夹具（EXT-A..I 判据，板端操作有限超时+0600 凭据机制）
+docs/video/test_evidence/ITEM-002/_verify_leakscan.py | active | EXT-I 精化判据本地独立复检夹具（纯本地无板端）
+docs/video/test_evidence/ITEM-002/_verify_run.py | active | 验证轮包装入口（用户级凭据导入本进程后运行交付 runner，可复现）
 docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-file-20261017-item002-r6.json | active | ITEM-002 file 源采样 JSON
 docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-file-20261017-item002-r6.log | active | ITEM-002 file 源逐秒状态日志（循环）
 docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-rtsp-auto-20261017-item002-r6.json | active | ITEM-002 rtsp decodebin 自适应采样 JSON
@@ -1686,6 +1691,17 @@ docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-ev
 docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-test-20261017-item002-r6.log | active | ITEM-002 test 源逐秒状态日志
 docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.log | active | ITEM-002 板端执行人类可读 transcript（build/selftest/gen-file/test/file/rtsp auto+h265）
 docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.transcript.json | active | ITEM-002 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-file-20261017-item002-verify-v1.json | active | 验证轮 file 源采样 JSON
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-file-20261017-item002-verify-v1.log | active | 验证轮 file 源逐秒状态日志（EOS 循环证据）
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-rtsp-auto-20261017-item002-verify-v1.json | active | 验证轮 rtsp decodebin 自适应采样 JSON
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-rtsp-auto-20261017-item002-verify-v1.log | active | 验证轮 rtsp decodebin 自适应逐秒状态日志
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-rtsp-h265-20261017-item002-verify-v1.json | active | 验证轮 rtsp 显式 H265 固化路径采样 JSON
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-rtsp-h265-20261017-item002-verify-v1.log | active | 验证轮 rtsp 显式 H265 固化路径逐秒状态日志
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-test-20261017-item002-verify-v1.json | active | 验证轮 test 源采样 JSON
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.core-evidence_probe-test-20261017-item002-verify-v1.log | active | 验证轮 test 源逐秒状态日志
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.log | active | 验证轮独立板端执行人类可读 transcript
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.transcript.json | active | 验证轮独立板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-002/video-cap-ext-192_168_0_103-20261017-item002-verify-v1.json | active | 验证侧 ext 夹具结构化结果（EXT-A..I 12 项判据检查）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
