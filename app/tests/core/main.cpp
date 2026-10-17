@@ -26,6 +26,7 @@ void run_bounded_queue_tests();
 void run_compressed_ring_tests();
 void run_recording_source_tests();
 void run_clip_request_tests();
+void run_recording_provider_tests();
 void run_alarm_center_tests();
 void run_clip_tests();
 void run_replay_tests();
@@ -63,6 +64,7 @@ int main(int argc, char** argv) {
     run_compressed_ring_tests();
     run_recording_source_tests();
     run_clip_request_tests();
+    run_recording_provider_tests();
     run_alarm_center_tests();
     run_clip_tests();
     run_replay_tests();

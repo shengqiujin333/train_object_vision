@@ -29,6 +29,7 @@ add_library(railhmi_media STATIC
     src/ai_dispatcher.cpp
     src/recording_tap.cpp
     src/clip_writer.cpp
+    src/media_provider.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -127,5 +128,14 @@ target_include_directories(railhmi-clip-solidify PRIVATE ${GST_INCLUDE_DIRS})
 target_compile_options(railhmi-clip-solidify PRIVATE ${GST_CFLAGS_OTHER})
 target_link_libraries(railhmi-clip-solidify PRIVATE railhmi_media)
 set_target_properties(railhmi-clip-solidify PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 录像 provider 与回放媒体链路探针（视频 ITEM-013）
+add_executable(railhmi-media-provider tools/media_provider_probe.cpp)
+target_include_directories(railhmi-media-provider PRIVATE ${GST_INCLUDE_DIRS})
+target_compile_options(railhmi-media-provider PRIVATE ${GST_CFLAGS_OTHER})
+target_link_libraries(railhmi-media-provider PRIVATE railhmi_media)
+set_target_properties(railhmi-media-provider PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

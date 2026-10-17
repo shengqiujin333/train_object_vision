@@ -19,6 +19,7 @@ add_executable(railhmi-core-tests
     test_compressed_ring.cpp
     test_recording_source.cpp
     test_clip_request.cpp
+    test_recording_provider.cpp
     test_alarm_center.cpp
     test_clip.cpp
     test_replay.cpp

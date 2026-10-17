@@ -22,6 +22,7 @@ add_library(railhmi_core STATIC
     src/alarm_center.cpp
     src/clip.cpp
     src/clip_request.cpp
+    src/recording_provider.cpp
     src/replay.cpp
     src/maintenance.cpp
     src/permissions.cpp

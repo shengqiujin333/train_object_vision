@@ -1,0 +1,17 @@
+type=clip availability=complete size_bytes=1328972 actual=[3600001000,3600005960] path=core-evidence/prov/CAM-01_evt-200-CAM-01.ts
+type=query case=complete status=ok reason= segments=1 coverage_complete=true covered_ms=4960
+type=query case=empty status=ok reason= segments=0 coverage_complete=false
+type=query case=partial status=partial reason= segments=1 covered_ms=1000 coverage_complete=false
+type=query case=gaps status=ok gaps=1 reason=SYNTH_GAP
+type=query case=expired status=error reason=TIMEOUT
+type=play id=play-400 status=ok reason= requested=3600001400 actual=3600001645 reached=true frames=14
+type=play id=play-500 status=ok reason= requested=3600001500 actual=3600001645 reached=true frames=14
+type=play id=play-600 status=ok reason= requested=3600001600 actual=3600001645 reached=true frames=14
+type=play id=play-2500 status=ok reason= requested=3600003500 actual=3600001645 reached=true frames=14
+type=play id=play-4500 status=ok reason= requested=3600005500 actual=3600003645 reached=true frames=14
+type=export status=ok reason= path=core-evidence/prov/exports/CAM-01_evt-200-CAM-01.ts size_bytes=1328972 complete=true
+type=export case=missing status=unavailable reason=NOT_FOUND
+type=thumbnail path=core-evidence/prov/thumbs/cam01_00000.jpg exists=true
+type=nvr query=unavailable/UNCONFIGURED play=unavailable/UNCONFIGURED export=unavailable/UNCONFIGURED segments=0
+type=sync close_max_deviation=0 close_in_sync=true spread_max_deviation=2000 spread_in_sync=false spread_prompt=同步偏差 2000 ms（阈值 300 ms）
+type=acceptance query_complete=true query_empty_ok=true query_partial=true gaps_returned=true deadline_timeout=true play_actual_position=true play_within_tolerance=true export_real=true export_missing_unavailable=true thumbnail_real=true nvr_unconfigured=true sync_prompt=true sync_consistency=true result=PASS
