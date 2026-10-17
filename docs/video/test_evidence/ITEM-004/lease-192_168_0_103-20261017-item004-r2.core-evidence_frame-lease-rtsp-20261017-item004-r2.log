@@ -1,0 +1,8 @@
+type=lease_pre not_ready=true status=NOT_READY plane_count=0
+type=injection source=rtsp camera=CAM-01 consumers=2 duration_s=3 session_id=s1a148916aec-707d15-0
+type=lease_first valid=true camera=CAM-01 origin=live format=NV12 size=1280x720 colorimetry=unknown buffer_ref=fr-CAM-01-1 memory_kind=cpu planes=2 buffer_bytes=1382400 plane0_stride=1280 plane1_offset=921600 plane_ok=true
+type=lease_concurrent consumers=2 reads=2929 max_use_count=4 published=78 rejected=0
+type=lease_shared use_count=3 released_while_shared=0
+type=lease_partial release_after_copies=0
+type=lease_last release_after_last=1
+type=summary released_total=77 final_not_ready=false

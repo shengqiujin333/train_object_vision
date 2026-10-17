@@ -20,6 +20,7 @@ add_library(railhmi_media STATIC
     src/multi_stream.cpp
     src/ai_worker.cpp
     src/video_capability.cpp
+    src/frame_lease.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -58,5 +59,12 @@ set_target_properties(railhmi-ai-runner PROPERTIES
 add_executable(railhmi-video-capability tools/video_capability_tool.cpp)
 target_link_libraries(railhmi-video-capability PRIVATE railhmi_media)
 set_target_properties(railhmi-video-capability PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 不可变帧租约与缓冲区所有权探针（视频 ITEM-004）
+add_executable(railhmi-frame-lease tools/frame_lease_probe.cpp)
+target_link_libraries(railhmi-frame-lease PRIVATE railhmi_media)
+set_target_properties(railhmi-frame-lease PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

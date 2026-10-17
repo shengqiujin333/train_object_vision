@@ -14,6 +14,15 @@ namespace media {
 
 namespace {
 
+const char* origin_of(SourceKind k) {
+    switch (k) {
+        case SourceKind::Rtsp: return "live";
+        case SourceKind::File: return "file";
+        case SourceKind::Test: return "simulation";
+    }
+    return "live";
+}
+
 std::string build_pipeline(const CameraStreamConfig& c) {
     CameraPipelineSpec spec;
     switch (c.source) {
@@ -84,6 +93,7 @@ struct CameraStream::Impl {
     std::unique_ptr<railhmi::core::FrameSequencer> sequencer;
     railhmi::core::FrameMeta last_meta;
     long long frames_emitted = 0;
+    std::unique_ptr<FrameStore> store;
 
     std::string scrub(const std::string& t) const { return redact_secret(t, redact_src); }
 
@@ -112,6 +122,7 @@ GstPadProbeReturn count_probe(GstPad*, GstPadProbeInfo*, gpointer data) {
 
 CameraStream::CameraStream(CameraStreamConfig cfg) : impl_(new Impl()) {
     impl_->cfg = std::move(cfg);
+    impl_->store.reset(new FrameStore(impl_->cfg.camera_id));
 }
 
 CameraStream::~CameraStream() {
@@ -240,6 +251,10 @@ bool CameraStream::pump(int timeout_ms) {
             if (impl_->sequencer)
                 impl_->last_meta = impl_->sequencer->next(mono_us, wall_ms, pts_ns);
             ++impl_->frames_emitted;
+            if (impl_->store) {
+                std::string why;
+                impl_->store->publish(s, impl_->last_meta, "", origin_of(impl_->cfg.source), &why);
+            }
             if (impl_->machine) impl_->machine->on_frame(now, q);
             impl_->last_frame_ms = now;
             impl_->frame_times.push_back(now);
@@ -285,6 +300,13 @@ unsigned long long CameraStream::generation() const {
 long long CameraStream::frames_emitted() const {
     return impl_ ? impl_->frames_emitted : 0;
 }
+
+FrameLease CameraStream::latest_frame() const {
+    if (!impl_ || !impl_->store) return FrameLease();
+    return impl_->store->latest();
+}
+
+FrameStore& CameraStream::frame_store() { return *impl_->store; }
 
 }  // namespace media
 }  // namespace railhmi

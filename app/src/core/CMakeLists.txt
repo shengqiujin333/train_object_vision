@@ -6,6 +6,7 @@ add_library(railhmi_core STATIC
     src/rules.cpp
     src/timebase.cpp
     src/frame_identity.cpp
+    src/frame_layout.cpp
     src/persistence_model.cpp
     src/retention.cpp
     src/simulation.cpp

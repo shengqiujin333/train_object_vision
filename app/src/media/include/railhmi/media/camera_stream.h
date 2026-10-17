@@ -12,6 +12,8 @@
 #include "railhmi/core/frame_identity.h"
 #include "railhmi/core/stream_state.h"
 #include "railhmi/core/timebase.h"
+#include "railhmi/media/frame_lease.h"
+#include "railhmi/media/frame_store.h"
 #include "railhmi/media/pipeline_factory.h"
 
 namespace railhmi {
@@ -79,6 +81,11 @@ public:
     railhmi::core::FrameMeta last_frame_meta() const;
     unsigned long long generation() const;
     long long frames_emitted() const;
+
+    // 最新帧租约（视频 ITEM-004）；无帧返回空租约（status()==NOT_READY）。
+    FrameLease latest_frame() const;
+    // 最新帧仓库：供上层设置 release 回调与读取发布/拒绝计数。
+    FrameStore& frame_store();
 
     static long long now_ms();
 
