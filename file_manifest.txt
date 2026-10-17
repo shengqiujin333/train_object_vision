@@ -1781,12 +1781,22 @@ docs/video/test_evidence/ITEM-005/rga-192_168_0_103-20261017-item005-verify-v1.l
 docs/video/test_evidence/ITEM-005/rga-192_168_0_103-20261017-item005-verify-v1.transcript.json | active | 验证独立复跑结构化 transcript（指纹与实现 r3 同板同 key）
 docs/video/test_evidence/ITEM-005/rga-ext-192_168_0_103-20261017-item005-verify-v1.json | active | 验证 EXT 夹具结构化结果（11 判据 + 板端命令步骤 + 凭据泄漏 0 命中）
 docs/video/test_evidence/ITEM-006/ITEM-006-ENV-C-D-20261017-r1.md | active | VideoExecutionEvidence：ITEM-006 selftest 8/8 + freeze→restart(generation+1/计数清零) + freeze→resume(Recovered) + cut FI-01 + rtsp；nonlive_presentable=0
+docs/video/test_evidence/ITEM-006/VERIFY-ITEM-006.md | active | ITEM-006 软件验证 TestEvidence（VERIFY-20261017-v1，TEST_PASS：独立复跑 9 步 exit=0、四运行状态序列与 r3 逐项一致（≤1ms 抖动）、selftest 8/8 逐行一致；EXT 8/8 含真实 GstBus ERROR 路径（空 URL rtsp 排空→升级 offline）、file EOS 循环、pull 钳制、冻结期不忙等、板端直编 18 判例（旧代纪租约门/质量标志阈值边界/degraded 可展示性/start 幂等）、凭据泄漏 0 命中）
+docs/video/test_evidence/ITEM-006/_verify_ext.py | active | ITEM-006 验证侧扩展夹具（8 组判据 + 内嵌 C++ vext_camera_stream 18 判例；判据先独立构造再取实测；板端 tmp 全清理）
+docs/video/test_evidence/ITEM-006/_verify_run.py | active | ITEM-006 验证侧独立复跑驱动（PowerShell 用户级凭据导入→同进程调交付 runner --keep-remote，stamp verify-v1）
 docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-r3.core-evidence_worker-cut-20261017-item006-r3.log | active | ITEM-006 cut FI-01 逐拍日志
 docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-r3.core-evidence_worker-freeze-20261017-item006-r3.log | active | ITEM-006 freeze→restart 逐拍日志
 docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-r3.core-evidence_worker-resume-20261017-item006-r3.log | active | ITEM-006 freeze→resume 逐拍日志（Recovered）
 docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-r3.core-evidence_worker-rtsp-20261017-item006-r3.log | active | ITEM-006 真实 RTSP 逐拍日志
 docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-r3.log | active | ITEM-006 板端执行人类可读 transcript（build-media/selftest/freeze/cut/resume/rtsp）
 docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-r3.transcript.json | active | ITEM-006 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-verify-v1.core-evidence_worker-cut-20261017-item006-verify-v1.log | active | 验证轮 cut FI-01 逐拍日志（offline(2.8,count3,escalated)）
+docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-verify-v1.core-evidence_worker-freeze-20261017-item006-verify-v1.log | active | 验证轮 freeze→restart 逐拍日志（状态序列与 r3 一致，iterations=126 bounded）
+docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-verify-v1.core-evidence_worker-resume-20261017-item006-verify-v1.log | active | 验证轮 freeze→resume 逐拍日志（Recovered、reconnect_count 清零）
+docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-verify-v1.core-evidence_worker-rtsp-20261017-item006-verify-v1.log | active | 验证轮真实 RTSP CAM-01 逐拍日志（connecting→live ~26fps，bus_state_changes=102）
+docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-verify-v1.log | active | 验证轮独立复跑人类可读 transcript（mkdir/upload/build/selftest/freeze/cut/resume/rtsp/download 全 exit=0）
+docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹与实现 r3 同板同 key）
+docs/video/test_evidence/ITEM-006/worker-ext-192_168_0_103-20261017-item006-verify-v1.json | active | 验证 EXT 夹具结构化结果（EX-A..EX-G 8 项全 PASS + 板端命令步骤；EX-F 含 vext 18 判例）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

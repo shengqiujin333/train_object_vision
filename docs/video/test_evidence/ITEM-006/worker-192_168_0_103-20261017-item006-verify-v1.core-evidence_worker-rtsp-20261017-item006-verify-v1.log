@@ -1,0 +1,18 @@
+type=injection source=rtsp camera=CAM-01 duration_s=4 freeze_after_s=-1 cut_after_s=-1 restart_after_s=-1 resume_after_s=-1 pull_ms=200 session_id=s1a148dbb084-9054e3-0
+t=0 type=worker_state state=connecting presentable=false fps=0 reconnect_count=0 generation=1 seq=0 quality=- last_frame_ms=0 wall_ms=-1 bus_state_changes=0
+t=300 type=worker_state state=connecting presentable=false fps=0 reconnect_count=0 generation=1 seq=0 quality=- last_frame_ms=0 wall_ms=-1 bus_state_changes=19
+t=500 type=worker_state state=connecting presentable=false fps=0 reconnect_count=0 generation=1 seq=0 quality=- last_frame_ms=0 wall_ms=-1 bus_state_changes=78
+t=801 type=worker_state state=live presentable=true fps=5 reconnect_count=0 generation=1 seq=9 quality=- last_frame_ms=352617059 wall_ms=1792223720449 bus_state_changes=102
+t=1001 type=worker_state state=live presentable=true fps=7 reconnect_count=0 generation=1 seq=14 quality=- last_frame_ms=352617261 wall_ms=1792223720676 bus_state_changes=102
+t=1301 type=worker_state state=live presentable=true fps=11 reconnect_count=0 generation=1 seq=22 quality=- last_frame_ms=352617580 wall_ms=1792223720981 bus_state_changes=102
+t=1501 type=worker_state state=live presentable=true fps=14 reconnect_count=0 generation=1 seq=27 quality=- last_frame_ms=352617789 wall_ms=1792223721169 bus_state_changes=102
+t=1801 type=worker_state state=live presentable=true fps=17 reconnect_count=0 generation=1 seq=34 quality=- last_frame_ms=352618060 wall_ms=1792223721448 bus_state_changes=102
+t=2001 type=worker_state state=live presentable=true fps=20 reconnect_count=0 generation=1 seq=39 quality=- last_frame_ms=352618285 wall_ms=1792223721676 bus_state_changes=102
+t=2302 type=worker_state state=live presentable=true fps=24 reconnect_count=0 generation=1 seq=47 quality=- last_frame_ms=352618609 wall_ms=1792223721968 bus_state_changes=102
+t=2502 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=1 seq=52 quality=- last_frame_ms=352618809 wall_ms=1792223722180 bus_state_changes=102
+t=2802 type=worker_state state=live presentable=true fps=25 reconnect_count=0 generation=1 seq=59 quality=- last_frame_ms=352619088 wall_ms=1792223722468 bus_state_changes=102
+t=3002 type=worker_state state=live presentable=true fps=25 reconnect_count=0 generation=1 seq=64 quality=- last_frame_ms=352619268 wall_ms=1792223722668 bus_state_changes=102
+t=3302 type=worker_state state=live presentable=true fps=25 reconnect_count=0 generation=1 seq=72 quality=- last_frame_ms=352619601 wall_ms=1792223722978 bus_state_changes=102
+t=3503 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=1 seq=76 quality=- last_frame_ms=352619739 wall_ms=1792223723149 bus_state_changes=102
+t=3803 type=worker_state state=live presentable=true fps=25 reconnect_count=0 generation=1 seq=84 quality=- last_frame_ms=352620088 wall_ms=1792223723459 bus_state_changes=102
+type=summary final_state=live iterations=89 events_total=2 freezes=0 reconnect_attempts=0 escalations=0 recoveries=0 bus_state_changes=102 state_transitions=2 nonlive_presentable=0 final_generation=1

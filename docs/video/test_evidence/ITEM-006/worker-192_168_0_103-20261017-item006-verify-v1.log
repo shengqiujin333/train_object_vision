@@ -1,0 +1,297 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 199 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [build-media] exit=0 =====
+[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_worker' -B '/tmp/railhmi_worker/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = MediaCheck
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'
+--   Found gstreamer-1.0, version 1.20.3
+--   Found gstreamer-app-1.0, version 1.20.1
+--   Found gstreamer-video-1.0, version 1.20.1
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_worker/build-media
+[build.sh] building: cmake --build '/tmp/railhmi_worker/build-media' -j8
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
+[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/maintenance.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o
+[ 31%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o
+[ 32%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o
+[ 35%] Linking CXX static library librailhmi_core.a
+[ 35%] Built target railhmi_core
+[ 36%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
+[ 38%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 40%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
+[ 41%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o
+[ 42%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o
+[ 44%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 45%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 46%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 48%] Linking CXX executable ../../tools/railhmi-config-check
+[ 48%] Built target railhmi-config-check
+[ 49%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
+[ 50%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 50%] Built target railhmi-sim-inject
+[ 51%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 53%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
+[ 54%] Linking CXX executable ../../tools/railhmi-alarm-probe
+[ 54%] Built target railhmi-alarm-probe
+[ 55%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 57%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 58%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
+[ 58%] Built target railhmi-status-probe
+[ 59%] Linking CXX executable ../../tools/railhmi-maintenance-probe
+[ 59%] Built target railhmi-maintenance-probe
+[ 61%] Linking CXX executable ../../tools/railhmi-fault-probe
+[ 62%] Linking CXX executable ../../tools/railhmi-health-probe
+[ 62%] Built target railhmi-fault-probe
+[ 63%] Linking CXX executable ../../tools/railhmi-permissions-probe
+[ 63%] Built target railhmi-health-probe
+[ 64%] Linking CXX executable ../../tools/railhmi-ai-probe
+[ 64%] Built target railhmi-permissions-probe
+[ 64%] Built target railhmi-ai-probe
+[ 66%] Linking CXX static library librailhmi_platform.a
+[ 66%] Built target railhmi_platform
+[ 67%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/video_capability.cpp.o
+[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o
+[ 71%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_lease.cpp.o
+[ 74%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o
+[ 74%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o
+[ 75%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o
+[ 76%] Linking CXX executable ../../tools/railhmi-replay-probe
+[ 76%] Built target railhmi-replay-probe
+[ 77%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rga_convert.cpp.o
+[ 79%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_worker.cpp.o
+[ 80%] Linking CXX executable ../../tools/railhmi-clip-probe
+[ 80%] Built target railhmi-clip-probe
+[ 81%] Linking CXX static library librailhmi_media.a
+[ 81%] Built target railhmi_media
+[ 83%] Building CXX object src/media/CMakeFiles/railhmi-video-capability.dir/tools/video_capability_tool.cpp.o
+[ 85%] Building CXX object src/media/CMakeFiles/railhmi-rga-convert.dir/tools/rga_convert_probe.cpp.o
+[ 85%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o
+[ 87%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o
+[ 88%] Building CXX object src/media/CMakeFiles/railhmi-camera-worker.dir/tools/camera_worker_probe.cpp.o
+[ 89%] Building CXX object src/media/CMakeFiles/railhmi-frame-lease.dir/tools/frame_lease_probe.cpp.o
+[ 90%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o
+[ 92%] Linking CXX executable ../../tools/railhmi-ai-runner
+[ 92%] Built target railhmi-ai-runner
+[ 93%] Linking CXX executable ../../tools/railhmi-rga-convert
+[ 93%] Built target railhmi-rga-convert
+[ 94%] Linking CXX executable ../../tools/railhmi-frame-lease
+[ 94%] Built target railhmi-frame-lease
+[ 96%] Linking CXX executable ../../tools/railhmi-camera-worker
+[ 97%] Linking CXX executable ../../tools/railhmi-multi-probe
+[ 97%] Built target railhmi-camera-worker
+[ 97%] Built target railhmi-multi-probe
+[ 98%] Linking CXX executable ../../tools/railhmi-video-capability
+[ 98%] Built target railhmi-video-capability
+[100%] Linking CXX executable ../../tools/railhmi-stream-probe
+[100%] Built target railhmi-stream-probe
+[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_worker/build-media
+[build.sh] media layer: /tmp/railhmi_worker/build-media/src/media/librailhmi_media.a
+BUILD_MEDIA_EXIT=0
+
+
+===== [selftest] exit=0 =====
+selftest PASS sm_live
+selftest PASS sm_live_no_freeze_before_timeout
+selftest PASS sm_freeze_after_timeout
+selftest PASS sm_frozen_to_reconnecting
+selftest PASS sm_escalated_offline
+selftest PASS sm_recovery_resets_count
+selftest PASS pull_timeout_clamped_to_200
+selftest PASS pull_timeout_floor_to_1
+selftest OK (0 failure(s))
+SELFTEST_EXIT=0
+
+
+===== [run-freeze] exit=0 =====
+type=injection source=test camera=CAM-01 duration_s=9 freeze_after_s=1 cut_after_s=-1 restart_after_s=6 resume_after_s=-1 pull_ms=200 session_id=s1a148db4d5f-d0f28-0
+t=0 type=worker_state state=live presentable=true fps=2 reconnect_count=0 generation=1 seq=3 quality=- last_frame_ms=352590909 wall_ms=1792223694297 bus_state_changes=27
+t=300 type=worker_state state=live presentable=true fps=5 reconnect_count=0 generation=1 seq=10 quality=- last_frame_ms=352591189 wall_ms=1792223694577 bus_state_changes=27
+t=500 type=worker_state state=live presentable=true fps=8 reconnect_count=0 generation=1 seq=15 quality=- last_frame_ms=352591389 wall_ms=1792223694777 bus_state_changes=27
+t=800 type=worker_state state=live presentable=true fps=12 reconnect_count=0 generation=1 seq=23 quality=- last_frame_ms=352591709 wall_ms=1792223695097 bus_state_changes=27
+t=1001 type=injection freeze=FI-02
+t=1001 type=worker_state state=live presentable=true fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=27
+t=1301 type=worker_state state=live presentable=true fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=1501 type=worker_state state=live presentable=true fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=1801 type=worker_state state=frozen presentable=false fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=2002 type=worker_state state=frozen presentable=false fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=2302 type=worker_state state=frozen presentable=false fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=2502 type=worker_state state=reconnecting presentable=false fps=10 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=2803 type=worker_state state=connecting presentable=false fps=5 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=3003 type=worker_state state=connecting presentable=false fps=2 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=3303 type=worker_state state=reconnecting presentable=false fps=0 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=3503 type=worker_state state=connecting presentable=false fps=0 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=3804 type=worker_state state=connecting presentable=false fps=0 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=4004 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=4304 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=4505 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=4805 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=5005 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=5305 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=5506 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=5806 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352591830 wall_ms=1792223695217 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=6006 type=injection restart=rebuild
+t=6006 type=worker_state state=live presentable=true fps=1 reconnect_count=0 generation=2 seq=2 quality=- last_frame_ms=352596882 wall_ms=1792223700269 bus_state_changes=61
+t=6306 type=worker_state state=live presentable=true fps=5 reconnect_count=0 generation=2 seq=10 quality=- last_frame_ms=352597201 wall_ms=1792223700590 bus_state_changes=61
+t=6506 type=worker_state state=live presentable=true fps=8 reconnect_count=0 generation=2 seq=15 quality=- last_frame_ms=352597402 wall_ms=1792223700790 bus_state_changes=61
+t=6806 type=worker_state state=live presentable=true fps=11 reconnect_count=0 generation=2 seq=22 quality=- last_frame_ms=352597682 wall_ms=1792223701069 bus_state_changes=61
+t=7007 type=worker_state state=live presentable=true fps=14 reconnect_count=0 generation=2 seq=27 quality=- last_frame_ms=352597881 wall_ms=1792223701269 bus_state_changes=61
+t=7307 type=worker_state state=live presentable=true fps=18 reconnect_count=0 generation=2 seq=35 quality=- last_frame_ms=352598201 wall_ms=1792223701589 bus_state_changes=61
+t=7507 type=worker_state state=live presentable=true fps=20 reconnect_count=0 generation=2 seq=40 quality=- last_frame_ms=352598401 wall_ms=1792223701789 bus_state_changes=61
+t=7807 type=worker_state state=live presentable=true fps=24 reconnect_count=0 generation=2 seq=47 quality=- last_frame_ms=352598681 wall_ms=1792223702069 bus_state_changes=61
+t=8008 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=2 seq=52 quality=- last_frame_ms=352598882 wall_ms=1792223702269 bus_state_changes=61
+t=8308 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=2 seq=60 quality=- last_frame_ms=352599201 wall_ms=1792223702589 bus_state_changes=61
+t=8508 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=2 seq=65 quality=- last_frame_ms=352599401 wall_ms=1792223702789 bus_state_changes=61
+t=8808 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=2 seq=72 quality=- last_frame_ms=352599681 wall_ms=1792223703069 bus_state_changes=61
+type=summary final_state=live iterations=126 events_total=9 freezes=1 reconnect_attempts=3 escalations=1 recoveries=0 bus_state_changes=61 state_transitions=8 nonlive_presentable=0 final_generation=2
+FREEZE_EXIT=0
+
+
+===== [run-cut] exit=0 =====
+type=injection source=test camera=CAM-01 duration_s=6 freeze_after_s=-1 cut_after_s=1 restart_after_s=-1 resume_after_s=-1 pull_ms=200 session_id=s1a148db714f-996d6a-0
+t=0 type=worker_state state=live presentable=true fps=2 reconnect_count=0 generation=1 seq=3 quality=- last_frame_ms=352600107 wall_ms=1792223703495 bus_state_changes=27
+t=300 type=worker_state state=live presentable=true fps=5 reconnect_count=0 generation=1 seq=10 quality=- last_frame_ms=352600386 wall_ms=1792223703775 bus_state_changes=27
+t=500 type=worker_state state=live presentable=true fps=8 reconnect_count=0 generation=1 seq=15 quality=- last_frame_ms=352600586 wall_ms=1792223703975 bus_state_changes=27
+t=800 type=worker_state state=live presentable=true fps=12 reconnect_count=0 generation=1 seq=23 quality=- last_frame_ms=352600906 wall_ms=1792223704295 bus_state_changes=27
+t=1000 type=injection cut=FI-01
+t=1000 type=worker_state state=live presentable=true fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27
+t=1301 type=worker_state state=reconnecting presentable=false fps=13 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=1501 type=worker_state state=connecting presentable=false fps=13 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=1801 type=worker_state state=connecting presentable=false fps=13 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=2001 type=worker_state state=reconnecting presentable=false fps=13 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=2302 type=worker_state state=connecting presentable=false fps=12 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=2502 type=worker_state state=connecting presentable=false fps=10 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=2802 type=worker_state state=offline presentable=false fps=5 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=3003 type=worker_state state=offline presentable=false fps=2 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=3303 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=3503 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=3804 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=4004 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=4304 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=4504 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=4804 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=5005 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=5305 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=5505 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+t=5805 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352601026 wall_ms=1792223704415 bus_state_changes=27 error=simulated stream cut (FI-01)
+type=summary final_state=offline iterations=50 events_total=7 freezes=0 reconnect_attempts=3 escalations=1 recoveries=0 bus_state_changes=27 state_transitions=6 nonlive_presentable=0 final_generation=1
+CUT_EXIT=0
+
+
+===== [run-resume] exit=0 =====
+type=injection source=test camera=CAM-01 duration_s=9 freeze_after_s=1 cut_after_s=-1 restart_after_s=-1 resume_after_s=6 pull_ms=200 session_id=s1a148db8970-f7af26-0
+t=0 type=worker_state state=live presentable=true fps=2 reconnect_count=0 generation=1 seq=3 quality=- last_frame_ms=352606282 wall_ms=1792223709670 bus_state_changes=27
+t=300 type=worker_state state=live presentable=true fps=5 reconnect_count=0 generation=1 seq=10 quality=- last_frame_ms=352606562 wall_ms=1792223709951 bus_state_changes=27
+t=500 type=worker_state state=live presentable=true fps=8 reconnect_count=0 generation=1 seq=15 quality=- last_frame_ms=352606762 wall_ms=1792223710150 bus_state_changes=27
+t=800 type=worker_state state=live presentable=true fps=12 reconnect_count=0 generation=1 seq=23 quality=- last_frame_ms=352607082 wall_ms=1792223710470 bus_state_changes=27
+t=1000 type=injection freeze=FI-02
+t=1000 type=worker_state state=live presentable=true fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=27
+t=1301 type=worker_state state=live presentable=true fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=1501 type=worker_state state=live presentable=true fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=1801 type=worker_state state=frozen presentable=false fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=2001 type=worker_state state=frozen presentable=false fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=2301 type=worker_state state=frozen presentable=false fps=13 reconnect_count=0 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=2501 type=worker_state state=reconnecting presentable=false fps=10 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=2802 type=worker_state state=connecting presentable=false fps=5 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=3002 type=worker_state state=connecting presentable=false fps=2 reconnect_count=1 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=3302 type=worker_state state=reconnecting presentable=false fps=0 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=3502 type=worker_state state=connecting presentable=false fps=0 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=3802 type=worker_state state=connecting presentable=false fps=0 reconnect_count=2 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=4003 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=4303 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=4503 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=4804 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=5004 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=5304 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=5504 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=5805 type=worker_state state=offline presentable=false fps=0 reconnect_count=3 generation=1 seq=26 quality=- last_frame_ms=352607202 wall_ms=1792223710590 bus_state_changes=34 error=simulated stream freeze (FI-02)
+t=6005 type=injection resume=thaw
+t=6005 type=worker_state state=live presentable=true fps=2 reconnect_count=0 generation=1 seq=29 quality=- last_frame_ms=352612285 wall_ms=1792223715673 bus_state_changes=45
+t=6305 type=worker_state state=live presentable=true fps=5 reconnect_count=0 generation=1 seq=36 quality=- last_frame_ms=352612565 wall_ms=1792223715953 bus_state_changes=45
+t=6505 type=worker_state state=live presentable=true fps=8 reconnect_count=0 generation=1 seq=41 quality=- last_frame_ms=352612765 wall_ms=1792223716153 bus_state_changes=45
+t=6806 type=worker_state state=live presentable=true fps=12 reconnect_count=0 generation=1 seq=49 quality=- last_frame_ms=352613085 wall_ms=1792223716473 bus_state_changes=45
+t=7006 type=worker_state state=live presentable=true fps=14 reconnect_count=0 generation=1 seq=54 quality=- last_frame_ms=352613285 wall_ms=1792223716673 bus_state_changes=45
+t=7306 type=worker_state state=live presentable=true fps=18 reconnect_count=0 generation=1 seq=61 quality=- last_frame_ms=352613565 wall_ms=1792223716953 bus_state_changes=45
+t=7506 type=worker_state state=live presentable=true fps=20 reconnect_count=0 generation=1 seq=66 quality=- last_frame_ms=352613765 wall_ms=1792223717153 bus_state_changes=45
+t=7806 type=worker_state state=live presentable=true fps=24 reconnect_count=0 generation=1 seq=74 quality=- last_frame_ms=352614085 wall_ms=1792223717473 bus_state_changes=45
+t=8006 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=1 seq=79 quality=- last_frame_ms=352614285 wall_ms=1792223717673 bus_state_changes=45
+t=8307 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=1 seq=86 quality=- last_frame_ms=352614565 wall_ms=1792223717953 bus_state_changes=45
+t=8507 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=1 seq=91 quality=- last_frame_ms=352614765 wall_ms=1792223718153 bus_state_changes=45
+t=8807 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=1 seq=99 quality=- last_frame_ms=352615085 wall_ms=1792223718473 bus_state_changes=45
+type=summary final_state=live iterations=126 events_total=8 freezes=1 reconnect_attempts=3 escalations=1 recoveries=1 bus_state_changes=45 state_transitions=8 nonlive_presentable=0 final_generation=1
+RESUME_EXIT=0
+
+
+===== [run-rtsp] exit=0 =====
+type=injection source=rtsp camera=CAM-01 duration_s=4 freeze_after_s=-1 cut_after_s=-1 restart_after_s=-1 resume_after_s=-1 pull_ms=200 session_id=s1a148dbb084-9054e3-0
+t=0 type=worker_state state=connecting presentable=false fps=0 reconnect_count=0 generation=1 seq=0 quality=- last_frame_ms=0 wall_ms=-1 bus_state_changes=0
+t=300 type=worker_state state=connecting presentable=false fps=0 reconnect_count=0 generation=1 seq=0 quality=- last_frame_ms=0 wall_ms=-1 bus_state_changes=19
+t=500 type=worker_state state=connecting presentable=false fps=0 reconnect_count=0 generation=1 seq=0 quality=- last_frame_ms=0 wall_ms=-1 bus_state_changes=78
+t=801 type=worker_state state=live presentable=true fps=5 reconnect_count=0 generation=1 seq=9 quality=- last_frame_ms=352617059 wall_ms=1792223720449 bus_state_changes=102
+t=1001 type=worker_state state=live presentable=true fps=7 reconnect_count=0 generation=1 seq=14 quality=- last_frame_ms=352617261 wall_ms=1792223720676 bus_state_changes=102
+t=1301 type=worker_state state=live presentable=true fps=11 reconnect_count=0 generation=1 seq=22 quality=- last_frame_ms=352617580 wall_ms=1792223720981 bus_state_changes=102
+t=1501 type=worker_state state=live presentable=true fps=14 reconnect_count=0 generation=1 seq=27 quality=- last_frame_ms=352617789 wall_ms=1792223721169 bus_state_changes=102
+t=1801 type=worker_state state=live presentable=true fps=17 reconnect_count=0 generation=1 seq=34 quality=- last_frame_ms=352618060 wall_ms=1792223721448 bus_state_changes=102
+t=2001 type=worker_state state=live presentable=true fps=20 reconnect_count=0 generation=1 seq=39 quality=- last_frame_ms=352618285 wall_ms=1792223721676 bus_state_changes=102
+t=2302 type=worker_state state=live presentable=true fps=24 reconnect_count=0 generation=1 seq=47 quality=- last_frame_ms=352618609 wall_ms=1792223721968 bus_state_changes=102
+t=2502 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=1 seq=52 quality=- last_frame_ms=352618809 wall_ms=1792223722180 bus_state_changes=102
+t=2802 type=worker_state state=live presentable=true fps=25 reconnect_count=0 generation=1 seq=59 quality=- last_frame_ms=352619088 wall_ms=1792223722468 bus_state_changes=102
+t=3002 type=worker_state state=live presentable=true fps=25 reconnect_count=0 generation=1 seq=64 quality=- last_frame_ms=352619268 wall_ms=1792223722668 bus_state_changes=102
+t=3302 type=worker_state state=live presentable=true fps=25 reconnect_count=0 generation=1 seq=72 quality=- last_frame_ms=352619601 wall_ms=1792223722978 bus_state_changes=102
+t=3503 type=worker_state state=live presentable=true fps=26 reconnect_count=0 generation=1 seq=76 quality=- last_frame_ms=352619739 wall_ms=1792223723149 bus_state_changes=102
+t=3803 type=worker_state state=live presentable=true fps=25 reconnect_count=0 generation=1 seq=84 quality=- last_frame_ms=352620088 wall_ms=1792223723459 bus_state_changes=102
+type=summary final_state=live iterations=89 events_total=2 freezes=0 reconnect_attempts=0 escalations=0 recoveries=0 bus_state_changes=102 state_transitions=2 nonlive_presentable=0 final_generation=1
+RTSP_EXIT=0
+
+
+===== [download] exit=0 =====
+worker-192_168_0_103-20261017-item006-verify-v1.core-evidence_worker-freeze-20261017-item006-verify-v1.log
+
+===== [download] exit=0 =====
+worker-192_168_0_103-20261017-item006-verify-v1.core-evidence_worker-cut-20261017-item006-verify-v1.log
+
+===== [download] exit=0 =====
+worker-192_168_0_103-20261017-item006-verify-v1.core-evidence_worker-resume-20261017-item006-verify-v1.log
+
+===== [download] exit=0 =====
+worker-192_168_0_103-20261017-item006-verify-v1.core-evidence_worker-rtsp-20261017-item006-verify-v1.log

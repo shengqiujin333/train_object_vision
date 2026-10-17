@@ -1,0 +1,49 @@
+{
+  "results": [
+    {
+      "id": "EX-A/pull_clamped_high",
+      "ok": true,
+      "detail": "head=type=injection source=test camera=CAM-01 duration_s=1 freeze_after_s=-1 cut_after_s=-1 restart_after_s=-1 resume_after_s"
+    },
+    {
+      "id": "EX-A/pull_floored_low",
+      "ok": true,
+      "detail": "head=type=injection source=test camera=CAM-01 duration_s=1 freeze_after_s=-1 cut_after_s=-1 restart_after_s=-1 resume_after_s"
+    },
+    {
+      "id": "EX-B",
+      "ok": true,
+      "detail": "exit=0 err_seen=True attempts=3 escalations=1 final=offline nonlive_presentable=0 iterations=30"
+    },
+    {
+      "id": "EX-C",
+      "ok": true,
+      "detail": "gen_ok=True late_slots=4 attempts=0 escalations=0 final=live"
+    },
+    {
+      "id": "EX-D",
+      "ok": true,
+      "detail": "exit=0 err_seen=True final=offline iterations=10"
+    },
+    {
+      "id": "EX-E",
+      "ok": true,
+      "detail": "exit=0 iterations=40 freezes=1 bounded<=120"
+    },
+    {
+      "id": "EX-F",
+      "ok": true,
+      "detail": "compile_ok=True vext_pass=18 vext_fail=0 exit0=True"
+    },
+    {
+      "id": "EX-G",
+      "ok": true,
+      "detail": "files=16 secrets=3 cred-semantics hits=none ssh-value-username-form-only_files=5"
+    }
+  ],
+  "pass": 8,
+  "fail": 0,
+  "elapsed_s": 29.4,
+  "board": "192.168.0.103",
+  "remote_tmp": "/tmp/ext006_board"
+}
