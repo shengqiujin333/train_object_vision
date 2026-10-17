@@ -1,0 +1,129 @@
+{
+  "tag": "recov-ext-192_168_0_103-20261017-item014-verify-v2",
+  "checks": [
+    {
+      "name": "EX-A config copy shows 300",
+      "ok": true,
+      "detail": "  reconnect_backoff_ms: 300\n"
+    },
+    {
+      "name": "EX-A run exit0",
+      "ok": true,
+      "detail": "rue repeat_same_error_recovers=true backoff_respected=true auth_no_retry=true capability_gated=true single_channel_isolation=true onvif_default_off=true onvif_unconfigured=true result=PASS\nEXA_EXIT=0\n"
+    },
+    {
+      "name": "EX-A base_backoff=300",
+      "ok": true,
+      "detail": "{'reconnect_backoff_ms': '300', 'duration_s': '9', 'channels': '3'}"
+    },
+    {
+      "name": "EX-A backoff respected (rebuild1-t_cut >= 250)",
+      "ok": true,
+      "detail": "t_cut=50 rebuild1=576"
+    },
+    {
+      "name": "EX-A second cut rebuild window >= 250",
+      "ok": true,
+      "detail": "{'t_cut_ms': '50', 'rebuild1_ms': '576', 'rebuild2_ms': '1253', 'rebuild3_ms': '2532', 'change_ms': '2500', 'second_cut': 'true'}"
+    },
+    {
+      "name": "EX-A capability gated (rebuild3 >= change)",
+      "ok": true,
+      "detail": "{'t_cut_ms': '50', 'rebuild1_ms': '576', 'rebuild2_ms': '1253', 'rebuild3_ms': '2532', 'change_ms': '2500', 'second_cut': 'true'}"
+    },
+    {
+      "name": "EX-A acceptance PASS",
+      "ok": true,
+      "detail": "{'rebuild_confirmed_by_new_frame': 'true', 'attempts_match_actual': 'true', 'repeat_same_error_recovers': 'true', 'backoff_respected': 'true', 'auth_no_retry': 'true', 'capability_gated': 'true', 'single_channel_isolation': 'true', 'onvif_default_off': 'true', 'onvif_unconfigured': 'true', 'result':"
+    },
+    {
+      "name": "NEG unknown arg exit2",
+      "ok": true,
+      "detail": "NEG_EXIT=2\nunknown arg: --bogus-flag\n"
+    },
+    {
+      "name": "NEG help exit0 usage",
+      "ok": true,
+      "detail": "usage: railhmi-recovery [--config dir] [--duration s] [--out log] [--json json] [--selftest]\nHELP_EXIT=0\n"
+    },
+    {
+      "name": "DET different-params rows differ (sanity)",
+      "ok": true,
+      "detail": "EX-A(300) vs DET(1000) must differ"
+    },
+    {
+      "name": "DET base_backoff=1000",
+      "ok": true,
+      "detail": "{'reconnect_backoff_ms': '1000', 'duration_s': '8', 'channels': '3'}"
+    },
+    {
+      "name": "DET acceptance PASS",
+      "ok": true,
+      "detail": "{'rebuild_confirmed_by_new_frame': 'true', 'attempts_match_actual': 'true', 'repeat_same_error_recovers': 'true', 'backoff_respected': 'true', 'auth_no_retry': 'true', 'capability_gated': 'true', 'single_channel_isolation': 'true', 'onvif_default_off': 'true', 'onvif_unconfigured': 'true', 'result':"
+    },
+    {
+      "name": "DET backoff respected >= 950",
+      "ok": true,
+      "detail": "{'t_cut_ms': '50', 'rebuild1_ms': '1304', 'rebuild2_ms': '2760', 'rebuild3_ms': '2534', 'change_ms': '2500', 'second_cut': 'true'}"
+    },
+    {
+      "name": "DET json acceptance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "EXT-C static libs present",
+      "ok": true,
+      "detail": "build-media/src/core/librailhmi_core.a\nbuild-media/src/media/librailhmi_media.a\nbuild-media/src/platform/librailhmi_platform.a\n"
+    },
+    {
+      "name": "EXT-C compiled",
+      "ok": true,
+      "detail": "VEXT_COMPILED\n"
+    },
+    {
+      "name": "EXT-C no FAIL at all (fix round: exhibits must pass)",
+      "ok": true,
+      "detail": "named fails=[]"
+    },
+    {
+      "name": "EXT-C 26 regression PASS lines (all)",
+      "ok": true,
+      "detail": "got 26 PASS"
+    },
+    {
+      "name": "EXT-C 0 FAIL lines",
+      "ok": true,
+      "detail": "got 0 FAIL"
+    },
+    {
+      "name": "EXT-C summary 0 failures",
+      "ok": true,
+      "detail": "cy_ms=226 onvif=disabled\nvext PASS g08 ch0 rebuilt+confirmed\nvext PASS g08 other channels generation unchanged\nvext PASS g08 other channels still frame-advancing\nvext summary 0 failure(s)\nVEXT_EXIT=0\n"
+    },
+    {
+      "name": "EXT-C g02 second cut present",
+      "ok": true,
+      "detail": "vext PASS g01 start_all\nvext OBSERVE g01 gen=1->2 kind=NETWORK failure_chain=0 max_failure_chain=1 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=226 onvif=disabled\nvext PASS g01 attempts once\nvext PASS g0"
+    },
+    {
+      "name": "EXT-C D-01 exhibit names exercised",
+      "ok": true,
+      "detail": "vext PASS g01 start_all\nvext OBSERVE g01 gen=1->2 kind=NETWORK failure_chain=0 max_failure_chain=1 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=226 onvif=disabled\nvext PASS g01 attempts once\nvext PASS g0"
+    },
+    {
+      "name": "EX-D credential leak 0 hits",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "EX-E cleanup confirmed",
+      "ok": true,
+      "detail": "CLEAN_CHECK_DONE\n"
+    }
+  ],
+  "summary": {
+    "total": 24,
+    "failed": 0
+  }
+}

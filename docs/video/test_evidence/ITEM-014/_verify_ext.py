@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""ITEM-014 验证侧扩展夹具（software_verification，VERIFY-20261017-v1）。
+"""ITEM-014 验证侧扩展夹具（software_verification，VERIFY-20261017-v2 修复轮）。
 
 在 --keep-remote 保留的 /tmp/railhmi_recovery 树上黑盒驱动交付 railhmi-recovery
 探针与已上传源码，验证侧自有判据：
 
   A. 独立参数轮: 复制 config 改 reconnect_backoff_ms=300 → 退避判据按参数独立重推导
   B. CLI 负例: --bogus-flag exit2 + --help exit0 用法行；同参二跑语义行恒等（确定性）
-  C. 板端 g++ 直编验证侧自有夹具 _verify_vext.cpp（链接交付三层 .a，8 场景 30 判例），
-     覆盖交付探针未测边界：恢复后同文本二次断流、重建后无新帧的继续重试、
-     异文本对照、鉴权/能力门控、ONVIF 三态、单路隔离
+  C. 板端 g++ 直编验证侧自有夹具 _verify_vext.cpp（链接交付三层 .a，8 场景 26 判例），
+     覆盖交付探针未测边界：恢复后同文本二次断流（D-01 修复核心，修复后必须 PASS）、
+     重建后无新帧的继续重试、异文本对照、鉴权/能力门控、ONVIF 三态、单路隔离
   D. 凭据泄漏扫描（本目录全部 ITEM-014 证据文件，SSH secret + 两类相机凭据语义）
   E. 板端 EXT 临时产物清理
+
+v2 判据协议（修复轮）：v1 的 3 条 D-01 呈证判据（缺陷在位时 FAIL）在修复后必须转 PASS；
+全部 26 条判例预期全 PASS，任何 FAIL 都提示修复未到位或回归。
 """
 import io
 import os
@@ -27,7 +30,7 @@ import paramiko  # noqa: E402
 from board_build import rrun  # noqa: E402
 
 OUT = HERE
-STAMP = "20261017-item014-verify-v1"
+STAMP = "20261017-item014-verify-v2"
 TAG = "recov-ext-%s-%s" % ("192_168_0_103", STAMP)
 REMOTE = "/tmp/railhmi_recovery"
 BIN = REMOTE + "/build-media/tools/railhmi-recovery"
@@ -114,8 +117,8 @@ if t and t.get("t_cut_ms") is not None:
     t_cut, r1 = int(t["t_cut_ms"]), int(t["rebuild1_ms"])
     check("EX-A backoff respected (rebuild1-t_cut >= 250)",
           r1 >= 0 and (r1 - t_cut) >= bb - 50, "t_cut=%d rebuild1=%d" % (t_cut, r1))
-    c1 = pa["recovery"].get("CAM-01", {})
-    check("EX-A attempts once + recovered", c1.get("attempts") == "1" and c1.get("recovered") == "true", str(c1))
+    check("EX-A second cut rebuild window >= 250",
+          t.get("rebuild2_ms") and (int(t["rebuild2_ms"]) - r1) >= bb - 50, str(t))
     check("EX-A capability gated (rebuild3 >= change)",
           int(t["rebuild3_ms"]) >= int(t["change_ms"]), str(t))
     check("EX-A acceptance PASS", pa["acceptance"] and pa["acceptance"].get("result") == "PASS",
@@ -193,20 +196,19 @@ if "VEXT_COMPILED" in res["output"]:
     out = res["output"]
     vpass = out.count("vext PASS")
     vfail = out.count("vext FAIL")
-    # v3 判据协议: g02 两条 + g03b 一条为业务判据（缺陷存在时 EXPECT FAIL=呈证），
-    # 其余 23 条为回归判据（期望 PASS）。
+    # v2 判据协议（修复轮）: v1 的 3 条 D-01 呈证判例（g02 两条 + g03b 一条）必须转 PASS，
+    # 其余 23 条回归判例必须保持 PASS —— 全 26 条判例预期全绿，任何 FAIL 即修复未到位/回归。
     exhibit_names = ("g02 second cut attempts==2", "g02 second cut rebuilt+confirmed",
                      "g03b D-01 exhibit same-text repeat not rebuilt")
     fails_named = re.findall(r"^vext FAIL (.+)$", out, re.M)
-    fails_other = [n for n in fails_named if n not in exhibit_names]
-    check("EXT-C exactly the 3 D-01 exhibit FAILs",
-          sorted(fails_named) == sorted(exhibit_names), "named fails=%s" % fails_named)
-    check("EXT-C no unexpected FAIL outside exhibits", not fails_other, str(fails_other))
-    check("EXT-C 23 regression PASS lines", vpass == 23, "got %d PASS" % vpass)
-    check("EXT-C 3 exhibit FAIL lines", vfail == 3, "got %d FAIL" % vfail)
-    check("EXT-C summary 3 failures (exactly the 3 exhibit clauses)",
-          "vext summary 3 failure(s)" in out, out[-200:])
+    check("EXT-C no FAIL at all (fix round: exhibits must pass)", not fails_named,
+          "named fails=%s" % fails_named)
+    check("EXT-C 26 regression PASS lines (all)", vpass == 26, "got %d PASS" % vpass)
+    check("EXT-C 0 FAIL lines", vfail == 0, "got %d FAIL" % vfail)
+    check("EXT-C summary 0 failures", "vext summary 0 failure(s)" in out, out[-200:])
     check("EXT-C g02 second cut present", "vext OBSERVE g02_second_cut" in out, out[:400])
+    check("EXT-C D-01 exhibit names exercised",
+          all(n in out for n in exhibit_names), out[:400])
     # 保存原始输出供证据归档
     (OUT / (TAG + ".vext.log")).write_text(out, encoding="utf-8")
     run("EXT-C-fetch-done", "echo fetched", 10)

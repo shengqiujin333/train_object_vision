@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""ITEM-014 验证侧独立复跑驱动（software_verification，VERIFY-20261017-v1）。
+"""ITEM-014 验证侧独立复跑驱动（software_verification，VERIFY-20261017-v2 修复轮）。
 
 从 PowerShell 用户级环境导入凭据到当前进程，再以同进程环境独立复跑交付入口
 app/tools/board_recovery_check.py（--keep-remote 保留板端构建树 /tmp/railhmi_recovery
-供验证侧 EXT 夹具使用）。stamp=20261017-item014-verify-v1；不采信实现方 r2 归档，
+供验证侧 EXT 夹具使用）。stamp=20261017-item014-verify-v2；不采信实现方 r3 归档，
 判据由 _verify_ext.py 单独核对。
 """
 import os
@@ -33,7 +33,7 @@ cmd = [sys.executable, str(RUNNER),
        "--host", "192.168.0.103",
        "--user", "admin",
        "--outdir", str(HERE),
-       "--stamp", "20261017-item014-verify-v1",
+       "--stamp", "20261017-item014-verify-v2",
        "--keep-remote"]
 print("run:", cmd[:1])
 res = subprocess.run(cmd)

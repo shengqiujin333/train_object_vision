@@ -1,6 +1,6 @@
 {
-  "impl_tag": "20261017-item014-r2",
-  "verify_tag": "20261017-item014-verify-v1",
+  "impl_tag": "20261017-item014-r3",
+  "verify_tag": "20261017-item014-verify-v2",
   "checks": [
     {
       "name": "row count 9",
@@ -40,7 +40,7 @@
     {
       "name": "row06 type=timing keyset",
       "ok": true,
-      "detail": "['change_ms', 'rebuild1_ms', 'rebuild3_ms', 't_cut_ms', 'type'] vs ['change_ms', 'rebuild1_ms', 'rebuild3_ms', 't_cut_ms', 'type']"
+      "detail": "['change_ms', 'rebuild1_ms', 'rebuild2_ms', 'rebuild3_ms', 'second_cut', 't_cut_ms', 'type'] vs ['change_ms', 'rebuild1_ms', 'rebuild2_ms', 'rebuild3_ms', 'second_cut', 't_cut_ms', 'type']"
     },
     {
       "name": "row07 type=home",
@@ -58,14 +58,24 @@
       "detail": ""
     },
     {
-      "name": "C1 rebuild confirmed by new frame",
+      "name": "C1 rebuild confirmed by new frame (both cuts, attempts=2)",
       "ok": true,
-      "detail": "{'type': 'recovery', 'cam': 'CAM-01', 'kind': 'NETWORK', 'failure_chain': '0', 'max_failure_chain': '1', 'attempts': '1', 'backoff_ms': '0', 'stopped': 'false', 'capability_wait': 'false', 'awaiting_recovery': 'false', 'recovered': 'true', 'recovered_generation': '2', 'recovery_latency_ms': '200', '"
+      "detail": "{'type': 'recovery', 'cam': 'CAM-01', 'kind': 'NETWORK', 'failure_chain': '0', 'max_failure_chain': '1', 'attempts': '2', 'backoff_ms': '0', 'stopped': 'false', 'capability_wait': 'false', 'awaiting_recovery': 'false', 'recovered': 'true', 'recovered_generation': '3', 'recovery_latency_ms': '201', '"
+    },
+    {
+      "name": "C1b second rebuild after first (rebuild2 > rebuild1 >= 0)",
+      "ok": true,
+      "detail": "t_cut=50 r1=1304 r2=2759"
+    },
+    {
+      "name": "C1c second_cut injected and second rebuild after backoff",
+      "ok": true,
+      "detail": "second_cut=true r1=1304 r2=2759 bb=1000"
     },
     {
       "name": "C2 backoff respected >= 950ms",
       "ok": true,
-      "detail": "t_cut=50 rebuild1=1279"
+      "detail": "t_cut=50 rebuild1=1304"
     },
     {
       "name": "C3 auth no retry",
@@ -75,12 +85,12 @@
     {
       "name": "C4 capability gated",
       "ok": true,
-      "detail": "rebuild3=2532 change=2500 rec3={'type': 'recovery', 'cam': 'CAM-03', 'kind': 'UNSUPPORTED', 'failure_chain': '0', 'max_failure_chain': '0', 'attempts': '1', 'backoff_ms': '0', 'stopped': 'false', 'capability_wait': 'false', 'awaiting_recovery': 'false', 'recovered': 'true', 'recovered_generation': '"
+      "detail": "rebuild3=2533 change=2500 rec3={'type': 'recovery', 'cam': 'CAM-03', 'kind': 'UNSUPPORTED', 'failure_chain': '0', 'max_failure_chain': '0', 'attempts': '1', 'backoff_ms': '0', 'stopped': 'false', 'capability_wait': 'false', 'awaiting_recovery': 'false', 'recovered': 'true', 'recovered_generation': '"
     },
     {
       "name": "C5 single channel isolation",
       "ok": true,
-      "detail": "{'type': 'generations', 'cam01': '1->2', 'cam02': '1->1', 'cam03': '1->2'}"
+      "detail": "{'type': 'generations', 'cam01': '1->3', 'cam02': '1->1', 'cam03': '1->2'}"
     },
     {
       "name": "C6 onvif default off",
@@ -95,7 +105,7 @@
     {
       "name": "C8 acceptance row matches independent verdict",
       "ok": true,
-      "detail": "{'type': 'acceptance', 'rebuild_confirmed_by_new_frame': 'true', 'attempts_counted_once': 'true', 'backoff_respected': 'true', 'auth_no_retry': 'true', 'capability_gated': 'true', 'single_channel_isolation': 'true', 'onvif_default_off': 'true', 'onvif_unconfigured': 'true', 'result': 'PASS'}"
+      "detail": "{'type': 'acceptance', 'rebuild_confirmed_by_new_frame': 'true', 'attempts_match_actual': 'true', 'repeat_same_error_recovers': 'true', 'backoff_respected': 'true', 'auth_no_retry': 'true', 'capability_gated': 'true', 'single_channel_isolation': 'true', 'onvif_default_off': 'true', 'onvif_unconfigur"
     },
     {
       "name": "selftest exit identical",
@@ -138,9 +148,14 @@
       "detail": "{'stopped': True, 'attempts': 0}"
     },
     {
-      "name": "json cam01 attempts1 recovered",
+      "name": "json cam01 attempts==rebuilds==2 recovered gen3",
       "ok": true,
-      "detail": "{'attempts': 1, 'recovered_generation': 2, 'recovered': True}"
+      "detail": "{'attempts': 2, 'rebuilds': 2, 'recovered_generation': 3, 'repeat_same_error_recovers': True, 'recovered': True}"
+    },
+    {
+      "name": "json cam01 repeat_same_error_recovers",
+      "ok": true,
+      "detail": "{'attempts': 2, 'rebuilds': 2, 'recovered_generation': 3, 'repeat_same_error_recovers': True, 'recovered': True}"
     },
     {
       "name": "json cam03 attempts1",
@@ -154,7 +169,7 @@
     }
   ],
   "summary": {
-    "total": 30,
+    "total": 33,
     "failed": 0
   }
 }

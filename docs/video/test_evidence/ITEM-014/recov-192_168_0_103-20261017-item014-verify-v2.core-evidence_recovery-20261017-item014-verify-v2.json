@@ -1,0 +1,6 @@
+{
+  "cam01": {"attempts": 2, "rebuilds": 2, "recovered_generation": 3, "repeat_same_error_recovers": true, "recovered": true},
+  "cam02": {"stopped": true, "attempts": 0},
+  "cam03": {"attempts": 1, "recovered_generation": 2},
+  "acceptance": true
+}
