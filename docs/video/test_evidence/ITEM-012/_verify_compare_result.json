@@ -1,0 +1,41 @@
+{
+  "checks": [
+    {
+      "check": "semantics_impl-r5",
+      "ok": true,
+      "detail": "independent re-derivation holds"
+    },
+    {
+      "check": "semantics_verify-v1",
+      "ok": true,
+      "detail": "independent re-derivation holds"
+    },
+    {
+      "check": "stable_config",
+      "ok": true,
+      "detail": "{'config_pre': 30, 'config_post': 60, 'eff_pre': 3, 'eff_post': 2, 'buffer_s': 7 vs {'config_pre': 30, 'config_post': 60, 'eff_pre': 3, 'eff_post': 2, 'buffer_s': 7"
+    },
+    {
+      "check": "stable_idem",
+      "ok": true,
+      "detail": "{'first': 'added', 'repeat': 'duplicate', 'different_params': 'conflict'} vs {'first': 'added', 'repeat': 'duplicate', 'different_params': 'conflict'}"
+    },
+    {
+      "check": "stable_acc",
+      "ok": true,
+      "detail": "{'real_media': 'true', 'coverage_matches': 'true', 'keyframe_aligned': 'true', ' vs {'real_media': 'true', 'coverage_matches': 'true', 'keyframe_aligned': 'true', '"
+    },
+    {
+      "check": "packets_window",
+      "ok": true,
+      "detail": "impl=125 verify=125 (|0|<=win)"
+    },
+    {
+      "check": "size_window",
+      "ok": true,
+      "detail": "impl=1332168 verify=1327656 (|Δ%|=0.339<=15%)"
+    }
+  ],
+  "problems": [],
+  "pass": true
+}

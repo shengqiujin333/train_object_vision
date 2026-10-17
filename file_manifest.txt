@@ -1919,11 +1919,23 @@ docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.l
 docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹一致/逐条命令/退出码）
 docs/video/test_evidence/ITEM-011/rec-ext-192_168_0_103-20261017-item011-verify-v1.json | active | ITEM-011 EXT 夹具结构化结果（12/12 PASS，EX-C 34 判例含驻留 keyframe 终态精确预言）
 docs/video/test_evidence/ITEM-012/ITEM-012-ENV-A0-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-012 core 802/0 + clip-selftest 8/8 + recording-tap 回归 selftest 9/9 + 板端真实管线（complete 1332168B 真实 MPEG-TS/tsdemux 校验/关键帧对齐/发布后于 rename；incomplete POST_ROLL_SHORTAGE；unavailable NO_MEDIA/MKDIR_FAILED；幂等 added·duplicate·conflict；acceptance PASS）
+docs/video/test_evidence/ITEM-012/VERIFY-ITEM-012.md | active | ITEM-012 软件验证 TestEvidence（VERIFY-20261017-v1，TEST_PASS：交付入口 --keep-remote 独立复跑 802 passed/0 failed 与实现 r5 逐行一致 + 独立语义比对 7/7（覆盖数学/缺口区间/三态绑定/JSON交叉/真实 TS 结构 188B 0x47 全同步）+ 自有扩展夹具 13/13（EX-A 独立参数轮容差重推导/EX-B 负例/EX-C 板端 g++ 直编 35 判例/EX-D 确定性/EX-E 泄漏 0/清理两侧确认））
+docs/video/test_evidence/ITEM-012/_verify_compare.py | active | ITEM-012 验证侧独立比对器（impl r5 vs verify-v1 独立重推导：config/幂等/三态绑定键/覆盖数学/缺口端别/JSON-日志交叉/包数与字节自然波动窗）
+docs/video/test_evidence/ITEM-012/_verify_compare_result.json | active | ITEM-012 独立比对结构化结果（7 checks PASS）
+docs/video/test_evidence/ITEM-012/_verify_ext.py | active | ITEM-012 验证侧 EXT 扩展夹具（EX-OFFLINE 上板前 dryrun/EX-A 独立参数轮/EX-B 负例×3/EX-C 板端 g++ 自有夹具 35 判例/EX-D 确定性/EX-E 泄漏扫描/清理；13/13）
+docs/video/test_evidence/ITEM-012/_verify_run.py | active | ITEM-012 验证侧独立复跑驱动（PowerShell 用户级凭据导入 → 同进程交付入口 --keep-remote）
+docs/video/test_evidence/ITEM-012/_verify_vext.cpp | active | ITEM-012 验证侧板端 C++ 扩展夹具（ClipWriter/clip_request/FileStore 35 判例：path sanitize/窗口算术/幂等注册表矩阵/缺口结构/无媒体不写盘不冒充/三态往返/容器缺省）
 docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-r5.core-evidence_clip-solidify-20261017-item012-r5.json | active | ITEM-012 片段三态汇总 JSON
 docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-r5.core-evidence_clip-solidify-20261017-item012-r5.log | active | ITEM-012 配置/缓冲/幂等/三态固化/acceptance 日志
 docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-r5.core-evidence_clips_CAM-01_evt-100-CAM-01.ts | active | ITEM-012 真实 MPEG-TS 保护片段（1332168 B；同步字节 47 40 00 31；未经转码只读归档）
 docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-r5.log | active | ITEM-012 板端执行人类可读 transcript（build-core/core-tests/build-media/clip selftest/recording-tap 回归 selftest/run-clip）
 docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-r5.transcript.json | active | ITEM-012 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-verify-v1.core-evidence_clip-solidify-20261017-item012-verify-v1.json | active | 验证轮 fresh 片段三态汇总 JSON
+docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-verify-v1.core-evidence_clip-solidify-20261017-item012-verify-v1.log | active | 验证轮 fresh 配置/缓冲/幂等/三态固化/acceptance 日志
+docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-verify-v1.core-evidence_clips_CAM-01_evt-100-CAM-01.ts | active | 验证轮 fresh 真实 MPEG-TS 保护片段（1327656 B；188B 包 0x47 全同步；未经转码只读归档）
+docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-verify-v1.log | active | 验证轮板端交付入口独立复跑全步骤 stdout（802/0 + clip selftest 8/8 + recording-tap 9/9 + acceptance PASS）
+docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹一致/逐条命令/退出码）
+docs/video/test_evidence/ITEM-012/clip-ext-192_168_0_103-20261017-item012-verify-v1.json | active | ITEM-012 EXT 夹具结构化结果（13/13 PASS，EX-C 35 判例含无媒体无目录副作用与缺口字段结构）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

@@ -1,0 +1,71 @@
+{
+  "results": [
+    {
+      "id": "EX-OFFLINE/dryrun",
+      "ok": true,
+      "detail": "archive dry-run semantics parse clean"
+    },
+    {
+      "id": "EX-A",
+      "ok": true,
+      "detail": "params pre=4/post=3; problems=none"
+    },
+    {
+      "id": "EX-B/neg",
+      "ok": true,
+      "detail": "unknown-arg exit=2 + message (token=2)"
+    },
+    {
+      "id": "EX-B/help",
+      "ok": true,
+      "detail": "--help exit=0 with option lines (token=0)"
+    },
+    {
+      "id": "EX-B/neg2",
+      "ok": true,
+      "detail": "non-numeric seconds tolerated, exit=0"
+    },
+    {
+      "id": "EX-C/upload",
+      "ok": true,
+      "detail": "vext_clip.cpp uploaded to railhmi_clip tree"
+    },
+    {
+      "id": "EX-C/build",
+      "ok": true,
+      "detail": "vext_clip built against delivery core+media+platform sources"
+    },
+    {
+      "id": "EX-C/run",
+      "ok": true,
+      "detail": "vext 35 PASS 0 FAIL token=0"
+    },
+    {
+      "id": "EX-D/semantics",
+      "ok": true,
+      "detail": "a2 independent semantics re-derivation holds"
+    },
+    {
+      "id": "EX-D/stable",
+      "ok": true,
+      "detail": "config/idem/acceptance identical a1 vs a2"
+    },
+    {
+      "id": "EX-D/exit",
+      "ok": true,
+      "detail": "a2 exit token=0"
+    },
+    {
+      "id": "EX-E",
+      "ok": true,
+      "detail": "binary leak scan grep+clean file scan 0 forms"
+    },
+    {
+      "id": "CLEAN",
+      "ok": true,
+      "detail": "board-side ext artifacts removed"
+    }
+  ],
+  "problems": [],
+  "pass": true
+}
