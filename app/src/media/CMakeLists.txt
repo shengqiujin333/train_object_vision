@@ -23,6 +23,7 @@ add_library(railhmi_media STATIC
     src/frame_lease.cpp
     src/rga_convert.cpp
     src/camera_worker.cpp
+    src/frame_dispatcher.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -82,5 +83,12 @@ set_target_properties(railhmi-rga-convert PROPERTIES
 add_executable(railhmi-camera-worker tools/camera_worker_probe.cpp)
 target_link_libraries(railhmi-camera-worker PRIVATE railhmi_media)
 set_target_properties(railhmi-camera-worker PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 三类消费者有界队列与背压探针（视频 ITEM-008）
+add_executable(railhmi-backpressure tools/backpressure_probe.cpp)
+target_link_libraries(railhmi-backpressure PRIVATE railhmi_media)
+set_target_properties(railhmi-backpressure PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )

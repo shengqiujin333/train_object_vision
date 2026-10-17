@@ -1,0 +1,20 @@
+type=injection source=test duration_s=8 display_hz=1.000000 ai_hz=1.000000 stop_recording_after_s=4 ai_depth=2 recording_frames=8 session_id=s1a14922c92d-48a89d-0
+t=0 type=bp dispatched=3 fps=2 display_dropped=2 ai_dropped=1 ai_depth=2 recording_overflow=0 recording_depth=0 display_reads=0 ai_reads=0 recording_reads=3
+t=500 type=bp dispatched=15 fps=8 display_dropped=14 ai_dropped=13 ai_depth=2 recording_overflow=0 recording_depth=0 display_reads=0 ai_reads=0 recording_reads=15
+t=1000 type=bp dispatched=28 fps=14 display_dropped=27 ai_dropped=25 ai_depth=2 recording_overflow=0 recording_depth=0 display_reads=1 ai_reads=1 recording_reads=28
+t=1500 type=bp dispatched=40 fps=20 display_dropped=39 ai_dropped=37 ai_depth=2 recording_overflow=0 recording_depth=0 display_reads=1 ai_reads=1 recording_reads=40
+t=2001 type=bp dispatched=53 fps=25 display_dropped=52 ai_dropped=49 ai_depth=2 recording_overflow=0 recording_depth=0 display_reads=2 ai_reads=2 recording_reads=53
+t=2501 type=bp dispatched=65 fps=25 display_dropped=64 ai_dropped=61 ai_depth=2 recording_overflow=0 recording_depth=0 display_reads=2 ai_reads=2 recording_reads=65
+t=3001 type=bp dispatched=78 fps=26 display_dropped=77 ai_dropped=73 ai_depth=2 recording_overflow=0 recording_depth=0 display_reads=3 ai_reads=3 recording_reads=78
+t=3502 type=bp dispatched=90 fps=26 display_dropped=89 ai_dropped=85 ai_depth=2 recording_overflow=0 recording_depth=0 display_reads=3 ai_reads=3 recording_reads=90
+t=4002 type=injection stop_recording overflow_at_stop=0
+t=4002 type=bp dispatched=103 fps=26 display_dropped=102 ai_dropped=97 ai_depth=2 recording_overflow=0 recording_depth=3 display_reads=4 ai_reads=4 recording_reads=100
+t=4502 type=bp dispatched=115 fps=26 display_dropped=114 ai_dropped=109 ai_depth=2 recording_overflow=7 recording_depth=8 display_reads=4 ai_reads=4 recording_reads=100
+t=5003 type=bp dispatched=128 fps=26 display_dropped=127 ai_dropped=121 ai_depth=2 recording_overflow=20 recording_depth=8 display_reads=5 ai_reads=5 recording_reads=100
+t=5503 type=bp dispatched=140 fps=26 display_dropped=139 ai_dropped=133 ai_depth=2 recording_overflow=32 recording_depth=8 display_reads=5 ai_reads=5 recording_reads=100
+t=6004 type=bp dispatched=153 fps=26 display_dropped=152 ai_dropped=145 ai_depth=2 recording_overflow=45 recording_depth=8 display_reads=6 ai_reads=6 recording_reads=100
+t=6504 type=bp dispatched=165 fps=25 display_dropped=164 ai_dropped=157 ai_depth=2 recording_overflow=57 recording_depth=8 display_reads=6 ai_reads=6 recording_reads=100
+t=7004 type=bp dispatched=178 fps=26 display_dropped=177 ai_dropped=169 ai_depth=2 recording_overflow=70 recording_depth=8 display_reads=7 ai_reads=7 recording_reads=100
+t=7505 type=bp dispatched=190 fps=26 display_dropped=189 ai_dropped=181 ai_depth=2 recording_overflow=82 recording_depth=8 display_reads=7 ai_reads=7 recording_reads=100
+type=summary capture_rate=30 dispatched=225 display_dropped=225 ai_dropped=216 recording_overflow_phase1=0 recording_overflow_phase2=117 display_reads=8 ai_reads=8 recording_reads=100
+type=acceptance capture_rate_ok=true display_dropped_ok=true ai_dropped_ok=true recording_independent_of_display_ai=true recording_overflows_when_consumer_stopped=true result=PASS

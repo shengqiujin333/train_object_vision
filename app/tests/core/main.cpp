@@ -22,6 +22,7 @@ void run_status_tests();
 void run_inference_tests();
 void run_frame_identity_tests();
 void run_frame_layout_tests();
+void run_bounded_queue_tests();
 void run_alarm_center_tests();
 void run_clip_tests();
 void run_replay_tests();
@@ -55,6 +56,7 @@ int main(int argc, char** argv) {
     run_inference_tests();
     run_frame_identity_tests();
     run_frame_layout_tests();
+    run_bounded_queue_tests();
     run_alarm_center_tests();
     run_clip_tests();
     run_replay_tests();

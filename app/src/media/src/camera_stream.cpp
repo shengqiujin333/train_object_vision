@@ -98,6 +98,7 @@ struct CameraStream::Impl {
     railhmi::core::FrameMeta last_meta;
     long long frames_emitted = 0;
     std::unique_ptr<FrameStore> store;
+    std::unique_ptr<FrameDispatcher> dispatcher;
     BgrImage last_bgr;
     long long bgr_converted = 0;
     long long bgr_failed = 0;
@@ -131,6 +132,12 @@ GstPadProbeReturn count_probe(GstPad*, GstPadProbeInfo*, gpointer data) {
 CameraStream::CameraStream(CameraStreamConfig cfg) : impl_(new Impl()) {
     impl_->cfg = std::move(cfg);
     impl_->store.reset(new FrameStore(impl_->cfg.camera_id));
+    DispatcherConfig dc;
+    dc.display_capacity = 1;
+    dc.ai_capacity = impl_->cfg.ai_queue_depth > 0 ? static_cast<std::size_t>(impl_->cfg.ai_queue_depth) : 1;
+    dc.recording_capacity = impl_->cfg.recording_queue_frames ? impl_->cfg.recording_queue_frames : 1;
+    dc.recording_bytes_capacity = impl_->cfg.recording_queue_bytes;
+    impl_->dispatcher.reset(new FrameDispatcher(dc));
 }
 
 CameraStream::~CameraStream() {
@@ -289,6 +296,10 @@ bool CameraStream::pump(int timeout_ms) {
                 std::string why;
                 impl_->store->publish(s, impl_->last_meta, "", origin_of(impl_->cfg.source), &why);
             }
+            // 三类消费者有界分发（显示 latest-only / 推理丢旧 / 录像独立有界）；非阻塞。
+            if (impl_->dispatcher && impl_->store) {
+                impl_->dispatcher->dispatch(impl_->store->latest());
+            }
             // 取流 worker 内 NV12→BGR（librga BT601_FULL）；失败只记错误，不丢帧。
             if (impl_->cfg.convert_bgr && impl_->store) {
                 FrameLease lease = impl_->store->latest();
@@ -340,6 +351,13 @@ StreamStats CameraStream::stats() const {
     st.pts_ns = impl_->last_meta.pts_ns;
     st.quality_flags = impl_->last_quality.describe();
     st.bus_state_changes = impl_->bus_state_changes;
+    if (impl_->dispatcher) {
+        st.display_dropped = impl_->dispatcher->display_dropped();
+        st.ai_dropped = impl_->dispatcher->ai_dropped();
+        st.recording_overflow = impl_->dispatcher->recording_overflow();
+        st.ai_depth = impl_->dispatcher->ai_depth();
+        st.recording_depth = impl_->dispatcher->recording_depth();
+    }
     return st;
 }
 
@@ -388,6 +406,8 @@ FrameLease CameraStream::latest_frame() const {
 }
 
 FrameStore& CameraStream::frame_store() { return *impl_->store; }
+
+FrameDispatcher& CameraStream::dispatcher() { return *impl_->dispatcher; }
 
 const BgrImage& CameraStream::last_bgr() const {
     static const BgrImage kEmpty;

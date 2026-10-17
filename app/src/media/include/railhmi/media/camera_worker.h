@@ -46,6 +46,9 @@ public:
     long long bus_state_changes() const;
     int pull_timeout_ms() const;
 
+    // 三类消费者有界队列（显示/推理/录像）（视频 ITEM-008）；线程安全。
+    FrameDispatcher& dispatcher();
+
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;

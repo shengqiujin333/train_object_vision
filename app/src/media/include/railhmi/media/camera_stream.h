@@ -13,6 +13,7 @@
 #include "railhmi/core/stream_state.h"
 #include "railhmi/core/timebase.h"
 #include "railhmi/media/frame_lease.h"
+#include "railhmi/media/frame_dispatcher.h"
 #include "railhmi/media/frame_store.h"
 #include "railhmi/media/pipeline_factory.h"
 #include "railhmi/media/rga_convert.h"
@@ -40,6 +41,9 @@ struct CameraStreamConfig {
     const railhmi::core::TimeBase* timebase = nullptr;  // 用于 capture_wall_ms；空/未校准则 -1
     std::string session_id;         // 应用启动不透明串；空则自动生成（跨相机共享）
     bool convert_bgr = false;       // 在取流 worker 内做 NV12→BGR（librga BT601_FULL）
+    int ai_queue_depth = 2;         // 推理有界丢旧帧队列深度（app.ai.queue_depth）
+    std::size_t recording_queue_frames = 30;             // 录像分支条数上限
+    std::size_t recording_queue_bytes = 0;               // 录像分支字节上限（0=只按条数）
     railhmi::core::StreamThresholds thresholds;
     railhmi::core::QualityThresholds quality;
 };
@@ -59,6 +63,11 @@ struct StreamStats {
     long long pts_ns = -1;            // 相机 PTS；-1=无/无效
     std::string quality_flags;        // 最近帧质量标志 describe()
     long long bus_state_changes = 0;  // GstBus STATE_CHANGED 计数
+    unsigned long long display_dropped = 0;   // 显示 latest-only 丢帧（ITEM-008）
+    unsigned long long ai_dropped = 0;        // 推理有界队列丢帧
+    unsigned long long recording_overflow = 0;  // 录像分支溢出（缺口）
+    unsigned long long ai_depth = 0;
+    unsigned long long recording_depth = 0;
 };
 
 // 单路取流：start() 建管线进入 PLAYING；pump() 推进（拉帧/驱动状态机）；stop() 收尾。
@@ -104,6 +113,8 @@ public:
     FrameLease latest_frame() const;
     // 最新帧仓库：供上层设置 release 回调与读取发布/拒绝计数。
     FrameStore& frame_store();
+    // 三类消费者有界队列（显示/推理/录像）（视频 ITEM-008）。
+    FrameDispatcher& dispatcher();
 
     // 最近一次 NV12→BGR 转换结果（视频 ITEM-005，需 cfg.convert_bgr）。失败不丢帧。
     const BgrImage& last_bgr() const;

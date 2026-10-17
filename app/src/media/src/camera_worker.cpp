@@ -158,5 +158,7 @@ long long CameraWorker::bus_state_changes() const {
 }
 int CameraWorker::pull_timeout_ms() const { return impl_->pull_ms; }
 
+FrameDispatcher& CameraWorker::dispatcher() { return impl_->stream->dispatcher(); }
+
 }  // namespace media
 }  // namespace railhmi
