@@ -1,0 +1,42 @@
+{
+  "results": [
+    {
+      "id": "A1/A5/A6-slot-identity-and-isolation",
+      "ok": true,
+      "detail": "both rounds: ids CAM-01..06 per-round, cells=6, counts self-consistent, fail cell offline/lease=false/gen=0"
+    },
+    {
+      "id": "A2-before-cut-presentable",
+      "ok": true,
+      "detail": "all pre-cut rounds non-fail cells presentable=true both rounds"
+    },
+    {
+      "id": "A3-cut-frozen",
+      "ok": true,
+      "detail": "per-round frozen baseline r1=354057673 verify=355892359 (monotonic clock differs across runs; in-round freeze and post-cut non-presentable checked per round in analyze)"
+    },
+    {
+      "id": "A4-others-advancing",
+      "ok": true,
+      "detail": "post-cut non-fault cells presentable=true and frame clock strictly advancing both rounds"
+    },
+    {
+      "id": "A7-selftest-identical",
+      "ok": true,
+      "detail": "selftest lines equal=True passes=6 (selftest PASS manager_size; selftest PASS slot_order_config ...)"
+    },
+    {
+      "id": "A8-state-sequence-semantic-equal",
+      "ok": true,
+      "detail": "rounds r1=16 verify=16 per-cell (idx,state,presentable,lease,gen,no-frame) windows identical=True"
+    },
+    {
+      "id": "A9-impl-acceptance-PASS",
+      "ok": true,
+      "detail": "r1 result=PASS verify result=PASS"
+    }
+  ],
+  "problems": [],
+  "pass": 7,
+  "fail": 0
+}

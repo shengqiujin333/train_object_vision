@@ -1,0 +1,39 @@
+{
+  "results": [
+    {
+      "id": "EX-A/six-healthy-concurrent-nonblocking",
+      "ok": true,
+      "detail": "exit=0 windows=12 grid_all_6l6p=True all_clocks_advance=True fps>=20 paths=6/6 "
+    },
+    {
+      "id": "EX-C/board-cpp-multi-manager-fixture",
+      "ok": true,
+      "detail": "compile_ok=True vext_pass=35 vext_fail=0 expected=35 missing=none exit0=True"
+    },
+    {
+      "id": "EX-D/unknown-arg-exit2",
+      "ok": true,
+      "detail": "exit=2 output_head=['unknown arg: --bogus-arg']"
+    },
+    {
+      "id": "EX-D/count0-exit3",
+      "ok": true,
+      "detail": "exit=3"
+    },
+    {
+      "id": "EX-E/deterministic-acceptance",
+      "ok": true,
+      "detail": "run1=PASS run2=PASS windows=10/10 semantic_diffs=0 (fps natural jitter excluded)"
+    },
+    {
+      "id": "EX-F",
+      "ok": true,
+      "detail": "files=17 secrets=3 cred-semantics hits=none ssh-value-username-form-only_files=6"
+    }
+  ],
+  "pass": 6,
+  "fail": 0,
+  "elapsed_s": 39.2,
+  "board": "192.168.0.103",
+  "remote_tmp": "/tmp/ext007_board"
+}
