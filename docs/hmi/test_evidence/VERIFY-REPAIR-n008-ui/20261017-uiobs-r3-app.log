@@ -1,0 +1,55 @@
+2026-10-17T08:10:31.204 INFO  railhmi 0.1.0 [mode=Target, simulation=off]
+2026-10-17T08:10:31.212 INFO  config dir: /tmp/railhmi_uireview/config
+2026-10-17T08:10:31.212 INFO  configuration OK: 6 cameras
+2026-10-17T08:10:31.212 INFO  render path: cpu
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792108800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792110600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792112400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792114200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792116000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792117800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792119600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792121400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792123200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792125000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792126800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792128600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792130400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792132200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792134000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792135800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792137600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792139400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792141200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792143000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792144800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792146600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792148400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792150200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792152000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792153800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792155600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792157400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792159200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792161000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792162800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792164600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792166400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792168200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792170000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792171800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792173600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792175400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792177200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792179000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792180800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792182600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792184400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792186200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792188000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792189800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792191600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792193400000.bmp
+qrc:/qml/pages/P3Replay.qml:185: TypeError: Property 'chipName' of object P3Replay_QMLTYPE_114(0x5594410540) is not a function
+qrc:/qml/pages/P3Replay.qml:185: TypeError: Property 'chipName' of object P3Replay_QMLTYPE_114(0x5594410540) is not a function
+qrc:/qml/pages/P3Replay.qml:185: TypeError: Property 'chipName' of object P3Replay_QMLTYPE_114(0x5594410540) is not a function

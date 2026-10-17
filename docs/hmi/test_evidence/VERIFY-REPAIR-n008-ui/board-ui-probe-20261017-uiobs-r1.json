@@ -1,0 +1,8 @@
+{
+  "os": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"",
+  "qt": "qtbase5-dev:arm64 5.15.3+dfsg-2ubuntu0.2\nqtbase5-dev-tools 5.15.3+dfsg-2ubuntu0.2\nqtdeclarative5-dev:arm64 5.15.3+dfsg-1\nqtdeclarative5-dev-tools 5.15.3+dfsg-1",
+  "tools": "MISS Xvfb\nMISS xvfb-run\nMISS import\nMISS convert\nMISS magick\nMISS xwd\nMISS scrot\nHAVE xdotool\nHAVE ffmpeg",
+  "display": "DISPLAY=[]\ntotal 8\ndrwxrwxrwt  2 root  root  4096 Oct 13 13:59 .\ndrwxrwxrwt 22 root  root  4096 Oct 17 07:54 ..\nsrwxrwxrwx  1 root  root     0 Oct 13 13:58 X0\nsrwxrwxrwx  1 admin admin    0 Oct 13 13:59 X1001\nactive",
+  "bins": "NO_RELEASE_BIN\nNO_BUILD_DIR",
+  "sudo": "SUDO_OK"
+}

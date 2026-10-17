@@ -1,0 +1,68 @@
+{
+  "host": "192.168.0.103",
+  "stamp": "20261017-uiobs-r1",
+  "repo": "E:\\work\\rail_issue\\rk3588_handover",
+  "steps": [
+    {
+      "cmd": "rm -rf /tmp/railhmi_uireview && mkdir -p /tmp/railhmi_uireview",
+      "exit": 0,
+      "elapsed_s": 0.25,
+      "output": ""
+    },
+    {
+      "cmd": "command -v Xvfb >/dev/null 2>&1 && echo HAVE_XVFB || echo MISS_XVFB",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "MISS_XVFB"
+    },
+    {
+      "cmd": "sudo -n env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends xvfb",
+      "exit": 0,
+      "elapsed_s": 8.51,
+      "output": "Reading package lists...\nBuilding dependency tree...\nReading state information...\nThe following NEW packages will be installed:\n  xvfb\n0 upgraded, 1 newly installed, 0 to remove and 258 not upgraded.\nNeed to get 957 kB of archives.\nAfter this operation, 2,285 kB of additional disk space will be used.\nGet:1 https://wiki.t-firefly.com:443/firefly-ubuntu-repo jammy/main arm64 xvfb arm64 2:21.1.4-2ubuntu1.7~22.04.8 [957 kB]\nFetched 957 kB in 2s (612 kB/s)\nSelecting previously unselected package xvfb.\r\n(Reading database ... \r(Reading database ... 5%\r(Reading database ... 10%\r(Reading database ... 15%\r(Reading database ... 20%\r(Reading database ... 25%\r(Reading database ... 30%\r(Reading database ... 35%\r(Reading database ... 40%\r(Reading database ... 45%\r(Reading database ... 50%\r(Reading database ... 55%\r(Reading database ... 60%\r(Reading database ... 65%\r(Reading database ... 70%\r(Reading database ... 75%\r(Reading database ... 80%\r(Reading database ... 85%\r(Reading database ... 90%\r(Reading database ... 95%\r(Reading database ... 100%\r(Reading database ... 155549 files and directories currently installed.)\r\nPreparing to unpack .../xvfb_2%3a21.1.4-2ubuntu1.7~22.04.8_arm64.deb ...\r\nUnpacking xvfb (2:21.1.4-2ubuntu1.7~22.04.8) ...\r\nSetting up xvfb (2:21.1.4-2ubuntu1.7~22.04.8) ...\r\nProcessing triggers for man-db (2.10.2-1) ..."
+    },
+    {
+      "cmd": "command -v Xvfb && (command -v ffmpeg && echo HAVE_FFMPEG)",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "/usr/bin/Xvfb\n/usr/local/bin/ffmpeg\nHAVE_FFMPEG"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_uireview/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -40'",
+      "exit": 0,
+      "elapsed_s": 31.14,
+      "output": "[ 63%] Linking CXX executable ../../tools/railhmi-health-probe\n[ 64%] Linking CXX executable ../../tools/railhmi-ai-probe\n[ 64%] Built target railhmi-ai-probe\n[ 64%] Built target railhmi-health-probe\n[ 66%] Linking CXX static library librailhmi_platform.a\n[ 66%] Built target railhmi_platform\n[ 67%] Linking CXX executable ../../tools/railhmi-replay-probe\n[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o\n[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o\n[ 71%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o\n[ 72%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o\n[ 74%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o\n[ 74%] Built target railhmi-replay-probe\n[ 75%] Linking CXX static library librailhmi_media.a\n[ 77%] Linking CXX executable ../../tools/railhmi-clip-probe\n[ 77%] Built target railhmi_media\n[ 79%] Automatic MOC for target railhmi\n[ 79%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o\n[ 81%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o\n[ 82%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o\n[ 82%] Built target railhmi-clip-probe\n[ 82%] Built target railhmi_autogen\n[ 83%] Automatic RCC for qml.qrc\n[ 85%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/mocs_compilation.cpp.o\n[ 86%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/replay_model.cpp.o\n[ 87%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/alarm_model.cpp.o\n[ 89%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/maintenance_model.cpp.o\n[ 90%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/main.cpp.o\n[ 91%] Linking CXX executable ../../tools/railhmi-stream-probe\n[ 93%] Linking CXX executable ../../tools/railhmi-ai-runner\n[ 93%] Built target railhmi-stream-probe\n[ 94%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/permissions_model.cpp.o\n[ 94%] Built target railhmi-ai-runner\n[ 95%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/health_model.cpp.o\n[ 97%] Linking CXX executable ../../tools/railhmi-multi-probe\n[ 97%] Built target railhmi-multi-probe\n[ 98%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/EWIEGA46WW/qrc_qml.cpp.o\n[100%] Linking CXX executable railhmi\n[100%] Built target railhmi\n[build.sh] build OK (mode=target); artifacts under /tmp/railhmi_uireview/app/build-target"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_uireview/app && ls -l build-target/src/ui/railhmi && file build-target/src/ui/railhmi && sha256sum build-target/src/ui/railhmi",
+      "exit": 0,
+      "elapsed_s": 0.16,
+      "output": "-rwxrwxr-x 1 admin admin 944016 Oct 17 08:01 build-target/src/ui/railhmi\nbuild-target/src/ui/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=3401215ec71a529ee2d96204ee781e2ef85f57c3, for GNU/Linux 3.7.0, not stripped\n208ff9f8140153ef4cc0ee7750fc809fc89b47b4f66802e9f0a74547a85d46d5  build-target/src/ui/railhmi"
+    },
+    {
+      "cmd": "cp -r /tmp/railhmi_uireview/app/config /tmp/railhmi_uireview/config && sed -i 's/^  simulation: .*/  simulation: true/;s/^  default_role: .*/  default_role: admin/' /tmp/railhmi_uireview/config/app.yaml && sed -n '1,12p' /tmp/railhmi_uireview/config/app.yaml",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "# railhmi 应用配置（角色/模式/录像来源/存储/NVR 登记）\n# 本期 mode=visible（红外未接入）；render_path 依 ITEM-002 板端实测选定 cpu。\napp:\n  language: \"zh-CN\"\n  default_role: admin\n  resolution: [1920, 1080]\n  render_path: cpu\n  mode: visible\n  recording_source: both\n  log_level: info\n  simulation: true\n  storage:"
+    },
+    {
+      "cmd": "pkill -f 'Xvfb :99' 2>/dev/null; rm -f /tmp/.X99-lock; setsid Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp >/tmp/railhmi_uireview/xvfb.log 2>&1 & echo xvfb_pid=$!",
+      "exit": -1,
+      "elapsed_s": 0.1,
+      "output": ""
+    },
+    {
+      "cmd": "for i in $(seq 1 20); do [ -S /tmp/.X11-unix/X99 ] && { echo XVFB_UP; break; }; sleep 0.5; done",
+      "exit": 0,
+      "elapsed_s": 10.12,
+      "output": ""
+    }
+  ],
+  "xvfb_install_exit": 0,
+  "deps": "/usr/bin/Xvfb\n/usr/local/bin/ffmpeg\nHAVE_FFMPEG",
+  "uploaded": 179,
+  "build_exit": 0,
+  "artifact": "-rwxrwxr-x 1 admin admin 944016 Oct 17 08:01 build-target/src/ui/railhmi\nbuild-target/src/ui/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=3401215ec71a529ee2d96204ee781e2ef85f57c3, for GNU/Linux 3.7.0, not stripped\n208ff9f8140153ef4cc0ee7750fc809fc89b47b4f66802e9f0a74547a85d46d5  build-target/src/ui/railhmi",
+  "xvfb_up": false,
+  "blocked": "xvfb not up"
+}

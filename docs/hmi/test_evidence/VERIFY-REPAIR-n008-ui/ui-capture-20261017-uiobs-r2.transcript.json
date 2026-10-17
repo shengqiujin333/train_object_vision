@@ -1,0 +1,79 @@
+{
+  "host": "192.168.0.103",
+  "stamp": "20261017-uiobs-r2",
+  "repo": "E:\\work\\rail_issue\\rk3588_handover",
+  "steps": [
+    {
+      "cmd": "rm -rf /tmp/railhmi_uireview && mkdir -p /tmp/railhmi_uireview",
+      "exit": 0,
+      "elapsed_s": 0.26,
+      "output": ""
+    },
+    {
+      "cmd": "command -v Xvfb >/dev/null 2>&1 && echo HAVE_XVFB || echo MISS_XVFB",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "HAVE_XVFB"
+    },
+    {
+      "cmd": "command -v Xvfb && command -v ffmpeg && command -v xdotool && echo DEPS_OK",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "/usr/bin/Xvfb\n/usr/local/bin/ffmpeg\n/usr/bin/xdotool\nDEPS_OK"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_uireview/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -40'",
+      "exit": 0,
+      "elapsed_s": 33.28,
+      "output": "[ 63%] Linking CXX executable ../../tools/railhmi-ai-probe\n[ 64%] Linking CXX executable ../../tools/railhmi-fault-probe\n[ 64%] Built target railhmi-ai-probe\n[ 66%] Linking CXX executable ../../tools/railhmi-health-probe\n[ 66%] Built target railhmi-fault-probe\n[ 66%] Built target railhmi-health-probe\n[ 67%] Linking CXX static library librailhmi_platform.a\n[ 67%] Built target railhmi_platform\n[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o\n[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o\n[ 74%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o\n[ 74%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o\n[ 74%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o\n[ 75%] Linking CXX static library librailhmi_media.a\n[ 75%] Built target railhmi_media\n[ 77%] Linking CXX executable ../../tools/railhmi-clip-probe\n[ 78%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o\n[ 79%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o\n[ 81%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o\n[ 82%] Automatic MOC for target railhmi\n[ 82%] Built target railhmi-clip-probe\n[ 82%] Built target railhmi_autogen\n[ 83%] Automatic RCC for qml.qrc\n[ 85%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/main.cpp.o\n[ 86%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/mocs_compilation.cpp.o\n[ 87%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/alarm_model.cpp.o\n[ 89%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/maintenance_model.cpp.o\n[ 90%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/replay_model.cpp.o\n[ 91%] Linking CXX executable ../../tools/railhmi-stream-probe\n[ 91%] Built target railhmi-stream-probe\n[ 93%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/permissions_model.cpp.o\n[ 94%] Linking CXX executable ../../tools/railhmi-ai-runner\n[ 94%] Built target railhmi-ai-runner\n[ 95%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/health_model.cpp.o\n[ 97%] Linking CXX executable ../../tools/railhmi-multi-probe\n[ 98%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/EWIEGA46WW/qrc_qml.cpp.o\n[ 98%] Built target railhmi-multi-probe\n[100%] Linking CXX executable railhmi\n[100%] Built target railhmi\n[build.sh] build OK (mode=target); artifacts under /tmp/railhmi_uireview/app/build-target"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_uireview/app && ls -l build-target/src/ui/railhmi && file build-target/src/ui/railhmi && sha256sum build-target/src/ui/railhmi",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "-rwxrwxr-x 1 admin admin 944016 Oct 17 08:08 build-target/src/ui/railhmi\nbuild-target/src/ui/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=c9208c03ea8ed7ab0402fd2e98d8a06344826b9c, for GNU/Linux 3.7.0, not stripped\n0af799340ae730afb0817a7b3766b0201cd0a4ece670ada6bd6bd3d5bb373677  build-target/src/ui/railhmi"
+    },
+    {
+      "cmd": "cp -r /tmp/railhmi_uireview/app/config /tmp/railhmi_uireview/config && sed -i 's/^  simulation: .*/  simulation: true/;s/^  default_role: .*/  default_role: admin/' /tmp/railhmi_uireview/config/app.yaml && sed -n '1,12p' /tmp/railhmi_uireview/config/app.yaml",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "# railhmi 应用配置（角色/模式/录像来源/存储/NVR 登记）\n# 本期 mode=visible（红外未接入）；render_path 依 ITEM-002 板端实测选定 cpu。\napp:\n  language: \"zh-CN\"\n  default_role: admin\n  resolution: [1920, 1080]\n  render_path: cpu\n  mode: visible\n  recording_source: both\n  log_level: info\n  simulation: true\n  storage:"
+    },
+    {
+      "cmd": "pkill -x Xvfb 2>/dev/null; rm -f /tmp/.X99-lock; nohup Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp </dev/null >/tmp/railhmi_uireview/xvfb.log 2>&1 & echo xvfb_pid=$!",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "xvfb_pid=358928"
+    },
+    {
+      "cmd": "for i in $(seq 1 20); do [ -S /tmp/.X11-unix/X99 ] && { echo XVFB_UP; break; }; sleep 0.5; done",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "XVFB_UP"
+    },
+    {
+      "cmd": "bash /tmp/railhmi_uireview/capture.sh",
+      "exit": 0,
+      "elapsed_s": 14.24,
+      "output": "WIN_UP=1 app_pid=358935\nCAP p1_realtime size=6154\nCAP p2_alarm_center size=6154\nCAP p3_replay size=6154\nCAP p4_all_cameras size=6154\nCAP p5_ai_debug size=6154\nCAP p6_maintenance size=6154\n=== app.log tail ===\n2026-10-17T08:08:41.877 INFO  railhmi 0.1.0 [mode=Target, simulation=off]\n2026-10-17T08:08:41.877 INFO  config dir: /tmp/railhmi_uireview/config\n2026-10-17T08:08:41.877 INFO  configuration OK: 6 cameras\n2026-10-17T08:08:41.878 INFO  render path: cpu\nThe X11 connection broke: Unsupported extension used (code 2)\nX connection to :99 broken (explicit kill or server shutdown).\r\nCAPTURE_DONE"
+    },
+    {
+      "cmd": "pkill -x railhmi 2>/dev/null; pkill -x Xvfb 2>/dev/null; echo cleaned",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "cleaned"
+    },
+    {
+      "cmd": "rm -rf /tmp/railhmi_uireview",
+      "exit": 0,
+      "elapsed_s": 0.13,
+      "output": ""
+    }
+  ],
+  "deps": "/usr/bin/Xvfb\n/usr/local/bin/ffmpeg\n/usr/bin/xdotool\nDEPS_OK",
+  "uploaded": 179,
+  "build_exit": 0,
+  "artifact": "-rwxrwxr-x 1 admin admin 944016 Oct 17 08:08 build-target/src/ui/railhmi\nbuild-target/src/ui/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=c9208c03ea8ed7ab0402fd2e98d8a06344826b9c, for GNU/Linux 3.7.0, not stripped\n0af799340ae730afb0817a7b3766b0201cd0a4ece670ada6bd6bd3d5bb373677  build-target/src/ui/railhmi",
+  "xvfb_up": true,
+  "capture_output": "WIN_UP=1 app_pid=358935\nCAP p1_realtime size=6154\nCAP p2_alarm_center size=6154\nCAP p3_replay size=6154\nCAP p4_all_cameras size=6154\nCAP p5_ai_debug size=6154\nCAP p6_maintenance size=6154\n=== app.log tail ===\n2026-10-17T08:08:41.877 INFO  railhmi 0.1.0 [mode=Target, simulation=off]\n2026-10-17T08:08:41.877 INFO  config dir: /tmp/railhmi_uireview/config\n2026-10-17T08:08:41.877 INFO  configuration OK: 6 cameras\n2026-10-17T08:08:41.878 INFO  render path: cpu\nThe X11 connection broke: Unsupported extension used (code 2)\nX connection to :99 broken (explicit kill or server shutdown).\r\nCAPTURE_DONE"
+}

@@ -1,0 +1,11 @@
+[08:01:10] exit=0 0.2s :: rm -rf /tmp/railhmi_uireview && mkdir -p /tmp/railhmi_uireview
+[08:01:10] exit=0 0.1s :: command -v Xvfb >/dev/null 2>&1 && echo HAVE_XVFB || echo MISS_XVFB
+[08:01:10] installing xvfb (review tooling dep, test scope)
+[08:01:18] exit=0 8.5s :: sudo -n env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends xvfb
+[08:01:18] exit=0 0.1s :: command -v Xvfb && (command -v ffmpeg && echo HAVE_FFMPEG)
+[08:01:28] uploaded 179 files
+[08:01:59] exit=0 31.1s :: cd /tmp/railhmi_uireview/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -40'
+[08:01:59] exit=0 0.2s :: cd /tmp/railhmi_uireview/app && ls -l build-target/src/ui/railhmi && file build-target/src/ui/railhmi && sha256sum build
+[08:01:59] exit=0 0.1s :: cp -r /tmp/railhmi_uireview/app/config /tmp/railhmi_uireview/config && sed -i 's/^  simulation: .*/  simulation: true/;s
+[08:01:59] exit=-1 0.1s :: pkill -f 'Xvfb :99' 2>/dev/null; rm -f /tmp/.X99-lock; setsid Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp >/tmp/railhm
+[08:02:09] exit=0 10.1s :: for i in $(seq 1 20); do [ -S /tmp/.X11-unix/X99 ] && { echo XVFB_UP; break; }; sleep 0.5; done

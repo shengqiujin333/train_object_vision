@@ -1,0 +1,33 @@
+[08:09:48] exit=0 0.2s :: rm -rf /tmp/railhmi_uireview && mkdir -p /tmp/railhmi_uireview
+[08:09:48] exit=0 0.1s :: command -v Xvfb >/dev/null 2>&1 && echo HAVE_XVFB || echo MISS_XVFB
+[08:09:48] exit=0 0.1s :: command -v Xvfb && command -v ffmpeg && command -v xdotool && echo DEPS_OK
+[08:09:58] uploaded 179 files
+[08:10:30] exit=0 32.2s :: cd /tmp/railhmi_uireview/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -40'
+[08:10:30] exit=0 0.1s :: cd /tmp/railhmi_uireview/app && ls -l build-target/src/ui/railhmi && file build-target/src/ui/railhmi && sha25
+[08:10:30] exit=0 0.1s :: cp -r /tmp/railhmi_uireview/app/config /tmp/railhmi_uireview/config && sed -i 's/^  simulation: .*/  simulatio
+[08:10:30] exit=0 0.1s :: pkill -x Xvfb 2>/dev/null; rm -f /tmp/.X99-lock; nohup Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp </dev/nul
+[08:10:30] exit=0 0.1s :: for i in $(seq 1 20); do [ -S /tmp/.X11-unix/X99 ] && { echo XVFB_UP; break; }; sleep 0.5; done
+[08:10:44] exit=0 14.1s :: bash /tmp/railhmi_uireview/capture.sh
+[08:10:44] 792166400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792168200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792170000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792171800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792173600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792175400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792177200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792179000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792180800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792182600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792184400000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792186200000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792188000000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792189800000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792191600000.bmp
+qrc:/qml/pages/P3Replay.qml:308:25: QML Image: Cannot open: qrc:/qml/pages/thumb/CAM-01/1792193400000.bmp
+qrc:/qml/pages/P3Replay.qml:185: TypeError: Property 'chipName' of object P3Replay_QMLTYPE_114(0x5594410540) is not a function
+qrc:/qml/pages/P3Replay.qml:185: TypeError: Property 'chipName' of object P3Replay_QMLTYPE_114(0x5594410540) is not a function
+qrc:/qml/pages/P3Replay.qml:185: TypeError: Property 'chipName' of object P3Replay_QMLTYPE_114(0x5594410540) is not a function
+CAPTURE_DONE
+[08:10:48] exit=0 0.1s :: pkill -x railhmi 2>/dev/null; pkill -x Xvfb 2>/dev/null; echo cleaned
+[08:10:48] exit=0 0.1s :: rm -rf /tmp/railhmi_uireview
+[08:10:48] done
