@@ -1945,12 +1945,25 @@ docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-verify-v1.
 docs/video/test_evidence/ITEM-012/clip-192_168_0_103-20261017-item012-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹一致/逐条命令/退出码）
 docs/video/test_evidence/ITEM-012/clip-ext-192_168_0_103-20261017-item012-verify-v1.json | active | ITEM-012 EXT 夹具结构化结果（13/13 PASS，EX-C 35 判例含无媒体无目录副作用与缺口字段结构）
 docs/video/test_evidence/ITEM-013/ITEM-013-ENV-A0-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-013 core 822/0 + provider selftest 8/8 + 板端真实片段（query complete/empty/partial/gaps/deadline；play 实际 position rel400→…1645、rel4500→…3645；export 1328972B；thumbnail 60861B JPEG；NVR UNCONFIGURED；sync spread 2000ms 提示；acceptance PASS）
+docs/video/test_evidence/ITEM-013/VERIFY-ITEM-013.md | active | ITEM-013 软件验证 TestEvidence（VERIFY-20261017-v1 判定，TEST_PASS：板端独立复跑 822/0+selftest 8/8 与实现 r2 逐行 identical、独立解析比对 11 checks（语义重推导/实际解码 position 判据/JSON-日志交叉）、扩展夹具 12/12+vext 42/42 覆盖覆盖合并/覆盖三态/deadline 边界/reason token；观察项 O-1 缩略图 seek 时序交实现参考）
+docs/video/test_evidence/ITEM-013/_verify_compare.py | active | ITEM-013 验证侧独立比对器（impl r2 vs verify-v1：语义重推导/play 键集/act_rel 实际解码 position 判据/export·size·covered 波动窗/JSON-日志交叉）
+docs/video/test_evidence/ITEM-013/_verify_compare_result.json | active | ITEM-013 独立比对结构化结果（11 checks PASS）
+docs/video/test_evidence/ITEM-013/_verify_ext.py | active | ITEM-013 验证侧 EXT 扩展夹具（EX-A 参数无关独立参数轮（可用性按窗+容差重推导）/EX-B 负例×2/EX-C 板端 g++ 自有夹具 42 判例/清理/凭据泄漏扫描；12/12）
+docs/video/test_evidence/ITEM-013/_verify_run.py | active | ITEM-013 验证侧独立复跑驱动（PowerShell 用户级凭据导入 → 同进程交付入口 --keep-remote）
+docs/video/test_evidence/ITEM-013/_verify_vext.cpp | active | ITEM-013 验证侧板端 C++ 扩展夹具（RecordingProvider 覆盖并集/三态/deadline/reason token/parse 往返/半开窗/缺口过滤 42 判例）
 docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-r2.core-evidence_media-provider-20261017-item013-r2.json | active | ITEM-013 provider 汇总 JSON
 docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-r2.core-evidence_media-provider-20261017-item013-r2.log | active | ITEM-013 片段/查询/回放/导出/缩略图/NVR/同步/acceptance 日志
 docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-r2.core-evidence_prov_exports_CAM-01_evt-200-CAM-01.ts | active | ITEM-013 导出真实片段（1328972 B，只读归档）
 docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-r2.core-evidence_prov_thumbs_cam01_00000.jpg | active | ITEM-013 媒体生成缩略图（60861 B，JPEG ff d8 ff e0）
 docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-r2.log | active | ITEM-013 板端执行人类可读 transcript
 docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-r2.transcript.json | active | ITEM-013 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-verify-v1.core-evidence_media-provider-20261017-item013-verify-v1.json | active | 验证轮 fresh provider 汇总 JSON
+docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-verify-v1.core-evidence_media-provider-20261017-item013-verify-v1.log | active | 验证轮 fresh 片段/query/play/export/thumbnail/NVR/sync/acceptance 日志
+docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-verify-v1.core-evidence_prov_exports_CAM-01_evt-200-CAM-01.ts | active | 验证轮 fresh 导出真实 MPEG-TS 片段（1334988 B；188B 包 0x47 全同步 7101/7101；只读归档）
+docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-verify-v1.core-evidence_prov_thumbs_cam01_00000.jpg | active | 验证轮 fresh 媒体生成缩略图（60627 B，JPEG ff d8 ff e0）
+docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-verify-v1.log | active | 验证轮板端交付入口独立复跑全步骤 stdout（822/0 + selftest 8/8 + acceptance PASS）
+docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹一致/逐条命令/退出码）
+docs/video/test_evidence/ITEM-013/prov-ext-192_168_0_103-20261017-item013-verify-v1.json | active | ITEM-013 EXT 夹具结构化结果（12/12 PASS，EX-C 42 判例含覆盖并集/半开窗/deadline 边界/reason token）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

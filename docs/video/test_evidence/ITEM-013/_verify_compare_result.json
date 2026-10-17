@@ -1,0 +1,61 @@
+{
+  "checks": [
+    {
+      "check": "semantics_impl-r2",
+      "ok": true,
+      "detail": "holds"
+    },
+    {
+      "check": "semantics_verify-v1",
+      "ok": true,
+      "detail": "holds"
+    },
+    {
+      "check": "stable_acc",
+      "ok": true,
+      "detail": "{'query_complete': 'true', 'query_empty_ok': 'true', 'query_partial': 'true', 'gaps_returned': 'true"
+    },
+    {
+      "check": "stable_nvr",
+      "ok": true,
+      "detail": "{'query': 'unavailable/UNCONFIGURED', 'play': 'unavailable/UNCONFIGURED', 'export': 'unavailable/UNC"
+    },
+    {
+      "check": "stable_export_missing",
+      "ok": true,
+      "detail": "{'status': 'unavailable', 'reason': 'NOT_FOUND'}"
+    },
+    {
+      "check": "stable_thumb",
+      "ok": true,
+      "detail": "{'path': 'core-evidence/prov/thumbs/cam01_00000.jpg', 'exists': 'true'}"
+    },
+    {
+      "check": "stable_play_status_series",
+      "ok": true,
+      "detail": "['ok/true', 'ok/true', 'ok/true', 'ok/true', 'ok/true']"
+    },
+    {
+      "check": "play_actual_mode",
+      "ok": true,
+      "detail": "impl=[245, 145, 45, -1855, -1855] verify=[245, 145, 45, -1855, -1335]"
+    },
+    {
+      "check": "play_frames_window",
+      "ok": true,
+      "detail": "impl=[14, 14, 14, 14, 14] verify=[14, 14, 14, 14, 2]"
+    },
+    {
+      "check": "export_size_window",
+      "ok": true,
+      "detail": "impl=1328972 verify=1334988"
+    },
+    {
+      "check": "covered_ms_window",
+      "ok": true,
+      "detail": "impl=4960 verify=4960"
+    }
+  ],
+  "problems": [],
+  "pass": true
+}

@@ -1,0 +1,9 @@
+{
+  "clip": {"path": "core-evidence/prov/CAM-01_evt-200-CAM-01.ts", "size_bytes": 1334988, "actual_t0_ms": 3600001000, "actual_t1_ms": 3600005960},
+  "query": {"complete": "ok", "empty": "ok", "partial": "partial"},
+  "play": {"requested": 3600001400, "actual": 3600001645, "reached": true},
+  "export": {"path": "core-evidence/prov/exports/CAM-01_evt-200-CAM-01.ts", "size_bytes": 1334988},
+  "thumbnail": "core-evidence/prov/thumbs/cam01_00000.jpg",
+  "nvr": "unavailable/UNCONFIGURED",
+  "acceptance": true
+}

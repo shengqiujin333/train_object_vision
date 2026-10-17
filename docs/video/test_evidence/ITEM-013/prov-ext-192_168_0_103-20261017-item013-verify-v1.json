@@ -1,0 +1,111 @@
+{
+  "stamp": "20261017-item013-verify-v1",
+  "steps": [
+    {
+      "step": "extA-param-run",
+      "cmd": "cd /tmp/railhmi_prov && /tmp/railhmi_prov/build-media/tools/railhmi-media-provider --config config --pre-seconds 2 --post-seconds 3 --warmup 6 --extra 3 --outdir /tmp/extA --out /tmp/extA/prov.log --json /tmp/extA/prov.json; echo A_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 13.25,
+      "output": "type=clip availability=incomplete size_bytes=1075360 actual=[3600005000,3600008960] path=/tmp/extA/CAM-01_evt-200-CAM-01.ts\ntype=query case=complete status=ok reason= segments=1 coverage_complete=true covered_ms=3960\ntype=query case=empty status=ok reason= segments=0 coverage_complete=false\ntype=query case=partial status=partial reason= segments=1 covered_ms=1000 coverage_complete=false\ntype=query case=gaps status=ok gaps=1 reason=SYNTH_GAP\ntype=query case=expired status=error reason=TIMEOUT\ntype=play id=play-400 status=ok reason= requested=3600005400 actual=3600005645 reached=true frames=14\ntype=play id=play-500 status=ok reason= requested=3600005500 actual=3600005645 reached=true frames=14\ntype=play id=play-600 status=ok reason= requested=3600005600 actual=3600005645 reached=true frames=14\ntype=play id=play-2500 status=ok reason= requested=3600007500 actual=3600005645 reached=true frames=14\ntype=play id=play-4500 status=ok reason= requested=3600009500 actual=3600007645 reached=true frames=14\ntype=export status=ok reason= path=/tmp/extA/exports/CAM-01_evt-200-CAM-01.ts size_bytes=1075360 complete=true\ntype=export case=missing status=unavailable reason=NOT_FOUND\ntype=thumbnail path=/tmp/extA/thumbs/cam01_00000.jpg exists=true\ntype=nvr query=unavailable/UNCONFIGURED play=unavailable/UNCONFIGURED export=unavailable/UNCONFIGURED segments=0\ntype=sync close_max_deviation=0 close_in_sync=true spread_max_deviation=2000 spread_in_sync=false spread_prompt=同步偏差 2000 ms（阈值 300 ms）\ntype=acceptance query_complete=true query_empty_ok=true query_partial=true gaps_returned=true deadline_timeout=true play_actual_position=true play_within_tolerance=true export_real=true export_missing_unavailable=true thumbnail_real=true nvr_unconfigured=true sync_prompt=true sync_consistency=true result=PASS\nA_EXIT=0\n"
+    },
+    {
+      "step": "extB-unknown-arg",
+      "cmd": "cd /tmp/railhmi_prov && /tmp/railhmi_prov/build-media/tools/railhmi-media-provider --bogus-flag; echo B1_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "B1_EXIT=2\nunknown arg: --bogus-flag\n"
+    },
+    {
+      "step": "extB-help",
+      "cmd": "cd /tmp/railhmi_prov && /tmp/railhmi_prov/build-media/tools/railhmi-media-provider --help; echo B2_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "usage: railhmi-media-provider [--config dir] [--pre-seconds n] [--post-seconds n] [--warmup s] [--extra s] [--outdir dir] [--out log] [--json json] [--selftest]\nB2_EXIT=0\n"
+    },
+    {
+      "step": "extC-vext-compile-run",
+      "cmd": "cd /tmp/railhmi_prov && g++ -std=c++17 -I src/core/include -o /tmp/vext_provider vext_recording_provider.cpp src/core/src/recording_provider.cpp 2>&1 | head -20; if [ -x /tmp/vext_provider ]; then /tmp/vext_provider; echo VEXT_EXIT=$?; else echo VEXT_COMPILE_FAILED; fi",
+      "exit": 0,
+      "elapsed_s": 1.34,
+      "output": "vext PASS v01_adjacent_union_2000\nvext PASS v02_touching_union_gap_1000\nvext PASS v03_chain_union_2500\nvext PASS v04_clipped_to_window_500\nvext PASS v05_outside_not_counted\nvext PASS v06_empty_window_zero\nvext PASS v07_negative_window_zero\nvext PASS v08_unusable_excluded\nvext PASS v09_all_unusable_zero\nvext PASS v10_unsorted_input_ok\nvext PASS v11_empty_input_zero\nvext PASS v12_unconfigured_priority\nvext PASS v13_unconfigured_no_segments_listed\nvext PASS v14_coverage_over_window_ok\nvext PASS v15_exact_window_complete\nvext PASS v16_one_short_partial\nvext PASS v17_mixed_usable_partial\nvext PASS v18_unusable_listed_for_diagnosis\nvext PASS v19_all_unavailable_not_found\nvext PASS v20_half_open_left_overlap\nvext PASS v21_half_open_right_empty_ok\nvext PASS v22_gap_camera_window_filter\nvext PASS v23_ok_no_reason_token\nvext PASS v42_unconfigured_no_gaps\nvext PASS v24_deadline_inclusive_boundary\nvext PASS v25_no_deadline\nvext PASS v26_negative_deadline_no_expires\nvext PASS v27_reason_unconfigured\nvext PASS v28_reason_not_found\nvext PASS v29_reason_timeout\nvext PASS v30_reason_storage_error\nvext PASS v31_reason_unverified\nvext PASS v32_reason_auth_failed\nvext PASS v33_reason_unsupported\nvext PASS v34_reason_none_empty\nvext PASS v35_parse_ok\nvext PASS v36_parse_partial\nvext PASS v37_parse_unavailable\nvext PASS v38_parse_error\nvext PASS v39_parse_reject_variants\nvext PASS v40_playback_defaults\nvext PASS v41_export_defaults\nvext OK (0 failure(s))\nVEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-cleanup",
+      "cmd": "rm -rf /tmp/extA /tmp/vext_provider /tmp/railhmi_prov/vext_recording_provider.cpp && echo EXT_CLEANED",
+      "exit": 0,
+      "elapsed_s": 0.19,
+      "output": "EXT_CLEANED\n"
+    },
+    {
+      "step": "ext-cleanup-verify",
+      "cmd": "ls /tmp/extA /tmp/vext_provider 2>&1; echo LS_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "ls: cannot access '/tmp/extA': No such file or directory\nls: cannot access '/tmp/vext_provider': No such file or directory\nLS_EXIT=2\n"
+    }
+  ],
+  "credential_hits": [],
+  "checks": [
+    {
+      "name": "A_independent_param_run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "A_clip_duration_within_tolerance",
+      "ok": true,
+      "detail": "t1-t0=3960 expect 5000±1100 (keyframe粒度短缺按交付不变式核验)"
+    },
+    {
+      "name": "A_partial_status_partial",
+      "ok": true,
+      "detail": "{'case': 'partial', 'status': 'partial', 'reason': '', 'segments': '1', 'covered_ms': '1000', 'coverage_complete': 'false'}"
+    },
+    {
+      "name": "A_partial_covered_bounded",
+      "ok": true,
+      "detail": "covered_ms=1000"
+    },
+    {
+      "name": "A_empty_ok_zero_segments",
+      "ok": true,
+      "detail": "{'case': 'empty', 'status': 'ok', 'reason': '', 'segments': '0', 'coverage_complete': 'false'}"
+    },
+    {
+      "name": "A_complete_covered_matches_net",
+      "ok": true,
+      "detail": "covered=3960 net=3960"
+    },
+    {
+      "name": "A_gaps_reason_token",
+      "ok": true,
+      "detail": "{'case': 'gaps', 'status': 'ok', 'gaps': '1', 'reason': 'SYNTH_GAP'}"
+    },
+    {
+      "name": "B_unknown_arg_exit2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "B_help_exit0_usage",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C_vext_provider_all_pass_42",
+      "ok": true,
+      "detail": "42/42"
+    },
+    {
+      "name": "CLEAN_board_ext_products_absent",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "D_no_credential_in_evidence",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "failures": 0
+}
