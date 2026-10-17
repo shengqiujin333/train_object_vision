@@ -81,18 +81,18 @@ app/src/core/tools/sim_inject.cpp | active | 模拟/故障注入 CLI（railhmi-s
 app/src/core/tools/status_probe.cpp | active | 关键状态区/顶部条探针 CLI（railhmi-status-probe；三重编码 + 点击权限；无 Qt；ITEM-016）
 app/src/media/CMakeLists.txt | active | railhmi_media 静态库（target 专用；pkg-config gstreamer + librga）+ railhmi-stream-probe + railhmi-multi-probe + railhmi-ai-runner（含 ai_worker）+ railhmi-video-capability（视频 ITEM-001 能力探测；含 video_capability.cpp）
 app/src/media/include/railhmi/media/ai_worker.h | active | 推理工作线程接口（可插拔 Detector/SimDetector；有界队列消费/遥测/start-stop；ITEM-017）
-app/src/media/include/railhmi/media/camera_stream.h | active | 单路取流与状态机接入接口（六态/质量/统计/presentable/断流注入）
+app/src/media/include/railhmi/media/camera_stream.h | active | 单路取流与状态机接入接口（六态/质量/统计/presentable/断流注入）；ITEM-002 增 username/password/timeout_us/decode/test_* 配置并改用 pipeline_factory 构建
 app/src/media/include/railhmi/media/multi_stream.h | active | 六路并发取流管理接口（逐路独立六态；单路失败不影响其余；ITEM-015）
-app/src/media/include/railhmi/media/pipeline_factory.h | active | 渲染路径枚举与管线描述接口
+app/src/media/include/railhmi/media/pipeline_factory.h | active | 视频接入管线工厂接口（ITEM-002）：PipelineSource/DecodeMode/CameraPipelineSpec、build_nv12_prefix/build_pipeline_description/split_rtsp_userinfo/redact_secret、渲染路径与库版本
 app/src/media/include/railhmi/media/video_capability.h | active | 视频源能力探测与配置绑定接口（视频 ITEM-001）：元素探测/库版本/凭据状态/就绪性/协商 caps 记录 + 纯逻辑辅助（可单测）
 app/src/media/src/ai_worker.cpp | active | 推理工作线程实现（std::thread 生命周期/有界队列/帧间隔/遥测；SimDetector 含距离；ITEM-017/021）
-app/src/media/src/camera_stream.cpp | active | 原生 GStreamer 取流实现（强制 UDP；test/file/rtsp；接入 core 六态）
+app/src/media/src/camera_stream.cpp | active | 原生 GStreamer 取流实现（接入 core 六态）；ITEM-002 改由 pipeline_factory 统一构建、错误整串脱敏、file 源 EOS 循环
 app/src/media/src/multi_stream.cpp | active | 多路并发管理器实现（start/pump/cut/stats/stop；ITEM-015）
-app/src/media/src/pipeline_factory.cpp | active | 管线描述/渲染路径解析/GStreamer 版本实现
+app/src/media/src/pipeline_factory.cpp | active | 管线工厂实现（ITEM-002）：三类源统一 NV12、rtsp 强制 UDP+RTP 视频过滤+认证属性、auto/显式 depay 路径、脱敏、file 循环；渲染路径/GStreamer 版本
 app/src/media/src/video_capability.cpp | active | 能力探测实现：直接 gst-inspect 探测（不用 --exists）、librga/librknnrt 版本、凭据只判存在性、有界 RTSP 协商 caps 探测（含瞬时重试与凭据擦除/脱敏）、JSON/文本输出
 app/src/media/tools/ai_runner.cpp | active | 推理工作线程运行器 CLI（railhmi-ai-runner；运行→停止验证 AI 不可用；ITEM-017）
 app/src/media/tools/multi_probe.cpp | active | 六路并发取流探针 CLI（railhmi-multi-probe；逐格状态 + 网格汇总 + 断流验收判定；ITEM-015）
-app/src/media/tools/stream_probe.cpp | active | 单路取流/状态机探针 CLI（railhmi-stream-probe）
+app/src/media/tools/stream_probe.cpp | active | 单路取流/状态机探针 CLI（railhmi-stream-probe）；ITEM-002 增 --decode/--user/--password-env/--timeout-us 与 --selftest 纯映射核对
 app/src/media/tools/video_capability_tool.cpp | active | 运行入口 railhmi-video-capability（--config/--json/--out/--probe-caps/--camera/--selftest；缺凭据/缺元素显式报错）
 app/src/platform/CMakeLists.txt | active | railhmi_platform 静态库；SQLite 优先 dev 包，否则运行时 libsqlite3.so.0 + 项目 shim 头；编译 SqliteStore/Repository
 app/src/platform/include/railhmi/platform/file_store.h | active | 原子文件存储接口（临时文件+rename，断电保护）
@@ -164,6 +164,7 @@ app/tests/run_core_tests.sh | active | core 单命令测试入口（构建+运�
 app/third_party/sqlite/sqlite3_min.h | active | 最小 SQLite C API 声明（无系统 sqlite3.h 时使用；存在系统头则优先系统头）
 app/tools/board_build.py | active | 板端构建/测试运行器（TestRun：core 单测 + tokens selftest + ui-scan（硬编码+各接线+打包核对）+ sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针；上传 app/ + 权限矩阵 + packaging/）；ui-scan 增 check_qml_qt_validity（QML_VALID_EXIT）
 app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
+app/tools/board_pipeline_check.py | active | 视频 ITEM-002 板端执行入口（上传→MediaCheck→stream-probe selftest→test/file/rtsp(auto+h265)→取回证据→清理；凭据经 0600 临时 env 文件注入并删除，命令串与日志不含凭据）
 app/tools/board_qmllint.py | active | 发布包板端 QML 静态检查（qmllint 逐文件；n008 证据，5.15 不覆盖大写属性名）
 app/tools/board_release_build.py | active | 发布包目标构建/打包器（授权内补装 Qt 开发依赖→板端 Release 构建→冒烟→tar.gz+sha256；含只作用于目标 /tmp 副本的诊断开关；n008）；增 --no-bundle（只构建+冒烟，不产出发布包）；修复 stage 组装 format 占位符计数（打包 tar.gz 首次实跑）
 app/tools/board_release_probe.py | active | 发布包板端只读资源/支持范围探针（OS/Qt/GStreamer/librga/rknn/sqlite/显示/systemd/apt 可达性；ITEM n008）
@@ -1656,6 +1657,7 @@ docs/video/VIDEO_E2E_PLAN.md | active | E2EPlan：视频端到端测试计划 v1
 docs/video/VIDEO_SYSTEM_DESIGN.md | active | VideoSystemDesignArtifact v1：六路可见光视频系统设计——视频源/协议/编码/时间戳确认、帧描述符与不可变 FrameLease 所有权、每路管线与线程/队列边界、背压与丢帧策略、实时/录像/推理三条时间线与软件同步口径、异常恢复与真实重建、本机保护片段与回放 media provider、吞吐/延迟/同步/存储/断流预算与测量方法、库与加速路径对比（原生 GStreamer+MPP+librga 选用、OpenCV/rgaconvert 否决、gl 保留）、接口职责边界、配置与待实测项；含本轮板端只读 GStreamer 栈核对（qmlglsink 缺失、mppvideodec 存在、--exists 不可靠）
 docs/video/VIDEO_TEST_DESIGN.md | active | TestDesignArtifact：视频系统软件测试设计 v1——五层测试环境（ENV-A0 主机单元/A 主机模拟/B 板端真库离线媒体/C 板端 file·test 源/D 板端真实 RTSP）、视频故障注入目录 FI-V-01..10、G1..G7 功能域 37 条用例（能力探测/管线工厂/帧身份/租约/RGA 转换/状态机与多路隔离/录像回放/脱敏日志/预算仪器）、P0 冒烟 5 条、ITEM-001..017 需求覆盖矩阵、证据分层与三源（真实/文件/模拟）不合并规则
 docs/video/implementation/ITEM-001_VIDEO_SOURCE_CAPABILITY.md | active | VideoSystemImplementation：视频 ITEM-001 交付清单（新增/修改文件与 digest、配置绑定与探测行为、运行入口、验证结果、调试修复历史、边界与移交）
+docs/video/implementation/ITEM-002_PIPELINE_FACTORY.md | active | VideoSystemImplementation：视频 ITEM-002 交付清单（管线工厂接口/行为、digest、运行入口、板端验证、调试结论 RTP 视频过滤、边界与移交）
 docs/video/test_evidence/ITEM-001/ITEM-001-ENV-B-20261017-r1.md | active | VideoExecutionEvidence：ITEM-001 源类型范围与链路测量记录（六路真实 RTSP 协商 caps=H265/NV12/1280x720/25、元素探测、库版本、凭据缺失路径、安全脱敏、原始证据索引；ENV-B 档）
 docs/video/test_evidence/ITEM-001/VERIFY-ITEM-001.md | active | TestEvidence（software_verification 独立复验）：VERIFY-20261017-v1 对实现 dc70856 的独立板端复跑（build/selftest 8/8/nocred/caps 6 路 measured 与 r5 字段级 identical）、TC-V-CAP-01..05 判据映射、EXT-01..06 扩展夹具（exit 3 元素缺失显式报缺/exit2 负例/--exists 假否独立复现/凭据泄漏 0 命中）、观察项 O-1 单路瞬时探测波动（音频 PCMA depay 竞态）/O-2 caps 确定性判据未闭环/O-3 eth1 100Mbps；TEST_PASS 范围限能力探测与配置绑定，不外推持续吞吐/多路并发/录像回放
 docs/video/test_evidence/ITEM-001/_verify_det2.py | active | 验证侧 caps 确定性夹具 v2（CAM-01 3 轮单路探测，判据=成功 run 的 caps 字段恒等；O-1 影响 0/3 成功如实记录不闭环）
@@ -1673,6 +1675,17 @@ docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-verif
 docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-verify-v1.log | active | 验证轮独立板端全流程人类可读 transcript（build/selftest 8/8/reachability/nocred/caps/artifacts）
 docs/video/test_evidence/ITEM-001/video-cap-192_168_0_103-20261017-item001-verify-v1.transcript.json | active | 验证轮独立板端执行结构化 transcript（命令+退出码+输出）
 docs/video/test_evidence/ITEM-001/video-cap-ext-192_168_0_103-20261017-item001-verify-v1.json | active | 验证侧 ext 夹具结构化结果（EXT-01..06 判据检查 + 板端步骤输出，含元素缺失 exit3/负例 exit2/--exists 假否/凭据泄漏扫描）
+docs/video/test_evidence/ITEM-002/ITEM-002-ENV-B-20261017-r1.md | active | VideoExecutionEvidence：ITEM-002 源类型范围与链路测量记录（test/file/rtsp auto+显式 h265 同工厂出帧、selftest 16/16、脱敏与原始证据索引）
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-file-20261017-item002-r6.json | active | ITEM-002 file 源采样 JSON
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-file-20261017-item002-r6.log | active | ITEM-002 file 源逐秒状态日志（循环）
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-rtsp-auto-20261017-item002-r6.json | active | ITEM-002 rtsp decodebin 自适应采样 JSON
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-rtsp-auto-20261017-item002-r6.log | active | ITEM-002 rtsp decodebin 自适应逐秒状态日志
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-rtsp-h265-20261017-item002-r6.json | active | ITEM-002 rtsp 显式 H265 固化路径采样 JSON
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-rtsp-h265-20261017-item002-r6.log | active | ITEM-002 rtsp 显式 H265 固化路径逐秒状态日志
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-test-20261017-item002-r6.json | active | ITEM-002 test 源采样 JSON
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.core-evidence_probe-test-20261017-item002-r6.log | active | ITEM-002 test 源逐秒状态日志
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.log | active | ITEM-002 板端执行人类可读 transcript（build/selftest/gen-file/test/file/rtsp auto+h265）
+docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-r6.transcript.json | active | ITEM-002 板端执行结构化 transcript（命令+退出码+输出）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

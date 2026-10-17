@@ -14,26 +14,27 @@ namespace media {
 namespace {
 
 std::string build_pipeline(const CameraStreamConfig& c) {
-    std::ostringstream s;
+    CameraPipelineSpec spec;
     switch (c.source) {
-        case SourceKind::Test:
-            s << "videotestsrc is-live=true ! videoconvert "
-                 "! video/x-raw,format=NV12,width=1280,height=720,framerate=25/1";
-            break;
-        case SourceKind::File:
-            s << "filesrc location=\"" << c.file << "\" ! decodebin ! video/x-raw,format=NV12";
-            break;
-        case SourceKind::Rtsp:
-            s << "rtspsrc location=\"" << c.url << "\" latency=" << c.latency_ms
-              << " timeout=5000000 protocols=udp udp-buffer-size=" << c.udp_buffer_bytes
-              << " ! decodebin ! video/x-raw,format=NV12";
-            break;
+        case SourceKind::Test: spec.source = PipelineSource::Test; break;
+        case SourceKind::File: spec.source = PipelineSource::File; break;
+        case SourceKind::Rtsp: spec.source = PipelineSource::Rtsp; break;
     }
-    s << " ! tee name=t "
-         "t. ! queue leaky=downstream max-size-buffers=1 ! fakesink name=count_sink sync=false "
-         "t. ! queue leaky=downstream max-size-buffers=1 "
-         "! appsink name=frame_sink drop=1 max-buffers=1 sync=false";
-    return s.str();
+    spec.camera_id = c.camera_id;
+    spec.url = c.url;
+    spec.username = c.username;
+    spec.password = c.password;
+    spec.latency_ms = c.latency_ms;
+    spec.timeout_us = c.timeout_us;
+    spec.udp_buffer_bytes = c.udp_buffer_bytes;
+    spec.decode = c.decode;
+    spec.file = c.file;
+    spec.test_is_live = c.test_is_live;
+    spec.test_width = c.test_width;
+    spec.test_height = c.test_height;
+    spec.test_fps = c.test_fps;
+    spec.path = RenderPath::Cpu;  // 单路探针固定 appsink（cpu）；显示路径由上层选择
+    return build_pipeline_description(spec);
 }
 
 railhmi::core::FrameStats frame_stats(const GstVideoFrame& vf) {
@@ -78,6 +79,9 @@ struct CameraStream::Impl {
     bool cut = false;
     bool started = false;
     std::string last_error;
+    std::string redact_src;   // 用于错误日志脱敏的凭据（仅内存）
+
+    std::string scrub(const std::string& t) const { return redact_secret(t, redact_src); }
 
     ~Impl() { teardown(); }
 
@@ -120,12 +124,19 @@ bool CameraStream::start(std::string* err) {
     gst_init(nullptr, nullptr);
     impl_->machine = new railhmi::core::StreamStateMachine(impl_->cfg.camera_id, impl_->cfg.thresholds);
 
+    // 解析用于日志脱敏的凭据：优先显式 password，否则从 rtsp URL 拆出。
+    impl_->redact_src = impl_->cfg.password;
+    if (impl_->redact_src.empty() && impl_->cfg.source == SourceKind::Rtsp) {
+        std::string loc, u, p;
+        if (split_rtsp_userinfo(impl_->cfg.url, &loc, &u, &p)) impl_->redact_src = p;
+    }
+
     const std::string desc = build_pipeline(impl_->cfg);
     GError* gerr = nullptr;
     impl_->pipeline = gst_parse_launch(desc.c_str(), &gerr);
     if (gerr) {
-        impl_->last_error = gerr->message;
-        if (err) *err = gerr->message;
+        impl_->last_error = impl_->scrub(gerr->message);
+        if (err) *err = impl_->scrub(gerr->message);
         g_error_free(gerr);
     }
     if (!impl_->pipeline) {
@@ -172,10 +183,15 @@ bool CameraStream::pump(int timeout_ms) {
                 GError* e = nullptr;
                 gchar* dbg = nullptr;
                 gst_message_parse_error(msg, &e, &dbg);
-                impl_->last_error = e ? e->message : "bus error";
+                impl_->last_error = impl_->scrub(e ? e->message : "bus error");
                 if (impl_->machine) impl_->machine->on_source_error(now, impl_->last_error);
                 if (e) g_error_free(e);
                 g_free(dbg);
+            } else if (impl_->cfg.source == SourceKind::File) {
+                // 文件源循环播放（ENV-C：录制文件循环模拟流）；EOS 不算源错误。
+                gst_element_seek_simple(
+                    impl_->pipeline, GST_FORMAT_TIME,
+                    static_cast<GstSeekFlags>(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT), 0);
             } else {
                 impl_->last_error = "eos";
                 if (impl_->machine) impl_->machine->on_source_error(now, "eos");

@@ -1,13 +1,15 @@
-// railhmi 单路取流与状态机探针（ITEM-013）
-// 用原生 GStreamer（强制 UDP）运行同一管线，接入 railhmi-core 六态与质量标志，
-// 输出 fps / 最近帧时间 / 重连次数 / presentable 的结构化状态；支持无相机 test 源与断流注入。
+// railhmi 单路取流与状态机探针（ITEM-013 / 管线工厂 ITEM-002）
+// 用 pipeline_factory 统一构建 rtsp(强制 UDP)/file/test 三类源管线，接入六态与质量标志，
+// 输出 fps / 最近帧时间 / 重连次数 / presentable；`--selftest` 仅做纯字符串映射核对（不 spawn）。
 //
 // 用法:
 //   railhmi-stream-probe --source test --duration 6 --cut-after 3 --out s.log --json s.json
 //   railhmi-stream-probe --source file --file clip.mp4 --duration 6
-//   railhmi-stream-probe --source rtsp --url 'rtsp://<user>:<pass>@<cam>/...' --duration 8
+//   railhmi-stream-probe --source rtsp --url 'rtsp://<cam>/...' --user admin --password-env VAR
+//   railhmi-stream-probe --source rtsp --url 'rtsp://user:pass@<cam>/...' --decode h265
+//   railhmi-stream-probe --selftest
 //
-// 退出码: 0 正常；2 参数错误；3 启动失败。
+// 退出码: 0 正常；1 selftest 失败；2 参数错误；3 启动失败。
 
 #include <chrono>
 #include <cstdio>
@@ -36,6 +38,64 @@ std::string fmt_fps(double v) {
     return b;
 }
 
+// 纯字符串映射自检（不 spawn GStreamer）：三类源 + auto/显式解码路径 + 脱敏。
+int run_selftest() {
+    using namespace railhmi::media;
+    int failures = 0;
+    auto check = [&](bool ok, const char* name) {
+        std::printf("selftest %s %s\n", ok ? "PASS" : "FAIL", name);
+        if (!ok) ++failures;
+    };
+    auto has = [](const std::string& s, const char* sub) {
+        return s.find(sub) != std::string::npos;
+    };
+
+    CameraPipelineSpec t;
+    t.source = PipelineSource::Test;
+    const std::string tp = build_pipeline_description(t);
+    check(has(tp, "videotestsrc"), "test_videotestsrc");
+    check(has(tp, "format=NV12"), "test_nv12");
+
+    CameraPipelineSpec f;
+    f.source = PipelineSource::File;
+    f.file = "/tmp/railhmi_probe.mp4";
+    const std::string fp = build_pipeline_description(f);
+    check(has(fp, "filesrc"), "file_filesrc");
+    check(has(fp, "decodebin"), "file_decodebin");
+    check(has(fp, "format=NV12"), "file_nv12");
+
+    CameraPipelineSpec r;
+    r.source = PipelineSource::Rtsp;
+    r.url = "rtsp://admin:DUMMY_SECRET@192.168.1.65:554/cam/realmonitor?channel=1&subtype=0";
+    r.decode = DecodeMode::Auto;
+    const std::string ra = build_pipeline_description(r);
+    check(has(ra, "protocols=udp"), "rtsp_udp");
+    check(!has(ra, "protocols=tcp"), "rtsp_no_tcp");
+    check(has(ra, "application/x-rtp,media=video"), "rtsp_video_only");
+    check(has(ra, "decodebin"), "rtsp_auto_decodebin");
+    check(has(ra, "user-id=\"admin\""), "rtsp_user_prop");
+    check(has(ra, "user-pw=\"DUMMY_SECRET\""), "rtsp_pw_prop");
+    check(!has(ra, "DUMMY_SECRET@"), "rtsp_no_creds_in_url");
+
+    CameraPipelineSpec r5 = r;
+    r5.decode = DecodeMode::ExplicitH265;
+    const std::string rp5 = build_pipeline_description(r5);
+    check(has(rp5, "rtph265depay") && has(rp5, "h265parse") && has(rp5, "mppvideodec"),
+          "rtsp_explicit_h265");
+    check(!has(rp5, "decodebin"), "rtsp_explicit_no_decodebin");
+
+    CameraPipelineSpec r4 = r;
+    r4.decode = DecodeMode::ExplicitH264;
+    const std::string rp4 = build_pipeline_description(r4);
+    check(has(rp4, "rtph264depay") && has(rp4, "h264parse") && has(rp4, "mppvideodec"),
+          "rtsp_explicit_h264");
+
+    check(!has(redact_secret(rp5, "DUMMY_SECRET"), "DUMMY_SECRET"), "redact_secret");
+
+    std::printf("selftest %s (%d failure(s))\n", failures == 0 ? "OK" : "FAILED", failures);
+    return failures == 0 ? 0 : 1;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -59,9 +119,25 @@ int main(int argc, char** argv) {
         else if (a == "--step") { std::string v; next(&v); step_ms = std::atoll(v.c_str()); }
         else if (a == "--out") next(&out);
         else if (a == "--json") next(&json);
+        else if (a == "--user") next(&cfg.username);
+        else if (a == "--password-env") {
+            std::string v; next(&v);
+            const char* p = std::getenv(v.c_str());
+            if (p) cfg.password = p;
+        }
+        else if (a == "--timeout-us") { std::string v; next(&v); cfg.timeout_us = std::atoi(v.c_str()); }
+        else if (a == "--decode") {
+            std::string v; next(&v);
+            if (!media::parse_decode_mode(v, &cfg.decode)) {
+                std::fprintf(stderr, "bad --decode '%s' (auto|h264|h265)\n", v.c_str());
+                return 2;
+            }
+        }
+        else if (a == "--selftest") return run_selftest();
         else if (a == "--help" || a == "-h") {
             std::printf("usage: railhmi-stream-probe --source test|file|rtsp [--file f] [--url u] "
-                        "[--duration s] [--cut-after s] [--step ms] [--out log] [--json json]\n");
+                        "[--user u] [--password-env VAR] [--decode auto|h264|h265] [--timeout-us n] "
+                        "[--duration s] [--cut-after s] [--step ms] [--out log] [--json json] [--selftest]\n");
             return 0;
         } else {
             std::fprintf(stderr, "unknown arg: %s\n", a.c_str());

@@ -1,14 +1,16 @@
 #pragma once
 
 // railhmi-media: 单路取流与流状态机接入（ITEM-013）。
-// 原生 GStreamer（强制 UDP）逐帧发布 → 接入 railhmi-core 六态与质量标志；
-// 统计 fps / 最近帧时间 / 重连次数；非 LIVE 不得把旧帧当作实时（presentable）。
-// 无相机时可用 test/file 源运行同一管线。target 专用（依赖 GStreamer/librga）。
+// 取流管线由 pipeline_factory（ITEM-002）统一构建：rtsp(强制 UDP)/file/test 三类源
+// 复用同一条 “源→解码→video/x-raw,format=NV12” 管线；凭据经 rtspsrc 属性传入且日志脱敏。
+// 逐帧发布 → 接入 railhmi-core 六态与质量标志；统计 fps / 最近帧时间 / 重连次数；
+// 非 LIVE 不得把旧帧当作实时（presentable）。target 专用（依赖 GStreamer/librga）。
 
 #include <deque>
 #include <string>
 
 #include "railhmi/core/stream_state.h"
+#include "railhmi/media/pipeline_factory.h"
 
 namespace railhmi {
 namespace media {
@@ -18,10 +20,18 @@ enum class SourceKind { Test, File, Rtsp };
 struct CameraStreamConfig {
     std::string camera_id = "CAM-01";
     SourceKind source = SourceKind::Test;
-    std::string url;      // source=rtsp（不含凭据的 URL；凭据由调用方在内存中安全构造）
-    std::string file;     // source=file
+    std::string url;               // source=rtsp；可含 user:pass@（工厂拆为认证属性）
+    std::string username;          // source=rtsp 可选显式认证
+    std::string password;          // 仅内存使用，日志/错误整串脱敏
+    std::string file;              // source=file
     int latency_ms = 500;
+    int timeout_us = 5000000;      // rtspsrc timeout（微秒）
     int udp_buffer_bytes = 4194304;
+    DecodeMode decode = DecodeMode::Auto;   // auto(decodebin) | h264 | h265 显式固化
+    bool test_is_live = true;      // source=test
+    int test_width = 1280;
+    int test_height = 720;
+    int test_fps = 25;
     railhmi::core::StreamThresholds thresholds;
     railhmi::core::QualityThresholds quality;
 };

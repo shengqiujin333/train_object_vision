@@ -1,0 +1,14 @@
+type=injection source=rtsp camera=CAM-01 duration_s=6 cut_after_s=-1 transport=udp
+t=0 type=stream_state state=connecting fps=0.0 last_frame_ms=0 reconnect_count=0 presentable=false
+t=515 type=stream_state state=live fps=5.5 last_frame_ms=342590637 reconnect_count=0 presentable=true
+t=1045 type=stream_state state=live fps=12.0 last_frame_ms=342591167 reconnect_count=0 presentable=true
+t=1516 type=stream_state state=live fps=18.0 last_frame_ms=342591638 reconnect_count=0 presentable=true
+t=2034 type=stream_state state=live fps=24.5 last_frame_ms=342592156 reconnect_count=0 presentable=true
+t=2521 type=stream_state state=live fps=25.0 last_frame_ms=342592643 reconnect_count=0 presentable=true
+t=3044 type=stream_state state=live fps=25.5 last_frame_ms=342593166 reconnect_count=0 presentable=true
+t=3515 type=stream_state state=live fps=25.5 last_frame_ms=342593637 reconnect_count=0 presentable=true
+t=4044 type=stream_state state=live fps=25.0 last_frame_ms=342594166 reconnect_count=0 presentable=true
+t=4514 type=stream_state state=live fps=25.5 last_frame_ms=342594636 reconnect_count=0 presentable=true
+t=5004 type=stream_state state=live fps=25.0 last_frame_ms=342595126 reconnect_count=0 presentable=true
+t=5524 type=stream_state state=live fps=25.0 last_frame_ms=342595646 reconnect_count=0 presentable=true
+type=summary final_state=live reconnect_count=0 last_frame_ms=342596086 presentable=true
