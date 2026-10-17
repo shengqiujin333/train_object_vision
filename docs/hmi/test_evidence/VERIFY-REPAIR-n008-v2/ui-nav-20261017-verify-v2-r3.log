@@ -1,0 +1,30 @@
+[08:26:21] exit=0 :: rm -rf /tmp/railhmi_verify_nav_v2 && mkdir -p /tmp/railhmi_verify_nav_v2
+[08:26:21] exit=0 :: command -v Xvfb >/dev/null 2>&1 && echo HAVE_XVFB || echo MISS_XVFB
+[08:26:30] uploaded 173 files
+[08:26:47] exit=3 :: cd /tmp/railhmi_verify_nav_v2/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -25'
+[08:26:47] exit=1 :: cd /tmp/railhmi_verify_nav_v2/app && sha256sum build-target/src/ui/railhmi && file build-target/src/
+[08:26:47] BUILD FAILED
+[08:27:26] exit=0 :: rm -rf /tmp/railhmi_verify_nav_v2 && mkdir -p /tmp/railhmi_verify_nav_v2
+[08:27:26] exit=0 :: command -v Xvfb >/dev/null 2>&1 && echo HAVE_XVFB || echo MISS_XVFB
+[08:27:36] uploaded 174 files
+[08:28:07] exit=0 :: cd /tmp/railhmi_verify_nav_v2/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -25'
+[08:28:07] exit=0 :: cd /tmp/railhmi_verify_nav_v2/app && sha256sum build-target/src/ui/railhmi && file build-target/src/
+[08:28:07] build ok
+[08:28:07] exit=0 :: cp -r /tmp/railhmi_verify_nav_v2/app/config /tmp/railhmi_verify_nav_v2/config && sed -i 's/^  simula
+[08:28:07] exit=0 :: pkill -x Xvfb 2>/dev/null; rm -f /tmp/.X99-lock; nohup Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp
+[08:28:07] exit=0 :: for i in $(seq 1 20); do [ -S /tmp/.X11-unix/X99 ] && { echo XVFB_UP; break; }; sleep 0.5; done
+[08:28:54] exit=0 :: bash /tmp/railhmi_verify_nav_v2/capture.sh
+[08:28:56] exit=0 :: pkill -x railhmi 2>/dev/null; pkill -x Xvfb 2>/dev/null; rm -rf /tmp/railhmi_verify_nav_v2; echo cle
+[08:28:56] done
+[08:37:07] exit=0 :: rm -rf /tmp/railhmi_verify_nav_v2 && mkdir -p /tmp/railhmi_verify_nav_v2
+[08:37:08] exit=0 :: command -v Xvfb >/dev/null 2>&1 && echo HAVE_XVFB || echo MISS_XVFB
+[08:37:17] uploaded 174 files
+[08:37:48] exit=0 :: cd /tmp/railhmi_verify_nav_v2/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -25'
+[08:37:48] exit=0 :: cd /tmp/railhmi_verify_nav_v2/app && sha256sum build-target/src/ui/railhmi && file build-target/src/
+[08:37:48] build ok
+[08:37:48] exit=0 :: cp -r /tmp/railhmi_verify_nav_v2/app/config /tmp/railhmi_verify_nav_v2/config && sed -i 's/^  simula
+[08:37:48] exit=0 :: pkill -x Xvfb 2>/dev/null; rm -f /tmp/.X99-lock; nohup Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp
+[08:37:48] exit=0 :: for i in $(seq 1 20); do [ -S /tmp/.X11-unix/X99 ] && { echo XVFB_UP; break; }; sleep 0.5; done
+[08:38:06] exit=0 :: bash /tmp/railhmi_verify_nav_v2/capture.sh
+[08:38:08] exit=0 :: pkill -x railhmi 2>/dev/null; pkill -x Xvfb 2>/dev/null; rm -rf /tmp/railhmi_verify_nav_v2; echo cle
+[08:38:08] done

@@ -1,0 +1,80 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "expected_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+    "remote_build_dir": "/tmp/railhmi_build",
+    "workdir": "/tmp/railhmi_verify_ext_v2",
+    "cpp": "docs/hmi/test_evidence/ITEM-005-stream/verify_stream_ext.cpp",
+    "outdir": "docs/hmi/test_evidence/VERIFY-REPAIR-n008-v2",
+    "stamp": "20261017-verify-v2-ext",
+    "connect_timeout": 10
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "notes": [
+    "aborts on fingerprint mismatch; no credentials logged"
+  ],
+  "steps": [
+    {
+      "step": "fingerprint",
+      "exit": 0,
+      "output": "observed=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU expected=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_verify_ext_v2",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": ""
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded docs/hmi/test_evidence/ITEM-005-stream/verify_stream_ext.cpp -> /tmp/railhmi_verify_ext_v2/verify_stream_ext.cpp"
+    },
+    {
+      "step": "compile",
+      "cmd": "cd /tmp/railhmi_build && g++ -std=c++17 -O0 -Wall -Isrc/core/include /tmp/railhmi_verify_ext_v2/verify_stream_ext.cpp src/core/src/stream_state.cpp -o /tmp/railhmi_verify_ext_v2/verify_stream_ext 2>&1; echo GXX_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.92,
+      "output": "GXX_EXIT=0\n"
+    },
+    {
+      "step": "run-ext",
+      "cmd": "cd /tmp/railhmi_build && /tmp/railhmi_verify_ext_v2/verify_stream_ext; echo EXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "== verify-stream-ext (software tester fixture, ITEM-005) ==\n[PASS] boundary mean==40 not too_dark (strict <)\n[PASS] mean 39.999 -> too_dark\n[PASS] boundary mean==220 not too_bright (strict >)\n[PASS] mean 220.001 -> too_bright\n[PASS] boundary stddev==3 not occluded\n[PASS] stddev 2.999 -> occluded\n[PASS] boundary lapvar==30 not blurred (strict <)\n[PASS] lapvar 0 -> blurred\n[PASS] partial invalid stats -> only occluded\n[PASS] multi-flag describe order\n[PASS] offline rejects present-as-live\n[PASS] connecting rejects present-as-live\n[PASS] first-frame timeout -> reconnecting\n[PASS] reconnecting rejects present-as-live\n[PASS] backoff elapsed -> connecting\n[PASS] explicit attempt reaches threshold -> offline\n[PASS] explicit attempt emits Escalated\n[PASS] escalated offline rejects present-as-live\n[PASS] drain returns all buffered events\n[PASS] start after escalation resets count\n[PASS] start emits Started\n[PASS] second drain is empty\n[PASS] frame after restart -> live\n[PASS] 49ms old frame presents as live\n[PASS] exactly freeze_timeout old rejects\n[PASS] bad-quality first frame -> degraded streaming\n[PASS] connecting->degraded emits Started+QualityDegraded+FirstFrame\n[PASS] degraded no-frame -> frozen\n[PASS] frozen after degraded rejects\n[PASS] degraded->frozen->reconnect escalates at threshold 1\n[PASS] escalated emitted in degraded chain\n[PASS] recovery with flags -> degraded, count reset\n[PASS] recovered emitted from offline\n[PASS] degraded old frame (50ms) rejects\n[PASS] two attempts below threshold stay reconnecting\n[PASS] one ReconnectAttempt event per attempt\n[PASS] third attempt escalates\n[PASS] arrived offline\n[PASS] offline sticky under tick\n[PASS] offline chain event buffer\n== 40 passed, 0 failed ==\nEXT_EXIT=0\n"
+    },
+    {
+      "step": "fx1_first_frame_timeout_zero",
+      "cmd": "rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp /tmp/railhmi_build/config/*.yaml /tmp/railhmi_fx/ && sed -i 's/first_frame_timeout_ms: 5000/first_frame_timeout_ms: 0/' /tmp/railhmi_fx/thresholds.yaml && /tmp/railhmi_build/build-core/tools/railhmi-config-check /tmp/railhmi_fx 2>&1; echo FX1_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "config INVALID (1 error(s)) dir=/tmp/railhmi_fx:\n  thresholds.first_frame_timeout_ms: must be >= 1\nFX1_EXIT=1\n"
+    },
+    {
+      "step": "fx2_reconnect_backoff_negative",
+      "cmd": "rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp /tmp/railhmi_build/config/*.yaml /tmp/railhmi_fx/ && sed -i 's/reconnect_backoff_ms: 1000/reconnect_backoff_ms: -1/' /tmp/railhmi_fx/thresholds.yaml && /tmp/railhmi_build/build-core/tools/railhmi-config-check /tmp/railhmi_fx 2>&1; echo FX2_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "config INVALID (1 error(s)) dir=/tmp/railhmi_fx:\n  thresholds.reconnect_backoff_ms: must be >= 0\nFX2_EXIT=1\n"
+    },
+    {
+      "step": "fx3_good_reference",
+      "cmd": "rm -rf /tmp/railhmi_fx && mkdir -p /tmp/railhmi_fx && cp /tmp/railhmi_build/config/*.yaml /tmp/railhmi_fx/ && /tmp/railhmi_build/build-core/tools/railhmi-config-check /tmp/railhmi_fx 2>&1; echo FX3_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "config OK: 6 cameras, 4 roi, 1 integrations (dir=/tmp/railhmi_fx)\n  mode=visible render_path=cpu recording_source=both\nFX3_EXIT=0\n"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_verify /tmp/railhmi_fx /tmp/railhmi_build && echo fixture_cleanup_done",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "fixture_cleanup_done\n"
+    }
+  ]
+}
