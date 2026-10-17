@@ -1,0 +1,4 @@
+2026-10-17T08:50:49.926 INFO  railhmi 0.1.0 [mode=Target, simulation=off]
+2026-10-17T08:50:49.926 INFO  config dir: /tmp/railhmi_uireview/config
+2026-10-17T08:50:49.927 INFO  configuration OK: 6 cameras
+2026-10-17T08:50:49.927 INFO  render path: cpu

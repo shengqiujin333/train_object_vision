@@ -1,0 +1,26 @@
+[08:50:07] exit=0 0.2s :: rm -rf /tmp/railhmi_uireview && mkdir -p /tmp/railhmi_uireview
+[08:50:07] exit=0 0.1s :: command -v Xvfb >/dev/null 2>&1 && echo HAVE_XVFB || echo MISS_XVFB
+[08:50:07] exit=0 0.1s :: command -v Xvfb && command -v ffmpeg && command -v xdotool && echo DEPS_OK
+[08:50:15] uploaded 179 files
+[08:50:49] exit=0 33.2s :: cd /tmp/railhmi_uireview/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -40'
+[08:50:49] exit=0 0.1s :: cd /tmp/railhmi_uireview/app && ls -l build-target/src/ui/railhmi && file build-target/src/ui/railhmi && sha25
+[08:50:49] exit=0 0.1s :: cp -r /tmp/railhmi_uireview/app/config /tmp/railhmi_uireview/config && sed -i 's/^  simulation: .*/  simulatio
+[08:50:49] exit=0 0.1s :: pkill -x Xvfb 2>/dev/null; rm -f /tmp/.X99-lock; nohup Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp </dev/nul
+[08:50:49] exit=0 0.1s :: for i in $(seq 1 20); do [ -S /tmp/.X11-unix/X99 ] && { echo XVFB_UP; break; }; sleep 0.5; done
+[08:51:03] exit=0 14.2s :: bash /tmp/railhmi_uireview/capture.sh
+[08:51:03] WIN_UP=1 app_pid=370042
+CAP p1_realtime size=52287
+CAP p2_alarm_center size=91724
+CAP p3_replay size=86170
+CAP p4_all_cameras size=54620
+CAP p5_ai_debug size=96105
+CAP p6_maintenance size=154093
+=== app.log tail ===
+2026-10-17T08:50:49.926 INFO  railhmi 0.1.0 [mode=Target, simulation=off]
+2026-10-17T08:50:49.926 INFO  config dir: /tmp/railhmi_uireview/config
+2026-10-17T08:50:49.927 INFO  configuration OK: 6 cameras
+2026-10-17T08:50:49.927 INFO  render path: cpu
+CAPTURE_DONE
+[08:51:09] exit=0 0.1s :: pkill -x railhmi 2>/dev/null; pkill -x Xvfb 2>/dev/null; echo cleaned
+[08:51:09] exit=0 0.1s :: rm -rf /tmp/railhmi_uireview
+[08:51:09] done
