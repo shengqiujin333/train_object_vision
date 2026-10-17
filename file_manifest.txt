@@ -89,7 +89,7 @@ app/src/media/include/railhmi/media/camera_stream.h | active | 单路取流与�
 app/src/media/include/railhmi/media/camera_worker.h | active | 每相机取流 worker 接口（视频 ITEM-006）：专用线程/请求(restart/cut/freeze/resume)/线程安全快照(stats/lease/presentable/事件计数)
 app/src/media/include/railhmi/media/frame_lease.h | active | 不可变帧租约公开接口（视频 ITEM-004）：FrameDescriptor（对齐契约 schema）+ FrameLease（共享所有权/use_count/plane_data）；GStreamer-free
 app/src/media/include/railhmi/media/frame_store.h | active | 每相机最新帧仓库接口（视频 ITEM-004）：publish/latest/release 回调/published·rejected 计数；GstSample 前向声明
-app/src/media/include/railhmi/media/multi_stream.h | active | 六路并发取流管理接口（逐路独立六态；单路失败不影响其余；ITEM-015）
+app/src/media/include/railhmi/media/multi_stream.h | active | 多路并发取流管理接口（视频 ITEM-007）：每路独立 CameraWorker、单路启动失败/断流隔离、槽位顺序不变、线程安全快照与单路请求
 app/src/media/include/railhmi/media/pipeline_factory.h | active | 视频接入管线工厂接口（ITEM-002）：PipelineSource/DecodeMode/CameraPipelineSpec、build_nv12_prefix/build_pipeline_description/split_rtsp_userinfo/redact_secret、渲染路径与库版本
 app/src/media/include/railhmi/media/rga_convert.h | active | NV12→BGR888 转换接口（视频 ITEM-005）：BgrImage/rga_hstride/nv12_to_bgr_(raw)/bgr_channel_means/spread；GStreamer-free
 app/src/media/include/railhmi/media/video_capability.h | active | 视频源能力探测与配置绑定接口（视频 ITEM-001）：元素探测/库版本/凭据状态/就绪性/协商 caps 记录 + 纯逻辑辅助（可单测）
@@ -97,14 +97,14 @@ app/src/media/src/ai_worker.cpp | active | 推理工作线程实现（std::threa
 app/src/media/src/camera_stream.cpp | active | 原生 GStreamer 取流实现（接入 core 六态）；ITEM-002 改由 pipeline_factory 统一构建、错误整串脱敏、file 源 EOS 循环；ITEM-003 每帧生成身份+时间（mono/wall/pts）、真实重建时 generation+1；ITEM-004 每帧发布到 FrameStore（origin=live/file/simulation）；ITEM-005 worker 内 NV12→BGR（失败不丢帧）；ITEM-006 drain STATE_CHANGED、冻结不忙等、重建清标志/统计、presentable 代际判定
 app/src/media/src/camera_worker.cpp | active | 每相机取流 worker 实现（视频 ITEM-006）：有限等待拉帧、drain bus/事件、驱动六态机、线程安全快照
 app/src/media/src/frame_lease.cpp | active | GStreamer-backed FrameBuffer（GstSample ref 共享 + GstVideoFrame 映射）与 FrameStore 实现（视频 ITEM-004）；末个租约释放时 unmap/unref 并触发回调
-app/src/media/src/multi_stream.cpp | active | 多路并发管理器实现（start/pump/cut/stats/stop；ITEM-015）
+app/src/media/src/multi_stream.cpp | active | 多路并发管理器实现（视频 ITEM-007）：每路一个 worker 线程；start_all 单路失败隔离；stats/latest_frame/is_presentable/start_error；取代旧顺序 pump_all
 app/src/media/src/pipeline_factory.cpp | active | 管线工厂实现（ITEM-002）：三类源统一 NV12、rtsp 强制 UDP+RTP 视频过滤+认证属性、auto/显式 depay 路径、脱敏、file 循环；渲染路径/GStreamer 版本
 app/src/media/src/rga_convert.cpp | active | librga imcvtcolor(BT601_FULL) NV12→BGR 实现（视频 ITEM-005）：stride/uv_offset/hstride padding、双成功码、显式拒绝
 app/src/media/src/video_capability.cpp | active | 能力探测实现：直接 gst-inspect 探测（不用 --exists）、librga/librknnrt 版本、凭据只判存在性、有界 RTSP 协商 caps 探测（含瞬时重试与凭据擦除/脱敏）、JSON/文本输出
 app/src/media/tools/ai_runner.cpp | active | 推理工作线程运行器 CLI（railhmi-ai-runner；运行→停止验证 AI 不可用；ITEM-017）
 app/src/media/tools/camera_worker_probe.cpp | active | 每路取流 worker 探针 CLI（railhmi-camera-worker；视频 ITEM-006）：六态/freeze/cut/restart/resume、presentable、bus STATE_CHANGED、--selftest
 app/src/media/tools/frame_lease_probe.cpp | active | 不可变帧租约探针 CLI（railhmi-frame-lease；视频 ITEM-004）：NOT_READY/descriptor/planes、多消费者并发、共享租约 release 回调、--selftest
-app/src/media/tools/multi_probe.cpp | active | 六路并发取流探针 CLI（railhmi-multi-probe；逐格状态 + 网格汇总 + 断流验收判定；ITEM-015）
+app/src/media/tools/multi_probe.cpp | active | 多路并发取流探针 CLI（railhmi-multi-probe；视频 ITEM-007）：worker 化逐格状态 + 网格汇总 + cut/启动失败隔离验收判定 + --selftest + --fail-index
 app/src/media/tools/rga_convert_probe.cpp | active | NV12→BGR 转换探针 CLI（railhmi-rga-convert；视频 ITEM-005）：合成 padded/纯蓝、失败路径、worker 转换统计、--selftest
 app/src/media/tools/stream_probe.cpp | active | 单路取流/状态机探针 CLI（railhmi-stream-probe）；ITEM-002 增 --decode/--user/--password-env/--timeout-us 与 --selftest 纯映射核对；ITEM-003 增时间基准校准、身份/接纳上屏与 --rebuild-after 重建演示、身份 selftest
 app/src/media/tools/video_capability_tool.cpp | active | 运行入口 railhmi-video-capability（--config/--json/--out/--probe-caps/--camera/--selftest；缺凭据/缺元素显式报错）
@@ -183,6 +183,7 @@ app/tools/board_camera_worker_check.py | active | 视频 ITEM-006 板端执行�
 app/tools/board_env_probe.py | active | 经登记 SSH 入口的板端只读探针运行器（受信任 known_hosts + 默认 RejectPolicy + 全超时；上传/执行/取回 md/raw/json/commands.json；凭据仅取环境变量）
 app/tools/board_frame_identity_check.py | active | 视频 ITEM-003 板端执行入口（上传→CoreTests 单测→MediaCheck selftest→test 源 --rebuild-after 重建运行→取回证据→清理）
 app/tools/board_frame_lease_check.py | active | 视频 ITEM-004 板端执行入口（上传→CoreTests 布局单测→MediaCheck selftest→test/rtsp 租约运行→取回证据→清理；凭据经 0600 临时 env 文件注入并删除）
+app/tools/board_multi_worker_check.py | active | 视频 ITEM-007 板端执行入口（上传→MediaCheck→multi-probe selftest→六路并发 cut/start-fail 隔离运行→取回证据→清理）
 app/tools/board_pipeline_check.py | active | 视频 ITEM-002 板端执行入口（上传→MediaCheck→stream-probe selftest→test/file/rtsp(auto+h265)→取回证据→清理；凭据经 0600 临时 env 文件注入并删除，命令串与日志不含凭据）
 app/tools/board_qmllint.py | active | 发布包板端 QML 静态检查（qmllint 逐文件；n008 证据，5.15 不覆盖大写属性名）
 app/tools/board_release_build.py | active | 发布包目标构建/打包器（授权内补装 Qt 开发依赖→板端 Release 构建→冒烟→tar.gz+sha256；含只作用于目标 /tmp 副本的诊断开关；n008）；增 --no-bundle（只构建+冒烟，不产出发布包）；修复 stage 组装 format 占位符计数（打包 tar.gz 首次实跑）
@@ -1682,6 +1683,7 @@ docs/video/implementation/ITEM-003_FRAME_IDENTITY.md | active | VideoSystemImple
 docs/video/implementation/ITEM-004_FRAME_LEASE.md | active | VideoSystemImplementation：视频 ITEM-004 交付清单（FrameDescriptor/FrameLease/FrameStore 契约与行为、平面/stride 校验、release 回调、digest、运行入口、板端验证、边界）
 docs/video/implementation/ITEM-005_RGA_CONVERT.md | active | VideoSystemImplementation：视频 ITEM-005 交付清单（NV12→BGR BT601_FULL、padding/hstride、双成功码、无 rgaconvert、失败不丢帧、digest、运行入口、板端验证、边界）
 docs/video/implementation/ITEM-006_CAMERA_WORKER.md | active | VideoSystemImplementation：视频 ITEM-006 交付清单（每相机 worker 线程、有限等待拉帧、drain bus/事件、六态机接入、presentable 代际判定、digest、板端验证、边界）
+docs/video/implementation/ITEM-007_MULTI_WORKER.md | active | VideoSystemImplementation：视频 ITEM-007 交付清单（worker 化多路管理器、单路启动失败/断流隔离、槽位不重排、digest、板端验证、边界）
 docs/video/test_evidence/ITEM-001/ITEM-001-ENV-B-20261017-r1.md | active | VideoExecutionEvidence：ITEM-001 源类型范围与链路测量记录（六路真实 RTSP 协商 caps=H265/NV12/1280x720/25、元素探测、库版本、凭据缺失路径、安全脱敏、原始证据索引；ENV-B 档）
 docs/video/test_evidence/ITEM-001/VERIFY-ITEM-001.md | active | TestEvidence（software_verification 独立复验）：VERIFY-20261017-v1 对实现 dc70856 的独立板端复跑（build/selftest 8/8/nocred/caps 6 路 measured 与 r5 字段级 identical）、TC-V-CAP-01..05 判据映射、EXT-01..06 扩展夹具（exit 3 元素缺失显式报缺/exit2 负例/--exists 假否独立复现/凭据泄漏 0 命中）、观察项 O-1 单路瞬时探测波动（音频 PCMA depay 竞态）/O-2 caps 确定性判据未闭环/O-3 eth1 100Mbps；TEST_PASS 范围限能力探测与配置绑定，不外推持续吞吐/多路并发/录像回放
 docs/video/test_evidence/ITEM-001/_verify_det2.py | active | 验证侧 caps 确定性夹具 v2（CAM-01 3 轮单路探测，判据=成功 run 的 caps 字段恒等；O-1 影响 0/3 成功如实记录不闭环）
@@ -1797,6 +1799,11 @@ docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-verify-v
 docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-verify-v1.log | active | 验证轮独立复跑人类可读 transcript（mkdir/upload/build/selftest/freeze/cut/resume/rtsp/download 全 exit=0）
 docs/video/test_evidence/ITEM-006/worker-192_168_0_103-20261017-item006-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹与实现 r3 同板同 key）
 docs/video/test_evidence/ITEM-006/worker-ext-192_168_0_103-20261017-item006-verify-v1.json | active | 验证 EXT 夹具结构化结果（EX-A..EX-G 8 项全 PASS + 板端命令步骤；EX-F 含 vext 18 判例）
+docs/video/test_evidence/ITEM-007/ITEM-007-ENV-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-007 selftest 6/6 + 六路并发（started=5、fail CAM-06 隔离、cut CAM-04 占位冻结、其余继续 presentable、槽位 6 不重排）result=PASS
+docs/video/test_evidence/ITEM-007/multi-192_168_0_103-20261017-item007-r1.core-evidence_multi-worker-20261017-item007-r1.json | active | ITEM-007 六路逐拍采样 JSON + acceptance
+docs/video/test_evidence/ITEM-007/multi-192_168_0_103-20261017-item007-r1.core-evidence_multi-worker-20261017-item007-r1.log | active | ITEM-007 六路逐拍 cell/grid + acceptance 日志
+docs/video/test_evidence/ITEM-007/multi-192_168_0_103-20261017-item007-r1.log | active | ITEM-007 板端执行人类可读 transcript（build-media/selftest/run-multi）
+docs/video/test_evidence/ITEM-007/multi-192_168_0_103-20261017-item007-r1.transcript.json | active | ITEM-007 板端执行结构化 transcript（命令+退出码+输出）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
