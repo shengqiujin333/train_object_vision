@@ -1823,10 +1823,21 @@ docs/video/test_evidence/ITEM-007/multi-192_168_0_103-20261017-item007-verify-v1
 docs/video/test_evidence/ITEM-007/multi-192_168_0_103-20261017-item007-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹与实现 r1 同板同 key）
 docs/video/test_evidence/ITEM-007/multi-ext-192_168_0_103-20261017-item007-verify-v1.json | active | 验证 EXT 夹具结构化结果（EX-A/EX-C/EX-D/EX-E/EX-F 6 项全 PASS + 每项判据细节）
 docs/video/test_evidence/ITEM-008/ITEM-008-ENV-A0-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-008 core 744/744（bounded_queue）+ selftest 4/4 + 背压运行（慢显示/慢AI 下 capture~25fps、display_dropped/ai_dropped 增长、录像独立、停录像后 overflow 0→117）result=PASS
+docs/video/test_evidence/ITEM-008/VERIFY-ITEM-008.md | active | VideoTestEvidence：ITEM-008 软件验证 TEST_PASS（独立复跑 9 步 exit=0、744/0、selftest 4/4、acceptance PASS；比对 C1-C11 8/8；EXT EX-A..EX-F 7/7 含自有 BoundedQueue 38 判例；结论/指纹/边界含 O-1 summary 读序竞态与 O-2 display_dropped==pushed-1 语义观察）
+docs/video/test_evidence/ITEM-008/_dryrun_selfcheck.py | active | EXT 上板前离线自检（判例名同集/大括号配平/恒真占位审计/归档数据可行性）
+docs/video/test_evidence/ITEM-008/_verify_compare.py | active | 验证轮独立解析比对：两轮原始逐拍行重建判据 C1-C11（不采信 type=acceptance）
+docs/video/test_evidence/ITEM-008/_verify_compare_result.json | active | 比对结果结构化输出（8 PASS / 0 FAIL / problems=0）
+docs/video/test_evidence/ITEM-008/_verify_ext.py | active | 验证 EXT 夹具：EX-A 独立参数轮 / EX-B 快显示慢AI / EX-C CLI 负例 / EX-D 板端 g++ 直编自有 BoundedQueue 38 判例 / EX-E 确定性 / EX-F 凭据扫描
+docs/video/test_evidence/ITEM-008/_verify_run.py | active | 验证轮阶段1驱动：交付 runner 独立复跑（--stamp 20261017-item008-verify-v1 --keep-remote）
 docs/video/test_evidence/ITEM-008/bp-192_168_0_103-20261017-item008-r2.core-evidence_backpressure-20261017-item008-r2.json | active | ITEM-008 背压汇总 JSON
 docs/video/test_evidence/ITEM-008/bp-192_168_0_103-20261017-item008-r2.core-evidence_backpressure-20261017-item008-r2.log | active | ITEM-008 背压逐拍 + acceptance 日志
 docs/video/test_evidence/ITEM-008/bp-192_168_0_103-20261017-item008-r2.log | active | ITEM-008 板端执行人类可读 transcript（build-core/core-tests/build-media/selftest/run-bp）
 docs/video/test_evidence/ITEM-008/bp-192_168_0_103-20261017-item008-r2.transcript.json | active | ITEM-008 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-008/bp-192_168_0_103-20261017-item008-verify-v1.core-evidence_backpressure-20261017-item008-verify-v1.json | active | 验证轮背压汇总 JSON
+docs/video/test_evidence/ITEM-008/bp-192_168_0_103-20261017-item008-verify-v1.core-evidence_backpressure-20261017-item008-verify-v1.log | active | 验证轮背压逐拍 + acceptance 日志（capture_rate=30、dd/ad 增长、pre-stop ov=0、post-stop ov 增 rd=8）
+docs/video/test_evidence/ITEM-008/bp-192_168_0_103-20261017-item008-verify-v1.log | active | 验证轮独立复跑人类可读 transcript（mkdir/upload/build-core/core-tests/build-media/selftest/run-bp/download 全 exit=0）
+docs/video/test_evidence/ITEM-008/bp-192_168_0_103-20261017-item008-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹与实现 r2 同板同 key）
+docs/video/test_evidence/ITEM-008/bp-ext-192_168_0_103-20261017-item008-verify-v1.json | active | 验证 EXT 夹具结构化结果（EX-A..EX-F 7 项全 PASS + 每项判据细节）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

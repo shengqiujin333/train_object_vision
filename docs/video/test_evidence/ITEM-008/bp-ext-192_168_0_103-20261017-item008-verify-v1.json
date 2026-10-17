@@ -1,0 +1,44 @@
+{
+  "results": [
+    {
+      "id": "EX-A/independent-param-backpressure-round",
+      "ok": true,
+      "detail": "samples=12; all per-tick checks ok"
+    },
+    {
+      "id": "EX-B/display-fast-ai-slow-recording-independent",
+      "ok": true,
+      "detail": "samples=12; slow-AI only; recording unaffected"
+    },
+    {
+      "id": "EX-C/unknown-arg-exit2",
+      "ok": true,
+      "detail": "exit=2 head=['unknown arg: --bogus-flag']"
+    },
+    {
+      "id": "EX-C/help-exit0-usage",
+      "ok": true,
+      "detail": "exit=0"
+    },
+    {
+      "id": "EX-D/board-cpp-bounded-queue-fixture",
+      "ok": true,
+      "detail": "compile_ok=True vext_pass=38 vext_fail=0 expected=38 missing=none exit0=True"
+    },
+    {
+      "id": "EX-E/deterministic-semantics-two-rounds",
+      "ok": true,
+      "detail": "windows=12/12 semantic_diffs=0 rerun_ok=True (fps excluded)"
+    },
+    {
+      "id": "EX-F/admin-credential-semantics-scan",
+      "ok": true,
+      "detail": "files=14 hits=none (admin=registered username; token form reviewed)"
+    }
+  ],
+  "pass": 7,
+  "fail": 0,
+  "elapsed_s": 24.5,
+  "board": "192.168.0.103",
+  "remote_tree": "/tmp/railhmi_bp"
+}

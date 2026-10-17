@@ -1,0 +1,47 @@
+{
+  "results": [
+    {
+      "id": "C1/C2/C3/C4-slow-consumers-no-collapse",
+      "ok": true,
+      "detail": "both rounds: injection=test/8s/1Hz/1Hz/stop4/depth2/frames8; fps>=20 t>=2s all ticks; display_dropped/ai_dropped monotone with large totals; ai_depth<=2 bounded"
+    },
+    {
+      "id": "C5-recording-independence-prestop",
+      "ok": true,
+      "detail": "both rounds: recording_overflow==0 every pre-stop tick despite display/ai heavy drops"
+    },
+    {
+      "id": "C6-recording-overflow-poststop-bounded",
+      "ok": true,
+      "detail": "both rounds: overflow strictly increasing after stop, recording_depth<=8 tail==8"
+    },
+    {
+      "id": "C7-recording-reads-frozen-poststop",
+      "ok": true,
+      "detail": "recording_reads constant after stop injection in both rounds"
+    },
+    {
+      "id": "C9-tail-slope-rederived",
+      "ok": true,
+      "detail": "tail fps slope independently re-derived (see C2; summary scalar not trusted)"
+    },
+    {
+      "id": "C8-summary-acceptance-PASS",
+      "ok": true,
+      "detail": "both rounds: summary + acceptance result=PASS; run-bp exit=0"
+    },
+    {
+      "id": "C10-selftest-identical-4",
+      "ok": true,
+      "detail": "selftest lines equal=True passes r2=4 verify=4"
+    },
+    {
+      "id": "C11-core-744-and-boundedqueue-identical",
+      "ok": true,
+      "detail": "744/0 both rounds + bounded_queue PASS lines identical: 18 lines (r2=18 verify=18)"
+    }
+  ],
+  "problems": [],
+  "pass": 8,
+  "fail": 0
+}
