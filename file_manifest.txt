@@ -1648,7 +1648,9 @@ docs/interfaces/VALIDATION.json | active | ContractValidationEvidence：61/61本
 docs/interfaces/examples.json | active | 接口契约示例：8正例、12反例、5顺序向量；含padding NV12、不可用模型、NVR未配置、部分录像与旧generation；纯设计夹具
 docs/interfaces/interface.schema.json | active | 接口适配器描述与夹具 JSON Schema Draft 2020-12：FrameDescriptor/InferenceEnvelope/ClipRequest/ProviderReply/ActionReply/StreamSnapshot；不替代既有C++/YAML/SQLite接口
 docs/interfaces/validate_contract.py | active | 接口架构自校验工具：有限本地文件检查、Schema/跨字段不变量/当前配置及限定源码对应；不连接设备、不执行产品
+docs/video/VIDEO_E2E_PLAN.md | active | E2EPlan：视频端到端测试计划 v1——六条 E2E 旅程（单路取流到呈现/六路并发与隔离/保护片段闭环/故障注入马拉松/回放时延与同步分布/脱敏审计），升降级门与证据分层（前一档全绿才进下一档；ENV-D 待凭据核验）
 docs/video/VIDEO_SYSTEM_DESIGN.md | active | VideoSystemDesignArtifact v1：六路可见光视频系统设计——视频源/协议/编码/时间戳确认、帧描述符与不可变 FrameLease 所有权、每路管线与线程/队列边界、背压与丢帧策略、实时/录像/推理三条时间线与软件同步口径、异常恢复与真实重建、本机保护片段与回放 media provider、吞吐/延迟/同步/存储/断流预算与测量方法、库与加速路径对比（原生 GStreamer+MPP+librga 选用、OpenCV/rgaconvert 否决、gl 保留）、接口职责边界、配置与待实测项；含本轮板端只读 GStreamer 栈核对（qmlglsink 缺失、mppvideodec 存在、--exists 不可靠）
+docs/video/VIDEO_TEST_DESIGN.md | active | TestDesignArtifact：视频系统软件测试设计 v1——五层测试环境（ENV-A0 主机单元/A 主机模拟/B 板端真库离线媒体/C 板端 file·test 源/D 板端真实 RTSP）、视频故障注入目录 FI-V-01..10、G1..G7 功能域 37 条用例（能力探测/管线工厂/帧身份/租约/RGA 转换/状态机与多路隔离/录像回放/脱敏日志/预算仪器）、P0 冒烟 5 条、ITEM-001..017 需求覆盖矩阵、证据分层与三源（真实/文件/模拟）不合并规则
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
