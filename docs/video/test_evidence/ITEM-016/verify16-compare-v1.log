@@ -1,0 +1,93 @@
+cmp16 PASS C1a inputs parsed 
+cmp16 PASS C1b capability config_ok identical 
+cmp16 PASS C1b capability elements_present identical 
+cmp16 PASS C1b capability missing identical 
+cmp16 PASS C1c gstreamer version identical nonempty 
+cmp16 PASS C1d librga identical 
+cmp16 PASS C1e librknnrt identical 
+cmp16 PASS C1f element count >= 11 identical 
+cmp16 PASS C1g element appsink present both 
+cmp16 PASS C1g element decodebin present both 
+cmp16 PASS C1g element fakesink present both 
+cmp16 PASS C1g element h264parse present both 
+cmp16 PASS C1g element h265parse present both 
+cmp16 PASS C1g element mppvideodec present both 
+cmp16 PASS C1g element queue present both 
+cmp16 PASS C1g element rtph264depay present both 
+cmp16 PASS C1g element rtph265depay present both 
+cmp16 PASS C1g element rtspsrc present both 
+cmp16 PASS C1g element tee present both 
+cmp16 PASS C1h required decoder faces covered 
+cmp16 PASS C2a three cameras present 
+cmp16 PASS C2b CAM-01 probe presence == independent classify 
+cmp16 PASS C2c CAM-01 r3 presence == fresh presence 
+cmp16 PASS C2b CAM-02 probe presence == independent classify 
+cmp16 PASS C2c CAM-02 r3 presence == fresh presence 
+cmp16 PASS C2b CAM-03 probe presence == independent classify 
+cmp16 PASS C2c CAM-03 r3 presence == fresh presence 
+cmp16 PASS C2d tristate visible exactly {online,gap,unverified} 
+cmp16 PASS C3a CAM-01 metric keys full 
+cmp16 PASS C3a CAM-02 metric keys full 
+cmp16 PASS C3a CAM-03 metric keys full 
+cmp16 PASS C3b metric keysets r3==fresh 
+cmp16 PASS C3c CAM-01.display_dropped numeric 
+cmp16 PASS C3c CAM-01.ai_dropped numeric 
+cmp16 PASS C3c CAM-01.recording_overflow numeric 
+cmp16 PASS C3c CAM-01.gap_count numeric 
+cmp16 PASS C3c CAM-01.reconnect_count numeric 
+cmp16 PASS C3c CAM-01.last_frame_mono_ms numeric 
+cmp16 PASS C3c CAM-01.last_frame_wall_ms numeric 
+cmp16 PASS C3d CAM-01 attempt_id form 
+cmp16 PASS C3e CAM-01 fps float 
+cmp16 PASS C3c CAM-02.display_dropped numeric 
+cmp16 PASS C3c CAM-02.ai_dropped numeric 
+cmp16 PASS C3c CAM-02.recording_overflow numeric 
+cmp16 PASS C3c CAM-02.gap_count numeric 
+cmp16 PASS C3c CAM-02.reconnect_count numeric 
+cmp16 PASS C3c CAM-02.last_frame_mono_ms numeric 
+cmp16 PASS C3c CAM-02.last_frame_wall_ms numeric 
+cmp16 PASS C3d CAM-02 attempt_id form 
+cmp16 PASS C3e CAM-02 fps float 
+cmp16 PASS C3c CAM-03.display_dropped numeric 
+cmp16 PASS C3c CAM-03.ai_dropped numeric 
+cmp16 PASS C3c CAM-03.recording_overflow numeric 
+cmp16 PASS C3c CAM-03.gap_count numeric 
+cmp16 PASS C3c CAM-03.reconnect_count numeric 
+cmp16 PASS C3c CAM-03.last_frame_mono_ms numeric 
+cmp16 PASS C3c CAM-03.last_frame_wall_ms numeric 
+cmp16 PASS C3d CAM-03 attempt_id form 
+cmp16 PASS C3e CAM-03 fps float 
+cmp16 PASS C3f CAM-01 attempt id consistent with live gen 
+cmp16 PASS C4a fresh daily 3 rows 
+cmp16 PASS C4b CAM-01 json keys == metric keys 
+cmp16 PASS C4c CAM-01 json presence matches row 
+cmp16 PASS C4d CAM-01 json last_error no creds 
+cmp16 PASS C4b CAM-02 json keys == metric keys 
+cmp16 PASS C4c CAM-02 json presence matches row 
+cmp16 PASS C4d CAM-02 json last_error no creds 
+cmp16 PASS C4b CAM-03 json keys == metric keys 
+cmp16 PASS C4c CAM-03 json presence matches row 
+cmp16 PASS C4d CAM-03 json last_error no creds 
+cmp16 PASS C4e daily rows r3==fresh per-camera fields 
+cmp16 PASS C4f daily ts fresh is today 
+cmp16 PASS C5a r3 redaction saw dirty 
+cmp16 PASS C5b fresh redaction redacted=<redacted> 
+cmp16 PASS C5c fresh redaction clean=true 
+cmp16 PASS C5d redacted text has no secret/userinfo/pipeline 
+cmp16 PASS C6a acceptance key sets identical 
+cmp16 PASS C6b acceptance capability_versions true (fresh) 
+cmp16 PASS C6b acceptance elements_required_present true (fresh) 
+cmp16 PASS C6b acceptance tristate_online_unverified_gap true (fresh) 
+cmp16 PASS C6b acceptance redaction_clean true (fresh) 
+cmp16 PASS C6b acceptance daily_roll_ok true (fresh) 
+cmp16 PASS C6b acceptance daily_file_written true (fresh) 
+cmp16 PASS C6b acceptance structured_fields true (fresh) 
+cmp16 PASS C7 implementer r3 transcript complete 
+cmp16 PASS C7 verify v1 transcript complete (keep-remote, no cleanup) 
+cmp16 PASS C8 fresh selftest OK 0 failures 
+cmp16 PASS C8b fresh selftest 7 PASS 
+cmp16 PASS C9 impl selftest OK 
+cmp16 PASS C10a fresh summary json parses coverage 
+cmp16 PASS C10b summary presence sets identical r3/fresh 
+
+cmp16 summary: fails=0

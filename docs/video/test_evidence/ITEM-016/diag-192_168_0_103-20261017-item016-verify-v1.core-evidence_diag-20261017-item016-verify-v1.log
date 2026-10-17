@@ -1,0 +1,17 @@
+type=capability config_ok=true gstreamer=1.20.3 librga=rga_api version 1.10.1_[0] librknnrt=2.3.2 (429f97ae6b@2025-04-09T09:09:27) elements_present=true missing=0
+type=element name=rtspsrc status=present long_name=RTSP packet receiver
+type=element name=rtph265depay status=present long_name=RTP H265 depayloader
+type=element name=h265parse status=present long_name=H.265 parser
+type=element name=rtph264depay status=present long_name=RTP H264 depayloader
+type=element name=h264parse status=present long_name=H.264 parser
+type=element name=decodebin status=present long_name=Decoder Bin
+type=element name=mppvideodec status=present long_name=Rockchip's MPP video decoder
+type=element name=tee status=present long_name=Tee pipe fitting
+type=element name=queue status=present long_name=Queue
+type=element name=appsink status=present long_name=AppSink
+type=element name=fakesink status=present long_name=Fake Sink
+type=metric camera=CAM-01 presence=online (在线) state=live fps=25.000000 last_frame_mono_ms=383877947 last_frame_wall_ms=1792254981295 reconnect_count=0 quality_flags= display_dropped=49 ai_dropped=48 recording_overflow=20 gap_count=0 attempt_id=CAM-01#g1 last_error=-
+type=metric camera=CAM-02 presence=gap (缺口) state=live fps=25.000000 last_frame_mono_ms=383877943 last_frame_wall_ms=1792254981291 reconnect_count=0 quality_flags= display_dropped=49 ai_dropped=48 recording_overflow=20 gap_count=1 attempt_id=none last_error=-
+type=metric camera=CAM-03 presence=unverified (未核验) state=offline fps=0.000000 last_frame_mono_ms=0 last_frame_wall_ms=-1 reconnect_count=0 quality_flags= display_dropped=0 ai_dropped=0 recording_overflow=0 gap_count=0 attempt_id=none last_error=-
+type=redaction raw_has_cred=true redacted=<redacted> clean=true
+type=acceptance capability_versions=true elements_required_present=true tristate_online_unverified_gap=true redaction_clean=true daily_roll_ok=true daily_file_written=true structured_fields=true result=PASS

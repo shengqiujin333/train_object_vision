@@ -1,0 +1,14 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[mkdir] exit=0 
+[upload] exit=0 uploaded 257 files from E:\work\rail_issue\rk3588_handover\app
+[build-core] exit=0 BUILD_CORE_EXIT=0
+[core-tests] exit=0 CORE_EXIT=0
+[build-media] exit=0 BUILD_MEDIA_EXIT=0
+[selftest] exit=0 SELFTEST_EXIT=0
+[run-diag] exit=0 DIAG_EXIT=0
+[download] exit=0 diag-192_168_0_103-20261017-item016-verify-v1.core-evidence_diag-20261017-item016-verify-v1.log
+[download] exit=0 diag-192_168_0_103-20261017-item016-verify-v1.core-evidence_diag-20261017-item016-verify-v1.json
+[download] exit=0 diag-192_168_0_103-20261017-item016-verify-v1.core-evidence_logs_video-2026-10-17.log
+transcript: E:\work\rail_issue\rk3588_handover\docs\video\test_evidence\ITEM-016\diag-192_168_0_103-20261017-item016-verify-v1.transcript.json
+log: E:\work\rail_issue\rk3588_handover\docs\video\test_evidence\ITEM-016\diag-192_168_0_103-20261017-item016-verify-v1.log
+run: ['C:\\Users\\123\\.openharness-venv\\Scripts\\python.exe']

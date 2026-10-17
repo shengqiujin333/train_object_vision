@@ -1,0 +1,96 @@
+{
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "EXA-prep",
+      "cmd": "cd /tmp/railhmi_diag && rm -rf config_vt && cp -r config config_vt && sed -i 's/freeze_timeout_ms: 2000/freeze_timeout_ms: 300/; s/reconnect_backoff_ms: 1000/reconnect_backoff_ms: 300/' config_vt/thresholds.yaml && grep -E 'freeze_timeout|reconnect_backoff' config_vt/thresholds.yaml",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": "  freeze_timeout_ms: 300\n  reconnect_backoff_ms: 300\n"
+    },
+    {
+      "step": "EXA-run",
+      "cmd": "cd /tmp/railhmi_diag && /tmp/railhmi_diag/build-media/tools/railhmi-diagnostics --config config_vt --duration 3 --logdir /tmp/vt_exa_logs --out /tmp/vt_exa.log --json /tmp/vt_exa.json; echo EXA_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 5.53,
+      "output": "type=capability config_ok=true gstreamer=1.20.3 librga=rga_api version 1.10.1_[0] librknnrt=2.3.2 (429f97ae6b@2025-04-09T09:09:27) elements_present=true missing=0\ntype=element name=rtspsrc status=present long_name=RTSP packet receiver\ntype=element name=rtph265depay status=present long_name=RTP H265 depayloader\ntype=element name=h265parse status=present long_name=H.265 parser\ntype=element name=rtph264depay status=present long_name=RTP H264 depayloader\ntype=element name=h264parse status=present long_name=H.264 parser\ntype=element name=decodebin status=present long_name=Decoder Bin\ntype=element name=mppvideodec status=present long_name=Rockchip's MPP video decoder\ntype=element name=tee status=present long_name=Tee pipe fitting\ntype=element name=queue status=present long_name=Queue\ntype=element name=appsink status=present long_name=AppSink\ntype=element name=fakesink status=present long_name=Fake Sink\ntype=metric camera=CAM-01 presence=online (在线) state=live fps=25.000000 last_frame_mono_ms=383886067 last_frame_wall_ms=1792254989416 reconnect_count=0 quality_flags= display_dropped=74 ai_dropped=73 recording_overflow=45 gap_count=0 attempt_id=CAM-01#g1 last_error=-\ntype=metric camera=CAM-02 presence=gap (缺口) state=live fps=25.500000 last_frame_mono_ms=383886068 last_frame_wall_ms=1792254989417 reconnect_count=0 quality_flags= display_dropped=74 ai_dropped=73 recording_overflow=45 gap_count=1 attempt_id=none last_error=-\ntype=metric camera=CAM-03 presence=unverified (未核验) state=offline fps=0.000000 last_frame_mono_ms=0 last_frame_wall_ms=-1 reconnect_count=0 quality_flags= display_dropped=0 ai_dropped=0 recording_overflow=0 gap_count=0 attempt_id=none last_error=-\ntype=redaction raw_has_cred=true redacted=<redacted> clean=true\ntype=acceptance capability_versions=true elements_required_present=true tristate_online_unverified_gap=true redaction_clean=true daily_roll_ok=true daily_file_written=true structured_fields=true result=PASS\nEXA_EXIT=0\n"
+    },
+    {
+      "step": "EXA-fetch",
+      "cmd": "cat /tmp/vt_exa.log",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "type=capability config_ok=true gstreamer=1.20.3 librga=rga_api version 1.10.1_[0] librknnrt=2.3.2 (429f97ae6b@2025-04-09T09:09:27) elements_present=true missing=0\ntype=element name=rtspsrc status=present long_name=RTSP packet receiver\ntype=element name=rtph265depay status=present long_name=RTP H265 depayloader\ntype=element name=h265parse status=present long_name=H.265 parser\ntype=element name=rtph264depay status=present long_name=RTP H264 depayloader\ntype=element name=h264parse status=present long_name=H.264 parser\ntype=element name=decodebin status=present long_name=Decoder Bin\ntype=element name=mppvideodec status=present long_name=Rockchip's MPP video decoder\ntype=element name=tee status=present long_name=Tee pipe fitting\ntype=element name=queue status=present long_name=Queue\ntype=element name=appsink status=present long_name=AppSink\ntype=element name=fakesink status=present long_name=Fake Sink\ntype=metric camera=CAM-01 presence=online (在线) state=live fps=25.000000 last_frame_mono_ms=383886067 last_frame_wall_ms=1792254989416 reconnect_count=0 quality_flags= display_dropped=74 ai_dropped=73 recording_overflow=45 gap_count=0 attempt_id=CAM-01#g1 last_error=-\ntype=metric camera=CAM-02 presence=gap (缺口) state=live fps=25.500000 last_frame_mono_ms=383886068 last_frame_wall_ms=1792254989417 reconnect_count=0 quality_flags= display_dropped=74 ai_dropped=73 recording_overflow=45 gap_count=1 attempt_id=none last_error=-\ntype=metric camera=CAM-03 presence=unverified (未核验) state=offline fps=0.000000 last_frame_mono_ms=0 last_frame_wall_ms=-1 reconnect_count=0 quality_flags= display_dropped=0 ai_dropped=0 recording_overflow=0 gap_count=0 attempt_id=none last_error=-\ntype=redaction raw_has_cred=true redacted=<redacted> clean=true\ntype=acceptance capability_versions=true elements_required_present=true tristate_online_unverified_gap=true redaction_clean=true daily_roll_ok=true daily_file_written=true structured_fields=true result=PASS\n"
+    },
+    {
+      "step": "EXA-daily",
+      "cmd": "ls /tmp/vt_exa_logs && wc -l /tmp/vt_exa_logs/video-*.log",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "video-2026-10-17.log\n3 /tmp/vt_exa_logs/video-2026-10-17.log\n"
+    },
+    {
+      "step": "EXD-run2",
+      "cmd": "cd /tmp/railhmi_diag && /tmp/railhmi_diag/build-media/tools/railhmi-diagnostics --config config --duration 2 --logdir /tmp/vt_det_logs --out /tmp/vt_det2.log; echo EXD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 4.76,
+      "output": "type=capability config_ok=true gstreamer=1.20.3 librga=rga_api version 1.10.1_[0] librknnrt=2.3.2 (429f97ae6b@2025-04-09T09:09:27) elements_present=true missing=0\ntype=element name=rtspsrc status=present long_name=RTSP packet receiver\ntype=element name=rtph265depay status=present long_name=RTP H265 depayloader\ntype=element name=h265parse status=present long_name=H.265 parser\ntype=element name=rtph264depay status=present long_name=RTP H264 depayloader\ntype=element name=h264parse status=present long_name=H.264 parser\ntype=element name=decodebin status=present long_name=Decoder Bin\ntype=element name=mppvideodec status=present long_name=Rockchip's MPP video decoder\ntype=element name=tee status=present long_name=Tee pipe fitting\ntype=element name=queue status=present long_name=Queue\ntype=element name=appsink status=present long_name=AppSink\ntype=element name=fakesink status=present long_name=Fake Sink\ntype=metric camera=CAM-01 presence=online (在线) state=live fps=25.000000 last_frame_mono_ms=383890916 last_frame_wall_ms=1792254994264 reconnect_count=0 quality_flags= display_dropped=49 ai_dropped=48 recording_overflow=20 gap_count=0 attempt_id=CAM-01#g1 last_error=-\ntype=metric camera=CAM-02 presence=gap (缺口) state=live fps=25.000000 last_frame_mono_ms=383890920 last_frame_wall_ms=1792254994268 reconnect_count=0 quality_flags= display_dropped=49 ai_dropped=48 recording_overflow=20 gap_count=1 attempt_id=none last_error=-\ntype=metric camera=CAM-03 presence=unverified (未核验) state=offline fps=0.000000 last_frame_mono_ms=0 last_frame_wall_ms=-1 reconnect_count=0 quality_flags= display_dropped=0 ai_dropped=0 recording_overflow=0 gap_count=0 attempt_id=none last_error=-\ntype=redaction raw_has_cred=true redacted=<redacted> clean=true\ntype=acceptance capability_versions=true elements_required_present=true tristate_online_unverified_gap=true redaction_clean=true daily_roll_ok=true daily_file_written=true structured_fields=true result=PASS\nEXD_EXIT=0\n"
+    },
+    {
+      "step": "EXB-unknown",
+      "cmd": "cd /tmp/railhmi_diag && /tmp/railhmi_diag/build-media/tools/railhmi-diagnostics --bogus-flag; echo EXB_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "EXB_EXIT=2\nunknown arg: --bogus-flag\n"
+    },
+    {
+      "step": "EXB-help",
+      "cmd": "cd /tmp/railhmi_diag && /tmp/railhmi_diag/build-media/tools/railhmi-diagnostics --help; echo EXB_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.18,
+      "output": "usage: railhmi-diagnostics [--config dir] [--duration s] [--logdir dir] [--out log] [--json json] [--selftest]\nEXB_EXIT=0\n"
+    },
+    {
+      "step": "tree-check",
+      "cmd": "ls /tmp/railhmi_diag/build-media/tools/railhmi-diagnostics && echo TREE_OK",
+      "exit": 0,
+      "elapsed_s": 0.06,
+      "output": "/tmp/railhmi_diag/build-media/tools/railhmi-diagnostics\nTREE_OK\n"
+    },
+    {
+      "step": "EXC-upload",
+      "cmd": "ls -la /tmp/railhmi_diag/vext16.cpp",
+      "exit": 0,
+      "elapsed_s": 0.03,
+      "output": "-rw-rw-r-- 1 admin admin 20132 Oct 18 00:36 /tmp/railhmi_diag/vext16.cpp\n"
+    },
+    {
+      "step": "EXC-build",
+      "cmd": "cd /tmp/railhmi_diag && g++ -std=c++17 -pthread -O1 -I src/core/include -I src/media/include -I src/platform/include $(pkg-config --cflags gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0) $(pkg-config --cflags librga) -o vext16 vext16.cpp build-media/src/media/librailhmi_media.a build-media/src/core/librailhmi_core.a build-media/src/platform/librailhmi_platform.a $(pkg-config --libs gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0) $(pkg-config --libs librga) 2>&1 | tail -8; if [ -x vext16 ]; then echo VEXT_BUILD_OK; else echo VEXT_COMPILE_FAILED; fi",
+      "exit": 0,
+      "elapsed_s": 1.77,
+      "output": "VEXT_BUILD_OK\n"
+    },
+    {
+      "step": "EXC-run",
+      "cmd": "cd /tmp/railhmi_diag && ./vext16; echo VEXT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.93,
+      "output": "vext PASS g01_degraded_online_fresh\nvext PASS g02_connecting_unverified_even_with_fresh_frame\nvext PASS g03_reconnecting_unverified\nvext PASS g04_offline_unverified\nvext PASS g05_gap_overrides_live\nvext PASS g06_frozen_is_gap\nvext PASS g07_attempt_id_gen3\nvext PASS g08_attempt_id_json\nvext PASS g09_empty_attempt_json_none\nvext PASS g10_empty_attempt_presence_still_online\nvext PASS g11_userinfo_masked_host_kept\nvext PASS g12_raw_detected_before_redact\nvext PASS g12b_benign_still_clean\nvext PASS g13_passwd_and_pwd_masked\nvext PASS g14_token_secret_user_id_masked\nvext PASS g15_multi_kv_masked\nvext PASS g16_kv_value_stops_at_separator\nvext PASS g17_pipeline_trigger_rtspsrc_whole_redacted\nvext PASS g17_pipeline_trigger_GstPipeline_whole_redacted\nvext PASS g17_pipeline_trigger_GST_MESSAGE_whole_redacted\nvext PASS g17_pipeline_trigger_pipeline0_whole_redacted\nvext PASS g21_json_ts\nvext PASS g22_json_severity\nvext PASS g23_json_source_video\nvext PASS g24_json_message\nvext PASS g25_quality_flags_passed_through\nvext PASS g26_fps_format\nvext PASS g27_wall_ms_format\nvext PASS g28_labels_unverified_online\nvext PASS g31_json_last_error_userinfo_redacted\nvext PASS g32_json_last_error_kv_redacted\nvext PASS g33_json_last_error_pipeline_whole\nvext PASS g34_json_no_pipeline_token\nvext PASS g35_multi_test_two_started\nvext PASS g36_multi_test_fps_positive\nvext PASS g37_multi_test_online\nvext PASS g38_multi_test_wall_calibrated\nvext PASS g39_multi_test_attempt_form\nvext PASS g40_roll_keeps_latest_day\nvext PASS g41_roll_day_is_d2\nvext PASS g42_same_day_not_pruned\nvext PASS g43_two_days_kept_with_max_2\nvext PASS g44_day_key_invalid_ts_marker\nvext PASS g44b_day_key_day1_start\nvext PASS g44c_day_key_rolls_at_utc_midnight\nvext PASS g45_day_key_plus46d\nvext PASS g46_contains_empty_false\nvext PASS g47_contains_benign_false\nvext PASS g48_redact_trailing_password_key_kept\nvext PASS g49_double_redaction_text_idempotent\nvext PASS g50_single_redaction_masks_all\nvext PASS g51_cut_leaves_live\nvext PASS g52_sibling_stays_online\nvext PASS g53_cut_channel_not_online_after_cut\nvext OK (0 failure(s))\nVEXT_EXIT=0\n"
+    },
+    {
+      "step": "cleanup-ext",
+      "cmd": "rm -rf /tmp/railhmi_diag/config_vt /tmp/vt_exa.log /tmp/vt_exa.json /tmp/vt_exa_logs /tmp/vt_det2.log /tmp/vt_det_logs /tmp/vext16.log /tmp/railhmi_diag/vext16.cpp /tmp/railhmi_diag/vext16 && echo EXT_CLEANED",
+      "exit": 0,
+      "elapsed_s": 0.04,
+      "output": "EXT_CLEANED\n"
+    },
+    {
+      "step": "cleanup-tree",
+      "cmd": "rm -rf /tmp/railhmi_diag && echo BOARD_CLEAN_DONE",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "BOARD_CLEAN_DONE\n"
+    }
+  ]
+}

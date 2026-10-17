@@ -2031,11 +2031,33 @@ docs/video/test_evidence/ITEM-015/tb-ext-192_168_0_103-20261017-item015-verify-v
 docs/video/test_evidence/ITEM-015/tb-ext-192_168_0_103-20261017-item015-verify-v1.json | active | ITEM-015 EXT 结构化结果（23 checks 0 failed；O-1 登记在案）
 docs/video/test_evidence/ITEM-015/tb-ext-192_168_0_103-20261017-item015-verify-v1.vext.log | active | ITEM-015 板端自有夹具原始输出（vext PASS×48 + FAIL×0 + summary 0 failures）
 docs/video/test_evidence/ITEM-016/ITEM-016-ENV-A0-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-016 core 898/0 + selftest 7/7 + 板端（gstreamer1.20.3/librga1.10.1/librknnrt2.3.2 + 11 元素 present+Long-name；三态 CAM-01 online/CAM-02 gap/CAM-03 unverified 全字段；按日 video-2026-10-17.log；脱敏 <redacted>；acceptance PASS）
+docs/video/test_evidence/ITEM-016/VERIFY-ITEM-016.md | active | TestEvidence：ITEM-016 验证轮 TEST_PASS（独立复跑 898/0+7/7；91 项语义比对；EXT 16/16；vext 54 判例；过程轮 7 次夹具修正归档；O-1..O-4 观察项）
+docs/video/test_evidence/ITEM-016/_selfcheck16_chains.py | active | ITEM-016 验证侧离线自检：vext 非法 const char* 拼接链静态扫描
+docs/video/test_evidence/ITEM-016/_selfcheck16_determinism.py | active | ITEM-016 验证侧离线自检：EX-D 同参二跑状态无关行恒等/波动域分账
+docs/video/test_evidence/ITEM-016/_selfcheck16_extra.py | active | ITEM-016 验证侧离线自检：vext PASS 行 named/dynamic 分账（50+4=54）
+docs/video/test_evidence/ITEM-016/_selfcheck16_fail3.py | active | ITEM-016 验证侧离线自检：vext 三处期望修正（g12/g22/g44）按源码语义重推导
+docs/video/test_evidence/ITEM-016/_selfcheck16_leak.py | active | ITEM-016 验证侧离线自检：证据文件泄漏扫描正则（admin/打码形态豁免口径）
+docs/video/test_evidence/ITEM-016/_selfcheck16_names.py | active | ITEM-016 验证侧离线自检：vext 判例名单与源码 check( 调用对账
+docs/video/test_evidence/ITEM-016/_selfcheck16_vext.py | active | ITEM-016 验证侧离线自检：vext 夹具构造大括号/名字核对
+docs/video/test_evidence/ITEM-016/_verify16_compare.py | active | ITEM-016 验证侧 91 项独立语义比对脚本（C1..C10，不采信 acceptance 行）
+docs/video/test_evidence/ITEM-016/_verify16_ext.py | active | ITEM-016 验证侧 EXT 驱动（EX-A 独立参数轮/EX-B 负例/EX-C vext/EX-D 同参二跑/EX-E 泄漏扫描+板端清理）
+docs/video/test_evidence/ITEM-016/_verify16_run.py | active | ITEM-016 验证侧板端独立复跑驱动（调用交付 runner --keep-remote stamp verify-v1）
+docs/video/test_evidence/ITEM-016/_verify16_vext.cpp | active | ITEM-016 验证侧板端自有 C++ 夹具（52 check 调用=50 具名+g17×4 动态；classify/attempt/脱敏/结构化 JSON/按日滚动/真实断流隔离）
 docs/video/test_evidence/ITEM-016/diag-192_168_0_103-20261017-item016-r3.core-evidence_diag-20261017-item016-r3.json | active | ITEM-016 汇总 JSON
 docs/video/test_evidence/ITEM-016/diag-192_168_0_103-20261017-item016-r3.core-evidence_diag-20261017-item016-r3.log | active | ITEM-016 能力/元素/三态指标/脱敏/acceptance 日志
 docs/video/test_evidence/ITEM-016/diag-192_168_0_103-20261017-item016-r3.core-evidence_logs_video-2026-10-17.log | active | ITEM-016 按日滚动结构化单行 JSON（3 路指标）
 docs/video/test_evidence/ITEM-016/diag-192_168_0_103-20261017-item016-r3.log | active | ITEM-016 板端执行人类可读 transcript（build-core/core-tests/build-media/selftest/run-diag）
 docs/video/test_evidence/ITEM-016/diag-192_168_0_103-20261017-item016-r3.transcript.json | active | ITEM-016 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-016/diag-192_168_0_103-20261017-item016-verify-v1.core-evidence_diag-20261017-item016-verify-v1.json | active | ITEM-016 验证轮 fresh 汇总 JSON
+docs/video/test_evidence/ITEM-016/diag-192_168_0_103-20261017-item016-verify-v1.core-evidence_diag-20261017-item016-verify-v1.log | active | ITEM-016 验证轮 fresh 探针日志（capability/元素/三态/脱敏/acceptance）
+docs/video/test_evidence/ITEM-016/diag-192_168_0_103-20261017-item016-verify-v1.core-evidence_logs_video-2026-10-17.log | active | ITEM-016 验证轮 fresh 按日滚动结构化 JSON
+docs/video/test_evidence/ITEM-016/diag-192_168_0_103-20261017-item016-verify-v1.log | active | ITEM-016 验证轮板端独立复跑全 transcript（core-tests 898/0 与实现轮一致；keep-remote）
+docs/video/test_evidence/ITEM-016/diag-192_168_0_103-20261017-item016-verify-v1.transcript.json | active | ITEM-016 验证轮结构化 transcript（指纹与实现轮一致）
+docs/video/test_evidence/ITEM-016/diag-ext-192_168_0_103-20261017-item016-verify-v1.checks.json | active | ITEM-016 EXT 结构化逐判例明细（16 checks 0 failed）
+docs/video/test_evidence/ITEM-016/diag-ext-192_168_0_103-20261017-item016-verify-v1.log | active | ITEM-016 EXT 全 transcript（EX-A/B/C/D/E + vext 54 PASS 留痕）
+docs/video/test_evidence/ITEM-016/diag-ext-192_168_0_103-20261017-item016-verify-v1.transcript.json | active | ITEM-016 EXT 结构化 transcript（指纹/逐命令/退出码）
+docs/video/test_evidence/ITEM-016/verify16-compare-v1.log | active | ITEM-016 91 项独立语义比对全 PASS 留痕
+docs/video/test_evidence/ITEM-016/verify16-run-driver-tail.log | active | ITEM-016 验证轮复跑驱动 stdout 摘要（build/core-tests/selftest/run-diag 全 exit=0）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

@@ -1,0 +1,7 @@
+{
+  "versions": {"gstreamer": "1.20.3", "librga": "rga_api version 1.10.1_[0]", "librknnrt": "2.3.2 (429f97ae6b@2025-04-09T09:09:27)"},
+  "presence": {"CAM-01": "online", "CAM-02": "gap", "CAM-03": "unverified"},
+  "daily_log": "core-evidence/logs/video-2026-10-17.log",
+  "redacted": "<redacted>",
+  "acceptance": true
+}

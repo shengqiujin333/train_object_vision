@@ -1,0 +1,163 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [EXA-prep] exit=0 =====
+  freeze_timeout_ms: 300
+  reconnect_backoff_ms: 300
+
+
+===== [EXA-run] exit=0 =====
+type=capability config_ok=true gstreamer=1.20.3 librga=rga_api version 1.10.1_[0] librknnrt=2.3.2 (429f97ae6b@2025-04-09T09:09:27) elements_present=true missing=0
+type=element name=rtspsrc status=present long_name=RTSP packet receiver
+type=element name=rtph265depay status=present long_name=RTP H265 depayloader
+type=element name=h265parse status=present long_name=H.265 parser
+type=element name=rtph264depay status=present long_name=RTP H264 depayloader
+type=element name=h264parse status=present long_name=H.264 parser
+type=element name=decodebin status=present long_name=Decoder Bin
+type=element name=mppvideodec status=present long_name=Rockchip's MPP video decoder
+type=element name=tee status=present long_name=Tee pipe fitting
+type=element name=queue status=present long_name=Queue
+type=element name=appsink status=present long_name=AppSink
+type=element name=fakesink status=present long_name=Fake Sink
+type=metric camera=CAM-01 presence=online (在线) state=live fps=25.000000 last_frame_mono_ms=383886067 last_frame_wall_ms=1792254989416 reconnect_count=0 quality_flags= display_dropped=74 ai_dropped=73 recording_overflow=45 gap_count=0 attempt_id=CAM-01#g1 last_error=-
+type=metric camera=CAM-02 presence=gap (缺口) state=live fps=25.500000 last_frame_mono_ms=383886068 last_frame_wall_ms=1792254989417 reconnect_count=0 quality_flags= display_dropped=74 ai_dropped=73 recording_overflow=45 gap_count=1 attempt_id=none last_error=-
+type=metric camera=CAM-03 presence=unverified (未核验) state=offline fps=0.000000 last_frame_mono_ms=0 last_frame_wall_ms=-1 reconnect_count=0 quality_flags= display_dropped=0 ai_dropped=0 recording_overflow=0 gap_count=0 attempt_id=none last_error=-
+type=redaction raw_has_cred=true redacted=<redacted> clean=true
+type=acceptance capability_versions=true elements_required_present=true tristate_online_unverified_gap=true redaction_clean=true daily_roll_ok=true daily_file_written=true structured_fields=true result=PASS
+EXA_EXIT=0
+
+
+===== [EXA-fetch] exit=0 =====
+type=capability config_ok=true gstreamer=1.20.3 librga=rga_api version 1.10.1_[0] librknnrt=2.3.2 (429f97ae6b@2025-04-09T09:09:27) elements_present=true missing=0
+type=element name=rtspsrc status=present long_name=RTSP packet receiver
+type=element name=rtph265depay status=present long_name=RTP H265 depayloader
+type=element name=h265parse status=present long_name=H.265 parser
+type=element name=rtph264depay status=present long_name=RTP H264 depayloader
+type=element name=h264parse status=present long_name=H.264 parser
+type=element name=decodebin status=present long_name=Decoder Bin
+type=element name=mppvideodec status=present long_name=Rockchip's MPP video decoder
+type=element name=tee status=present long_name=Tee pipe fitting
+type=element name=queue status=present long_name=Queue
+type=element name=appsink status=present long_name=AppSink
+type=element name=fakesink status=present long_name=Fake Sink
+type=metric camera=CAM-01 presence=online (在线) state=live fps=25.000000 last_frame_mono_ms=383886067 last_frame_wall_ms=1792254989416 reconnect_count=0 quality_flags= display_dropped=74 ai_dropped=73 recording_overflow=45 gap_count=0 attempt_id=CAM-01#g1 last_error=-
+type=metric camera=CAM-02 presence=gap (缺口) state=live fps=25.500000 last_frame_mono_ms=383886068 last_frame_wall_ms=1792254989417 reconnect_count=0 quality_flags= display_dropped=74 ai_dropped=73 recording_overflow=45 gap_count=1 attempt_id=none last_error=-
+type=metric camera=CAM-03 presence=unverified (未核验) state=offline fps=0.000000 last_frame_mono_ms=0 last_frame_wall_ms=-1 reconnect_count=0 quality_flags= display_dropped=0 ai_dropped=0 recording_overflow=0 gap_count=0 attempt_id=none last_error=-
+type=redaction raw_has_cred=true redacted=<redacted> clean=true
+type=acceptance capability_versions=true elements_required_present=true tristate_online_unverified_gap=true redaction_clean=true daily_roll_ok=true daily_file_written=true structured_fields=true result=PASS
+
+
+===== [EXA-daily] exit=0 =====
+video-2026-10-17.log
+3 /tmp/vt_exa_logs/video-2026-10-17.log
+
+
+===== [EXD-run2] exit=0 =====
+type=capability config_ok=true gstreamer=1.20.3 librga=rga_api version 1.10.1_[0] librknnrt=2.3.2 (429f97ae6b@2025-04-09T09:09:27) elements_present=true missing=0
+type=element name=rtspsrc status=present long_name=RTSP packet receiver
+type=element name=rtph265depay status=present long_name=RTP H265 depayloader
+type=element name=h265parse status=present long_name=H.265 parser
+type=element name=rtph264depay status=present long_name=RTP H264 depayloader
+type=element name=h264parse status=present long_name=H.264 parser
+type=element name=decodebin status=present long_name=Decoder Bin
+type=element name=mppvideodec status=present long_name=Rockchip's MPP video decoder
+type=element name=tee status=present long_name=Tee pipe fitting
+type=element name=queue status=present long_name=Queue
+type=element name=appsink status=present long_name=AppSink
+type=element name=fakesink status=present long_name=Fake Sink
+type=metric camera=CAM-01 presence=online (在线) state=live fps=25.000000 last_frame_mono_ms=383890916 last_frame_wall_ms=1792254994264 reconnect_count=0 quality_flags= display_dropped=49 ai_dropped=48 recording_overflow=20 gap_count=0 attempt_id=CAM-01#g1 last_error=-
+type=metric camera=CAM-02 presence=gap (缺口) state=live fps=25.000000 last_frame_mono_ms=383890920 last_frame_wall_ms=1792254994268 reconnect_count=0 quality_flags= display_dropped=49 ai_dropped=48 recording_overflow=20 gap_count=1 attempt_id=none last_error=-
+type=metric camera=CAM-03 presence=unverified (未核验) state=offline fps=0.000000 last_frame_mono_ms=0 last_frame_wall_ms=-1 reconnect_count=0 quality_flags= display_dropped=0 ai_dropped=0 recording_overflow=0 gap_count=0 attempt_id=none last_error=-
+type=redaction raw_has_cred=true redacted=<redacted> clean=true
+type=acceptance capability_versions=true elements_required_present=true tristate_online_unverified_gap=true redaction_clean=true daily_roll_ok=true daily_file_written=true structured_fields=true result=PASS
+EXD_EXIT=0
+
+
+===== [EXB-unknown] exit=0 =====
+EXB_EXIT=2
+unknown arg: --bogus-flag
+
+
+===== [EXB-help] exit=0 =====
+usage: railhmi-diagnostics [--config dir] [--duration s] [--logdir dir] [--out log] [--json json] [--selftest]
+EXB_EXIT=0
+
+
+===== [tree-check] exit=0 =====
+/tmp/railhmi_diag/build-media/tools/railhmi-diagnostics
+TREE_OK
+
+
+===== [EXC-upload] exit=0 =====
+-rw-rw-r-- 1 admin admin 20132 Oct 18 00:36 /tmp/railhmi_diag/vext16.cpp
+
+
+===== [EXC-build] exit=0 =====
+VEXT_BUILD_OK
+
+
+===== [EXC-run] exit=0 =====
+vext PASS g01_degraded_online_fresh
+vext PASS g02_connecting_unverified_even_with_fresh_frame
+vext PASS g03_reconnecting_unverified
+vext PASS g04_offline_unverified
+vext PASS g05_gap_overrides_live
+vext PASS g06_frozen_is_gap
+vext PASS g07_attempt_id_gen3
+vext PASS g08_attempt_id_json
+vext PASS g09_empty_attempt_json_none
+vext PASS g10_empty_attempt_presence_still_online
+vext PASS g11_userinfo_masked_host_kept
+vext PASS g12_raw_detected_before_redact
+vext PASS g12b_benign_still_clean
+vext PASS g13_passwd_and_pwd_masked
+vext PASS g14_token_secret_user_id_masked
+vext PASS g15_multi_kv_masked
+vext PASS g16_kv_value_stops_at_separator
+vext PASS g17_pipeline_trigger_rtspsrc_whole_redacted
+vext PASS g17_pipeline_trigger_GstPipeline_whole_redacted
+vext PASS g17_pipeline_trigger_GST_MESSAGE_whole_redacted
+vext PASS g17_pipeline_trigger_pipeline0_whole_redacted
+vext PASS g21_json_ts
+vext PASS g22_json_severity
+vext PASS g23_json_source_video
+vext PASS g24_json_message
+vext PASS g25_quality_flags_passed_through
+vext PASS g26_fps_format
+vext PASS g27_wall_ms_format
+vext PASS g28_labels_unverified_online
+vext PASS g31_json_last_error_userinfo_redacted
+vext PASS g32_json_last_error_kv_redacted
+vext PASS g33_json_last_error_pipeline_whole
+vext PASS g34_json_no_pipeline_token
+vext PASS g35_multi_test_two_started
+vext PASS g36_multi_test_fps_positive
+vext PASS g37_multi_test_online
+vext PASS g38_multi_test_wall_calibrated
+vext PASS g39_multi_test_attempt_form
+vext PASS g40_roll_keeps_latest_day
+vext PASS g41_roll_day_is_d2
+vext PASS g42_same_day_not_pruned
+vext PASS g43_two_days_kept_with_max_2
+vext PASS g44_day_key_invalid_ts_marker
+vext PASS g44b_day_key_day1_start
+vext PASS g44c_day_key_rolls_at_utc_midnight
+vext PASS g45_day_key_plus46d
+vext PASS g46_contains_empty_false
+vext PASS g47_contains_benign_false
+vext PASS g48_redact_trailing_password_key_kept
+vext PASS g49_double_redaction_text_idempotent
+vext PASS g50_single_redaction_masks_all
+vext PASS g51_cut_leaves_live
+vext PASS g52_sibling_stays_online
+vext PASS g53_cut_channel_not_online_after_cut
+vext OK (0 failure(s))
+VEXT_EXIT=0
+
+
+===== [cleanup-ext] exit=0 =====
+EXT_CLEANED
+
+
+===== [cleanup-tree] exit=0 =====
+BOARD_CLEAN_DONE
+

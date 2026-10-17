@@ -1,0 +1,86 @@
+{
+  "stamp": "20261017-item016-verify-v1",
+  "checks": [
+    {
+      "name": "EX-A run done",
+      "ok": true,
+      "detail": "pability_versions=true elements_required_present=true tristate_online_unverified_gap=true redaction_clean=true daily_roll_ok=true daily_file_written=true structured_fields=true result=PASS\nEXA_EXIT=0\n"
+    },
+    {
+      "name": "EX-A acceptance result=PASS",
+      "ok": true,
+      "detail": "{'capability_versions': 'true', 'elements_required_present': 'true', 'tristate_online_unverified_gap': 'true', 'redaction_clean': 'true', 'daily_roll_ok': 'true', 'daily_file_written': 'true', 'structured_fields': 'true', 'result': 'PASS'}"
+    },
+    {
+      "name": "EX-A CAM-01 keys full",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "EX-A CAM-02 keys full",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "EX-A CAM-03 keys full",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "EX-A tristate exactly online/gap/unverified",
+      "ok": true,
+      "detail": "{'CAM-01': 'online', 'CAM-02': 'gap', 'CAM-03': 'unverified'}"
+    },
+    {
+      "name": "EX-A redaction clean",
+      "ok": true,
+      "detail": "ts_required_present=true tristate_online_unverified_gap=true redaction_clean=true daily_roll_ok=true daily_file_written=true structured_fields=true result=PASS\n"
+    },
+    {
+      "name": "EX-A daily file 3 lines",
+      "ok": true,
+      "detail": "video-2026-10-17.log\n3 /tmp/vt_exa_logs/video-2026-10-17.log\n"
+    },
+    {
+      "name": "EX-D run2 done",
+      "ok": true,
+      "detail": "_present=true tristate_online_unverified_gap=true redaction_clean=true daily_roll_ok=true daily_file_written=true structured_fields=true result=PASS\nEXD_EXIT=0\n"
+    },
+    {
+      "name": "EX-B unknown arg exit2",
+      "ok": true,
+      "detail": "EXB_EXIT=2\nunknown arg: --bogus-flag\n"
+    },
+    {
+      "name": "EX-B help exit0 + usage",
+      "ok": true,
+      "detail": "usage: railhmi-diagnostics [--config dir] [--duration s] [--logdir dir] [--out log] [--json json] [--selftest]\nEXB_EXIT=0\n"
+    },
+    {
+      "name": "EX-C build ok",
+      "ok": true,
+      "detail": "VEXT_BUILD_OK\n"
+    },
+    {
+      "name": "EX-C vext all pass (52)",
+      "ok": true,
+      "detail": "pass=54 fails=[]"
+    },
+    {
+      "name": "EX-C vext PASS line count matches 54",
+      "ok": true,
+      "detail": "54"
+    },
+    {
+      "name": "EX-E credential leak scan clean",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "cleanup tree done",
+      "ok": true,
+      "detail": "BOARD_CLEAN_DONE\n"
+    }
+  ],
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+}
