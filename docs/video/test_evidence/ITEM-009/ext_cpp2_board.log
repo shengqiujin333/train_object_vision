@@ -1,0 +1,14 @@
+rga_api version 1.10.1_[0]
+check PASS h01_valid_nv12_converts
+check PASS h02_dimensions_match
+check PASS h03_bgr_size_wxh3
+check PASS h04_grey_channels_near_equal
+check PASS h05_zero_uv_offset_rejected
+check PASS h06_stride_too_small_rejected
+check PASS h07_odd_width_rejected
+check PASS h08_blue_nv12_converts
+check PASS h09_blue_source_blue_channel_dominant
+selftest OK (0 failure(s))
+EXIT_TOK=0
+
+---STDERR---

@@ -1,0 +1,15 @@
+check PASS g01_cpu_path_available_no_reason
+check PASS g02_gl_status_explicit_pairing
+check PASS g03_gl_unavailable_reason_prefixed_missing
+check PASS g04_invalid_lease_no_snapshot
+check PASS g05_invalid_lease_not_presentable
+check PASS g06_invalid_lease_no_update_counter
+check PASS g07_gl_distributor_initial_not_presentable
+check PASS g08_gl_distributor_reports_render_path
+check PASS g09_unknown_camera_no_snapshot
+check PASS g10_unknown_camera_not_presentable
+check PASS g11_unknown_camera_updates_zero
+selftest OK (0 failure(s))
+EXIT_TOK=0
+
+---STDERR---

@@ -1,0 +1,69 @@
+type=render_path path=cpu available=true reason=-
+type=render_path path=gl available=false reason=missing:qmlglsink
+type=multi source=test channels=6 started=6
+rga_api version 1.10.1_[0]
+type=phase phase=P1 cameras=3 polls=78 probe=CAM-01 snapshot_valid=true presentable=true seq=41 generation=1 updates=41 format=BGR888 size=1280x720 view=left-front-right
+ RgaBlit(1513) RGA_BLIT fail: Invalid argument
+ RgaBlit(1514) RGA_BLIT fail: Invalid argument
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f7c2d2390, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 2560, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f702a5de0, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 1792, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+2763 im2d_rga_impl rga_task_submit(2171): Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
+2763 im2d_rga_impl rga_dump_channel_info(1500): src_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, nv12]
+  buffer[handle,fd,va,pa] = [0, 0, 7f7c2d2390, 0]
+  color_space = 0x0, global_alpha = 0xff, rd_mode = 0x1
+
+2763 im2d_rga_impl rga_dump_channel_info(1500): dst_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, bgr888]
+  buffer[handle,fd,va,pa] = [0, 0, 7f702a5de0, 0]
+  color_space = 0x2, global_alpha = 0xff, rd_mode = 0x1
+
+2763 im2d_rga_impl rga_dump_opt(1550): opt version[0x0]:
+
+2763 im2d_rga_impl rga_dump_opt(1551): set_core[0x0], priority[0]
+
+2763 im2d_rga_impl rga_task_submit(2180): acquir_fence[-1], release_fence_ptr[0x0], usage[0x80000]
+
+type=phase phase=P4 cameras=6 polls=126 probe=CAM-01 snapshot_valid=true presentable=true seq=84 generation=1 updates=83 format=BGR888 size=1280x720 view=all-cameras
+type=phase phase=P5 cameras=1 polls=23 probe=CAM-01 snapshot_valid=true presentable=true seq=118 generation=1 updates=117 format=BGR888 size=1280x720 view=ai-debug
+ RgaBlit(1513) RGA_BLIT fail: Invalid argument
+ RgaBlit(1514) RGA_BLIT fail: Invalid argument
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f7da8ded0, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 2560, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f70548df0, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 1792, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+4763 im2d_rga_impl rga_task_submit(2171): Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
+4763 im2d_rga_impl rga_dump_channel_info(1500): src_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, nv12]
+  buffer[handle,fd,va,pa] = [0, 0, 7f7da8ded0, 0]
+  color_space = 0x0, global_alpha = 0xff, rd_mode = 0x1
+
+4763 im2d_rga_impl rga_dump_channel_info(1500): dst_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, bgr888]
+  buffer[handle,fd,va,pa] = [0, 0, 7f70548df0, 0]
+  color_space = 0x2, global_alpha = 0xff, rd_mode = 0x1
+
+4763 im2d_rga_impl rga_dump_opt(1550): opt version[0x0]:
+
+4763 im2d_rga_impl rga_dump_opt(1551): set_core[0x0], priority[0]
+
+4763 im2d_rga_impl rga_task_submit(2180): acquir_fence[-1], release_fence_ptr[0x0], usage[0x80000]
+
+type=summary channels=6 page_switch_no_rebuild=true snapshots_valid=true single_source=true gl_status_explicit=true
+type=acceptance result=PASS
+EXIT_TOK=0
+---STDERR_BLIT_COUNT---
+0
+---BLIT_LOG_END---
+
+---STDERR---

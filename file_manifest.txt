@@ -1846,10 +1846,19 @@ docs/video/test_evidence/ITEM-008/bp-192_168_0_103-20261017-item008-verify-v1.lo
 docs/video/test_evidence/ITEM-008/bp-192_168_0_103-20261017-item008-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹与实现 r2 同板同 key）
 docs/video/test_evidence/ITEM-008/bp-ext-192_168_0_103-20261017-item008-verify-v1.json | active | 验证 EXT 夹具结构化结果（EX-A..EX-F 7 项全 PASS + 每项判据细节）
 docs/video/test_evidence/ITEM-009/ITEM-009-ENV-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-009 selftest 2/2 + 六路 P1→P4→P5 切换（generation=1 不变、updates 42→83→118、快照 BGR888 1280x720、gl 显式 missing:qmlglsink）result=PASS
+docs/video/test_evidence/ITEM-009/VERIFY-ITEM-009.md | active | TestEvidence（software_verification VERIFY-20261017-v1）：TEST_PASS——交付入口独立复跑 + 独立解析比对 60/60 + 板端 CLI 负例 13/13 + 自有 C++ 夹具 27/27 + 源码级断言 16/16；O-1 librga 并发 init 间歇失败（不阻塞判据面）
+docs/video/test_evidence/ITEM-009/board_b7.log | active | 六路 stderr 分离采样（RGA log 通道复核）
+docs/video/test_evidence/ITEM-009/display-192_168_0_103-20261017-item009-VERIFY-v1.core-evidence_display-20261017-item009-VERIFY-v1.json | active | 验证轮 fresh 复跑汇总 JSON
+docs/video/test_evidence/ITEM-009/display-192_168_0_103-20261017-item009-VERIFY-v1.core-evidence_display-20261017-item009-VERIFY-v1.log | active | 验证轮 fresh 复跑核心判据日志
+docs/video/test_evidence/ITEM-009/display-192_168_0_103-20261017-item009-VERIFY-v1.log | active | 验证轮板端执行人类可读 transcript（8 步 keep-remote）
+docs/video/test_evidence/ITEM-009/display-192_168_0_103-20261017-item009-VERIFY-v1.transcript.json | active | 验证轮板端执行结构化 transcript
 docs/video/test_evidence/ITEM-009/display-192_168_0_103-20261017-item009-r2.core-evidence_display-20261017-item009-r2.json | active | ITEM-009 汇总 JSON
 docs/video/test_evidence/ITEM-009/display-192_168_0_103-20261017-item009-r2.core-evidence_display-20261017-item009-r2.log | active | ITEM-009 渲染路径 + P1/P4/P5 逐阶段 + acceptance 日志
 docs/video/test_evidence/ITEM-009/display-192_168_0_103-20261017-item009-r2.log | active | ITEM-009 板端执行人类可读 transcript（build-media/selftest/run-display）
 docs/video/test_evidence/ITEM-009/display-192_168_0_103-20261017-item009-r2.transcript.json | active | ITEM-009 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-009/ext_cpp2_board.log | active | 验证自有夹具 display_ext2.cpp 9/9 板端输出（nv12_to_bgr_raw 纯函数语义）
+docs/video/test_evidence/ITEM-009/ext_cpp3_board.log | active | 验证自有夹具 display_ext3.cpp 7/7 板端输出（RGA 失败→恢复语义）
+docs/video/test_evidence/ITEM-009/ext_cpp_board.log | active | 验证自有夹具 display_ext.cpp 11/11 板端输出（render path/无效租约/gl 分发器/未知相机）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
