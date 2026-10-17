@@ -1,0 +1,50 @@
+vext PASS v01 dev==threshold in_sync (<=)
+vext PASS v01 dev==threshold+1 not in_sync (>)
+vext PASS v02 uncalibrated flags false
+vext PASS v02 try_to_wall_ms false
+vext PASS v02 output not written (caller value preserved)
+vext PASS v02 nullptr out param safe
+vext PASS v03 first calibration converts +1s
+vext PASS v03 recalibration replaces reference (no offset stacking)
+vext PASS v04 to_wall_ms idempotent
+vext PASS v04 to_mono_us idempotent (same wall input)
+vext PASS v04 wall->mono->wall stable
+vext PASS v05 negative mono linear
+vext PASS v05 large span /1000 exact
+vext PASS v05 large span *1000 exact
+vext PASS v05 negative wall linear
+vext PASS v06 empty locked list available (no false unavailable)
+vext PASS v06 empty locked but uncalibrated still UNCALIBRATED
+vext PASS v07 two missing reported
+vext PASS v07 missing in locked order (CAM-02, CAM-04)
+vext PASS v07 no prompt on missing path
+vext PASS v07 unknown extra key ignored in deviation
+vext PASS v08 threshold 0: identical heads in_sync
+vext PASS v08 threshold 0: 1ms dev prompts
+vext PASS v08 negative threshold conservative not crash
+vext PASS v09 dev==-tol reached (<=
+vext PASS v09 dev==+tol+1 accepted
+vext PASS v09 dev==+tol+1 not reached
+vext PASS v09 negative tolerance normalized to 0
+vext PASS v09 tol0 exact target reached
+vext PASS v10 gen1 accepted at 8000
+vext PASS v10 gen1 stale after two seeks
+vext PASS v10 gen2 stale after newer seek
+vext PASS v10 position stays last accepted
+vext PASS v10 reset clears all
+vext PASS v10 post-reset generation mismatch guard
+vext PASS v11 first accepted
+vext PASS v11 second accepted same gen
+vext PASS v11 last accepted wins
+vext PASS v11 reached at tolerance edge
+vext PASS v12 gen0 callback accepted as current (!= semantics)
+vext PASS v12 position recorded
+vext PASS v12 pre-seek gen0 within default target 0+tol (actual behavior, O-2)
+vext PASS v12 first seek generation is 1
+vext PASS v12 gen0 stale after first seek
+vext PASS v13 single camera available dev0
+vext PASS v13 no prompt for single
+vext PASS v14 uncalibrated priority over head presence
+vext PASS v14 no prompt when uncalibrated
+vext summary 0 failure(s)
+VEXT_EXIT=0

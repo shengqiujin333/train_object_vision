@@ -1,0 +1,8 @@
+type=config replay_sync_threshold_ms=100
+type=timebase calibrated=true can_write_utc=true wall_ms=1792251178358 mono_us=380075009393 +1s_wall=1792251179358 roundtrip=true
+type=uncalibrated can_write_utc=false try_to_wall_ms=false utc_event_written=false reject=true
+type=sync case=real_heads source=calibrated_monotonic_clock status=available in_sync=true max_deviation_ms=10 prompt=
+type=sync case=skewed in_sync=false max_deviation_ms=800 prompt=同步偏差 800 ms（阈值 100 ms）
+type=sync case=missing_clock available=false reason=MISSING_CLOCK missing=CAM-03
+type=seek gen1=1 gen2=2 stale0_discarded=true accepted=true premature_located=false stale1_discarded=true stale_pos_unchanged=true reached=true
+type=acceptance timebase_calibrated=true conversion_roundtrip=true uncalibrated_no_utc=true sync_real_in_sync=true sync_prompt_over_threshold=true sync_missing_clock_unavailable=true seek_stale_discarded=true seek_not_premature=true seek_reached=true threshold_from_config=false result=FAIL

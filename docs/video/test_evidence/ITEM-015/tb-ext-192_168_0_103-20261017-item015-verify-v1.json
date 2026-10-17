@@ -1,0 +1,124 @@
+{
+  "tag": "tb-ext-192_168_0_103-20261017-item015-verify-v1",
+  "checks": [
+    {
+      "name": "EX-A config copy shows 100",
+      "ok": true,
+      "detail": "  replay_sync_threshold_ms: 100\n"
+    },
+    {
+      "name": "EX-A run exit0",
+      "ok": true,
+      "detail": "in_sync=true sync_prompt_over_threshold=true sync_missing_clock_unavailable=true seek_stale_discarded=true seek_not_premature=true seek_reached=true threshold_from_config=false result=FAIL\nEXA_EXIT=0\n"
+    },
+    {
+      "name": "EX-A config threshold echoed 100",
+      "ok": true,
+      "detail": "type=config replay_sync_threshold_ms=100"
+    },
+    {
+      "name": "EX-A skewed dev 800 over 100",
+      "ok": true,
+      "detail": "type=sync case=skewed in_sync=false max_deviation_ms=800 prompt=同步偏差 800 ms（阈值 100 ms）"
+    },
+    {
+      "name": "EX-A skewed not in_sync with prompt(threshold=100)",
+      "ok": true,
+      "detail": "同步偏差 800 ms（阈值 100 ms）"
+    },
+    {
+      "name": "EX-A real heads in_sync within 100",
+      "ok": true,
+      "detail": "type=sync case=real_heads source=calibrated_monotonic_clock status=available in_sync=true max_deviation_ms=10 prompt="
+    },
+    {
+      "name": "EX-A acceptance row matches deliverable contract (default-300 self-check, O-1)",
+      "ok": true,
+      "detail": "e sync_real_in_sync=true sync_prompt_over_threshold=true sync_missing_clock_unavailable=true seek_stale_discarded=true seek_not_premature=true seek_reached=true threshold_from_config=false result=FAIL"
+    },
+    {
+      "name": "EX-A behavior rows prove threshold-100 semantics (independent of acceptance row)",
+      "ok": true,
+      "detail": "cfg=type=config replay_sync_threshold_ms=100 skew=type=sync case=skewed in_sync=false max_deviation_ms=800 prompt=同步偏差 800 ms（阈值 100 ms）"
+    },
+    {
+      "name": "EX-A json threshold 100",
+      "ok": true,
+      "detail": "{\n  \"threshold_ms\": 100,\n  \"sync_real\": {\"in_sync\": true, \"max_deviation_ms\": 10},\n  \"sync_skewed\": {\"in_sync\": false, \"max_deviation_ms\": 800},\n  \"missing_clock\": \"MISSING_CLOCK\",\n  \"seek\": {\"gen1\": "
+    },
+    {
+      "name": "EX-A json acceptance false (O-1 deliverable contract under non-default config)",
+      "ok": true,
+      "detail": ",\n  \"sync_skewed\": {\"in_sync\": false, \"max_deviation_ms\": 800},\n  \"missing_clock\": \"MISSING_CLOCK\",\n  \"seek\": {\"gen1\": 1, \"gen2\": 2, \"stale_discarded\": true, \"reached\": true},\n  \"acceptance\": false\n}\n"
+    },
+    {
+      "name": "NEG unknown arg exit2",
+      "ok": true,
+      "detail": "NEG_EXIT=2\nunknown arg: --bogus-flag\n"
+    },
+    {
+      "name": "NEG help exit0 usage",
+      "ok": true,
+      "detail": "usage: railhmi-timebase-sync [--config dir] [--out log] [--json json] [--selftest]\nHELP_EXIT=0\n"
+    },
+    {
+      "name": "DET run exit0",
+      "ok": true,
+      "detail": "in_sync=true sync_prompt_over_threshold=true sync_missing_clock_unavailable=true seek_stale_discarded=true seek_not_premature=true seek_reached=true threshold_from_config=false result=FAIL\nDET_EXIT=0\n"
+    },
+    {
+      "name": "DET semantic rows identical (except real-clock line)",
+      "ok": true,
+      "detail": "\nEXA:['type=acceptance timebase_calibrated=true conversion_roundtrip=true uncalibrated_no_utc=true sync_real_in_sync=true sync_prompt_over_threshold=true sync_missing_clock_unavailable=true seek_stale_discarded=true seek_not_premature=true seek_reached=true threshold_from_config=false result=FAIL']\n"
+    },
+    {
+      "name": "DET json acceptance false (O-1: same non-default config as EX-A)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "EXT-C core lib + headers present",
+      "ok": true,
+      "detail": "build-core/src/core/librailhmi_core.a\nsrc/core/include/railhmi/core/replay_sync.h\nsrc/core/include/railhmi/core/timebase.h\n"
+    },
+    {
+      "name": "EXT-C compiled",
+      "ok": true,
+      "detail": "VEXT_COMPILED\n"
+    },
+    {
+      "name": "EXT-C no FAIL lines",
+      "ok": true,
+      "detail": "named fails=[]"
+    },
+    {
+      "name": "EXT-C all 48 cases PASS (source-derived)",
+      "ok": true,
+      "detail": "got 48 PASS, expect 48"
+    },
+    {
+      "name": "EXT-C summary 0 failures",
+      "ok": true,
+      "detail": " single camera available dev0\nvext PASS v13 no prompt for single\nvext PASS v14 uncalibrated priority over head presence\nvext PASS v14 no prompt when uncalibrated\nvext summary 0 failure(s)\nVEXT_EXIT=0\n"
+    },
+    {
+      "name": "EXT-C VEXT_EXIT=0",
+      "ok": true,
+      "detail": " over head presence\nvext PASS v14 no prompt when uncalibrated\nvext summary 0 failure(s)\nVEXT_EXIT=0\n"
+    },
+    {
+      "name": "EX-D credential leak 0 hits",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "EX-E cleanup confirmed",
+      "ok": true,
+      "detail": "CLEAN_CHECK_DONE\n"
+    }
+  ],
+  "summary": {
+    "total": 23,
+    "failed": 0
+  }
+}

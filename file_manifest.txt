@@ -2006,10 +2006,24 @@ docs/video/test_evidence/ITEM-014/recov-ext-192_168_0_103-20261017-item014-verif
 docs/video/test_evidence/ITEM-014/recov-ext-192_168_0_103-20261017-item014-verify-v2.json | active | ITEM-014 EXT 结构化结果（v2 修复轮 24 checks 0 failed；vext 26/26 全绿含三条 D-01 呈证判据转 PASS）
 docs/video/test_evidence/ITEM-014/recov-ext-192_168_0_103-20261017-item014-verify-v2.vext.log | active | ITEM-014 板端自有夹具原始输出（v2 修复轮 vext PASS×26 + FAIL×0 + OBSERVE 行原始描述）
 docs/video/test_evidence/ITEM-015/ITEM-015-ENV-A0-20261017-r1.md | active | VideoExecutionEvidence：ITEM-015 core 879/0 + selftest 9/9 + 板端真实时钟（calibrated/roundtrip；uncalibrated no UTC；sync real in_sync maxdev10；skewed 800ms prompt；missing clock available=false；seek gen1→2 陈旧丢弃/未达不提前/达到 reached；acceptance PASS）
+docs/video/test_evidence/ITEM-015/VERIFY-ITEM-015.md | active | ITEM-015 软件验证 TestEvidence（VERIFY-20261017-v1：板端独立复跑 879/0 逐行一致 + selftest 9/9 + compare 50/50 独立判据重推导 + ext 23/23（参数轮阈值 100 + 负例 + 确定性）+ vext 48/48 黑盒夹具（阈值半开/守卫不写输出/重复校准不叠加/换算幂等/多缺路/seek 容差边界/陈旧保持/gen0 语义）+ 凭据 0 泄漏 + 板端清理；O-1 探针 acceptance 硬编码默认阈值 300、O-2 gen0 初始代 reached 初始态语义，交实现参考）
+docs/video/test_evidence/ITEM-015/_cleanup_board.py | active | ITEM-015 验证轮板端收尾清理脚本（railhmi_timebase 树 BOARD_CLEAN_DONE）
+docs/video/test_evidence/ITEM-015/_verify_compare.py | active | ITEM-015 验证侧独立解析比对（impl r2 vs fresh verify-v1 逐行 + C1-C7 判据独立重推导；50 checks）
+docs/video/test_evidence/ITEM-015/_verify_compare_result.json | active | ITEM-015 compare 50 判定明细（0 failed）
+docs/video/test_evidence/ITEM-015/_verify_ext.py | active | ITEM-015 验证侧扩展夹具驱动（EX-A 参数轮阈值 100/CLI 负例/确定性/vext 直编/凭据扫描/清理；23 checks）
+docs/video/test_evidence/ITEM-015/_verify_run.py | active | ITEM-015 验证侧独立复跑驱动（凭据导入 + board_timebase_sync_check --keep-remote）
+docs/video/test_evidence/ITEM-015/_verify_vext.cpp | active | ITEM-015 验证侧自有 C++ 夹具（链接 librailhmi_core.a；TimeBase/同步/seek 14 场景 48 判例）
 docs/video/test_evidence/ITEM-015/tb-192_168_0_103-20261017-item015-r2.core-evidence_timebase-sync-20261017-item015-r2.json | active | ITEM-015 汇总 JSON
 docs/video/test_evidence/ITEM-015/tb-192_168_0_103-20261017-item015-r2.core-evidence_timebase-sync-20261017-item015-r2.log | active | ITEM-015 校准/守卫/同步/seek/acceptance 日志
 docs/video/test_evidence/ITEM-015/tb-192_168_0_103-20261017-item015-r2.log | active | ITEM-015 板端执行人类可读 transcript（build-core/core-tests/selftest/run-sync）
 docs/video/test_evidence/ITEM-015/tb-192_168_0_103-20261017-item015-r2.transcript.json | active | ITEM-015 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-015/tb-192_168_0_103-20261017-item015-verify-v1.core-evidence_timebase-sync-20261017-item015-verify-v1.json | active | ITEM-015 验证轮 fresh 复跑汇总 JSON
+docs/video/test_evidence/ITEM-015/tb-192_168_0_103-20261017-item015-verify-v1.core-evidence_timebase-sync-20261017-item015-verify-v1.log | active | ITEM-015 验证轮 fresh 复跑探针日志（校准/守卫/同步/seek/acceptance）
+docs/video/test_evidence/ITEM-015/tb-192_168_0_103-20261017-item015-verify-v1.log | active | ITEM-015 验证轮板端独立复跑全 transcript（core-tests 879/0 与实现轮逐行 identical）
+docs/video/test_evidence/ITEM-015/tb-192_168_0_103-20261017-item015-verify-v1.transcript.json | active | ITEM-015 验证轮结构化 transcript（指纹与实现轮一致）
+docs/video/test_evidence/ITEM-015/tb-ext-192_168_0_103-20261017-item015-verify-v1.exa.log | active | ITEM-015 EX-A 独立参数轮探针原文（阈值 100：config 回显/prompt 含 100/行为行语义）
+docs/video/test_evidence/ITEM-015/tb-ext-192_168_0_103-20261017-item015-verify-v1.json | active | ITEM-015 EXT 结构化结果（23 checks 0 failed；O-1 登记在案）
+docs/video/test_evidence/ITEM-015/tb-ext-192_168_0_103-20261017-item015-verify-v1.vext.log | active | ITEM-015 板端自有夹具原始输出（vext PASS×48 + FAIL×0 + summary 0 failures）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

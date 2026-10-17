@@ -1,0 +1,260 @@
+{
+  "impl_tag": "20261017-item015-r2",
+  "verify_tag": "20261017-item015-verify-v1",
+  "checks": [
+    {
+      "name": "row count 8",
+      "ok": true,
+      "detail": "impl=8 veri=8"
+    },
+    {
+      "name": "row types identical",
+      "ok": true,
+      "detail": "['config', 'timebase', 'uncalibrated', 'sync', 'sync', 'sync', 'seek', 'acceptance'] vs ['config', 'timebase', 'uncalibrated', 'sync', 'sync', 'sync', 'seek', 'acceptance']"
+    },
+    {
+      "name": "row00 type=config",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row01 type=timebase keyset",
+      "ok": true,
+      "detail": "['+1s_wall', 'calibrated', 'can_write_utc', 'mono_us', 'roundtrip', 'type', 'wall_ms'] vs ['+1s_wall', 'calibrated', 'can_write_utc', 'mono_us', 'roundtrip', 'type', 'wall_ms']"
+    },
+    {
+      "name": "row02 type=uncalibrated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row03 type=sync",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row04 type=sync",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row05 type=sync",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row06 type=seek",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row07 type=acceptance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C1 calibrated + can_write_utc true",
+      "ok": true,
+      "detail": "{'type': 'timebase', 'calibrated': 'true', 'can_write_utc': 'true', 'wall_ms': '1792250460276', 'mono_us': '379356927732', '+1s_wall': '1792250461276', 'roundtrip': 'true'}"
+    },
+    {
+      "name": "C1 single linear conversion (+1s_wall - wall == 1000)",
+      "ok": true,
+      "detail": "wall=1792250460276 +1s_wall=1792250461276"
+    },
+    {
+      "name": "C1 wall is UTC epoch scale",
+      "ok": true,
+      "detail": "1792250460276"
+    },
+    {
+      "name": "C1 roundtrip true",
+      "ok": true,
+      "detail": "{'type': 'timebase', 'calibrated': 'true', 'can_write_utc': 'true', 'wall_ms': '1792250460276', 'mono_us': '379356927732', '+1s_wall': '1792250461276', 'roundtrip': 'true'}"
+    },
+    {
+      "name": "C2 uncalibrated guard",
+      "ok": true,
+      "detail": "{'type': 'uncalibrated', 'can_write_utc': 'false', 'try_to_wall_ms': 'false', 'utc_event_written': 'false', 'reject': 'true'}"
+    },
+    {
+      "name": "C3 threshold from config == 300",
+      "ok": true,
+      "detail": "{'type': 'config', 'replay_sync_threshold_ms': '300'}"
+    },
+    {
+      "name": "C3 real heads available+in_sync, dev in [0,threshold]",
+      "ok": true,
+      "detail": "{'type': 'sync', 'case': 'real_heads', 'source': 'calibrated_monotonic_clock', 'status': 'available', 'in_sync': 'true', 'max_deviation_ms': '10', 'prompt': ''}"
+    },
+    {
+      "name": "C3 API 无固定 offsets 语义行",
+      "ok": true,
+      "detail": "{'type': 'sync', 'case': 'real_heads', 'source': 'calibrated_monotonic_clock', 'status': 'available', 'in_sync': 'true', 'max_deviation_ms': '10', 'prompt': ''}"
+    },
+    {
+      "name": "C4 skewed over threshold",
+      "ok": true,
+      "detail": "{'type': 'sync', 'case': 'skewed', 'in_sync': 'false', 'max_deviation_ms': '800', 'prompt': '同步偏差'}"
+    },
+    {
+      "name": "C4 prompt explicit with deviation and threshold",
+      "ok": true,
+      "detail": "同步偏差 800 ms（阈值 300 ms）"
+    },
+    {
+      "name": "C4 skewed dev == 800 (heads[0]+800 injected)",
+      "ok": true,
+      "detail": "{'type': 'sync', 'case': 'skewed', 'in_sync': 'false', 'max_deviation_ms': '800', 'prompt': '同步偏差'}"
+    },
+    {
+      "name": "C5 missing clock unavailable",
+      "ok": true,
+      "detail": "{'type': 'sync', 'case': 'missing_clock', 'available': 'false', 'reason': 'MISSING_CLOCK', 'missing': 'CAM-03'}"
+    },
+    {
+      "name": "C6 generations increment",
+      "ok": true,
+      "detail": "{'type': 'seek', 'gen1': '1', 'gen2': '2', 'stale0_discarded': 'true', 'accepted': 'true', 'premature_located': 'false', 'stale1_discarded': 'true', 'stale_pos_unchanged': 'true', 'reached': 'true'}"
+    },
+    {
+      "name": "C6 stale callbacks discarded",
+      "ok": true,
+      "detail": "{'type': 'seek', 'gen1': '1', 'gen2': '2', 'stale0_discarded': 'true', 'accepted': 'true', 'premature_located': 'false', 'stale1_discarded': 'true', 'stale_pos_unchanged': 'true', 'reached': 'true'}"
+    },
+    {
+      "name": "C6 stale position unchanged",
+      "ok": true,
+      "detail": "{'type': 'seek', 'gen1': '1', 'gen2': '2', 'stale0_discarded': 'true', 'accepted': 'true', 'premature_located': 'false', 'stale1_discarded': 'true', 'stale_pos_unchanged': 'true', 'reached': 'true'}"
+    },
+    {
+      "name": "C6 current gen callback accepted",
+      "ok": true,
+      "detail": "{'type': 'seek', 'gen1': '1', 'gen2': '2', 'stale0_discarded': 'true', 'accepted': 'true', 'premature_located': 'false', 'stale1_discarded': 'true', 'stale_pos_unchanged': 'true', 'reached': 'true'}"
+    },
+    {
+      "name": "C6 not premature located",
+      "ok": true,
+      "detail": "{'type': 'seek', 'gen1': '1', 'gen2': '2', 'stale0_discarded': 'true', 'accepted': 'true', 'premature_located': 'false', 'stale1_discarded': 'true', 'stale_pos_unchanged': 'true', 'reached': 'true'}"
+    },
+    {
+      "name": "C6 reached only within tolerance",
+      "ok": true,
+      "detail": "{'type': 'seek', 'gen1': '1', 'gen2': '2', 'stale0_discarded': 'true', 'accepted': 'true', 'premature_located': 'false', 'stale1_discarded': 'true', 'stale_pos_unchanged': 'true', 'reached': 'true'}"
+    },
+    {
+      "name": "C7 acceptance row matches independent verdict",
+      "ok": true,
+      "detail": "{'type': 'acceptance', 'timebase_calibrated': 'true', 'conversion_roundtrip': 'true', 'uncalibrated_no_utc': 'true', 'sync_real_in_sync': 'true', 'sync_prompt_over_threshold': 'true', 'sync_missing_clock_unavailable': 'true', 'seek_stale_discarded': 'true', 'seek_not_premature': 'true', 'seek_reache"
+    },
+    {
+      "name": "selftest exit identical",
+      "ok": true,
+      "detail": "0/0"
+    },
+    {
+      "name": "selftest 9 cases identical lists (ordered)",
+      "ok": true,
+      "detail": "9/9"
+    },
+    {
+      "name": "selftest no FAIL lines",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "selftest OK summary",
+      "ok": true,
+      "detail": "ock\nselftest PASS stale_discarded\nselftest PASS reached\nselftest OK (0 failure(s))\nSELFTEST_EXIT=0\n\n"
+    },
+    {
+      "name": "core-tests exit identical",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "core-tests PASS lists identical (879 lines)",
+      "ok": true,
+      "detail": "impl=879 veri=879"
+    },
+    {
+      "name": "core-tests 879/0 both",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "replay_sync group all sampled cases present (unique 22)",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "replay_sync sampled hits == 23 (gen1 accepted x2)",
+      "ok": true,
+      "detail": "total=23"
+    },
+    {
+      "name": "no unexpected sampled name",
+      "ok": true,
+      "detail": "{'gen1 accepted': 2}"
+    },
+    {
+      "name": "impl steps all exit 0",
+      "ok": true,
+      "detail": "{'mkdir': 0, 'upload': 0, 'build-core': 0, 'core-tests': 0, 'selftest': 0, 'run-sync': 0, 'download': 0, 'cleanup': 0}"
+    },
+    {
+      "name": "verify steps all exit 0",
+      "ok": true,
+      "detail": "{'mkdir': 0, 'upload': 0, 'build-core': 0, 'core-tests': 0, 'selftest': 0, 'run-sync': 0, 'download': 0}"
+    },
+    {
+      "name": "host key fingerprint consistent",
+      "ok": true,
+      "detail": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU / SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "name": "json keys identical",
+      "ok": true,
+      "detail": "['threshold_ms', 'sync_real', 'sync_skewed', 'missing_clock', 'seek', 'acceptance']"
+    },
+    {
+      "name": "json threshold 300",
+      "ok": true,
+      "detail": "300"
+    },
+    {
+      "name": "json sync_real in_sync true",
+      "ok": true,
+      "detail": "{'in_sync': True, 'max_deviation_ms': 10}"
+    },
+    {
+      "name": "json sync_skewed over threshold",
+      "ok": true,
+      "detail": "{'in_sync': False, 'max_deviation_ms': 800}"
+    },
+    {
+      "name": "json missing_clock",
+      "ok": true,
+      "detail": "MISSING_CLOCK"
+    },
+    {
+      "name": "json seek gens 1/2",
+      "ok": true,
+      "detail": "{'gen1': 1, 'gen2': 2, 'stale_discarded': True, 'reached': True}"
+    },
+    {
+      "name": "json seek stale+reached",
+      "ok": true,
+      "detail": "{'gen1': 1, 'gen2': 2, 'stale_discarded': True, 'reached': True}"
+    },
+    {
+      "name": "json acceptance true",
+      "ok": true,
+      "detail": "True"
+    }
+  ],
+  "summary": {
+    "total": 50,
+    "failed": 0
+  }
+}
