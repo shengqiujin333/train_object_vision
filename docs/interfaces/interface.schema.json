@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RailHMI adapter contract fixtures 1.0.0 (not a network protocol)",
+  "oneOf": [
+    {"$ref": "#/$defs/frame"}, {"$ref": "#/$defs/inference"},
+    {"$ref": "#/$defs/clip"}, {"$ref": "#/$defs/provider"},
+    {"$ref": "#/$defs/action"}, {"$ref": "#/$defs/stream"}
+  ],
+  "$defs": {
+    "id": {"type": "string", "minLength": 1},
+    "uint": {"type": "integer", "minimum": 0},
+    "unit": {"type": "number", "minimum": 0, "maximum": 1},
+    "version": {"const": "1.0.0"},
+    "origin": {"enum": ["live", "file", "simulation"]},
+    "reason": {"enum": ["NONE", "INVALID_CONFIG", "CREDENTIAL_MISSING", "AUTH_FAILED", "TIMEOUT", "SOURCE_ERROR", "UNSUPPORTED", "MODEL_MISMATCH", "NOT_READY", "CANCELLED", "STALE", "CONFLICT", "UNCONFIGURED", "UNVERIFIED", "NOT_FOUND", "STORAGE_ERROR"]},
+    "plane": {
+      "type": "object", "additionalProperties": false,
+      "required": ["offset", "stride_bytes", "size_bytes"],
+      "properties": {"offset": {"$ref": "#/$defs/uint"}, "stride_bytes": {"type": "integer", "minimum": 1}, "size_bytes": {"type": "integer", "minimum": 1}}
+    },
+    "frame": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "contract_version", "origin", "session_id", "camera_id", "generation", "seq", "capture_mono_us", "capture_wall_ms", "pts_ns", "width", "height", "format", "colorimetry", "planes", "buffer_bytes", "buffer_ref", "memory_kind"],
+      "properties": {
+        "kind": {"const": "FrameDescriptor"}, "contract_version": {"$ref": "#/$defs/version"}, "origin": {"$ref": "#/$defs/origin"},
+        "session_id": {"$ref": "#/$defs/id"}, "camera_id": {"$ref": "#/$defs/id"}, "generation": {"$ref": "#/$defs/uint"}, "seq": {"$ref": "#/$defs/uint"},
+        "capture_mono_us": {"$ref": "#/$defs/uint"}, "capture_wall_ms": {"type": "integer"}, "pts_ns": {"type": ["integer", "null"], "minimum": 0},
+        "width": {"type": "integer", "minimum": 1}, "height": {"type": "integer", "minimum": 1},
+        "format": {"enum": ["NV12", "BGR888", "RGB888"]}, "colorimetry": {"enum": ["bt601_full", "bt601_limited", "bt709_full", "bt709_limited", "unknown"]},
+        "planes": {"type": "array", "minItems": 1, "maxItems": 2, "items": {"$ref": "#/$defs/plane"}},
+        "buffer_bytes": {"type": "integer", "minimum": 1}, "buffer_ref": {"$ref": "#/$defs/id"}, "memory_kind": {"const": "cpu"}
+      }
+    },
+    "box": {
+      "type": "object", "additionalProperties": false,
+      "required": ["x", "y", "w", "h", "confidence", "class_id", "label", "in_roi", "distance_m", "track_id"],
+      "properties": {
+        "x": {"$ref": "#/$defs/unit"}, "y": {"$ref": "#/$defs/unit"}, "w": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}, "h": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "confidence": {"$ref": "#/$defs/unit"}, "class_id": {"type": "integer", "minimum": 0}, "label": {"$ref": "#/$defs/id"}, "in_roi": {"type": "boolean"},
+        "distance_m": {"anyOf": [{"const": -1}, {"type": "number", "minimum": 0}]},
+        "track_id": {"type": ["integer", "null"], "minimum": 0, "maximum": 2147483647}
+      }
+    },
+    "inference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "contract_version", "origin", "session_id", "camera_id", "generation", "seq", "profile", "capture_mono_us", "result_mono_us", "latency_ms", "model_version", "availability", "reason", "boxes"],
+      "properties": {
+        "kind": {"const": "InferenceEnvelope"}, "contract_version": {"$ref": "#/$defs/version"}, "origin": {"$ref": "#/$defs/origin"},
+        "session_id": {"$ref": "#/$defs/id"}, "camera_id": {"$ref": "#/$defs/id"}, "generation": {"$ref": "#/$defs/uint"}, "seq": {"$ref": "#/$defs/uint"},
+        "profile": {"enum": ["front", "pantograph", "wheel_rail", "cab_door"]}, "capture_mono_us": {"$ref": "#/$defs/uint"}, "result_mono_us": {"$ref": "#/$defs/uint"},
+        "latency_ms": {"$ref": "#/$defs/uint"}, "model_version": {"type": "string"}, "availability": {"enum": ["ready", "unavailable"]}, "reason": {"$ref": "#/$defs/reason"},
+        "boxes": {"type": "array", "items": {"$ref": "#/$defs/box"}}
+      }
+    },
+    "clip": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "contract_version", "request_id", "event_id", "camera_id", "trigger_wall_ms", "t0_wall_ms", "t1_wall_ms"],
+      "properties": {
+        "kind": {"const": "ClipRequest"}, "contract_version": {"$ref": "#/$defs/version"}, "request_id": {"$ref": "#/$defs/id"},
+        "event_id": {"type": "integer", "minimum": 1}, "camera_id": {"$ref": "#/$defs/id"}, "trigger_wall_ms": {"type": "integer"}, "t0_wall_ms": {"type": "integer"}, "t1_wall_ms": {"type": "integer"}
+      }
+    },
+    "segment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["camera_id", "t0_wall_ms", "t1_wall_ms", "media_ref", "complete", "size_bytes"],
+      "properties": {"camera_id": {"$ref": "#/$defs/id"}, "t0_wall_ms": {"type": "integer"}, "t1_wall_ms": {"type": "integer"}, "media_ref": {"$ref": "#/$defs/id"}, "complete": {"type": "boolean"}, "size_bytes": {"type": "integer", "minimum": 1}}
+    },
+    "gap": {
+      "type": "object", "additionalProperties": false,
+      "required": ["camera_id", "t0_wall_ms", "t1_wall_ms", "reason"],
+      "properties": {"camera_id": {"$ref": "#/$defs/id"}, "t0_wall_ms": {"type": "integer"}, "t1_wall_ms": {"type": "integer"}, "reason": {"$ref": "#/$defs/id"}}
+    },
+    "provider": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "contract_version", "request_id", "provider", "status", "reason", "segments", "gaps"],
+      "properties": {
+        "kind": {"const": "ProviderReply"}, "contract_version": {"$ref": "#/$defs/version"}, "request_id": {"$ref": "#/$defs/id"}, "provider": {"enum": ["local", "nvr"]},
+        "status": {"enum": ["ok", "partial", "unavailable", "error"]}, "reason": {"$ref": "#/$defs/reason"},
+        "segments": {"type": "array", "items": {"$ref": "#/$defs/segment"}}, "gaps": {"type": "array", "items": {"$ref": "#/$defs/gap"}}
+      }
+    },
+    "action": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "contract_version", "request_id", "phase", "reason"],
+      "properties": {"kind": {"const": "ActionReply"}, "contract_version": {"$ref": "#/$defs/version"}, "request_id": {"$ref": "#/$defs/id"}, "phase": {"enum": ["accepted", "completed", "failed"]}, "reason": {"$ref": "#/$defs/reason"}}
+    },
+    "stream": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "contract_version", "session_id", "camera_id", "generation", "state", "now_mono_us", "last_frame_mono_us", "last_frame_wall_ms", "presentable", "quality", "fps", "reconnect_count", "attempt_id", "last_error"],
+      "properties": {
+        "kind": {"const": "StreamSnapshot"}, "contract_version": {"$ref": "#/$defs/version"}, "session_id": {"$ref": "#/$defs/id"}, "camera_id": {"$ref": "#/$defs/id"}, "generation": {"$ref": "#/$defs/uint"},
+        "state": {"enum": ["connecting", "live", "degraded", "frozen", "offline", "reconnecting"]}, "now_mono_us": {"$ref": "#/$defs/uint"},
+        "last_frame_mono_us": {"type": ["integer", "null"], "minimum": 0}, "last_frame_wall_ms": {"type": ["integer", "null"]}, "presentable": {"type": "boolean"},
+        "quality": {"type": "array", "uniqueItems": true, "items": {"enum": ["too_dark", "too_bright", "occluded", "blurred"]}},
+        "fps": {"type": "number", "minimum": 0}, "reconnect_count": {"$ref": "#/$defs/uint"}, "attempt_id": {"$ref": "#/$defs/uint"}, "last_error": {"type": "string"}
+      }
+    }
+  }
+}

@@ -1,0 +1,523 @@
+{
+  "evidence_type": "ContractValidationEvidence",
+  "status": "PASS",
+  "scope": "local schema + fixture semantic invariants + selected source/config correspondence",
+  "contract_version": "1.0.0",
+  "source_head": "a441939f3275db7d8850864a0f281a9cef18704d",
+  "command": "python docs/interfaces/validate_contract.py --output docs/interfaces/VALIDATION.json",
+  "versions": {
+    "python": "3.13.9",
+    "PyYAML": "6.0.3",
+    "jsonschema": "4.26.0"
+  },
+  "summary": {
+    "checks": 61,
+    "passed": 61,
+    "failed": [],
+    "positive_examples": 8,
+    "negative_examples": 12,
+    "sequence_vectors": 5
+  },
+  "checks": [
+    {
+      "name": "schema_meta",
+      "passed": true,
+      "detail": "Draft 2020-12 schema is valid"
+    },
+    {
+      "name": "valid:padded_nv12",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "valid:tracked_person",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "valid:unsupported_semantics",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "valid:alarm_window",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "valid:nvr_unconfigured",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "valid:local_partial",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "valid:accepted_is_pending",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "valid:fresh_degraded",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "reject:odd_nv12",
+      "passed": true,
+      "detail": {
+        "expected": "nv12_even",
+        "observed": [
+          "nv12_even"
+        ]
+      }
+    },
+    {
+      "name": "reject:overrun_plane",
+      "passed": true,
+      "detail": {
+        "expected": "plane_bounds",
+        "observed": [
+          "plane_bounds",
+          "plane_bounds"
+        ]
+      }
+    },
+    {
+      "name": "reject:overlapping_planes",
+      "passed": true,
+      "detail": {
+        "expected": "plane_overlap",
+        "observed": [
+          "plane_overlap"
+        ]
+      }
+    },
+    {
+      "name": "reject:result_before_capture",
+      "passed": true,
+      "detail": {
+        "expected": "result_time",
+        "observed": [
+          "result_time"
+        ]
+      }
+    },
+    {
+      "name": "reject:wrong_profile",
+      "passed": true,
+      "detail": {
+        "expected": "profile_match",
+        "observed": [
+          "profile_match"
+        ]
+      }
+    },
+    {
+      "name": "reject:box_outside_frame",
+      "passed": true,
+      "detail": {
+        "expected": "box_bounds",
+        "observed": [
+          "box_bounds"
+        ]
+      }
+    },
+    {
+      "name": "reject:unavailable_with_boxes",
+      "passed": true,
+      "detail": {
+        "expected": "unavailable_boxes",
+        "observed": [
+          "unavailable_boxes"
+        ]
+      }
+    },
+    {
+      "name": "reject:reversed_clip",
+      "passed": true,
+      "detail": {
+        "expected": "clip_window",
+        "observed": [
+          "clip_window",
+          "clip_config_window"
+        ]
+      }
+    },
+    {
+      "name": "reject:nvr_claimed_success",
+      "passed": true,
+      "detail": {
+        "expected": "nvr_config",
+        "observed": [
+          "nvr_config"
+        ]
+      }
+    },
+    {
+      "name": "reject:frozen_presentable",
+      "passed": true,
+      "detail": {
+        "expected": "stream_freshness",
+        "observed": [
+          "stream_freshness"
+        ]
+      }
+    },
+    {
+      "name": "reject:stale_live",
+      "passed": true,
+      "detail": {
+        "expected": "stream_freshness",
+        "observed": [
+          "stream_freshness"
+        ]
+      }
+    },
+    {
+      "name": "reject:unsupported_major",
+      "passed": true,
+      "detail": {
+        "expected": "schema",
+        "observed": [
+          "schema"
+        ]
+      }
+    },
+    {
+      "name": "vector:matching_current_result",
+      "passed": true,
+      "detail": "accept"
+    },
+    {
+      "name": "vector:duplicate_result",
+      "passed": true,
+      "detail": "STALE"
+    },
+    {
+      "name": "vector:out_of_order_result",
+      "passed": true,
+      "detail": "STALE"
+    },
+    {
+      "name": "vector:old_generation_result",
+      "passed": true,
+      "detail": "STALE"
+    },
+    {
+      "name": "vector:old_session_result",
+      "passed": true,
+      "detail": "STALE"
+    },
+    {
+      "name": "vector:clock_units",
+      "passed": true,
+      "detail": "1000000us→1040000us corresponds to 40ms; reference formula only"
+    },
+    {
+      "name": "vector:adjacent_not_total_window",
+      "passed": true,
+      "detail": "0/400/800ms is three adjacent hits under current source semantics"
+    },
+    {
+      "name": "vector:suppress_boundary",
+      "passed": true,
+      "detail": "At default 3000ms equality, previous event is no longer suppressed"
+    },
+    {
+      "name": "config:six_visible_udp",
+      "passed": true,
+      "detail": "No credentials resolved or printed"
+    },
+    {
+      "name": "config:profiles",
+      "passed": true,
+      "detail": "Current baseline profile order"
+    },
+    {
+      "name": "config:roi_bounds",
+      "passed": true,
+      "detail": "ROI camera references and normalized bounds"
+    },
+    {
+      "name": "config:runtime_intent",
+      "passed": true,
+      "detail": "Configuration intent; not measured availability"
+    },
+    {
+      "name": "source:frame_ref_exists",
+      "passed": true,
+      "detail": {
+        "path": "app/src/core/include/railhmi/core/inference.h",
+        "line": 42
+      }
+    },
+    {
+      "name": "source:synthetic_tick_present",
+      "passed": true,
+      "detail": {
+        "path": "app/src/media/src/ai_worker.cpp",
+        "line": 92
+      }
+    },
+    {
+      "name": "source:sample_release_present",
+      "passed": true,
+      "detail": {
+        "path": "app/src/media/src/camera_stream.cpp",
+        "line": 204
+      }
+    },
+    {
+      "name": "source:freshness_strict_less",
+      "passed": true,
+      "detail": {
+        "path": "app/src/core/src/stream_state.cpp",
+        "line": 148
+      }
+    },
+    {
+      "name": "source:adjacent_confirmation_window",
+      "passed": true,
+      "detail": {
+        "path": "app/src/core/src/rules.cpp",
+        "line": 205
+      }
+    },
+    {
+      "name": "source:suppression_strict_less",
+      "passed": true,
+      "detail": {
+        "path": "app/src/core/src/rules.cpp",
+        "line": 192
+      }
+    },
+    {
+      "name": "source:ack_state_update",
+      "passed": true,
+      "detail": {
+        "path": "app/src/core/src/rules.cpp",
+        "line": 251
+      }
+    },
+    {
+      "name": "source:timebase_formula",
+      "passed": true,
+      "detail": {
+        "path": "app/src/core/src/timebase.cpp",
+        "line": 16
+      }
+    },
+    {
+      "name": "source:sqlite_normal",
+      "passed": true,
+      "detail": {
+        "path": "app/src/platform/src/sqlite_store.cpp",
+        "line": 27
+      }
+    },
+    {
+      "name": "source:rename_not_durability",
+      "passed": true,
+      "detail": {
+        "path": "app/src/platform/src/file_store.cpp",
+        "line": 64
+      }
+    },
+    {
+      "name": "source:initial_empty_channels",
+      "passed": true,
+      "detail": {
+        "path": "app/src/ui/src/main.cpp",
+        "line": 113
+      }
+    },
+    {
+      "name": "source:video_layer_placeholder",
+      "passed": true,
+      "detail": {
+        "path": "app/src/ui/qml/components/VideoSurface.qml",
+        "line": 25
+      }
+    },
+    {
+      "name": "source:segmentation_13_outputs",
+      "passed": true,
+      "detail": {
+        "path": "code/rknpu2_postprocess.cc",
+        "line": 831
+      }
+    },
+    {
+      "name": "source:rga_success_codes",
+      "passed": true,
+      "detail": {
+        "path": "code/main.cc",
+        "line": 691
+      }
+    },
+    {
+      "name": "source:alarm_mapping_L1",
+      "passed": true,
+      "detail": [
+        "PersonOnRail",
+        "FrontObstacle",
+        "WheelDerail"
+      ]
+    },
+    {
+      "name": "source:alarm_mapping_L2",
+      "passed": true,
+      "detail": [
+        "PantographAbnormal",
+        "DoorAjar",
+        "FrontCameraDevice",
+        "Device"
+      ]
+    },
+    {
+      "name": "source:alarm_mapping_L3",
+      "passed": true,
+      "detail": [
+        "SideCameraDevice"
+      ]
+    },
+    {
+      "name": "provenance:git_head",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "document:IF-01",
+      "passed": true,
+      "detail": "Declared boundary exists"
+    },
+    {
+      "name": "document:IF-02",
+      "passed": true,
+      "detail": "Declared boundary exists"
+    },
+    {
+      "name": "document:IF-03",
+      "passed": true,
+      "detail": "Declared boundary exists"
+    },
+    {
+      "name": "document:IF-04",
+      "passed": true,
+      "detail": "Declared boundary exists"
+    },
+    {
+      "name": "document:IF-05",
+      "passed": true,
+      "detail": "Declared boundary exists"
+    },
+    {
+      "name": "document:IF-06",
+      "passed": true,
+      "detail": "Declared boundary exists"
+    },
+    {
+      "name": "document:IF-07",
+      "passed": true,
+      "detail": "Declared boundary exists"
+    },
+    {
+      "name": "document:IF-08",
+      "passed": true,
+      "detail": "Declared boundary exists"
+    },
+    {
+      "name": "document:IF-09",
+      "passed": true,
+      "detail": "Declared boundary exists"
+    },
+    {
+      "name": "document:INV-10",
+      "passed": true,
+      "detail": "Declared boundary exists"
+    }
+  ],
+  "input_sha256": {
+    "app/config/app.yaml": "d14f98633eba64ea024fc128a42e98e90e54a021495f27b57c058fa26a50cbfe",
+    "app/config/cameras.yaml": "4307d50ee6040b888528044594fcebcf603938b2d63c2390c4a15b843bd07c97",
+    "app/config/roi.yaml": "88995f07d00d1c16aba8314b20dad2b1ac5cd4485393646eff41d237c5632066",
+    "app/config/thresholds.yaml": "3a99995b4ab719004e91dcd0d10755eade39d3ce8b22804dd0b4d18e32e9abda",
+    "app/src/core/include/railhmi/core/inference.h": "a354c7c10ddf7aa1ff31fee2846bde6aea086ecb7a302e42ad42b4c85536e231",
+    "app/src/core/src/rules.cpp": "8941d467a19d93cdd97663a1104091657f78283117e7269860cd671e2f0e554b",
+    "app/src/core/src/stream_state.cpp": "e711c8375d4031c95de81159eacb58ed29c3aa2d4681cf214dc0f2780e928a7f",
+    "app/src/core/src/timebase.cpp": "6be00382775da82ea3673afe0890caeab01417d336ca83ab7fccd92108b2684a",
+    "app/src/media/src/ai_worker.cpp": "bcea4e6a8510832eb4477e77abfbff0c4dc552ea4e91240dae2ef0d7fabf1289",
+    "app/src/media/src/camera_stream.cpp": "ab47830fbdda64e074ab08d51bcfe2d77710b663fb08356e20a8f38235e6bdea",
+    "app/src/platform/src/file_store.cpp": "e3aea6eae5b8ee9eca1bce94ccbcbadfe78ce60b3c17682d9485b24fd32b6c67",
+    "app/src/platform/src/sqlite_store.cpp": "c4172e386fec01ee6845ae73182c6edc31598d9d42e4df5bcf866fd308a69a11",
+    "app/src/ui/qml/components/VideoSurface.qml": "9bf1601893f4844f255a37fde944a86c6c6e8df1864f1580289f6cdfbdfac517",
+    "app/src/ui/src/main.cpp": "4b23616409dcc04ef3c613265302ad1dfe67d79e358ec7209e4a32531c224a23",
+    "code/main.cc": "278d5af84fcabd8f1b7f4882f2ae8df077505ac2101d483ac5ba3767a0e02cf0",
+    "code/rknpu2_postprocess.cc": "63155b3cc02539d354e478aa4ae1bbf344d6404aa986f9b2a017aafbb1de2d0a",
+    "docs/interfaces/examples.json": "692e89c1b8f63e7ace31f618d3f27e628b288bcf764e43da05f717e711117d0f",
+    "docs/interfaces/interface.schema.json": "b90da7b12321359b2986c52de2995f9b6713a1a2b347af87058ee38233b2820a",
+    "docs/interfaces/INTERFACE_CONTRACT.md": "6dd81741b4a000027aebd85308dba059389b69862f5fb218f4fb863c832899bb",
+    "docs/interfaces/validate_contract.py": "3e2a7fe0bbc2d70e683f0ecd7c42db2e0e3e1f7d6d7e99a7da455db26793f590"
+  },
+  "findings": [
+    {
+      "id": "D-01",
+      "state": "implementation_handoff",
+      "fact": "stats-only media API; no pixel lease to UI/AI"
+    },
+    {
+      "id": "D-02",
+      "state": "implementation_handoff",
+      "fact": "state transitions do not rebuild media pipeline"
+    },
+    {
+      "id": "D-03",
+      "state": "implementation_handoff",
+      "fact": "AI tick synthesizes FrameRef and has no result publication"
+    },
+    {
+      "id": "D-04",
+      "state": "implementation_handoff",
+      "fact": "semantic adapter/tracking/order needed before rule ingestion"
+    },
+    {
+      "id": "D-05",
+      "state": "implementation_handoff",
+      "fact": "repository update/transaction API and file fsync absent"
+    },
+    {
+      "id": "D-06",
+      "state": "implementation_handoff",
+      "fact": "clip metadata and replay cursor do not supply actual media"
+    },
+    {
+      "id": "D-07",
+      "state": "implementation_handoff",
+      "fact": "main seeds health/recovery examples unconditionally"
+    },
+    {
+      "id": "D-08",
+      "state": "unknown",
+      "fact": "NVR/PTZ actual protocol, distance calibration and dedicated model semantics need evidence"
+    }
+  ],
+  "not_executed": [
+    "remote inspection",
+    "camera stream access",
+    "product compilation or product unit tests",
+    "target integration",
+    "real inference",
+    "recording/playback",
+    "performance",
+    "power loss",
+    "human visual acceptance"
+  ],
+  "limitations": [
+    "Source snippets check correspondence only, not runtime correctness or absence of other code.",
+    "No schema acceptance creates a usable pixel buffer, model, device, or media file.",
+    "Product 0.1.0 release scope remains unchanged; downstream implementation is required."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "notice": "Design fixtures only; no real capture, detection, or playable media is claimed.",
+  "valid": [
+    {"name": "padded_nv12", "value": {"kind": "FrameDescriptor", "contract_version": "1.0.0", "origin": "simulation", "session_id": "fixture-session", "camera_id": "CAM-01", "generation": 2, "seq": 5, "capture_mono_us": 1000000, "capture_wall_ms": 1760000000000, "pts_ns": null, "width": 1280, "height": 720, "format": "NV12", "colorimetry": "bt601_full", "planes": [{"offset": 0, "stride_bytes": 1344, "size_bytes": 967680}, {"offset": 967680, "stride_bytes": 1344, "size_bytes": 483840}], "buffer_bytes": 1451520, "buffer_ref": "fixture-buffer", "memory_kind": "cpu"}},
+    {"name": "tracked_person", "value": {"kind": "InferenceEnvelope", "contract_version": "1.0.0", "origin": "simulation", "session_id": "fixture-session", "camera_id": "CAM-01", "generation": 2, "seq": 5, "profile": "front", "capture_mono_us": 1000000, "result_mono_us": 1040000, "latency_ms": 40, "model_version": "fixture-model", "availability": "ready", "reason": "NONE", "boxes": [{"x": 0.4, "y": 0.5, "w": 0.1, "h": 0.2, "confidence": 0.8, "class_id": 0, "label": "person", "in_roi": true, "distance_m": -1, "track_id": 7}]}},
+    {"name": "unsupported_semantics", "value": {"kind": "InferenceEnvelope", "contract_version": "1.0.0", "origin": "simulation", "session_id": "fixture-session", "camera_id": "CAM-04", "generation": 2, "seq": 5, "profile": "pantograph", "capture_mono_us": 1000000, "result_mono_us": 1040000, "latency_ms": 40, "model_version": "", "availability": "unavailable", "reason": "UNSUPPORTED", "boxes": []}},
+    {"name": "alarm_window", "value": {"kind": "ClipRequest", "contract_version": "1.0.0", "request_id": "fixture-event-42-front", "event_id": 42, "camera_id": "CAM-01", "trigger_wall_ms": 1760000000000, "t0_wall_ms": 1759999970000, "t1_wall_ms": 1760000060000}},
+    {"name": "nvr_unconfigured", "value": {"kind": "ProviderReply", "contract_version": "1.0.0", "request_id": "fixture-query", "provider": "nvr", "status": "unavailable", "reason": "UNCONFIGURED", "segments": [], "gaps": []}},
+    {"name": "local_partial", "value": {"kind": "ProviderReply", "contract_version": "1.0.0", "request_id": "fixture-query", "provider": "local", "status": "partial", "reason": "SOURCE_ERROR", "segments": [{"camera_id": "CAM-01", "t0_wall_ms": 1760000000000, "t1_wall_ms": 1760000030000, "media_ref": "fixture-video-not-a-file", "complete": false, "size_bytes": 1000}], "gaps": [{"camera_id": "CAM-01", "t0_wall_ms": 1759999970000, "t1_wall_ms": 1760000000000, "reason": "prebuffer_missing"}]}},
+    {"name": "accepted_is_pending", "value": {"kind": "ActionReply", "contract_version": "1.0.0", "request_id": "fixture-action", "phase": "accepted", "reason": "NONE"}},
+    {"name": "fresh_degraded", "value": {"kind": "StreamSnapshot", "contract_version": "1.0.0", "session_id": "fixture-session", "camera_id": "CAM-01", "generation": 2, "state": "degraded", "now_mono_us": 1100000, "last_frame_mono_us": 1000000, "last_frame_wall_ms": 1760000000000, "presentable": true, "quality": ["too_dark"], "fps": 25.0, "reconnect_count": 0, "attempt_id": 1, "last_error": ""}}
+  ],
+  "sequence_cases": [
+    {"name": "matching_current_result", "generation": 2, "seq": 5, "last_seq": 4, "expected": "accept"},
+    {"name": "duplicate_result", "generation": 2, "seq": 5, "last_seq": 5, "expected": "STALE"},
+    {"name": "out_of_order_result", "generation": 2, "seq": 3, "last_seq": 4, "expected": "STALE"},
+    {"name": "old_generation_result", "generation": 1, "seq": 100, "last_seq": 4, "expected": "STALE"},
+    {"name": "old_session_result", "session_id": "previous-session", "generation": 2, "seq": 5, "last_seq": 4, "expected": "STALE"}
+  ],
+  "invalid": [
+    {"name": "odd_nv12", "base": "padded_nv12", "patch": {"width": 1279}, "expected": "nv12_even"},
+    {"name": "overrun_plane", "base": "padded_nv12", "patch": {"buffer_bytes": 1000}, "expected": "plane_bounds"},
+    {"name": "overlapping_planes", "base": "padded_nv12", "patch": {"planes": [{"offset": 0, "stride_bytes": 1344, "size_bytes": 967680}, {"offset": 1, "stride_bytes": 1344, "size_bytes": 483840}]}, "expected": "plane_overlap"},
+    {"name": "result_before_capture", "base": "tracked_person", "patch": {"result_mono_us": 990000}, "expected": "result_time"},
+    {"name": "wrong_profile", "base": "tracked_person", "patch": {"profile": "pantograph"}, "expected": "profile_match"},
+    {"name": "box_outside_frame", "base": "tracked_person", "patch": {"boxes": [{"x": 0.95, "y": 0.5, "w": 0.1, "h": 0.2, "confidence": 0.8, "class_id": 0, "label": "person", "in_roi": true, "distance_m": -1, "track_id": 7}]}, "expected": "box_bounds"},
+    {"name": "unavailable_with_boxes", "base": "tracked_person", "patch": {"availability": "unavailable", "reason": "NOT_READY"}, "expected": "unavailable_boxes"},
+    {"name": "reversed_clip", "base": "alarm_window", "patch": {"t1_wall_ms": 1759999900000}, "expected": "clip_window"},
+    {"name": "nvr_claimed_success", "base": "nvr_unconfigured", "patch": {"status": "ok", "reason": "NONE"}, "expected": "nvr_config"},
+    {"name": "frozen_presentable", "base": "fresh_degraded", "patch": {"state": "frozen"}, "expected": "stream_freshness"},
+    {"name": "stale_live", "base": "fresh_degraded", "patch": {"now_mono_us": 3000000}, "expected": "stream_freshness"},
+    {"name": "unsupported_major", "base": "alarm_window", "patch": {"contract_version": "2.0.0"}, "expected": "schema"}
+  ]
+}

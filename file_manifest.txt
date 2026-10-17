@@ -1643,6 +1643,11 @@ docs/hmi/ui_review/REVIEW-REPAIR-n008.md | active | UI 实现评审证据（UIIm
 docs/hmi/ui_review/tools/board_run.py | active | UI 评审工具：目标板受限远程执行（指纹核验，诊断/清理用）
 docs/hmi/ui_review/tools/board_ui_capture.py | active | UI 评审工具：目标板 Qt Release 构建 + Xvfb 软件场景图装载 + xdotool 导航 + ffmpeg 截屏取证（缺失时非交互安装 xvfb）
 docs/hmi/ui_review/tools/board_ui_probe.py | active | UI 评审工具：目标板只读前提探针（Qt/Xvfb/ffmpeg/二进制/DISPLAY/X11 socket/sudo）
+docs/interfaces/INTERFACE_CONTRACT.md | active | InterfaceContract v1.0.0：基于当前源码/已验证桌面发布的六路可见光接口架构；生产者消费者、帧租约/时钟/状态/推理语义/报警/持久化/录像回放/Qt桥接/错误重试/兼容及8项实现交接；不改产品源码、不冒充设备联调
+docs/interfaces/VALIDATION.json | active | ContractValidationEvidence：61/61本地契约检查通过，记录命令/版本/源码位置/输入哈希/8项交接及未执行范围；不代表目标集成验证
+docs/interfaces/examples.json | active | 接口契约示例：8正例、12反例、5顺序向量；含padding NV12、不可用模型、NVR未配置、部分录像与旧generation；纯设计夹具
+docs/interfaces/interface.schema.json | active | 接口适配器描述与夹具 JSON Schema Draft 2020-12：FrameDescriptor/InferenceEnvelope/ClipRequest/ProviderReply/ActionReply/StreamSnapshot；不替代既有C++/YAML/SQLite接口
+docs/interfaces/validate_contract.py | active | 接口架构自校验工具：有限本地文件检查、Schema/跨字段不变量/当前配置及限定源码对应；不连接设备、不执行产品
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
 models/yolov5s.rknn | existing | 人形检测模型（RKNN）
