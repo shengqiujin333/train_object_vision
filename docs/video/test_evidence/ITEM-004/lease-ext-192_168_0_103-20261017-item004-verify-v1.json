@@ -1,0 +1,91 @@
+{
+  "stamp": "20261017-item004-verify-v1",
+  "steps": [
+    {
+      "step": "extA-consumers-0",
+      "cmd": "cd /tmp/railhmi_lease && /tmp/railhmi_lease/build-media/tools/railhmi-frame-lease --source test --duration 1 --consumers 0 --out /tmp/extA.log; echo A_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.38,
+      "output": "type=lease_pre not_ready=true status=NOT_READY plane_count=0\ntype=injection source=test camera=CAM-01 consumers=0 duration_s=1 session_id=s1a1489cfd4a-a43b5f-0\ntype=lease_first valid=true camera=CAM-01 origin=simulation format=NV12 size=1280x720 colorimetry=unknown buffer_ref=fr-CAM-01-1 memory_kind=cpu planes=2 buffer_bytes=1382400 plane0_stride=1280 plane1_offset=921600 plane_ok=true\ntype=lease_concurrent consumers=0 reads=0 max_use_count=2 published=27 rejected=0\ntype=lease_shared use_count=3 released_while_shared=0\ntype=lease_partial release_after_copies=0\ntype=lease_last release_after_last=1\ntype=summary released_total=26 final_not_ready=false\nA_EXIT=0\n"
+    },
+    {
+      "step": "extB-unknown-arg",
+      "cmd": "cd /tmp/railhmi_lease && /tmp/railhmi_lease/build-media/tools/railhmi-frame-lease --bogus-flag; echo B1_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "B1_EXIT=2\nunknown arg: --bogus-flag\n"
+    },
+    {
+      "step": "extB-help",
+      "cmd": "cd /tmp/railhmi_lease && /tmp/railhmi_lease/build-media/tools/railhmi-frame-lease --help; echo B2_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "usage: railhmi-frame-lease --source test|file|rtsp [--file f] [--url u] [--user u] [--password-env VAR] [--duration s] [--consumers n] [--out log] [--selftest]\nB2_EXIT=0\n"
+    },
+    {
+      "step": "extC-rerun-test",
+      "cmd": "cd /tmp/railhmi_lease && /tmp/railhmi_lease/build-media/tools/railhmi-frame-lease --source test --duration 2 --consumers 3 --out /tmp/extC.log; echo C_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 2.23,
+      "output": "type=lease_pre not_ready=true status=NOT_READY plane_count=0\ntype=injection source=test camera=CAM-01 consumers=3 duration_s=2 session_id=s1a1489d0309-baad02-0\ntype=lease_first valid=true camera=CAM-01 origin=simulation format=NV12 size=1280x720 colorimetry=unknown buffer_ref=fr-CAM-01-1 memory_kind=cpu planes=2 buffer_bytes=1382400 plane0_stride=1280 plane1_offset=921600 plane_ok=true\ntype=lease_concurrent consumers=3 reads=2958 max_use_count=3 published=52 rejected=0\ntype=lease_shared use_count=3 released_while_shared=0\ntype=lease_partial release_after_copies=0\ntype=lease_last release_after_last=1\ntype=summary released_total=51 final_not_ready=false\nC_EXIT=0\n"
+    },
+    {
+      "step": "extD-compile-run",
+      "cmd": "cd /tmp/railhmi_lease && g++ -std=c++17 -I src/core/include -o /tmp/vext_frame_layout vext_frame_layout.cpp src/core/src/frame_layout.cpp 2>&1 | head -20; if [ -x /tmp/vext_frame_layout ]; then /tmp/vext_frame_layout; echo VEXT_EXIT=$?; else echo VEXT_COMPILE_FAILED; fi",
+      "exit": 0,
+      "elapsed_s": 0.82,
+      "output": "vext PASS v01_nv12_contiguous_ok\nvext PASS v02_nv12_total_1382400\nvext PASS v03_y_size_921600\nvext PASS v04_uv_offset_921600\nvext PASS v05_uv_size_460800\nvext PASS v06_zero_width_rejected\nvext PASS v07_zero_height_rejected\nvext PASS v08_nv12_padded_ok\nvext PASS v09_padded_total_1520640\nvext PASS v10_odd_width_rejected\nvext PASS v11_odd_height_rejected\nvext PASS v12_y_stride_lt_width_rejected\nvext PASS v13_uv_stride_lt_width_rejected\nvext PASS v14_uv_inside_y_rejected\nvext PASS v15_packed_min_stride_ok\nvext PASS v16_packed_size_921600\nvext PASS v17_packed_stride_lt_w3_rejected\nvext PASS v18_packed_factory_rejects_nv12\nvext PASS v19_validate_zero_buffer_rejected\nvext PASS v20_validate_uv_beyond_buffer\nvext PASS v21_validate_uv_size_lt_half_row\nvext PASS v22_validate_packed_size_lt_needed\nvext PASS v23_validate_overlap_rejected\nvext PASS v24_validate_nv12_single_plane\nvext PASS v25_parse_nv12\nvext PASS v26_parse_uyvy_rejected\nvext PASS v27_to_string_bgr888\nvext OK (0 failure(s))\nVEXT_EXIT=0\n"
+    },
+    {
+      "step": "ext-cleanup-tmp",
+      "cmd": "rm -f /tmp/extA.log /tmp/extB.log /tmp/extC.log /tmp/vext_frame_layout /tmp/railhmi_lease/vext_frame_layout.cpp && echo EXT_TMP_CLEANED",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "EXT_TMP_CLEANED\n"
+    }
+  ],
+  "credential_hits": [],
+  "checks": [
+    {
+      "name": "A_consumers0_completes_reads0_shared_last1",
+      "ok": true
+    },
+    {
+      "name": "B_unknown_arg_exit2",
+      "ok": true
+    },
+    {
+      "name": "B_help_exit0_usage",
+      "ok": true
+    },
+    {
+      "name": "F_descriptor_arithmetic_NV12_1280x720",
+      "ok": true
+    },
+    {
+      "name": "C_pre_not_ready_plane_count0",
+      "ok": true
+    },
+    {
+      "name": "C_release_callback_exactly_once_on_last_consumer",
+      "ok": true
+    },
+    {
+      "name": "C_summary_final_not_ready_false",
+      "ok": true
+    },
+    {
+      "name": "C_buffer_ref_first_is_1",
+      "ok": true
+    },
+    {
+      "name": "D_vext_frame_layout_all_pass_27",
+      "ok": true
+    },
+    {
+      "name": "E_no_credential_in_evidence",
+      "ok": true
+    }
+  ],
+  "failures": 0
+}

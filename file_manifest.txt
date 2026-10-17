@@ -1741,10 +1741,22 @@ docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify
 docs/video/test_evidence/ITEM-003/identity-ext-192_168_0_103-20261017-item003-verify-v1.json | active | 验证侧 ext 夹具结构化结果（EXT-1..9+CLEANUP 10/10 PASS，针对 verify-v3 板端轮）
 docs/video/test_evidence/ITEM-003/verify_state.json | active | 验证轮 fresh-round token / runner exit / marker 读回状态
 docs/video/test_evidence/ITEM-004/ITEM-004-ENV-A0-B-20261017-r1.md | active | VideoExecutionEvidence：ITEM-004 core 单测 726/726（frame_layout 组）+ selftest 6/6 + test/rtsp 租约（NOT_READY、NV12 1280x720 descriptor、多消费者并发、release 回调最后消费者退出后触发一次）
+docs/video/test_evidence/ITEM-004/VERIFY-ITEM-004.md | active | 软件验证 TestEvidence（VERIFY-20261017-v1，TEST_PASS）：独立板端复跑 8 步 exit=0 与实现方 r2 逐项对齐（726/0、selftest 6/6、test/rtsp 判据行一致）+ ext 10/10（consumers-0 行为面/未知参数 exit2/租约日志独立解析/板端 g++ 27 负例判例/凭据泄漏 0 命中）+ 算术独立核对 + O-1/O-2 观察项
+docs/video/test_evidence/ITEM-004/_dryrun_selfcheck.py | active | EXT 夹具上板前离线自查（对归档日志核对全部正则与数组组序；v1 轮零成本抓组序错误）
+docs/video/test_evidence/ITEM-004/_verify_ext.log | active | EXT 夹具过程轮 v1 stdout（D 编译 include 路径错 + E 假阳性两处夹具构造错原样记录，VERIFY §5）
+docs/video/test_evidence/ITEM-004/_verify_ext.py | active | 验证侧扩展夹具驱动（A consumers-0/B 解析负例/C 租约日志独立解析/D 板端 g++ 直编 frame_layout 自有 27 判例/E 凭据泄漏扫描）
+docs/video/test_evidence/ITEM-004/_verify_ext2.log | active | EXT 夹具修正轮 stdout（10/10 PASS 终态）
+docs/video/test_evidence/ITEM-004/_verify_run.log | active | 独立复跑驱动 stdout 记录（mkdir/upload/8 步 exit=0/下载产物列表）
+docs/video/test_evidence/ITEM-004/_verify_run.py | active | 验证轮独立复跑驱动（PowerShell 用户级凭据导入当前进程后调用交付入口 --keep-remote）
 docs/video/test_evidence/ITEM-004/lease-192_168_0_103-20261017-item004-r2.core-evidence_frame-lease-rtsp-20261017-item004-r2.log | active | ITEM-004 真实 RTSP（CAM-01）租约日志
 docs/video/test_evidence/ITEM-004/lease-192_168_0_103-20261017-item004-r2.core-evidence_frame-lease-test-20261017-item004-r2.log | active | ITEM-004 test 源租约/多消费者/release 回调日志
 docs/video/test_evidence/ITEM-004/lease-192_168_0_103-20261017-item004-r2.log | active | ITEM-004 板端执行人类可读 transcript（build-core/core-tests/build-media/selftest/lease-test/lease-rtsp）
 docs/video/test_evidence/ITEM-004/lease-192_168_0_103-20261017-item004-r2.transcript.json | active | ITEM-004 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-004/lease-192_168_0_103-20261017-item004-verify-v1.core-evidence_frame-lease-rtsp-20261017-item004-verify-v1.log | active | 验证轮真实 RTSP（CAM-01，origin=live）租约日志
+docs/video/test_evidence/ITEM-004/lease-192_168_0_103-20261017-item004-verify-v1.core-evidence_frame-lease-test-20261017-item004-verify-v1.log | active | 验证轮 test 源（origin=simulation）租约/多消费者/release 回调日志
+docs/video/test_evidence/ITEM-004/lease-192_168_0_103-20261017-item004-verify-v1.log | active | 验证轮独立复跑人类可读 transcript（board_frame_lease_check.py --keep-remote 全 8 步 exit=0）
+docs/video/test_evidence/ITEM-004/lease-192_168_0_103-20261017-item004-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-004/lease-ext-192_168_0_103-20261017-item004-verify-v1.json | active | 验证侧 ext 夹具结构化结果（A/B/C/D/E/F 10 判例 PASS 含 vext_frame_layout 27/27，v1 夹具构造错修正记录）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

@@ -1,0 +1,28 @@
+[extA-consumers-0] exit=0
+ext PASS A_consumers0_completes_reads0_shared_last1
+[extB-unknown-arg] exit=0
+ext PASS B_unknown_arg_exit2
+[extB-help] exit=0
+ext PASS B_help_exit0_usage
+[extC-rerun-test] exit=0
+ext PASS F_descriptor_arithmetic_NV12_1280x720
+ext PASS C_pre_not_ready_plane_count0
+ext PASS C_release_callback_exactly_once_on_last_consumer
+ext PASS C_summary_final_not_ready_false
+ext PASS C_buffer_ref_first_is_1
+self-contained D side: compiling on board...
+[extD-compile-run] exit=0
+ext FAIL D_vext_frame_layout_all_pass_0
+[ext-cleanup-tmp] exit=0
+ext FAIL E_no_credential_in_evidence
+PASS A_consumers0_completes_reads0_shared_last1
+PASS B_unknown_arg_exit2
+PASS B_help_exit0_usage
+PASS F_descriptor_arithmetic_NV12_1280x720
+PASS C_pre_not_ready_plane_count0
+PASS C_release_callback_exactly_once_on_last_consumer
+PASS C_summary_final_not_ready_false
+PASS C_buffer_ref_first_is_1
+FAIL D_vext_frame_layout_all_pass_0
+FAIL E_no_credential_in_evidence
+ext FAILED (2 failure(s))
