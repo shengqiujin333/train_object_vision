@@ -1,5 +1,6 @@
 add_library(railhmi_core STATIC
     src/version.cpp
+    src/video_diagnostics.cpp
     src/yaml.cpp
     src/config.cpp
     src/stream_state.cpp

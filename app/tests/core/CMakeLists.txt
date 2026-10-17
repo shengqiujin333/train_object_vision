@@ -22,6 +22,7 @@ add_executable(railhmi-core-tests
     test_recording_provider.cpp
     test_recovery_policy.cpp
     test_replay_sync.cpp
+    test_video_diagnostics.cpp
     test_alarm_center.cpp
     test_clip.cpp
     test_replay.cpp

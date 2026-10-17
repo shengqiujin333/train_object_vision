@@ -149,3 +149,12 @@ target_link_libraries(railhmi-recovery PRIVATE railhmi_media)
 set_target_properties(railhmi-recovery PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
+
+# 视频诊断/能力探测/结构化日志探针（视频 ITEM-016）
+add_executable(railhmi-diagnostics tools/diagnostics_probe.cpp)
+target_include_directories(railhmi-diagnostics PRIVATE ${GST_INCLUDE_DIRS})
+target_compile_options(railhmi-diagnostics PRIVATE ${GST_CFLAGS_OTHER})
+target_link_libraries(railhmi-diagnostics PRIVATE railhmi_media)
+set_target_properties(railhmi-diagnostics PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
