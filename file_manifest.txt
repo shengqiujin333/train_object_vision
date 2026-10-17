@@ -1865,10 +1865,20 @@ docs/video/test_evidence/ITEM-009/ext_cpp2_board.log | active | 验证自有夹�
 docs/video/test_evidence/ITEM-009/ext_cpp3_board.log | active | 验证自有夹具 display_ext3.cpp 7/7 板端输出（RGA 失败→恢复语义）
 docs/video/test_evidence/ITEM-009/ext_cpp_board.log | active | 验证自有夹具 display_ext.cpp 11/11 板端输出（render path/无效租约/gl 分发器/未知相机）
 docs/video/test_evidence/ITEM-010/ITEM-010-ENV-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-010 selftest 4/4 + 六路 test 源（配置驱动 interval=5/depth=2）——启用路 CAM-01/04/05/06 enqueued=32=dropped 18/skipped 131/depth≤2，两侧 CAM-02/03 enqueued=0 rejected=163，popped 含 session/generation/seq 身份，acceptance result=PASS
+docs/video/test_evidence/ITEM-010/VERIFY-ITEM-010.md | active | TestEvidence（software_verification VERIFY-20261017-v1）：TEST_PASS——交付入口独立复跑 6 步 exit=0 + 独立解析比对 8/8（summary 六路逐字段恒等）+ EXT 6/6（板端 g++ 直编 AiFrameRouter+FrameStore 真实租约链路 28/28、独立参数轮 interval3/depth1、CLI 负例、确定性、泄漏扫描 0 命中）；O-1 停机时序 total_enqueued=131=128+3 观察项
+docs/video/test_evidence/ITEM-010/_verify_compare.py | active | 验证侧独立解析比对脚本（impl r2 vs fresh verify-v1，判据独立重推导）
+docs/video/test_evidence/ITEM-010/_verify_compare_result.json | active | 独立解析比对结构化结果 8/8 PASS
+docs/video/test_evidence/ITEM-010/_verify_ext.py | active | 验证侧 EXT 扩展夹具（EX-A 独立参数轮 / EX-B CLI 负例 / EX-C 板端 C++ 直驱 28 判例 / EX-D 确定性 / EX-E 泄漏扫描）
+docs/video/test_evidence/ITEM-010/_verify_run.py | active | 验证侧独立复跑驱动（凭据导入→同进程调交付 runner --keep-remote）
 docs/video/test_evidence/ITEM-010/ai-192_168_0_103-20261017-item010-r2.core-evidence_ai-dispatch-20261017-item010-r2.json | active | ITEM-010 汇总 JSON
 docs/video/test_evidence/ITEM-010/ai-192_168_0_103-20261017-item010-r2.core-evidence_ai-dispatch-20261017-item010-r2.log | active | ITEM-010 逐路派发汇总 + popped 身份 + acceptance 日志
 docs/video/test_evidence/ITEM-010/ai-192_168_0_103-20261017-item010-r2.log | active | ITEM-010 板端执行人类可读 transcript（build-media/selftest/run-ai）
 docs/video/test_evidence/ITEM-010/ai-192_168_0_103-20261017-item010-r2.transcript.json | active | ITEM-010 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-010/ai-192_168_0_103-20261017-item010-verify-v1.core-evidence_ai-dispatch-20261017-item010-verify-v1.json | active | 验证轮 fresh 汇总 JSON（interval=5/depth=2/total_enqueued=131）
+docs/video/test_evidence/ITEM-010/ai-192_168_0_103-20261017-item010-verify-v1.core-evidence_ai-dispatch-20261017-item010-verify-v1.log | active | 验证轮 fresh 六路逐拍派发 + summary + popped + acceptance 原始日志
+docs/video/test_evidence/ITEM-010/ai-192_168_0_103-20261017-item010-verify-v1.log | active | 验证轮板端执行人类可读 transcript（build-media/selftest/run-ai/download 全 exit=0）
+docs/video/test_evidence/ITEM-010/ai-192_168_0_103-20261017-item010-verify-v1.transcript.json | active | 验证轮板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-010/ai-ext-192_168_0_103-20261017-item010-verify-v1.json | active | EXT 结构化结果 6/6 PASS
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

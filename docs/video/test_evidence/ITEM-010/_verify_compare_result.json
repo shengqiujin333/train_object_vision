@@ -1,0 +1,39 @@
+{
+  "checks": [
+    {
+      "name": "impl-r2 independent-semantics",
+      "ok": true
+    },
+    {
+      "name": "verify-v1 independent-semantics",
+      "ok": true
+    },
+    {
+      "name": "tick-count-aligned 12/12",
+      "ok": true
+    },
+    {
+      "name": "tick-semantic-sequence-identical (n=12 windows; 2 jitter<=1-frame windows)",
+      "ok": true
+    },
+    {
+      "name": "summary-identical-6-rows",
+      "ok": true
+    },
+    {
+      "name": "acceptance-identical",
+      "ok": true
+    },
+    {
+      "name": "popped-structure-identical",
+      "ok": true
+    },
+    {
+      "name": "summary-json-identical {'interval': 5, 'queue_depth': 2, 'total_enqueued': 131, 'acceptance': True}",
+      "ok": true
+    }
+  ],
+  "pass": 8,
+  "fail": 0,
+  "problems": []
+}

@@ -1,0 +1,39 @@
+{
+  "results": [
+    {
+      "id": "EX-A/independent-params-round",
+      "ok": true,
+      "detail": "samples=8 rows=6; interval=3 depth=1: per-tick depth<=1, enq~published/3, disabled rows enq=0"
+    },
+    {
+      "id": "EX-B/unknown-arg-exit2",
+      "ok": true,
+      "detail": "exit=2 head=unknown arg: --bogus-flag"
+    },
+    {
+      "id": "EX-B/help-exit0-usage",
+      "ok": true,
+      "detail": "exit=0"
+    },
+    {
+      "id": "EX-C/board-cpp-router-fixture",
+      "ok": true,
+      "detail": "compile_ok=True vext_pass=28 vext_fail=0 expected=28 missing=none exit0=True fatal=False"
+    },
+    {
+      "id": "EX-D/deterministic-two-rounds",
+      "ok": true,
+      "detail": "windows=8/8 jitter_windows=1(each<=1 hard=0) (t excluded)"
+    },
+    {
+      "id": "EX-E/admin-credential-semantics-scan",
+      "ok": true,
+      "detail": "files=15 hits=none (admin=registered username; token form reviewed)"
+    }
+  ],
+  "pass": 6,
+  "fail": 0,
+  "elapsed_s": 14.9,
+  "board": "192.168.0.103",
+  "remote_tree": "/tmp/railhmi_ai"
+}

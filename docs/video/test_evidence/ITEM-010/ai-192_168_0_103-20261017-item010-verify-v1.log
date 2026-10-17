@@ -1,0 +1,184 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+
+===== [mkdir] exit=0 =====
+
+
+===== [upload] exit=0 =====
+uploaded 216 files from E:\work\rail_issue\rk3588_handover\app
+
+===== [build-media] exit=0 =====
+[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_ai' -B '/tmp/railhmi_ai/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = MediaCheck
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'
+--   Found gstreamer-1.0, version 1.20.3
+--   Found gstreamer-app-1.0, version 1.20.1
+--   Found gstreamer-video-1.0, version 1.20.1
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_ai/build-media
+[build.sh] building: cmake --build '/tmp/railhmi_ai/build-media' -j8
+[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o
+[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/maintenance.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o
+[ 31%] Linking CXX static library librailhmi_core.a
+[ 31%] Built target railhmi_core
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 34%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 36%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o
+[ 39%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 40%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o
+[ 41%] Linking CXX executable ../../tools/railhmi-config-check
+[ 42%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 42%] Built target railhmi-config-check
+[ 43%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 43%] Built target railhmi-sim-inject
+[ 44%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
+[ 45%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 47%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 48%] Linking CXX executable ../../tools/railhmi-alarm-probe
+[ 48%] Built target railhmi-alarm-probe
+[ 49%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 50%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
+[ 51%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
+[ 51%] Built target railhmi-status-probe
+[ 52%] Linking CXX executable ../../tools/railhmi-maintenance-probe
+[ 52%] Built target railhmi-maintenance-probe
+[ 54%] Linking CXX executable ../../tools/railhmi-fault-probe
+[ 54%] Built target railhmi-fault-probe
+[ 55%] Linking CXX executable ../../tools/railhmi-health-probe
+[ 56%] Linking CXX executable ../../tools/railhmi-permissions-probe
+[ 56%] Built target railhmi-health-probe
+[ 56%] Built target railhmi-permissions-probe
+[ 57%] Linking CXX static library librailhmi_platform.a
+[ 57%] Built target railhmi_platform
+[ 58%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o
+[ 59%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/video_capability.cpp.o
+[ 60%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o
+[ 62%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+[ 64%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o
+[ 63%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o
+[ 65%] Linking CXX executable ../../tools/railhmi-replay-probe
+[ 65%] Built target railhmi-replay-probe
+[ 66%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_lease.cpp.o
+[ 67%] Linking CXX executable ../../tools/railhmi-ai-probe
+[ 67%] Built target railhmi-ai-probe
+[ 68%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rga_convert.cpp.o
+[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_worker.cpp.o
+[ 71%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_dispatcher.cpp.o
+[ 72%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/display_distributor.cpp.o
+[ 73%] Linking CXX executable ../../tools/railhmi-clip-probe
+[ 73%] Built target railhmi-clip-probe
+[ 74%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/display_registry.cpp.o
+[ 75%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_dispatcher.cpp.o
+[ 77%] Linking CXX static library librailhmi_media.a
+[ 77%] Built target railhmi_media
+[ 79%] Building CXX object src/media/CMakeFiles/railhmi-rga-convert.dir/tools/rga_convert_probe.cpp.o
+[ 79%] Building CXX object src/media/CMakeFiles/railhmi-video-capability.dir/tools/video_capability_tool.cpp.o
+[ 80%] Building CXX object src/media/CMakeFiles/railhmi-frame-lease.dir/tools/frame_lease_probe.cpp.o
+[ 81%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o
+[ 82%] Building CXX object src/media/CMakeFiles/railhmi-camera-worker.dir/tools/camera_worker_probe.cpp.o
+[ 85%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o
+[ 85%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o
+[ 86%] Building CXX object src/media/CMakeFiles/railhmi-backpressure.dir/tools/backpressure_probe.cpp.o
+[ 87%] Linking CXX executable ../../tools/railhmi-ai-runner
+[ 87%] Built target railhmi-ai-runner
+[ 88%] Building CXX object src/media/CMakeFiles/railhmi-display.dir/tools/display_probe.cpp.o
+[ 89%] Linking CXX executable ../../tools/railhmi-camera-worker
+[ 89%] Built target railhmi-camera-worker
+[ 90%] Building CXX object src/media/CMakeFiles/railhmi-ai-dispatch.dir/tools/ai_dispatch_probe.cpp.o
+[ 91%] Linking CXX executable ../../tools/railhmi-frame-lease
+[ 93%] Linking CXX executable ../../tools/railhmi-rga-convert
+[ 93%] Built target railhmi-rga-convert
+[ 93%] Built target railhmi-frame-lease
+[ 94%] Linking CXX executable ../../tools/railhmi-video-capability
+[ 94%] Built target railhmi-video-capability
+[ 95%] Linking CXX executable ../../tools/railhmi-backpressure
+[ 96%] Linking CXX executable ../../tools/railhmi-multi-probe
+[ 96%] Built target railhmi-backpressure
+[ 97%] Linking CXX executable ../../tools/railhmi-stream-probe
+[ 97%] Built target railhmi-multi-probe
+[ 97%] Built target railhmi-stream-probe
+[ 98%] Linking CXX executable ../../tools/railhmi-display
+[ 98%] Built target railhmi-display
+[100%] Linking CXX executable ../../tools/railhmi-ai-dispatch
+[100%] Built target railhmi-ai-dispatch
+[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_ai/build-media
+[build.sh] media layer: /tmp/railhmi_ai/build-media/src/media/librailhmi_media.a
+BUILD_MEDIA_EXIT=0
+
+
+===== [selftest] exit=0 =====
+selftest PASS interval_gating
+selftest PASS interval_always_when_le1
+selftest PASS enabled_filtering
+selftest PASS profile_none_disabled
+selftest OK (0 failure(s))
+SELFTEST_EXIT=0
+
+
+===== [run-ai] exit=0 =====
+type=injection source=test channels=6 started=6 inference_interval=5 queue_depth=2 consume_hz=2.000000
+t=0 type=ai [CAM-01 enq=0 drop=0 skip=3 rej=0 depth=0] [CAM-02 enq=0 drop=0 skip=0 rej=3 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=3 depth=0] [CAM-04 enq=0 drop=0 skip=3 rej=0 depth=0] [CAM-05 enq=0 drop=0 skip=3 rej=0 depth=0] [CAM-06 enq=0 drop=0 skip=3 rej=0 depth=0] popped=0
+t=500 type=ai [CAM-01 enq=3 drop=0 skip=12 rej=0 depth=2] [CAM-02 enq=0 drop=0 skip=0 rej=15 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=15 depth=0] [CAM-04 enq=3 drop=0 skip=12 rej=0 depth=2] [CAM-05 enq=3 drop=0 skip=12 rej=0 depth=2] [CAM-06 enq=3 drop=0 skip=12 rej=0 depth=2] popped=4
+t=1000 type=ai [CAM-01 enq=5 drop=2 skip=23 rej=0 depth=1] [CAM-02 enq=0 drop=0 skip=0 rej=28 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=28 depth=0] [CAM-04 enq=5 drop=2 skip=23 rej=0 depth=1] [CAM-05 enq=5 drop=2 skip=23 rej=0 depth=1] [CAM-06 enq=5 drop=2 skip=23 rej=0 depth=1] popped=8
+t=1501 type=ai [CAM-01 enq=8 drop=3 skip=32 rej=0 depth=2] [CAM-02 enq=0 drop=0 skip=0 rej=40 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=40 depth=0] [CAM-04 enq=8 drop=3 skip=32 rej=0 depth=2] [CAM-05 enq=8 drop=3 skip=32 rej=0 depth=2] [CAM-06 enq=8 drop=3 skip=32 rej=0 depth=2] popped=12
+t=2001 type=ai [CAM-01 enq=10 drop=5 skip=43 rej=0 depth=1] [CAM-02 enq=0 drop=0 skip=0 rej=53 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=53 depth=0] [CAM-04 enq=10 drop=5 skip=43 rej=0 depth=1] [CAM-05 enq=10 drop=5 skip=43 rej=0 depth=1] [CAM-06 enq=10 drop=5 skip=43 rej=0 depth=1] popped=16
+t=2501 type=ai [CAM-01 enq=13 drop=6 skip=52 rej=0 depth=2] [CAM-02 enq=0 drop=0 skip=0 rej=65 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=65 depth=0] [CAM-04 enq=13 drop=6 skip=52 rej=0 depth=2] [CAM-05 enq=13 drop=6 skip=52 rej=0 depth=2] [CAM-06 enq=13 drop=6 skip=52 rej=0 depth=2] popped=20
+t=3002 type=ai [CAM-01 enq=15 drop=8 skip=63 rej=0 depth=1] [CAM-02 enq=0 drop=0 skip=0 rej=78 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=78 depth=0] [CAM-04 enq=15 drop=8 skip=63 rej=0 depth=1] [CAM-05 enq=15 drop=8 skip=63 rej=0 depth=1] [CAM-06 enq=15 drop=8 skip=63 rej=0 depth=1] popped=24
+t=3502 type=ai [CAM-01 enq=18 drop=9 skip=72 rej=0 depth=2] [CAM-02 enq=0 drop=0 skip=0 rej=90 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=90 depth=0] [CAM-04 enq=18 drop=9 skip=72 rej=0 depth=2] [CAM-05 enq=18 drop=9 skip=72 rej=0 depth=2] [CAM-06 enq=18 drop=9 skip=72 rej=0 depth=2] popped=28
+t=4002 type=ai [CAM-01 enq=20 drop=11 skip=83 rej=0 depth=1] [CAM-02 enq=0 drop=0 skip=0 rej=103 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=103 depth=0] [CAM-04 enq=20 drop=11 skip=83 rej=0 depth=1] [CAM-05 enq=20 drop=11 skip=83 rej=0 depth=1] [CAM-06 enq=20 drop=11 skip=83 rej=0 depth=1] popped=32
+t=4503 type=ai [CAM-01 enq=23 drop=12 skip=92 rej=0 depth=2] [CAM-02 enq=0 drop=0 skip=0 rej=115 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=115 depth=0] [CAM-04 enq=23 drop=12 skip=92 rej=0 depth=2] [CAM-05 enq=23 drop=12 skip=93 rej=0 depth=2] [CAM-06 enq=23 drop=12 skip=92 rej=0 depth=2] popped=36
+t=5003 type=ai [CAM-01 enq=25 drop=14 skip=103 rej=0 depth=1] [CAM-02 enq=0 drop=0 skip=0 rej=128 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=128 depth=0] [CAM-04 enq=25 drop=14 skip=103 rej=0 depth=1] [CAM-05 enq=25 drop=14 skip=103 rej=0 depth=1] [CAM-06 enq=25 drop=14 skip=103 rej=0 depth=1] popped=40
+t=5504 type=ai [CAM-01 enq=28 drop=15 skip=112 rej=0 depth=2] [CAM-02 enq=0 drop=0 skip=0 rej=140 depth=0] [CAM-03 enq=0 drop=0 skip=0 rej=140 depth=0] [CAM-04 enq=28 drop=15 skip=112 rej=0 depth=2] [CAM-05 enq=28 drop=15 skip=113 rej=0 depth=2] [CAM-06 enq=28 drop=15 skip=112 rej=0 depth=2] popped=44
+type=ai_summary camera=CAM-01 enabled=true published=163 enqueued=32 dropped=18 skipped=131 rejected=0 depth=2
+type=ai_summary camera=CAM-02 enabled=false published=163 enqueued=0 dropped=0 skipped=0 rejected=163 depth=0
+type=ai_summary camera=CAM-03 enabled=false published=163 enqueued=0 dropped=0 skipped=0 rejected=163 depth=0
+type=ai_summary camera=CAM-04 enabled=true published=163 enqueued=32 dropped=18 skipped=131 rejected=0 depth=2
+type=ai_summary camera=CAM-05 enabled=true published=163 enqueued=32 dropped=18 skipped=131 rejected=0 depth=2
+type=ai_summary camera=CAM-06 enabled=true published=163 enqueued=32 dropped=18 skipped=131 rejected=0 depth=2
+type=popped camera=CAM-06 session=s1a1497fc385-7a91f3-5 generation=1 seq=145 profile=cab_door capture_mono_us=363374745575
+type=acceptance enabled_only_dispatch=true disabled_never_enqueued=true interval_applied=true bounded=true overflow_counted=true identity_present=true result=PASS
+AI_EXIT=0
+
+
+===== [download] exit=0 =====
+ai-192_168_0_103-20261017-item010-verify-v1.core-evidence_ai-dispatch-20261017-item010-verify-v1.log
+
+===== [download] exit=0 =====
+ai-192_168_0_103-20261017-item010-verify-v1.core-evidence_ai-dispatch-20261017-item010-verify-v1.json
