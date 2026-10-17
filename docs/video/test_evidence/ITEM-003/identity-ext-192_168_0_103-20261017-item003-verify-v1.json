@@ -1,0 +1,59 @@
+{
+  "results": [
+    {
+      "id": "EXT-1",
+      "ok": true,
+      "detail": "token_present=True cat_exit=0"
+    },
+    {
+      "id": "EXT-2",
+      "ok": true,
+      "detail": "pre_gen1=True post_gen2=True rebuild_seen=True gate_stale_seen=True sid_injected_matches_rebuild=True seq_reset_after_rebuild=True summary_final_live=True"
+    },
+    {
+      "id": "EXT-3",
+      "ok": true,
+      "detail": "exit=0 rebuild_gen2=True samples_all_gen2=True(6)/True"
+    },
+    {
+      "id": "EXT-4",
+      "ok": true,
+      "detail": "exit=0 no_rebuild=True all_gen1=True summary_gen1=True"
+    },
+    {
+      "id": "EXT-5",
+      "ok": true,
+      "detail": "exit=0 no_rebuild=True all_gen1=True"
+    },
+    {
+      "id": "EXT-6",
+      "ok": true,
+      "detail": "identity_selftest_items=7 all_pass=True exit=0"
+    },
+    {
+      "id": "EXT-7",
+      "ok": true,
+      "detail": "summary_required_keys=[]"
+    },
+    {
+      "id": "EXT-8",
+      "ok": true,
+      "detail": "wall_utc_ok=True date=2026-10-17 06:21:39.922000+00:00/2026-10-17 06:21:45.461000+00:00 pts_range_ok=True pts_reset=True"
+    },
+    {
+      "id": "EXT-9",
+      "ok": true,
+      "detail": "files=23 secrets=3 cred-semantics-hits=none ssh-username-token-only-files=10"
+    },
+    {
+      "id": "CLEANUP",
+      "ok": true,
+      "detail": "exit=0 out=board_tree_cleaned"
+    }
+  ],
+  "pass": 10,
+  "fail": 0,
+  "elapsed_s": 18.7,
+  "board": "192.168.0.103",
+  "remote_dir": "/tmp/railhmi_identity"
+}

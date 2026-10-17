@@ -1,0 +1,16 @@
+type=injection source=test camera=CAM-01 duration_s=6 cut_after_s=-1 rebuild_after_s=2 session_id=s1a1487d50a1-e9c526-0 generation=1 transport=n/a
+t=0 type=stream_state state=live fps=0.5 last_frame_ms=346431295 reconnect_count=0 presentable=true generation=1 seq=1 wall_ms=1792217534661 pts_ns=16854140 admit=accepted
+t=537 type=stream_state state=live fps=7.5 last_frame_ms=346431832 reconnect_count=0 presentable=true generation=1 seq=15 wall_ms=1792217535221 pts_ns=576854140 admit=accepted
+t=1017 type=stream_state state=live fps=13.5 last_frame_ms=346432312 reconnect_count=0 presentable=true generation=1 seq=27 wall_ms=1792217535701 pts_ns=1056854140 admit=accepted
+t=1537 type=stream_state state=live fps=20.0 last_frame_ms=346432832 reconnect_count=0 presentable=true generation=1 seq=40 wall_ms=1792217536221 pts_ns=1576854140 admit=accepted
+t=2017 type=rebuild generation=2 session_id=s1a1487d50a1-e9c526-0
+t=2017 type=identity_gate stale_old_generation=stale_generation old_gen=1 new_gen=2
+t=2017 type=stream_state state=live fps=25.0 last_frame_ms=346433327 reconnect_count=0 presentable=true generation=2 seq=1 wall_ms=1792217536692 pts_ns=15216301 admit=accepted
+t=2527 type=stream_state state=live fps=25.5 last_frame_ms=346433823 reconnect_count=0 presentable=true generation=2 seq=14 wall_ms=1792217537211 pts_ns=535216301 admit=accepted
+t=3008 type=stream_state state=live fps=25.5 last_frame_ms=346434303 reconnect_count=0 presentable=true generation=2 seq=26 wall_ms=1792217537692 pts_ns=1015216301 admit=accepted
+t=3528 type=stream_state state=live fps=25.5 last_frame_ms=346434823 reconnect_count=0 presentable=true generation=2 seq=39 wall_ms=1792217538212 pts_ns=1535216301 admit=accepted
+t=4008 type=stream_state state=live fps=25.5 last_frame_ms=346435303 reconnect_count=0 presentable=true generation=2 seq=51 wall_ms=1792217538692 pts_ns=2015216301 admit=accepted
+t=4528 type=stream_state state=live fps=25.5 last_frame_ms=346435823 reconnect_count=0 presentable=true generation=2 seq=64 wall_ms=1792217539212 pts_ns=2535216301 admit=accepted
+t=5009 type=stream_state state=live fps=25.0 last_frame_ms=346436304 reconnect_count=0 presentable=true generation=2 seq=76 wall_ms=1792217539693 pts_ns=3015216301 admit=accepted
+t=5527 type=stream_state state=live fps=25.5 last_frame_ms=346436822 reconnect_count=0 presentable=true generation=2 seq=89 wall_ms=1792217540211 pts_ns=3535216301 admit=accepted
+type=summary final_state=live reconnect_count=0 last_frame_ms=346437262 presentable=true session_id=s1a1487d50a1-e9c526-0 generation=2 frames_emitted=151 gate_admitted=151 gate_rejected=0

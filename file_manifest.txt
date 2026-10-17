@@ -1708,10 +1708,29 @@ docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.
 docs/video/test_evidence/ITEM-002/pipe-192_168_0_103-20261017-item002-verify-v1.transcript.json | active | 验证轮独立板端执行结构化 transcript（命令+退出码+输出）
 docs/video/test_evidence/ITEM-002/video-cap-ext-192_168_0_103-20261017-item002-verify-v1.json | active | 验证侧 ext 夹具结构化结果（EXT-A..I 12 项判据检查）
 docs/video/test_evidence/ITEM-003/ITEM-003-ENV-A0-B-20261017-r1.md | active | VideoExecutionEvidence：ITEM-003 core 单测 698/698 + 身份 selftest 23/23 + test 源 --rebuild-after 真实重建（generation 1→2、seq 重置、旧代际 stale_generation 被拒）与时间戳单位说明
+docs/video/test_evidence/ITEM-003/VERIFY-ITEM-003.md | active | TestEvidence：ITEM-003 独立软件验证（独立板端复跑 + r2 逐行一致性 COMPARISON_IDENTICAL + EXT-1..9 扩展夹具 10/10 + 凭据语义零泄漏，TEST_PASS）
+docs/video/test_evidence/ITEM-003/_verify_compare.py | active | 验证侧逐行结构一致性比对夹具（impl r2 vs verify v3，归一口径显式可复核）
+docs/video/test_evidence/ITEM-003/_verify_dryrun0.py | active | 离线 dry-run 夹具（本地归档日志驱动 ext 解析器与判据域预检，零板端成本）
+docs/video/test_evidence/ITEM-003/_verify_ext.py | active | 验证侧可复现扩展夹具（EXT-1..9+CLEANUP 判据，板端操作有限超时+凭据 env 导入+清理确认）
+docs/video/test_evidence/ITEM-003/_verify_run.py | active | 验证轮独立复现入口（预置 fresh-round marker 防陈树 + 包装交付 runner --keep-remote，可复现）
 docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-r2.core-evidence_identity-20261017-item003-r2.json | active | ITEM-003 重建运行采样 JSON
 docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-r2.core-evidence_identity-20261017-item003-r2.log | active | ITEM-003 重建运行逐拍身份/时间/接纳日志
 docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-r2.log | active | ITEM-003 板端执行人类可读 transcript（build-core/core-tests/build-media/selftest/identity-run）
 docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-r2.transcript.json | active | ITEM-003 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v1.core-evidence_identity-20261017-item003-verify-v1.json | active | 验证轮 v1 过程轮采样 JSON
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v1.core-evidence_identity-20261017-item003-verify-v1.log | active | 验证轮 v1 过程轮采样日志
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v1.log | active | 验证轮 v1 过程轮 transcript（判据构造调试历史）
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v1.transcript.json | active | 验证轮 v1 过程轮 transcript（结构化）
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v2.core-evidence_identity-20261017-item003-verify-v2.json | active | 验证轮 v2 过程轮采样 JSON
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v2.core-evidence_identity-20261017-item003-verify-v2.log | active | 验证轮 v2 过程轮采样日志
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v2.log | active | 验证轮 v2 过程轮 transcript（判据构造调试历史）
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v2.transcript.json | active | 验证轮 v2 过程轮 transcript（结构化）
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v3.core-evidence_identity-20261017-item003-verify-v3.json | active | 验证轮重建运行采样 JSON
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v3.core-evidence_identity-20261017-item003-verify-v3.log | active | 验证轮重建运行逐拍身份/时间/接纳日志（generation 1→2、seq 重置、stale_generation）
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v3.log | active | 验证轮板端执行人类可读 transcript（build-core/core-tests/build-media/selftest/identity-run）
+docs/video/test_evidence/ITEM-003/identity-192_168_0_103-20261017-item003-verify-v3.transcript.json | active | 验证轮板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-003/identity-ext-192_168_0_103-20261017-item003-verify-v1.json | active | 验证侧 ext 夹具结构化结果（EXT-1..9+CLEANUP 10/10 PASS，针对 verify-v3 板端轮）
+docs/video/test_evidence/ITEM-003/verify_state.json | active | 验证轮 fresh-round token / runner exit / marker 读回状态
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
