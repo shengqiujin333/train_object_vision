@@ -6,6 +6,7 @@
 
 #include <chrono>
 #include <cmath>
+#include <memory>
 #include <sstream>
 
 namespace railhmi {
@@ -80,6 +81,9 @@ struct CameraStream::Impl {
     bool started = false;
     std::string last_error;
     std::string redact_src;   // 用于错误日志脱敏的凭据（仅内存）
+    std::unique_ptr<railhmi::core::FrameSequencer> sequencer;
+    railhmi::core::FrameMeta last_meta;
+    long long frames_emitted = 0;
 
     std::string scrub(const std::string& t) const { return redact_secret(t, redact_src); }
 
@@ -123,6 +127,18 @@ bool CameraStream::start(std::string* err) {
     if (impl_->started) return true;
     gst_init(nullptr, nullptr);
     impl_->machine = new railhmi::core::StreamStateMachine(impl_->cfg.camera_id, impl_->cfg.thresholds);
+
+    // 帧身份：session 跨相机共享；每次真正重建（本次 start）generation+1、seq 归零。
+    if (!impl_->sequencer) {
+        const std::string sid = impl_->cfg.session_id.empty() ? railhmi::core::make_session_id()
+                                                              : impl_->cfg.session_id;
+        impl_->sequencer.reset(new railhmi::core::FrameSequencer(sid, impl_->cfg.camera_id));
+    }
+    impl_->sequencer->begin_generation();
+    impl_->last_meta = railhmi::core::FrameMeta{};
+    impl_->last_meta.id.session_id = impl_->sequencer->session_id();
+    impl_->last_meta.id.camera_id = impl_->cfg.camera_id;
+    impl_->last_meta.id.generation = impl_->sequencer->generation();
 
     // 解析用于日志脱敏的凭据：优先显式 password，否则从 rtsp URL 拆出。
     impl_->redact_src = impl_->cfg.password;
@@ -213,6 +229,17 @@ bool CameraStream::pump(int timeout_ms) {
                 q = railhmi::core::classify_quality(frame_stats(vf), impl_->cfg.quality);
                 gst_video_frame_unmap(&vf);
             }
+            // 帧身份 + 时间（单调接收时刻；UTC 需已校准；PTS 无效则 -1）。
+            long long pts_ns = -1;
+            if (buf && GST_CLOCK_TIME_IS_VALID(GST_BUFFER_PTS(buf)))
+                pts_ns = static_cast<long long>(GST_BUFFER_PTS(buf));
+            const long long mono_us = railhmi::core::TimeBase::steady_now_us();
+            long long wall_ms = -1;
+            if (impl_->cfg.timebase && impl_->cfg.timebase->calibrated())
+                wall_ms = impl_->cfg.timebase->to_wall_ms(mono_us);
+            if (impl_->sequencer)
+                impl_->last_meta = impl_->sequencer->next(mono_us, wall_ms, pts_ns);
+            ++impl_->frames_emitted;
             if (impl_->machine) impl_->machine->on_frame(now, q);
             impl_->last_frame_ms = now;
             impl_->frame_times.push_back(now);
@@ -238,7 +265,25 @@ StreamStats CameraStream::stats() const {
     st.presentable = impl_->machine->may_present_as_live(now);
     st.fps = impl_->frame_times.size() / 2.0;  // 2s 滑窗
     st.last_error = impl_->last_error;
+    st.session_id = impl_->last_meta.id.session_id;
+    st.generation = impl_->last_meta.id.generation;
+    st.last_seq = impl_->last_meta.id.seq;
+    st.capture_wall_ms = impl_->last_meta.capture_wall_ms;
+    st.pts_ns = impl_->last_meta.pts_ns;
     return st;
+}
+
+railhmi::core::FrameMeta CameraStream::last_frame_meta() const {
+    if (!impl_) return railhmi::core::FrameMeta{};
+    return impl_->last_meta;
+}
+
+unsigned long long CameraStream::generation() const {
+    return (impl_ && impl_->sequencer) ? impl_->sequencer->generation() : 0ULL;
+}
+
+long long CameraStream::frames_emitted() const {
+    return impl_ ? impl_->frames_emitted : 0;
 }
 
 }  // namespace media

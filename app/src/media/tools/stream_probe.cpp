@@ -19,6 +19,8 @@
 #include <string>
 #include <vector>
 
+#include "railhmi/core/frame_identity.h"
+#include "railhmi/core/timebase.h"
 #include "railhmi/media/camera_stream.h"
 
 namespace {
@@ -92,6 +94,29 @@ int run_selftest() {
 
     check(!has(redact_secret(rp5, "DUMMY_SECRET"), "DUMMY_SECRET"), "redact_secret");
 
+    // 帧身份纯逻辑（视频 ITEM-003）：seq 递增、重建代际、接纳拒绝。
+    {
+        railhmi::core::FrameSequencer seq("sess-selftest", "CAM-99");
+        seq.begin_generation();
+        const railhmi::core::FrameMeta f1 = seq.next(1, -1, -1);
+        const railhmi::core::FrameMeta f2 = seq.next(2, -1, -1);
+        check(f1.id.seq == 1 && f2.id.seq == 2, "identity_seq_increasing");
+        seq.begin_generation();
+        const railhmi::core::FrameMeta f3 = seq.next(3, -1, -1);
+        check(f3.id.generation == 2 && f3.id.seq == 1, "identity_rebuild_resets_seq");
+        railhmi::core::FrameGate gate("sess-selftest");
+        check(gate.admit(f3.id) == railhmi::core::FrameAdmission::Accepted, "gate_accept");
+        check(gate.admit(f3.id) == railhmi::core::FrameAdmission::DuplicateSeq, "gate_duplicate_seq");
+        const railhmi::core::FrameId old{"sess-selftest", "CAM-99", 1, 9};
+        check(gate.admit(old) == railhmi::core::FrameAdmission::StaleGeneration,
+              "gate_stale_generation");
+        const railhmi::core::FrameId back{"sess-selftest", "CAM-99", 2, 0};
+        check(gate.admit(back) == railhmi::core::FrameAdmission::OutOfOrderSeq,
+              "gate_out_of_order_seq");
+        const railhmi::core::FrameId other{"sess-other", "CAM-99", 2, 1};
+        check(gate.admit(other) == railhmi::core::FrameAdmission::StaleSession, "gate_stale_session");
+    }
+
     std::printf("selftest %s (%d failure(s))\n", failures == 0 ? "OK" : "FAILED", failures);
     return failures == 0 ? 0 : 1;
 }
@@ -104,6 +129,7 @@ int main(int argc, char** argv) {
     std::string src = "test";
     long long duration_s = 6;
     long long cut_after_s = -1;
+    long long rebuild_after_s = -1;
     long long step_ms = 500;
     std::string out, json;
 
@@ -116,6 +142,7 @@ int main(int argc, char** argv) {
         else if (a == "--camera") next(&cfg.camera_id);
         else if (a == "--duration") { std::string v; next(&v); duration_s = std::atoll(v.c_str()); }
         else if (a == "--cut-after") { std::string v; next(&v); cut_after_s = std::atoll(v.c_str()); }
+        else if (a == "--rebuild-after") { std::string v; next(&v); rebuild_after_s = std::atoll(v.c_str()); }
         else if (a == "--step") { std::string v; next(&v); step_ms = std::atoll(v.c_str()); }
         else if (a == "--out") next(&out);
         else if (a == "--json") next(&json);
@@ -137,7 +164,7 @@ int main(int argc, char** argv) {
         else if (a == "--help" || a == "-h") {
             std::printf("usage: railhmi-stream-probe --source test|file|rtsp [--file f] [--url u] "
                         "[--user u] [--password-env VAR] [--decode auto|h264|h265] [--timeout-us n] "
-                        "[--duration s] [--cut-after s] [--step ms] [--out log] [--json json] [--selftest]\n");
+                        "[--duration s] [--cut-after s] [--rebuild-after s] [--step ms] [--out log] [--json json] [--selftest]\n");
             return 0;
         } else {
             std::fprintf(stderr, "unknown arg: %s\n", a.c_str());
@@ -147,6 +174,13 @@ int main(int argc, char** argv) {
     if (src == "file") cfg.source = media::SourceKind::File;
     else if (src == "rtsp") cfg.source = media::SourceKind::Rtsp;
     else cfg.source = media::SourceKind::Test;
+
+    // 统一时间基准：单调接收时刻为内部基准，校准时记录 UTC 偏移。
+    railhmi::core::TimeBase timebase;
+    timebase.calibrate(railhmi::core::TimeBase::system_now_ms(),
+                       railhmi::core::TimeBase::steady_now_us());
+    cfg.timebase = &timebase;
+    if (cfg.session_id.empty()) cfg.session_id = railhmi::core::make_session_id();
 
     media::CameraStream stream(cfg);
     std::string err;
@@ -164,7 +198,18 @@ int main(int argc, char** argv) {
     emit("type=injection source=" + src + " camera=" + cfg.camera_id +
          " duration_s=" + std::to_string(duration_s) +
          " cut_after_s=" + std::to_string(cut_after_s) +
+         " rebuild_after_s=" + std::to_string(rebuild_after_s) +
+         " session_id=" + cfg.session_id +
+         " generation=" + std::to_string(stream.generation()) +
          " transport=" + std::string(cfg.source == media::SourceKind::Rtsp ? "udp" : "n/a"));
+
+    railhmi::core::FrameGate gate(cfg.session_id);
+    long long admitted = 0, rejected = 0;
+    unsigned long long seen_seq = 0, seen_gen = 0;
+    std::string last_admit = "none";
+    bool rebuilt = false;
+    bool has_stale = false;
+    railhmi::core::FrameId stale_after_rebuild;
 
     std::vector<Sample> samples;
     using clock = std::chrono::steady_clock;
@@ -180,7 +225,41 @@ int main(int argc, char** argv) {
             cut_done = true;
             emit("t=" + std::to_string(elapsed) + " type=injection cut=FI-01 (simulated stream cut)");
         }
-        stream.pump(200);
+        if (rebuild_after_s >= 0 && !rebuilt && elapsed >= rebuild_after_s * 1000) {
+            const railhmi::core::FrameMeta before = stream.last_frame_meta();
+            stream.stop();
+            std::string rerr;
+            stream.start(&rerr);
+            rebuilt = true;
+            if (!before.id.session_id.empty() && before.id.generation > 0) {
+                stale_after_rebuild = before.id;
+                has_stale = true;
+            }
+            emit("t=" + std::to_string(elapsed) + " type=rebuild generation=" +
+                 std::to_string(stream.generation()) + " session_id=" + cfg.session_id);
+        }
+
+        const bool got = stream.pump(200);
+        if (got) {
+            const railhmi::core::FrameMeta m = stream.last_frame_meta();
+            if (m.id.seq != seen_seq || m.id.generation != seen_gen) {
+                seen_seq = m.id.seq;
+                seen_gen = m.id.generation;
+                const railhmi::core::FrameAdmission adm = gate.admit(m.id);
+                if (adm == railhmi::core::FrameAdmission::Accepted) ++admitted; else ++rejected;
+                last_admit = railhmi::core::to_string(adm);
+                if (has_stale && m.id.generation > stale_after_rebuild.generation) {
+                    stale_after_rebuild.seq = stale_after_rebuild.seq + 1000;
+                    const railhmi::core::FrameAdmission sadm = gate.admit(stale_after_rebuild);
+                    emit("t=" + std::to_string(elapsed) + " type=identity_gate stale_old_generation=" +
+                         railhmi::core::to_string(sadm) + " old_gen=" +
+                         std::to_string(stale_after_rebuild.generation) + " new_gen=" +
+                         std::to_string(m.id.generation));
+                    has_stale = false;
+                }
+            }
+        }
+
         const long long slot = elapsed / step_ms;
         if (slot != prev_slot) {
             prev_slot = slot;
@@ -197,6 +276,11 @@ int main(int argc, char** argv) {
                  " fps=" + fmt_fps(s.fps) + " last_frame_ms=" + std::to_string(s.last_frame_ms) +
                  " reconnect_count=" + std::to_string(s.reconnect_count) +
                  " presentable=" + std::string(s.presentable ? "true" : "false") +
+                 " generation=" + std::to_string(s.generation) +
+                 " seq=" + std::to_string(s.last_seq) +
+                 " wall_ms=" + std::to_string(s.capture_wall_ms) +
+                 " pts_ns=" + std::to_string(s.pts_ns) +
+                 " admit=" + last_admit +
                  (s.last_error.empty() ? "" : " error=" + s.last_error));
         }
     }
@@ -205,7 +289,12 @@ int main(int argc, char** argv) {
     emit("type=summary final_state=" + std::string(railhmi::core::to_string(s.state)) +
          " reconnect_count=" + std::to_string(s.reconnect_count) +
          " last_frame_ms=" + std::to_string(s.last_frame_ms) +
-         " presentable=" + std::string(s.presentable ? "true" : "false"));
+         " presentable=" + std::string(s.presentable ? "true" : "false") +
+         " session_id=" + cfg.session_id +
+         " generation=" + std::to_string(stream.generation()) +
+         " frames_emitted=" + std::to_string(stream.frames_emitted()) +
+         " gate_admitted=" + std::to_string(admitted) +
+         " gate_rejected=" + std::to_string(rejected));
     stream.stop();
 
     if (!json.empty()) {

@@ -9,7 +9,9 @@
 #include <deque>
 #include <string>
 
+#include "railhmi/core/frame_identity.h"
 #include "railhmi/core/stream_state.h"
+#include "railhmi/core/timebase.h"
 #include "railhmi/media/pipeline_factory.h"
 
 namespace railhmi {
@@ -32,6 +34,8 @@ struct CameraStreamConfig {
     int test_width = 1280;
     int test_height = 720;
     int test_fps = 25;
+    const railhmi::core::TimeBase* timebase = nullptr;  // 用于 capture_wall_ms；空/未校准则 -1
+    std::string session_id;         // 应用启动不透明串；空则自动生成（跨相机共享）
     railhmi::core::StreamThresholds thresholds;
     railhmi::core::QualityThresholds quality;
 };
@@ -43,6 +47,12 @@ struct StreamStats {
     int reconnect_count = 0;
     bool presentable = false;      // 非 LIVE（含 DEGRADED 新鲜帧）时为 false
     std::string last_error;
+    // 帧身份与时间（视频 ITEM-003）
+    std::string session_id;
+    unsigned long long generation = 0;
+    unsigned long long last_seq = 0;
+    long long capture_wall_ms = -1;   // 已校准 UTC；-1=不可用
+    long long pts_ns = -1;            // 相机 PTS；-1=无/无效
 };
 
 // 单路取流：start() 建管线进入 PLAYING；pump() 推进（拉帧/驱动状态机）；stop() 收尾。
@@ -64,6 +74,11 @@ public:
     bool pump(int timeout_ms = 200);
 
     StreamStats stats() const;
+
+    // 最近一帧的身份+时间（视频 ITEM-003）；未出帧时 session/generation 已就绪、seq=0。
+    railhmi::core::FrameMeta last_frame_meta() const;
+    unsigned long long generation() const;
+    long long frames_emitted() const;
 
     static long long now_ms();
 

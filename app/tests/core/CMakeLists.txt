@@ -13,6 +13,7 @@ add_executable(railhmi-core-tests
     test_grid.cpp
     test_status.cpp
     test_inference.cpp
+    test_frame_identity.cpp
     test_alarm_center.cpp
     test_clip.cpp
     test_replay.cpp
