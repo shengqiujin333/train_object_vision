@@ -2087,6 +2087,8 @@ docs/video/test_evidence/ITEM-017/measure-ext-192_168_0_103-20261018-item017-ver
 docs/video/test_evidence/ITEM-017/verify17-compare-v1.log | active | ITEM-017 验证侧语义预言机 r3+fresh 双归档 79 判例全 PASS 留痕
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 docs/vision/VISION_DESIGN.md | active | VisionDesignArtifact：六路可见光视觉任务判定/输入输出与推理接口/标注语义与映射/评价指标与业务错误代价/数据事实与策略/模型复用与量化/预处理后处理规范/职责边界/风险与待确认决策（computer_vision_engineer.vision_design v1）
+docs/vision/VISION_E2E_PLAN.md | active | E2EPlan：视觉/推理端到端旅程 5 条（host selftest 闭环/板端真模型探针/file 源全链路/front 真机确认/不可用语义审核）与升降级门（software_tester.software_test_design v1）
+docs/vision/VISION_TEST_DESIGN.md | active | TestDesignArtifact：视觉/推理应用测试设计——AI-HOST/AI-BOARD/ENV-C/ENV-D 分层、FI-AI-01..13 故障注入、G1..G13 用例集（38 个 TC-T）与 P0 冒烟、覆盖矩阵逐 ITEM 落点、证据与移交边界（software_tester.software_test_design v1）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
