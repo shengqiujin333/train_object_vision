@@ -1,0 +1,56 @@
+{
+  "checks": [
+    {
+      "check": "semantics_impl-r2-dur",
+      "ok": true,
+      "detail": "independent re-derivation holds"
+    },
+    {
+      "check": "semantics_impl-r2-byte",
+      "ok": true,
+      "detail": "independent re-derivation holds"
+    },
+    {
+      "check": "semantics_verify-v1-dur",
+      "ok": true,
+      "detail": "independent re-derivation holds"
+    },
+    {
+      "check": "semantics_verify-v1-byte",
+      "ok": true,
+      "detail": "independent re-derivation holds"
+    },
+    {
+      "check": "stable_source_acc_dur",
+      "ok": true,
+      "detail": "SOURCE: True"
+    },
+    {
+      "check": "stable_config_dur",
+      "ok": true,
+      "detail": "config fields identical across rounds"
+    },
+    {
+      "check": "stable_source_acc_byte",
+      "ok": true,
+      "detail": "SOURCE: True"
+    },
+    {
+      "check": "stable_config_byte",
+      "ok": true,
+      "detail": "config fields identical across rounds"
+    },
+    {
+      "check": "received_window_dur",
+      "ok": true,
+      "detail": "impl=199 verify=200 (|diff|=1 <= 8)"
+    },
+    {
+      "check": "received_window_byte",
+      "ok": true,
+      "detail": "impl=199 verify=199 (|diff|=0 <= 8)"
+    }
+  ],
+  "problems": [],
+  "pass": true
+}

@@ -1,0 +1,66 @@
+{
+  "results": [
+    {
+      "id": "EX-A",
+      "ok": true,
+      "detail": "independent params round; problems=none"
+    },
+    {
+      "id": "EX-B/neg",
+      "ok": true,
+      "detail": "unknown-arg exit=2 + message (token=2)"
+    },
+    {
+      "id": "EX-B/help",
+      "ok": true,
+      "detail": "--help exit=0 with option lines (token=0)"
+    },
+    {
+      "id": "EX-C/upload",
+      "ok": true,
+      "detail": "vext_recording.cpp uploaded to railhmi_rec tree"
+    },
+    {
+      "id": "EX-C/build",
+      "ok": true,
+      "detail": "vext_recording built against delivery core+media sources"
+    },
+    {
+      "id": "EX-C/run",
+      "ok": true,
+      "detail": "vext 34 PASS 0 FAIL token=0"
+    },
+    {
+      "id": "EX-D/stable",
+      "ok": true,
+      "detail": "config/source/acceptance identical a1 vs a2"
+    },
+    {
+      "id": "EX-D/semantics",
+      "ok": true,
+      "detail": "a2 independent semantics re-derivation holds"
+    },
+    {
+      "id": "EX-D/exit",
+      "ok": true,
+      "detail": "a2 exit token=0"
+    },
+    {
+      "id": "EX-D/window",
+      "ok": true,
+      "detail": "packets a1=50 a2=51 (|Δ|=1<=8)"
+    },
+    {
+      "id": "EX-E",
+      "ok": true,
+      "detail": "credential semantic forms 0 hits (clean)"
+    },
+    {
+      "id": "CLEAN",
+      "ok": true,
+      "detail": "board-side ext artifacts removed"
+    }
+  ],
+  "problems": [],
+  "pass": true
+}

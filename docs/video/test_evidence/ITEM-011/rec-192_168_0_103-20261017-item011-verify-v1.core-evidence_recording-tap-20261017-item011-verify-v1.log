@@ -1,0 +1,5 @@
+type=config config_pre_seconds=30 effective_pre_seconds=3 max_bytes=1048576 duration_s=8 fps=25 display_pull_ms=200
+type=source requested=both nvr_configured=false effective=local_fallback local=true nvr=false reason=NVR_UNCONFIGURED
+type=tap_records received=200 expected=200 keyframe_last=false display_frames=39
+type=rolling packets=76 bytes=776699 first_ts_ms=3600004960 last_ts_ms=3600007960 span_ms=3000 keyframes=3 pushed=200 evicted_duration=124 evicted_bytes=0
+type=acceptance bytes_bounded=true duration_bounded=true evicted=true record_rate_ok=true display_independent=true source_status_explicit=true result=PASS

@@ -1891,12 +1891,25 @@ docs/video/test_evidence/ITEM-010/ai-192_168_0_103-20261017-item010-verify-v1.lo
 docs/video/test_evidence/ITEM-010/ai-192_168_0_103-20261017-item010-verify-v1.transcript.json | active | 验证轮板端执行结构化 transcript（命令+退出码+输出）
 docs/video/test_evidence/ITEM-010/ai-ext-192_168_0_103-20261017-item010-verify-v1.json | active | EXT 结构化结果 6/6 PASS
 docs/video/test_evidence/ITEM-011/ITEM-011-ENV-A0-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-011 core 783/0 + selftest 9/9 + 板端真实压缩管线两阶段（时长绑定 span=3000/evicted_duration=123；字节绑定 bytes=196093≤204800/evicted_bytes=179），received≈199/200 vs display 39，source=local_fallback reason=NVR_UNCONFIGURED，acceptance PASS
+docs/video/test_evidence/ITEM-011/VERIFY-ITEM-011.md | active | ITEM-011 软件验证 TestEvidence（VERIFY-20261017-v1 判定 TEST_PASS：板端独立复跑 783/0+selftest 9/9+双阶段 acceptance、独立解析比对 10/10、EXT 12/12；夹具过程轮修正留痕；观察项 O-1/O-2/O-3）
+docs/video/test_evidence/ITEM-011/_verify_compare.py | active | ITEM-011 视频验证独立解析比对脚本（impl r2 vs verify-v1 独立语义重推导 10/10）
+docs/video/test_evidence/ITEM-011/_verify_compare_result.json | active | ITEM-011 视频验证比对结构化结果（10 checks PASS）
+docs/video/test_evidence/ITEM-011/_verify_ext.py | active | ITEM-011 视频验证 EXT 扩展夹具（EX-A 独立参数轮/EX-B 负例/EX-C 板端 g++ 自有夹具 34/34/EX-D 确定性/EX-E 泄漏扫描/清理；12/12）
+docs/video/test_evidence/ITEM-011/_verify_run.py | active | ITEM-011 视频验证独立复跑驱动（PowerShell 用户级凭据导入 → 同进程交付入口 --keep-remote）
+docs/video/test_evidence/ITEM-011/_verify_vext.cpp | active | ITEM-011 验证侧板端 C++ 扩展夹具（CompressedRingBuffer/RecordingTap 34 判例：无限上限/超宽单包/collect 闭区间/关键帧边界/淘汰分账/大窗口终态精确预言/并发安全/来源状态）
 docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-r2.core-evidence_recording-tap-20261017-item011-r2.json | active | ITEM-011 阶段一（时长绑定）汇总 JSON
 docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-r2.core-evidence_recording-tap-20261017-item011-r2.log | active | ITEM-011 阶段一（时长绑定）观测与 acceptance 日志
 docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-r2.core-evidence_recording-tap-byte-20261017-item011-r2.json | active | ITEM-011 阶段二（字节绑定）汇总 JSON
 docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-r2.core-evidence_recording-tap-byte-20261017-item011-r2.log | active | ITEM-011 阶段二（字节绑定）观测与 acceptance 日志
 docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-r2.log | active | ITEM-011 板端执行人类可读 transcript（build-core/core-tests/build-media/selftest/run-rec/run-rec-byte）
 docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-r2.transcript.json | active | ITEM-011 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.core-evidence_recording-tap-20261017-item011-verify-v1.json | active | 验证轮时长绑定阶段 fresh 汇总 JSON
+docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.core-evidence_recording-tap-20261017-item011-verify-v1.log | active | 验证轮时长绑定阶段 fresh 逐行观测与 acceptance
+docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.core-evidence_recording-tap-byte-20261017-item011-verify-v1.json | active | 验证轮字节绑定阶段 fresh 汇总 JSON
+docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.core-evidence_recording-tap-byte-20261017-item011-verify-v1.log | active | 验证轮字节绑定阶段 fresh 逐行观测与 acceptance
+docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.log | active | 验证轮板端交付入口独立复跑全步骤 stdout（783/0 + selftest 9/9 + 双阶段 acceptance PASS）
+docs/video/test_evidence/ITEM-011/rec-192_168_0_103-20261017-item011-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹一致/逐条命令/退出码）
+docs/video/test_evidence/ITEM-011/rec-ext-192_168_0_103-20261017-item011-verify-v1.json | active | ITEM-011 EXT 夹具结构化结果（12/12 PASS，EX-C 34 判例含驻留 keyframe 终态精确预言）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
