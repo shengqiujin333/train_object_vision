@@ -1648,6 +1648,8 @@ docs/interfaces/VALIDATION.json | active | ContractValidationEvidence：61/61本
 docs/interfaces/examples.json | active | 接口契约示例：8正例、12反例、5顺序向量；含padding NV12、不可用模型、NVR未配置、部分录像与旧generation；纯设计夹具
 docs/interfaces/interface.schema.json | active | 接口适配器描述与夹具 JSON Schema Draft 2020-12：FrameDescriptor/InferenceEnvelope/ClipRequest/ProviderReply/ActionReply/StreamSnapshot；不替代既有C++/YAML/SQLite接口
 docs/interfaces/validate_contract.py | active | 接口架构自校验工具：有限本地文件检查、Schema/跨字段不变量/当前配置及限定源码对应；不连接设备、不执行产品
+docs/video/VIDEO_SYSTEM_DESIGN.md | active | VideoSystemDesignArtifact v1：六路可见光视频系统设计——视频源/协议/编码/时间戳确认、帧描述符与不可变 FrameLease 所有权、每路管线与线程/队列边界、背压与丢帧策略、实时/录像/推理三条时间线与软件同步口径、异常恢复与真实重建、本机保护片段与回放 media provider、吞吐/延迟/同步/存储/断流预算与测量方法、库与加速路径对比（原生 GStreamer+MPP+librga 选用、OpenCV/rgaconvert 否决、gl 保留）、接口职责边界、配置与待实测项；含本轮板端只读 GStreamer 栈核对（qmlglsink 缺失、mppvideodec 存在、--exists 不可靠）
+docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
 models/yolov5s.rknn | existing | 人形检测模型（RKNN）
