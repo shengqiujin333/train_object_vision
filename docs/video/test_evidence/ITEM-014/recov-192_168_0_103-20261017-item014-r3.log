@@ -10,26 +10,21 @@ uploaded 247 files from E:\work\rail_issue\rk3588_handover\app
 [build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1
 [build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
 [build.sh] configuring: cmake -S '/tmp/railhmi_recovery' -B '/tmp/railhmi_recovery/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON
--- The CXX compiler identification is GNU 11.4.0
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/c++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
 -- railhmi: build mode = CoreTests
 -- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /tmp/railhmi_recovery/build-core
 [build.sh] building: cmake --build '/tmp/railhmi_recovery/build-core' -j8
-[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
-[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
-[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+Consolidate compiler generated dependencies of target railhmi_core
+[  1%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
 [  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
 [  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
-[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
-[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
-[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
 [ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/compressed_ring.cpp.o
 [ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_source.cpp.o
 [ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
@@ -55,71 +50,84 @@ uploaded 247 files from E:\work\rail_issue\rk3588_handover\app
 [ 35%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o
 [ 36%] Linking CXX static library librailhmi_core.a
 [ 36%] Built target railhmi_core
-[ 37%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
-[ 38%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
-[ 39%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+Consolidate compiler generated dependencies of target railhmi-status-probe
+Consolidate compiler generated dependencies of target railhmi-config-check
+Consolidate compiler generated dependencies of target railhmi_platform
+Consolidate compiler generated dependencies of target railhmi-ai-probe
+Consolidate compiler generated dependencies of target railhmi-sim-inject
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+Consolidate compiler generated dependencies of target railhmi-replay-probe
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
+Consolidate compiler generated dependencies of target railhmi-maintenance-probe
+Consolidate compiler generated dependencies of target railhmi-alarm-probe
 [ 40%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
 [ 42%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o
-[ 43%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
-[ 44%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 43%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 44%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
 [ 45%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o
 [ 46%] Linking CXX executable ../../tools/railhmi-config-check
-[ 46%] Built target railhmi-config-check
-[ 47%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
-[ 48%] Linking CXX executable ../../tools/railhmi-sim-inject
-[ 48%] Built target railhmi-sim-inject
-[ 50%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
-[ 51%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
-[ 52%] Linking CXX executable ../../tools/railhmi-status-probe
-[ 53%] Linking CXX executable ../../tools/railhmi-maintenance-probe
-[ 54%] Linking CXX executable ../../tools/railhmi-alarm-probe
-[ 54%] Built target railhmi-status-probe
-[ 55%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
-[ 55%] Built target railhmi-alarm-probe
-[ 56%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
-[ 57%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
-[ 57%] Built target railhmi-maintenance-probe
-[ 59%] Linking CXX executable ../../tools/railhmi-permissions-probe
-[ 59%] Built target railhmi-permissions-probe
-[ 60%] Linking CXX executable ../../tools/railhmi-fault-probe
-[ 61%] Linking CXX executable ../../tools/railhmi-health-probe
-[ 61%] Built target railhmi-fault-probe
-[ 61%] Built target railhmi-health-probe
+[ 47%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 47%] Built target railhmi-config-check
+Consolidate compiler generated dependencies of target railhmi-permissions-probe
+[ 48%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
+[ 50%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 50%] Built target railhmi-sim-inject
+Consolidate compiler generated dependencies of target railhmi-health-probe
+[ 51%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
+[ 52%] Linking CXX executable ../../tools/railhmi-permissions-probe
+[ 52%] Built target railhmi-permissions-probe
+Consolidate compiler generated dependencies of target railhmi-fault-probe
+[ 53%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
+[ 54%] Linking CXX executable ../../tools/railhmi-maintenance-probe
+[ 55%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 55%] Built target railhmi-maintenance-probe
+[ 56%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 57%] Linking CXX executable ../../tools/railhmi-fault-probe
+[ 57%] Built target railhmi-fault-probe
+[ 59%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 59%] Built target railhmi-status-probe
+[ 60%] Linking CXX executable ../../tools/railhmi-health-probe
+[ 60%] Built target railhmi-health-probe
+[ 61%] Linking CXX executable ../../tools/railhmi-alarm-probe
+[ 61%] Built target railhmi-alarm-probe
 [ 62%] Linking CXX executable ../../tools/railhmi-replay-probe
-[ 62%] Built target railhmi-replay-probe
-[ 63%] Linking CXX executable ../../tools/railhmi-ai-probe
-[ 64%] Linking CXX static library librailhmi_platform.a
-[ 64%] Built target railhmi-ai-probe
+[ 63%] Linking CXX static library librailhmi_platform.a
+[ 64%] Linking CXX executable ../../tools/railhmi-ai-probe
 [ 64%] Built target railhmi_platform
-[ 67%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o
-[ 67%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_stream.cpp.o
-[ 68%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o
-[ 70%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_rules.cpp.o
-[ 70%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+Consolidate compiler generated dependencies of target railhmi-clip-probe
+[ 64%] Built target railhmi-replay-probe
+Consolidate compiler generated dependencies of target railhmi-core-tests
+[ 65%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+[ 67%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o
+[ 68%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_stream.cpp.o
+[ 69%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o
+[ 70%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o
 [ 71%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_config.cpp.o
-[ 72%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o
+[ 72%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_rules.cpp.o
+[ 72%] Built target railhmi-ai-probe
 [ 73%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_persistence.cpp.o
 [ 75%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_simulation.cpp.o
 [ 76%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_navigation.cpp.o
 [ 77%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_registry.cpp.o
 [ 78%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_layout.cpp.o
-[ 79%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_status.cpp.o
-[ 80%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_grid.cpp.o
-[ 81%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_inference.cpp.o
-[ 82%] Linking CXX executable ../../tools/railhmi-clip-probe
+[ 79%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_grid.cpp.o
+[ 80%] Linking CXX executable ../../tools/railhmi-clip-probe
+[ 80%] Built target railhmi-clip-probe
+[ 82%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_inference.cpp.o
+[ 82%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_status.cpp.o
 [ 84%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_frame_identity.cpp.o
-[ 84%] Built target railhmi-clip-probe
 [ 85%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_frame_layout.cpp.o
 [ 86%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_bounded_queue.cpp.o
 [ 87%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_compressed_ring.cpp.o
-[ 88%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_clip_request.cpp.o
-[ 89%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_recording_source.cpp.o
+[ 88%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_recording_source.cpp.o
+[ 89%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_clip_request.cpp.o
 [ 90%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_recording_provider.cpp.o
 [ 92%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_recovery_policy.cpp.o
 [ 93%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_alarm_center.cpp.o
 [ 94%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_clip.cpp.o
-[ 95%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_replay.cpp.o
-[ 96%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_maintenance.cpp.o
+[ 95%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_maintenance.cpp.o
+[ 96%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_replay.cpp.o
 [ 97%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_permissions.cpp.o
 [ 98%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_health.cpp.o
 [100%] Linking CXX executable ../railhmi-core-tests
@@ -997,105 +1005,108 @@ CORE_EXIT=0
 [build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1
 [build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
 [build.sh] configuring: cmake -S '/tmp/railhmi_recovery' -B '/tmp/railhmi_recovery/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON
--- The CXX compiler identification is GNU 11.4.0
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/c++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
 -- railhmi: build mode = MediaCheck
 -- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
--- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
--- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'
---   Found gstreamer-1.0, version 1.20.3
---   Found gstreamer-app-1.0, version 1.20.1
---   Found gstreamer-video-1.0, version 1.20.1
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /tmp/railhmi_recovery/build-media
 [build.sh] building: cmake --build '/tmp/railhmi_recovery/build-media' -j8
-[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
-[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+Consolidate compiler generated dependencies of target railhmi_core
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
 [  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
 [  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
-[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
-[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
-[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
-[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
 [  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/compressed_ring.cpp.o
 [  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_source.cpp.o
 [ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
 [ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
 [ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
-[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
 [ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
 [ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
 [ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
 [ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
-[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
-[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
 [ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o
 [ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o
 [ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip_request.cpp.o
 [ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_provider.cpp.o
 [ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay.cpp.o
 [ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/maintenance.cpp.o
-[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o
-[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o
 [ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery.cpp.o
 [ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery_policy.cpp.o
 [ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o
 [ 30%] Linking CXX static library librailhmi_core.a
 [ 30%] Built target railhmi_core
-[ 31%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o
-[ 32%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+Consolidate compiler generated dependencies of target railhmi-alarm-probe
+Consolidate compiler generated dependencies of target railhmi-ai-probe
+Consolidate compiler generated dependencies of target railhmi_platform
+Consolidate compiler generated dependencies of target railhmi-config-check
+[ 33%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
 [ 33%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
-[ 34%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
-[ 34%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o
-[ 37%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
-[ 37%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
-[ 37%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
-[ 38%] Linking CXX executable ../../tools/railhmi-config-check
-[ 39%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+Consolidate compiler generated dependencies of target railhmi-sim-inject
+Consolidate compiler generated dependencies of target railhmi-replay-probe
+Consolidate compiler generated dependencies of target railhmi-status-probe
+Consolidate compiler generated dependencies of target railhmi-maintenance-probe
+[ 34%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 36%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o
+[ 38%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 39%] Linking CXX executable ../../tools/railhmi-config-check
 [ 39%] Built target railhmi-config-check
-[ 40%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
-[ 41%] Linking CXX executable ../../tools/railhmi-status-probe
-[ 42%] Linking CXX executable ../../tools/railhmi-maintenance-probe
-[ 42%] Built target railhmi-status-probe
-[ 43%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
-[ 44%] Linking CXX executable ../../tools/railhmi-sim-inject
-[ 44%] Built target railhmi-maintenance-probe
-[ 45%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
-[ 45%] Built target railhmi-sim-inject
-[ 46%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
-[ 47%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
-[ 48%] Linking CXX executable ../../tools/railhmi-fault-probe
-[ 49%] Linking CXX executable ../../tools/railhmi-replay-probe
+[ 40%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 41%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 42%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 42%] Built target railhmi-sim-inject
+Consolidate compiler generated dependencies of target railhmi-permissions-probe
+[ 43%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
+Consolidate compiler generated dependencies of target railhmi-health-probe
+[ 44%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 45%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
+[ 46%] Linking CXX executable ../../tools/railhmi-alarm-probe
+[ 46%] Built target railhmi-status-probe
+Consolidate compiler generated dependencies of target railhmi-fault-probe
+[ 47%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
+[ 47%] Built target railhmi-alarm-probe
+[ 48%] Linking CXX executable ../../tools/railhmi-permissions-probe
+[ 48%] Built target railhmi-permissions-probe
+[ 49%] Linking CXX executable ../../tools/railhmi-fault-probe
 [ 49%] Built target railhmi-fault-probe
-[ 49%] Built target railhmi-replay-probe
-[ 50%] Linking CXX executable ../../tools/railhmi-alarm-probe
-[ 51%] Linking CXX executable ../../tools/railhmi-permissions-probe
-[ 51%] Built target railhmi-alarm-probe
-[ 51%] Built target railhmi-permissions-probe
+[ 50%] Linking CXX executable ../../tools/railhmi-ai-probe
+[ 51%] Linking CXX executable ../../tools/railhmi-replay-probe
+[ 51%] Built target railhmi-ai-probe
 [ 52%] Linking CXX executable ../../tools/railhmi-health-probe
-[ 52%] Built target railhmi-health-probe
-[ 53%] Linking CXX executable ../../tools/railhmi-ai-probe
-[ 53%] Built target railhmi-ai-probe
+[ 53%] Linking CXX executable ../../tools/railhmi-maintenance-probe
+[ 53%] Built target railhmi-replay-probe
+[ 53%] Built target railhmi-health-probe
+[ 53%] Built target railhmi-maintenance-probe
 [ 54%] Linking CXX static library librailhmi_platform.a
 [ 54%] Built target railhmi_platform
-[ 57%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o
-[ 57%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o
-[ 57%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o
-[ 58%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_lease.cpp.o
-[ 59%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
-[ 60%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rga_convert.cpp.o
-[ 61%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o
-[ 62%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/video_capability.cpp.o
+Consolidate compiler generated dependencies of target railhmi-clip-probe
+Consolidate compiler generated dependencies of target railhmi_media
+[ 55%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+[ 56%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o
+[ 58%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o
+[ 58%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rga_convert.cpp.o
+[ 59%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o
+[ 60%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o
+[ 61%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/video_capability.cpp.o
+[ 62%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_lease.cpp.o
 [ 63%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_worker.cpp.o
 [ 64%] Linking CXX executable ../../tools/railhmi-clip-probe
 [ 65%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_dispatcher.cpp.o
+[ 65%] Built target railhmi-clip-probe
 [ 66%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/display_distributor.cpp.o
-[ 66%] Built target railhmi-clip-probe
 [ 67%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/display_registry.cpp.o
 [ 68%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_dispatcher.cpp.o
 [ 69%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/recording_tap.cpp.o
@@ -1104,48 +1115,62 @@ CORE_EXIT=0
 [ 72%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/recovery_controller.cpp.o
 [ 73%] Linking CXX static library librailhmi_media.a
 [ 73%] Built target railhmi_media
-[ 76%] Building CXX object src/media/CMakeFiles/railhmi-video-capability.dir/tools/video_capability_tool.cpp.o
-[ 76%] Building CXX object src/media/CMakeFiles/railhmi-frame-lease.dir/tools/frame_lease_probe.cpp.o
-[ 76%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o
-[ 77%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o
-[ 78%] Building CXX object src/media/CMakeFiles/railhmi-backpressure.dir/tools/backpressure_probe.cpp.o
-[ 79%] Building CXX object src/media/CMakeFiles/railhmi-rga-convert.dir/tools/rga_convert_probe.cpp.o
-[ 80%] Building CXX object src/media/CMakeFiles/railhmi-camera-worker.dir/tools/camera_worker_probe.cpp.o
-[ 81%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o
-[ 82%] Linking CXX executable ../../tools/railhmi-video-capability
-[ 82%] Built target railhmi-video-capability
+Consolidate compiler generated dependencies of target railhmi-ai-runner
+Consolidate compiler generated dependencies of target railhmi-stream-probe
+Consolidate compiler generated dependencies of target railhmi-camera-worker
+Consolidate compiler generated dependencies of target railhmi-multi-probe
+Consolidate compiler generated dependencies of target railhmi-backpressure
+[ 75%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o
+[ 75%] Building CXX object src/media/CMakeFiles/railhmi-camera-worker.dir/tools/camera_worker_probe.cpp.o
+[ 76%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o
+Consolidate compiler generated dependencies of target railhmi-frame-lease
+Consolidate compiler generated dependencies of target railhmi-rga-convert
+Consolidate compiler generated dependencies of target railhmi-video-capability
+[ 77%] Building CXX object src/media/CMakeFiles/railhmi-frame-lease.dir/tools/frame_lease_probe.cpp.o
+[ 78%] Building CXX object src/media/CMakeFiles/railhmi-rga-convert.dir/tools/rga_convert_probe.cpp.o
+[ 79%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o
+[ 80%] Building CXX object src/media/CMakeFiles/railhmi-backpressure.dir/tools/backpressure_probe.cpp.o
+[ 81%] Building CXX object src/media/CMakeFiles/railhmi-video-capability.dir/tools/video_capability_tool.cpp.o
+[ 82%] Linking CXX executable ../../tools/railhmi-ai-runner
+[ 82%] Built target railhmi-ai-runner
+Consolidate compiler generated dependencies of target railhmi-display
 [ 83%] Building CXX object src/media/CMakeFiles/railhmi-display.dir/tools/display_probe.cpp.o
-[ 84%] Linking CXX executable ../../tools/railhmi-stream-probe
-[ 84%] Built target railhmi-stream-probe
+[ 84%] Linking CXX executable ../../tools/railhmi-rga-convert
+[ 84%] Built target railhmi-rga-convert
+Consolidate compiler generated dependencies of target railhmi-ai-dispatch
 [ 84%] Building CXX object src/media/CMakeFiles/railhmi-ai-dispatch.dir/tools/ai_dispatch_probe.cpp.o
-[ 85%] Linking CXX executable ../../tools/railhmi-ai-runner
-[ 86%] Linking CXX executable ../../tools/railhmi-multi-probe
-[ 86%] Built target railhmi-ai-runner
-[ 87%] Building CXX object src/media/CMakeFiles/railhmi-recording-tap.dir/tools/recording_tap_probe.cpp.o
-[ 88%] Linking CXX executable ../../tools/railhmi-rga-convert
-[ 88%] Built target railhmi-rga-convert
+[ 85%] Linking CXX executable ../../tools/railhmi-camera-worker
+[ 85%] Built target railhmi-camera-worker
+Consolidate compiler generated dependencies of target railhmi-recording-tap
+[ 86%] Building CXX object src/media/CMakeFiles/railhmi-recording-tap.dir/tools/recording_tap_probe.cpp.o
+[ 87%] Linking CXX executable ../../tools/railhmi-video-capability
+[ 88%] Linking CXX executable ../../tools/railhmi-frame-lease
+[ 88%] Built target railhmi-video-capability
+Consolidate compiler generated dependencies of target railhmi-clip-solidify
 [ 89%] Building CXX object src/media/CMakeFiles/railhmi-clip-solidify.dir/tools/clip_solidify_probe.cpp.o
-[ 89%] Built target railhmi-multi-probe
-[ 90%] Linking CXX executable ../../tools/railhmi-camera-worker
+[ 90%] Linking CXX executable ../../tools/railhmi-stream-probe
+[ 90%] Built target railhmi-frame-lease
+Consolidate compiler generated dependencies of target railhmi-media-provider
 [ 91%] Building CXX object src/media/CMakeFiles/railhmi-media-provider.dir/tools/media_provider_probe.cpp.o
-[ 91%] Built target railhmi-camera-worker
+[ 91%] Built target railhmi-stream-probe
+Consolidate compiler generated dependencies of target railhmi-recovery
 [ 92%] Building CXX object src/media/CMakeFiles/railhmi-recovery.dir/tools/recovery_probe.cpp.o
-[ 93%] Linking CXX executable ../../tools/railhmi-frame-lease
-[ 93%] Built target railhmi-frame-lease
-[ 94%] Linking CXX executable ../../tools/railhmi-backpressure
-[ 95%] Linking CXX executable ../../tools/railhmi-display
-[ 95%] Built target railhmi-backpressure
-[ 95%] Built target railhmi-display
-[ 96%] Linking CXX executable ../../tools/railhmi-recording-tap
-[ 96%] Built target railhmi-recording-tap
+[ 93%] Linking CXX executable ../../tools/railhmi-recording-tap
+[ 93%] Built target railhmi-recording-tap
+[ 94%] Linking CXX executable ../../tools/railhmi-display
+[ 94%] Built target railhmi-display
+[ 95%] Linking CXX executable ../../tools/railhmi-backpressure
+[ 96%] Linking CXX executable ../../tools/railhmi-multi-probe
+[ 96%] Built target railhmi-backpressure
+[ 96%] Built target railhmi-multi-probe
 [ 97%] Linking CXX executable ../../tools/railhmi-clip-solidify
-[ 98%] Linking CXX executable ../../tools/railhmi-recovery
-[ 98%] Built target railhmi-clip-solidify
-[ 98%] Built target railhmi-recovery
+[ 97%] Built target railhmi-clip-solidify
+[ 98%] Linking CXX executable ../../tools/railhmi-media-provider
 [ 99%] Linking CXX executable ../../tools/railhmi-ai-dispatch
+[ 99%] Built target railhmi-media-provider
 [ 99%] Built target railhmi-ai-dispatch
-[100%] Linking CXX executable ../../tools/railhmi-media-provider
-[100%] Built target railhmi-media-provider
+[100%] Linking CXX executable ../../tools/railhmi-recovery
+[100%] Built target railhmi-recovery
 [build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_recovery/build-media
 [build.sh] media layer: /tmp/railhmi_recovery/build-media/src/media/librailhmi_media.a
 BUILD_MEDIA_EXIT=0
@@ -1169,21 +1194,21 @@ SELFTEST_EXIT=0
 ===== [run-recovery] exit=0 =====
 type=config reconnect_backoff_ms=1000 duration_s=8 channels=3
 type=start started=3 of=3
-type=recovery cam=CAM-01 kind=NETWORK failure_chain=0 max_failure_chain=1 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=201 onvif=disabled
+type=recovery cam=CAM-01 kind=NETWORK failure_chain=0 max_failure_chain=1 attempts=2 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=3 recovery_latency_ms=201 onvif=disabled
 type=recovery cam=CAM-02 kind=AUTH_FAILED failure_chain=0 max_failure_chain=0 attempts=0 backoff_ms=0 stopped=true capability_wait=false stop_reason=AUTH_FAILED awaiting_recovery=false recovered=false recovered_generation=0 recovery_latency_ms=-1 onvif=disabled
-type=recovery cam=CAM-03 kind=UNSUPPORTED failure_chain=0 max_failure_chain=0 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=25 onvif=disabled
-type=generations cam01=1->2 cam02=1->1 cam03=1->2
-type=timing t_cut_ms=50 rebuild1_ms=1278 rebuild3_ms=2532 change_ms=2500
+type=recovery cam=CAM-03 kind=UNSUPPORTED failure_chain=0 max_failure_chain=0 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=76 onvif=disabled
+type=generations cam01=1->3 cam02=1->1 cam03=1->2
+type=timing t_cut_ms=50 rebuild1_ms=1305 rebuild2_ms=2785 rebuild3_ms=2534 change_ms=2500 second_cut=true
 type=home kind=NONE failure_chain=0 max_failure_chain=0 attempts=0 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=false recovered_generation=0 recovery_latency_ms=-1 onvif=unavailable:UNCONFIGURED
-type=acceptance rebuild_confirmed_by_new_frame=true attempts_counted_once=true backoff_respected=true auth_no_retry=true capability_gated=true single_channel_isolation=true onvif_default_off=true onvif_unconfigured=true result=PASS
+type=acceptance rebuild_confirmed_by_new_frame=true attempts_match_actual=true repeat_same_error_recovers=true backoff_respected=true auth_no_retry=true capability_gated=true single_channel_isolation=true onvif_default_off=true onvif_unconfigured=true result=PASS
 RECOVERY_EXIT=0
 
 
 ===== [download] exit=0 =====
-recov-192_168_0_103-20261017-item014-r2.core-evidence_recovery-20261017-item014-r2.log
+recov-192_168_0_103-20261017-item014-r3.core-evidence_recovery-20261017-item014-r3.log
 
 ===== [download] exit=0 =====
-recov-192_168_0_103-20261017-item014-r2.core-evidence_recovery-20261017-item014-r2.json
+recov-192_168_0_103-20261017-item014-r3.core-evidence_recovery-20261017-item014-r3.json
 
 ===== [cleanup] exit=0 =====
 cleaned

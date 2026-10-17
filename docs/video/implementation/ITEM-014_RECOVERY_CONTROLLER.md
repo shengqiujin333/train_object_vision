@@ -13,9 +13,9 @@
 |---|---|---|---|
 | `app/src/core/include/railhmi/core/recovery_policy.h` | 新增 | `eb0e5788280ac6fa` | 错误分类 + 退避重试/停止/能力门控策略（纯逻辑） |
 | `app/src/core/src/recovery_policy.cpp` | 新增 | `5202a98c210ef246` | `classify_source_error`、`RecoveryPolicy`、`describe_recovery_state` |
-| `app/src/media/include/railhmi/media/recovery_controller.h` | 新增 | `e380c7f142266878` | `RecoveryController`/状态接口（公开头无 GStreamer） |
-| `app/src/media/src/recovery_controller.cpp` | 新增 | `39df7de327017109` | 轮询错误/退避重建/真帧确认/ONVIF 钩子 |
-| `app/src/media/tools/recovery_probe.cpp` | 新增 | `60047a5b7d1242a7` | 运行入口 `railhmi-recovery`（配置驱动 + `--selftest`） |
+| `app/src/media/include/railhmi/media/recovery_controller.h` | 新增 | `f94e5903d649b0f9` | `RecoveryController`/状态接口（公开头无 GStreamer） |
+| `app/src/media/src/recovery_controller.cpp` | 新增 | `9162a20299a43989` | 轮询错误/退避重建/真帧确认/去重失效/ONVIF 钩子 |
+| `app/src/media/tools/recovery_probe.cpp` | 新增 | `4ef65e71bf670ea1` | 运行入口 `railhmi-recovery`（配置驱动 + `--selftest`） |
 | `app/tools/board_recovery_check.py` | 新增 | `62fc6fa0cd35b4d3` | 板端执行入口 |
 | `app/src/core/CMakeLists.txt` | 修改 | `0cf64be1f7b796c5` | 编译 `recovery_policy.cpp` |
 | `app/src/media/CMakeLists.txt` | 修改 | `79e58d679608cf53` | 编译 `recovery_controller.cpp` + 注册探针 |
@@ -48,25 +48,26 @@ python app/tools/board_recovery_check.py --host <addr> --user <user> \
     --outdir docs/video/test_evidence/ITEM-014 --stamp <tag>
 ```
 
-## 4. 板端验证结果（RK3588，stamp `20261017-item014-r2`）
+## 4. 板端验证结果（RK3588，stamp `20261017-item014-r3`，修复轮）
 
 - `railhmi-core-tests`：**857 passed / 0 failed**（新增 `recovery_policy` 组）。
 - `railhmi-recovery --selftest`：**10/10 PASS**（分类五项 + 退避/重建一次/鉴权停止/能力等待/能力变化后重建）。
 - 三路并发（test 源，`reconnect_backoff_ms=1000`）：
-  - **CAM-01 断流→退避→重建→真帧确认**：`kind=NETWORK attempts=1 recovered=true generation 1→2 recovery_latency_ms=201`；`t_cut=50ms`、`rebuild=1278ms` → 退避 ≥ 1000ms 满足。
+  - **CAM-01 断流→退避→重建→真帧确认（含同文本二次断流）**：`kind=NETWORK attempts=2 recovered=true recovered_generation=3 generation 1→3`；`t_cut=50ms`、`rebuild1=1305ms`、`second_cut=true`、`rebuild2=2785ms` → 两次退避均 ≥ 1000ms 满足；**第一次恢复后再次出现完全相同文本的断流仍被识别并重建**（D-01 修复）。
   - **CAM-02 鉴权失败不重试**：`kind=AUTH_FAILED stopped=true attempts=0 generation 1→1`（仍在出帧）。
-  - **CAM-03 不支持能力门控**：`kind=UNSUPPORTED`，能力变化前不重建；`change=2500ms`、`rebuild=2532ms` → `attempts=1 recovered generation 1→2`。
-  - **单路隔离**：CAM-01 重建期间 CAM-02 generation 保持 1。
+  - **CAM-03 不支持能力门控**：`kind=UNSUPPORTED`，能力变化前不重建；`change=2500ms`、`rebuild=2534ms` → `attempts=1 recovered generation 1→2`。
+  - **单路隔离**：CAM-01 两次重建期间 CAM-02 generation 保持 1。
   - **ONVIF**：默认 `disabled`；启用未配置 → `unavailable:UNCONFIGURED`，`onvif_tick=false`。
-  - acceptance：`rebuild_confirmed_by_new_frame=true attempts_counted_once=true backoff_respected=true auth_no_retry=true capability_gated=true single_channel_isolation=true onvif_default_off=true onvif_unconfigured=true result=PASS`。
-- 证据：`docs/video/test_evidence/ITEM-014/ITEM-014-ENV-A0-C-20261017-r1.md` 与同目录原始日志/JSON。
+  - acceptance：`rebuild_confirmed_by_new_frame=true attempts_match_actual=true repeat_same_error_recovers=true backoff_respected=true auth_no_retry=true capability_gated=true single_channel_isolation=true onvif_default_off=true onvif_unconfigured=true result=PASS`。
+- 证据：`docs/video/test_evidence/ITEM-014/ITEM-014-ENV-A0-C-20261017-r1.md` 与同目录原始日志/JSON（`…-r3`）。
 
-## 5. 调试过程（本轮）
+## 5. 调试/修复过程
 
 | 观察 | 根因 | 处理 |
 |---|---|---|
 | r1 core 1 项失败 `classify unsupported` | 错误文本 "No such element" 不含子串 "no element" | 分类增加 `no such element` 关键字（r2 通过） |
 | r1 media 编译失败 `RecoveryState has no member describe` | `RecoveryControllerStatus` 持有 `RecoveryState`（无 `describe`） | 新增 `core::describe_recovery_state(const RecoveryState&)`，控制器改用它（r2 通过） |
+| **D-01（验证轮 TEST_FAIL）**：恢复成功后，**相同文本**断流不再触发重建（`attempts` 停在 1、generation 2→2） | `tick()` 以 `last_error != last_seen_error_` 文本等值去重；恢复后 `last_seen_error_` 未失效，重建清空 last_error 后同文本错误被当旧错误跳过 | **去重失效**：`tick()` 在 **generation 变化**或 **last_error 变空**时清除 `last_seen_error_`；恢复确认时同样清除。探针增加「恢复后再次注入完全相同文本断流」场景（r3：attempts=2、generation 1→3、`repeat_same_error_recovers=true`） |
 
 ## 6. 边界与移交
 

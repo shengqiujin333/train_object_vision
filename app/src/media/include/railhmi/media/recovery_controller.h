@@ -58,6 +58,7 @@ private:
     RecoveryControllerConfig cfg_;
     core::RecoveryPolicy policy_;
     std::string last_seen_error_;
+    long long last_gen_ = -1;
     long long pending_gen_ = -1;
     long long rebuild_at_ms_ = -1;
     bool awaiting_recovery_ = false;

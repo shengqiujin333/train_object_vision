@@ -19,8 +19,16 @@ core::RecoveryAction RecoveryController::tick(long long now_ms) {
     if (!worker_) return core::RecoveryAction::None;
     const StreamStats s = worker_->stats();
 
-    // 轮询 worker 的脱敏 last_error 新值（worker 线程写入），只在新字符串时分类一次。
-    if (!s.last_error.empty() && s.last_error != last_seen_error_) {
+    // 代际变化（真实重建）使旧错误去重失效：新会话里同一文本错误必须重新分类。
+    const long long gen = static_cast<long long>(s.generation);
+    if (gen != last_gen_) {
+        last_gen_ = gen;
+        last_seen_error_.clear();
+    }
+    // 轮询 worker 的脱敏 last_error：空 -> 去重失效；新值 -> 分类一次。
+    if (s.last_error.empty()) {
+        last_seen_error_.clear();
+    } else if (s.last_error != last_seen_error_) {
         last_seen_error_ = s.last_error;
         const core::SourceErrorKind kind = core::classify_source_error("gst", s.last_error);
         if (kind != core::SourceErrorKind::None) policy_.on_error(kind, s.last_error, now_ms);
@@ -35,6 +43,8 @@ core::RecoveryAction RecoveryController::tick(long long now_ms) {
             recovery_latency_ms_ = rebuild_at_ms_ >= 0 ? (now_ms - rebuild_at_ms_) : -1;
             awaiting_recovery_ = false;
             pending_gen_ = -1;
+            last_seen_error_.clear();   // 恢复后同一文本错误视为新错误
+            last_gen_ = static_cast<long long>(s.generation);
         }
         return core::RecoveryAction::None;
     }

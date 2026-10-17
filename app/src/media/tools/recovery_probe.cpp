@@ -154,21 +154,36 @@ int main(int argc, char** argv) {
     c2.on_source_error("gst-resource-error-quark", "Unauthorized 401", now_ms());
     c3.on_source_error("gst-core-error-quark", "no element 'mppvideodec' (unsupported)", now_ms());
 
-    long long t_rebuild1 = -1, t_rebuild3 = -1;
+    long long t_rebuild1 = -1, t_rebuild2 = -1, t_rebuild3 = -1;
+    int rebuild1_count = 0;
     bool c3_rebuilt_before_change = false;
     bool capability_changed = false;
+    bool second_cut_done = false;
+    bool recovered1_once = false;
     const long long change_at = 2500;
     while (now_ms() < duration_s * 1000) {
         const long long now = now_ms();
         const core::RecoveryAction a1 = c1.tick(now);
         const core::RecoveryAction a2 = c2.tick(now);
         const core::RecoveryAction a3 = c3.tick(now);
-        if (a1 == core::RecoveryAction::Rebuild && t_rebuild1 < 0) t_rebuild1 = now;
+        if (a1 == core::RecoveryAction::Rebuild) {
+            ++rebuild1_count;
+            if (rebuild1_count == 1) t_rebuild1 = now;
+            else if (rebuild1_count == 2) t_rebuild2 = now;
+        }
         if (a3 == core::RecoveryAction::Rebuild) {
             if (!capability_changed) c3_rebuilt_before_change = true;
             if (t_rebuild3 < 0) t_rebuild3 = now;
         }
         (void)a2;
+        // 第一次恢复后，再次注入**完全相同文本**的断流，验证恢复后去重失效、能再次重建。
+        if (!recovered1_once) {
+            const auto st1 = c1.status();
+            if (st1.recovered && !st1.awaiting_recovery && st1.recovered_generation > gen1_before) {
+                recovered1_once = true;
+                if (!second_cut_done) { mgr.request_cut(0); second_cut_done = true; }
+            }
+        }
         if (!capability_changed && now >= change_at) {
             capability_changed = true;
             c3.notify_capability_changed(now);
@@ -191,12 +206,16 @@ int main(int argc, char** argv) {
          " cam02=" + std::to_string(gen2_before) + "->" + std::to_string(gen2_after) +
          " cam03=" + std::to_string(gen3_before) + "->" + std::to_string(gen3_after));
     emit("type=timing t_cut_ms=" + std::to_string(t_cut) + " rebuild1_ms=" + std::to_string(t_rebuild1) +
-         " rebuild3_ms=" + std::to_string(t_rebuild3) + " change_ms=" + std::to_string(change_at));
+         " rebuild2_ms=" + std::to_string(t_rebuild2) + " rebuild3_ms=" + std::to_string(t_rebuild3) +
+         " change_ms=" + std::to_string(change_at) + " second_cut=" +
+         std::string(second_cut_done ? "true" : "false"));
     emit("type=home " + onvif_probe.status().describe());
 
     const bool rebuild_confirmed = s1.recovered && gen1_after > gen1_before &&
                                    s1.recovered_generation > gen1_before && st[0].last_seq > 0;
-    const bool attempts_once = s1.policy.total_attempts == 1;
+    const bool attempts_match_actual = s1.policy.total_attempts == rebuild1_count;
+    const bool repeat_same_error_recovers = rebuild1_count == 2 && gen1_after == gen1_before + 2 &&
+                                            s1.recovered_generation == gen1_before + 2;
     const bool backoff_respected = t_rebuild1 >= 0 && (t_rebuild1 - t_cut) >= base_backoff - 50;
     const bool auth_no_retry = s2.policy.stopped && s2.policy.total_attempts == 0 &&
                                gen2_after == gen2_before && st[1].last_seq > 0;
@@ -207,11 +226,13 @@ int main(int argc, char** argv) {
                            !onvif_probe.onvif_tick(now_ms());
     const bool onvif_default = c1.status().onvif_status == "disabled";
 
-    const bool ok = rebuild_confirmed && attempts_once && backoff_respected && auth_no_retry &&
-                    capability_gated && isolation && onvif_default && onvif_off;
+    const bool ok = rebuild_confirmed && attempts_match_actual && repeat_same_error_recovers &&
+                    backoff_respected && auth_no_retry && capability_gated && isolation &&
+                    onvif_default && onvif_off;
     emit("type=acceptance rebuild_confirmed_by_new_frame=" +
          std::string(rebuild_confirmed ? "true" : "false") +
-         " attempts_counted_once=" + std::string(attempts_once ? "true" : "false") +
+         " attempts_match_actual=" + std::string(attempts_match_actual ? "true" : "false") +
+         " repeat_same_error_recovers=" + std::string(repeat_same_error_recovers ? "true" : "false") +
          " backoff_respected=" + std::string(backoff_respected ? "true" : "false") +
          " auth_no_retry=" + std::string(auth_no_retry ? "true" : "false") +
          " capability_gated=" + std::string(capability_gated ? "true" : "false") +
@@ -225,7 +246,9 @@ int main(int argc, char** argv) {
     if (!json.empty()) {
         std::ofstream j(json, std::ios::trunc);
         j << "{\n  \"cam01\": {\"attempts\": " << s1.policy.total_attempts
+          << ", \"rebuilds\": " << rebuild1_count
           << ", \"recovered_generation\": " << s1.recovered_generation
+          << ", \"repeat_same_error_recovers\": " << (repeat_same_error_recovers ? "true" : "false")
           << ", \"recovered\": " << (s1.recovered ? "true" : "false") << "},\n";
         j << "  \"cam02\": {\"stopped\": " << (s2.policy.stopped ? "true" : "false")
           << ", \"attempts\": " << s2.policy.total_attempts << "},\n";
