@@ -1,0 +1,6 @@
+{
+  "cam01": {"attempts": 1, "recovered_generation": 2, "recovered": true},
+  "cam02": {"stopped": true, "attempts": 0},
+  "cam03": {"attempts": 1, "recovered_generation": 2},
+  "acceptance": true
+}

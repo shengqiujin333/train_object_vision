@@ -1,0 +1,160 @@
+{
+  "impl_tag": "20261017-item014-r2",
+  "verify_tag": "20261017-item014-verify-v1",
+  "checks": [
+    {
+      "name": "row count 9",
+      "ok": true,
+      "detail": "impl=9 veri=9"
+    },
+    {
+      "name": "row00 type=config",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row01 type=start",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row02 type=recovery",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row03 type=recovery",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row04 type=recovery",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row05 type=generations",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row06 type=timing keyset",
+      "ok": true,
+      "detail": "['change_ms', 'rebuild1_ms', 'rebuild3_ms', 't_cut_ms', 'type'] vs ['change_ms', 'rebuild1_ms', 'rebuild3_ms', 't_cut_ms', 'type']"
+    },
+    {
+      "name": "row07 type=home",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row08 type=acceptance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "row types identical",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C1 rebuild confirmed by new frame",
+      "ok": true,
+      "detail": "{'type': 'recovery', 'cam': 'CAM-01', 'kind': 'NETWORK', 'failure_chain': '0', 'max_failure_chain': '1', 'attempts': '1', 'backoff_ms': '0', 'stopped': 'false', 'capability_wait': 'false', 'awaiting_recovery': 'false', 'recovered': 'true', 'recovered_generation': '2', 'recovery_latency_ms': '200', '"
+    },
+    {
+      "name": "C2 backoff respected >= 950ms",
+      "ok": true,
+      "detail": "t_cut=50 rebuild1=1279"
+    },
+    {
+      "name": "C3 auth no retry",
+      "ok": true,
+      "detail": "{'type': 'recovery', 'cam': 'CAM-02', 'kind': 'AUTH_FAILED', 'failure_chain': '0', 'max_failure_chain': '0', 'attempts': '0', 'backoff_ms': '0', 'stopped': 'true', 'capability_wait': 'false', 'stop_reason': 'AUTH_FAILED', 'awaiting_recovery': 'false', 'recovered': 'false', 'recovered_generation': '0"
+    },
+    {
+      "name": "C4 capability gated",
+      "ok": true,
+      "detail": "rebuild3=2532 change=2500 rec3={'type': 'recovery', 'cam': 'CAM-03', 'kind': 'UNSUPPORTED', 'failure_chain': '0', 'max_failure_chain': '0', 'attempts': '1', 'backoff_ms': '0', 'stopped': 'false', 'capability_wait': 'false', 'awaiting_recovery': 'false', 'recovered': 'true', 'recovered_generation': '"
+    },
+    {
+      "name": "C5 single channel isolation",
+      "ok": true,
+      "detail": "{'type': 'generations', 'cam01': '1->2', 'cam02': '1->1', 'cam03': '1->2'}"
+    },
+    {
+      "name": "C6 onvif default off",
+      "ok": true,
+      "detail": "disabled"
+    },
+    {
+      "name": "C7 onvif unconfigured no tick",
+      "ok": true,
+      "detail": "unavailable:UNCONFIGURED"
+    },
+    {
+      "name": "C8 acceptance row matches independent verdict",
+      "ok": true,
+      "detail": "{'type': 'acceptance', 'rebuild_confirmed_by_new_frame': 'true', 'attempts_counted_once': 'true', 'backoff_respected': 'true', 'auth_no_retry': 'true', 'capability_gated': 'true', 'single_channel_isolation': 'true', 'onvif_default_off': 'true', 'onvif_unconfigured': 'true', 'result': 'PASS'}"
+    },
+    {
+      "name": "selftest exit identical",
+      "ok": true,
+      "detail": "0/0"
+    },
+    {
+      "name": "selftest 10 cases identical lists",
+      "ok": true,
+      "detail": "10/10 ['classify_auth', 'classify_credential', 'classify_format', 'classify_network', 'classify_unsupported', 'policy_auth_stop', 'policy_backoff', 'policy_capability_wait', 'policy_rebuild_after_change', 'policy_rebuild_once']"
+    },
+    {
+      "name": "selftest no FAIL lines",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "core-tests exit identical",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "core-tests PASS lists identical (857 lines)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "core-tests 857/0 both",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "json keys identical",
+      "ok": true,
+      "detail": "['cam01', 'cam02', 'cam03', 'acceptance']"
+    },
+    {
+      "name": "json cam02 stopped attempts0",
+      "ok": true,
+      "detail": "{'stopped': True, 'attempts': 0}"
+    },
+    {
+      "name": "json cam01 attempts1 recovered",
+      "ok": true,
+      "detail": "{'attempts': 1, 'recovered_generation': 2, 'recovered': True}"
+    },
+    {
+      "name": "json cam03 attempts1",
+      "ok": true,
+      "detail": "{'attempts': 1, 'recovered_generation': 2}"
+    },
+    {
+      "name": "json acceptance true",
+      "ok": true,
+      "detail": "True"
+    }
+  ],
+  "summary": {
+    "total": 30,
+    "failed": 0
+  }
+}

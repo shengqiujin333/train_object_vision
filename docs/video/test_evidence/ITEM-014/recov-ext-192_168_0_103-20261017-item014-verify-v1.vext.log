@@ -1,0 +1,36 @@
+vext PASS g01 start_all
+vext OBSERVE g01 gen=1->2 kind=NETWORK failure_chain=0 max_failure_chain=1 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=226 onvif=disabled
+vext PASS g01 attempts once
+vext PASS g01 recovered by new frame
+vext PASS g01 frames after recovery
+vext PASS g01 latency recorded
+vext OBSERVE g02_second_cut gen=2->2 kind=NETWORK failure_chain=0 max_failure_chain=1 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=226 onvif=disabled
+vext FAIL g02 second cut attempts==2
+vext FAIL g02 second cut rebuilt+confirmed
+vext PASS g02 frames after second recovery
+vext OBSERVE g03_freeze_inject gen=1->2 kind=OTHER failure_chain=0 max_failure_chain=1 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=200 onvif=disabled
+vext PASS g03 distinct-text error classified and rebuilt
+vext PASS g03 recovered
+vext OBSERVE g03b_second_freeze gen=2->2 kind=OTHER failure_chain=0 max_failure_chain=1 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=231 onvif=disabled
+vext FAIL g03b D-01 exhibit same-text repeat not rebuilt
+vext OBSERVE g04_continuous_fault gen=1->3 kind=OTHER failure_chain=9 max_failure_chain=9 attempts=2 backoff_ms=1600 stopped=true capability_wait=false stop_reason=MAX_ATTEMPTS awaiting_recovery=true recovered=true recovered_generation=2 recovery_latency_ms=226 onvif=disabled
+vext PASS g04 bounded retry continues during awaiting
+vext OBSERVE g05_auth gen=1->1 kind=AUTH_FAILED failure_chain=0 max_failure_chain=0 attempts=0 backoff_ms=0 stopped=true capability_wait=false stop_reason=AUTH_FAILED awaiting_recovery=false recovered=false recovered_generation=0 recovery_latency_ms=-1 onvif=disabled
+vext PASS g05 auth no retry
+vext PASS g05 no rebuild on auth
+vext PASS g06 waits capability
+vext PASS g06 no rebuild while waiting
+vext OBSERVE g06_after_change gen=1->2 kind=UNSUPPORTED failure_chain=0 max_failure_chain=0 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=50 onvif=disabled
+vext PASS g06 single rebuild after change confirmed
+vext PASS g07 default disabled
+vext PASS g07 default no tick
+vext PASS g07 unconfigured explicit
+vext PASS g07 unconfigured no action
+vext PASS g07 configured unsupported explicit
+vext PASS g07 configured no action (protocol not registered)
+vext OBSERVE g08 gen=1->2 kind=NETWORK failure_chain=0 max_failure_chain=1 attempts=1 backoff_ms=0 stopped=false capability_wait=false awaiting_recovery=false recovered=true recovered_generation=2 recovery_latency_ms=201 onvif=disabled
+vext PASS g08 ch0 rebuilt+confirmed
+vext PASS g08 other channels generation unchanged
+vext PASS g08 other channels still frame-advancing
+vext summary 3 failure(s)
+VEXT_EXIT=1

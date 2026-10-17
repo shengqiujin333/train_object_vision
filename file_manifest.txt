@@ -1973,10 +1973,22 @@ docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-verify-v1.
 docs/video/test_evidence/ITEM-013/prov-192_168_0_103-20261017-item013-verify-v1.transcript.json | active | 验证轮独立复跑结构化 transcript（指纹一致/逐条命令/退出码）
 docs/video/test_evidence/ITEM-013/prov-ext-192_168_0_103-20261017-item013-verify-v1.json | active | ITEM-013 EXT 夹具结构化结果（12/12 PASS，EX-C 42 判例含覆盖并集/半开窗/deadline 边界/reason token）
 docs/video/test_evidence/ITEM-014/ITEM-014-ENV-A0-C-20261017-r1.md | active | VideoExecutionEvidence：ITEM-014 core 857/0 + selftest 10/10 + 三路（CAM-01 NETWORK attempts=1 gen1→2 真帧确认 latency201ms；CAM-02 AUTH_FAILED stopped attempts=0 gen1→1；CAM-03 UNSUPPORTED 能力变化后 attempts=1 gen1→2；单路隔离；ONVIF disabled/unavailable:UNCONFIGURED；acceptance PASS）
+docs/video/test_evidence/ITEM-014/VERIFY-ITEM-014.md | active | ITEM-014 软件验证 TestEvidence（VERIFY-20261017-v1 判定 TEST_FAIL：独立复跑 857/0+selftest+三路语义与实现 r2 逐行一致 30/30、意义判据独立重推导 C1–C8 全绿；扩展夹具 24/24 含 EX-A 参数轮 300ms/负例/确定性/泄漏 0/清理；业务缺陷 D-01 P2 实证——恢复后同文本错误被 tick() 字符串去重跳过分类致该路永不再重建（recovery_controller.cpp:23），vext g02/g03b 三条呈证判据 FAIL；D-02 疑点否证——连续故障下按退避续试至 MAX_ATTEMPTS 有界停止；O-1 freeze 文本归 OTHER 参考、O-2 awaiting×stop 边缘交互登记）
+docs/video/test_evidence/ITEM-014/_verify_compare.py | active | ITEM-014 验证侧独立解析比对（实现 r2 vs fresh verify-v1：行级/字段级 delta + 自有语义重推导 C1–C8 + selftest/core-tests PASS 列表程序化比对 + JSON 结构域；timing 行调度抖动域按存在性）
+docs/video/test_evidence/ITEM-014/_verify_compare_result.json | active | ITEM-014 解析比对结果（30 checks 0 failed）
+docs/video/test_evidence/ITEM-014/_verify_ext.py | active | ITEM-014 验证侧扩展夹具运行器（/tmp/railhmi_recovery 保留树上：EX-A 独立参数轮 300ms 重推导、CLI 负例、同参确定性、g++ 直编自有夹具、呈证三条 FAIL-as-expected 协议、23 回归判据、凭据泄漏扫描、清理确认）
+docs/video/test_evidence/ITEM-014/_verify_run.py | active | ITEM-014 验证侧独立复跑驱动（同进程凭据导入 → board_recovery_check.py --keep-remote stamp=20261017-item014-verify-v1）
+docs/video/test_evidence/ITEM-014/_verify_vext.cpp | active | ITEM-014 验证侧板端 C++ 夹具（8 场景 26 判例：g01 正向基线、g02 同文本二次断流 D-01 呈证、g03 异文本对照、g03b 同文本 freeze 二次去重呈证、g04 连续故障退避续试、g05 鉴权不重试、g06 能力门控、g07 ONVIF 三态、g08 单路隔离；链接交付三层 .a）
 docs/video/test_evidence/ITEM-014/recov-192_168_0_103-20261017-item014-r2.core-evidence_recovery-20261017-item014-r2.json | active | ITEM-014 恢复汇总 JSON
 docs/video/test_evidence/ITEM-014/recov-192_168_0_103-20261017-item014-r2.core-evidence_recovery-20261017-item014-r2.log | active | ITEM-014 三路恢复/代际/时序/ONVIF/acceptance 日志
 docs/video/test_evidence/ITEM-014/recov-192_168_0_103-20261017-item014-r2.log | active | ITEM-014 板端执行人类可读 transcript（build-core/core-tests/build-media/selftest/run-recovery）
 docs/video/test_evidence/ITEM-014/recov-192_168_0_103-20261017-item014-r2.transcript.json | active | ITEM-014 板端执行结构化 transcript（命令+退出码+输出）
+docs/video/test_evidence/ITEM-014/recov-192_168_0_103-20261017-item014-verify-v1.core-evidence_recovery-20261017-item014-verify-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/video/test_evidence/ITEM-014/recov-192_168_0_103-20261017-item014-verify-v1.core-evidence_recovery-20261017-item014-verify-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/video/test_evidence/ITEM-014/recov-192_168_0_103-20261017-item014-verify-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/video/test_evidence/ITEM-014/recov-192_168_0_103-20261017-item014-verify-v1.transcript.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/video/test_evidence/ITEM-014/recov-ext-192_168_0_103-20261017-item014-verify-v1.json | active | ITEM-014 EXT 结构化结果（24 checks 0 failed，含 3 条 D-01 呈证 FAIL-as-expected 协议判定）
+docs/video/test_evidence/ITEM-014/recov-ext-192_168_0_103-20261017-item014-verify-v1.vext.log | active | ITEM-014 板端自有夹具原始输出（vext PASS×23 + FAIL×3 呈证 + OBSERVE 行原始描述）
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
