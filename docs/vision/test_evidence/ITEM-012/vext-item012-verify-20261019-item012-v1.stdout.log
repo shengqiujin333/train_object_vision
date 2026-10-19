@@ -1,0 +1,32 @@
+vext INFO fixture publish ok seq=1 h=180
+vext PASS A01_worker_mask_captured_when_enabled :: READY upd=1
+vext PASS A02_worker_mask_plane_content_copy :: size=3072
+vext PASS A03_worker_mask_snapshot_independent :: detector buffer corrupted
+vext PASS A04_worker_mask_second_frame_overwrites :: upd=2 p0=0
+vext PASS A05_worker_mask_capture_off_not_captured :: NOT_CAPTURED
+vext PASS A06_worker_mask_ready_no_masks :: SEG_UNAVAILABLE
+vext PASS A07_worker_mask_invalid_dims_rejected :: SEG_UNAVAILABLE
+vext PASS A08_worker_mask_detector_unavailable_reason :: STUB_DOWN
+vext PASS A09_worker_mask_whole_plane_with_padding :: size=3264
+vext PASS B01_stride_padding_not_counted :: positive=6
+vext PASS B02_stride_less_than_width_rejected :: READY
+vext PASS B03_plane_one_byte_short_rejected
+vext PASS B04_plane_exact_size_usable
+vext PASS B05_null_plane_rejected_fallback_reason :: 掩码不可用
+vext PASS B06_mask_kind_passthrough :: custom
+vext PASS B07_positive_zero_is_numeric_not_placeholder :: positive=0
+vext PASS B08_json_positive_zero_numeric
+vext PASS B09_positive_full_plane_exact :: positive=64
+vext PASS B10_no_channel_input_mask_reason :: rows=2
+vext PASS C01_admin_switches_effective_roi_absent
+vext PASS C02_available_override_semantics_anchored :: input-authoritative
+vext PASS C03_zero_boxes_real_zero_confidence_dash :: 0/—
+vext PASS C04_confidence_two_decimals :: 0.50
+vext PASS C05_json_escape_quotes_backslash
+vext PASS C06_distance_text_passthrough :: 123.4 m
+vext PASS C07_fps_zero_is_unknown :: —
+vext PASS C08_latency_zero_is_unknown :: —
+vext PASS C09_stale_reason_passthrough :: 推理陈旧
+vext PASS C10_describe_stable_order :: boxes,mask
+vext RESULT: PASS pass=29 fail=0
+VEXT_RUN_EXIT=0

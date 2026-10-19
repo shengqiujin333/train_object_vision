@@ -1,0 +1,2 @@
+type=view json={"visible":false,"hidden_reason":"driver role cannot view AI debug (P5 hidden; overlays off)","switches":{"boxes":true,"roi":true,"text":true,"mask":true},"switches_desc":"boxes,roi,text,mask","overlays_effective":false,"channels":[]}
+RESULT: PASS failures=0

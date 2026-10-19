@@ -1,0 +1,19 @@
+type=selftest note=纯逻辑夹具（不加载 RKNN/不连相机）；四开关默认关闭、司机不可见、未知占位
+[PASS] switches_default_off :: none
+[PASS] switches_parse :: boxes,mask
+[PASS] switches_parse_rejects :: 未知开关名
+[PASS] developer_visible_two_channels :: 2
+[PASS] default_no_overlays :: 默认无叠加
+[PASS] fields_present_and_formatted :: 5.0 fps
+[PASS] unavailable_reason_explicit :: PROFILE_UNSUPPORTED
+[PASS] unknown_placeholders_not_zero :: 全部 '—'
+[PASS] unknown_not_zero_literal :: 不是 0 的任何形式
+[PASS] driver_hidden_no_overlays :: driver role cannot view AI debug (P5 hidden; overlays off)
+[PASS] maintainer_visible :: 维护可见
+[PASS] mask_switch_off_not_provided :: 开关关闭即使可用也不叠加
+[PASS] mask_overlay_when_available :: 零拷贝 + 正像素统计
+[PASS] mask_unavailable_no_overlay :: SEG_UNAVAILABLE
+[PASS] roi_boxes_overlay_flags :: ROI/框开关生效
+[PASS] json_fields_and_placeholders :: {"visible":true,"hidden_reason":"","switches":{"boxes":false,"roi":false,"text":false,"mask":false},"switches_desc":"non
+[PASS] json_no_mask_when_not_provided :: 未提供掩码时无 mask 对象
+RESULT: PASS failures=0

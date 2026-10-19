@@ -1,0 +1,304 @@
+{
+ "stamp": "verify-20261019-item012-v1",
+ "impl_stamp": "20261021-item012-r4",
+ "total": 59,
+ "failed": 0,
+ "ok": true,
+ "results": [
+  {
+   "ok": true,
+   "name": "C00_fresh_transcript_present",
+   "detail": "verify-20261019-item012-v1"
+  },
+  {
+   "ok": true,
+   "name": "C00_steps_present",
+   "detail": "missing=[]"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_exits_zero",
+   "detail": "bad=[]"
+  },
+  {
+   "ok": true,
+   "name": "C00_upload_scale",
+   "detail": "uploaded 335 files"
+  },
+  {
+   "ok": true,
+   "name": "C01_exit_tokens_zero",
+   "detail": "n=15 [('BUILD_CORE_EXIT', '0'), ('BUILD_MEDIA_EXIT', '0'), ('TEST_EXIT', '0'), ('DEBUG_SELFTEST_EXIT', '0')]"
+  },
+  {
+   "ok": true,
+   "name": "C02_cleanup_deferred_keep_remote",
+   "detail": "keep-remote: cleanup deferred"
+  },
+  {
+   "ok": true,
+   "name": "C10_junit_xml_present",
+   "detail": "vision-item012-192_168_0_103-verify-20261019-item012-v1.app_core-evidence_item012-core-tests-verify-20261019-item012-v1.xml"
+  },
+  {
+   "ok": true,
+   "name": "C10_junit_failures_zero",
+   "detail": "failures=0"
+  },
+  {
+   "ok": true,
+   "name": "C11_debug_case_domain_multiset",
+   "detail": "fresh_dom=65 want=65 diff=[]"
+  },
+  {
+   "ok": true,
+   "name": "C12_junit_total_1412",
+   "detail": "tests=1412"
+  },
+  {
+   "ok": true,
+   "name": "C1b_junit_names_fresh_eq_r4",
+   "detail": "fresh=1412 impl=1412"
+  },
+  {
+   "ok": true,
+   "name": "C20_selftest_17_cases",
+   "detail": "fresh=17 impl=17"
+  },
+  {
+   "ok": true,
+   "name": "C21_selftest_names_identity",
+   "detail": "fresh vs r4 逐行恒等"
+  },
+  {
+   "ok": true,
+   "name": "C22_selftest_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_fields_view_json_parsed",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_fields_semantics",
+   "detail": "field formatting rederived"
+  },
+  {
+   "ok": true,
+   "name": "C3_fields_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_unavailable_view_json_parsed",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_unavailable_semantics",
+   "detail": "unknown!=0 rederived"
+  },
+  {
+   "ok": true,
+   "name": "C3_unavailable_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_mask_on_view_json_parsed",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_mask_on_semantics",
+   "detail": "positive_pixels==1024 (independent recompute 1024)"
+  },
+  {
+   "ok": true,
+   "name": "C3_mask_on_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_mask_off_view_json_parsed",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_mask_off_semantics",
+   "detail": "switch off -> no payload, availability observable"
+  },
+  {
+   "ok": true,
+   "name": "C3_mask_off_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_no_mask_view_json_parsed",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_no_mask_semantics",
+   "detail": "no mask -> reason only"
+  },
+  {
+   "ok": true,
+   "name": "C3_no_mask_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_driver_view_json_parsed",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_driver_semantics",
+   "detail": "switches requested all-on yet hidden"
+  },
+  {
+   "ok": true,
+   "name": "C3_driver_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_dev-all-overlays_view_json_parsed",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_dev_all_overlays_semantics",
+   "detail": "mask_demo 1280x720 every-7th rederived=131658"
+  },
+  {
+   "ok": true,
+   "name": "C4_dev-all-overlays_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_driver-all-overlays_view_json_parsed",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_driver_hidden_even_all_on",
+   "detail": "driver role cannot view AI debug (P5 hidden; overlays off)"
+  },
+  {
+   "ok": true,
+   "name": "C4_driver-all-overlays_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_maint-default-off_view_json_parsed",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_maint_default_off_semantics",
+   "detail": "overlays none -> all flags false"
+  },
+  {
+   "ok": true,
+   "name": "C4_maint-default-off_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C50_media_selftest_30",
+   "detail": "n=30"
+  },
+  {
+   "ok": true,
+   "name": "C51_media_mask_capture_cases",
+   "detail": "2 mask capture cases in domain"
+  },
+  {
+   "ok": true,
+   "name": "C52_media_selftest_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C60_chain_debug_view_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C61_chain_running_state_semantics",
+   "detail": "mask 1280x720 pos=54867 conf=—"
+  },
+  {
+   "ok": true,
+   "name": "C62_chain_stopped_view_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C63_chain_stopped_unavailable_with_reason",
+   "detail": "n=1"
+  },
+  {
+   "ok": true,
+   "name": "C64_chain_13_pass_lines",
+   "detail": "n=13"
+  },
+  {
+   "ok": true,
+   "name": "C65_chain_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C66_debug_switch_echo",
+   "detail": "('developer', 'mask', 'true')"
+  },
+  {
+   "ok": true,
+   "name": "C7_credential_not_in_fresh_evidence",
+   "detail": "cred_len=5 hits=[]"
+  },
+  {
+   "ok": true,
+   "name": "C8_type_lines_identity_debug-selftest",
+   "detail": "fresh=58 impl=58 type-lines"
+  },
+  {
+   "ok": true,
+   "name": "C8_type_lines_identity_fixture-fields",
+   "detail": "fresh=1324 impl=1324 type-lines"
+  },
+  {
+   "ok": true,
+   "name": "C8_type_lines_identity_fixture-unavailable",
+   "detail": "fresh=1324 impl=1324 type-lines"
+  },
+  {
+   "ok": true,
+   "name": "C8_type_lines_identity_fixture-mask_on",
+   "detail": "fresh=1394 impl=1394 type-lines"
+  },
+  {
+   "ok": true,
+   "name": "C8_type_lines_identity_fixture-mask_off",
+   "detail": "fresh=1289 impl=1289 type-lines"
+  },
+  {
+   "ok": true,
+   "name": "C8_type_lines_identity_fixture-no_mask",
+   "detail": "fresh=1332 impl=1332 type-lines"
+  },
+  {
+   "ok": true,
+   "name": "C8_type_lines_identity_fixture-driver",
+   "detail": "fresh=249 impl=249 type-lines"
+  }
+ ]
+}

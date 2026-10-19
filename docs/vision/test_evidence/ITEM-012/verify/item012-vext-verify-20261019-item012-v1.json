@@ -1,0 +1,81 @@
+{
+ "stamp": "verify-20261019-item012-v1",
+ "pass": true,
+ "steps": [
+  {
+   "step": "V0_keep_remote_tree_present",
+   "ok": true,
+   "detail": "TREE_OK"
+  },
+  {
+   "step": "V1_vext_build",
+   "ok": true,
+   "detail": "exit=0 3.1s e included from /usr/include/glib-2.0/glib.h:82,\n                 from /usr/include/gstreamer-1.0/gst/gst.h:27,\n                 from /tmp/railhmi_vision_item012_verify-20261019-item012-v1/vext_item012.cpp:27:\n/usr/include/glib-2.0/glib/gstrfuncs.h:257:23: note: declared here\n  257 | gpointer              g_memdup         (gconstpointer mem,\n      |                       ^~~~~~~~\nVEXT_BUILD_EXIT=0"
+  },
+  {
+   "step": "V2_vext_run",
+   "ok": true,
+   "detail": "pass=29 fail=0 src_names=29"
+  },
+  {
+   "step": "V3_debug_unknown_arg",
+   "ok": true,
+   "detail": "EXIT=2"
+  },
+  {
+   "step": "V3_debug_help",
+   "ok": true,
+   "detail": "EXIT=0"
+  },
+  {
+   "step": "V3_debug_unknown_fixture",
+   "ok": true,
+   "detail": "EXIT=2"
+  },
+  {
+   "step": "V3_debug_no_args_selftest",
+   "ok": true,
+   "detail": "EXIT=0"
+  },
+  {
+   "step": "V3_debug_unknown_overlay_name",
+   "ok": true,
+   "detail": "EXIT=2"
+  },
+  {
+   "step": "V3_debug_unknown_role",
+   "ok": true,
+   "detail": "EXIT=2"
+  },
+  {
+   "step": "V3_media_unknown_arg",
+   "ok": true,
+   "detail": "EXIT=2"
+  },
+  {
+   "step": "V3_media_unknown_overlay_name",
+   "ok": true,
+   "detail": "type=error bad --debug-overlays: bogus"
+  },
+  {
+   "step": "V4_overlay_switch_bites_end_to_end",
+   "ok": true,
+   "detail": "OFF_EFF False ON_EFF True ON_MASK True POS 131658"
+  },
+  {
+   "step": "V5_selftest_deterministic",
+   "ok": true,
+   "detail": "584a9b7d97813983..."
+  },
+  {
+   "step": "V6_board_artifact_credential_scan",
+   "ok": true,
+   "detail": "cred_len=5 raw_hits=[':29', ':2'] (len<10 -> admin full-string false-positive excluded per ITEM-002/004 convention)"
+  },
+  {
+   "step": "V7_board_cleanup",
+   "ok": true,
+   "detail": "ls: cannot access '/tmp/railhmi_vision_item012_verify-20261019-item012-v1': No s"
+  }
+ ]
+}
