@@ -1,0 +1,3 @@
+type=config dir=./config confirm_frames=3 confidence_min=0.500000 suppress_window_ms=3000
+events=1
+RESULT: PASS

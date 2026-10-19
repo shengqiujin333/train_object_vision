@@ -24,7 +24,7 @@
 | 按 track 排序 | 升序 | `sorted`：track 2 在前、5 在后 | `item007-fixture-sorted` |
 | 阈值来自配置 | `thresholds` 的 confirm/confidence/suppress | `confirm_frames=3 confidence_min=0.5 suppress_window_ms=3000` | `item007-config` |
 | core 单测（含语义适配） | 全绿 | `tests=1142 failures=0` | `item007-core-tests-r1.xml` |
-| 探针 selftest | 全绿 | `RESULT: PASS failures=0`（30 判例） | `item007-selftest-r1.log` |
+| 探针 selftest | 全绿 | `RESULT: PASS failures=0`（19 判例） | `item007-selftest-r1.log` |
 
 ## 2. 执行环境（实测）
 
@@ -52,7 +52,7 @@
 
 - `vision-item007-…-r1.transcript.json` / `.log` — 全流程命令/退出码/输出/主机指纹
 - `…-r1.app_core-evidence_item007-core-tests-…-r1.xml` — core 单测 JUnit（1142/0）
-- `…-r1.app_core-evidence_item007-selftest-…-r1.{log,json}` — 30 判例自检
+- `…-r1.app_core-evidence_item007-selftest-…-r1.{log,json}` — 19 判例自检
 - `…-r1.app_core-evidence_item007-fixture-{person_on_rail,unknown_label,multi_target,off_rail,generation_reset,no_track,low_confidence,obstacle,unavailable,aggregate,sorted}-…-r1.{log,json}`
 - `…-r1.app_core-evidence_item007-config-…-r1.{log,json}`
 

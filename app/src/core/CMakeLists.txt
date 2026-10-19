@@ -27,6 +27,7 @@ add_library(railhmi_core STATIC
     src/vision_two_stage.cpp
     src/vision_inference_envelope.cpp
     src/vision_semantic_adapter.cpp
+    src/vision_tracker.cpp
     src/alarm_center.cpp
     src/clip.cpp
     src/clip_request.cpp
@@ -120,6 +121,13 @@ set_target_properties(railhmi-vision-envelope PROPERTIES
 add_executable(railhmi-vision-semantic tools/semantic_probe.cpp)
 target_link_libraries(railhmi-vision-semantic PRIVATE railhmi_core)
 set_target_properties(railhmi-vision-semantic PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 轻量跟踪与多帧确认协同探针（视觉推理 ITEM-008；纯逻辑夹具）
+add_executable(railhmi-vision-tracking tools/tracking_probe.cpp)
+target_link_libraries(railhmi-vision-tracking PRIVATE railhmi_core)
+set_target_properties(railhmi-vision-tracking PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
 

@@ -19,7 +19,7 @@ app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
 app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
-app/src/core/CMakeLists.txt | active | railhmi_core 静态库（含帧身份 frame_identity、帧布局 frame_layout、压缩滚动缓冲 compressed_ring、录像来源 recording_source、片段请求 clip_request、录像 provider recording_provider、异常恢复策略 recovery_policy、回放同步 replay_sync、视频诊断 video_diagnostics、预算测量 metrics、视觉模型能力 vision_model_capability、视觉预处理 vision_preprocess、检测后处理 vision_detect_postprocess、分割后处理 vision_seg_postprocess、同帧两阶段 vision_two_stage、结果关联发布 vision_inference_envelope、语义适配 vision_semantic_adapter）+ config-check + sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针 + railhmi-timebase-sync（视频 ITEM-015）+ railhmi-model-probe（视觉推理 ITEM-001）+ railhmi-vision-detect（视觉推理 ITEM-003）+ railhmi-vision-seg（视觉推理 ITEM-004）+ railhmi-vision-twostage（视觉推理 ITEM-005）+ railhmi-vision-envelope（视觉推理 ITEM-006）+ railhmi-vision-semantic（视觉推理 ITEM-007）
+app/src/core/CMakeLists.txt | active | railhmi_core 静态库（含帧身份 frame_identity、帧布局 frame_layout、压缩滚动缓冲 compressed_ring、录像来源 recording_source、片段请求 clip_request、录像 provider recording_provider、异常恢复策略 recovery_policy、回放同步 replay_sync、视频诊断 video_diagnostics、预算测量 metrics、视觉模型能力 vision_model_capability、视觉预处理 vision_preprocess、检测后处理 vision_detect_postprocess、分割后处理 vision_seg_postprocess、同帧两阶段 vision_two_stage、结果关联发布 vision_inference_envelope、语义适配 vision_semantic_adapter、轻量跟踪 vision_tracker）+ config-check + sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针 + railhmi-timebase-sync（视频 ITEM-015）+ railhmi-model-probe（视觉推理 ITEM-001）+ railhmi-vision-detect（视觉推理 ITEM-003）+ railhmi-vision-seg（视觉推理 ITEM-004）+ railhmi-vision-twostage（视觉推理 ITEM-005）+ railhmi-vision-envelope（视觉推理 ITEM-006）+ railhmi-vision-semantic（视觉推理 ITEM-007）+ railhmi-vision-tracking（视觉推理 ITEM-008）
 app/src/core/include/railhmi/core/alarm_center.h | active | 报警中心模型接口（字段派生/默认排序/六维筛选/确认与维护日志/录像三态；ITEM-018）
 app/src/core/include/railhmi/core/bounded_queue.h | active | 有界丢最旧队列（视频 ITEM-008）：线程安全、非阻塞、条数+字节上限、pushed/dropped/popped 计数；纯标准库模板
 app/src/core/include/railhmi/core/camera_registry.h | active | 配置驱动摄像头注册表/检测职责徽标/NVR 集成项接口
@@ -59,7 +59,8 @@ app/src/core/include/railhmi/core/vision_inference_envelope.h | active | 推理�
 app/src/core/include/railhmi/core/vision_model_capability.h | active | 视觉模型能力描述与就绪核验接口（视觉推理 ITEM-001）：TensorDesc/ModelDescriptor/ModelSpec/identify_kind/check_capability/稳定 reason/文本与 JSON 序列化/模型路径解析/profile 证据；纯标准库
 app/src/core/include/railhmi/core/vision_preprocess.h | active | 视觉推理输入预处理接口（视觉推理 ITEM-002）：letterbox 参数/量化·反量化/PreprocessConfig/PreprocessedInput（HWC 张量+统计）/packed 与 NV12 参考路径/稳定 reason；纯标准库
 app/src/core/include/railhmi/core/vision_seg_postprocess.h | active | YOLOv8-seg 分割后处理接口（视觉推理 ITEM-004）：SegConfig/SegBox/SegMask/SegResult/decode_yolov8_seg（13 输出、每框独立原图二值 plane）/MODEL_MISMATCH；纯标准库
-app/src/core/include/railhmi/core/vision_semantic_adapter.h | active | 语义适配与规则接入接口（视觉推理 ITEM-007）：SemanticConfig（白名单/confidence/require_track）/SemanticResult（detections+candidate）/SemanticAdapter（聚合排序/受控清理/dispatch）；纯标准库
+app/src/core/include/railhmi/core/vision_semantic_adapter.h | active | 语义适配与规则接入接口（视觉推理 ITEM-007）：SemanticConfig（白名单/confidence/require_track；ITEM-008 增 TrackPolicy+TrackerConfig）/SemanticResult（detections+candidate）/SemanticAdapter（聚合排序/受控清理/dispatch）；纯标准库
+app/src/core/include/railhmi/core/vision_tracker.h | active | 轻量目标跟踪接口（视觉推理 ITEM-008）：TrackerConfig/TrackState/TrackedBox/LightweightTracker（标签+IoU 贪心/中心距回退/丢失淘汰/时间鸿沟/容量上限/reset）+ camera_level_track_id(-1)；纯标准库
 app/src/core/include/railhmi/core/vision_two_stage.h | active | 同帧两阶段判定接口（视觉推理 ITEM-005）：TwoStageInput/TwoStageResult/TwoStageConfig（danger_zone/缓存策略）/evaluate_two_stage/TwoStageCache/TwoStageEvaluator；纯标准库
 app/src/core/include/railhmi/core/yaml.h | active | 无依赖 YAML 子集解析器接口（块映射/序列/流序列/标量，含行号错误）
 app/src/core/src/alarm_center.cpp | active | 报警中心模型实现（排序/筛选/确认/维护日志/UTC 时间工具；ITEM-018）
@@ -100,7 +101,8 @@ app/src/core/src/vision_inference_envelope.cpp | active | 推理结果关联与�
 app/src/core/src/vision_model_capability.cpp | active | 视觉模型能力核验实现（视觉推理 ITEM-001）：NHWC/NCHW 归一/结构识别（不看文件名）/输入与检测·分割输出逐项匹配/稳定 reason/文本与 JSON
 app/src/core/src/vision_preprocess.cpp | active | 视觉预处理实现（视觉推理 ITEM-002）：居中 letterbox/双线性采样（带 stride）/BGR→RGB/归一化与 int8·uint8·float32 量化/逐通道均值/NV12 参考转换/非法输入拒绝
 app/src/core/src/vision_seg_postprocess.cpp | active | YOLOv8-seg 后处理实现（视觉推理 ITEM-004）：13 输出解析/DFL/proto 点积/双线性 resize/框裁剪/逆 letterbox/每框二值 plane/形状与布局不符显式 MODEL_MISMATCH
-app/src/core/src/vision_semantic_adapter.cpp | active | 语义适配与规则接入实现（视觉推理 ITEM-007）：白名单拦截/同 track 聚合与排序/track_id null 丢弃/候选与非候选分流/generation 受控清理/下发 RuleEngine
+app/src/core/src/vision_semantic_adapter.cpp | active | 语义适配与规则接入实现（视觉推理 ITEM-007）：白名单拦截/同 track 聚合与排序/track_id null 丢弃/候选与非候选分流/generation 受控清理/下发 RuleEngine；ITEM-008 增 TrackPolicy 分发与跟踪器接入（先 reset 后映射）
+app/src/core/src/vision_tracker.cpp | active | 轻量跟踪实现（视觉推理 ITEM-008）：同标签 IoU 贪心/中心距回退/ misses 淘汰/时间鸿沟/超容量显式 -1/id 单调递增且 reset 不复用
 app/src/core/src/vision_two_stage.cpp | active | 同帧两阶段判定实现（视觉推理 ITEM-005）：同帧身份门/中心点落 rail 掩码/danger_zone 求交/不可用不输出安全/FrameGate 接纳/可选跨帧缓存（默认关）
 app/src/core/src/yaml.cpp | active | YAML 子集解析器实现
 app/src/core/tools/ai_probe.cpp | active | 推理调度/队列/遥测探针 CLI（railhmi-ai-probe；丢旧帧/降频/优先级/预算/温度守卫/AI 不可用/距离/司机隔离；ITEM-017/021）
@@ -116,10 +118,11 @@ app/src/core/tools/model_probe.cpp | active | 视觉模型能力核验探针 CLI
 app/src/core/tools/permissions_probe.cpp | active | 权限矩阵/二次确认探针 CLI（railhmi-permissions-probe；矩阵/门控/导出·配置日志；ITEM-023）
 app/src/core/tools/replay_probe.cpp | active | 历史回放模型探针 CLI（railhmi-replay-probe；时间轴/跳转/同步偏差/来源回退/详情；ITEM-020）
 app/src/core/tools/seg_probe.cpp | active | YOLOv8-seg 分割后处理探针 CLI（railhmi-vision-seg；视觉推理 ITEM-004）：--selftest 22 判例、fixture rail/zero_coeff/nocrop/nms/empty/badcount/badsegshape/badproto/badfmt/int8、--config
-app/src/core/tools/semantic_probe.cpp | active | 语义适配与规则接入探针 CLI（railhmi-vision-semantic；视觉推理 ITEM-007）：--selftest 30 判例、11 fixtures（person/未知/多目标/离轨/gen 清理/无 track/低置信/obstacle/不可用/聚合/排序）、--config 读 thresholds
+app/src/core/tools/semantic_probe.cpp | active | 语义适配与规则接入探针 CLI（railhmi-vision-semantic；视觉推理 ITEM-007）：--selftest 19 判例、11 fixtures（person/未知/多目标/离轨/gen 清理/无 track/低置信/obstacle/不可用/聚合/排序）、--config 读 thresholds
 app/src/core/tools/sim_inject.cpp | active | 模拟/故障注入 CLI（railhmi-sim-inject；无 Qt；输出 log/JSON）
 app/src/core/tools/status_probe.cpp | active | 关键状态区/顶部条探针 CLI（railhmi-status-probe；三重编码 + 点击权限；无 Qt；ITEM-016）
 app/src/core/tools/timebase_sync_probe.cpp | active | 时间基准与回放同步探针 CLI（railhmi-timebase-sync；视频 ITEM-015）：真实时钟校准/未校准守卫/实际播放头 UTC 同步/seek 世代、--selftest
+app/src/core/tools/tracking_probe.cpp | active | 轻量跟踪与多帧确认协同探针 CLI（railhmi-vision-tracking；视觉推理 ITEM-008）：--selftest 23 判例、8 fixtures（同目标/多目标/标签隔离/丢失/换代/相机级/无 track/上限）、--config + --policy
 app/src/core/tools/two_stage_probe.cpp | active | 同帧两阶段判定探针 CLI（railhmi-vision-twostage；视觉推理 ITEM-005）：--selftest 30 判例、17 fixtures（命中/不可用/跨帧/danger_zone/接纳/缓存）、--config 读 roi.yaml danger_zone
 app/src/media/CMakeLists.txt | active | railhmi_media 静态库（target 专用；pkg-config gstreamer + librga；含 video_capability/frame_lease/rga_convert/camera_worker/frame_dispatcher/display_distributor/display_registry/ai_dispatcher/recording_tap/clip_writer/media_provider/recovery_controller/frame_preprocess）+ railhmi-stream-probe + railhmi-multi-probe + railhmi-ai-runner（含 ai_worker）+ railhmi-video-capability（ITEM-001）+ railhmi-frame-lease（ITEM-004）+ railhmi-rga-convert（ITEM-005）+ railhmi-camera-worker（ITEM-006）+ railhmi-backpressure（ITEM-008）+ railhmi-display（ITEM-009）+ railhmi-ai-dispatch（ITEM-010）+ railhmi-recording-tap（ITEM-011）+ railhmi-clip-solidify（ITEM-012）+ railhmi-media-provider（ITEM-013）+ railhmi-recovery（ITEM-014）+ railhmi-diagnostics（ITEM-016）+ railhmi-measure（ITEM-017）+ railhmi-rknn-probe（视觉推理 ITEM-001；含 rknn_model_probe）+ railhmi-vision-preprocess（视觉推理 ITEM-002；含 frame_preprocess）
 app/src/media/include/railhmi/media/ai_dispatcher.h | active | AI 帧派发边界接口（视频 ITEM-010）：AiFrame（含 session_id/camera_id/generation/seq 关联键 + FrameLease）/AiCameraSpec/AiFrameRouter（按 ai_enabled/ai_profile 选择、按 inference_interval 降频、有界丢最旧并计数；仅媒体侧派发，不含推理）
@@ -221,8 +224,8 @@ app/src/ui/src/permissions_model.cpp | active | 权限桥接实现（矩阵/门�
 app/src/ui/src/permissions_model.h | active | 权限/二次确认 QML 桥接接口（matrix/can*/exportRecording/modifyConfig/recentLogs 委托 core；ITEM-023）
 app/src/ui/src/replay_model.cpp | active | 历史回放桥接实现（时间轴/跳转/同步/来源/时间格式 + 报警选择动态详情 + 真实时钟偏移同步快照；ITEM-020）
 app/src/ui/src/replay_model.h | active | 历史回放 QML 桥接接口（timeline/jumpTargets/sourceStatus + 选择 selectAlarm/selectedDetail/relatedCameras + syncState + playback/setPlaying/setSpeed；ITEM-020）
-app/tests/core/CMakeLists.txt | active | railhmi-core-tests（多源：.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess/vision_detect_postprocess/vision_seg_postprocess/vision_two_stage/vision_inference_envelope/vision_semantic_adapter；注入 RAILHMI_CONFIG_DIR）
-app/tests/core/main.cpp | active | railhmi-core 单元测试入口（.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess/vision_detect_postprocess/vision_seg_postprocess/vision_two_stage/vision_inference_envelope/vision_semantic_adapter 三十六组；支持 --junit）
+app/tests/core/CMakeLists.txt | active | railhmi-core-tests（多源：.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess/vision_detect_postprocess/vision_seg_postprocess/vision_two_stage/vision_inference_envelope/vision_semantic_adapter/vision_tracker；注入 RAILHMI_CONFIG_DIR）
+app/tests/core/main.cpp | active | railhmi-core 单元测试入口（.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess/vision_detect_postprocess/vision_seg_postprocess/vision_two_stage/vision_inference_envelope/vision_semantic_adapter/vision_tracker 三十七组；支持 --junit）
 app/tests/core/test_alarm_center.cpp | active | 报警中心测试（ITEM-018：字段派生/默认排序/六维筛选与空态/确认不删事件/维护日志）
 app/tests/core/test_bounded_queue.cpp | active | 有界丢最旧队列测试（视频 ITEM-008：容量 1 latest-only/有界丢旧/字节预算/计数/空语义）
 app/tests/core/test_clip.cpp | active | 保护片段/缺口测试（ITEM-019：滚动缓冲/片段时长/finalize/缺口合并/保留优先/原子写盘）
@@ -260,6 +263,7 @@ app/tests/core/test_vision_model_capability.cpp | active | 视觉模型能力核
 app/tests/core/test_vision_preprocess.cpp | active | 视觉预处理测试（视觉推理 ITEM-002：letterbox/量化与反量化/RGB 顺序/stride/非法输入拒绝/NV12 参考/float32/uint8）
 app/tests/core/test_vision_seg_postprocess.cpp | active | YOLOv8-seg 后处理测试（视觉推理 ITEM-004：13 输出解码/掩码尺寸与 stride/二值/坐标对齐/阈值/裁剪/NMS/空图/形状与布局不符/int8）
 app/tests/core/test_vision_semantic_adapter.cpp | active | 语义适配与规则接入测试（视觉推理 ITEM-007：person/未知拦截/多目标与聚合排序/离轨不误清/generation 清理/无 track/低置信/obstacle/不可用/受控清理作用域）
+app/tests/core/test_vision_tracker.cpp | active | 轻量跟踪测试（视觉推理 ITEM-008：新/续 id、标签隔离、丢失删除、reset 不复用、时间鸿沟、超容量 -1；适配器 Lightweight/CameraLevel/EnvelopeOnly 与 generation 清理）
 app/tests/core/test_vision_two_stage.cpp | active | 同帧两阶段判定测试（视觉推理 ITEM-005：身份/掩码中心命中/可用性门/danger_zone/FrameGate 接纳/缓存默认关与复用过期换代/计数）
 app/tests/run_core_tests.sh | active | core 单命令测试入口（构建+运行+归档日志/JUnit XML+退出码；ITEM-008 交付，验证轮独立复现 243/243）
 app/third_party/sqlite/sqlite3_min.h | active | 最小 SQLite C API 声明（无系统 sqlite3.h 时使用；存在系统头则优先系统头）
@@ -292,6 +296,7 @@ app/tools/board_vision_model_probe.py | active | 视觉推理 ITEM-001 板端执
 app/tools/board_vision_preprocess.py | active | 视觉推理 ITEM-002 板端执行入口（上传 app/→CoreTests 单测→MediaCheck 编译→selftest/fixture bgr·nv12/真实 FrameLease 预处理→取回证据→清理）
 app/tools/board_vision_seg.py | active | 视觉推理 ITEM-004 板端执行入口（上传 app/→CoreTests 单测→selftest→10 fixtures→config 阈值→取回证据→清理）
 app/tools/board_vision_semantic.py | active | 视觉推理 ITEM-007 板端执行入口（上传 app/→CoreTests 单测→selftest→11 fixtures→config（thresholds）→取回证据→清理）
+app/tools/board_vision_tracking.py | active | 视觉推理 ITEM-008 板端执行入口（上传 app/→CoreTests 单测→selftest→8 fixtures→config+policy→取回证据→清理）
 app/tools/board_vision_two_stage.py | active | 视觉推理 ITEM-005 板端执行入口（上传 app/→CoreTests 单测→selftest→17 fixtures→config（roi.yaml danger_zone）→取回证据→清理）
 app/tools/check_ai_debug_wiring.py | active | AI 调试页/司机隔离静态核对（ITEM-021：叠加层四开关默认关/调试令牌 debug_box·debug_roi/距离与延迟字段/司机守卫/无硬编码）
 app/tools/check_health_wiring.py | active | 健康/日志/自恢复静态核对（ITEM-024：恢复浮层/P6 日志与恢复卡/桥接 core/注入）
@@ -2135,7 +2140,8 @@ docs/vision/implementation/ITEM-003_DETECT_POSTPROCESS.md | active | 视觉推�
 docs/vision/implementation/ITEM-004_SEG_POSTPROCESS.md | active | 视觉推理 ITEM-004 实现说明：YOLOv8-seg 13 输出解码交付/如何满足工作项/解码约定/每框二值掩码/MODEL_MISMATCH/运行入口与观察（前向归 ITEM-009、性能未测）
 docs/vision/implementation/ITEM-005_TWO_STAGE.md | active | 视觉推理 ITEM-005 实现说明：同帧两阶段交付/如何满足工作项/判定语义/缓存策略/运行入口/返工记录（默认构造重复、不可用返回值语义、探针悬垂临时）与边界
 docs/vision/implementation/ITEM-006_ENVELOPE_PUBLICATION.md | active | 视觉推理 ITEM-006 实现说明：InferenceEnvelope 交付/如何满足工作项/字段语义（延迟含排队/track_id null/掩码零拷贝）/逐类拒绝与有界队列/运行入口/返工记录与边界
-docs/vision/implementation/ITEM-007_SEMANTIC_RULES.md | active | 视觉推理 ITEM-007 实现说明：白名单映射/聚合排序/无 track 禁用 0/受控清理接口（invalidate_track/invalidate_camera）/运行入口/观察（跟踪归 ITEM-008、on_detection 语义未改）
+docs/vision/implementation/ITEM-007_SEMANTIC_RULES.md | active | 视觉推理 ITEM-007 实现说明：白名单映射/聚合排序/无 track 禁用 0/受控清理接口（invalidate_track/invalidate_camera）/运行入口/观察（跟踪归 ITEM-008、on_detection 语义未改）；selftest 判例数已按实测订正为 19
+docs/vision/implementation/ITEM-008_TRACKING.md | active | 视觉推理 ITEM-008 实现说明：轻量跟踪器（IoU/中心距、id 单调不复用、丢失/鸿沟/上限）/三种 TrackPolicy/先 reset 后映射/运行入口/返工记录与观察
 docs/vision/test_evidence/ITEM-001/ITEM-001-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-001 实际正确性证据（夹具匹配/不匹配 8 用例、真实 rknn_query 两模型、描述核验与负例、配置汇总、core 958/0）与未执行项
 docs/vision/test_evidence/ITEM-001/VERIFY-ITEM-001.md | active | TestEvidence：视觉 ITEM-001 独立验证（VERIFY-20261018-v1 TEST_PASS：交付入口独立复跑 13 产物 + 独立比对 38/38 + vext 板端 28 判例/CLI 负例/确定性/脱敏/清理；O-1 profile_gap 配置事实、O-2 输出量化无门登记）
 docs/vision/test_evidence/ITEM-001/build-CoreTests-192_168_0_103-20261018-item001-r1.log | active | ITEM-001 core 构建/测试人类可读 transcript（r1）
@@ -2601,6 +2607,42 @@ docs/vision/test_evidence/ITEM-007/vision-item007-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-007/vision-item007-192_168_0_103-verify-20261019-item007-v1.app_core-evidence_item007-selftest-verify-20261019-item007-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/ITEM-007/vision-item007-192_168_0_103-verify-20261019-item007-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/ITEM-007/vision-item007-192_168_0_103-verify-20261019-item007-v1.transcript.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-008/ITEM-008-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-008 实际正确性证据（同目标稳定 id/多目标独立/丢失不重用/generation 清理/相机级 null/容量上限，core 1161/0）与未执行项
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r1.app_core-evidence_item008-core-tests-20261019-item008-r1.xml | active | ITEM-008 core 单测 JUnit（r1：失败）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r1.app_core-evidence_item008-selftest-20261019-item008-r1.log | active | ITEM-008 夹具自检（r1：8 失败）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r1.log | active | ITEM-008 返工前人类可读 transcript（r1）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r1.transcript.json | active | ITEM-008 返工前 transcript（r1：夹具 in_roi 未设导致无事件）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r2.app_core-evidence_item008-core-tests-20261019-item008-r2.xml | active | ITEM-008 core 单测 JUnit（r2：generation 判例失败）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r2.app_core-evidence_item008-selftest-20261019-item008-r2.log | active | ITEM-008 夹具自检（r2：2 失败）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r2.log | active | ITEM-008 返工前人类可读 transcript（r2）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r2.transcript.json | active | ITEM-008 返工前 transcript（r2：generation reset 顺序错误）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r3.app_core-evidence_item008-core-tests-20261019-item008-r3.xml | active | ITEM-008 core 单测 JUnit（r3：通过）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r3.app_core-evidence_item008-selftest-20261019-item008-r3.log | active | ITEM-008 夹具自检（r3：PASS）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r3.log | active | ITEM-008 返工前人类可读 transcript（r3）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r3.transcript.json | active | ITEM-008 返工前 transcript（r3：generation 顺序修复后通过）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-config-20261019-item008-r4.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-config-20261019-item008-r4.log | active | ITEM-008 配置（r4：thresholds + lightweight 策略）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-core-tests-20261019-item008-r4.xml | active | ITEM-008 core 单测 JUnit（r4：tests=1161 failures=0）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-camera_level-20261019-item008-r4.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-camera_level-20261019-item008-r4.log | active | ITEM-008 camera_level（r4：单相机事件、track_id=-1）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-envelope_only-20261019-item008-r4.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-envelope_only-20261019-item008-r4.log | active | ITEM-008 envelope_only（r4：null track 丢弃回归）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-generation_reset-20261019-item008-r4.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-generation_reset-20261019-item008-r4.log | active | ITEM-008 generation_reset（r4：tracker_resets=1 gen_keys=1 new_id=2 events=0/0/1）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-label_guard-20261019-item008-r4.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-label_guard-20261019-item008-r4.log | active | ITEM-008 label_guard（r4：标签变化不串 id）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-max_tracks-20261019-item008-r4.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-max_tracks-20261019-item008-r4.log | active | ITEM-008 max_tracks（r4：超限显式 -1 untracked）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-miss_drop-20261019-item008-r4.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-miss_drop-20261019-item008-r4.log | active | ITEM-008 miss_drop（r4：丢失删除、重现新 id）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-same_target-20261019-item008-r4.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-same_target-20261019-item008-r4.log | active | ITEM-008 same_target（r4：track=1 连续 4 帧，第3帧1事件不重复）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-two_targets-20261019-item008-r4.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-fixture-two_targets-20261019-item008-r4.log | active | ITEM-008 two_targets（r4：2 个不同 track，各自事件）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-selftest-20261019-item008-r4.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-selftest-20261019-item008-r4.log | active | ITEM-008 夹具自检文本（r4：23 判例 PASS）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.log | active | ITEM-008 板端执行人类可读 transcript（r4）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.transcript.json | active | ITEM-008 板端执行结构化 transcript（r4 权威轮：命令/退出码/输出/主机指纹）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

@@ -1,0 +1,24 @@
+[PASS] new box -> id 1
+[PASS] same box -> same id
+[PASS] small move -> same id (IoU)
+[PASS] far box -> new id
+[PASS] ids never 0
+[PASS] different label not matched
+[PASS] center fallback matches
+[PASS] missed track dropped :: 0
+[PASS] reappear -> new id (not reused)
+[PASS] reset clears tracks
+[PASS] post-reset id continues (no reuse)
+[PASS] max_tracks -> untracked (-1), not fabricated
+[PASS] stale gap -> new id
+[FAIL] lightweight: same target -> same id + 1 event :: id=1
+[FAIL] event carries track id
+[FAIL] lightweight: two targets -> 2 ids/events :: 0
+[PASS] generation change: no alarm on first new frame
+[FAIL] generation change resets tracker + rule keys :: 1/0
+[FAIL] new generation gets new track id (no reuse) :: 1
+[FAIL] new generation re-confirms (3 frames)
+[FAIL] camera-level: one camera event, track_id=-1 (not 0) :: events=0 id=-1
+[FAIL] event carries null track
+[PASS] envelope_only: null track dropped (regression)
+RESULT: FAIL failures=8

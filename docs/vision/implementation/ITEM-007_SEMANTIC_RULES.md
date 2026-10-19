@@ -12,7 +12,7 @@
 |---|---|---|
 | 语义适配纯逻辑 | `app/src/core/include/railhmi/core/vision_semantic_adapter.h`、`src/vision_semantic_adapter.cpp` | 白名单映射为 `core::Detection`、未知 label 拦截、同 track 聚合 + 按 track 排序、候选/非候选分流、generation 受控清理、下发 `RuleEngine`。仅标准库。 |
 | 受控清理接口 | `app/src/core/include/railhmi/core/rules.h`、`src/rules.cpp` | `RuleEngine::invalidate_track(camera, track)` / `invalidate_camera(camera)`：只清该目标/该相机的确认与抑制状态，**不删除事件**。 |
-| 探针 | `app/src/core/tools/semantic_probe.cpp`（`railhmi-vision-semantic`） | `--selftest`（30 判例）、11 个 fixture、`--config`（thresholds 的 confirm/confidence/suppress）。 |
+| 探针 | `app/src/core/tools/semantic_probe.cpp`（`railhmi-vision-semantic`） | `--selftest`（19 判例）、11 个 fixture、`--config`（thresholds 的 confirm/confidence/suppress）。 |
 | 单元测试 | `app/tests/core/test_vision_semantic_adapter.cpp` | person/未知/多目标/离轨不误清/generation/无 track/低置信/obstacle/不可用/聚合排序/清理作用域。 |
 | 板端入口 | `app/tools/board_vision_semantic.py` | 一次有界会话：CoreTests→core-tests→selftest→11 fixtures→config→取回证据→清理。 |
 
@@ -29,7 +29,7 @@
 | generation 变化受控清理确认状态 | 适配器按相机记录 generation；变化时调用 `RuleEngine::invalidate_camera`（不删事件），计 `generation_reset_keys` | `generation_reset`：`gen_reset_keys=1 events=0/0/1`（新代重新累计 3 帧才报警） |
 | 失帧/目标消失只清该目标，不整路误清 | 非候选目标走 `RuleEngine::invalidate_track(camera,track)`；候选走 `on_detection` | `off_rail`：同帧 track2 离轨，track1 仍在第 3 帧报警（`events=1`） |
 | 多目标命中不重复开事件 | `RuleEngine` 抑制窗口（`suppress_window_ms`）内同 key 只更新已有事件 | selftest `no duplicate events within suppress window` |
-| 判定可复现 | `--selftest` 30 判例全 PASS | `item007-selftest` |
+| 判定可复现 | `--selftest` 19 判例全 PASS | `item007-selftest` |
 
 语义映射（front）：
 
@@ -65,7 +65,7 @@ cd app && bash build.sh CoreTests && ./build-core/tests/railhmi-core-tests
 
 ## 5. 验证记录
 
-- 本轮实现**首次板端执行即通过**（r1：build=0、core-tests 1142/0、selftest 30/30、11 fixtures 与 config 全部符合预期）；无返工轮。
+- 本轮实现**首次板端执行即通过**（r1：build=0、core-tests 1142/0、selftest 19/19、11 fixtures 与 config 全部符合预期）；无返工轮。
 
 ## 6. 观察与移交
 

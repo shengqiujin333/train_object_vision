@@ -23,6 +23,7 @@
 #include "railhmi/core/config.h"                     // AiProfile
 #include "railhmi/core/rules.h"                      // Detection / RuleEngine / AlarmEvent
 #include "railhmi/core/vision_inference_envelope.h"  // InferenceEnvelope
+#include "railhmi/core/vision_tracker.h"             // LightweightTracker / TrackerConfig
 
 namespace railhmi {
 namespace core {
@@ -36,6 +37,14 @@ inline const char* kStaleGeneration() { return "SEMANTIC_STALE_GENERATION"; }
 inline const char* kBadConfig() { return "SEMANTIC_BAD_CONFIG"; }
 }  // namespace semantic_reason
 
+// 目标关联策略（视觉 ITEM-008）。
+enum class TrackPolicy {
+    EnvelopeOnly = 0,  // 直接用 envelope 的 track_id（null 则丢弃）
+    Lightweight,       // 本地轻量跟踪器分配 id
+    CameraLevel,       // 显式相机级适配：共享 null 关联键（-1，**不是 0**）
+};
+const char* to_string(TrackPolicy v);
+
 struct SemanticConfig {
     AiProfile profile = AiProfile::Front;
     std::vector<std::string> allowed_labels = {"person", "obstacle"};  // 受支持（白名单）
@@ -45,6 +54,8 @@ struct SemanticConfig {
     bool use_envelope_in_roi = true;      // in_roi 由 ITEM-005 两阶段判定给出
     std::string threshold_source;         // 证据
     std::string allowed_labels_source;    // 证据
+    TrackPolicy track_policy = TrackPolicy::EnvelopeOnly;
+    TrackerConfig tracker;
 };
 
 struct SemanticStats {
@@ -59,6 +70,8 @@ struct SemanticStats {
     long long aggregated = 0;              // 同 track 重复框被合并
     long long generation_reset_keys = 0;   // generation 变化清理的 key 数
     long long track_reset_keys = 0;        // 非候选目标按 track 清理的 key 数
+    long long tracker_resets = 0;          // generation 变化重置跟踪器次数
+    long long untracked = 0;               // 超 max_tracks 无法分配 id 的框
 };
 
 struct SemanticResult {
@@ -96,6 +109,7 @@ private:
 
     SemanticConfig cfg_;
     mutable std::map<std::string, std::uint64_t> last_generation_;
+    mutable LightweightTracker tracker_;
 };
 
 }  // namespace core

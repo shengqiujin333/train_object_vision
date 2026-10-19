@@ -16,7 +16,16 @@ bool contains(const std::vector<std::string>& v, const std::string& s) {
 
 }  // namespace
 
-SemanticAdapter::SemanticAdapter(SemanticConfig cfg) : cfg_(std::move(cfg)) {}
+SemanticAdapter::SemanticAdapter(SemanticConfig cfg) : cfg_(std::move(cfg)), tracker_(cfg_.tracker) {}
+
+const char* to_string(TrackPolicy v) {
+    switch (v) {
+        case TrackPolicy::EnvelopeOnly: return "envelope_only";
+        case TrackPolicy::Lightweight: return "lightweight";
+        case TrackPolicy::CameraLevel: return "camera_level";
+    }
+    return "?";
+}
 
 int SemanticAdapter::invalidate_track(RuleEngine* rules, const std::string& camera_id, int track_id) {
     if (!rules) return 0;
@@ -47,13 +56,10 @@ SemanticResult SemanticAdapter::adapt(const InferenceEnvelope& e, long long ts_m
     r.available = true;
     r.stats.input_boxes = static_cast<long long>(e.boxes.size());
 
-    // 按 track 聚合（同 track 取最高分）；map 的有序性天然给出稳定 track 排序。
-    std::map<int, Detection> by_track;
+    // 1) 白名单过滤（未知 label 拦截）。
+    std::vector<EnvelopeBox> filtered;
+    filtered.reserve(e.boxes.size());
     for (const EnvelopeBox& b : e.boxes) {
-        if (cfg_.require_track && b.track_id < 0) {
-            ++r.stats.dropped_no_track;
-            continue;
-        }
         if (!contains(cfg_.known_labels, b.label)) {
             ++r.stats.blocked_unknown_label;
             continue;
@@ -62,11 +68,44 @@ SemanticResult SemanticAdapter::adapt(const InferenceEnvelope& e, long long ts_m
             ++r.stats.blocked_not_allowed;
             continue;
         }
+        filtered.push_back(b);
+    }
+
+    // 2) 目标关联：按策略得到每框 track_id；无法关联的框显式丢弃/标记。
+    std::vector<std::int32_t> ids(filtered.size(), -1);
+    std::vector<char> keep(filtered.size(), 1);
+    if (cfg_.track_policy == TrackPolicy::Lightweight) {
+        const auto tracked = tracker_.update(filtered, ts_ms);
+        for (std::size_t i = 0; i < filtered.size(); ++i) {
+            ids[i] = tracked[i].track_id;
+            if (ids[i] < 0) {
+                ++r.stats.untracked;
+                keep[i] = 0;
+            }
+        }
+    } else if (cfg_.track_policy == TrackPolicy::CameraLevel) {
+        // 显式相机级适配：共享 null 关联键（-1），**不是 0**。
+        ids.assign(filtered.size(), camera_level_track_id());
+    } else {
+        for (std::size_t i = 0; i < filtered.size(); ++i) {
+            ids[i] = filtered[i].track_id < 0 ? -1 : filtered[i].track_id;
+            if (cfg_.require_track && ids[i] < 0) {
+                ++r.stats.dropped_no_track;
+                keep[i] = 0;
+            }
+        }
+    }
+
+    // 3) 按 track 聚合（同 track 取最高分）；map 的有序性天然给出稳定 track 排序。
+    std::map<int, Detection> by_track;
+    for (std::size_t i = 0; i < filtered.size(); ++i) {
+        if (!keep[i]) continue;
+        const EnvelopeBox& b = filtered[i];
         Detection d;
         d.camera_id = e.frame.camera_id;
         d.profile = cfg_.profile;
         d.t_ms = ts_ms;
-        d.track_id = b.track_id < 0 ? -1 : b.track_id;
+        d.track_id = ids[i];
         d.in_roi = cfg_.use_envelope_in_roi ? b.in_roi : false;
         d.confidence = b.confidence;
         d.distance_m = b.distance_m;
@@ -130,8 +169,16 @@ std::vector<AlarmEvent> SemanticAdapter::dispatch(SemanticResult* r, RuleEngine*
 
 std::vector<AlarmEvent> SemanticAdapter::adapt_and_dispatch(const InferenceEnvelope& e, long long ts_ms,
                                                            RuleEngine* rules, SemanticResult* out) {
+    // 先处理 generation 变化：必须先 reset 跟踪器，再为当前帧分配 id。
+    SemanticResult gen;
+    note_generation(e.frame, rules, &gen);
+    if (!gen.ok && gen.reason == semantic_reason::kStaleGeneration()) {
+        if (out) *out = gen;
+        return {};
+    }
     SemanticResult r = adapt(e, ts_ms);
-    note_generation(e.frame, rules, &r);
+    r.stats.generation_reset_keys = gen.stats.generation_reset_keys;
+    r.stats.tracker_resets = gen.stats.tracker_resets;
     auto events = dispatch(&r, rules);
     if (out) *out = r;
     return events;
@@ -158,6 +205,8 @@ void SemanticAdapter::note_generation(const FrameId& frame, RuleEngine* rules,
     it->second = frame.generation;
     // generation 变化：该相机的确认/跟踪状态失效，受控清理（不删除事件）。
     r->stats.generation_reset_keys += rules->invalidate_camera(frame.camera_id);
+    tracker_.reset();  // 旧目标 track 不得跨代复用；id 继续单调递增
+    ++r->stats.tracker_resets;
 }
 
 }  // namespace core
