@@ -1,0 +1,10 @@
+type=descriptor declared=yolov5s profile=front file=yolov5s.rknn file_present=1 load_status=ok runtime_api=2.3.2 (429f97ae6b@2025-04-09T09:09:27) runtime_drv=0.9.8
+ready=1 reason=READY detail=structure verified kind=yolov5_detect matched=8 mismatched=0
+  [ok] identify=yolov5_detect
+  [ok] input.count=1
+  [ok] input[0].dims=3x640x640
+  [ok] input[0].quant=int8/affine zp=-128 scale=0.00392157
+  [ok] output[0].head=c255 80x80
+  [ok] output[1].head=c255 40x40
+  [ok] output[2].head=c255 20x20
+  [ok] output.scales=3

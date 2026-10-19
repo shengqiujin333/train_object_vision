@@ -1,0 +1,9 @@
+descriptor_version=1
+model.path=/tmp/railhmi_vision_item001_20261018-item001-r1/model-assets/yolov5s.rknn
+model.file=yolov5s.rknn
+model.file_present=0
+model.load_status=RKNN_RUNTIME_UNAVAILABLE
+model.runtime.api_version=
+model.runtime.drv_version=
+input.count=0
+output.count=0

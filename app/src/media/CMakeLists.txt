@@ -31,6 +31,7 @@ add_library(railhmi_media STATIC
     src/clip_writer.cpp
     src/media_provider.cpp
     src/recovery_controller.cpp
+    src/rknn_model_probe.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -69,6 +70,13 @@ set_target_properties(railhmi-ai-runner PROPERTIES
 add_executable(railhmi-video-capability tools/video_capability_tool.cpp)
 target_link_libraries(railhmi-video-capability PRIVATE railhmi_media)
 set_target_properties(railhmi-video-capability PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 真模型张量描述探针（视觉推理 ITEM-001；dlopen librknnrt，无编译期 rknn 依赖）
+add_executable(railhmi-rknn-probe tools/rknn_probe.cpp)
+target_link_libraries(railhmi-rknn-probe PRIVATE railhmi_media)
+set_target_properties(railhmi-rknn-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
 

@@ -1,0 +1,10 @@
+type=selftest cases=8
+[PASS] TC-T-CAP-01/seg structure match -> ready -> ready=true reason=READY (expect ready=true reason=READY)
+[PASS] TC-T-CAP-01/detect structure match -> ready -> ready=true reason=READY (expect ready=true reason=READY)
+[PASS] FI-AI-01 model missing -> MODEL_MISSING -> ready=false reason=MODEL_MISSING (expect ready=false reason=MODEL_MISSING)
+[PASS] FI-AI-02 output count mismatch -> MODEL_MISMATCH -> ready=false reason=MODEL_MISMATCH (expect ready=false reason=MODEL_MISMATCH)
+[PASS] FI-AI-03 unquantized input -> MODEL_MISMATCH -> ready=false reason=MODEL_MISMATCH (expect ready=false reason=MODEL_MISMATCH)
+[PASS] TC-T-CAP-03 declared name vs structure -> MODEL_MISMATCH -> ready=false reason=MODEL_MISMATCH (expect ready=false reason=MODEL_MISMATCH)
+[PASS] runtime unavailable -> RKNN_RUNTIME_UNAVAILABLE -> ready=false reason=RKNN_RUNTIME_UNAVAILABLE (expect ready=false reason=RKNN_RUNTIME_UNAVAILABLE)
+[PASS] unknown declared name -> MODEL_MISMATCH -> ready=false reason=MODEL_MISMATCH (expect ready=false reason=MODEL_MISMATCH)
+RESULT: PASS passed=8 failed=0

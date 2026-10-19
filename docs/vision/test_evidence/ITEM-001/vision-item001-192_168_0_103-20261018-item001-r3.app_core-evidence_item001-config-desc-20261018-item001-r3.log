@@ -1,0 +1,10 @@
+type=config config_dir=./config models_dir=/tmp/railhmi_vision_item001_20261018-item001-r3/model-assets declared=4 declared_failed=0 unsupported_profiles=3 unverified=0
+profile=front model=yolov5s version=rknn-2.3.2/yolov5s path=/tmp/railhmi_vision_item001_20261018-item001-r3/model-assets/yolov5s.rknn file_present=1 available=1 reason=READY detail=structure verified
+profile=wheel_rail model=yolov8s-seg version=rknn-2.3.2/yolov8s-seg path=/tmp/railhmi_vision_item001_20261018-item001-r3/model-assets/yolov8s-seg.rknn file_present=1 available=0 reason=PROFILE_UNSUPPORTED detail=profile has no verified model evidence for this kind
+profile=pantograph model=yolov5s version=rknn-2.3.2/yolov5s path=/tmp/railhmi_vision_item001_20261018-item001-r3/model-assets/yolov5s.rknn file_present=1 available=0 reason=PROFILE_UNSUPPORTED detail=profile has no verified model evidence for this kind
+profile=cab_door model=yolov5s version=rknn-2.3.2/yolov5s path=/tmp/railhmi_vision_item001_20261018-item001-r3/model-assets/yolov5s.rknn file_present=1 available=0 reason=PROFILE_UNSUPPORTED detail=profile has no verified model evidence for this kind
+profile.front evidence=1 required=2 yolov8_seg=missing yolov5_detect=ok
+profile.pantograph evidence=0 required=0
+profile.wheel_rail evidence=0 required=0
+profile.cab_door evidence=0 required=0
+RESULT: PASS declared_failed=0 profile_gap=1 (unsupported/unverified are expected states, see lines)

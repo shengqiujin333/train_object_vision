@@ -20,6 +20,7 @@ add_library(railhmi_core STATIC
     src/channel_view.cpp
     src/status.cpp
     src/inference.cpp
+    src/vision_model_capability.cpp
     src/alarm_center.cpp
     src/clip.cpp
     src/clip_request.cpp
@@ -71,6 +72,13 @@ set_target_properties(railhmi-timebase-sync PROPERTIES
 add_executable(railhmi-ai-probe tools/ai_probe.cpp)
 target_link_libraries(railhmi-ai-probe PRIVATE railhmi_core)
 set_target_properties(railhmi-ai-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 视觉模型能力核验探针（视觉推理 ITEM-001；无 Qt/RKNN，夹具可自检）
+add_executable(railhmi-model-probe tools/model_probe.cpp)
+target_link_libraries(railhmi-model-probe PRIVATE railhmi_core)
+set_target_properties(railhmi-model-probe PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
 
