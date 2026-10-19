@@ -1,0 +1,589 @@
+{
+ "stamp": "20261021-item010-r4",
+ "impl_stamp": "20261021-item010-r4",
+ "pass": true,
+ "total": 116,
+ "failures": 0,
+ "results": [
+  {
+   "ok": true,
+   "name": "C00_fresh_transcript_present",
+   "detail": "20261021-item010-r4"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_build-core_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_build-media_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_core-tests_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_duty-selftest_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_duty-config_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-no_model_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-config_only_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-missing_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-mismatch_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-ready_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_duty-real-descriptor-seg_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_duty-real-descriptor-det_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_duty-media-no-model_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_duty-media-declared-mismatch_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_chain4_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_cleanup_deferred",
+   "detail": "cleanup step=0"
+  },
+  {
+   "ok": true,
+   "name": "C1_junit_1300_0",
+   "detail": "tests=1300 failures=0"
+  },
+  {
+   "ok": true,
+   "name": "C1_junit_multiset_identical_impl_r4",
+   "detail": "fresh=1300 impl=1300 only_fresh=0 only_impl=0"
+  },
+  {
+   "ok": true,
+   "name": "C1_duty_test_domain_present",
+   "detail": "duty*=78 sched_unavailable*=5"
+  },
+  {
+   "ok": true,
+   "name": "C1_key_duty_cases_present",
+   "detail": "missing=[]"
+  },
+  {
+   "ok": true,
+   "name": "C2_selftest_logs_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C2_selftest_pass_names_identical",
+   "detail": "17 cases"
+  },
+  {
+   "ok": true,
+   "name": "C2_selftest_17_cases",
+   "detail": "17"
+  },
+  {
+   "ok": true,
+   "name": "C2_no_model_pantograph_unavailable_unknown",
+   "detail": "{\"duty\": \"pantograph\", \"available\": false, \"reason\": \"PROFILE_UNSUPPORTED\", \"detail\": \"no dedicated model capability dec"
+  },
+  {
+   "ok": true,
+   "name": "C2_no_model_wheel_rail_unavailable_unknown",
+   "detail": "{\"duty\": \"wheel_rail\", \"available\": false, \"reason\": \"PROFILE_UNSUPPORTED\", \"detail\": \"no dedicated model capability dec"
+  },
+  {
+   "ok": true,
+   "name": "C2_no_model_cab_door_unavailable_unknown",
+   "detail": "{\"duty\": \"cab_door\", \"available\": false, \"reason\": \"PROFILE_UNSUPPORTED\", \"detail\": \"no dedicated model capability decla"
+  },
+  {
+   "ok": true,
+   "name": "C2_ready_but_unknown",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C2_declared_label_sets_normal",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C2_unknown_display_never_normal",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_config_logs_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_config_duty_rows_identical",
+   "detail": "[('pantograph', 'false', 'PROFILE_UNSUPPORTED', 'unknown'), ('wheel_rail', 'false', 'PROFILE_UNSUPPORTED', 'unknown'), ('cab_door', 'false', 'PROFILE_UNSUPPORTED', 'unknown')]"
+  },
+  {
+   "ok": true,
+   "name": "C3_three_duties_unavailable_unknown",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_registered_names_from_real_config",
+   "detail": "{'pantograph': 'yolov5s', 'wheel_rail': 'yolov8s-seg', 'cab_door': 'yolov5s'}"
+  },
+  {
+   "ok": true,
+   "name": "C3_config_json_independent_recheck",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_config_pass_names",
+   "detail": "['config_three_duties_unavailable_unknown']"
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_no_model_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_no_model_scenario",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_no_model_semantics",
+   "detail": "avail=False reason=PROFILE_UNSUPPORTED state=unknown"
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_no_model_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_config_only_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_config_only_scenario",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_config_only_semantics",
+   "detail": "avail=False reason=PROFILE_UNSUPPORTED state=unknown"
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_config_only_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_missing_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_missing_scenario",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_missing_semantics",
+   "detail": "avail=False reason=MODEL_MISSING state=unknown"
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_missing_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_mismatch_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_mismatch_scenario",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_mismatch_semantics",
+   "detail": "avail=False reason=MODEL_MISMATCH state=unknown"
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_mismatch_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_ready_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_ready_scenario",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_ready_semantics",
+   "detail": "avail=True reason=READY state=unknown"
+  },
+  {
+   "ok": true,
+   "name": "C4_fixture_ready_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C5_descriptor_seg_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C5_descriptor_seg_evals_identical",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C5_seg_real_mismatch",
+   "detail": "['output_count13!=3']"
+  },
+  {
+   "ok": true,
+   "name": "C5_seg_detail_records_real_shape",
+   "detail": "descriptor does not match declared duty capability (detected=yolov8_seg;13 outputs with 1 proto(32x1"
+  },
+  {
+   "ok": true,
+   "name": "C5_seg_descriptor_real",
+   "detail": "[('2.3.2 (429f97ae6b@2025-04-09T09:09:27)', '0.9.8', '1', '13')]"
+  },
+  {
+   "ok": true,
+   "name": "C5_descriptor_det_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C5_descriptor_det_evals_identical",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C5_det_real_mismatch",
+   "detail": "['output_count3!=2']"
+  },
+  {
+   "ok": true,
+   "name": "C5_det_descriptor_real",
+   "detail": "[('2.3.2 (429f97ae6b@2025-04-09T09:09:27)', '0.9.8', '1', '3')]"
+  },
+  {
+   "ok": true,
+   "name": "C6_media_no_model_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C6_media_no_model_three_unavailable_unknown",
+   "detail": "{'pantograph': ('false', 'PROFILE_UNSUPPORTED', 'unknown'), 'wheel_rail': ('false', 'PROFILE_UNSUPPORTED', 'unknown'), 'cab_door': ('false', 'PROFILE_UNSUPPORTED', 'unknown')}"
+  },
+  {
+   "ok": true,
+   "name": "C6_media_no_model_pass_names",
+   "detail": "['duty_pantograph_no_model', 'duty_wheel_rail_no_model', 'duty_cab_door_no_model']"
+  },
+  {
+   "ok": true,
+   "name": "C6_media_no_model_registered_recorded",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C6_media_mismatch_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C6_media_mismatch_rows_identical",
+   "detail": "[('pantograph', 'false', 'MODEL_MISMATCH', 'unknown', 'yolov5s', 'yolov5s', 'declaration+descriptor'), ('wheel_rail', 'false', 'PROFILE_UNSUPPORTED', 'unknown', 'yolov8s-seg', '', 'none'), ('cab_door', 'false', 'MODEL_MISMATCH', 'unknown', 'yolov5s', 'yolov8s-seg', 'declaration+descriptor')]"
+  },
+  {
+   "ok": true,
+   "name": "C6_media_mismatch_semantics",
+   "detail": "{'pantograph': ('false', 'MODEL_MISMATCH', 'unknown', 'declaration+descriptor'), 'wheel_rail': ('false', 'PROFILE_UNSUPPORTED', 'unknown', 'none'), 'cab_door': ('false', 'MODEL_MISMATCH', 'unknown', 'declaration+descriptor')}"
+  },
+  {
+   "ok": true,
+   "name": "C6_media_mismatch_pass_names",
+   "detail": "['duty_pantograph_declared', 'duty_wheel_rail_no_model', 'duty_cab_door_declared']"
+  },
+  {
+   "ok": true,
+   "name": "C6_media_pantograph_layout_mismatch",
+   "detail": "['unsupported_decode_layout']"
+  },
+  {
+   "ok": true,
+   "name": "C7_chain4_json_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C7_chain4_shape",
+   "detail": "mode=chain budget=1"
+  },
+  {
+   "ok": true,
+   "name": "C7_four_lanes",
+   "detail": "{'CAM-06', 'CAM-05', 'CAM-01', 'CAM-04'}"
+  },
+  {
+   "ok": true,
+   "name": "C7_front_ready",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C7_front_inferred_full_budget",
+   "detail": "inferred=30 (5fps x 6s)"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-04_unavailable",
+   "detail": "reason=PROFILE_UNSUPPORTED"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-04_consumed_outside_budget",
+   "detail": "consumed=30 inferred=30"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-04_no_npu_cost",
+   "detail": "last_infer_us=3"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-04_fps_dispatched",
+   "detail": "fps=5.03297"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-05_unavailable",
+   "detail": "reason=PROFILE_UNSUPPORTED"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-05_consumed_outside_budget",
+   "detail": "consumed=30 inferred=30"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-05_no_npu_cost",
+   "detail": "last_infer_us=2"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-05_fps_dispatched",
+   "detail": "fps=5.17857"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-06_unavailable",
+   "detail": "reason=PROFILE_UNSUPPORTED"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-06_consumed_outside_budget",
+   "detail": "consumed=29 inferred=29"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-06_no_npu_cost",
+   "detail": "last_infer_us=1"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-06_fps_dispatched",
+   "detail": "fps=5.04232"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-04_envelope_unavailable_empty",
+   "detail": "{\"session_id\": \"s1a15416ad8b-fcb96f-0\", \"camera_id\": \"CAM-04\", \"generation\": 1, \"seq\": 150, \"profile\": \"pantograph\", \"ca"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-04_envelope_profile",
+   "detail": "pantograph"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-05_envelope_unavailable_empty",
+   "detail": "{\"session_id\": \"s1a15416ad8b-fcb96f-0\", \"camera_id\": \"CAM-05\", \"generation\": 1, \"seq\": 150, \"profile\": \"wheel_rail\", \"ca"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-05_envelope_profile",
+   "detail": "wheel_rail"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-06_envelope_unavailable_empty",
+   "detail": "{\"session_id\": \"s1a15416ad8b-fcb96f-0\", \"camera_id\": \"CAM-06\", \"generation\": 1, \"seq\": 145, \"profile\": \"cab_door\", \"capt"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-06_envelope_profile",
+   "detail": "cab_door"
+  },
+  {
+   "ok": true,
+   "name": "C7_front_envelope_ready",
+   "detail": "ready"
+  },
+  {
+   "ok": true,
+   "name": "C7_last_round_budget_split",
+   "detail": "{\"round\": 353, \"run\": [\"CAM-01\"], \"skipped\": [], \"unavailable\": [\"CAM-04\"], \"idle\": [\"CAM-05\", \"CAM-06\"], \"priority_order\": [\"CAM-01\"], \"tem"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-01_last_round_skipped_empty",
+   "detail": "[]"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-04_last_round_skipped_empty",
+   "detail": "[]"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-05_last_round_skipped_empty",
+   "detail": "[]"
+  },
+  {
+   "ok": true,
+   "name": "C7_CAM-06_last_round_skipped_empty",
+   "detail": "[]"
+  },
+  {
+   "ok": true,
+   "name": "C7_last_round_duty_lanes_not_in_run",
+   "detail": "['CAM-01', 'CAM-04', 'CAM-05', 'CAM-06']"
+  },
+  {
+   "ok": true,
+   "name": "C7_consumed_conservation",
+   "detail": "summary=119 lanes=119"
+  },
+  {
+   "ok": true,
+   "name": "C7_unavailable_conservation",
+   "detail": "summary=93"
+  },
+  {
+   "ok": true,
+   "name": "C7_infer_calls_all_consumed",
+   "detail": "infer_calls=119 consumed=119"
+  },
+  {
+   "ok": true,
+   "name": "C7_published_conservation",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C7_duty_status_unknown",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C7_no_events",
+   "detail": "events=0"
+  },
+  {
+   "ok": true,
+   "name": "C7_result_pass",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C7_thermal_measured",
+   "detail": "celsius=44.384"
+  },
+  {
+   "ok": true,
+   "name": "C8_fingerprint",
+   "detail": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+  },
+  {
+   "ok": true,
+   "name": "C8_no_credential_leak",
+   "detail": "leaks=0"
+  },
+  {
+   "ok": true,
+   "name": "C9_exit_tokens_zero",
+   "detail": "17 tokens, nonzero=[]"
+  },
+  {
+   "ok": true,
+   "name": "C9_exit_token_kinds",
+   "detail": "['BUILD_CORE', 'BUILD_MEDIA', 'CHAIN4', 'DESC_DET', 'DESC_SEG', 'DUTY_CONFIG', 'DUTY_SELFTEST', 'FIXTURE', 'MEDIA_MISMATCH', 'MEDIA_NOMODEL', 'RKNN', 'TEST']"
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+vext PASS g01_apply_without_explicit_eval_auto_evaluates :: READY
+vext PASS g02_apply_counts_prediction :: 1
+vext PASS g03_apply_no_declaration_rejects :: PROFILE_UNSUPPORTED
+vext PASS g04_threshold_inclusive_at_exact_min :: 0.500000
+vext PASS g05_threshold_just_below
+vext PASS g06_override_zero_is_valid_threshold :: 0.01 passes
+vext PASS g07_override_negative_falls_back
+vext PASS g08_tie_keeps_first_label :: pantograph_abnormal
+vext PASS g10_stats_exact_ledger :: ev=1 pr=1 un=2 bl=1 be=1
+vext PASS g11_stats_second_apply_no_extra_eval
+vext PASS g12_re_eval_resets_semantic_state_to_unknown
+vext PASS g13_not_raised_detection_mapping :: 1
+vext PASS g14_closed_detection_mapping
+vext PASS g15_wheel_normal_not_abnormal
+vext PASS g16_load_status_passthrough_runtime_unavailable :: RKNN_RUNTIME_UNAVAILABLE
+vext PASS g17_empty_load_status_not_ready :: NOT_READY
+vext PASS g18_output_count_zero_skips_output_checks :: READY
+vext PASS g19_output_count_zero_no_layout_check :: READY
+vext PASS g20_guard_halves_budget :: effective=1
+vext PASS g21_guard_run_front_only
+vext PASS g22_duty_lanes_unavailable_even_under_guard :: unavail=2
+vext PASS g23_no_frame_duty_lane_is_idle :: idle=1
+vext PASS g24_guard_no_pseudo_starvation
+vext PASS g25_waits_exclude_duty_lanes :: waits=1
+vext PASS g26_second_round_stable
+vext PASS g27_max_wait_not_polluted :: 0
+vext PASS g28_recovered_budget_duty_still_outside :: run=1
+vext PASS g29_round_json_unavailable_visible
+vext RESULT: PASS failures=0
+VEXT_RUN_EXIT=0

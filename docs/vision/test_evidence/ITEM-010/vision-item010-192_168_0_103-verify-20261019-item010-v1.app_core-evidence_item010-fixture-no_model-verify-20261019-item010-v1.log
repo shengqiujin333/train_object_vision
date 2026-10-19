@@ -1,0 +1,2 @@
+type=scenario name=no_model json={"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared for this duty","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+RESULT: PASS failures=0

@@ -1,0 +1,2 @@
+type=scenario name=mismatch json={"duty":"pantograph","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"yolov5s","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count"],"mismatched":["unsupported_decode_layout"]}
+RESULT: PASS failures=0

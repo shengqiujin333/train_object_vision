@@ -2764,6 +2764,15 @@ docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261021-
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261021-item009-v2.log | active | ITEM-009 v2 fresh 轮人类可读日志（9 步全 0 含 neg-missing-models）
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261021-item009-v2.transcript.json | active | ITEM-009 v2 fresh 轮 transcript（指纹/逐命令退出码/8 份下载）
 docs/vision/test_evidence/ITEM-010/ITEM-010-EVIDENCE.md | active | 视觉推理 ITEM-010 板端证据（core 1300/0、duty selftest 17/17、5 fixtures、真实描述 MODEL_MISMATCH、media duty 两情形、4 路 budget=1 不可用路不占预算、返工留痕、覆盖边界）
+docs/vision/test_evidence/ITEM-010/VERIFY-ITEM-010.md | active | TestEvidence（software_verification verify-20261019-item010-v1）：TEST_PASS——三叉验证全绿：V-RUN 交付入口独立复跑 16 步 exit=0 + V-CMP 离线 oracle 116/116（fresh vs impl r4，板前 dry-run 同 116/116 证明非空转）+ V-EXT 板端 g++ 直编自有夹具 28/28（apply 自动求值/阈值边界含 override=0/平分 tie/统计精确账/Detection 映射/load_status 透传/output_count=0/调度集成守卫与职责路预算外）+ CLI 负例 + 语义反转负例（mismatch 模型断言 available 必 exit=1）+ 确定性 sha256 恒等 + 板端清理
+docs/vision/test_evidence/ITEM-010/verify/_dryrun_names.py | active | ITEM-010 验证侧 check 名深度感知提取离线验证（v3，板前预演纪律）
+docs/vision/test_evidence/ITEM-010/verify/item010-compare-20261021-item010-r4.json | active | ITEM-010 oracle 板前 dry-run 结果（对 impl r4 归档 116/116，判据非空转证明）
+docs/vision/test_evidence/ITEM-010/verify/item010-compare-verify-20261019-item010-v1.json | active | ITEM-010 V-CMP 结构化结果（116/116 PASS，fresh vs impl r4）
+docs/vision/test_evidence/ITEM-010/verify/item010-vext-verify-20261019-item010-v1.json | active | ITEM-010 V-EXT 结构化结果（11/11 PASS）
+docs/vision/test_evidence/ITEM-010/verify/verify_item010_compare.py | active | ITEM-010 验证侧离线 oracle（C00..C9 十相 116 判据：transcript/JUnit/selftest/config/夹具/drill/media/chain4 独立重推导 + impl r4 恒等 + 指纹/凭据扫描）
+docs/vision/test_evidence/ITEM-010/verify/verify_item010_vext.py | active | ITEM-010 V-EXT 驱动（V0 保留树/V1 板端直编/V2 判例名恒等/V3 CLI 负例/V4 语义反转/V5 确定性/V6 泄漏扫描/V7 清理）
+docs/vision/test_evidence/ITEM-010/verify/vext_item010.cpp | active | ITEM-010 验证自有扩展夹具（28 判例域 A..H：apply 自动求值/阈值边界含 override=0/平分 tie/统计精确账/Detection 映射/load_status 透传/output_count=0/调度集成）
+docs/vision/test_evidence/ITEM-010/vext-item010-verify-20261019-item010-v1.stdout.log | active | ITEM-010 验证轮 V-EXT 板端 stdout 留痕（28/28 判例 + 语义反转负例 exit=1）
 docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-20261021-item010-r2.log | active | ITEM-010 r2 留痕（CoreTests 编译失败：新增调度测试的 JSON 断言字符串未转义）
 docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-20261021-item010-r3.app_core-evidence_item010-media-mismatch-20261021-item010-r3.log | active | ITEM-010 r3 缺陷留痕（duty_model_paths 误用 break 导致 cab_door 误报 MODEL_MISSING）
 docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-chain4-20261021-item010-r4.json | active | ITEM-010 4 路 budget=1 链路 JSON（last_round 含 unavailable，duty_status 在场）
@@ -2790,6 +2799,30 @@ docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-20261021-item010
 docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-20261021-item010-r4.descriptors_yolov8s-seg.descriptor.txt | active | ITEM-010 真实模型描述文本
 docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-20261021-item010-r4.log | active | ITEM-010 终轮人类可读日志（build/core-tests/duty selftest/config/fixtures/drill/media duty/chain4/cleanup）
 docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-20261021-item010-r4.transcript.json | active | ITEM-010 终轮 transcript（指纹/逐命令退出码/上传构建测试 drill 清理）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-chain4-verify-20261019-item010-v1.json | active | ITEM-010 验证轮 4 路 budget=1 链路 JSON（unavailable=[CAM-04,05,06] 不占预算）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-chain4-verify-20261019-item010-v1.log | active | ITEM-010 验证轮 4 路链路日志
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-core-tests-verify-20261019-item010-v1.xml | active | ITEM-010 验证轮 JUnit XML（tests=1300 failures=0，与 impl r4 恒等）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-descriptor-det-verify-20261019-item010-v1.log | active | ITEM-010 验证轮真实 yolov5s 描述 drill（cab_door 声明 2 输出 vs 实际 3 → MODEL_MISMATCH）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-descriptor-seg-verify-20261019-item010-v1.log | active | ITEM-010 验证轮真实 yolov8s-seg 描述 drill（pantograph 声明 3 输出 vs 实际 13 → MODEL_MISMATCH）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-duty-config-verify-20261019-item010-v1.json | active | ITEM-010 验证轮真实配置口径 JSON（3 职责全 unavailable+unknown，registration is not evidence）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-duty-config-verify-20261019-item010-v1.log | active | ITEM-010 验证轮 duty config 日志
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-duty-selftest-verify-20261019-item010-v1.json | active | ITEM-010 验证轮 duty selftest JSON（failures=0）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-duty-selftest-verify-20261019-item010-v1.log | active | ITEM-010 验证轮 duty selftest 日志（17/17）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-fixture-config_only-verify-20261019-item010-v1.log | active | ITEM-010 验证轮 config_only 夹具（PROFILE_UNSUPPORTED）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-fixture-mismatch-verify-20261019-item010-v1.log | active | ITEM-010 验证轮 mismatch 夹具（MODEL_MISMATCH）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-fixture-missing-verify-20261019-item010-v1.log | active | ITEM-010 验证轮 missing 夹具（MODEL_MISSING）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-fixture-no_model-verify-20261019-item010-v1.log | active | ITEM-010 验证轮 no_model 夹具（PROFILE_UNSUPPORTED）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-fixture-ready-verify-20261019-item010-v1.log | active | ITEM-010 验证轮 ready 夹具（READY 且 state=unknown）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-media-mismatch-verify-20261019-item010-v1.json | active | ITEM-010 验证轮 media duty 声明+真实模型 JSON（duty_status 在场）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-media-mismatch-verify-20261019-item010-v1.log | active | ITEM-010 验证轮 media duty mismatch 日志
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-media-no-model-verify-20261019-item010-v1.json | active | ITEM-010 验证轮 media duty 无声明 JSON（duty_status 在场）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-media-no-model-verify-20261019-item010-v1.log | active | ITEM-010 验证轮 media duty no-model 日志
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-rknn-yolov5s-verify-20261019-item010-v1.json | active | ITEM-010 验证轮 rknn_query 描述（yolov5s）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.app_core-evidence_item010-rknn-yolov8s-seg-verify-20261019-item010-v1.json | active | ITEM-010 验证轮 rknn_query 描述（yolov8s-seg）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.descriptors_yolov5s.descriptor.txt | active | ITEM-010 验证轮真实模型描述文本
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.descriptors_yolov8s-seg.descriptor.txt | active | ITEM-010 验证轮真实模型描述文本
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.log | active | ITEM-010 验证 fresh 轮人类可读日志（16 步全 0 含 duty selftest/config/5 fixtures/drill/media duty/chain4）
+docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.transcript.json | active | ITEM-010 验证 fresh 轮 transcript（指纹/逐命令退出码/22 份下载/keep-remote）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
