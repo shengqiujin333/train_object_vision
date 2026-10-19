@@ -1,0 +1,8 @@
+type=worker start interval=5 depth=2 cameras=6 detector=sim(substitute,not-rknn) synthetic_tick=on
+type=channel camera=CAM-01 profile=front fps=5 latency=33 dropped=79 model=rknn-2.3.2/yolov5s
+type=channel camera=CAM-04 profile=pantograph fps=5 latency=39 dropped=79 model=rknn-2.3.2/yolov5s
+type=channel camera=CAM-05 profile=wheel_rail fps=5 latency=36 dropped=79 model=rknn-2.3.2/yolov8s-seg
+type=channel camera=CAM-06 profile=cab_door fps=5 latency=42 dropped=79 model=rknn-2.3.2/yolov5s
+type=ai-status running=运行 eligible=4 with_result=4
+type=ai-status stopped=AI 不可用
+type=acceptance worker_stopped=true ai_unavailable=true channels_ran=4/4 result=PASS

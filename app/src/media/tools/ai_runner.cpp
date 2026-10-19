@@ -62,13 +62,15 @@ int main(int argc, char** argv) {
     wc.sched.npu_budget = cfg.settings.app.ai.npu_budget;
     wc.sched.temp_limit_c = cfg.settings.app.ai.temp_limit_c;
     wc.cameras = core::build_registry(cfg.settings);
+    // 历史替代输入链路：显式开启自造帧 tick（生产模式默认为关闭）。
+    wc.synthetic_tick = true;
 
     auto det = std::make_shared<media::SimDetector>(models);
     media::AiWorker worker(wc, det);
     emit("type=worker start interval=" + std::to_string(wc.sched.inference_interval) +
          " depth=" + std::to_string(wc.sched.queue_depth) +
          " cameras=" + std::to_string(wc.cameras.size()) +
-         " detector=sim(substitute,not-rknn)");
+         " detector=sim(substitute,not-rknn) synthetic_tick=on");
 
     worker.start();
     const auto t0 = std::chrono::steady_clock::now();

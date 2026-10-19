@@ -1,10 +1,11 @@
 #pragma once
 
-// railhmi-media: 推理工作线程（ITEM-017）。
+// railhmi-media: 推理工作线程（ITEM-017；视觉推理 ITEM-009 起降为替代输入链路）。
 // 独立线程消费每路有界丢旧帧队列，按配置帧间隔调用可插拔 Detector，产出 DetectionResult，
 // 并维护 railhmi-core::AiRuntime 遥测（fps/耗时/最近结果）。start/stop 明确 join，退出清理干净。
-// Detector 由视觉/模型职责提供；本层提供 SimDetector（替代输入，非 RKNN）用于无模型时验证
-// 线程/调度/遥测与“停止后 AI 不可用”语义。target 专用。
+// Detector 由视觉/模型职责提供；本层保留 SimDetector（替代输入，非 RKNN）仅供无模型时验证
+// 线程/调度/遥测与“停止后 AI 不可用”语义，**生产路径已切换到 VisionAiWorker**（视觉推理
+// ITEM-009：真实帧租约 + RknnVisionDetector + ai_dispatcher 队列），且 `synthetic_tick` 默认关闭。
 
 #include <atomic>
 #include <map>
@@ -46,9 +47,14 @@ struct AiWorkerConfig {
     railhmi::core::AiSchedulerConfig sched;
     std::vector<railhmi::core::CameraSlot> cameras;   // 提供 id/profile/ai_enabled
     double temp_c = 60.0;
+    // 自造帧 tick（仅替代输入的历史链路用；**生产模式必须为 false**）。
+    // 视觉推理 ITEM-009 起，生产路径为 VisionAiWorker（真实检测器 + 真实帧租约）。
+    bool synthetic_tick = false;
 };
 
-// 推理工作线程：自驱动 tick（可外部 submit）。tick 推进内部时钟、入队并推理到期帧。
+// 推理工作线程（**替代输入**历史链路，ITEM-017）：仅在 `synthetic_tick=true` 时自驱动 tick，
+// 推进内部时钟、入队并推理到期帧。生产模式必须关闭自造帧；真实链路走
+// `VisionAiWorker`（视觉推理 ITEM-009：真实帧租约 + 真实检测器 + ai_dispatcher 队列）。
 class AiWorker {
 public:
     AiWorker(AiWorkerConfig cfg, std::shared_ptr<Detector> detector);

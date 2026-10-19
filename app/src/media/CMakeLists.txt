@@ -33,6 +33,10 @@ add_library(railhmi_media STATIC
     src/recovery_controller.cpp
     src/rknn_model_probe.cpp
     src/frame_preprocess.cpp
+    src/thermal_sensor.cpp
+    src/rknn_session.cpp
+    src/vision_ai_worker.cpp
+    src/vision_rknn_detector.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -42,7 +46,7 @@ target_include_directories(railhmi_media PRIVATE
 )
 target_link_libraries(railhmi_media PUBLIC
     railhmi_core railhmi_platform
-    ${GST_LIBRARIES} ${RGA_LIBRARIES}
+    ${GST_LIBRARIES} ${RGA_LIBRARIES} ${CMAKE_DL_LIBS}
 )
 target_compile_options(railhmi_media PRIVATE ${GST_CFLAGS_OTHER})
 
@@ -85,6 +89,13 @@ set_target_properties(railhmi-rknn-probe PROPERTIES
 add_executable(railhmi-vision-preprocess tools/preprocess_probe.cpp)
 target_link_libraries(railhmi-vision-preprocess PRIVATE railhmi_media)
 set_target_properties(railhmi-vision-preprocess PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 真实检测器/推理工作线程/调度探针（视觉推理 ITEM-009；RKNN + 帧租约 + ai_dispatcher 队列）
+add_executable(railhmi-vision-pipeline tools/vision_pipeline_probe.cpp)
+target_link_libraries(railhmi-vision-pipeline PRIVATE railhmi_media)
+set_target_properties(railhmi-vision-pipeline PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
 

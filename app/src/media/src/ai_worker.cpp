@@ -73,7 +73,7 @@ void AiWorker::stop() {
 
 void AiWorker::loop() {
     while (running_.load()) {
-        tick(40);
+        if (cfg_.synthetic_tick) tick(40);   // 仅替代输入链路：生产模式不自造帧
         std::this_thread::sleep_for(std::chrono::milliseconds(40));
     }
 }
