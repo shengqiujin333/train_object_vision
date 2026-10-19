@@ -1,0 +1,23 @@
+type=selftest schema=railhmi.vision.selftest.v1 no_device=true environment=ai-host-fixture cases=16
+[FAIL] model/model.missing :: absent model is not ready [FI-AI-01/TC-T-CAP-02]
+[FAIL] model/model.tensor_mismatch :: seg-like descriptor does not satisfy yolov5s spec [FI-AI-02/TC-T-CAP-03]
+[PASS] model/model.ready :: detect + seg descriptors match declared specs [TC-T-CAP-01]
+[PASS] preprocess/preprocess.synthetic_letterbox :: letterbox/quantize produced 640x640 RGB int8 [TC-T-PRE-01/03/04]
+[PASS] preprocess/preprocess.empty_frame :: empty/invalid frame rejected explicitly [FI-AI-04/TC-T-PRE-05]
+[PASS] detect/detect.no_detection :: all-zero tensors -> ready with empty boxes (no error) [TC-T-DET-04]
+[PASS] detect/detect.synthetic_box :: synthetic person box decoded at expected normalized coordinates [TC-T-DET-02/FI-AI-11]
+[PASS] seg/seg.synthetic_mask :: 13-tensor seg fixture -> 1 rail box with full-size binary plane [TC-T-SEG-01/02/03]
+[FAIL] two_stage/two_stage.person_on_mask :: person center inside rail mask -> alarm hit [TC-T-TWOPHASE-01]
+[PASS] two_stage/two_stage.mask_missing_unavailable :: missing mask -> unavailable, never 'rail safe' [FI-AI-07/TC-T-TWOPHASE-03]
+[PASS] envelope/envelope.stale_duplicate_out_of_order :: stale generation / duplicate seq / out-of-order each rejected and counted [FI-AI-10/TC-T-PUB-02]
+[PASS] envelope/envelope.unavailable_vs_empty :: unavailable+reason vs ready+empty boxes are distinguishable [TC-T-PUB-03/FI-AI-07]
+[PASS] availability/availability.ai_stopped :: worker stopped -> AI unavailable [TC-T-DISP-02]
+[PASS] availability/availability.duty_unsupported :: three duties unavailable + unknown despite config registration [TC-T-MIS-01/02]
+[PASS] availability/availability.distance_uncalibrated :: no calibration -> distance -1 with unknown placeholder [TC-T-DIST-01]
+[PASS] debug/availability.debug_unknown_not_zero :: unavailable channel shows reason and '—' placeholders (never 0) [TC-T-DBG-03]
+type=pending text=真机精度/检出率/误报率：需 ENV-D 现场数据与冻结测试集实测（本自检不声称通过）
+type=pending text=人工视觉确认（框/掩码是否合理）：只能由用户完成（本自检不替代）
+type=pending text=4/6 路并发、热稳态温度与长跑稳定性：需板端长时实测（本自检仅夹具路径）
+type=pending text=真实相机 RTSP 取流与真实目标距离：需现场授权（ENV-D）
+type=summary total=16 passed=13 failed=3
+RESULT: FAIL failures=3

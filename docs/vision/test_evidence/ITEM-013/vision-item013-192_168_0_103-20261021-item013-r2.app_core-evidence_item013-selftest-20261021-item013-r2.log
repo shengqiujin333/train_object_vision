@@ -1,0 +1,85 @@
+type=selftest schema=railhmi.vision.selftest.v1 no_device=true environment=ai-host-fixture cases=16
+[PASS] model/model.missing :: absent model is not ready (MODEL_MISSING) [FI-AI-01/TC-T-CAP-02]
+    evidence file_present=false
+    evidence ready=false
+    evidence reason=MODEL_MISSING
+[PASS] model/model.tensor_mismatch :: seg-like descriptor does not satisfy yolov5s spec [FI-AI-02/TC-T-CAP-03]
+    evidence mismatched_items=0
+    evidence ready=false
+    evidence reason=MODEL_MISMATCH
+[PASS] model/model.ready :: detect + seg descriptors match declared specs [TC-T-CAP-01]
+    evidence detect_outputs=3
+    evidence detect_ready=true
+    evidence seg_outputs=13
+    evidence seg_ready=true
+[PASS] preprocess/preprocess.synthetic_letterbox :: letterbox/quantize produced 640x640 RGB int8 [TC-T-PRE-01/03/04]
+    evidence b_mean=-72.50
+    evidence bytes=1228800
+    evidence ok=true
+    evidence pad_x=0
+    evidence pad_y=140
+    evidence r_mean=34.38
+    evidence scale=0.500000
+[PASS] preprocess/preprocess.empty_frame :: empty/invalid frame rejected explicitly [FI-AI-04/TC-T-PRE-05]
+    evidence ok=false
+    evidence reason=PRE_NULL_BUFFER: null source
+[PASS] detect/detect.no_detection :: all-zero tensors -> ready with empty boxes (no error) [TC-T-DET-04]
+    evidence boxes=0
+    evidence ok=true
+    evidence reason=DETECT_EMPTY
+[PASS] detect/detect.synthetic_box :: synthetic person box decoded at expected normalized coordinates [TC-T-DET-02/FI-AI-11]
+    evidence boxes=1
+    evidence expected_x=0.498437
+    evidence h=0.020312
+    evidence label=person
+    evidence tolerance=0.001
+    evidence w=0.015625
+    evidence x=0.498437
+    evidence y=0.496094
+[PASS] seg/seg.synthetic_mask :: 13-tensor seg fixture -> 1 rail box with full-size binary plane [TC-T-SEG-01/02/03]
+    evidence boxes=1
+    evidence mask_h=640
+    evidence mask_w=640
+    evidence positive=14400
+    evidence reason=SEG_OK
+    evidence score=1.0000
+    evidence w=0.1875
+    evidence x=0.5062
+[PASS] two_stage/two_stage.person_on_mask :: person center inside rail mask -> alarm hit [TC-T-TWOPHASE-01]
+    evidence alarm_hits=1
+    evidence mask_hit=1
+    evidence person_total=1
+[PASS] two_stage/two_stage.mask_missing_unavailable :: missing mask -> unavailable, never 'rail safe' [FI-AI-07/TC-T-TWOPHASE-03]
+    evidence alarm_hits=0
+    evidence available=false
+    evidence reason=TWO_STAGE_UNAVAILABLE
+[PASS] envelope/envelope.stale_duplicate_out_of_order :: stale generation / duplicate seq / out-of-order each rejected and counted [FI-AI-10/TC-T-PUB-02]
+    evidence accepted=2
+    evidence duplicate_reason=duplicate_seq
+    evidence duplicate_seq=1
+    evidence out_of_order_reason=out_of_order_seq
+    evidence out_of_order_seq=1
+    evidence stale_generation=1
+    evidence stale_reason=stale_generation
+[PASS] envelope/envelope.unavailable_vs_empty :: unavailable+reason vs ready+empty boxes are distinguishable [TC-T-PUB-03/FI-AI-07]
+    evidence ready_reason=READY
+    evidence unavailable_reason=SEG_UNAVAILABLE
+[PASS] availability/availability.ai_stopped :: worker stopped -> AI unavailable [TC-T-DISP-02]
+    evidence status_text=AI 不可用
+[PASS] availability/availability.duty_unsupported :: three duties unavailable + unknown despite config registration [TC-T-MIS-01/02]
+    evidence reason=PROFILE_UNSUPPORTED
+    evidence states=pantograph=unknown;wheel_rail=unknown;cab_door=unknown;
+[PASS] availability/availability.distance_uncalibrated :: no calibration -> distance -1 with unknown placeholder [TC-T-DIST-01]
+    evidence distance_m=-1.00
+    evidence reason=NO_CALIBRATION
+    evidence text=—
+[PASS] debug/availability.debug_unknown_not_zero :: unavailable channel shows reason and '—' placeholders (never 0) [TC-T-DBG-03]
+    evidence confidence_text=—
+    evidence fps_text=—
+    evidence unavailable_reason=PROFILE_UNSUPPORTED
+type=pending text=真机精度/检出率/误报率：需 ENV-D 现场数据与冻结测试集实测（本自检不声称通过）
+type=pending text=人工视觉确认（框/掩码是否合理）：只能由用户完成（本自检不替代）
+type=pending text=4/6 路并发、热稳态温度与长跑稳定性：需板端长时实测（本自检仅夹具路径）
+type=pending text=真实相机 RTSP 取流与真实目标距离：需现场授权（ENV-D）
+type=summary total=16 passed=16 failed=0
+RESULT: PASS failures=0

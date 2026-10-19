@@ -32,6 +32,7 @@ void run_vision_worker_schedule_tests();
 void run_vision_duty_capability_tests();
 void run_vision_distance_tests();
 void run_vision_debug_view_tests();
+void run_vision_selftest_tests();
 void run_frame_identity_tests();
 void run_frame_layout_tests();
 void run_bounded_queue_tests();
@@ -86,6 +87,7 @@ int main(int argc, char** argv) {
     run_vision_duty_capability_tests();
     run_vision_distance_tests();
     run_vision_debug_view_tests();
+    run_vision_selftest_tests();
     run_frame_identity_tests();
     run_frame_layout_tests();
     run_bounded_queue_tests();

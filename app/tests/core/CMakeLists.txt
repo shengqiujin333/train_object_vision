@@ -25,6 +25,7 @@ add_executable(railhmi-core-tests
     test_vision_duty_capability.cpp
     test_vision_distance.cpp
     test_vision_debug_view.cpp
+    test_vision_selftest.cpp
     test_frame_identity.cpp
     test_frame_layout.cpp
     test_bounded_queue.cpp
