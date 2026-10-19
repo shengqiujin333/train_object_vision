@@ -1,0 +1,422 @@
+{
+  "stamp": "verify-20261019-item005-v1",
+  "passed": 83,
+  "total": 83,
+  "records": [
+    {
+      "ok": true,
+      "name": "T1_build-core_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_core-tests_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-center_in_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-center_out_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-no_person_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-seg_unavailable_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-mask_empty_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-detect_unavailable_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-frame_mismatch_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-danger_zone_hit_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-danger_zone_miss_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-stale_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-cache_disabled_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-cache_hit_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-cache_expired_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-cache_gen_change_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-bounds_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-multi_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-mask_misaligned_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_config_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_selftest_exit_00",
+      "detail": "tokens=[0, 0] transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_keep_remote_no_cleanup",
+      "detail": "cleanup_steps=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_host_fingerprint_expected",
+      "detail": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "ok": true,
+      "name": "T1_upload_app_reported",
+      "detail": "uploaded 292 files"
+    },
+    {
+      "ok": true,
+      "name": "T1_39_downloads_ok",
+      "detail": "39"
+    },
+    {
+      "ok": true,
+      "name": "T2_selftest_pass_count_from_source",
+      "detail": "board=26 source=26"
+    },
+    {
+      "ok": true,
+      "name": "T2_selftest_result_line",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T2_selftest_judgement_names_present",
+      "detail": "missing=[]"
+    },
+    {
+      "ok": true,
+      "name": "T2_selftest_identical_to_impl_r4",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3a_center_in_mask_pixel_pred",
+      "detail": "(0.5,0.8)"
+    },
+    {
+      "ok": true,
+      "name": "T3b_center_in_row",
+      "detail": "{'ok': '1', 'available': '1', 'reason': 'TWO_STAGE_OK', 'persons': '1', 'mask_hit': '1', 'alarms': '1', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3c_center_in_det_line",
+      "detail": "det[0] xywh=(0.4500,0.7500,0.1000,0.1000) score=0.900 mask_hit=1 zone=0 alarm=1"
+    },
+    {
+      "ok": true,
+      "name": "T3d_center_out_mask_pixel_pred",
+      "detail": "(0.5,0.2)"
+    },
+    {
+      "ok": true,
+      "name": "T3e_center_out_row",
+      "detail": "{'ok': '1', 'available': '1', 'reason': 'TWO_STAGE_NO_ALARM', 'persons': '1', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '1', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3f_no_person_row",
+      "detail": "{'ok': '1', 'available': '1', 'reason': 'TWO_STAGE_NO_PERSON', 'persons': '0', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3g_seg_unavailable_unavailable_row",
+      "detail": "{'ok': '0', 'available': '0', 'reason': 'TWO_STAGE_UNAVAILABLE', 'persons': '0', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3g_mask_empty_unavailable_row",
+      "detail": "{'ok': '0', 'available': '0', 'reason': 'TWO_STAGE_UNAVAILABLE', 'persons': '0', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3g_detect_unavailable_unavailable_row",
+      "detail": "{'ok': '0', 'available': '0', 'reason': 'TWO_STAGE_UNAVAILABLE', 'persons': '0', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3g_mask_misaligned_unavailable_row",
+      "detail": "{'ok': '0', 'available': '0', 'reason': 'TWO_STAGE_UNAVAILABLE', 'persons': '0', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3i_frame_mismatch_reason",
+      "detail": "{'ok': '0', 'available': '0', 'reason': 'TWO_STAGE_FRAME_MISMATCH', 'persons': '0', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3j_dz_hit_zone_pred",
+      "detail": "(0.5,0.9)"
+    },
+    {
+      "ok": true,
+      "name": "T3k_dz_hit_row",
+      "detail": "{'ok': '1', 'available': '1', 'reason': 'TWO_STAGE_OK', 'persons': '1', 'mask_hit': '1', 'alarms': '1', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3l_dz_hit_det_line",
+      "detail": "det[0] xywh=(0.4500,0.8500,0.1000,0.1000) score=0.900 mask_hit=1 zone=1 alarm=1"
+    },
+    {
+      "ok": true,
+      "name": "T3m_dz_miss_zone_pred",
+      "detail": "(0.5,0.7000000000000001)"
+    },
+    {
+      "ok": true,
+      "name": "T3n_dz_miss_row",
+      "detail": "{'ok': '1', 'available': '1', 'reason': 'TWO_STAGE_NO_ALARM', 'persons': '1', 'mask_hit': '1', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '1', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3o_dz_miss_det_line",
+      "detail": "det[0] xywh=(0.4500,0.6500,0.1000,0.1000) score=0.900 mask_hit=1 zone=0 alarm=0"
+    },
+    {
+      "ok": true,
+      "name": "T3p_stale_row",
+      "detail": "{'ok': '0', 'available': '0', 'reason': 'TWO_STAGE_STALE', 'persons': '0', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3q_cache_disabled_row",
+      "detail": "{'ok': '0', 'available': '0', 'reason': 'TWO_STAGE_UNAVAILABLE', 'persons': '0', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3r_cache_age_indep_arith",
+      "detail": "100ms"
+    },
+    {
+      "ok": true,
+      "name": "T3s_cache_hit_row",
+      "detail": "{'ok': '1', 'available': '1', 'reason': 'TWO_STAGE_OK', 'persons': '1', 'mask_hit': '1', 'alarms': '1', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '1', 'cache_age_ms': '100'}"
+    },
+    {
+      "ok": true,
+      "name": "T3t_cache_expired_indep_arith",
+      "detail": "900ms>500ms"
+    },
+    {
+      "ok": true,
+      "name": "T3u_cache_expired_row",
+      "detail": "{'ok': '0', 'available': '0', 'reason': 'TWO_STAGE_UNAVAILABLE', 'persons': '0', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3v_cache_gen_change_row",
+      "detail": "{'ok': '0', 'available': '0', 'reason': 'TWO_STAGE_UNAVAILABLE', 'persons': '0', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3w_bounds_center_pred",
+      "detail": "1.07>1"
+    },
+    {
+      "ok": true,
+      "name": "T3x_bounds_row",
+      "detail": "{'ok': '1', 'available': '1', 'reason': 'TWO_STAGE_NO_ALARM', 'persons': '1', 'mask_hit': '0', 'alarms': '0', 'dropped_no_mask': '0', 'dropped_zone': '0', 'dropped_bounds': '1', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3y_multi_pixel_preds",
+      "detail": "3 centers"
+    },
+    {
+      "ok": true,
+      "name": "T3z_multi_row",
+      "detail": "{'ok': '1', 'available': '1', 'reason': 'TWO_STAGE_OK', 'persons': '3', 'mask_hit': '2', 'alarms': '2', 'dropped_no_mask': '1', 'dropped_zone': '0', 'dropped_bounds': '0', 'used_cache': '0', 'cache_age_ms': '-1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3z2_multi_det_lines",
+      "detail": "[('0.4500', '0.7500', '0.1000', '0.1000', '0.900', '1', '0', '1'), ('0.4500', '0.8500', '0.1000', '0.1000', '0.900', '1', '0', '1'), ('0.4500', '0.1500', '0.1000', '0.1000', '0.900', '0', '0', '0')]"
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_center_in",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_center_out",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_no_person",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_seg_unavailable",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_mask_empty",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_detect_unavailable",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_frame_mismatch",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_danger_zone_hit",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_danger_zone_miss",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_stale",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_cache_disabled",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_cache_hit",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_cache_expired",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_cache_gen_change",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_bounds",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_multi",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3_result_pass_mask_misaligned",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T4_config_danger_zone_from_roi_yaml",
+      "detail": "type=config dir=./config danger_zone=found x=0.080000 y=0.820000 w=0.840000 h=0.160000\ntype=config require_same_frame=1 danger_zone=1 cache_enabled=0\n"
+    },
+    {
+      "ok": true,
+      "name": "T4b_roi_yaml_source_values",
+      "detail": "camera: CAM-01\n    name: danger_zone\n    x: 0.08\n    y: 0.82\n    w: 0.84\n    h: "
+    },
+    {
+      "ok": true,
+      "name": "T4c_config_run_zone_path",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T5_junit_tests_1084_failures_0",
+      "detail": "tests=\"1084\" failures=\"0\""
+    },
+    {
+      "ok": true,
+      "name": "T5_junit_names_extracted_nonempty",
+      "detail": "fresh_names=1084"
+    },
+    {
+      "ok": true,
+      "name": "T5_junit_name_multiset_identical_fresh_vs_impl",
+      "detail": "fresh=1084 impl=1084 only_fresh=[] only_impl=[]"
+    },
+    {
+      "ok": true,
+      "name": "T5_twostage_case_names_present_in_junit",
+      "detail": "missing=[] count_src=25"
+    },
+    {
+      "ok": true,
+      "name": "T6_no_credential_leak",
+      "detail": "[]"
+    }
+  ]
+}

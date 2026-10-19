@@ -1,0 +1,35 @@
+vext PASS g01_center_row432_exact_band_start_hit :: mask_hit=1 alarms=1
+vext PASS g01b_center_row431_just_above_miss
+vext PASS g02_center_px1279_image_edge_hit
+vext PASS g02b_center_beyond_right_edge_dropped
+vext PASS g03_stride_padded_mask_hit
+vext PASS g03b_stride_less_than_width_unavailable
+vext PASS g04_second_mask_hit
+vext PASS g05_zero_positive_mask_unavailable_no_safe_output
+vext PASS g06_single_pixel_mask_exact_hit
+vext PASS g07_roi_contains_left_top_corner_inclusive
+vext PASS g07b_roi_contains_right_bottom_corner_inclusive
+vext PASS g07c_roi_contains_just_left_out
+vext PASS g07d_roi_contains_just_above_out
+vext PASS g08_center_just_inside_zone_top_edge
+vext PASS g08b_center_just_inside_zone_bottom_edge
+vext PASS g08c_center_just_outside_zone_bottom_edge
+vext PASS g09_label_person_preserved
+vext PASS g10_enabled_with_zero_age_never_reuses
+vext PASS g11_negative_age_rejected
+vext PASS g12_age_equal_max_boundary_reuses
+vext PASS g13_age_plus_one_expired
+vext PASS g14_policy_allows_generation_change_reuse
+vext PASS g14b_session_change_still_rejected
+vext PASS g15_cache_hit_full_detection_semantics
+vext PASS g16_cache_disabled_never_stores
+vext PASS g17_require_same_frame_false_allows_cross_frame
+vext PASS g18_null_out_param_error
+vext PASS g19_nonpositive_image_size_bad_config
+vext PASS g20_null_persons_no_person
+vext PASS g21_null_masks_unavailable
+vext PASS g22_unavailable_empty_detections_no_safe_conclusion
+vext PASS g23_reason_tokens_stable
+vext PASS g24_same_input_deterministic
+vext OK (0 failures)
+VEXT_RUN_EXIT=0

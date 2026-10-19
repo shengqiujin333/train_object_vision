@@ -2351,6 +2351,14 @@ docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑总日志
 docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.transcript.json | active | ITEM-004 验证独立复跑 transcript
 docs/vision/test_evidence/ITEM-005/ITEM-005-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-005 实际正确性证据（同帧命中/不可用/跨帧/danger_zone/身份接纳/缓存默认关与复用，core 1084/0）与未执行项
+docs/vision/test_evidence/ITEM-005/VERIFY-ITEM-005.md | active | ITEM-005 软件验证 TestEvidence（TEST_PASS：独立复跑 fresh vs r4 + 83/83 独立比对 + 33 判例 vext 扩展夹具 + 负例/确定性/泄漏/清理）
+docs/vision/test_evidence/ITEM-005/verify/item005-compare-verify-20261019-item005-v1.json | active | 验证比对结果归档（83/83）
+docs/vision/test_evidence/ITEM-005/verify/verify_item005_compare.py | active | 验证独立比对 oracle（83 判据，不采信交付 acceptance 行；像素/缓存/ROI 预言独立重推导）
+docs/vision/test_evidence/ITEM-005/verify/verify_item005_run.py | active | 验证独立复跑驱动（PowerShell 用户级凭据导入 + 交付 runner --keep-remote）
+docs/vision/test_evidence/ITEM-005/verify/verify_item005_vext.py | active | 验证 EXT 夹具板上运行器（V0..V6；复用 keep-remote 树 g++ 直编）
+docs/vision/test_evidence/ITEM-005/verify/vext_item005.cpp | active | 验证自有扩展夹具源码（33 判例：掩码像素语义/danger_zone 闭区间边界/缓存策略登记边界/配置语义/不可用结构性保证/确定性）
+docs/vision/test_evidence/ITEM-005/vext-item005-verify-20261019-item005-v1.json | active | 验证 EXT 驱动结构化结果（9/9 检查 PASS：树在场/直编/判例集合恒等/负例/确定性/泄漏/清理）
+docs/vision/test_evidence/ITEM-005/vext-item005-verify-20261019-item005-v1.stdout.log | active | 验证自有扩展夹具板端原始 stdout（33 判例全 PASS + 汇总）
 docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-20261019-item005-r1.log | active | ITEM-005 返工前人类可读 transcript（r1）
 docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-20261019-item005-r1.transcript.json | active | ITEM-005 返工前 transcript（r1：TwoStageCache 默认构造重复定义 BUILD_EXIT=3）
 docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-20261019-item005-r2.app_core-evidence_item005-core-tests-20261019-item005-r2.xml | active | ITEM-005 core 单测 JUnit（r2：不可用判例失败）
@@ -2402,6 +2410,48 @@ docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-20261019-item005
 docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-20261019-item005-r4.app_core-evidence_item005-selftest-20261019-item005-r4.log | active | ITEM-005 夹具自检文本（r4：30 判例 RESULT PASS failures=0）
 docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-20261019-item005-r4.log | active | ITEM-005 板端执行人类可读 transcript（r4）
 docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-20261019-item005-r4.transcript.json | active | ITEM-005 板端执行结构化 transcript（r4 权威轮：命令/退出码/输出/主机指纹）
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-config-verify-20261019-item005-v1.json | active | 验证独立复跑 config JSON
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-config-verify-20261019-item005-v1.log | active | 验证独立复跑 config 日志（roi.yaml CAM-01 danger_zone 源值）
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-core-tests-verify-20261019-item005-v1.xml | active | 验证独立复跑 core JUnit（1084/0；fresh vs r4 判例名多重集恒等）
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-<name>-verify-20261019-item005-v1.{log,json} | active | 验证独立复跑 17 fixtures × (log+json)（center_in..mask_misaligned，共 34 份，逐字段 fresh vs r4 独立断言通过）
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-bounds-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-bounds-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-cache_disabled-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-cache_disabled-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-cache_expired-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-cache_expired-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-cache_gen_change-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-cache_gen_change-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-cache_hit-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-cache_hit-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-center_in-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-center_in-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-center_out-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-center_out-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-danger_zone_hit-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-danger_zone_hit-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-danger_zone_miss-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-danger_zone_miss-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-detect_unavailable-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-detect_unavailable-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-frame_mismatch-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-frame_mismatch-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-mask_empty-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-mask_empty-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-mask_misaligned-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-mask_misaligned-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-multi-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-multi-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-no_person-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-no_person-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-seg_unavailable-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-seg_unavailable-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-stale-verify-20261019-item005-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-fixture-stale-verify-20261019-item005-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-selftest-verify-20261019-item005-v1.json | active | 验证独立复跑 selftest JSON
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.app_core-evidence_item005-selftest-verify-20261019-item005-v1.log | active | 验证独立复跑 selftest 文本（30 判例 RESULT PASS，fresh vs r4 全文恒等）
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.log | active | 验证独立复跑人类可读 transcript（verify-20261019-item005-v1，--keep-remote）
+docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.transcript.json | active | 验证独立复跑结构化 transcript（指纹与实现 r4 同板同 key；292 文件/39 下载）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
