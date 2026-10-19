@@ -37,6 +37,7 @@
 #include "railhmi/core/inference.h"
 #include "railhmi/core/rules.h"
 #include "railhmi/core/timebase.h"
+#include "railhmi/core/vision_debug_view.h"
 #include "railhmi/core/vision_distance.h"
 #include "railhmi/core/vision_inference_envelope.h"
 #include "railhmi/core/vision_worker_schedule.h"
@@ -486,7 +487,47 @@ int run_selftest(const std::string& config_dir, const std::string& out_json) {
               "distance_m=-1 + NO_CALIBRATION + 文本占位");
     }
 
-    // 9) 异常路径回归（验证侧 D-01）：模型缺失 / 模型非法时必须优雅降级为不可用 + reason，
+    // 9) P5 掩码叠加（ITEM-012）：只在开关开启且掩码真实可用时抓取/提供；否则只给原因。
+    {
+        std::vector<media::AiCameraSpec> cams = {{"CAM-01", true, "front"}};
+        media::VisionWorkerConfig wc;
+        wc.sched = {1, 2, 4, 85.0};
+        wc.cameras = cams;
+        wc.semantic = semantic_cfg(th);
+        wc.rules = rule_cfg(th);
+        wc.capture_latest_mask = true;   // 模拟 P5 打开掩码开关
+        media::StubVisionDetector::Config stubc;
+        stubc.sleep_us = 0;
+        auto det = std::make_shared<media::StubVisionDetector>(stubc);
+        media::VisionAiWorker worker(wc, det, nullptr, nullptr);
+        worker.submit(lease);
+        worker.step();
+        media::VisionWorkerSnapshot s = worker.snapshot();
+        bool captured_ok = false;
+        for (const auto& l : s.lanes) {
+            if (l.camera_id != "CAM-01") continue;
+            // 替代检测器无掩码 -> 就绪帧也必须“不可用 + 原因”，且不伪造 plane
+            captured_ok = !l.mask_available && l.mask_plane == nullptr &&
+                          !l.mask_unavailable_reason.empty() && l.mask_unavailable_reason != "NOT_CAPTURED";
+        }
+        check(captured_ok, "debug_mask_capture_unavailable_reason",
+              "无掩码 -> 不可用原因（非 NOT_CAPTURED）/无 plane");
+
+        media::VisionWorkerConfig wc2 = wc;
+        wc2.capture_latest_mask = false;
+        auto det2 = std::make_shared<media::StubVisionDetector>(stubc);
+        media::VisionAiWorker worker2(wc2, det2, nullptr, nullptr);
+        worker2.submit(lease);
+        worker2.step();
+        media::VisionWorkerSnapshot s2 = worker2.snapshot();
+        bool not_captured = false;
+        for (const auto& l : s2.lanes)
+            if (l.camera_id == "CAM-01")
+                not_captured = !l.mask_available && l.mask_unavailable_reason == "NOT_CAPTURED";
+        check(not_captured, "debug_mask_capture_off_not_captured", "开关关闭 -> NOT_CAPTURED");
+    }
+
+    // 10) 异常路径回归（验证侧 D-01）：模型缺失 / 模型非法时必须优雅降级为不可用 + reason，
     //    不得崩溃（历史上 load_kind 在 move 后解引用空 unique_ptr -> SIGSEGV/exit 139）。
     {
         media::RknnDetectorConfig dcfg;
@@ -560,6 +601,8 @@ struct ChainOptions {
     std::vector<std::string> duty_models;     // ITEM-010：kind:path
     std::vector<std::string> calibs;          // ITEM-011：camera=..,zoom=..,ref_m=..,ref_h_px=..
     std::vector<std::string> camera_zooms;    // ITEM-011：CAM-01=Z1
+    std::string debug_overlays = "none";      // ITEM-012：boxes,roi,text,mask（默认全关）
+    std::string debug_role = "developer";     // ITEM-012：driver/maintainer/developer/admin
     std::string out_json;
 };
 
@@ -770,6 +813,22 @@ int run_chain(const ChainOptions& opt) {
         emit("type=camera_zoom camera=" + spec.substr(0, eq) + " zoom=" + spec.substr(eq + 1));
     }
     if (wc.calibrations.size() == 0) emit("type=calibration none (distance_m 将恒为 -1/未知)");
+
+    // ITEM-012：P5 叠加开关（默认全关）；mask 开关开启时才抓取最近掩码。
+    core::OverlaySwitches overlays;
+    if (!core::parse_overlay_switches(opt.debug_overlays, &overlays)) {
+        emit("type=error bad --debug-overlays: " + opt.debug_overlays);
+        return 2;
+    }
+    core::Role debug_role = core::Role::Developer;
+    if (!core::parse_role(opt.debug_role, &debug_role)) {
+        emit("type=error bad --debug-role: " + opt.debug_role);
+        return 2;
+    }
+    wc.capture_latest_mask = overlays.mask;
+    emit("type=debug_switch role=" + std::string(core::to_string(debug_role)) +
+         " overlays=" + overlays.describe() +
+         " capture_mask=" + env_bool(wc.capture_latest_mask));
     media::VisionAiWorker worker(wc, detector, thermal, rules);
 
     // 取流源（file/test；真实 RTSP 属 ENV-D，不在本轮）。
@@ -894,6 +953,102 @@ int run_chain(const ChainOptions& opt) {
         if (!l.envelope_summary.empty())
             emit("type=envelope camera=" + l.camera_id + " json=" + l.envelope_summary);
     }
+    // ITEM-012：P5 数据面（每路字段 + 叠加开关门控 + 掩码可用性）。
+    // 用“运行中”快照（online）生成，反映 P5 实际看到的运行态；停止后再生成一份验证不可用语义。
+    std::string saved_debug_view_json;
+    {
+        core::DebugViewInput dvi;
+        dvi.registry = selected;
+        dvi.runtime = online.ai;
+        dvi.role = debug_role;
+        dvi.switches = overlays;
+        dvi.now_ms = mono_ms();
+        for (const auto& l : online.lanes) {
+            core::DebugChannelInput ch;
+            ch.row.camera_id = l.camera_id;
+            for (const auto& slot : selected)
+                if (slot.id == l.camera_id) ch.row.name = slot.name;
+            ch.row.profile = l.profile;
+            ch.row.profile_label = core::ai_profile_label(l.profile);
+            ch.row.model_version = l.model_version;
+            ch.row.fps = l.fps;
+            ch.row.latency_ms = l.latency_ms;
+            // EnvelopeBox -> DetectionBox（P5 展示用的归一化框 + 置信度/距离/ROI 标记）
+            for (const auto& b : l.boxes) {
+                core::DetectionBox db;
+                db.x = b.x;
+                db.y = b.y;
+                db.w = b.w;
+                db.h = b.h;
+                db.confidence = b.confidence;
+                db.class_id = b.class_id;
+                db.label = b.label;
+                db.in_roi = b.in_roi;
+                db.distance_m = b.distance_m;
+                ch.row.boxes.push_back(db);
+            }
+            float maxc = 0.0f;
+            for (const auto& b : l.boxes) maxc = std::max(maxc, b.confidence);
+            ch.row.max_confidence = maxc;
+            ch.row.distance_text = l.distance_text;
+            ch.row.last_result_text = l.consumed > 0 ? "0 秒前" : "—";
+            ch.row.last_result_age_ms = l.consumed > 0 ? 0 : -1;
+            ch.row.available = online.worker_alive && l.unavailable_reason.empty();
+            ch.row.unavailable_reason =
+                !online.worker_alive ? "AI 不可用"
+                                     : (l.unavailable_reason.empty() ? "" : l.unavailable_reason);
+            ch.boxes_available = l.envelope_stats.accepted > 0;
+            ch.box_count = static_cast<int>(l.boxes.size());
+            const core::RoiConfig* roi = core::find_roi(loaded.settings.roi, l.camera_id,
+                                                        "danger_zone");
+            if (roi) {
+                ch.has_roi = true;
+                ch.roi = *roi;
+            }
+            ch.mask.available = l.mask_available;
+            ch.mask.reason = l.mask_unavailable_reason;
+            ch.mask.width = l.mask_width;
+            ch.mask.height = l.mask_height;
+            ch.mask.stride_bytes = l.mask_stride_bytes;
+            ch.mask.plane = l.mask_plane ? l.mask_plane.get() : nullptr;
+            dvi.channels.push_back(std::move(ch));
+        }
+        const core::DebugViewModel view = core::build_debug_view(dvi);
+        emit("type=debug_view json=" + core::debug_view_json(view));
+        check(view.visible == core::ai_debug_visible(debug_role), "chain_debug_visibility",
+              std::string("role=") + core::to_string(debug_role) +
+                  " visible=" + env_bool(view.visible));
+        bool mask_gate_ok = true;
+        for (const auto& c : view.channels) {
+            if (c.overlay_mask && !(overlays.mask && c.mask_available)) mask_gate_ok = false;
+            if (c.overlay_roi && !(overlays.roi && c.has_roi)) mask_gate_ok = false;
+            if (c.overlay_boxes && !overlays.boxes) mask_gate_ok = false;
+        }
+        check(mask_gate_ok, "chain_debug_overlay_gate", "叠加只在开关+数据可用时提供");
+        bool unknown_ok = true;
+        for (const auto& c : view.channels) {
+            if (!c.row.available && c.unavailable_reason.empty()) unknown_ok = false;
+        }
+        check(unknown_ok, "chain_debug_unavailable_reason", "不可用路必须有原因");
+        saved_debug_view_json = core::debug_view_json(view);
+
+        // 停止后：同一数据面必须显示 AI 不可用（不得继续显示“可用”）。
+        core::DebugViewInput dvi2 = dvi;
+        dvi2.runtime = stopped.ai;
+        for (auto& ch : dvi2.channels) {
+            ch.row.available = false;
+            ch.row.unavailable_reason = "AI 不可用";
+        }
+        const core::DebugViewModel stopped_view = core::build_debug_view(dvi2);
+        bool stopped_unavailable = !stopped_view.channels.empty() && !stopped.ai.worker_alive;
+        for (const auto& c : stopped_view.channels) {
+            if (c.row.available || c.unavailable_reason.empty()) stopped_unavailable = false;
+        }
+        emit("type=debug_view_stopped json=" + core::debug_view_json(stopped_view));
+        check(stopped_unavailable, "chain_debug_stopped_unavailable",
+              "停止后每路 available=false 且有原因");
+    }
+
     emit("type=rule events_total=" + std::to_string(rules->events().size()) +
          " events_new=" + std::to_string(events));
     emit("type=summary submitted=" + std::to_string(submitted) +
@@ -952,6 +1107,7 @@ int run_chain(const ChainOptions& opt) {
               << ",\"thermal_guard_rounds\":" << stopped.thermal_guard_rounds
               << ",\"steps\":" << stopped.steps
               << ",\"infer_calls\":" << stopped.infer_calls
+              << ",\"debug_view\":" << (saved_debug_view_json.empty() ? "null" : saved_debug_view_json)
               << ",\"detector\":" << detector->status_json()
               << ",\"lanes\":[";
             for (std::size_t i = 0; i < stopped.lanes.size(); ++i) {
@@ -968,6 +1124,11 @@ int run_chain(const ChainOptions& opt) {
                   << ",\"published\":" << l.published
                   << ",\"dropped\":" << l.dropped
                   << ",\"last_infer_us\":" << l.last_infer_us
+                  << ",\"mask_available\":" << (l.mask_available ? "true" : "false")
+                  << ",\"mask_unavailable_reason\":\"" << l.mask_unavailable_reason << "\""
+                  << ",\"mask_width\":" << l.mask_width
+                  << ",\"mask_height\":" << l.mask_height
+                  << ",\"mask_updates\":" << l.mask_updates
                   << ",\"distance_valid\":" << l.distance_valid
                   << ",\"distance_unknown\":" << l.distance_unknown
                   << ",\"distance_text\":\"" << l.distance_text << "\""
@@ -1026,6 +1187,8 @@ int main(int argc, char** argv) {
         else if (a == "--duty-model") { std::string v; next(&v); chain.duty_models.push_back(v); }
         else if (a == "--calib") { std::string v; next(&v); chain.calibs.push_back(v); }
         else if (a == "--camera-zoom") { std::string v; next(&v); chain.camera_zooms.push_back(v); }
+        else if (a == "--debug-overlays") next(&chain.debug_overlays);
+        else if (a == "--debug-role") next(&chain.debug_role);
         else if (a == "--selftest") selftest = true;
         else if (a == "--out") next(&out);
         else if (a == "--json") next(&json);

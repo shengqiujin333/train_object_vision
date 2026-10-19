@@ -49,6 +49,14 @@ struct VisionAiWorker::Lane {
     std::map<std::string, long long> distance_unknown_by_reason;
     float last_distance_m = -1.0f;
     std::string distance_text = "—";
+    // ITEM-012 掩码快照（P5 叠加用；仅开关开启时抓取）
+    bool mask_available = false;
+    std::string mask_reason = "NOT_CAPTURED";
+    int mask_w = 0;
+    int mask_h = 0;
+    int mask_stride = 0;
+    std::shared_ptr<const std::vector<std::uint8_t>> mask_plane;
+    long long mask_updates = 0;
     std::string envelope_summary;
     std::map<std::string, long long> unavailable_by_reason;
     std::string last_reason;
@@ -304,7 +312,36 @@ int VisionAiWorker::step() {
             lane->tracker.tick_missing(ts_ms);
         }
 
-        // 4b) 发布（单生产者 = 本线程；有界丢最旧）。
+        // 4b) P5 掩码快照（ITEM-012）：仅在开关开启时复制“最近一帧”掩码；
+        //     不可用时记录原因，绝不用空掩码冒充“已叠加”。
+        bool mask_ok_now = false;
+        std::string mask_reason_now = "SEG_UNAVAILABLE";
+        int mw = 0, mh = 0, mstride = 0;
+        std::shared_ptr<const std::vector<std::uint8_t>> mplane;
+        if (cfg_.capture_latest_mask) {
+            if (out.envelope.availability == core::AiAvailability::Ready &&
+                !out.envelope.masks.empty() &&
+                out.envelope.masks[0].plane && out.envelope.masks[0].width > 0 &&
+                out.envelope.masks[0].height > 0 &&
+                out.envelope.masks[0].stride_bytes >= out.envelope.masks[0].width &&
+                out.envelope.masks[0].plane->size() >=
+                    static_cast<std::size_t>(out.envelope.masks[0].stride_bytes) *
+                        static_cast<std::size_t>(out.envelope.masks[0].height)) {
+                mw = out.envelope.masks[0].width;
+                mh = out.envelope.masks[0].height;
+                mstride = out.envelope.masks[0].stride_bytes;
+                mplane = std::make_shared<const std::vector<std::uint8_t>>(
+                    *out.envelope.masks[0].plane);
+                mask_ok_now = true;
+                mask_reason_now = "READY";
+            } else if (out.envelope.availability == core::AiAvailability::Ready) {
+                mask_reason_now = "SEG_UNAVAILABLE";   // ready 但本帧无掩码
+            } else {
+                mask_reason_now = out.reason;          // 推理不可用
+            }
+        }
+
+        // 4c) 发布（单生产者 = 本线程；有界丢最旧）。
         std::string reject;
         const bool accepted = lane->publisher->submit(out.envelope, &reject);
         core::InferenceEnvelope drained;
@@ -341,6 +378,17 @@ int VisionAiWorker::step() {
             for (const auto& kv : dist_reasons)
                 lane->distance_unknown_by_reason[kv.first] += kv.second;
             if (last_dist > 0.0f) lane->last_distance_m = last_dist;
+            if (cfg_.capture_latest_mask) {
+                lane->mask_available = mask_ok_now;
+                lane->mask_reason = mask_reason_now;
+                if (mask_ok_now) {
+                    lane->mask_w = mw;
+                    lane->mask_h = mh;
+                    lane->mask_stride = mstride;
+                    lane->mask_plane = mplane;
+                    ++lane->mask_updates;
+                }
+            }
             {
                 char dbuf[32];
                 if (lane->last_distance_m > 0.0f)
@@ -421,6 +469,13 @@ VisionWorkerSnapshot VisionAiWorker::snapshot() const {
         l.distance_unknown_by_reason = lane->distance_unknown_by_reason;
         l.last_distance_m = lane->last_distance_m;
         l.distance_text = lane->distance_text;
+        l.mask_available = lane->mask_available;
+        l.mask_unavailable_reason = lane->mask_reason;
+        l.mask_width = lane->mask_w;
+        l.mask_height = lane->mask_h;
+        l.mask_stride_bytes = lane->mask_stride;
+        l.mask_plane = lane->mask_plane;
+        l.mask_updates = lane->mask_updates;
         l.envelope_summary = lane->envelope_summary;
         l.unavailable_by_reason = lane->unavailable_by_reason;
         l.last_unavailable_reason = lane->last_reason;

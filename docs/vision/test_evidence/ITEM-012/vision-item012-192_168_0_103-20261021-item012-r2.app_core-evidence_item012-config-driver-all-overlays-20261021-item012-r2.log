@@ -1,0 +1,5 @@
+type=config dir=./config role=driver overlays=boxes,roi,text,mask
+type=view json={"visible":false,"hidden_reason":"driver role cannot view AI debug (P5 hidden; overlays off)","switches":{"boxes":true,"roi":true,"text":true,"mask":true},"switches_desc":"boxes,roi,text,mask","overlays_effective":false,"channels":[]}
+[PASS] config_role_visibility :: visible=false
+[PASS] config_hidden_no_data :: driver role cannot view AI debug (P5 hidden; overlays off)
+RESULT: PASS failures=0

@@ -105,6 +105,8 @@ struct VisionWorkerConfig {
     // ITEM-011：相机标定（含变焦档位）与“当前档位”。未标定/档位未知时距离恒 -1。
     railhmi::core::DistanceCalibrationSet calibrations;
     std::map<std::string, std::string> camera_zoom;   // camera_id -> 当前变焦档位（缺省=未知）
+    // ITEM-012：P5 掩码叠加开关开启时才抓取“最近一帧掩码”（避免常态拷贝 ~1MB/帧）。
+    bool capture_latest_mask = false;
 };
 
 // 每路遥测（P5/证据口径；不伪造未测数值）。
@@ -133,6 +135,14 @@ struct VisionLaneSnapshot {
     std::map<std::string, long long> distance_unknown_by_reason;
     float last_distance_m = -1.0f;
     std::string distance_text = "—";
+    // ITEM-012：最近掩码（仅 capture_latest_mask 时填充；plane 共享所有权，便于安全快照）
+    bool mask_available = false;
+    std::string mask_unavailable_reason = "NOT_CAPTURED";
+    int mask_width = 0;
+    int mask_height = 0;
+    int mask_stride_bytes = 0;
+    std::shared_ptr<const std::vector<std::uint8_t>> mask_plane;
+    long long mask_updates = 0;
     std::size_t tracks = 0;
     std::string envelope_summary;  // 最近 envelope JSON（boxes 为空时不含路径/凭据）
     std::map<std::string, long long> unavailable_by_reason;  // 不可用原因分布（可观察）
