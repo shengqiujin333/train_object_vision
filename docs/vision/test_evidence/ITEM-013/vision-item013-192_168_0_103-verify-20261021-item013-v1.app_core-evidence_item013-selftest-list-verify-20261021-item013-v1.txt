@@ -1,0 +1,16 @@
+model.missing
+model.tensor_mismatch
+model.ready
+preprocess.synthetic_letterbox
+preprocess.empty_frame
+detect.no_detection
+detect.synthetic_box
+seg.synthetic_mask
+two_stage.person_on_mask
+two_stage.mask_missing_unavailable
+envelope.stale_duplicate_out_of_order
+envelope.unavailable_vs_empty
+availability.ai_stopped
+availability.duty_unsupported
+availability.distance_uncalibrated
+availability.debug_unknown_not_zero
