@@ -1,0 +1,2 @@
+type=fixture name=valid json={"valid":true,"distance_m":500,"text":"500.0 m","reason":"DISTANCE_OK","detail":"distance = ref_m*ref_px/px","zoom":"Z1","box_height_px":89,"px_per_m_reference":52.3529}
+RESULT: PASS failures=0

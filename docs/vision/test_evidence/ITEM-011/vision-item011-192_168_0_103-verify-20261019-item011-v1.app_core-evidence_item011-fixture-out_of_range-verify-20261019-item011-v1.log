@@ -1,0 +1,2 @@
+type=fixture name=out_of_range json={"valid":false,"distance_m":-1,"text":"—","reason":"OUT_OF_RANGE","detail":"distance 1112.5 m outside calibrated range [5.0, 600.0]","zoom":"Z1","box_height_px":40,"px_per_m_reference":52.3529}
+RESULT: PASS failures=0

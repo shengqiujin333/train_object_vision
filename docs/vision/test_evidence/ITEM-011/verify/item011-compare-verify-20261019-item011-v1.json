@@ -1,0 +1,372 @@
+{
+ "stamp": "verify-20261019-item011-v1",
+ "impl": "20261021-item011-r3",
+ "checks": [
+  {
+   "ok": true,
+   "name": "C00_fresh_transcript_present",
+   "detail": "verify-20261019-item011-v1"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_build-core_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_build-media_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_core-tests_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_distance-selftest_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-no_calib_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-zoom_unknown_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-zoom_mismatch_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-non_person_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-out_of_range_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_fixture-valid_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_form-anchor_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_form-scaling_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_form-zoom-unknown_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_form-no-calib_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_media-selftest_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_step_chain_exit0",
+   "detail": "exit=0"
+  },
+  {
+   "ok": true,
+   "name": "C00_cleanup_deferred",
+   "detail": "cleanup step=absent(keep-remote)"
+  },
+  {
+   "ok": true,
+   "name": "C0EXIT_main_log_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C0EXIT_all_exit_tokens_zero",
+   "detail": "tokens=16"
+  },
+  {
+   "ok": true,
+   "name": "C1_junit_1347_0",
+   "detail": "tests=1347 failures=0"
+  },
+  {
+   "ok": true,
+   "name": "C1_junit_multiset_identical_impl_r3",
+   "detail": "fresh=1347 impl=1347 only_fresh=0 only_impl=0"
+  },
+  {
+   "ok": true,
+   "name": "C1_distance_case_set_exact",
+   "detail": "fresh=47 want=47 missing=[] extra=[]"
+  },
+  {
+   "ok": true,
+   "name": "C2_selftest_logs_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C2_selftest_names_identical_14",
+   "detail": "fresh=14 impl=14 fails=0"
+  },
+  {
+   "ok": true,
+   "name": "C2_selftest_anchor_89px_500m_row",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C2_selftest_half_px_250m_row",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C2_selftest_constants_recomputed",
+   "detail": "px/m=52.352941 const=44500"
+  },
+  {
+   "ok": true,
+   "name": "C2_selftest_result_row",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C3_fixture_no_calib_semantics",
+   "detail": "reason=NO_CALIBRATION m=-1 text=— identical_impl=True"
+  },
+  {
+   "ok": true,
+   "name": "C3_fixture_zoom_unknown_semantics",
+   "detail": "reason=ZOOM_UNKNOWN m=-1 text=— identical_impl=True"
+  },
+  {
+   "ok": true,
+   "name": "C3_fixture_zoom_mismatch_semantics",
+   "detail": "reason=ZOOM_MISMATCH m=-1 text=— identical_impl=True"
+  },
+  {
+   "ok": true,
+   "name": "C3_fixture_non_person_semantics",
+   "detail": "reason=NOT_PERSON m=-1 text=— identical_impl=True"
+  },
+  {
+   "ok": true,
+   "name": "C3_fixture_out_of_range_semantics",
+   "detail": "reason=OUT_OF_RANGE m=-1 text=— identical_impl=True"
+  },
+  {
+   "ok": true,
+   "name": "C3_out_of_range_recomputed_1112_5",
+   "detail": "range detail present"
+  },
+  {
+   "ok": true,
+   "name": "C3_fixture_valid_semantics",
+   "detail": "reason=DISTANCE_OK m=500 text=500.0 m identical_impl=True"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_anchor_formula_recomputed",
+   "detail": "est=500 exp=500.0000"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_anchor_impl_identical",
+   "detail": "stable lines identical"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_anchor_exit_token",
+   "detail": "FORM_ANCHOR_EXIT=0"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_scaling_formula_recomputed",
+   "detail": "est=250 exp=250.0000"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_scaling_impl_identical",
+   "detail": "stable lines identical"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_scaling_exit_token",
+   "detail": "FORM_SCALE_EXIT=0"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_zoom-unknown_unknown_semantics",
+   "detail": "{\"valid\": false, \"distance_m\": -1, \"text\": \"—\", \"reason\": \"ZOOM_UNKNOWN\", \"detail\": \"current zoom level is unknown; cali"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_zoom-unknown_impl_identical",
+   "detail": "stable lines identical"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_zoom-unknown_exit_token",
+   "detail": "FORM_ZU_EXIT=0"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_no-calib_unknown_semantics",
+   "detail": "{\"valid\": false, \"distance_m\": -1, \"text\": \"—\", \"reason\": \"NO_CALIBRATION\", \"detail\": \"camera 'CAM-09' has no calibratio"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_no-calib_impl_identical",
+   "detail": "stable lines identical"
+  },
+  {
+   "ok": true,
+   "name": "C4_form_no-calib_exit_token",
+   "detail": "FORM_NC_EXIT=0"
+  },
+  {
+   "ok": true,
+   "name": "C5_media_logs_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C5_media_formula_constant",
+   "detail": "1236.111111"
+  },
+  {
+   "ok": true,
+   "name": "C5_media_formula_36px",
+   "detail": "got=1236.111084 exp=1236.111111"
+  },
+  {
+   "ok": true,
+   "name": "C5_media_valid_and_text_rows",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C5_media_no_calib_row",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C5_media_distance_case_count_6",
+   "detail": "['distance_calibration_parsed', 'distance_with_calibration_matches_formula', 'distance_valid_counted', 'distance_worker_text', 'distance_box_present', 'distance_without_calibration_unknown']"
+  },
+  {
+   "ok": true,
+   "name": "C5_media_total_28",
+   "detail": "total=28"
+  },
+  {
+   "ok": true,
+   "name": "C5_media_stable_lines_identical",
+   "detail": "stable=32"
+  },
+  {
+   "ok": true,
+   "name": "C6_chain_logs_present",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C6_chain_calibration_echo",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C6_chain_camera_zoom_echo",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C6_chain_one_lane",
+   "detail": "[('CAM-01', '0', '0', '—', '-1.000000')]"
+  },
+  {
+   "ok": true,
+   "name": "C6_chain_distance_stats_bounded",
+   "detail": "lane=CAM-01 valid=0 text=— last=-1.000000"
+  },
+  {
+   "ok": true,
+   "name": "C6_chain_judgements_9",
+   "detail": "n=9"
+  },
+  {
+   "ok": true,
+   "name": "C6_chain_result_row",
+   "detail": ""
+  },
+  {
+   "ok": true,
+   "name": "C6_chain_stable_lines_identical",
+   "detail": "stable=17"
+  },
+  {
+   "ok": true,
+   "name": "C6_lane_token_consumed3",
+   "detail": "consumed=30"
+  },
+  {
+   "ok": true,
+   "name": "C6_lane_token_inferred3",
+   "detail": "inferred=30"
+  },
+  {
+   "ok": true,
+   "name": "C6_lane_token_published3",
+   "detail": "published=30"
+  },
+  {
+   "ok": true,
+   "name": "C6_lane_token_dropped",
+   "detail": "dropped=0"
+  },
+  {
+   "ok": true,
+   "name": "C6_lane_token_skipped_interval",
+   "detail": "skipped_interval="
+  },
+  {
+   "ok": true,
+   "name": "C6_lane_token_distance_valid",
+   "detail": "distance_valid=0"
+  },
+  {
+   "ok": true,
+   "name": "C6_lane_token_distance_unknown",
+   "detail": "distance_unknown=0"
+  },
+  {
+   "ok": true,
+   "name": "C7_credential_leakage_scan",
+   "detail": "skipped (short credential)"
+  },
+  {
+   "ok": true,
+   "name": "C8_manifest_covers_verify_report",
+   "detail": ""
+  }
+ ],
+ "pass": true
+}

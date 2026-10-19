@@ -1,0 +1,42 @@
+vext INFO fixture publish ok seq=1 h=180
+vext PASS A00_anchor_constant_independent :: 44500 px m
+vext PASS A01_anchor_reference_px_per_m_independent :: 52.352941
+vext PASS A1_worker_valid_formula :: dist=598.118286
+vext PASS A2_worker_text_formula :: 598.1 m
+vext PASS A3_worker_zoom_unknown :: ZOOM_UNKNOWN
+vext PASS A4_worker_zoom_unknown_text :: —
+vext PASS A5_worker_zoom_mismatch :: ZOOM_MISMATCH
+vext PASS A6_worker_multi_zoom_level_exact :: dist=299.059143
+vext PASS A7_worker_unlimited_range_passes :: dist=1236.111084
+vext PASS B1_not_person_precedes_zoom :: NOT_PERSON
+vext PASS B2_no_calib_precedes_zoom :: NO_CALIBRATION
+vext PASS B3_zoom_unknown_precedes_invalid :: ZOOM_UNKNOWN
+vext PASS B4_zoom_unknown_precedes_zero_px :: ZOOM_UNKNOWN
+vext PASS B5_mismatch_precedes_invalid :: ZOOM_MISMATCH
+vext PASS B6_invalid_box_precedes_range :: INVALID_BOX
+vext PASS C1_exact_lower_bound_valid :: 5.000000
+vext PASS C2_below_lower_bound_refused :: 89.000000
+vext PASS C3_exact_upper_bound_valid :: 800.000000
+vext PASS C4_above_upper_bound_unknown_not_clamped :: -1.000000
+vext PASS C5_zero_min_unlimited :: 4.944444
+vext PASS C6_zero_max_unlimited :: 8000.000000
+vext PASS D1_multi_camera_membership :: 2 cameras
+vext PASS D2_zooms_of_camera
+vext PASS D3_per_camera_constants_isolated :: e1=500.000000 e2=250.000000
+vext PASS D4_duplicate_first_wins :: ref_m=500.000000
+vext PASS E1_json_integer_distance_no_decimal :: valid: {"valid":true,"distance_m":500,"text":"500.0 m","reason":"DISTANCE_OK","detail":"distance = ref_m*ref_px/px","zoom":"Z1"
+vext PASS E2_json_unknown_minus_one_token :: unk: {"valid":false,"distance_m":-1,"text":"—","reason":"NO_CALIBRATION","detail":"camera 'CAM-01' has no calibration","zoo
+vext PASS E3_raw_formula_pointer_agreement :: 44.5px -> 1000.000000
+vext PASS E4_raw_formula_beyond_range_still_formula :: 0.5px -> 89000.000000
+vext PASS E5_estimate_guards_ranges_but_raw_does_not :: OUT_OF_RANGE
+vext PASS F1_obj_m_optional :: no err
+vext PASS F1b_obj_m_missing_px_per_m_is_minus_one :: px/m=-1.000000
+vext PASS F2_zero_min_max_unlimited :: no err
+vext PASS F2b_zero_range_calibration_valid
+vext PASS F3_empty_spec_refused :: camera is required
+vext PASS F4_item_without_equals_refused :: zoom is required (calibration must be zoom-specific)
+vext PASS F5_negative_ref_m_refused :: calibration parameters invalid (non-positive or contradictory)
+vext PASS F6_nan_refused :: bad ref_h_px: nan
+vext PASS F6b_inf_refused :: bad ref_m: inf
+vext OK pass=39 fail=0
+VEXT_RUN_EXIT=0

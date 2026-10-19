@@ -1,0 +1,66 @@
+{
+ "stamp": "verify-20261019-item011-v1",
+ "pass": true,
+ "steps": [
+  {
+   "step": "V0_keep_remote_tree_present",
+   "ok": true,
+   "detail": "TREE_OK"
+  },
+  {
+   "step": "V1_vext_build",
+   "ok": true,
+   "detail": "exit=0 2.5s e included from /usr/include/glib-2.0/glib.h:82,\n                 from /usr/include/gstreamer-1.0/gst/gst.h:27,\n                 from /tmp/railhmi_vision_item011_verify-20261019-item011-v1/vext_item011.cpp:23:\n/usr/include/glib-2.0/glib/gstrfuncs.h:257:23: note: declared here\n  257 | gpointer              g_memdup         (gconstpointer mem,\n      |                       ^~~~~~~~\nVEXT_BUILD_EXIT=0"
+  },
+  {
+   "step": "V2_vext_run",
+   "ok": true,
+   "detail": "pass=39 fail=0 src_names=39"
+  },
+  {
+   "step": "V3_distance_unknown_arg",
+   "ok": true,
+   "detail": "EXIT=2"
+  },
+  {
+   "step": "V3_distance_help",
+   "ok": true,
+   "detail": "EXIT=0"
+  },
+  {
+   "step": "V3_distance_unknown_fixture",
+   "ok": true,
+   "detail": "EXIT=2"
+  },
+  {
+   "step": "V3_distance_no_args_selftest",
+   "ok": true,
+   "detail": "EXIT=0"
+  },
+  {
+   "step": "V3_media_unknown_arg",
+   "ok": true,
+   "detail": "EXIT=2"
+  },
+  {
+   "step": "V4_negative_expect_valid_fails",
+   "ok": true,
+   "detail": "RESULT: FAIL failures=1"
+  },
+  {
+   "step": "V5_selftest_deterministic",
+   "ok": true,
+   "detail": "d3e863ca2d4dafea..."
+  },
+  {
+   "step": "V6_board_artifact_credential_scan",
+   "ok": true,
+   "detail": "cred_len=5 raw_hits=[':1'] (len<10 -> admin full-string false-positive excluded per ITEM-002/004 convention)"
+  },
+  {
+   "step": "V7_board_cleanup",
+   "ok": true,
+   "detail": "ls: cannot access '/tmp/railhmi_vision_item011_verify-20261019-item011-v1': No s"
+  }
+ ]
+}

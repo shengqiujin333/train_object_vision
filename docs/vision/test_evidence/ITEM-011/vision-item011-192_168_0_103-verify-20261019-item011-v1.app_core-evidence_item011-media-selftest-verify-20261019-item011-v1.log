@@ -1,0 +1,34 @@
+type=selftest config=./config engine=stub(substitute,not-rknn)
+type=selftest note=selftest 不加载 RKNN、不声称精度；链路真实性由 --mode chain 呈证
+[PASS] selftest_frame_lease_from_stream :: seq=1
+type=selftest lease format=NV12 size=320x180 session=s1a154864a9e-fa4b00-0
+[PASS] prod_no_synthetic_frames :: steps=40 infer_calls=0
+[PASS] submit_not_blocked_by_infer :: max=1000us n=236
+[PASS] snapshot_not_blocked_by_infer :: p95=0us max=1000us
+[PASS] request_stop_immediate :: 0us
+[PASS] stop_ai_unavailable :: AI 不可用
+[PASS] stop_join_bounded_by_one_infer :: 29000us (infer=200000us, 只等当前一次)
+[PASS] slow_infer_did_run :: infer_calls=5
+type=selftest blocking submit_p95_us=0 snapshot_p95_us=0 request_stop_us=0 join_us=29000
+[PASS] bounded_drop_oldest :: pushed=5 depth=2 dropped=3
+[PASS] drop_oldest_keeps_newest :: popped=5,6 last_pushed=6
+[PASS] budget_fairness_all_lanes_ran :: 4/4 within 8 rounds
+[PASS] budget_fairness_balanced :: each lane 2 times
+[PASS] temp_guard_halves_budget :: limit=85.000000 budget 4->2
+[PASS] injected_temp_not_measured :: INJECTED
+type=thermal state=MEASURED celsius=40.692000 source=thermal_zone0 reason=THERMAL_OK zones=7
+[PASS] thermal_source_reported_honestly :: measured from sysfs
+[PASS] track_id_never_zero :: boxes track_id != 0
+[PASS] no_frame_lane_not_inferred :: CAM-04 consumed=0
+[PASS] two_lanes_configured :: 2
+[PASS] rule_engine_receives_detections :: events=1 (stub, 非模型能力声明)
+[PASS] distance_calibration_parsed
+[PASS] distance_with_calibration_matches_formula :: got=1236.111084 expected=1236.111111
+[PASS] distance_valid_counted :: valid=1
+[PASS] distance_worker_text :: 1236.1 m
+[PASS] distance_box_present :: 替代检测器人员框在场
+[PASS] distance_without_calibration_unknown :: distance_m=-1 + NO_CALIBRATION + 文本占位
+[PASS] model_missing_graceful :: load=false err=det:MODEL_MISSING;seg:MODEL_MISSING;
+[PASS] model_missing_reason_visible :: MODEL_MISSING
+[PASS] invalid_model_graceful :: load=false err=det:MODEL_LOAD_FAILED;seg:MODEL_MISSING;
+RESULT: PASS failures=0
