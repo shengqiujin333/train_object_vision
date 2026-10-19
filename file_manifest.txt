@@ -2204,6 +2204,16 @@ docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.log | active | 验证轮独立板端执行人类可读 transcript（keep-remote：无 cleanup 步骤）
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.transcript.json | active | 验证轮独立板端执行结构化 transcript（命令+退出 token+指纹 SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU）
 docs/vision/test_evidence/ITEM-003/ITEM-003-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-003 实际正确性证据（夹具张量：解码坐标/分数/白名单/NMS/空图/补边区/int8/配置阈值，core 1035/0）与未执行项
+docs/vision/test_evidence/ITEM-003/VERIFY-ITEM-003.md | active | TestEvidence：视觉 ITEM-003 独立验证（VERIFY-20261019-item003-v1 TEST_PASS：交付入口独立复跑 17 产物 + 独立比对 53/53（独立 letterbox/decode/逆变换/量化数学镜像对照已部署解码）+ vext 板端 30 判例/CLI 负例/确定性/脱敏/清理；O-1 nms_iou 配置面、O-2 NMS 像素空间重建依赖同请求 letterbox 参数）
+docs/vision/test_evidence/ITEM-003/item003-compare-20261019-item003-r3.json | active | ITEM-003 oracle 对 impl r3 归档的 dry-run 预演归档（52/53：唯一差异为 impl 归档自身无 --keep-remote 执行了 cleanup，预估内基准差异非判据失败）
+docs/vision/test_evidence/ITEM-003/item003-compare-verify-20261019-item003-v1.json | active | ITEM-003 独立比对 oracle 判定归档（53/53 检查 PASS）
+docs/vision/test_evidence/ITEM-003/verify/_dryrun_on_impl.py | active | ITEM-003 oracle 对 impl r3 归档的零板成本 dry-run 预演（抓出 7 处验证侧构造错）
+docs/vision/test_evidence/ITEM-003/verify/verify_item003_compare.py | active | ITEM-003 独立解析比对（53 判据：退出码 token/selftest 源统计/独立解码数学镜像/六夹具逐字段/config 源读/JUnit 多重集+括号深度判例名提取/脱敏）
+docs/vision/test_evidence/ITEM-003/verify/verify_item003_run.py | active | ITEM-003 验证驱动：凭据导入 + 调交付入口独立复跑（--keep-remote 保留板端树）
+docs/vision/test_evidence/ITEM-003/verify/verify_item003_vext.py | active | ITEM-003 vext 驱动：上板 g++ 直编扩展夹具 + CLI 负例 + 确定性 + 板端泄漏扫描 + 树清理
+docs/vision/test_evidence/ITEM-003/verify/vext_item003.cpp | active | ITEM-003 验证自有扩展夹具（30 判例：三尺度联合/conf 半开边界/空白名单拒绝/跨类别 NMS 数学/letterbox 边裁与偏置/uint8 路径/候选守恒/确定性逐字段比较；链接 railhmi_core 静态库）
+docs/vision/test_evidence/ITEM-003/vext-item003-verify-20261019-item003-v1.json | active | ITEM-003 vext 板端判定归档（9/9 检查 PASS；板上 30 判例/0 失败）
+docs/vision/test_evidence/ITEM-003/vext-item003-verify-20261019-item003-v1.stdout.log | active | ITEM-003 vext 板端原始 stdout（30 判例逐行）
 docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r1.log | active | ITEM-003 返工前人类可读 transcript（r1）
 docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r1.transcript.json | active | ITEM-003 返工前 transcript（r1：zp 字段编译失败，工具未构建）
 docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-config-20261019-item003-r2.json | active | 同上 JSON
@@ -2244,6 +2254,25 @@ docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003
 docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-selftest-20261019-item003-r3.log | active | ITEM-003 夹具自检文本（r3：19 判例 RESULT PASS failures=0）
 docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.log | active | ITEM-003 板端执行人类可读 transcript（r3）
 docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.transcript.json | active | ITEM-003 板端执行结构化 transcript（r3 权威轮：命令/退出码/输出/主机指纹）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-config-verify-20261019-item003-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-config-verify-20261019-item003-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-core-tests-verify-20261019-item003-v1.xml | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-empty-verify-20261019-item003-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-empty-verify-20261019-item003-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-int8-verify-20261019-item003-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-int8-verify-20261019-item003-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-nms-verify-20261019-item003-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-nms-verify-20261019-item003-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-nonperson-verify-20261019-item003-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-nonperson-verify-20261019-item003-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-padbox-verify-20261019-item003-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-padbox-verify-20261019-item003-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-person-verify-20261019-item003-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-person-verify-20261019-item003-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-selftest-verify-20261019-item003-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-selftest-verify-20261019-item003-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.log | active | ITEM-003 验证独立复跑人类可读 transcript（--keep-remote；17 下载全 0）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.transcript.json | active | ITEM-003 验证独立复跑结构化 transcript（--keep-remote）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
@@ -2259,5 +2288,22 @@ tools/cam_viewer.py | existing | PC 端双路取流观看器（诊断/FPS/坏帧
 tools/onvif_test.py | existing | 热成像相机 ONVIF 探测/重启
 tools/ptz_control.py | existing | 前方球机 PTZ 变焦/聚焦控制
 troubleshooting_cameras_demo.md | existing | 相机与 demo 故障排查手册（历史）
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-config-verify-20261019-item003-v1.json | active | ITEM-003 验证独立复跑 config JSON
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-config-verify-20261019-item003-v1.log | active | ITEM-003 验证独立复跑 config 日志
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-core-tests-verify-20261019-item003-v1.xml | active | ITEM-003 验证独立复跑 core JUnit（tests=1035 failures=0）
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-empty-verify-20261019-item003-v1.json | active | ITEM-003 验证独立复跑 fixture-empty JSON
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-empty-verify-20261019-item003-v1.log | active | ITEM-003 验证独立复跑 fixture-empty 日志
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-int8-verify-20261019-item003-v1.json | active | ITEM-003 验证独立复跑 fixture-int8 JSON
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-int8-verify-20261019-item003-v1.log | active | ITEM-003 验证独立复跑 fixture-int8 日志
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-nms-verify-20261019-item003-v1.json | active | ITEM-003 验证独立复跑 fixture-nms JSON
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-nms-verify-20261019-item003-v1.log | active | ITEM-003 验证独立复跑 fixture-nms 日志
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-nonperson-verify-20261019-item003-v1.json | active | ITEM-003 验证独立复跑 fixture-nonperson JSON
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-nonperson-verify-20261019-item003-v1.log | active | ITEM-003 验证独立复跑 fixture-nonperson 日志
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-padbox-verify-20261019-item003-v1.json | active | ITEM-003 验证独立复跑 fixture-padbox JSON
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-padbox-verify-20261019-item003-v1.log | active | ITEM-003 验证独立复跑 fixture-padbox 日志
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-person-verify-20261019-item003-v1.json | active | ITEM-003 验证独立复跑 fixture-person JSON
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-fixture-person-verify-20261019-item003-v1.log | active | ITEM-003 验证独立复跑 fixture-person 日志
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-selftest-verify-20261019-item003-v1.json | active | ITEM-003 验证独立复跑 selftest JSON
+vision-item003-192_168_0_103-verify-20261019-item003-v1.app_core-evidence_item003-selftest-verify-20261019-item003-v1.log | active | ITEM-003 验证独立复跑 selftest 日志
 一些说明和要求.txt | existing | 用户口述摄像头部署与检测职责要求
 功能需求.docx | existing | 产品功能需求说明书 PRD V0.1（交互与报警/回放判据来源）

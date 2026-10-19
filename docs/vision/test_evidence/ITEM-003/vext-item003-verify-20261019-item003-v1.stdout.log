@@ -1,0 +1,32 @@
+vext PASS g01_three_scales_joint_decode
+vext PASS g02_three_boxes_from_three_scales
+vext PASS g03_all_three_scale_indices_present
+vext PASS g04_cross_scale_score_desc_order
+vext PASS g05_cross_scale_duplicate_nms_merged
+vext PASS g06_score_equal_threshold_kept
+vext PASS g07_empty_whitelist_rejected
+vext PASS g08_other_whitelist_drops_person_counted
+vext PASS g09_mixed_classes_person_only
+vext PASS g10_cross_class_not_suppressed
+vext PASS g11_disjoint_boxes_both_kept
+vext PASS g12_iou_plus1_adjacent_zero
+vext PASS g13_iou_plus1_identical_one
+vext PASS g14_inverse_clamps_right_bottom
+vext PASS g15_inverse_clamps_left_to_zero
+vext PASS g16_letterbox_1280x1024_ok
+vext PASS g17_letterbox_1280x1024_pad_y_64
+vext PASS g18_inverse_offset_letterbox_ok
+vext PASS g19_inverse_offset_letterbox_correct
+vext PASS g20_no_outputs_ok_empty
+vext PASS g21_null_err_pointer_safe
+vext PASS g22_uint8_path_decodes_person
+vext PASS g23_uint8_zero_scale_no_crash
+vext PASS g24_max_detections_1_truncates_2
+vext PASS g25_truncation_keeps_highest
+vext PASS g27_candidate_accounting_invariant
+vext PASS g28_two_runs_both_ok
+vext PASS g29_same_input_fieldwise_identical
+vext PASS g30_reason_stable_token
+vext PASS g31_label_vocabulary_person_and_clsN
+vext OK (0 failures, 30 checks runtime)
+VEXT_RUN_EXIT=0

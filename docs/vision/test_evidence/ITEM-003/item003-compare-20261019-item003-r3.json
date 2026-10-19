@@ -1,0 +1,271 @@
+{
+  "checks": [
+    {
+      "name": "T1_build-core_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_core-tests_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_selftest_exits_00",
+      "ok": true,
+      "detail": "tokens=[0, 0] transcript_exit=0"
+    },
+    {
+      "name": "T1_fixture-person_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_fixture-nonperson_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_fixture-nms_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_fixture-empty_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_fixture-padbox_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_fixture-int8_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_config_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_keep_remote_no_cleanup",
+      "ok": false,
+      "detail": "cleanup_steps=1"
+    },
+    {
+      "name": "T1_host_fingerprint_present",
+      "ok": true,
+      "detail": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "name": "T1_upload_app_reported",
+      "ok": true,
+      "detail": "uploaded 282 files"
+    },
+    {
+      "name": "T1_17_downloads_ok",
+      "ok": true,
+      "detail": "17"
+    },
+    {
+      "name": "T2_selftest_pass_count_from_source",
+      "ok": true,
+      "detail": "board=19 source=19"
+    },
+    {
+      "name": "T2_selftest_result_line",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T2_selftest_19_judgements_names",
+      "ok": true,
+      "detail": "missing=[] count=19"
+    },
+    {
+      "name": "T2_person_normalized_coords_exact",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T2_selftest_identical_to_impl_r3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T3a_letterbox_independent_math",
+      "ok": true,
+      "detail": "{'scale': 0.5, 'rw': 640, 'rh': 360, 'pad_x': 0, 'pad_y': 140}"
+    },
+    {
+      "name": "T3a_person_decode_independent_math",
+      "ok": true,
+      "detail": "0.312500,0.444444,0.100000,0.177778 expect=0.312500,0.444444,0.100000,0.177778"
+    },
+    {
+      "name": "T3a_selfencode_runs",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T3a_cell_indices_independent",
+      "ok": true,
+      "detail": "i=41 j=29"
+    },
+    {
+      "name": "T3b_person_detect_row_independent",
+      "ok": true,
+      "detail": "{'ok': 1, 'reason': 'DETECT_OK', 'boxes': 1, 'candidates': 1, 'dropped_score': 25199, 'dropped_class': 0, 'suppressed': 0, 'dropped_bounds': 0, 'truncated': 0}"
+    },
+    {
+      "name": "T3b_person_box_row_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T3b_person_box_coords_vs_independent",
+      "ok": true,
+      "detail": "0.31250,0.44444,0.10000,0.17778"
+    },
+    {
+      "name": "T3b_person_box_score_cls_label",
+      "ok": true,
+      "detail": "score=0.8100 cls=0 label=person"
+    },
+    {
+      "name": "T3b_person_box_source_fields",
+      "ok": true,
+      "detail": "scale=0 anchor=2 cell=41,29"
+    },
+    {
+      "name": "T3b_nms_pair_iou_in_expected_window",
+      "ok": true,
+      "detail": "iou=0.6247"
+    },
+    {
+      "name": "T3b_nms_detect_row_independent",
+      "ok": true,
+      "detail": "{'ok': 1, 'reason': 'DETECT_OK', 'boxes': 1, 'candidates': 2, 'dropped_score': 25198, 'dropped_class': 0, 'suppressed': 1, 'dropped_bounds': 0, 'truncated': 0}"
+    },
+    {
+      "name": "T3b_nms_keeps_higher_score",
+      "ok": true,
+      "detail": "box xywh=(0.31250,0.44444,0.10000,0.17778) score=0.8100 cls=0 label=person scale"
+    },
+    {
+      "name": "T3b_nms_099_keeps_2_via_config",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T3b_nonperson_detect_row_independent",
+      "ok": true,
+      "detail": "{'ok': 1, 'reason': 'DETECT_EMPTY', 'boxes': 0, 'candidates': 1, 'dropped_score': 25199, 'dropped_class': 1, 'suppressed': 0, 'dropped_bounds': 0, 'truncated': 0}"
+    },
+    {
+      "name": "T3b_empty_detect_row_independent",
+      "ok": true,
+      "detail": "{'ok': 1, 'reason': 'DETECT_EMPTY', 'boxes': 0, 'candidates': 0, 'dropped_score': 25200, 'dropped_class': 0, 'suppressed': 0, 'dropped_bounds': 0, 'truncated': 0}"
+    },
+    {
+      "name": "T3b_padbox_detect_row_independent",
+      "ok": true,
+      "detail": "{'ok': 1, 'reason': 'DETECT_EMPTY', 'boxes': 0, 'candidates': 1, 'dropped_score': 25199, 'dropped_class': 0, 'suppressed': 0, 'dropped_bounds': 1, 'truncated': 0}"
+    },
+    {
+      "name": "T3b_int8_detect_row_independent",
+      "ok": true,
+      "detail": "{'ok': 1, 'reason': 'DETECT_OK', 'boxes': 1, 'candidates': 1, 'dropped_score': 25199, 'dropped_class': 0, 'suppressed': 0, 'dropped_bounds': 0, 'truncated': 0}"
+    },
+    {
+      "name": "T3b_int8_box_row_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T3b_int8_coords_vs_independent_dequant",
+      "ok": true,
+      "detail": "have=0.31228,0.44409,0.10050,0.17831 exp=0.31228,0.44409,0.10050,0.17831"
+    },
+    {
+      "name": "T3b_int8_score_vs_independent",
+      "ok": true,
+      "detail": "have=0.8065 exp=0.8065"
+    },
+    {
+      "name": "T4_thresholds_yaml_confidence_min",
+      "ok": true,
+      "detail": "0.5"
+    },
+    {
+      "name": "T4_config_row_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T4_config_row_semantics",
+      "ok": true,
+      "detail": "type=config dir=./config confidence_min=0.500000 score_used=0.500000 nms_iou=0.450000 (from thresholds.confide"
+    },
+    {
+      "name": "T4_config_person_box_kept_at_0.5",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T4_config_box_exact_coords",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T5_junit_1035_0",
+      "ok": true,
+      "detail": "<testsuites tests=\"1035\" failures=\"0\""
+    },
+    {
+      "name": "T5_junit_name_multiset_identical_to_r3",
+      "ok": true,
+      "detail": "fresh=1035 impl=1035"
+    },
+    {
+      "name": "T5_test_source_judgements_extracted",
+      "ok": true,
+      "detail": "32"
+    },
+    {
+      "name": "T5_all_detect_judgements_on_board",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "T5_has[int8 x within quant tol]",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T5_has[boxes sorted by score desc]",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T5_has[inverse clamps to frame]",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T5_has[iou identical]",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T6_no_credential_leak_fresh_products",
+      "ok": true,
+      "detail": "files=19 hits=[]"
+    }
+  ],
+  "passed": 52,
+  "failed": 1
+}

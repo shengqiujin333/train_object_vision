@@ -1,0 +1,51 @@
+{
+  "stamp": "verify-20261019-item003-v1",
+  "checks": [
+    {
+      "step": "V0_keep_remote_tree_present",
+      "ok": true,
+      "detail": "TREE_OK"
+    },
+    {
+      "step": "V1_vext_build",
+      "ok": true,
+      "detail": "exit=0 1.4s VEXT_BUILD_EXIT=0"
+    },
+    {
+      "step": "V2_vext_all_pass",
+      "ok": true,
+      "detail": "pass=30 fail=0 exit=0"
+    },
+    {
+      "step": "V2_vext_count_matches_source",
+      "ok": true,
+      "detail": "board=30 source=30"
+    },
+    {
+      "step": "V2_judgement_domains",
+      "ok": true,
+      "detail": "{'g01': True, 'g05': True, 'g06': True, 'g07': True, 'g10': True, 'g12': True, 'g14': True, 'g17': True, 'g20': True, 'g22': True, 'g24': True, 'g27': True, 'g29': True, 'g31': True}"
+    },
+    {
+      "step": "V3_cli_negative_exits",
+      "ok": true,
+      "detail": "[('unknown-arg', 2, 'X=2'), ('no-action', 2, 'X=2'), ('help', 0, 'X=0')]"
+    },
+    {
+      "step": "V4_selftest_deterministic",
+      "ok": true,
+      "detail": "0e594f89b7bc256c..."
+    },
+    {
+      "step": "V5_board_no_credential_leak",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "step": "V6_board_cleanup",
+      "ok": true,
+      "detail": "p/railhmi_vision_item003_verify-20261019-item003-v1': No such file or directory\nCLEAN_DONE"
+    }
+  ],
+  "all_pass": true
+}

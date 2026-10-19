@@ -1,0 +1,5 @@
+type=config score_threshold=0.250000 nms_iou=0.450000 whitelist=[0] classes=80 source=cli
+type=decoder reason=DETECT_OK
+type=detect ok=1 reason=DETECT_OK boxes=1 candidates=2 dropped_score=25198 dropped_class=0 nms_suppressed=1 dropped_bounds=0 truncated=0
+box xywh=(0.31250,0.44444,0.10000,0.17778) score=0.8100 cls=0 label=person scale=0 anchor=2 cell=41,29
+RESULT: PASS

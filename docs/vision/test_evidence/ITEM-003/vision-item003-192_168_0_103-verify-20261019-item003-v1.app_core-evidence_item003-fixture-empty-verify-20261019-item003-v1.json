@@ -1,0 +1,1 @@
+{"mode":"fixture","failures":0,"lines":["type=config score_threshold=0.250000 nms_iou=0.450000 whitelist=[0] classes=80 source=cli","type=decoder reason=DETECT_EMPTY","type=detect ok=1 reason=DETECT_EMPTY boxes=0 candidates=0 dropped_score=25200 dropped_class=0 nms_suppressed=0 dropped_bounds=0 truncated=0","RESULT: PASS"]}
