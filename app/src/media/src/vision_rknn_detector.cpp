@@ -153,54 +153,47 @@ bool RknnVisionDetector::load_kind(railhmi::core::VisionModelKind kind,
     m->path = railhmi::core::resolve_model_path(cfg_.models_dir, decl.name);
     m->session.reset(new RknnSession());
 
+    // 失败路径统一处理：先把 reason/detail 写入 Model 并**拷贝**到局部，再移交所有权。
+    // 不能在 models_[kind]=std::move(m) 之后解引用 m（D-01：模型缺失路径曾因此 SIGSEGV）。
+    auto fail_with = [&](std::unique_ptr<Model> model, std::string reason,
+                         std::string detail) -> bool {
+        model->ready = false;
+        model->reason = std::move(reason);
+        model->detail = std::move(detail);
+        const std::string reason_copy = model->reason;
+        models_[kind] = std::move(model);
+        if (err) *err = reason_copy;
+        return false;
+    };
+
     std::string open_err;
     if (!m->session->open(m->path, &m->desc, &open_err)) {
-        m->ready = false;
-        m->reason = m->desc.load_status.empty() ? "MODEL_LOAD_FAILED" : m->desc.load_status;
-        m->detail = open_err;
-        models_[kind] = std::move(m);
-        if (err) *err = m->reason;
-        return false;
+        const std::string reason =
+            m->desc.load_status.empty() ? "MODEL_LOAD_FAILED" : m->desc.load_status;
+        return fail_with(std::move(m), reason, open_err);
     }
 
     const railhmi::core::ModelSpec spec =
         railhmi::core::spec_for_declared(decl.name, railhmi::core::AiProfile::Front);
     m->check = railhmi::core::check_capability(m->desc, spec);
-    if (!m->check.ready) {
-        m->ready = false;
-        m->reason = m->check.reason;
-        m->detail = m->check.detail;
-        models_[kind] = std::move(m);
-        if (err) *err = m->reason;
-        return false;
-    }
+    if (!m->check.ready)
+        return fail_with(std::move(m), m->check.reason, m->check.detail);
+
     if (m->desc.inputs.size() != 1) {
-        m->ready = false;
-        m->reason = infer_reason::kInputMismatch();
-        m->detail = "input tensor count=" + std::to_string(m->desc.inputs.size());
-        models_[kind] = std::move(m);
-        if (err) *err = m->reason;
-        return false;
+        return fail_with(std::move(m), infer_reason::kInputMismatch(),
+                         "input tensor count=" + std::to_string(m->desc.inputs.size()));
     }
 
     const railhmi::core::TensorDesc& in = m->desc.inputs[0];
     int c = 0, h = 0, w = 0;
     if (!chw_of(in, &c, &h, &w) || c != 3) {
-        m->ready = false;
-        m->reason = infer_reason::kInputMismatch();
-        m->detail = "input shape unsupported (c=" + std::to_string(c) + ")";
-        models_[kind] = std::move(m);
-        if (err) *err = m->reason;
-        return false;
+        return fail_with(std::move(m), infer_reason::kInputMismatch(),
+                         "input shape unsupported (c=" + std::to_string(c) + ")");
     }
     m->input_type = input_type_of(in.type);
     if (m->input_type == 0xFFFFFFFFu) {
-        m->ready = false;
-        m->reason = infer_reason::kInputMismatch();
-        m->detail = "input dtype unsupported: " + dtype_name(in.type);
-        models_[kind] = std::move(m);
-        if (err) *err = m->reason;
-        return false;
+        return fail_with(std::move(m), infer_reason::kInputMismatch(),
+                         "input dtype unsupported: " + dtype_name(in.type));
     }
 
     railhmi::core::InputTensorSpec is;

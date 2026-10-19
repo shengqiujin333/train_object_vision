@@ -27,7 +27,9 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <sys/stat.h>
 #include <thread>
+#include <unistd.h>
 #include <vector>
 
 #include "railhmi/core/config.h"
@@ -56,7 +58,11 @@ std::ofstream g_fo;
 
 void emit(const std::string& line) {
     std::printf("%s\n", line.c_str());
-    if (g_fo) g_fo << line << "\n";
+    std::fflush(stdout);   // 异常/崩溃路径下也保留已产生证据（D-01 取证要求）
+    if (g_fo) {
+        g_fo << line << "\n";
+        g_fo.flush();
+    }
 }
 
 void check(bool ok, const std::string& name, const std::string& detail = "") {
@@ -405,6 +411,55 @@ int run_selftest(const std::string& config_dir, const std::string& out_json) {
     }
 
     src.stream->stop();
+
+    // 8) 异常路径回归（验证侧 D-01）：模型缺失 / 模型非法时必须优雅降级为不可用 + reason，
+    //    不得崩溃（历史上 load_kind 在 move 后解引用空 unique_ptr -> SIGSEGV/exit 139）。
+    {
+        media::RknnDetectorConfig dcfg;
+        for (const auto& m : app.ai.models) {
+            core::DeclaredModel d;
+            d.profile = m.profile;
+            d.name = m.name;
+            d.version = m.version;
+            dcfg.declared.push_back(d);
+        }
+        dcfg.detect.score_threshold = static_cast<float>(th.confidence_min);
+        dcfg.seg.score_threshold = static_cast<float>(th.confidence_min);
+        dcfg.models_dir = "/tmp/railhmi_item009_selftest_missing_models";
+        media::RknnVisionDetector missing(dcfg);
+        std::string lerr;
+        const bool load_ok = missing.load(&lerr);
+        const std::string mjs = missing.status_json();
+        check(!load_ok && !lerr.empty() && !missing.ready(core::AiProfile::Front),
+              "model_missing_graceful", "load=false err=" + lerr);
+        check(mjs.find("\"ready\":false") != std::string::npos &&
+                  (mjs.find("MODEL_MISSING") != std::string::npos ||
+                   mjs.find("RKNN_RUNTIME_UNAVAILABLE") != std::string::npos),
+              "model_missing_reason_visible",
+              mjs.find("MODEL_MISSING") != std::string::npos ? "MODEL_MISSING"
+                                                            : mjs.substr(0, 120));
+
+        // 非法模型文件：rknn_init 失败路径同样只降级不崩溃。
+        const std::string bad_dir = "/tmp/railhmi_item009_selftest_bad_models";
+        const std::string bad_file = bad_dir + "/yolov5s.rknn";
+        ::mkdir(bad_dir.c_str(), 0700);
+        {
+            std::ofstream bf(bad_file, std::ios::binary | std::ios::trunc);
+            bf << "not-an-rknn-file";
+        }
+        media::RknnDetectorConfig bcfg = dcfg;
+        bcfg.models_dir = bad_dir;
+        media::RknnVisionDetector invalid(bcfg);
+        std::string berr;
+        const bool bad_ok = invalid.load(&berr);
+        const std::string bjs = invalid.status_json();
+        check(!bad_ok && !berr.empty() && !invalid.ready(core::AiProfile::Front) &&
+                  bjs.find("\"ready\":false") != std::string::npos,
+              "invalid_model_graceful", "load=false err=" + berr);
+        ::unlink(bad_file.c_str());
+        ::rmdir(bad_dir.c_str());
+    }
+
     const bool ok = g_fail == 0;
     emit(std::string("RESULT: ") + (ok ? "PASS" : "FAIL") + " failures=" + std::to_string(g_fail));
     if (!out_json.empty()) {

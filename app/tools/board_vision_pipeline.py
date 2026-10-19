@@ -117,7 +117,7 @@ def main() -> int:
     ap.add_argument("--command-timeout", type=int, default=300)
     ap.add_argument("--chain-duration", type=int, default=12)
     ap.add_argument("--chain4-duration", type=int, default=10)
-    ap.add_argument("--only", default="build,core-tests,selftest,chain,chain4")
+    ap.add_argument("--only", default="build,core-tests,selftest,chain,chain4,neg-missing-models")
     ap.add_argument("--keep-remote", action="store_true")
     args = ap.parse_args()
 
@@ -224,6 +224,17 @@ def main() -> int:
                 args.command_timeout))
             rels.append("app/core-evidence/item009-chain4-%s.log" % args.stamp)
             rels.append("app/core-evidence/item009-chain4-%s.json" % args.stamp)
+
+        if "neg-missing-models" in steps:
+            # D-01 回归：模型缺失必须优雅降为不可用（退出 1），不得段错误（139）。
+            note("neg-missing-models", rrun(
+                client, "cd %s/app && ./build-media/tools/railhmi-vision-pipeline --mode chain "
+                        "--config ./config --models-dir /tmp/railhmi_item009_absent_models "
+                        "--source test --duration 2 "
+                        "--out core-evidence/item009-neg-missing-%s.log; echo NEG_EXIT=$?"
+                        % (remote, args.stamp),
+                args.command_timeout))
+            rels.append("app/core-evidence/item009-neg-missing-%s.log" % args.stamp)
 
         if "ai-runner" in steps:
             # 回归：替代输入链路（SimDetector + 显式 synthetic_tick）仍可运行，未被真实路径破坏。

@@ -2720,6 +2720,16 @@ docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009-r6.transcript.json | active | ITEM-009 终轮 transcript（指纹/逐命令退出码/上传构建运行下载清理）
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009-r7.app_core-evidence_item009-ai-runner-20261020-item009-r7.log | active | ITEM-009 回归证据：railhmi-ai-runner（SimDetector 替代输入 + 显式 synthetic_tick=on）4/4 路 PASS，停止后 AI 不可用
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009-r7.log | active | ITEM-009 r7 回归留痕（MediaCheck 构建 + 替代输入链路运行，AI_RUNNER_EXIT=0）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261021-item009-r8.app_core-evidence_item009-chain-20261021-item009-r8.json | active | ITEM-009 r8 单路真实链路 JSON（模型/温度/计数/调度）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261021-item009-r8.app_core-evidence_item009-chain-20261021-item009-r8.log | active | ITEM-009 r8 终轮可读日志（build/core-tests/selftest/chain/chain4/neg-missing-models/cleanup）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261021-item009-r8.app_core-evidence_item009-chain4-20261021-item009-r8.json | active | ITEM-009 r8 4 路预算裁剪 JSON
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261021-item009-r8.app_core-evidence_item009-chain4-20261021-item009-r8.log | active | ITEM-009 r8 终轮可读日志（build/core-tests/selftest/chain/chain4/neg-missing-models/cleanup）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261021-item009-r8.app_core-evidence_item009-core-tests-20261021-item009-r8.xml | active | ITEM-009 r8 JUnit XML（tests=1215 failures=0）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261021-item009-r8.app_core-evidence_item009-neg-missing-20261021-item009-r8.log | active | ITEM-009 r8 终轮可读日志（build/core-tests/selftest/chain/chain4/neg-missing-models/cleanup）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261021-item009-r8.app_core-evidence_item009-selftest-20261021-item009-r8.json | active | ITEM-009 r8 自检 JSON（failures=0）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261021-item009-r8.app_core-evidence_item009-selftest-20261021-item009-r8.log | active | ITEM-009 r8 终轮可读日志（build/core-tests/selftest/chain/chain4/neg-missing-models/cleanup）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261021-item009-r8.log | active | ITEM-009 r8 终轮可读日志（build/core-tests/selftest/chain/chain4/neg-missing-models/cleanup）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261021-item009-r8.transcript.json | active | ITEM-009 r8 终轮 transcript（指纹/逐命令退出码/含 D-01 负例步骤/下载与清理）
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.app_core-evidence_item009-chain-verify-20261020-item009-v1.json | active | ITEM-009 验证 fresh 轮单路真实链路 JSON
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.app_core-evidence_item009-chain-verify-20261020-item009-v1.log | active | ITEM-009 验证 fresh 轮单路真实链路日志（9/9 PASS）
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.app_core-evidence_item009-chain4-verify-20261020-item009-v1.json | active | ITEM-009 验证 fresh 轮 4 路预算裁剪 JSON

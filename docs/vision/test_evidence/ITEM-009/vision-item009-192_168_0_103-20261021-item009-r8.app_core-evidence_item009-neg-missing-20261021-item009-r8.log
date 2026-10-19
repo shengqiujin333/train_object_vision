@@ -1,0 +1,33 @@
+type=config dir=./config models_dir=/tmp/railhmi_item009_absent_models interval=5 depth=2 npu_budget=4(config) temp_limit_c=85.000000 confirm_frames=3 confidence_min=0.500000
+type=models {"engine":"rknn","models_dir":"/tmp/railhmi_item009_absent_models","models":[{"kind":"yolov5_detect","declared":"yolov5s","version":"rknn-2.3.2/yolov5s","present":false,"ready":false,"reason":"MODEL_MISSING","detail":"model file not readable","input_dtype":"","input_h":0,"input_w":0,"input_scale":0,"input_zp":0,"output_count":0,"runtime_api":"","runtime_drv":""},{"kind":"yolov8_seg","declared":"yolov8s-seg","version":"rknn-2.3.2/yolov8s-seg","present":false,"ready":false,"reason":"MODEL_MISSING","detail":"model file not readable","input_dtype":"","input_h":0,"input_w":0,"input_scale":0,"input_zp":0,"output_count":0,"runtime_api":"","runtime_drv":""}],"profiles":[{"profile":"front","ready":false,"reason":"MODEL_MISSING","model_version":""},{"profile":"wheel_rail","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""},{"profile":"pantograph","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""},{"profile":"cab_door","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""}],"counters":{"infer_calls":0,"infer_ok":0,"infer_unavailable":0,"det_boxes":0,"seg_boxes":0,"mask_positive":0,"preprocess_failed":0,"infer_failed":0,"decode_failed":0,"last_pre_us":0,"last_det_us":0,"last_seg_us":0},"danger_zone":"CAM-01/danger_zone"}
+type=profile name=front ready=false reason=MODEL_MISSING model=
+type=profile name=wheel_rail ready=false reason=PROFILE_UNSUPPORTED model=
+type=profile name=pantograph ready=false reason=PROFILE_UNSUPPORTED model=
+type=profile name=cab_door ready=false reason=PROFILE_UNSUPPORTED model=
+type=source lane=CAM-01 source=test profile=front
+type=source lane=CAM-04 source=test profile=pantograph
+type=source lane=CAM-05 source=test profile=wheel_rail
+type=source lane=CAM-06 source=test profile=cab_door
+type=trace t_ms=1016 submitted=104 steps=194 infer_calls=20 events=0 thermal=MEASURED temp_c=43.461000 guard=false
+type=ai-status running=运行 worker_alive=true
+type=stop request_stop_us=0 status=AI 不可用
+type=lane camera=CAM-01 profile=front ready=false reason=MODEL_MISSING model= consumed=10 inferred=10 unavailable=10 unavailable_by_reason=MODEL_MISSING:10 last_unavailable_reason=MODEL_MISSING last_unavailable_detail=profile has no verified model capability published=10 dropped=0 skipped_interval=40 queue_depth=0 last_infer_us=5 latency_ms=3 fps=4.994451 tracks=0 events=0 env_ready=10 env_unavailable=10 env_queue_dropped=0
+type=envelope camera=CAM-01 json={"session_id":"s1a153ec368c-1be5b1-0","camera_id":"CAM-01","generation":1,"seq":50,"profile":"front","capture_mono_us":538250476572,"result_mono_us":538250480519,"latency_ms":3,"model_version":"","availability":"unavailable","reason":"MODEL_MISSING","box_count":0,"boxes":[],"masks":[]}
+type=lane camera=CAM-04 profile=pantograph ready=false reason=PROFILE_UNSUPPORTED model= consumed=10 inferred=10 unavailable=10 unavailable_by_reason=PROFILE_UNSUPPORTED:10 last_unavailable_reason=PROFILE_UNSUPPORTED last_unavailable_detail=profile has no verified model capability published=10 dropped=0 skipped_interval=41 queue_depth=0 last_infer_us=1 latency_ms=3 fps=4.964148 tracks=0 events=0 env_ready=10 env_unavailable=10 env_queue_dropped=0
+type=envelope camera=CAM-04 json={"session_id":"s1a153ec368c-1be5b1-0","camera_id":"CAM-04","generation":1,"seq":50,"profile":"pantograph","capture_mono_us":538250477064,"result_mono_us":538250480579,"latency_ms":3,"model_version":"","availability":"unavailable","reason":"PROFILE_UNSUPPORTED","box_count":0,"boxes":[],"masks":[]}
+type=lane camera=CAM-05 profile=wheel_rail ready=false reason=PROFILE_UNSUPPORTED model= consumed=10 inferred=10 unavailable=10 unavailable_by_reason=PROFILE_UNSUPPORTED:10 last_unavailable_reason=PROFILE_UNSUPPORTED last_unavailable_detail=profile has no verified model capability published=10 dropped=0 skipped_interval=40 queue_depth=0 last_infer_us=1 latency_ms=3 fps=4.980631 tracks=0 events=0 env_ready=10 env_unavailable=10 env_queue_dropped=0
+type=envelope camera=CAM-05 json={"session_id":"s1a153ec368c-1be5b1-0","camera_id":"CAM-05","generation":1,"seq":50,"profile":"wheel_rail","capture_mono_us":538250477547,"result_mono_us":538250480562,"latency_ms":3,"model_version":"","availability":"unavailable","reason":"PROFILE_UNSUPPORTED","box_count":0,"boxes":[],"masks":[]}
+type=lane camera=CAM-06 profile=cab_door ready=false reason=PROFILE_UNSUPPORTED model= consumed=10 inferred=10 unavailable=10 unavailable_by_reason=PROFILE_UNSUPPORTED:10 last_unavailable_reason=PROFILE_UNSUPPORTED last_unavailable_detail=profile has no verified model capability published=10 dropped=0 skipped_interval=41 queue_depth=0 last_infer_us=0 latency_ms=4 fps=4.994451 tracks=0 events=0 env_ready=10 env_unavailable=10 env_queue_dropped=0
+type=envelope camera=CAM-06 json={"session_id":"s1a153ec368c-1be5b1-0","camera_id":"CAM-06","generation":1,"seq":50,"profile":"cab_door","capture_mono_us":538250476078,"result_mono_us":538250480595,"latency_ms":4,"model_version":"","availability":"unavailable","reason":"PROFILE_UNSUPPORTED","box_count":0,"boxes":[],"masks":[]}
+type=rule events_total=0 events_new=0
+type=summary submitted=202 consumed=40 published=40 unavailable=40 round=380 budget=4 thermal_guard_rounds=0 thermal_unknown_rounds=0 thermal={"valid":true,"state":"MEASURED","measured":true,"injected":false,"celsius":41.615,"source":"thermal_zone0","reason":"THERMAL_OK","zone_index":0,"read_mono_ms":538250512}
+[FAIL] chain_models_ready :: det:MODEL_MISSING;seg:MODEL_MISSING;
+[PASS] chain_frames_dispatched_and_consumed :: submitted=202 consumed=40
+[PASS] chain_envelopes_published :: 40
+[PASS] chain_stop_ai_unavailable :: AI 不可用
+[PASS] chain_scheduler_rounds :: rounds=380
+[PASS] chain_budget_respected :: 4<=4
+[PASS] chain_thermal_reported :: {"valid":true,"state":"MEASURED","measured":true,"injected":false,"celsius":41.615,"source":"thermal_zone0","reason":"THERMAL_OK","zone_index":0,"read_mono_ms":538250512}
+[PASS] chain_guard_matches_measured_temp :: measured=41.615000 limit=85.000000 guard=false
+[PASS] chain_lease_available :: missing_polls=1
+RESULT: FAIL failures=1

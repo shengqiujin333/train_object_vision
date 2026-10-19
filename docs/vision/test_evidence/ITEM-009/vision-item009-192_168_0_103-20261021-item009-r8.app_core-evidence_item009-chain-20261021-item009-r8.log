@@ -1,0 +1,34 @@
+type=config dir=./config models_dir=/tmp/railhmi_vision_item009_20261021-item009-r8/model-assets interval=5 depth=2 npu_budget=4(config) temp_limit_c=85.000000 confirm_frames=3 confidence_min=0.500000
+type=models {"engine":"rknn","models_dir":"/tmp/railhmi_vision_item009_20261021-item009-r8/model-assets","models":[{"kind":"yolov5_detect","declared":"yolov5s","version":"rknn-2.3.2/yolov5s","present":true,"ready":true,"reason":"READY","detail":"capability verified","input_dtype":"int8","input_h":640,"input_w":640,"input_scale":0.00392157,"input_zp":-128,"output_count":3,"runtime_api":"2.3.2 (429f97ae6b@2025-04-09T09:09:27)","runtime_drv":"0.9.8"},{"kind":"yolov8_seg","declared":"yolov8s-seg","version":"rknn-2.3.2/yolov8s-seg","present":true,"ready":true,"reason":"READY","detail":"capability verified","input_dtype":"int8","input_h":640,"input_w":640,"input_scale":0.00392157,"input_zp":-128,"output_count":13,"runtime_api":"2.3.2 (429f97ae6b@2025-04-09T09:09:27)","runtime_drv":"0.9.8"}],"profiles":[{"profile":"front","ready":true,"reason":"READY","model_version":"rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg"},{"profile":"wheel_rail","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""},{"profile":"pantograph","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""},{"profile":"cab_door","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""}],"counters":{"infer_calls":0,"infer_ok":0,"infer_unavailable":0,"det_boxes":0,"seg_boxes":0,"mask_positive":0,"preprocess_failed":0,"infer_failed":0,"decode_failed":0,"last_pre_us":0,"last_det_us":0,"last_seg_us":0},"danger_zone":"CAM-01/danger_zone"}
+type=profile name=front ready=true reason=READY model=rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg
+type=profile name=wheel_rail ready=false reason=PROFILE_UNSUPPORTED model=
+type=profile name=pantograph ready=false reason=PROFILE_UNSUPPORTED model=
+type=profile name=cab_door ready=false reason=PROFILE_UNSUPPORTED model=
+type=source lane=CAM-01 source=test profile=front
+type=trace t_ms=1008 submitted=26 steps=80 infer_calls=4 events=0 thermal=MEASURED temp_c=41.615000 guard=false
+type=trace t_ms=2008 submitted=51 steps=138 infer_calls=9 events=0 thermal=MEASURED temp_c=42.538000 guard=false
+type=trace t_ms=3008 submitted=76 steps=195 infer_calls=14 events=0 thermal=MEASURED temp_c=42.538000 guard=false
+type=trace t_ms=4008 submitted=101 steps=253 infer_calls=19 events=0 thermal=MEASURED temp_c=41.615000 guard=false
+type=trace t_ms=5008 submitted=126 steps=309 infer_calls=24 events=0 thermal=MEASURED temp_c=42.538000 guard=false
+type=trace t_ms=6008 submitted=151 steps=366 infer_calls=29 events=0 thermal=MEASURED temp_c=42.538000 guard=false
+type=trace t_ms=7008 submitted=176 steps=420 infer_calls=34 events=0 thermal=MEASURED temp_c=42.538000 guard=false
+type=trace t_ms=8008 submitted=200 steps=474 infer_calls=39 events=0 thermal=MEASURED temp_c=41.615000 guard=false
+type=trace t_ms=9008 submitted=226 steps=531 infer_calls=44 events=0 thermal=MEASURED temp_c=42.538000 guard=false
+type=trace t_ms=10008 submitted=251 steps=585 infer_calls=49 events=0 thermal=MEASURED temp_c=42.538000 guard=false
+type=trace t_ms=11008 submitted=276 steps=642 infer_calls=54 events=0 thermal=MEASURED temp_c=42.538000 guard=false
+type=ai-status running=运行 worker_alive=true
+type=stop request_stop_us=0 status=AI 不可用
+type=lane camera=CAM-01 profile=front ready=true reason= model=rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg consumed=60 inferred=60 unavailable=9 unavailable_by_reason=TWO_STAGE_UNAVAILABLE:9 last_unavailable_reason=TWO_STAGE_UNAVAILABLE last_unavailable_detail=rail mask empty published=60 dropped=0 skipped_interval=240 queue_depth=0 last_infer_us=139976 latency_ms=140 fps=5.008064 tracks=0 events=0 env_ready=60 env_unavailable=9 env_queue_dropped=0
+type=envelope camera=CAM-01 json={"session_id":"s1a153ebdd28-beb7df-0","camera_id":"CAM-01","generation":1,"seq":300,"profile":"front","capture_mono_us":538237583994,"result_mono_us":538237724312,"latency_ms":140,"model_version":"rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg","availability":"ready","reason":"READY","box_count":0,"boxes":[],"masks":[{"box_index":-1,"width":1280,"height":720,"stride_bytes":1280,"kind":"rail","plane_present":true}]}
+type=rule events_total=0 events_new=0
+type=summary submitted=300 consumed=60 published=60 unavailable=9 round=701 budget=1 thermal_guard_rounds=0 thermal_unknown_rounds=0 thermal={"valid":true,"state":"MEASURED","measured":true,"injected":false,"celsius":42.538,"source":"thermal_zone3","reason":"THERMAL_OK","zone_index":3,"read_mono_ms":538237584}
+[PASS] chain_models_ready
+[PASS] chain_frames_dispatched_and_consumed :: submitted=300 consumed=60
+[PASS] chain_envelopes_published :: 60
+[PASS] chain_stop_ai_unavailable :: AI 不可用
+[PASS] chain_scheduler_rounds :: rounds=701
+[PASS] chain_budget_respected :: 1<=4
+[PASS] chain_thermal_reported :: {"valid":true,"state":"MEASURED","measured":true,"injected":false,"celsius":42.538,"source":"thermal_zone3","reason":"THERMAL_OK","zone_index":3,"read_mono_ms":538237584}
+[PASS] chain_guard_matches_measured_temp :: measured=42.538000 limit=85.000000 guard=false
+[PASS] chain_lease_available :: missing_polls=1
+RESULT: PASS failures=0

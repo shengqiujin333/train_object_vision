@@ -16,7 +16,7 @@
 | 真实检测器 | `app/src/media/include/railhmi/media/vision_rknn_detector.h`、`src/vision_rknn_detector.cpp` | `VisionDetector` 实现：`FrameLease`→ITEM-002 预处理→`rknn_run`→ITEM-003/004 解码→ITEM-005 同帧两阶段→ITEM-006 envelope；模型名/版本来自配置，按 ITEM-001 结构核验后才 ready。 |
 | 生产推理工作线程 | `app/src/media/include/railhmi/media/vision_ai_worker.h`、`src/vision_ai_worker.cpp` | 消费 `AiFrameRouter`（ai_dispatcher 的带身份有界丢旧队列）；`plan_inference`+无饥饿调度；**infer 在锁外**；每路轻量跟踪分配 track_id；envelope 入发布队列；语义适配→`RuleEngine`；温度与决策入遥测；`request_stop()` 立即不可用。 |
 | 关闭自造帧 tick | `app/src/media/include/railhmi/media/ai_worker.h`、`src/ai_worker.cpp` | `AiWorkerConfig::synthetic_tick` 默认 **false**（生产模式不再自造帧）；历史替代输入链路（`railhmi-ai-runner`）显式开启并在输出标注 `synthetic_tick=on`。 |
-| 探针 | `app/src/media/tools/vision_pipeline_probe.cpp`（`railhmi-vision-pipeline`） | `--selftest`（19 判例：无造帧/非阻塞/丢旧/预算/温度/不可用语义）与 `--mode chain`（test/file 源→派发→RKNN→envelope→规则）。 |
+| 探针 | `app/src/media/tools/vision_pipeline_probe.cpp`（`railhmi-vision-pipeline`） | `--selftest`（22 判例：无造帧/非阻塞/丢旧/预算/温度/不可用语义/**模型缺失与非法模型的异常降级**）与 `--mode chain`（test/file 源→派发→RKNN→envelope→规则）；`emit` 逐行 flush，崩溃/异常路径也保留已产生证据。 |
 | 单元测试 | `app/tests/core/test_vision_worker_schedule.cpp` | 温度解析/多 zone/注入标记/年龄 + 调度器 54 判例（预算、优先级、无饥饿、守卫、idle、边界、确定性、JSON）。 |
 | 板端入口 | `app/tools/board_vision_pipeline.py` | 一次有界会话：上传→CoreTests→core-tests→MediaCheck→selftest→chain（单路）→chain4（4 路 + 预算裁剪）→取回证据→清理。 |
 
@@ -91,6 +91,7 @@ CameraStream(file/test/rtsp)                 AiFrameRouter（ai_dispatcher）
 | r3 | selftest 3 项失败：`bounded_drop_oldest` depth=0/dropped=0；`rule_engine_receives_detections` events=0 | (a) 该用例 `inference_interval=5`，`frame_due(seq=1,5)=false` → 帧被降频丢弃，队列本就为空（非丢旧）；(b) 替代检测器框 `in_roi=false`，适配器候选要求 in_roi → 不下发 | 用例改 `interval=1` 并按真实帧推进；替代检测器置 `in_roi_flags=1` 以覆盖规则链路（标注非能力声明）；同时把分析路由的规则引擎改为共享实例 | r4 上述两项通过 |
 | r4 | `drop_oldest_keeps_newest :: seq=5 last_pushed=6` | 断言写错：depth=2 丢旧后**保留最新两帧**，首次 pop 得到倒数第二新（5），第二次才是最新（6） | 改为连续 pop 两次比对 `pushed[n-2], pushed[n-1]` | r5 通过 |
 | r5 | 全绿（selftest 19/19，chain PASS，chain4 PASS） | — | — | r6 终轮独立复跑 |
+| r8 | 验证轮 D-01：`--mode chain` 模型缺失时 **SIGSEGV（exit 139）**，stdout 0 字节 | `load_kind` 五条失败路径同构：`models_[kind] = std::move(m)` 后仍 `*err = m->reason`（空 `unique_ptr` 解引用）；`run_chain` 恒传 `&load_err`，模型缺失必崩 | (a) 新增局部 `fail_with(model, reason, detail)`：先写 reason/detail 再**拷贝** reason，最后移交所有权，5 处统一收口；(b) 探针 `emit` 加 `fflush`，异常路径保留证据；(c) 自检新增 3 判例（`model_missing_graceful` / `model_missing_reason_visible` / `invalid_model_graceful`）并新增板端负例步骤 `neg-missing-models` 直接复现原命令 | r8：同一命令 exit **1**（非 139），`MODEL_MISSING` 在 `type=models` JSON 可见，降级后 40 帧仍以 unavailable 发布；selftest 22/22 |
 
 ## 7. 观察与移交
 
@@ -103,3 +104,5 @@ CameraStream(file/test/rtsp)                 AiFrameRouter（ai_dispatcher）
 7. **未执行/不外推**：未连接任何真实相机（ENV-D）；未测真实画面检出率/误报/掩码质量；未测 4 路全模型并发（当前仅 front 有模型证据）；未做热稳态长跑；未设置 NPU core mask；`npu_budget` 不作算力容量解释。以上均为待执行项，不在本增量声称通过。
 8. **同帧两次预处理**：front 的 det 与 seg 各持一个 `FramePreprocessor`，同一帧做了两次 letterbox/量化（实测 det+seg 合计 ≈144ms）。可优化为一次预处理供两模型共用（纯性能优化，不影响正确性/契约），留待性能轮评估。
 9. **未做模型热重载**：模型在构造时加载一次；配置变更需重启进程（`load()` 幂等，不做运行中替换）。
+10. **异常路径语义（D-01 修复后）**：模型缺失/非法 -> `load()` 返回 false、`err` 汇总每类模型 reason、`status_json()` 逐模型 `present/ready/reason/detail`，profile 转 `MODEL_MISSING`/`MODEL_LOAD_FAILED`；探针 `chain` 继续以 unavailable 发布空框 envelope，并把 `chain_models_ready` 判 FAIL（exit 1）。**不得**用崩溃/静默无输出代替显式 reason。
+11. **失败路径的代码约束**：`load_kind` 内所有失败分支统一走 `fail_with`（先拷贝 reason 再 move）；新增失败分支时不要先 `models_[kind]=std::move(m)` 再解引用 `m`。
