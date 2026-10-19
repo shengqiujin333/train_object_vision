@@ -1,0 +1,41 @@
+vext PASS g01_gen1_seq50_accepted
+vext PASS g01_gen2_seq0_resets_baseline
+vext PASS g01_two_accepted_no_reject :: {"submitted":2,"accepted":2,"rejected":0,"stale_session":0,"stale_generation":0,"duplicate_seq":0,"out_of_order_seq":0,"queued":2,"queue_dropped":0,"popped":0,"unavailable":0,"empty_boxes":0,"non_empty":2}
+vext PASS g02_first_submit_adopts_session
+vext PASS g02_second_session_rejected :: stale_session
+vext PASS g03_seed_gen3
+vext PASS g03_stale_gen_rejected :: stale_generation
+vext PASS g03_same_gen_new_seq_still_accepted
+vext PASS g03_counts_after_mixed :: {"submitted":3,"accepted":2,"rejected":1,"stale_session":0,"stale_generation":1,"duplicate_seq":0,"out_of_order_seq":0,"queued":2,"queue_dropped":0,"popped":0,"unavailable":0,"empty_boxes":0,"non_empty":2}
+vext PASS g04_equal_seq_duplicate :: duplicate_seq
+vext PASS g04_lower_seq_out_of_order :: out_of_order_seq
+vext PASS g04_much_lower_still_ooo :: out_of_order_seq
+vext PASS g04_higher_seq_accepted
+vext PASS g05_999us_truncates_to_0
+vext PASS g05_1000us_is_1ms
+vext PASS g05_zero_zero
+vext PASS g05_negative_clamped
+vext PASS g06_queue_wait_included_in_latency :: 2000
+vext PASS g07_depth1_size :: 1
+vext PASS g07_depth1_dropped_4 :: 4
+vext PASS g07_depth1_keeps_newest :: 5
+vext PASS g08_push_always_true_under_load
+vext PASS g08_drop_oldest_counted :: {"submitted":3,"accepted":3,"rejected":0,"stale_session":0,"stale_generation":0,"duplicate_seq":0,"out_of_order_seq":0,"queued":3,"queue_dropped":1,"popped":0,"unavailable":0,"empty_boxes":0,"non_empty":3}
+vext PASS g09_unavailable_still_enqueued
+vext PASS g09_empty_ready_enqueued
+vext PASS g09_classification_counts :: {"submitted":2,"accepted":2,"rejected":0,"stale_session":0,"stale_generation":0,"duplicate_seq":0,"out_of_order_seq":0,"queued":2,"queue_dropped":0,"popped":0,"unavailable":1,"empty_boxes":1,"non_empty":0}
+vext PASS g10_popped_and_dropped_consistent :: popped=2 dropped=2
+vext PASS g10_empty_pop_no_count
+vext PASS g11_json_track_id_minus_one
+vext PASS g11_json_no_track_id_zero
+vext PASS g12_reason_override_custom :: THERMAL_GUARD
+vext PASS g12_default_ai_unavailable :: AI_UNAVAILABLE
+vext PASS g12_default_tokens_stable
+vext PASS g12_json_reason :: AI_UNAVAILABLE
+vext PASS g13_json_availability_distinct
+vext PASS g13_json_outputs_differ
+vext PASS g14_no_pointer_ready_empty_both
+vext PASS g15_track_ids_partial_fill_minus_one
+vext PASS g16_stats_json_all_counters
+vext OK (0 failures)
+VEXT_RUN_EXIT=0

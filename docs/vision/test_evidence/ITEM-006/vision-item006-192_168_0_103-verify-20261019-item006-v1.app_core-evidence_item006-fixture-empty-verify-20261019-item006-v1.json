@@ -1,0 +1,1 @@
+{"mode":"fixture","failures":0,"lines":["type=config queue_depth=2","{\"session_id\":\"s-env\",\"camera_id\":\"CAM-01\",\"generation\":1,\"seq\":1,\"profile\":\"front\",\"capture_mono_us\":0,\"result_mono_us\":1000,\"latency_ms\":1,\"model_version\":\"rknn-2.3.2/yolov5s\",\"availability\":\"ready\",\"reason\":\"READY\",\"box_count\":0,\"boxes\":[],\"masks\":[]}","RESULT: PASS"]}

@@ -1,0 +1,7 @@
+type=config queue_depth=2
+accepted seq=20
+duplicate -> duplicate_seq
+out_of_order -> out_of_order_seq
+stale_generation -> stale_generation
+stats {"submitted":4,"accepted":1,"rejected":3,"stale_session":0,"stale_generation":1,"duplicate_seq":1,"out_of_order_seq":1,"queued":1,"queue_dropped":0,"popped":0,"unavailable":0,"empty_boxes":0,"non_empty":1}
+RESULT: PASS

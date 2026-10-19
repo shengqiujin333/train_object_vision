@@ -2459,6 +2459,14 @@ docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.log | active | 验证独立复跑人类可读 transcript（verify-20261019-item005-v1，--keep-remote）
 docs/vision/test_evidence/ITEM-005/vision-item005-192_168_0_103-verify-20261019-item005-v1.transcript.json | active | 验证独立复跑结构化 transcript（指纹与实现 r4 同板同 key；292 文件/39 下载）
 docs/vision/test_evidence/ITEM-006/ITEM-006-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-006 实际正确性证据（identity/延迟/可用与空框/track_id null/掩码引用/逐类拒绝计数/有界队列丢旧，core 1118/0）与未执行项
+docs/vision/test_evidence/ITEM-006/VERIFY-ITEM-006.md | active | ITEM-006 软件验证 TestEvidence（VERIFY-20261019-item006-v1，TEST_PASS：交付入口独立复跑 + 28 判据独立比对（fresh vs r3 12 份日志逐字节恒等/JUnit 1118 判例名多重集恒等/TC-T-PUB-01..05 独立重推导）+ vext 39 判例板上全 PASS（世代边界/乱序重复判定序/延迟边界/队列深度 1-2 丢旧/JSON track_id -1/reason 覆盖）+ 负例/确定性 sha256/泄漏 0/板端清理）
+docs/vision/test_evidence/ITEM-006/verify/item006-compare-verify-20261019-item006-v1.json | active | ITEM-006 验证比对归档（28/28）
+docs/vision/test_evidence/ITEM-006/verify/verify_item006_compare.py | active | ITEM-006 验证独立比对 oracle（28 判据，不采信交付 RESULT 行；身份链/延迟/逐类拒绝/有界队列/配置来源独立重推导 + fresh vs r3 恒等）
+docs/vision/test_evidence/ITEM-006/verify/verify_item006_run.py | active | ITEM-006 验证独立复跑驱动（PowerShell 用户级凭据导入 + 交付 runner --keep-remote）
+docs/vision/test_evidence/ITEM-006/verify/verify_item006_vext.py | active | ITEM-006 验证 EXT 夹具板上运行器（V0..V6；复用 keep-remote 树 g++ 直编）
+docs/vision/test_evidence/ITEM-006/verify/vext_item006.cpp | active | ITEM-006 验证自有扩展夹具源码（39 判例：世代前进/拒绝不破坏 gate/乱序重复边界/延迟截断与钳位/排队计入/depth1 逐出/push 恒真/unavailable 入队分类/popped 一致性/track_id JSON/reason token/g15 短表/stats 键面）
+docs/vision/test_evidence/ITEM-006/vext-item006-verify-20261019-item006-v1.json | active | ITEM-006 验证 vext 结构化判定（9/9 检查 PASS）
+docs/vision/test_evidence/ITEM-006/vext-item006-verify-20261019-item006-v1.stdout.log | active | ITEM-006 验证 vext 板端 stdout 留痕（39 PASS + OK）
 docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-20261019-item006-r1.log | active | ITEM-006 返工前人类可读 transcript（r1）
 docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-20261019-item006-r1.transcript.json | active | ITEM-006 返工前 transcript（r1：DetectBox 字段误用 BUILD_EXIT=3）
 docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-20261019-item006-r2.app_core-evidence_item006-core-tests-20261019-item006-r2.xml | active | ITEM-006 core 单测 JUnit（r2：track_id null 判例失败）
@@ -2492,6 +2500,33 @@ docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-20261019-item006
 docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-20261019-item006-r3.app_core-evidence_item006-selftest-20261019-item006-r3.log | active | ITEM-006 夹具自检文本（r3：24 判例 RESULT PASS failures=0）
 docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-20261019-item006-r3.log | active | ITEM-006 板端执行人类可读 transcript（r3）
 docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-20261019-item006-r3.transcript.json | active | ITEM-006 板端执行结构化 transcript（r3 权威轮：命令/退出码/输出/主机指纹）
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-config-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 config JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-config-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 config 日志（app.ai.queue_depth=2）
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-core-tests-verify-20261019-item006-v1.xml | active | ITEM-006 验证独立复跑 core JUnit（tests=1118 failures=0，判例名与 r3 多重集恒等）
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-duplicate-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 fixture-duplicate JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-duplicate-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 fixture-duplicate 日志
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-empty-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 fixture-empty JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-empty-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 fixture-empty 日志
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-identity-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 fixture-identity JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-identity-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 fixture-identity 日志
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-no_track-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 fixture-no_track JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-no_track-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 fixture-no_track 日志
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-out_of_order-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 fixture-out_of_order JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-out_of_order-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 fixture-out_of_order 日志
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-queue_overflow-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 fixture-queue_overflow JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-queue_overflow-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 fixture-queue_overflow 日志
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-ready-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 fixture-ready JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-ready-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 fixture-ready 日志
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-seg_unavailable-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 fixture-seg_unavailable JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-seg_unavailable-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 fixture-seg_unavailable 日志
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-stale-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 fixture-stale JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-stale-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 fixture-stale 日志
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-unavailable-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 fixture-unavailable JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-fixture-unavailable-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 fixture-unavailable 日志
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-selftest-verify-20261019-item006-v1.json | active | ITEM-006 验证独立复跑 selftest JSON
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.app_core-evidence_item006-selftest-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑 selftest 日志（34 PASS 行，与 r3 恒等）
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.log | active | ITEM-006 验证独立复跑人类可读 transcript（全步骤 exit=0）
+docs/vision/test_evidence/ITEM-006/vision-item006-192_168_0_103-verify-20261019-item006-v1.transcript.json | active | ITEM-006 验证独立复跑结构化 transcript（指纹与实现 r3 同板同 key）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

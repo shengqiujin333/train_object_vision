@@ -1,0 +1,3 @@
+type=config queue_depth=2
+{"session_id":"s-env","camera_id":"CAM-01","generation":1,"seq":1,"profile":"front","capture_mono_us":0,"result_mono_us":0,"latency_ms":0,"model_version":"","availability":"unavailable","reason":"SEG_UNAVAILABLE","box_count":0,"boxes":[],"masks":[]}
+RESULT: PASS
