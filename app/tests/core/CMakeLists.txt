@@ -18,6 +18,7 @@ add_executable(railhmi-core-tests
     test_vision_detect_postprocess.cpp
     test_vision_seg_postprocess.cpp
     test_vision_two_stage.cpp
+    test_vision_inference_envelope.cpp
     test_frame_identity.cpp
     test_frame_layout.cpp
     test_bounded_queue.cpp

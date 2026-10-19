@@ -1,0 +1,268 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "local_app": "E:\\work\\rail_issue\\rk3588_handover\\app",
+    "remote_dir": "",
+    "outdir": "docs/vision/test_evidence/ITEM-006",
+    "stamp": "20261019-item006-r1",
+    "connect_timeout": 10,
+    "build_timeout": 900,
+    "command_timeout": 180,
+    "keep_remote": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "env",
+      "cmd": "uname -smr; nproc; g++ --version | head -1",
+      "exit": 0,
+      "elapsed_s": 0.19,
+      "output": "Linux 6.1.141 aarch64\n8\ng++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\n"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_vision_item006_20261019-item006-r1/app/core-evidence && echo ok",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "ok\n"
+    },
+    {
+      "step": "upload-app",
+      "exit": 0,
+      "output": "uploaded 297 files"
+    },
+    {
+      "step": "build-core",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && bash build.sh CoreTests; echo BUILD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 11.32,
+      "output": "[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1\n[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no\n[build.sh] configuring: cmake -S '/tmp/railhmi_vision_item006_20261019-item006-r1/app' -B '/tmp/railhmi_vision_item006_20261019-item006-r1/app/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- railhmi: build mode = CoreTests\n-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/railhmi_vision_item006_20261019-item006-r1/app/build-core\n[build.sh] building: cmake --build '/tmp/railhmi_vision_item006_20261019-item006-r1/app/build-core' -j8\n[  1%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/video_diagnostics.cpp.o\n[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o\n[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o\n[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o\n[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o\n[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o\n[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o\n[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o\n[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o\n[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_source.cpp.o\n[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/compressed_ring.cpp.o\n[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o\n[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o\n[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o\n[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o\n[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o\n[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o\n[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o\n[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o\n[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o\n[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o\n[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_model_capability.cpp.o\n[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_preprocess.cpp.o\n[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_detect_postprocess.cpp.o\n[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_seg_postprocess.cpp.o\n[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_two_stage.cpp.o\n[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_inference_envelope.cpp.o\n[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o\nBUILD_EXIT=3\n/tmp/railhmi_vision_item006_20261019-item006-r1/app/src/core/src/vision_inference_envelope.cpp: In function ‘railhmi::core::InferenceEnvelope railhmi::core::build_envelope(const railhmi::core::EnvelopeBuildInput&)’:\n/tmp/railhmi_vision_item006_20261019-item006-r1/app/src/core/src/vision_inference_envelope.cpp:90:30: error: ‘const struct railhmi::core::DetectBox’ has no member named ‘confidence’\n   90 |             o.confidence = b.confidence;\n      |                              ^~~~~~~~~~\n/tmp/railhmi_vision_item006_20261019-item006-r1/app/src/core/src/vision_inference_envelope.cpp:93:26: error: ‘const struct railhmi::core::DetectBox’ has no member named ‘in_roi’\n   93 |             o.in_roi = b.in_roi;\n      |                          ^~~~~~\n/tmp/railhmi_vision_item006_20261019-item006-r1/app/src/core/src/vision_inference_envelope.cpp:94:30: error: ‘const struct railhmi::core::DetectBox’ has no member named ‘distance_m’\n   94 |             o.distance_m = b.distance_m;\n      |                              ^~~~~~~~~~\ngmake[2]: *** [src/core/CMakeFiles/railhmi_core.dir/build.make:440: src/core/CMakeFiles/railhmi_core.dir/src/vision_inference_envelope.cpp.o] Error 1\ngmake[2]: *** Waiting for unfinished jobs....\ngmake[1]: *** [CMakeFiles/Makefile2:168: src/core/CMakeFiles/railhmi_core.dir/all] Error 2\ngmake: *** [Makefile:101: all] Error 2\n[build.sh] build failed (mode=core-tests)\n"
+    },
+    {
+      "step": "core-tests",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tests/railhmi-core-tests --junit core-evidence/item006-core-tests-20261019-item006-r1.xml; echo TEST_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "TEST_EXIT=127\nbash: line 1: ./build-core/tests/railhmi-core-tests: No such file or directory\n"
+    },
+    {
+      "step": "selftest",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --selftest --out core-evidence/item006-selftest-20261019-item006-r1.log; echo SELFTEST_EXIT=$?; ./build-core/tools/railhmi-vision-envelope --selftest --json core-evidence/item006-selftest-20261019-item006-r1.json >> /dev/null 2>&1; echo SELFTEST_JSON_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "SELFTEST_EXIT=127\nSELFTEST_JSON_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "fixture-ready",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --fixture ready --depth 2 --out core-evidence/item006-fixture-ready-20261019-item006-r1.log --json core-evidence/item006-fixture-ready-20261019-item006-r1.json; echo FIX_READY_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "FIX_READY_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "fixture-empty",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --fixture empty --depth 2 --out core-evidence/item006-fixture-empty-20261019-item006-r1.log --json core-evidence/item006-fixture-empty-20261019-item006-r1.json; echo FIX_EMPTY_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.35,
+      "output": "FIX_EMPTY_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "fixture-unavailable",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --fixture unavailable --depth 2 --out core-evidence/item006-fixture-unavailable-20261019-item006-r1.log --json core-evidence/item006-fixture-unavailable-20261019-item006-r1.json; echo FIX_UNAVAILABLE_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.15,
+      "output": "FIX_UNAVAILABLE_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "fixture-seg_unavailable",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --fixture seg_unavailable --depth 2 --out core-evidence/item006-fixture-seg_unavailable-20261019-item006-r1.log --json core-evidence/item006-fixture-seg_unavailable-20261019-item006-r1.json; echo FIX_SEG_UNAVAILABLE_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "FIX_SEG_UNAVAILABLE_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "fixture-no_track",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --fixture no_track --depth 2 --out core-evidence/item006-fixture-no_track-20261019-item006-r1.log --json core-evidence/item006-fixture-no_track-20261019-item006-r1.json; echo FIX_NO_TRACK_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.27,
+      "output": "FIX_NO_TRACK_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "fixture-identity",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --fixture identity --depth 2 --out core-evidence/item006-fixture-identity-20261019-item006-r1.log --json core-evidence/item006-fixture-identity-20261019-item006-r1.json; echo FIX_IDENTITY_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "FIX_IDENTITY_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "fixture-stale",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --fixture stale --depth 2 --out core-evidence/item006-fixture-stale-20261019-item006-r1.log --json core-evidence/item006-fixture-stale-20261019-item006-r1.json; echo FIX_STALE_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.32,
+      "output": "FIX_STALE_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "fixture-duplicate",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --fixture duplicate --depth 2 --out core-evidence/item006-fixture-duplicate-20261019-item006-r1.log --json core-evidence/item006-fixture-duplicate-20261019-item006-r1.json; echo FIX_DUPLICATE_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "FIX_DUPLICATE_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "fixture-out_of_order",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --fixture out_of_order --depth 2 --out core-evidence/item006-fixture-out_of_order-20261019-item006-r1.log --json core-evidence/item006-fixture-out_of_order-20261019-item006-r1.json; echo FIX_OUT_OF_ORDER_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "FIX_OUT_OF_ORDER_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "fixture-queue_overflow",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --fixture queue_overflow --depth 2 --out core-evidence/item006-fixture-queue_overflow-20261019-item006-r1.log --json core-evidence/item006-fixture-queue_overflow-20261019-item006-r1.json; echo FIX_QUEUE_OVERFLOW_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "FIX_QUEUE_OVERFLOW_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "config",
+      "cmd": "cd /tmp/railhmi_vision_item006_20261019-item006-r1/app && ./build-core/tools/railhmi-vision-envelope --config ./config --out core-evidence/item006-config-20261019-item006-r1.log --json core-evidence/item006-config-20261019-item006-r1.json; echo CONFIG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "CONFIG_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-envelope: No such file or directory\n"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-core-tests-20261019-item006-r1.xml: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-selftest-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-selftest-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-config-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-config-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-ready-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-ready-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-empty-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-empty-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-unavailable-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-unavailable-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-seg_unavailable-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-seg_unavailable-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-no_track-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-no_track-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-identity-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-identity-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-stale-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-stale-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-duplicate-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-duplicate-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-out_of_order-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-out_of_order-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-queue_overflow-20261019-item006-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item006-fixture-queue_overflow-20261019-item006-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_vision_item006_20261019-item006-r1 && echo cleaned",
+      "exit": 0,
+      "elapsed_s": 0.06,
+      "output": "cleaned\n"
+    }
+  ]
+}

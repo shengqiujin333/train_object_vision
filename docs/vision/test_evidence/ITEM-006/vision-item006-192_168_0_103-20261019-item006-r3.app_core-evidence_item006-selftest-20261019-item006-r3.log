@@ -1,0 +1,35 @@
+[PASS] latency = (result-capture)/1000
+[PASS] latency negative clamped to 0
+[PASS] latency zero
+[PASS] ready envelope
+[PASS] identity key preserved
+[PASS] capture/result/latency
+[PASS] model_version carried
+[PASS] box with track_id
+[PASS] mask ref preserved (zero-copy)
+[PASS] unknown track_id is null (-1)
+[PASS] track_id not fabricated as 0
+[PASS] ready + empty boxes (no target)
+[PASS] unavailable + reason + empty boxes
+[PASS] unavailable distinguishable from empty
+[PASS] detect not ready -> AI_UNAVAILABLE
+[PASS] seg not ready -> SEG_UNAVAILABLE
+[PASS] distance/in_roi overrides applied
+[PASS] accepted first
+[PASS] duplicate seq rejected :: duplicate_seq
+[PASS] out-of-order rejected :: out_of_order_seq
+[PASS] stale generation rejected :: stale_generation
+[PASS] stale session rejected :: stale_session
+[PASS] submit/accepted/rejected counts
+[PASS] per-class rejection counts independent :: {"submitted":5,"accepted":1,"rejected":4,"stale_session":1,"stale_generation":1,"duplicate_seq":1,"out_of_order_seq":1,"queued":1,"queue_dropped":0,"popped":0,"unavailable":0,"empty_boxes":0,"non_empty":1}
+[PASS] queue bounded to depth :: 2
+[PASS] queue drop-oldest counted :: {"submitted":5,"accepted":5,"rejected":0,"stale_session":0,"stale_generation":0,"duplicate_seq":0,"out_of_order_seq":0,"queued":5,"queue_dropped":3,"popped":0,"unavailable":0,"empty_boxes":0,"non_empty":5}
+[PASS] queue keeps newest (pop order) :: 33,34
+[PASS] empty queue pop false
+[PASS] popped count
+[PASS] availability/box classification counts :: {"submitted":3,"accepted":3,"rejected":0,"stale_session":0,"stale_generation":0,"duplicate_seq":0,"out_of_order_seq":0,"queued":3,"queue_dropped":0,"popped":0,"unavailable":1,"empty_boxes":1,"non_empty":1}
+[PASS] drop counter non-negative
+[PASS] ready json fields
+[PASS] unavailable json fields
+[PASS] empty vs unavailable distinguishable in json
+RESULT: PASS failures=0
