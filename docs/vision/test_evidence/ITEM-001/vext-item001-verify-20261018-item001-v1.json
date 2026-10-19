@@ -1,0 +1,56 @@
+{
+  "stamp": "verify-20261018-item001-v1",
+  "checks": [
+    {
+      "step": "V0_tree_present",
+      "ok": true,
+      "detail": "tree missing -> rebuild"
+    },
+    {
+      "step": "V0_rebuild",
+      "ok": true,
+      "detail": "probe_exit=0"
+    },
+    {
+      "step": "V1_vext_build",
+      "ok": true,
+      "detail": "exit=0 1.0s VEXT_BUILD_EXIT=0"
+    },
+    {
+      "step": "V2_vext_all_pass",
+      "ok": true,
+      "detail": "pass=28 fail=0 exit=0"
+    },
+    {
+      "step": "V2_vext_count_matches_source",
+      "ok": true,
+      "detail": "board=28 source_calls=29 (g10 if/else picks 1)"
+    },
+    {
+      "step": "V2_judgement_domains",
+      "ok": true,
+      "detail": "{'g01': True, 'g04': True, 'g07': True, 'g14': True}"
+    },
+    {
+      "step": "V3_cli_negative_exits",
+      "ok": true,
+      "detail": "[('unknown-arg', 2), ('no-action', 2), ('help', 0), ('missing-descriptor', 2)]"
+    },
+    {
+      "step": "V4_selftest_deterministic",
+      "ok": true,
+      "detail": "1fe7b2b6f9688129..."
+    },
+    {
+      "step": "V5_board_no_credential_leak",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "step": "V6_board_cleanup",
+      "ok": true,
+      "detail": "vision_item001_verify-20261018-item001-v1': No such file or directory\nCLEAN_DONE"
+    }
+  ],
+  "all_pass": true
+}

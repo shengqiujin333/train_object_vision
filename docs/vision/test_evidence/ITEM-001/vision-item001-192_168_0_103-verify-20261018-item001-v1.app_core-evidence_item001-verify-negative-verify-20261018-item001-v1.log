@@ -1,0 +1,2 @@
+type=descriptor declared=yolov5s profile=front file=yolov8s-seg.rknn file_present=1 load_status=ok runtime_api=2.3.2 (429f97ae6b@2025-04-09T09:09:27) runtime_drv=0.9.8
+ready=0 reason=MODEL_MISMATCH detail=declared=yolov5_detect identified=yolov8_seg (structure mismatch, file name ignored) kind=yolov5_detect matched=0 mismatched=0
