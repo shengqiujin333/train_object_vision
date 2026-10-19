@@ -2689,6 +2689,19 @@ docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑日志（V-RUN：8 fixtures 全 FIX_*_EXIT=0，config CONFIG_EXIT=0）
 docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.transcript.json | active | ITEM-008 验证独立复跑 transcript（V-RUN：主机指纹核验，--keep-remote 无 cleanup，21 份产物）
 docs/vision/test_evidence/ITEM-009/ITEM-009-EVIDENCE.md | active | 视觉推理 ITEM-009 板端证据（core 1215/0、selftest 19/19、真实链路 9/9、4 路预算裁剪 9/9、实测温度与 envelope 样例、返工留痕、覆盖边界）
+docs/vision/test_evidence/ITEM-009/VERIFY-ITEM-009.md | active | ITEM-009 软件验证证据（V-RUN fresh 复跑全绿/V-CMP 104 判据/V-EXT 38 判例/D-01 SIGSEGV 根因定位与可复现证据/验证侧返工留痕/结论 TEST_FAIL）
+docs/vision/test_evidence/ITEM-009/verify/_dryrun_on_impl.py | active | ITEM-009 oracle 对 impl r6/r7 归档的零板成本预演（抓出 5 处验证侧 oracle 构造错）
+docs/vision/test_evidence/ITEM-009/verify/dbg-missing-models-evidence.json | active | D-01 取证归档（S1 复现 139/S2 无缓冲定位/S3 有效模型对照/S4 gdb 回溯 load_kind）
+docs/vision/test_evidence/ITEM-009/verify/dbg_missing_models.py | active | D-01 板端取证驱动（复用 keep-remote 树；stdbuf 无缓冲 + gdb 回溯）
+docs/vision/test_evidence/ITEM-009/verify/dryrun_on_impl.json | active | ITEM-009 oracle 预演结果归档（51/51 PASS）
+docs/vision/test_evidence/ITEM-009/verify/item009-compare-verify-20261020-item009-v1.json | active | ITEM-009 验证比对归档（104/104：impl r6 与 fresh 各 45 判据 + 跨轮确定域恒等 14）
+docs/vision/test_evidence/ITEM-009/verify/verify_item009_compare.py | active | ITEM-009 验证独立比对 oracle（V-CMP：104 判据，不采信交付 RESULT 行；判例集合/config token/温度族/envelope 身份链/守卫一致性独立重推导 + fresh vs impl 恒等）
+docs/vision/test_evidence/ITEM-009/verify/verify_item009_vext.py | active | ITEM-009 验证扩展夹具驱动（V-EXT：板端 g++ 直编 + 判例名集合与夹具源恒等 + CLI 负例 + --json 确定性 + 泄漏扫描 + 通过才清理）
+docs/vision/test_evidence/ITEM-009/verify/vext_item009.cpp | active | ITEM-009 验证自有扩展夹具（38 判例域 A..M：轮转配对精确序列/新路与 idle 等待语义/温度物理边界含端点/注入样本门/fresh 半开窗/守卫奇数预算下取整/JSON 转义/周期 3 轮转预言；链接 railhmi_core 静态库）
+docs/vision/test_evidence/ITEM-009/verify/vision-item009-192_168_0_103-dbg-item009-missing-models.log | active | D-01 取证 dbg 树构建留痕（--only build --keep-remote）
+docs/vision/test_evidence/ITEM-009/verify/vision-item009-192_168_0_103-dbg-item009-missing-models.transcript.json | active | D-01 取证 dbg 树 transcript
+docs/vision/test_evidence/ITEM-009/vext-item009-verify-20261020-item009-v1.json | active | ITEM-009 V-EXT v2 结果归档（9/9；夹具 38 判例全 PASS；V6 清理 CLEAN_DONE）
+docs/vision/test_evidence/ITEM-009/vext-item009-verify-20261020-item009-v1.stdout.log | active | ITEM-009 V-EXT v2 板端 stdout（vext PASS 38 行 + vext OK）
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009-r1.log | active | ITEM-009 r1 留痕（MediaCheck 编译失败：缺 include/成员重名/类型误赋）
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009-r2.log | active | ITEM-009 r2 留痕（MediaCheck 编译失败：core::steady_now_us 名称错）
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009-r3.app_core-evidence_item009-selftest-20261020-item009-r3.json | active | ITEM-009 r3 自检 JSON（failures=3）
@@ -2707,6 +2720,15 @@ docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009-r6.transcript.json | active | ITEM-009 终轮 transcript（指纹/逐命令退出码/上传构建运行下载清理）
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009-r7.app_core-evidence_item009-ai-runner-20261020-item009-r7.log | active | ITEM-009 回归证据：railhmi-ai-runner（SimDetector 替代输入 + 显式 synthetic_tick=on）4/4 路 PASS，停止后 AI 不可用
 docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-20261020-item009-r7.log | active | ITEM-009 r7 回归留痕（MediaCheck 构建 + 替代输入链路运行，AI_RUNNER_EXIT=0）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.app_core-evidence_item009-chain-verify-20261020-item009-v1.json | active | ITEM-009 验证 fresh 轮单路真实链路 JSON
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.app_core-evidence_item009-chain-verify-20261020-item009-v1.log | active | ITEM-009 验证 fresh 轮单路真实链路日志（9/9 PASS）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.app_core-evidence_item009-chain4-verify-20261020-item009-v1.json | active | ITEM-009 验证 fresh 轮 4 路预算裁剪 JSON
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.app_core-evidence_item009-chain4-verify-20261020-item009-v1.log | active | ITEM-009 验证 fresh 轮 4 路 budget=1 日志（9/9 PASS）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.app_core-evidence_item009-core-tests-verify-20261020-item009-v1.xml | active | ITEM-009 验证 fresh 轮 JUnit（tests=1215 failures=0）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.app_core-evidence_item009-selftest-verify-20261020-item009-v1.json | active | ITEM-009 验证 fresh 轮自检 JSON（failures=0）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.app_core-evidence_item009-selftest-verify-20261020-item009-v1.log | active | ITEM-009 验证 fresh 轮自检日志（19/19 PASS）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.log | active | ITEM-009 验证 fresh 轮人类可读日志（PROBE_EXIT=0 elapsed=216.4s）
+docs/vision/test_evidence/ITEM-009/vision-item009-192_168_0_103-verify-20261020-item009-v1.transcript.json | active | ITEM-009 验证 fresh 轮 transcript（指纹/逐命令退出码）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

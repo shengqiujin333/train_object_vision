@@ -1,0 +1,261 @@
+{
+  "stage": "dryrun-on-impl",
+  "checks": [
+    {
+      "step": "S1_selftest_case_set",
+      "ok": true,
+      "detail": "n=19 missing=[] extra=[]"
+    },
+    {
+      "step": "S1_selftest_result_pass",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "S2_submit_max_below_50ms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "S2_snapshot_p95_below_20ms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "S2_request_stop_immediate_token",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "S2_join_below_400ms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "S2_prod_no_synthetic",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "S2_slow_infer_ran",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "S2_blocking_line_shape",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "S2_thermal_line_shape",
+      "ok": true,
+      "detail": "type=thermal state=MEASURED celsius=43.461000 source=thermal_zone0 reason=THERMAL_OK zones=7"
+    },
+    {
+      "step": "S2_drop_oldest_shape",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "S2_fairness_shape",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "C1_config_tokens",
+      "ok": true,
+      "detail": "config line independently re-derived"
+    },
+    {
+      "step": "C1_lane_fields_present",
+      "ok": true,
+      "detail": "['consumed', 'dropped', 'env_queue_dropped', 'env_ready', 'env_unavailable']"
+    },
+    {
+      "step": "C1_interval_defreq_math",
+      "ok": true,
+      "detail": "submitted=300 consumed=60 (interval=5: consumed*5 ~= submitted)"
+    },
+    {
+      "step": "C1_skipped_plus_consumed",
+      "ok": true,
+      "detail": "skipped_interval=240 consumed=60"
+    },
+    {
+      "step": "C1_unavailable_reason_family",
+      "ok": true,
+      "detail": "TWO_STAGE_UNAVAILABLE:9"
+    },
+    {
+      "step": "C1_infer_cost_plausible",
+      "ok": true,
+      "detail": "last_infer_us=143854 (test pattern det+seg, 不外推)"
+    },
+    {
+      "step": "C1_latency_ordering",
+      "ok": true,
+      "detail": "latency=144 >= infer_ms=143 (latency 含排队)"
+    },
+    {
+      "step": "C1_fps_matches_defreq",
+      "ok": true,
+      "detail": "fps=5.019141 (25/5)"
+    },
+    {
+      "step": "C1_env_counters",
+      "ok": true,
+      "detail": "env_ready=60 env_unavailable=9"
+    },
+    {
+      "step": "C1_envelope_lines",
+      "ok": true,
+      "detail": "n=1"
+    },
+    {
+      "step": "C1_envelope_identity",
+      "ok": true,
+      "detail": "seq=300 avail=ready"
+    },
+    {
+      "step": "C1_envelope_mask_shape",
+      "ok": true,
+      "detail": "masks kind=rail box_index=-1 (front 框/掩码分离)"
+    },
+    {
+      "step": "C1_chain_check_set",
+      "ok": true,
+      "detail": "['chain_models_ready', 'chain_frames_dispatched_and_consumed', 'chain_envelopes_published', 'chain_stop_ai_unavailable', 'chain_scheduler_rounds', 'chain_budget_respected', 'chain_thermal_reported', 'chain_guard_matches_measured_temp', 'chain_lease_available']"
+    },
+    {
+      "step": "C1_summary_thermal_measured",
+      "ok": true,
+      "detail": "{\"valid\": true, \"state\": \"MEASURED\", \"measured\": true, \"injected\": false, \"celsius\": 43.461, \"source\": \"thermal_zone0\", "
+    },
+    {
+      "step": "C1_guard_consistency",
+      "ok": true,
+      "detail": "实测 43.5<=85 -> guard=false 一致"
+    },
+    {
+      "step": "C2_four_lanes",
+      "ok": true,
+      "detail": "['CAM-01', 'CAM-04', 'CAM-05', 'CAM-06']"
+    },
+    {
+      "step": "C2_cli_budget_override",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "C2_budget_effective_1",
+      "ok": true,
+      "detail": "summary budget=1 (cli-override 生效)"
+    },
+    {
+      "step": "C2_consumed_sum_matches",
+      "ok": true,
+      "detail": "lanes={'CAM-01': 50, 'CAM-04': 50, 'CAM-05': 49, 'CAM-06': 50} summary=199"
+    },
+    {
+      "step": "C2_published_sum_matches",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "C2_unavailable_sum_matches",
+      "ok": true,
+      "detail": "unavailable=156"
+    },
+    {
+      "step": "C2_no_starvation_all_lanes",
+      "ok": true,
+      "detail": "{'CAM-01': 50, 'CAM-04': 50, 'CAM-05': 49, 'CAM-06': 50}"
+    },
+    {
+      "step": "C2_no_starvation_balanced",
+      "ok": true,
+      "detail": "base=49.8"
+    },
+    {
+      "step": "C2_profiles_unsupported_family",
+      "ok": true,
+      "detail": "3 non-front lanes PROFILE_UNSUPPORTED"
+    },
+    {
+      "step": "C2_unsupported_fast_return",
+      "ok": true,
+      "detail": "{'CAM-04': '2', 'CAM-05': '2', 'CAM-06': '1'}"
+    },
+    {
+      "step": "C2_front_real_infer",
+      "ok": true,
+      "detail": "142208"
+    },
+    {
+      "step": "C2_dropped_bounded",
+      "ok": true,
+      "detail": "queue depth<=2 (config)"
+    },
+    {
+      "step": "C2_envelope_count",
+      "ok": true,
+      "detail": "n=4"
+    },
+    {
+      "step": "C2_unavailable_envelope_shape",
+      "ok": true,
+      "detail": "不可用 + 空框 + 空掩码（与 ready 可区分）"
+    },
+    {
+      "step": "C2_front_envelope_ready_or_unavail",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "J1_junit_1215_0",
+      "ok": true,
+      "detail": "tests=1215 failures=0"
+    },
+    {
+      "step": "J1_case_names_count",
+      "ok": true,
+      "detail": "extracted=1215"
+    },
+    {
+      "step": "J1_new54_split_35_19",
+      "ok": true,
+      "detail": "sched=35 thermal=19 sum=54 (本增量 54 = 温度 19 + 调度 35)"
+    },
+    {
+      "step": "J1_new_cases_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "R7_synthetic_tick_on",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "R7_sim_detector_labeled",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "R7_four_channels",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "R7_stop_unavailable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "R7_acceptance_pass",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "all_pass": true
+}

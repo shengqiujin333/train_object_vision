@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "step": "S0_tree_present",
+      "ok": true,
+      "detail": "TREE_OK"
+    },
+    {
+      "step": "S1_repro_default_models",
+      "ok": true,
+      "detail": "exit=139 bytes=0"
+    },
+    {
+      "step": "S2_unbuffered_last_lines",
+      "ok": true,
+      "detail": "exit=139 | last=type=config dir=./config models_dir=../models interval=5 depth=2 npu_budget=4(config) temp_limit_c=85.000000 confirm_frames=3 confidence_min=0.500000"
+    },
+    {
+      "step": "S3_valid_models_control",
+      "ok": true,
+      "detail": "exit=0 tail=RESULT: PASS failures=0"
+    },
+    {
+      "step": "S4_gdb_backtrace",
+      "ok": true,
+      "detail": "<char>, std::allocator<char> > const&) () at /lib/aarch64-linux-gnu/libstdc++.so.6\n#1  0x000000555558e160 in railhmi::media::RknnVisionDetector::load_kind(railhmi::core::VisionModelKind, railhmi::core::DeclaredModel const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*) ()\n#2  0x000000555558f538 in railhmi::media::RknnVisionDetector::load(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*) ()\n#3  0x000000555555e578 in (anonymous namespace)::run_chain((anonymous namespace)::ChainOptions const&) ()\n#4  0x0000005555555b60 in main ()"
+    }
+  ]
+}
