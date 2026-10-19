@@ -1,0 +1,29 @@
+vext PASS g01_center_fallback_matches_when_iou_below_min :: id=1 matched=1
+vext PASS g02_center_fallback_off_checks_no_match :: id=2 matched=0
+vext PASS g03_center_fallback_respects_dist_bound :: id=2
+vext PASS g04_two_tracks_progressive_move_keep_ids :: ids=1,2
+vext PASS g05_iou_greedy_prefers_highest_pair :: ids=3,2
+vext PASS g06_max_misses_zero_drops_on_first_miss :: dropped=1
+vext PASS g07_first_tick_keeps
+vext PASS g07_second_tick_keeps
+vext PASS g07_third_tick_drops :: size=0
+vext PASS g07_reapplied_new_id_not_reused :: id=2
+vext PASS g08_hit_keeps_alive :: id=1
+vext PASS g08_misses_reset_by_hit :: size=1
+vext PASS g09_id_strictly_monotonic_positive :: last_id=11 next_id=12
+vext PASS g10_same_frame_multi_boxes_get_distinct_ids :: ids=1,2,3
+vext PASS g11_gap_equal_still_matches :: id=1
+vext PASS g11_gap_over_creates_new_id :: id=2
+vext PASS g12_camera_level_track_id_is_minus1 :: v=-1
+vext PASS g13_camera_level_aggregates_same_frame_boxes :: agg=1
+vext PASS g13_camera_level_one_merged_event_minus1_not_0 :: events=1 track=-1
+vext PASS g14_adapter_two_labels_two_alarm_types :: events=2 types=0/1
+vext PASS g15_adapter_detection_carries_source_camera :: cam=CAM-02
+vext PASS g16_no_zero_among_truncated :: saw_zero=true if emitted
+vext PASS g16_untracked_explicit_minus1_no_fabrication :: minus1=1 positive=2
+vext PASS g16_untracked_repeat_no_id_leak :: neg2=1
+vext PASS g17_suppress_window_no_duplicate_alarm :: events=1
+vext PASS g18_next_id_continues_after_generation :: nid=2
+vext PASS g18_next_id_continues_after_second_generation :: nid2=3
+vext OK (0 failures)
+VEXT_RUN_EXIT=0

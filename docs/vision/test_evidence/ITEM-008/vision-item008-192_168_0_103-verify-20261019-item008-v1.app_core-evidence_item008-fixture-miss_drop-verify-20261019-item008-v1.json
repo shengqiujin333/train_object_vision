@@ -1,0 +1,1 @@
+{"mode":"fixture","failures":0,"lines":["type=config fixture=miss_drop policy=lightweight","dropped=1 new_id=2","RESULT: PASS"]}

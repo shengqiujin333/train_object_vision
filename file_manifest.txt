@@ -2608,6 +2608,14 @@ docs/vision/test_evidence/ITEM-007/vision-item007-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-007/vision-item007-192_168_0_103-verify-20261019-item007-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/ITEM-007/vision-item007-192_168_0_103-verify-20261019-item007-v1.transcript.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/ITEM-008/ITEM-008-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-008 实际正确性证据（同目标稳定 id/多目标独立/丢失不重用/generation 清理/相机级 null/容量上限，core 1161/0）与未执行项
+docs/vision/test_evidence/ITEM-008/VERIFY-ITEM-008.md | active | ITEM-008 验证轮主报告（V-RUN 独立复跑 + V-CMP 26 判据 + V-EXT 27 判例板上全 PASS；TEST_PASS）
+docs/vision/test_evidence/ITEM-008/verify/item008-compare-verify-20261019-item008-v1.json | active | ITEM-008 验证比对归档（passed=26/26 fresh vs impl r4）
+docs/vision/test_evidence/ITEM-008/verify/verify_item008_compare.py | active | ITEM-008 验证比对 oracle（V-CMP：26 判据独立重推导，不采信交付 RESULT 行）
+docs/vision/test_evidence/ITEM-008/verify/verify_item008_run.py | active | ITEM-008 验证驱动（V-RUN：通过交付入口 board_vision_tracking.py 独立板端复跑 --keep-remote）
+docs/vision/test_evidence/ITEM-008/verify/verify_item008_vext.py | active | ITEM-008 验证扩展夹具驱动（V-EXT：板端 g++ 直编 + CLI 负例 + 确定性 + 泄漏扫描 + 清理）
+docs/vision/test_evidence/ITEM-008/verify/vext_item008.cpp | active | ITEM-008 验证自有扩展夹具（27 判例：匹配算法边界/贪心顺序/生命周期/时间鸿沟/相机级合并/id 不变量/容量上限/抑制窗口/跨代递增）
+docs/vision/test_evidence/ITEM-008/vext-item008-verify-20261019-item008-v1.json | active | ITEM-008 验证扩展夹具驱动判定归档（9/9 检查 PASS）
+docs/vision/test_evidence/ITEM-008/vext-item008-verify-20261019-item008-v1.stdout.log | active | ITEM-008 验证扩展夹具板端判定日志（PASS 27 fail 0）
 docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r1.app_core-evidence_item008-core-tests-20261019-item008-r1.xml | active | ITEM-008 core 单测 JUnit（r1：失败）
 docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r1.app_core-evidence_item008-selftest-20261019-item008-r1.log | active | ITEM-008 夹具自检（r1：8 失败）
 docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r1.log | active | ITEM-008 返工前人类可读 transcript（r1）
@@ -2643,6 +2651,29 @@ docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008
 docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.app_core-evidence_item008-selftest-20261019-item008-r4.log | active | ITEM-008 夹具自检文本（r4：23 判例 PASS）
 docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.log | active | ITEM-008 板端执行人类可读 transcript（r4）
 docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-20261019-item008-r4.transcript.json | active | ITEM-008 板端执行结构化 transcript（r4 权威轮：命令/退出码/输出/主机指纹）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-config-verify-20261019-item008-v1.json | active | ITEM-008 验证独立复跑 config JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-config-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑 config 日志（confirm=3 conf=0.5 suppress=3000）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-core-tests-verify-20261019-item008-v1.xml | active | ITEM-008 验证独立复跑 core JUnit（tests=1161 failures=0）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-camera_level-verify-20261019-item008-v1.json | active | ITEM-008 验证独立复跑 fixture camera_level JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-camera_level-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑 fixture camera_level 日志（det_id=-1 events=1）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-envelope_only-verify-20261019-item008-v1.json | active | ITEM-008 验证独立复跑 fixture envelope_only JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-envelope_only-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑 fixture envelope_only 日志（det=0 no_track=1）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-generation_reset-verify-20261019-item008-v1.json | active | ITEM-008 验证独立复跑 fixture generation_reset JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-generation_reset-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑 fixture generation_reset 日志（tracker_resets=1 gen_keys=1 new_id=2 events=0/0/1）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-label_guard-verify-20261019-item008-v1.json | active | ITEM-008 验证独立复跑 fixture label_guard JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-label_guard-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑 fixture label_guard 日志（ids=2）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-max_tracks-verify-20261019-item008-v1.json | active | ITEM-008 验证独立复跑 fixture max_tracks JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-max_tracks-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑 fixture max_tracks 日志（ids=1,-1 untracked=1）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-miss_drop-verify-20261019-item008-v1.json | active | ITEM-008 验证独立复跑 fixture miss_drop JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-miss_drop-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑 fixture miss_drop 日志（dropped=1 new_id=2）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-same_target-verify-20261019-item008-v1.json | active | ITEM-008 验证独立复跑 fixture same_target JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-same_target-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑 fixture same_target 日志（track=1 连续 4 帧、events 0/0/1/1）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-two_targets-verify-20261019-item008-v1.json | active | ITEM-008 验证独立复跑 fixture two_targets JSON
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-fixture-two_targets-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑 fixture two_targets 日志（events=2）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-selftest-verify-20261019-item008-v1.json | active | ITEM-008 验证独立复跑 selftest JSON（23 判例）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.app_core-evidence_item008-selftest-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑 selftest 日志（23 PASS）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.log | active | ITEM-008 验证独立复跑日志（V-RUN：8 fixtures 全 FIX_*_EXIT=0，config CONFIG_EXIT=0）
+docs/vision/test_evidence/ITEM-008/vision-item008-192_168_0_103-verify-20261019-item008-v1.transcript.json | active | ITEM-008 验证独立复跑 transcript（V-RUN：主机指纹核验，--keep-remote 无 cleanup，21 份产物）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

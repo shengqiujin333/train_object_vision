@@ -1,0 +1,3 @@
+type=config fixture=envelope_only policy=envelope_only
+det=0 no_track=1
+RESULT: PASS

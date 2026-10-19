@@ -1,0 +1,3 @@
+type=config fixture=label_guard policy=lightweight
+ids=2
+RESULT: PASS

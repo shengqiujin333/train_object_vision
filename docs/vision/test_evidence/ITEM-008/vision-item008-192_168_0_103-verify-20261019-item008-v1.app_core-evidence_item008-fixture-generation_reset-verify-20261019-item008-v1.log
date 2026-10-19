@@ -1,0 +1,3 @@
+type=config fixture=generation_reset policy=lightweight
+tracker_resets=1 gen_keys=1 new_id=2 events=0/0/1
+RESULT: PASS

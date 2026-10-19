@@ -1,0 +1,1 @@
+{"mode":"fixture","failures":0,"lines":["type=config fixture=same_target policy=lightweight","frame=1 track=1 events_total=0","frame=2 track=1 events_total=0","frame=3 track=1 events_total=1","frame=4 track=1 events_total=1","RESULT: PASS"]}
