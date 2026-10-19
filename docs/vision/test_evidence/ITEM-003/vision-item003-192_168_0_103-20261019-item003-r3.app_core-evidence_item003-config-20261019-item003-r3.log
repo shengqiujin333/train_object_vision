@@ -1,0 +1,4 @@
+type=config dir=./config confidence_min=0.500000 score_used=0.500000 nms_iou=0.450000 (from thresholds.confidence_min)
+type=detect ok=1 reason=DETECT_OK boxes=1 candidates=1 dropped_score=25199 dropped_class=0 nms_suppressed=0 dropped_bounds=0 truncated=0
+box xywh=(0.31250,0.44444,0.10000,0.17778) score=0.8100 cls=0 label=person scale=0 anchor=2 cell=41,29
+RESULT: PASS

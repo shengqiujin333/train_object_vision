@@ -22,6 +22,7 @@ add_library(railhmi_core STATIC
     src/inference.cpp
     src/vision_model_capability.cpp
     src/vision_preprocess.cpp
+    src/vision_detect_postprocess.cpp
     src/alarm_center.cpp
     src/clip.cpp
     src/clip_request.cpp
@@ -80,6 +81,13 @@ set_target_properties(railhmi-ai-probe PROPERTIES
 add_executable(railhmi-model-probe tools/model_probe.cpp)
 target_link_libraries(railhmi-model-probe PRIVATE railhmi_core)
 set_target_properties(railhmi-model-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# YOLOv5 人形检测后处理探针（视觉推理 ITEM-003；纯逻辑夹具）
+add_executable(railhmi-vision-detect tools/detect_probe.cpp)
+target_link_libraries(railhmi-vision-detect PRIVATE railhmi_core)
+set_target_properties(railhmi-vision-detect PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
 

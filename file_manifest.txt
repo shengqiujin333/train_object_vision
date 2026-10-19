@@ -19,7 +19,7 @@ app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
 app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
-app/src/core/CMakeLists.txt | active | railhmi_core 静态库（含帧身份 frame_identity、帧布局 frame_layout、压缩滚动缓冲 compressed_ring、录像来源 recording_source、片段请求 clip_request、录像 provider recording_provider、异常恢复策略 recovery_policy、回放同步 replay_sync、视频诊断 video_diagnostics、预算测量 metrics、视觉模型能力 vision_model_capability、视觉预处理 vision_preprocess）+ config-check + sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针 + railhmi-timebase-sync（视频 ITEM-015）+ railhmi-model-probe（视觉推理 ITEM-001）
+app/src/core/CMakeLists.txt | active | railhmi_core 静态库（含帧身份 frame_identity、帧布局 frame_layout、压缩滚动缓冲 compressed_ring、录像来源 recording_source、片段请求 clip_request、录像 provider recording_provider、异常恢复策略 recovery_policy、回放同步 replay_sync、视频诊断 video_diagnostics、预算测量 metrics、视觉模型能力 vision_model_capability、视觉预处理 vision_preprocess、检测后处理 vision_detect_postprocess）+ config-check + sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针 + railhmi-timebase-sync（视频 ITEM-015）+ railhmi-model-probe（视觉推理 ITEM-001）+ railhmi-vision-detect（视觉推理 ITEM-003）
 app/src/core/include/railhmi/core/alarm_center.h | active | 报警中心模型接口（字段派生/默认排序/六维筛选/确认与维护日志/录像三态；ITEM-018）
 app/src/core/include/railhmi/core/bounded_queue.h | active | 有界丢最旧队列（视频 ITEM-008）：线程安全、非阻塞、条数+字节上限、pushed/dropped/popped 计数；纯标准库模板
 app/src/core/include/railhmi/core/camera_registry.h | active | 配置驱动摄像头注册表/检测职责徽标/NVR 集成项接口
@@ -54,6 +54,7 @@ app/src/core/include/railhmi/core/stream_state.h | active | 流状态机与质�
 app/src/core/include/railhmi/core/timebase.h | active | 统一时间基准接口（UTC 毫秒 ↔ 单调微秒）；ITEM-015 增 try_to_wall_ms/can_write_utc（未校准守卫，禁止写 UTC 业务事件）
 app/src/core/include/railhmi/core/version.h | active | 版本/构建档位/模拟开关接口（core 无 Qt/GStreamer/相机/SQLite 依赖）
 app/src/core/include/railhmi/core/video_diagnostics.h | active | 视频每路结构化诊断与整条脱敏接口（视频 ITEM-016）：VideoChannelMetrics/DiagnosticPresence/classify_presence/video_metric_json_line/redact_error；纯标准库
+app/src/core/include/railhmi/core/vision_detect_postprocess.h | active | YOLOv5 人形检测后处理接口（视觉推理 ITEM-003）：RawDetectTensor/DetectConfig/DetectBox/DetectResult/decode_yolov5/逆 letterbox 归一化/+1 IoU/稳定 reason；纯标准库
 app/src/core/include/railhmi/core/vision_model_capability.h | active | 视觉模型能力描述与就绪核验接口（视觉推理 ITEM-001）：TensorDesc/ModelDescriptor/ModelSpec/identify_kind/check_capability/稳定 reason/文本与 JSON 序列化/模型路径解析/profile 证据；纯标准库
 app/src/core/include/railhmi/core/vision_preprocess.h | active | 视觉推理输入预处理接口（视觉推理 ITEM-002）：letterbox 参数/量化·反量化/PreprocessConfig/PreprocessedInput（HWC 张量+统计）/packed 与 NV12 参考路径/稳定 reason；纯标准库
 app/src/core/include/railhmi/core/yaml.h | active | 无依赖 YAML 子集解析器接口（块映射/序列/流序列/标量，含行号错误）
@@ -90,6 +91,7 @@ app/src/core/src/stream_state.cpp | active | 流状态机实现（首帧超时/�
 app/src/core/src/timebase.cpp | active | 时间基准实现（ITEM-015 增未校准守卫 try_to_wall_ms）
 app/src/core/src/version.cpp | active | 版本与构建描述实现
 app/src/core/src/video_diagnostics.cpp | active | 视频诊断三态/结构化 JSON/整条脱敏实现（视频 ITEM-016）
+app/src/core/src/vision_detect_postprocess.cpp | active | YOLOv5 检测后处理实现（视觉推理 ITEM-003）：通道优先三尺度解码/置信度过滤/类别白名单/letterbox 逆变换归一化/按类别 NMS（+1 IoU）/截断与统计
 app/src/core/src/vision_model_capability.cpp | active | 视觉模型能力核验实现（视觉推理 ITEM-001）：NHWC/NCHW 归一/结构识别（不看文件名）/输入与检测·分割输出逐项匹配/稳定 reason/文本与 JSON
 app/src/core/src/vision_preprocess.cpp | active | 视觉预处理实现（视觉推理 ITEM-002）：居中 letterbox/双线性采样（带 stride）/BGR→RGB/归一化与 int8·uint8·float32 量化/逐通道均值/NV12 参考转换/非法输入拒绝
 app/src/core/src/yaml.cpp | active | YAML 子集解析器实现
@@ -97,6 +99,7 @@ app/src/core/tools/ai_probe.cpp | active | 推理调度/队列/遥测探针 CLI�
 app/src/core/tools/alarm_probe.cpp | active | 报警中心模型探针 CLI（railhmi-alarm-probe；排序/筛选/空态/批量确认/维护日志；ITEM-018）
 app/src/core/tools/clip_probe.cpp | active | 保护片段/缺口探针 CLI（railhmi-clip-probe；片段时长/原子写盘/保护优先/缺口合并；ITEM-019）
 app/src/core/tools/config_check.cpp | active | 启动配置校验入口 main（railhmi-config-check；合法摘要/非法逐条字段并非零退出）
+app/src/core/tools/detect_probe.cpp | active | YOLOv5 检测后处理探针 CLI（railhmi-vision-detect；视觉推理 ITEM-003）：--selftest 19 判例、fixture person/nonperson/nms/empty/padbox/int8、--config 读 thresholds.confidence_min
 app/src/core/tools/fault_probe.cpp | active | 故障自检目录探针 CLI（railhmi-fault-probe；ITEM-025）
 app/src/core/tools/health_probe.cpp | active | 健康/日志/自恢复探针 CLI（railhmi-health-probe；ITEM-024）
 app/src/core/tools/maintenance_probe.cpp | active | 设备维护模型探针 CLI（railhmi-maintenance-probe；PTZ 容差/动作/日志/前方 AI/维护行/录像/健康；ITEM-022）
@@ -206,8 +209,8 @@ app/src/ui/src/permissions_model.cpp | active | 权限桥接实现（矩阵/门�
 app/src/ui/src/permissions_model.h | active | 权限/二次确认 QML 桥接接口（matrix/can*/exportRecording/modifyConfig/recentLogs 委托 core；ITEM-023）
 app/src/ui/src/replay_model.cpp | active | 历史回放桥接实现（时间轴/跳转/同步/来源/时间格式 + 报警选择动态详情 + 真实时钟偏移同步快照；ITEM-020）
 app/src/ui/src/replay_model.h | active | 历史回放 QML 桥接接口（timeline/jumpTargets/sourceStatus + 选择 selectAlarm/selectedDetail/relatedCameras + syncState + playback/setPlaying/setSpeed；ITEM-020）
-app/tests/core/CMakeLists.txt | active | railhmi-core-tests（多源：.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess；注入 RAILHMI_CONFIG_DIR）
-app/tests/core/main.cpp | active | railhmi-core 单元测试入口（.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess 三十一组；支持 --junit）
+app/tests/core/CMakeLists.txt | active | railhmi-core-tests（多源：.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess/vision_detect_postprocess；注入 RAILHMI_CONFIG_DIR）
+app/tests/core/main.cpp | active | railhmi-core 单元测试入口（.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess/vision_detect_postprocess 三十二组；支持 --junit）
 app/tests/core/test_alarm_center.cpp | active | 报警中心测试（ITEM-018：字段派生/默认排序/六维筛选与空态/确认不删事件/维护日志）
 app/tests/core/test_bounded_queue.cpp | active | 有界丢最旧队列测试（视频 ITEM-008：容量 1 latest-only/有界丢旧/字节预算/计数/空语义）
 app/tests/core/test_clip.cpp | active | 保护片段/缺口测试（ITEM-019：滚动缓冲/片段时长/finalize/缺口合并/保留优先/原子写盘）
@@ -239,6 +242,7 @@ app/tests/core/test_stream.cpp | active | 流状态机与质量判定测试（TC
 app/tests/core/test_util.cpp | active | 测试 harness 实现（pass/fail 计数、断言记录、JUnit XML 写出）
 app/tests/core/test_util.h | active | 测试 harness 声明（断言记录与 write_junit）
 app/tests/core/test_video_diagnostics.cpp | active | 视频诊断测试（视频 ITEM-016：三态 online/gap/unverified、attempt_id、整条脱敏 userinfo/kv/location/pipeline、结构化 JSON 字段与 last_error 脱敏）
+app/tests/core/test_vision_detect_postprocess.cpp | active | YOLOv5 检测后处理测试（视觉推理 ITEM-003：解码坐标/分数/白名单/空图/阈值/NMS/越界/截断/IoU/逆变换/int8）
 app/tests/core/test_vision_model_capability.cpp | active | 视觉模型能力核验测试（视觉推理 ITEM-001：规格映射/结构识别/匹配与不匹配/FI-AI-01..03/profile 证据/配置解析/文本往返/JSON）
 app/tests/core/test_vision_preprocess.cpp | active | 视觉预处理测试（视觉推理 ITEM-002：letterbox/量化与反量化/RGB 顺序/stride/非法输入拒绝/NV12 参考/float32/uint8）
 app/tests/run_core_tests.sh | active | core 单命令测试入口（构建+运行+归档日志/JUnit XML+退出码；ITEM-008 交付，验证轮独立复现 243/243）
@@ -266,6 +270,7 @@ app/tools/board_render_spike.py | active | ITEM-002 板端渲染 spike 运行器
 app/tools/board_rga_convert_check.py | active | 视频 ITEM-005 板端执行入口（上传→MediaCheck→rga-convert selftest→test/rtsp 转换运行→取回证据→清理；凭据经 0600 临时 env 文件注入并删除）
 app/tools/board_timebase_sync_check.py | active | 视频 ITEM-015 板端执行入口（上传→CoreTests+core-tests→railhmi-timebase-sync selftest+真实时钟校准/守卫/同步/seek 运行→取回日志/JSON→清理）
 app/tools/board_video_capability.py | active | 视频 ITEM-001 板端执行入口（上传 app/→build.sh MediaCheck→selftest/可达性/无凭据/有界 caps 探测→取回证据→清理；凭据经 0600 临时 env 文件注入并删除，命令串与日志不含凭据）
+app/tools/board_vision_detect.py | active | 视觉推理 ITEM-003 板端执行入口（上传 app/→CoreTests 单测→selftest→6 fixtures→config 阈值→取回证据→清理）
 app/tools/board_vision_model_probe.py | active | 视觉推理 ITEM-001 板端执行入口（上传 app/+models→CoreTests 单测+selftest→MediaCheck 编译 rknn 探针→真实 rknn_query→描述核验（含负例）→配置汇总→取回证据→清理）
 app/tools/board_vision_preprocess.py | active | 视觉推理 ITEM-002 板端执行入口（上传 app/→CoreTests 单测→MediaCheck 编译→selftest/fixture bgr·nv12/真实 FrameLease 预处理→取回证据→清理）
 app/tools/check_ai_debug_wiring.py | active | AI 调试页/司机隔离静态核对（ITEM-021：叠加层四开关默认关/调试令牌 debug_box·debug_roi/距离与延迟字段/司机守卫/无硬编码）
@@ -2106,6 +2111,7 @@ docs/vision/VISION_E2E_PLAN.md | active | E2EPlan：视觉/推理端到端旅程
 docs/vision/VISION_TEST_DESIGN.md | active | TestDesignArtifact：视觉/推理应用测试设计——AI-HOST/AI-BOARD/ENV-C/ENV-D 分层、FI-AI-01..13 故障注入、G1..G13 用例集（38 个 TC-T）与 P0 冒烟、覆盖矩阵逐 ITEM 落点、证据与移交边界（software_tester.software_test_design v1）
 docs/vision/implementation/ITEM-001_MODEL_CAPABILITY.md | active | 视觉推理 ITEM-001 实现说明：交付源码/入口、如何满足工作项、分层与 ABI 决定、运行命令、返工记录（rknn_release→rknn_destroy、bool++）、边界与配置缺口
 docs/vision/implementation/ITEM-002_PREPROCESS.md | active | 视觉推理 ITEM-002 实现说明：租约消费与预处理交付/如何满足工作项/运行入口/返工记录（通道均值累加、命名空间 using）与观察（预处理耗时、TC-T-PRE-01 pad_y 差异）
+docs/vision/implementation/ITEM-003_DETECT_POSTPROCESS.md | active | 视觉推理 ITEM-003 实现说明：YOLOv5 解码交付/如何满足工作项/解码约定/运行入口/返工记录（zp 字段、补边区夹具、int8 空背景）与观察（+1 IoU、真实前向归 ITEM-009）
 docs/vision/test_evidence/ITEM-001/ITEM-001-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-001 实际正确性证据（夹具匹配/不匹配 8 用例、真实 rknn_query 两模型、描述核验与负例、配置汇总、core 958/0）与未执行项
 docs/vision/test_evidence/ITEM-001/VERIFY-ITEM-001.md | active | TestEvidence：视觉 ITEM-001 独立验证（VERIFY-20261018-v1 TEST_PASS：交付入口独立复跑 13 产物 + 独立比对 38/38 + vext 板端 28 判例/CLI 负例/确定性/脱敏/清理；O-1 profile_gap 配置事实、O-2 输出量化无门登记）
 docs/vision/test_evidence/ITEM-001/build-CoreTests-192_168_0_103-20261018-item001-r1.log | active | ITEM-001 core 构建/测试人类可读 transcript（r1）
@@ -2197,6 +2203,47 @@ docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.app_core-evidence_item002-selftest-verify-20261019-item002-v1.log | active | 验证轮夹具自检文本（27 判例 PASS，与 r4 全文恒等）
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.log | active | 验证轮独立板端执行人类可读 transcript（keep-remote：无 cleanup 步骤）
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.transcript.json | active | 验证轮独立板端执行结构化 transcript（命令+退出 token+指纹 SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU）
+docs/vision/test_evidence/ITEM-003/ITEM-003-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-003 实际正确性证据（夹具张量：解码坐标/分数/白名单/NMS/空图/补边区/int8/配置阈值，core 1035/0）与未执行项
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r1.log | active | ITEM-003 返工前人类可读 transcript（r1）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r1.transcript.json | active | ITEM-003 返工前 transcript（r1：zp 字段编译失败，工具未构建）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-config-20261019-item003-r2.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-config-20261019-item003-r2.log | active | ITEM-003 配置阈值（r2）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-core-tests-20261019-item003-r2.xml | active | ITEM-003 core 单测 JUnit（r2：1035/3）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-empty-20261019-item003-r2.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-empty-20261019-item003-r2.log | active | ITEM-003 empty 夹具（r2）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-int8-20261019-item003-r2.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-int8-20261019-item003-r2.log | active | ITEM-003 int8 夹具（r2：零填充缺陷导致全网格伪候选）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-nms-20261019-item003-r2.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-nms-20261019-item003-r2.log | active | ITEM-003 nms 夹具（r2）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-nonperson-20261019-item003-r2.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-nonperson-20261019-item003-r2.log | active | ITEM-003 nonperson 夹具（r2）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-padbox-20261019-item003-r2.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-padbox-20261019-item003-r2.log | active | ITEM-003 padbox 夹具（r2）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-person-20261019-item003-r2.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-fixture-person-20261019-item003-r2.log | active | ITEM-003 person 夹具（r2）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-selftest-20261019-item003-r2.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.app_core-evidence_item003-selftest-20261019-item003-r2.log | active | ITEM-003 夹具自检（r2：int8 dequant 失败）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.log | active | ITEM-003 返工前人类可读 transcript（r2）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r2.transcript.json | active | ITEM-003 返工前 transcript（r2：补边区夹具缺陷 + int8 零填充缺陷；core 1035/3）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-config-20261019-item003-r3.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-config-20261019-item003-r3.log | active | ITEM-003 配置阈值（r3：thresholds.confidence_min=0.5；boxes=1）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-core-tests-20261019-item003-r3.xml | active | ITEM-003 core 单测 JUnit（r3：tests=1035 failures=0）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-empty-20261019-item003-r3.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-empty-20261019-item003-r3.log | active | ITEM-003 empty 夹具（r3：DETECT_EMPTY boxes=0）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-int8-20261019-item003-r3.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-int8-20261019-item003-r3.log | active | ITEM-003 int8 夹具（r3：xywh=(0.31228,0.44409,0.10050,0.17831) score=0.8065）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-nms-20261019-item003-r3.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-nms-20261019-item003-r3.log | active | ITEM-003 nms 夹具（r3：boxes=1 suppressed=1）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-nonperson-20261019-item003-r3.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-nonperson-20261019-item003-r3.log | active | ITEM-003 nonperson 夹具（r3：boxes=0 dropped_class=1）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-padbox-20261019-item003-r3.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-padbox-20261019-item003-r3.log | active | ITEM-003 padbox 夹具（r3：dropped_bounds=1 boxes=0）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-person-20261019-item003-r3.json | active | 同上 JSON
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-fixture-person-20261019-item003-r3.log | active | ITEM-003 person 夹具（r3：xywh=(0.31250,0.44444,0.10000,0.17778) score=0.8100）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-selftest-20261019-item003-r3.json | active | ITEM-003 夹具自检 JSON（r3）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.app_core-evidence_item003-selftest-20261019-item003-r3.log | active | ITEM-003 夹具自检文本（r3：19 判例 RESULT PASS failures=0）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.log | active | ITEM-003 板端执行人类可读 transcript（r3）
+docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-20261019-item003-r3.transcript.json | active | ITEM-003 板端执行结构化 transcript（r3 权威轮：命令/退出码/输出/主机指纹）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签
