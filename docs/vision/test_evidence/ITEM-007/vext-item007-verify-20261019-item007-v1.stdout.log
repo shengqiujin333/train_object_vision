@@ -1,0 +1,34 @@
+vext PASS g01_invalidate_track1_keeps_track11_confirm :: keys=1
+vext PASS g01_track11_confirms_on_3rd_frame_after_track1_cleanup :: per0=1
+vext PASS g02_invalidate_track0_keeps_track10_confirm :: keys=1
+vext PASS g02_track10_confirms_on_3rd_frame_after_track0_cleanup :: per0=1
+vext PASS g03_invalidate_track11_keeps_track1_confirm :: keys=1
+vext PASS g03_track1_confirms_on_3rd_frame_after_track11_cleanup :: per0=1
+vext PASS g04_track_zero_is_legal_not_null :: ev=1
+vext PASS g04_event_carries_track_zero :: track=0
+vext PASS g05_camera_level_adaptation_confirms_without_track :: no_track=0
+vext PASS g05_event_track_is_minus1_never_fabricated_0 :: track=-1
+vext PASS g06_known_but_not_allowed_counted :: not_allowed=3 unknown=0
+vext PASS g06_known_but_not_allowed_no_alarm :: events=0
+vext PASS g07_empty_case_and_unknown_labels_strictly_blocked :: unknown=3 events=0
+vext PASS g08_generation_reset_keys_on_cam01 :: keys=1
+vext PASS g08_cam02_confirm_survives_cam01_generation_reset :: events=1
+vext PASS g09_invalidate_track_only_own_camera_keys :: keys=1
+vext PASS g09_cam02_track1_confirm_survives_cam01_invalidate :: events=1
+vext PASS g10_stale_generation_defensive_no_dispatch :: reason=SEMANTIC_STALE_GENERATION
+vext PASS g10_confirm_survives_stale_frame :: events=1
+vext PASS g11_detections_strictly_ascending_by_track :: n=3
+vext PASS g11_events_emitted_in_track_order :: events=3
+vext PASS g12_same_track_aggregated :: n=1
+vext PASS g12_whole_higher_score_frame_kept :: conf=0.900000 dist=20.000000
+vext PASS g13_confidence_exact_equal_is_candidate :: low=0 events=1
+vext PASS g14_low_confidence_frame_resets_confirm_accumulation :: low=1 track_reset=1
+vext PASS g14_reset_counted_once_on_low_frame :: track_reset=1
+vext PASS g15_ready_empty_boxes_no_alarm_no_judgement :: avail=1
+vext PASS g15_no_events_from_empty_envelope :: events=0
+vext PASS g16_same_generation_no_reset_keys :: gen_reset=0
+vext PASS g17_track1_emitted_before_cleanup :: events=1
+vext PASS g17_invalidate_camera_counts_own_camera_keys :: keys=3
+vext PASS g17_events_kept_and_cam02_confirms :: events=2
+vext OK (0 failures)
+VEXT_RUN_EXIT=0

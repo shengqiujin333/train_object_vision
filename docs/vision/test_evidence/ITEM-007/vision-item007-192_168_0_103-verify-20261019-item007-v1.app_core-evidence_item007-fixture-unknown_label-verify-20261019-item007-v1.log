@@ -1,0 +1,4 @@
+type=config confirm_frames=3 confirm_window_ms=500 confidence_min=0.500000 suppress_window_ms=3000 require_track=1 allowed=2
+type=result events=0 unknown=3 no_track=0 low_conf=0 mapped=0 det_last=0 track_reset=0
+type=events total=0
+RESULT: PASS
