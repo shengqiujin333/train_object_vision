@@ -1,0 +1,1 @@
+{"mode":"fixture","failures":0,"lines":["type=config confirm_frames=3 confirm_window_ms=500 confidence_min=0.500000 suppress_window_ms=3000 require_track=1 allowed=2","type=result type=semantic ok=1 available=1 reason=SEMANTIC_OK det=2 cand=2 in=3 mapped=2 unknown=0 no_track=0 low_conf=0 off_rail=0 agg=1 gen_reset=0 track_reset=0","RESULT: PASS"]}

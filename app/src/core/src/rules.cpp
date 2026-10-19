@@ -268,5 +268,48 @@ std::size_t RuleEngine::unacked_count() const {
     return n;
 }
 
+namespace {
+
+template <typename Map>
+int erase_keys(Map* m, const std::string& prefix, const std::string& suffix) {
+    int n = 0;
+    for (auto it = m->begin(); it != m->end();) {
+        const std::string& k = it->first;
+        const bool head_ok = k.compare(0, prefix.size(), prefix) == 0;
+        const bool tail_ok =
+            suffix.empty() || (k.size() >= suffix.size() &&
+                               k.compare(k.size() - suffix.size(), suffix.size(), suffix) == 0);
+        if (head_ok && tail_ok) {
+            it = m->erase(it);
+            ++n;
+        } else {
+            ++it;
+        }
+    }
+    return n;
+}
+
+}  // namespace
+
+int RuleEngine::invalidate_track(const std::string& camera_id, int track_id) {
+    if (track_id < 0) return 0;  // null track 不形成确认 key，不清理
+    const std::string prefix = camera_id + "|";
+    const std::string suffix = "|" + std::to_string(track_id);
+    int n = 0;
+    n += erase_keys(&confirm_, prefix, suffix);
+    n += erase_keys(&last_emit_ms_, prefix, suffix);
+    n += erase_keys(&key_event_id_, prefix, suffix);
+    return n;
+}
+
+int RuleEngine::invalidate_camera(const std::string& camera_id) {
+    const std::string prefix = camera_id + "|";
+    int n = 0;
+    n += erase_keys(&confirm_, prefix, std::string());
+    n += erase_keys(&last_emit_ms_, prefix, std::string());
+    n += erase_keys(&key_event_id_, prefix, std::string());
+    return n;
+}
+
 }  // namespace core
 }  // namespace railhmi

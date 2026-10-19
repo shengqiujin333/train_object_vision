@@ -1,0 +1,1 @@
+{"mode":"fixture","failures":0,"lines":["type=config confirm_frames=3 confirm_window_ms=500 confidence_min=0.500000 suppress_window_ms=3000 require_track=1 allowed=2","type=result events=1 unknown=0 no_track=0 low_conf=0 mapped=3 det_last=1 track_reset=0","type=events total=1","event type=person_on_rail level=1 track=1","RESULT: PASS"]}

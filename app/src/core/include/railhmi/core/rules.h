@@ -111,6 +111,11 @@ public:
     const std::vector<AlarmEvent>& events() const { return events_; }
     const AlarmEvent* find(long long id) const;
     std::size_t unacked_count() const;
+
+    // 受控状态清理（视觉 ITEM-007）：只清理指定目标的确认/抑制状态，**不删除事件**。
+    // 返回实际清理的 key 数（可观察）。用于失帧/目标消失（按 track）与 generation 变化（按相机）。
+    int invalidate_track(const std::string& camera_id, int track_id);
+    int invalidate_camera(const std::string& camera_id);
     RuleConfig config() const { return cfg_; }
 
 private:

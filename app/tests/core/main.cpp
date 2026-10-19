@@ -26,6 +26,7 @@ void run_vision_detect_postprocess_tests();
 void run_vision_seg_postprocess_tests();
 void run_vision_two_stage_tests();
 void run_vision_inference_envelope_tests();
+void run_vision_semantic_adapter_tests();
 void run_frame_identity_tests();
 void run_frame_layout_tests();
 void run_bounded_queue_tests();
@@ -74,6 +75,7 @@ int main(int argc, char** argv) {
     run_vision_seg_postprocess_tests();
     run_vision_two_stage_tests();
     run_vision_inference_envelope_tests();
+    run_vision_semantic_adapter_tests();
     run_frame_identity_tests();
     run_frame_layout_tests();
     run_bounded_queue_tests();
