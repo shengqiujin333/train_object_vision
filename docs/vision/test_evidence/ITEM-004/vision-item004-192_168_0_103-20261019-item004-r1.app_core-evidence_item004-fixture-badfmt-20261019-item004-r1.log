@@ -1,0 +1,4 @@
+type=config score_threshold=0.250000 nms_iou=0.450000 mask_threshold=0.000000 crop_to_box=1 whitelist=[0]
+type=decoder ok=0 reason=MODEL_MISMATCH detail= err=MODEL_MISMATCH: branch[0].unsupported fmt (expect nchw)
+type=seg ok=0 reason=MODEL_MISMATCH boxes=0 masks=0 candidates=0 dropped_score=0 dropped_class=0 nms_suppressed=0 dropped_bounds=0 truncated=0
+RESULT: PASS

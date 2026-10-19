@@ -40,6 +40,7 @@ struct RawDetectTensor {
     int height = 0;
     int width = 0;
     TensorType dtype = TensorType::Int8;
+    TensorFormat fmt = TensorFormat::Nchw;  // 本项目输出为 NCHW；非 NCHW 由后处理显式拒绝
     int32_t zero_point = 0;
     float scale = 0.0f;
     bool is_float = false;                  // Float32 时为 true（data 指向 float）
@@ -84,6 +85,11 @@ struct DetectResult {
     long long dropped_bounds = 0;       // 逆 letterbox 后越界被丢弃
     long long truncated = 0;            // 超出 max_detections 被截断
 };
+
+// 反量化单个元素（int8/uint8 按 affine；float32 取原值）。供检测/分割后处理共用。
+double tensor_dequant(const RawDetectTensor& t, std::size_t index);
+// NCHW 通道优先线性下标 c*H*W + h*W + w。
+std::size_t tensor_index_nchw(const RawDetectTensor& t, int c, int h, int w);
 
 // 默认 anchors（yolov5s；与已部署模型一致，可覆盖）。
 std::vector<int> default_yolov5_anchors();

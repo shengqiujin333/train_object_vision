@@ -9,16 +9,7 @@
 namespace railhmi {
 namespace core {
 
-namespace {
-
-bool fail(std::string* err, const char* reason, const std::string& detail = std::string()) {
-    if (err) *err = detail.empty() ? std::string(reason) : (std::string(reason) + ": " + detail);
-    return false;
-}
-
-double sigmoid(double x) { return 1.0 / (1.0 + std::exp(-x)); }
-
-double dequant(const RawDetectTensor& t, std::size_t index) {
+double tensor_dequant(const RawDetectTensor& t, std::size_t index) {
     if (t.is_float || t.dtype == TensorType::Float32) {
         float f = 0.0f;
         std::memcpy(&f, t.data + index * sizeof(float), sizeof(float));
@@ -32,6 +23,22 @@ double dequant(const RawDetectTensor& t, std::size_t index) {
     }
     return (q - static_cast<double>(t.zero_point)) * static_cast<double>(t.scale);
 }
+
+std::size_t tensor_index_nchw(const RawDetectTensor& t, int c, int h, int w) {
+    return static_cast<std::size_t>(c) * static_cast<std::size_t>(t.height) * t.width +
+           static_cast<std::size_t>(h) * t.width + static_cast<std::size_t>(w);
+}
+
+namespace {
+
+bool fail(std::string* err, const char* reason, const std::string& detail = std::string()) {
+    if (err) *err = detail.empty() ? std::string(reason) : (std::string(reason) + ": " + detail);
+    return false;
+}
+
+double sigmoid(double x) { return 1.0 / (1.0 + std::exp(-x)); }
+
+double dequant(const RawDetectTensor& t, std::size_t index) { return tensor_dequant(t, index); }
 
 bool is_whitelisted(const DetectConfig& cfg, int cls) {
     return std::find(cfg.class_whitelist.begin(), cfg.class_whitelist.end(), cls) !=
