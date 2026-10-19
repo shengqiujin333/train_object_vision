@@ -62,7 +62,7 @@ app/src/core/include/railhmi/core/vision_inference_envelope.h | active | 推理�
 app/src/core/include/railhmi/core/vision_model_capability.h | active | 视觉模型能力描述与就绪核验接口（视觉推理 ITEM-001）：TensorDesc/ModelDescriptor/ModelSpec/identify_kind/check_capability/稳定 reason/文本与 JSON 序列化/模型路径解析/profile 证据；纯标准库
 app/src/core/include/railhmi/core/vision_preprocess.h | active | 视觉推理输入预处理接口（视觉推理 ITEM-002）：letterbox 参数/量化·反量化/PreprocessConfig/PreprocessedInput（HWC 张量+统计）/packed 与 NV12 参考路径/稳定 reason；纯标准库
 app/src/core/include/railhmi/core/vision_seg_postprocess.h | active | YOLOv8-seg 分割后处理接口（视觉推理 ITEM-004）：SegConfig/SegBox/SegMask/SegResult/decode_yolov8_seg（13 输出、每框独立原图二值 plane）/MODEL_MISMATCH；纯标准库
-app/src/core/include/railhmi/core/vision_selftest.h | active | 无相机自检接口（视觉推理 ITEM-013）：SelfTestCase/SelfTestReport（schema/no_device/cases/pending）、run_vision_selftest（16 个确定性判例：模型/预处理/检测/分割/两阶段/关联/可用性/调试）、selftest_json（可排除 timestamp 的确定性输出）、selftest_case_ids；纯标准库
+app/src/core/include/railhmi/core/vision_selftest.h | active | 无相机自检接口（视觉推理 ITEM-013）：SelfTestCase/SelfTestReport（schema/no_device/cases/pending）、run_vision_selftest（16 个确定性判例：模型/预处理/检测/分割/两阶段/关联/可用性/调试）、selftest_json（可排除 timestamp 的确定性输出）、selftest_case_ids；纯标准库；r3 增 FI-AI-12 覆盖（17 判例：未知 label 拦截零报警）
 app/src/core/include/railhmi/core/vision_semantic_adapter.h | active | 语义适配与规则接入接口（视觉推理 ITEM-007）：SemanticConfig（白名单/confidence/require_track；ITEM-008 增 TrackPolicy+TrackerConfig）/SemanticResult（detections+candidate）/SemanticAdapter（聚合排序/受控清理/dispatch）；纯标准库
 app/src/core/include/railhmi/core/vision_tracker.h | active | 轻量目标跟踪接口（视觉推理 ITEM-008）：TrackerConfig/TrackState/TrackedBox/LightweightTracker（标签+IoU 贪心/中心距回退/丢失淘汰/时间鸿沟/容量上限/reset）+ camera_level_track_id(-1)；纯标准库
 app/src/core/include/railhmi/core/vision_two_stage.h | active | 同帧两阶段判定接口（视觉推理 ITEM-005）：TwoStageInput/TwoStageResult/TwoStageConfig（danger_zone/缓存策略）/evaluate_two_stage/TwoStageCache/TwoStageEvaluator；纯标准库
@@ -109,7 +109,7 @@ app/src/core/src/vision_inference_envelope.cpp | active | 推理结果关联与�
 app/src/core/src/vision_model_capability.cpp | active | 视觉模型能力核验实现（视觉推理 ITEM-001）：NHWC/NCHW 归一/结构识别（不看文件名）/输入与检测·分割输出逐项匹配/稳定 reason/文本与 JSON
 app/src/core/src/vision_preprocess.cpp | active | 视觉预处理实现（视觉推理 ITEM-002）：居中 letterbox/双线性采样（带 stride）/BGR→RGB/归一化与 int8·uint8·float32 量化/逐通道均值/NV12 参考转换/非法输入拒绝
 app/src/core/src/vision_seg_postprocess.cpp | active | YOLOv8-seg 后处理实现（视觉推理 ITEM-004）：13 输出解析/DFL/proto 点积/双线性 resize/框裁剪/逆 letterbox/每框二值 plane/形状与布局不符显式 MODEL_MISMATCH
-app/src/core/src/vision_selftest.cpp | active | 无相机自检实现（视觉推理 ITEM-013）：合成 BGR 图->letterbox/量化、合成检测张量->期望框、13 张量分割->640x640 掩码、两阶段命中/缺掩码不可用、旧代/重复/乱序计数、AI 停止/职责不支持/未标定/未知占位；pending 四项待执行
+app/src/core/src/vision_selftest.cpp | active | 无相机自检实现（视觉推理 ITEM-013）：合成 BGR 图->letterbox/量化、合成检测张量->期望框、13 张量分割->640x640 掩码、两阶段命中/缺掩码不可用、旧代/重复/乱序计数、AI 停止/职责不支持/未标定/未知占位；pending 四项待执行；r3 增 semantic.unknown_label_intercepted（build_envelope+SemanticAdapter+RuleEngine 单帧确认）
 app/src/core/src/vision_semantic_adapter.cpp | active | 语义适配与规则接入实现（视觉推理 ITEM-007）：白名单拦截/同 track 聚合与排序/track_id null 丢弃/候选与非候选分流/generation 受控清理/下发 RuleEngine；ITEM-008 增 TrackPolicy 分发与跟踪器接入（先 reset 后映射）
 app/src/core/src/vision_tracker.cpp | active | 轻量跟踪实现（视觉推理 ITEM-008）：同标签 IoU 贪心/中心距回退/ misses 淘汰/时间鸿沟/超容量显式 -1/id 单调递增且 reset 不复用
 app/src/core/src/vision_two_stage.cpp | active | 同帧两阶段判定实现（视觉推理 ITEM-005）：同帧身份门/中心点落 rail 掩码/danger_zone 求交/不可用不输出安全/FrameGate 接纳/可选跨帧缓存（默认关）
@@ -288,7 +288,7 @@ app/tests/core/test_vision_inference_envelope.cpp | active | 推理结果关联�
 app/tests/core/test_vision_model_capability.cpp | active | 视觉模型能力核验测试（视觉推理 ITEM-001：规格映射/结构识别/匹配与不匹配/FI-AI-01..03/profile 证据/配置解析/文本往返/JSON）
 app/tests/core/test_vision_preprocess.cpp | active | 视觉预处理测试（视觉推理 ITEM-002：letterbox/量化与反量化/RGB 顺序/stride/非法输入拒绝/NV12 参考/float32/uint8）
 app/tests/core/test_vision_seg_postprocess.cpp | active | YOLOv8-seg 后处理测试（视觉推理 ITEM-004：13 输出解码/掩码尺寸与 stride/二值/坐标对齐/阈值/裁剪/NMS/空图/形状与布局不符/int8）
-app/tests/core/test_vision_selftest.cpp | active | 无相机自检测试（视觉推理 ITEM-013）：全套通过/判例 id 唯一与域覆盖/requirement 在场/pending 标注/JSON 结构与确定性/关键证据在场/JSON 不含地址与凭据
+app/tests/core/test_vision_selftest.cpp | active | 无相机自检测试（视觉推理 ITEM-013）：全套通过/判例 id 唯一与域覆盖/requirement 在场/pending 标注/JSON 结构与确定性/关键证据在场/JSON 不含地址与凭据；r3 增 FI-AI-01/02/04/07/10/12 六个覆盖编号存在性断言
 app/tests/core/test_vision_semantic_adapter.cpp | active | 语义适配与规则接入测试（视觉推理 ITEM-007：person/未知拦截/多目标与聚合排序/离轨不误清/generation 清理/无 track/低置信/obstacle/不可用/受控清理作用域）
 app/tests/core/test_vision_tracker.cpp | active | 轻量跟踪测试（视觉推理 ITEM-008：新/续 id、标签隔离、丢失删除、reset 不复用、时间鸿沟、超容量 -1；适配器 Lightweight/CameraLevel/EnvelopeOnly 与 generation 清理）
 app/tests/core/test_vision_two_stage.cpp | active | 同帧两阶段判定测试（视觉推理 ITEM-005：身份/掩码中心命中/可用性门/danger_zone/FrameGate 接纳/缓存默认关与复用过期换代/计数）
@@ -2179,7 +2179,7 @@ docs/vision/implementation/ITEM-009_DETECTOR_WORKER.md | active | 视觉推理 I
 docs/vision/implementation/ITEM-010_DUTY_AVAILABILITY.md | active | 视觉推理 ITEM-010 实现文档（语义不变量/求值顺序/调度与线程集成/状态发布通道/板端实测/返工记录/观察与移交）
 docs/vision/implementation/ITEM-011_DISTANCE.md | active | 视觉推理 ITEM-011 实现文档（换算模型/门控 reason 表/应用链路/规则与 P5 语义/板端实测/返工记录/观察与移交）
 docs/vision/implementation/ITEM-012_DEBUG_VIEW.md | active | 视觉推理 ITEM-012 实现文档（数据模型与不变量/角色可见性/掩码取数与生命周期/板端实测/返工记录/观察与移交）
-docs/vision/implementation/ITEM-013_SELFTEST.md | active | 视觉推理 ITEM-013 实现文档（判例矩阵/JSON 与归档/板端实测/返工记录/观察与移交）
+docs/vision/implementation/ITEM-013_SELFTEST.md | active | 视觉推理 ITEM-013 实现文档（判例矩阵/JSON 与归档/板端实测/返工记录/观察与移交）（v2：按验证轮 D-01 补 FI-AI-12 判例后重跑 r3）
 docs/vision/test_evidence/ITEM-001/ITEM-001-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-001 实际正确性证据（夹具匹配/不匹配 8 用例、真实 rknn_query 两模型、描述核验与负例、配置汇总、core 958/0）与未执行项
 docs/vision/test_evidence/ITEM-001/VERIFY-ITEM-001.md | active | TestEvidence：视觉 ITEM-001 独立验证（VERIFY-20261018-v1 TEST_PASS：交付入口独立复跑 13 产物 + 独立比对 38/38 + vext 板端 28 判例/CLI 负例/确定性/脱敏/清理；O-1 profile_gap 配置事实、O-2 输出量化无门登记）
 docs/vision/test_evidence/ITEM-001/build-CoreTests-192_168_0_103-20261018-item001-r1.log | active | ITEM-001 core 构建/测试人类可读 transcript（r1）
@@ -2971,7 +2971,7 @@ docs/vision/test_evidence/ITEM-012/vision-item012-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-012/vision-item012-192_168_0_103-verify-20261019-item012-v1.app_core-evidence_item012-media-selftest-verify-20261019-item012-v1.log | active | ITEM-012 验证轮 media 自检日志（30/30 含掩码抓取门控）
 docs/vision/test_evidence/ITEM-012/vision-item012-192_168_0_103-verify-20261019-item012-v1.log | active | ITEM-012 验证 fresh 轮人类可读日志（15 步全 0：build/core-tests/selftest/6 fixtures/3 config/media/chain；保留树）
 docs/vision/test_evidence/ITEM-012/vision-item012-192_168_0_103-verify-20261019-item012-v1.transcript.json | active | ITEM-012 验证 fresh 轮 transcript（指纹/逐命令退出码/19 份下载/keep-remote）
-docs/vision/test_evidence/ITEM-013/ITEM-013-EVIDENCE.md | active | 视觉推理 ITEM-013 板端证据（core 1445/0、自检 16/16、确定性 sha256 一致、关键数值、pending 四项、SELFTEST 归档、返工留痕、覆盖边界）
+docs/vision/test_evidence/ITEM-013/ITEM-013-EVIDENCE.md | active | 视觉推理 ITEM-013 板端证据（core 1445/0、自检 16/16、确定性 sha256 一致、关键数值、pending 四项、SELFTEST 归档、返工留痕、覆盖边界）（r3：修复 D-01 后 17/17；含 FI-AI-12 判例与验证观察项）
 docs/vision/test_evidence/ITEM-013/VERIFY-ITEM-013.md | active | ITEM-013 验证独立验证报告（V-RUN/V-CMP/V-EXT/D-01 呈证）
 docs/vision/test_evidence/ITEM-013/verify-item013-vext-v1.log | active | ITEM-013 验证 vext 夹具板端运行日志（16/16）
 docs/vision/test_evidence/ITEM-013/verify_item013_cmp.py | active | ITEM-013 验证独立解析口径（28 判据）
@@ -2992,6 +2992,18 @@ docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r2.app_core-evidence_item013-selftest-list-20261021-item013-r2.txt | active | ITEM-013 判例 id 清单（16 条，--list）
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r2.log | active | ITEM-013 终轮人类可读日志（build/core-tests/两次确定性自检/归档自检/list/media/cleanup）
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r2.transcript.json | active | ITEM-013 终轮 transcript（指纹/逐命令退出码/上传构建自检 sha256/取回清理）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.app_core-evidence_item013-core-tests-20261021-item013-r3.xml | active | ITEM-013 r3 JUnit XML（tests=1452 failures=0，含 FI 覆盖断言）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.app_core-evidence_item013-media-selftest-20261021-item013-r3.json | active | ITEM-013 r3 归档自检 JSON（17 判例 + pending 四项）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.app_core-evidence_item013-media-selftest-20261021-item013-r3.log | active | ITEM-013 r3 终轮人类可读日志（build/core-tests/确定性自检/归档/list/media/cleanup）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.app_core-evidence_item013-selftest-20261021-item013-r3.json | active | ITEM-013 r3 归档自检 JSON（17 判例 + pending 四项）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.app_core-evidence_item013-selftest-20261021-item013-r3.log | active | ITEM-013 r3 终轮人类可读日志（build/core-tests/确定性自检/归档/list/media/cleanup）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.app_core-evidence_item013-selftest-det1-20261021-item013-r3.json | active | ITEM-013 r3 确定性自检 JSON 第 1 次（sha256 9bfbd807…）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.app_core-evidence_item013-selftest-det1-20261021-item013-r3.log | active | ITEM-013 r3 终轮人类可读日志（build/core-tests/确定性自检/归档/list/media/cleanup）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.app_core-evidence_item013-selftest-det2-20261021-item013-r3.json | active | ITEM-013 r3 确定性自检 JSON 第 2 次（与第 1 次逐字节相同）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.app_core-evidence_item013-selftest-det2-20261021-item013-r3.log | active | ITEM-013 r3 终轮人类可读日志（build/core-tests/确定性自检/归档/list/media/cleanup）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.app_core-evidence_item013-selftest-list-20261021-item013-r3.txt | active | ITEM-013 r3 判例 id 清单（17 条，--list）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.log | active | ITEM-013 r3 终轮人类可读日志（build/core-tests/确定性自检/归档/list/media/cleanup）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r3.transcript.json | active | ITEM-013 r3 终轮 transcript（指纹/逐命令退出码/两次确定性自检 sha256/取回清理）
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v1.app_core-evidence_item013-core-tests-verify-20261021-item013-v1.xml | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v1.app_core-evidence_item013-media-selftest-verify-20261021-item013-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v1.app_core-evidence_item013-media-selftest-verify-20261021-item013-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
@@ -3006,6 +3018,8 @@ docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v1.transcript.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r2.deterministic.json | active | 视觉自检归档 JSON（确定性副本，无 timestamp；跨轮 sha256 比对用）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r2.json | active | 视觉自检归档 JSON（含 timestamp；16/16 PASS + pending 四项；测试设计 G13 归档位置）
+docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r3.deterministic.json | active | 视觉自检归档 JSON（r3 确定性副本，无 timestamp；同版本跨轮 sha256 比对用）
+docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r3.json | active | 视觉自检归档 JSON（r3，含 timestamp；17/17 PASS + FI-AI-12 + pending 四项）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261021-item013-v1.deterministic.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261021-item013-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）

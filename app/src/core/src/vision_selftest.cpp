@@ -17,6 +17,7 @@
 #include "railhmi/core/vision_inference_envelope.h"
 #include "railhmi/core/vision_model_capability.h"
 #include "railhmi/core/vision_preprocess.h"
+#include "railhmi/core/vision_semantic_adapter.h"
 #include "railhmi/core/vision_seg_postprocess.h"
 #include "railhmi/core/vision_two_stage.h"
 
@@ -539,6 +540,70 @@ void case_envelope(std::vector<SelfTestCase>* out) {
     out->push_back(u);
 }
 
+// 未知 label 拦截（FI-AI-12 / TC-T-SEM-01）：未知类零报警 + 拦截计数可见，person 照常映射。
+void case_semantic(std::vector<SelfTestCase>* out) {
+    SelfTestCase c = mk("semantic.unknown_label_intercepted", "semantic", "FI-AI-12/TC-T-SEM-01");
+    std::vector<DetectBox> boxes;
+    DetectBox person;
+    person.x = 0.40f;
+    person.y = 0.50f;
+    person.w = 0.10f;
+    person.h = 0.20f;
+    person.score = 0.90f;
+    person.class_id = 0;
+    person.label = "person";
+    boxes.push_back(person);
+    DetectBox unknown = person;
+    unknown.class_id = 77;
+    unknown.label = "weird_class";   // 既非白名单也非已知标签
+    boxes.push_back(unknown);
+    std::vector<char> in_roi = {1, 1};
+
+    EnvelopeBuildInput bin;
+    bin.frame = fid("CAM-01", 1, 7);
+    bin.profile = AiProfile::Front;
+    bin.model_version = "fixture-model";
+    bin.capture_mono_us = 1000;
+    bin.result_mono_us = 2000;
+    bin.detect_ready = true;
+    bin.boxes = &boxes;
+    bin.in_roi_flags = in_roi;
+    const InferenceEnvelope env = build_envelope(bin);
+
+    SemanticConfig sc;
+    sc.profile = AiProfile::Front;
+    sc.allowed_labels = {"person", "obstacle"};
+    sc.known_labels = {"person", "obstacle"};
+    sc.confidence_min = 0.5;
+    sc.require_track = true;
+    sc.use_envelope_in_roi = true;
+    sc.track_policy = TrackPolicy::Lightweight;
+    SemanticAdapter adapter(sc);
+    RuleConfig rc;
+    rc.confirm_frames = 1;   // 单帧即可确认：person 产生 1 个事件，未知类必须 0 个
+    rc.confirm_window_ms = 500;
+    rc.confidence_min = 0.5;
+    rc.suppress_window_ms = 3000;
+    RuleEngine rules(rc);
+    SemanticResult res;
+    const std::vector<AlarmEvent> events = adapter.adapt_and_dispatch(env, 1000, &rules, &res);
+
+    bool only_person = true;
+    for (const auto& d : res.detections)
+        if (d.label != "person") only_person = false;
+    c.pass = res.available && res.stats.blocked_unknown_label == 1 && res.stats.mapped == 1 &&
+             res.detections.size() == 1 && only_person && events.size() == 1 &&
+             events[0].type == AlarmType::PersonOnRail;
+    c.detail = "unknown label intercepted (no alarm); person still mapped and confirmed";
+    c.evidence["input_boxes"] = std::to_string(boxes.size());
+    c.evidence["mapped"] = std::to_string(res.stats.mapped);
+    c.evidence["blocked_unknown_label"] = std::to_string(res.stats.blocked_unknown_label);
+    c.evidence["detections"] = std::to_string(res.detections.size());
+    c.evidence["events"] = std::to_string(events.size());
+    c.evidence["event_type"] = events.empty() ? "-" : to_string(events[0].type);
+    out->push_back(c);
+}
+
 // 可用性：AI 停止 / 三职责无模型 / 距离未标定 / 调试占位（ITEM-009/010/011/012）。
 void case_availability(std::vector<SelfTestCase>* out) {
     {
@@ -648,6 +713,7 @@ SelfTestReport run_vision_selftest() {
     case_detect(&r.cases);
     case_seg(&r.cases);
     case_envelope(&r.cases);
+    case_semantic(&r.cases);
     case_availability(&r.cases);
 
     for (const auto& c : r.cases) {

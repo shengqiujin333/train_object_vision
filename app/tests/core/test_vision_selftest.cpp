@@ -56,6 +56,15 @@ void run_vision_selftest_tests() {
         for (const auto& c : r.cases)
             if (c.requirement.empty()) all_have_requirement = false;
         check(all_have_requirement, "selftest_cases_reference_requirement", "每判例标注 TC/FI");
+
+        // TC-T-SELF-01 要求覆盖 FI-AI-01/02/04/07/10/12（FI-AI-12 = 未知 label 拦截）。
+        for (const char* fi : {"FI-AI-01", "FI-AI-02", "FI-AI-04", "FI-AI-07", "FI-AI-10",
+                               "FI-AI-12"}) {
+            bool covered = false;
+            for (const auto& c : r.cases)
+                if (contains(c.requirement, fi)) covered = true;
+            check(covered, std::string("selftest_covers_") + fi, fi);
+        }
     }
 
     // ---- 待执行项明确标注（TC-T-SELF-03） ----
@@ -102,6 +111,12 @@ void run_vision_selftest_tests() {
         check(no_mask && no_mask->pass && no_mask->evidence.at("available") == "false" &&
                   no_mask->evidence.at("alarm_hits") == "0",
               "selftest_two_stage_no_mask", no_mask ? no_mask->evidence.at("reason") : "");
+
+        const SelfTestCase* sem = find_case(r, "semantic.unknown_label_intercepted");
+        check(sem && sem->pass && sem->evidence.at("blocked_unknown_label") == "1" &&
+                  sem->evidence.at("mapped") == "1" && sem->evidence.at("events") == "1",
+              "selftest_unknown_label_intercepted",
+              sem ? ("blocked=" + sem->evidence.at("blocked_unknown_label")) : "");
 
         const SelfTestCase* empty = find_case(r, "preprocess.empty_frame");
         check(empty && empty->pass && !empty->evidence.at("reason").empty(),
