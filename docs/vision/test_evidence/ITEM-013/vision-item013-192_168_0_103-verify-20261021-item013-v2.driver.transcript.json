@@ -1,0 +1,72 @@
+{
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "cred_import",
+      "exit": 0,
+      "output": "imported len=5"
+    },
+    {
+      "step": "vrun",
+      "exit": 0,
+      "elapsed_s": 193.0
+    },
+    {
+      "step": "archive",
+      "exit": 0,
+      "output": "SELFTEST copies written"
+    },
+    {
+      "step": "rrun_env",
+      "cmd": "uname -smr; g++ --version | head -1",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": "Linux 6.1.141 aarch64\ng++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\n"
+    },
+    {
+      "step": "upload_verify_item013_vext_v2.cpp",
+      "exit": 0
+    },
+    {
+      "step": "upload_verify_item013_vext.cpp",
+      "exit": 0
+    },
+    {
+      "step": "upload_v2",
+      "exit": 0
+    },
+    {
+      "step": "vext2_build",
+      "cmd": "cd /tmp/railhmi_vision_item013_verify-20261021-item013-v2/app && g++ -std=c++17 -I src/core/include verify_item013_vext_v2.cpp build-core/src/core/librailhmi_core.a -o vext2; echo VEXT_BUILD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.6,
+      "output": "VEXT_BUILD_EXIT=0\n"
+    },
+    {
+      "step": "vext2_run",
+      "cmd": "cd /tmp/railhmi_vision_item013_verify-20261021-item013-v2/app && ./vext2; echo VEXT_RUN_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.3,
+      "output": "vext PASS v01_delivered_selftest_17_pass :: total=17 failed=0\nvext PASS v02_selftest_fi_ai_12_present :: FI-AI-10 present=1 FI-AI-12 present=1\nvext PASS v03_unknown_label_case_present_and_pass :: blocked=1 mapped=1 events=1\nvext PASS v04_fi_ai_12_judgment_face :: unknown label intercepted (no alarm); person still mapped and confirmed\nvext PASS v05_selftest_json_fi_ai_12_visible :: JSON 归档面可见 FI-AI-12(与头注释一致)\nvext PASS v06_sem_result_ok :: SEMANTIC_OK\nvext PASS v07_fi_ai_12_blocked_unknown_1 :: blocked_unknown_label=1\nvext PASS v08_only_person_mapped :: mapped=1\nvext PASS v09_unknown_no_alarm :: alarms=0\nvext PASS v10_repeat_unknown_still_blocked_per_call :: per-call counter not accumulated\nvext PASS v11_fi_ai_12_counter_visible_in_detail :: in=2 mapped=1 candidates=1 unknown=1 no_track=0\nvext PASS v12_blocked_not_allowed_distinct_counter :: SEMANTIC_ALL_BLOCKED\nvext PASS v13_json_no_raw_ctrl_note :: 信息性: selftest 无控制字符源\nvext PASS v14_json_pending_human_visual_present :: pending 面保留\nvext PASS v15_single_gate_cross_camera_same_seq_dup :: ok_a=1 ok_b=0 rej=duplicate_seq\nvext PASS v16_unavailable_still_queued :: accepted=2 reason=AI_UNAVAILABLE\nvext PASS v17_distance_default_invalid :: meters=-1.000000\nvext PASS v18_debug_unknown_dash_regression :: —\nvext RESULT pass=18 fail=0\nVEXT_RUN_EXIT=0\n"
+    },
+    {
+      "step": "vext1_build",
+      "cmd": "cd /tmp/railhmi_vision_item013_verify-20261021-item013-v2/app && g++ -std=c++17 -I src/core/include verify_item013_vext.cpp build-core/src/core/librailhmi_core.a -o vext1; echo VEXT1_BUILD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 1.6,
+      "output": "VEXT1_BUILD_EXIT=0\n"
+    },
+    {
+      "step": "vext1_run",
+      "cmd": "cd /tmp/railhmi_vision_item013_verify-20261021-item013-v2/app && ./vext1; echo VEXT1_RUN_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": "vext FAIL v01_delivered_selftest_16_pass :: total=17 failed=0\nvext FAIL v02_selftest_fi_ai_12_not_in_requirements :: FI-AI-10 present=1 FI-AI-12 present=1\nvext FAIL v03_selftest_json_no_fi_ai_12 :: JSON 也无 FI-AI-12(与头注释声称矛盾)\nvext PASS v04_sem_result_ok :: SEMANTIC_OK\nvext PASS v05_fi_ai_12_blocked_unknown_1 :: blocked_unknown_label=1\nvext PASS v06_only_person_mapped :: mapped=1\nvext PASS v07_unknown_no_alarm :: alarms=0\nvext PASS v08_repeat_unknown_still_blocked_per_call :: per-call counter not accumulated\nvext PASS v09_fi_ai_12_counter_visible_in_detail :: in=2 mapped=1 candidates=1 unknown=1 no_track=0\nvext PASS v10_blocked_not_allowed_distinct_counter :: SEMANTIC_ALL_BLOCKED\nvext PASS v11_json_no_raw_ctrl_note :: 信息性: selftest 无控制字符源\nvext PASS v12_json_pending_human_visual_present :: pending 面保留\nvext PASS v13_single_gate_cross_camera_same_seq_dup :: ok_a=1 ok_b=0 rej=duplicate_seq\nvext PASS v14_unavailable_still_queued :: accepted=2 reason=AI_UNAVAILABLE\nvext PASS v15_distance_default_invalid :: meters=-1.000000\nvext PASS v16_debug_unknown_dash_regression :: —\nvext RESULT pass=13 fail=3\nVEXT1_RUN_EXIT=1\n"
+    },
+    {
+      "step": "vneg",
+      "exit": 8,
+      "output": "v1 fixture should FAIL on fixed tree"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[env] exit=0 g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+[mkdir] exit=0 ok
+[upload-app] exit=0 uploaded 340 files
+[upload-model] exit=0 yolov8s-seg.rknn
+[upload-model] exit=0 yolov5s.rknn
+[build-core] exit=0 BUILD_CORE_EXIT=0
+[build-media] exit=0 BUILD_MEDIA_EXIT=0
+[core-tests] exit=0 TEST_EXIT=0
+[selftest-det1] exit=0 DET1_EXIT=0
+[selftest-det2] exit=0 DET2_EXIT=0
+[selftest-sha256] exit=0 9bfbd80709a52c0e50452d0fc68b491bae8b3829d2ccf1671c603dc41bdee3c4  item013-selftest-det2-verify-20261021-item013-v2.json
+[selftest-archive] exit=0 SELF_EXIT=0
+[selftest-list] exit=0 LIST_EXIT=0
+[media-selftest] exit=0 E RKNN: [07:25:38.660] rknn_init, load model failed!
+[download] exit=0 vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-core-tests-verify-20261021-item013-v2.xml
+[download] exit=0 vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-det1-verify-20261021-item013-v2.log
+[download] exit=0 vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-det2-verify-20261021-item013-v2.log
+[download] exit=0 vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-verify-20261021-item013-v2.log
+[download] exit=0 vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-list-verify-20261021-item013-v2.txt
+[download] exit=0 vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-det1-verify-20261021-item013-v2.json
+[download] exit=0 vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-det2-verify-20261021-item013-v2.json
+[download] exit=0 vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-verify-20261021-item013-v2.json
+[download] exit=0 vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-media-selftest-verify-20261021-item013-v2.log
+[download] exit=0 vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-media-selftest-verify-20261021-item013-v2.json
+transcript: E:\work\rail_issue\rk3588_handover\docs\vision\test_evidence\ITEM-013\vision-item013-192_168_0_103-verify-20261021-item013-v2.transcript.json
+log: E:\work\rail_issue\rk3588_handover\docs\vision\test_evidence\ITEM-013\vision-item013-192_168_0_103-verify-20261021-item013-v2.log
+downloads: 10
+
+--- stderr ---

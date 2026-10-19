@@ -2972,10 +2972,15 @@ docs/vision/test_evidence/ITEM-012/vision-item012-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-012/vision-item012-192_168_0_103-verify-20261019-item012-v1.log | active | ITEM-012 验证 fresh 轮人类可读日志（15 步全 0：build/core-tests/selftest/6 fixtures/3 config/media/chain；保留树）
 docs/vision/test_evidence/ITEM-012/vision-item012-192_168_0_103-verify-20261019-item012-v1.transcript.json | active | ITEM-012 验证 fresh 轮 transcript（指纹/逐命令退出码/19 份下载/keep-remote）
 docs/vision/test_evidence/ITEM-013/ITEM-013-EVIDENCE.md | active | 视觉推理 ITEM-013 板端证据（core 1445/0、自检 16/16、确定性 sha256 一致、关键数值、pending 四项、SELFTEST 归档、返工留痕、覆盖边界）（r3：修复 D-01 后 17/17；含 FI-AI-12 判例与验证观察项）
-docs/vision/test_evidence/ITEM-013/VERIFY-ITEM-013.md | active | ITEM-013 验证独立验证报告（V-RUN/V-CMP/V-EXT/D-01 呈证）
-docs/vision/test_evidence/ITEM-013/verify-item013-vext-v1.log | active | ITEM-013 验证 vext 夹具板端运行日志（16/16）
+docs/vision/test_evidence/ITEM-013/VERIFY-ITEM-013.md | active | ITEM-013 验证独立验证报告（v2 复核轮：D-01 修复复核 TEST_PASS——V-RUN fresh 复跑 17/17 + core 1452/0、确定性 sha256 9bfbd807 与 impl r3 恒等、V-EXT v2 呈证协议翻转 18/18、V-NEG 反转取证 v1 夹具 fail=3、V-CMP fresh 41/41/dry-run 39/39；pending 四项如实标注）
+docs/vision/test_evidence/ITEM-013/verify-item013-vext-v1-replay.log | active | ITEM-013 v2 复核轮反转取证日志（v1 夹具在修复树 r3 上 v01/v02/v03 FAIL + RESULT fail=3 + VEXT1_RUN_EXIT=1）
+docs/vision/test_evidence/ITEM-013/verify-item013-vext-v1.log | active | ITEM-013 验证 vext 夹具板端运行日志（v1 轮 16/16 呈证；v2 轮中该夹具逐字节复用作反转取证，replay 见 verify-item013-vext-v1-replay.log）
+docs/vision/test_evidence/ITEM-013/verify-item013-vext-v2.log | active | ITEM-013 v2 复核轮 vext 夹具板端运行日志（18/18，呈证判例翻转后全绿）
 docs/vision/test_evidence/ITEM-013/verify_item013_cmp.py | active | ITEM-013 验证独立解析口径（28 判据）
-docs/vision/test_evidence/ITEM-013/verify_item013_vext.cpp | active | ITEM-013 验证自有夹具（FI-AI-12 呈证 + 机制在位证明，板端直编）
+docs/vision/test_evidence/ITEM-013/verify_item013_cmp_v2.py | active | ITEM-013 v2 复核轮独立解析口径（41 判据 fresh + dry-run 对 impl r3 归档 39/39 非空转；17 判例输出面 + 六 FI requirement 矩阵）
+docs/vision/test_evidence/ITEM-013/verify_item013_driver_v2.py | active | ITEM-013 v2 复核轮验证驱动（V-RUN + 归档 + V-EXT 板端直编 + V-NEG 反转 + 全绿才清理；含驱动退出码判据缺陷留痕）
+docs/vision/test_evidence/ITEM-013/verify_item013_vext.cpp | active | ITEM-013 验证自有夹具（FI-AI-12 呈证 + 机制在位证明，板端直编；v2 轮逐字节复用作反转取证 = 修复树上 fail=3）
+docs/vision/test_evidence/ITEM-013/verify_item013_vext_v2.cpp | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r1.app_core-evidence_item013-selftest-20261021-item013-r1.log | active | ITEM-013 r1 留痕（自检 3 项失败：reason 断言 + 分割夹具 DFL 通道错误）
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r1.app_core-evidence_item013-selftest-det1-20261021-item013-r1.log | active | ITEM-013 r1 留痕（自检 3 项失败：reason 断言 + 分割夹具 DFL 通道错误）
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-20261021-item013-r1.app_core-evidence_item013-selftest-det2-20261021-item013-r1.log | active | ITEM-013 r1 留痕（自检 3 项失败：reason 断言 + 分割夹具 DFL 通道错误）
@@ -3016,12 +3021,28 @@ docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v1.app_core-evidence_item013-selftest-verify-20261021-item013-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v1.log | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v1.transcript.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-core-tests-verify-20261021-item013-v2.xml | active | ITEM-013 v2 复核轮 fresh JUnit（tests=1452 failures=0，含 selftest_covers_FI-AI-12）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-media-selftest-verify-20261021-item013-v2.json | active | ITEM-013 v2 复核轮 media 自检 JSON（failures=0）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-media-selftest-verify-20261021-item013-v2.log | active | ITEM-013 v2 复核轮 media 自检日志（RESULT: PASS）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-det1-verify-20261021-item013-v2.json | active | ITEM-013 v2 复核轮确定性自检 JSON 1（sha256 9bfbd807…，与 impl r3 逐字节恒等）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-det1-verify-20261021-item013-v2.log | active | ITEM-013 v2 复核轮确定性自检日志 1（17/17）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-det2-verify-20261021-item013-v2.json | active | ITEM-013 v2 复核轮确定性自检 JSON 2（与 det1/impl r3 恒等）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-det2-verify-20261021-item013-v2.log | active | ITEM-013 v2 复核轮确定性自检日志 2（17/17）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-list-verify-20261021-item013-v2.txt | active | ITEM-013 v2 复核轮 --list（17 id 与 JSON cases 顺序恒等）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-verify-20261021-item013-v2.json | active | ITEM-013 v2 复核轮归档自检 JSON（summary 17/17/0 + FI-AI-12 在位 + pending 4）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.app_core-evidence_item013-selftest-verify-20261021-item013-v2.log | active | ITEM-013 v2 复核轮归档自检 verbose 日志（17/17 PASS + pending）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.driver.log | active | ITEM-013 v2 复核轮驱动 stdout/stderr 留痕（V-RUN/归档/V-EXT/V-NEG 命令面）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.driver.transcript.json | active | ITEM-013 v2 复核轮驱动 transcript（指纹/步退出码/夹具编译运行；注：vneg final 步记录的 exit=8 为驱动自身退出码判据缺陷，业务判定以 replay 日志为准）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.log | active | ITEM-013 v2 复核轮交付 runner fresh 日志（全步 *_EXIT=0 + 下载 10 件）
+docs/vision/test_evidence/ITEM-013/vision-item013-192_168_0_103-verify-20261021-item013-v2.transcript.json | active | ITEM-013 v2 复核轮交付 runner transcript（指纹一致/keep-remote）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r2.deterministic.json | active | 视觉自检归档 JSON（确定性副本，无 timestamp；跨轮 sha256 比对用）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r2.json | active | 视觉自检归档 JSON（含 timestamp；16/16 PASS + pending 四项；测试设计 G13 归档位置）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r3.deterministic.json | active | 视觉自检归档 JSON（r3 确定性副本，无 timestamp；同版本跨轮 sha256 比对用）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r3.json | active | 视觉自检归档 JSON（r3，含 timestamp；17/17 PASS + FI-AI-12 + pending 四项）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261021-item013-v1.deterministic.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261021-item013-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
+docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261021-item013-v2.deterministic.json | active | ITEM-013 v2 复核轮 SELFTEST 归档确定性副本（与 impl r3 逐字节恒等）
+docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261021-item013-v2.json | active | ITEM-013 v2 复核轮 SELFTEST 归档 JSON（17/17，G13 要求位置）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

@@ -1,0 +1,18 @@
+vext FAIL v01_delivered_selftest_16_pass :: total=17 failed=0
+vext FAIL v02_selftest_fi_ai_12_not_in_requirements :: FI-AI-10 present=1 FI-AI-12 present=1
+vext FAIL v03_selftest_json_no_fi_ai_12 :: JSON 也无 FI-AI-12(与头注释声称矛盾)
+vext PASS v04_sem_result_ok :: SEMANTIC_OK
+vext PASS v05_fi_ai_12_blocked_unknown_1 :: blocked_unknown_label=1
+vext PASS v06_only_person_mapped :: mapped=1
+vext PASS v07_unknown_no_alarm :: alarms=0
+vext PASS v08_repeat_unknown_still_blocked_per_call :: per-call counter not accumulated
+vext PASS v09_fi_ai_12_counter_visible_in_detail :: in=2 mapped=1 candidates=1 unknown=1 no_track=0
+vext PASS v10_blocked_not_allowed_distinct_counter :: SEMANTIC_ALL_BLOCKED
+vext PASS v11_json_no_raw_ctrl_note :: 信息性: selftest 无控制字符源
+vext PASS v12_json_pending_human_visual_present :: pending 面保留
+vext PASS v13_single_gate_cross_camera_same_seq_dup :: ok_a=1 ok_b=0 rej=duplicate_seq
+vext PASS v14_unavailable_still_queued :: accepted=2 reason=AI_UNAVAILABLE
+vext PASS v15_distance_default_invalid :: meters=-1.000000
+vext PASS v16_debug_unknown_dash_regression :: —
+vext RESULT pass=13 fail=3
+VEXT1_RUN_EXIT=1
