@@ -2280,33 +2280,70 @@ docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.log | active | ITEM-003 验证独立复跑人类可读 transcript（--keep-remote；17 下载全 0）
 docs/vision/test_evidence/ITEM-003/vision-item003-192_168_0_103-verify-20261019-item003-v1.transcript.json | active | ITEM-003 验证独立复跑结构化 transcript（--keep-remote）
 docs/vision/test_evidence/ITEM-004/ITEM-004-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-004 实际正确性证据（夹具张量：13 输出解码/每框二值掩码/坐标对齐/阈值裁剪/NMS/形状不符 MODEL_MISMATCH/int8，core 1059/0）与未执行项
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-config-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-config-20261019-item004-r1.log | active | ITEM-004 配置阈值（r1：confidence_min=0.5；boxes=1 masks=1）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-core-tests-20261019-item004-r1.xml | active | ITEM-004 core 单测 JUnit（r1：tests=1059 failures=0）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badcount-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badcount-20261019-item004-r1.log | active | ITEM-004 badcount 夹具（r1：tensor count=12 expected=13 → MODEL_MISMATCH）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badfmt-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badfmt-20261019-item004-r1.log | active | ITEM-004 badfmt 夹具（r1：非 NCHW → MODEL_MISMATCH）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badproto-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badproto-20261019-item004-r1.log | active | ITEM-004 badproto 夹具（r1：proto 32x80x160 → MODEL_MISMATCH）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badsegshape-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badsegshape-20261019-item004-r1.log | active | ITEM-004 badsegshape 夹具（r1：seg channels=16 expected=32 → MODEL_MISMATCH）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-empty-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-empty-20261019-item004-r1.log | active | ITEM-004 empty 夹具（r1：SEG_EMPTY boxes=0 masks=0）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-int8-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-int8-20261019-item004-r1.log | active | ITEM-004 int8 夹具（r1：boxes=1 masks=1 positive=7040 px(600,240)=1）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-nms-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-nms-20261019-item004-r1.log | active | ITEM-004 nms 夹具（r1：boxes=1 masks=1 nms_suppressed=1）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-nocrop-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-nocrop-20261019-item004-r1.log | active | ITEM-004 nocrop 夹具（r1：crop_to_box=false，positive=460800）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-rail-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-rail-20261019-item004-r1.log | active | ITEM-004 rail 夹具（r1：xywh=(0.45625,0.19999,0.10001,0.17779) score=0.9；mask 1280x720 stride=1280 positive=7040）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-zero_coeff-20261019-item004-r1.json | active | 同上 JSON
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-zero_coeff-20261019-item004-r1.log | active | ITEM-004 zero_coeff 夹具（r1：框保留、掩码全 0）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-selftest-20261019-item004-r1.json | active | ITEM-004 夹具自检 JSON（r1）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-selftest-20261019-item004-r1.log | active | ITEM-004 夹具自检文本（r1：22 判例 RESULT PASS failures=0）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.log | active | ITEM-004 板端执行人类可读 transcript（r1）
-docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.transcript.json | active | ITEM-004 板端执行结构化 transcript（r1：命令/退出码/输出/主机指纹）
+docs/vision/test_evidence/ITEM-004/VERIFY-ITEM-004.md | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/verify/_append_manifest.py | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/verify/_oracle_calc.py | active | ITEM-004 验证侧数字预言独立推导脚本
+docs/vision/test_evidence/ITEM-004/verify/item004-compare-verify-20261019-item004-v1.json | active | ITEM-004 比对 oracle 结果归档 47/47
+docs/vision/test_evidence/ITEM-004/verify/verify_item004_compare.py | active | ITEM-004 独立解析比对 oracle（47 判据）
+docs/vision/test_evidence/ITEM-004/verify/verify_item004_run.py | active | ITEM-004 验证独立复跑驱动（调用交付入口 board_vision_seg.py）
+docs/vision/test_evidence/ITEM-004/verify/verify_item004_vext.py | active | ITEM-004 vext 板端驱动（g++ 直编 + 负例 + 确定性 + 泄漏 + 清理）
+docs/vision/test_evidence/ITEM-004/verify/vext_item004.cpp | active | ITEM-004 验证自有扩展夹具（24 唯一名判例）
+docs/vision/test_evidence/ITEM-004/vext-item004-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vext-item004-verify-20261019-item004-v1.stdout.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-config-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-config-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-core-tests-20261019-item004-r1.xml | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badcount-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badcount-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badfmt-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badfmt-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badproto-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badproto-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badsegshape-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-badsegshape-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-empty-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-empty-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-int8-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-int8-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-nms-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-nms-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-nocrop-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-nocrop-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-rail-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-rail-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-zero_coeff-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-fixture-zero_coeff-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-selftest-20261019-item004-r1.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.app_core-evidence_item004-selftest-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.log | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-20261019-item004-r1.transcript.json | active | ITEM-004 验证独立复跑产物
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-config-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 config JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-config-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 config 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-core-tests-verify-20261019-item004-v1.xml | active | ITEM-004 验证独立复跑 core-tests JUnit XML
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-badcount-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 fixture-badcount JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-badcount-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 fixture-badcount 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-badfmt-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 fixture-badfmt JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-badfmt-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 fixture-badfmt 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-badproto-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 fixture-badproto JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-badproto-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 fixture-badproto 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-badsegshape-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 fixture-badsegshape JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-badsegshape-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 fixture-badsegshape 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-empty-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 fixture-empty JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-empty-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 fixture-empty 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-int8-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 fixture-int8 JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-int8-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 fixture-int8 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-nms-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 fixture-nms JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-nms-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 fixture-nms 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-nocrop-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 fixture-nocrop JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-nocrop-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 fixture-nocrop 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-rail-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 fixture-rail JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-rail-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 fixture-rail 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-zero_coeff-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 fixture-zero_coeff JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-fixture-zero_coeff-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 fixture-zero_coeff 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-selftest-verify-20261019-item004-v1.json | active | ITEM-004 验证独立复跑 selftest JSON
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.app_core-evidence_item004-selftest-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑 selftest 日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.log | active | ITEM-004 验证独立复跑总日志
+docs/vision/test_evidence/ITEM-004/vision-item004-192_168_0_103-verify-20261019-item004-v1.transcript.json | active | ITEM-004 验证独立复跑 transcript
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

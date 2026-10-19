@@ -1,0 +1,23 @@
+[PASS] rail decode ok
+[PASS] box<->mask one-to-one :: type=seg ok=1 reason=SEG_OK boxes=1 masks=1 candidates=1 dropped_score=8399 dropped_class=0 nms_suppressed=0 dropped_bounds=0 truncated=0
+[PASS] box normalized coords :: 0.456246,0.199992,0.100009,0.177793
+[PASS] score/class/label
+[PASS] mask dims/stride/size = original :: boxes=1 masks=1 mask=1280x720 stride=1280 size=921600 positive=7040 px(-1,-1)=-1
+[PASS] mask binary + has positives :: boxes=1 masks=1 mask=1280x720 stride=1280 size=921600 positive=7040 px(-1,-1)=-1
+[PASS] mask positive inside box (left half) :: boxes=1 masks=1 mask=1280x720 stride=1280 size=921600 positive=7040 px(600,240)=1
+[PASS] mask zero inside box (right half) :: boxes=1 masks=1 mask=1280x720 stride=1280 size=921600 positive=7040 px(680,240)=0
+[PASS] mask zero outside box :: boxes=1 masks=1 mask=1280x720 stride=1280 size=921600 positive=7040 px(400,240)=0
+[PASS] zero coefficients -> all-zero mask, box kept :: boxes=1 masks=1 mask=1280x720 stride=1280 size=921600 positive=0 px(-1,-1)=-1
+[PASS] mask_threshold configurable :: boxes=1 masks=1 mask=1280x720 stride=1280 size=921600 positive=0 px(-1,-1)=-1
+[PASS] crop_to_box configurable :: boxes=1 masks=1 mask=1280x720 stride=1280 size=921600 positive=460800 px(-1,-1)=-1
+[PASS] empty -> SEG_EMPTY
+[PASS] nms keeps 1 (mask follows) :: type=seg ok=1 reason=SEG_OK boxes=1 masks=1 candidates=2 dropped_score=8398 dropped_class=0 nms_suppressed=1 dropped_bounds=0 truncated=0
+[PASS] 12 tensors -> MODEL_MISMATCH :: MODEL_MISMATCH: tensor count=12 expected=13
+[PASS] bad seg channels -> MODEL_MISMATCH :: MODEL_MISMATCH: branch[0].seg channels=16 expected=32
+[PASS] bad proto shape -> MODEL_MISMATCH :: MODEL_MISMATCH: proto shape 32x80x160 expected 32x160x160
+[PASS] non-NCHW -> MODEL_MISMATCH :: MODEL_MISMATCH: branch[0].unsupported fmt (expect nchw)
+[PASS] box channels not 4*dfl -> MODEL_MISMATCH :: MODEL_MISMATCH: branch[0].box channels=63 not 4*dfl
+[PASS] int8 decode + mask :: boxes=1 masks=1 mask=1280x720 stride=1280 size=921600 positive=7040 px(-1,-1)=-1
+[PASS] int8 box within quant tol
+[PASS] int8 mask aligned
+RESULT: PASS failures=0

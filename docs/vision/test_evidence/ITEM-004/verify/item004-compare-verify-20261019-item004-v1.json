@@ -1,0 +1,242 @@
+{
+  "stamp": "verify-20261019-item004-v1",
+  "passed": 47,
+  "total": 47,
+  "records": [
+    {
+      "ok": true,
+      "name": "T1_build-core_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_core-tests_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_selftest_exit_00",
+      "detail": "tokens=[0, 0] transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-rail_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-zero_coeff_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-nocrop_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-nms_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-empty_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-badcount_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-badsegshape_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-badproto_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-badfmt_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_fixture-int8_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_config_exit0",
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_keep_remote_no_cleanup",
+      "detail": "cleanup_steps=0"
+    },
+    {
+      "ok": true,
+      "name": "T1_host_fingerprint_expected",
+      "detail": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "ok": true,
+      "name": "T1_upload_app_reported",
+      "detail": "uploaded 287 files"
+    },
+    {
+      "ok": true,
+      "name": "T1_25_downloads_ok",
+      "detail": "25"
+    },
+    {
+      "ok": true,
+      "name": "T2_selftest_pass_count_from_source",
+      "detail": "board=22 source=22"
+    },
+    {
+      "ok": true,
+      "name": "T2_selftest_result_line",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T2_selftest_judgement_names_present",
+      "detail": "missing=[]"
+    },
+    {
+      "ok": true,
+      "name": "T2_selftest_identical_to_impl_r1",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3a_letterbox_independent_math",
+      "detail": "{'scale': 0.5, 'pad_x': 0.0, 'pad_y': 140.0}"
+    },
+    {
+      "ok": true,
+      "name": "T3b_rail_fixture_independent_xywh",
+      "detail": "(0.45625, 0.2, 0.1, 0.17777777777777778)"
+    },
+    {
+      "ok": true,
+      "name": "T3c_rail_type_seg_row_indep",
+      "detail": "{'ok': '1', 'reason': 'SEG_OK', 'boxes': '1', 'masks': '1', 'candidates': '1', 'dropped_score': '8399', 'dropped_class': '0', 'nms_suppressed': '0', 'dropped_bounds': '0', 'truncated': '0'}"
+    },
+    {
+      "ok": true,
+      "name": "T3d_rail_box_line_xywh",
+      "detail": "[('0', '0.45625', '0.19999', '0.10001', '0.17779', '0.9000', '0', 'rail')]"
+    },
+    {
+      "ok": true,
+      "name": "T3e_rail_mask_row_indep",
+      "detail": "{'boxes': '1', 'masks': '1', 'mask': '1280x720', 'stride': '1280', 'size': '921600', 'positive': '7040', 'px(600,240)': '1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3f_rail_closed_form_count",
+      "detail": "128*55=7040"
+    },
+    {
+      "ok": true,
+      "name": "T3g_zero_coeff_mask_zero_box_kept",
+      "detail": "{'boxes': '1', 'masks': '1', 'mask': '1280x720', 'stride': '1280', 'size': '921600', 'positive': '0', 'px(600,240)': '0'}"
+    },
+    {
+      "ok": true,
+      "name": "T3h_nocrop_closed_form_720x640",
+      "detail": "{'boxes': '1', 'masks': '1', 'mask': '1280x720', 'stride': '1280', 'size': '921600', 'positive': '460800', 'px(600,240)': '1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3i_nms_row",
+      "detail": "{'ok': '1', 'reason': 'SEG_OK', 'boxes': '1', 'masks': '1', 'candidates': '2', 'dropped_score': '8398', 'dropped_class': '0', 'nms_suppressed': '1', 'dropped_bounds': '0', 'truncated': '0'}"
+    },
+    {
+      "ok": true,
+      "name": "T3j_nms_iou_indep_above_threshold",
+      "detail": "indep IoU=0.7808219178082192"
+    },
+    {
+      "ok": true,
+      "name": "T3k_empty_seg_empty",
+      "detail": "{'ok': '1', 'reason': 'SEG_EMPTY', 'boxes': '0', 'masks': '0', 'candidates': '0', 'dropped_score': '8400', 'dropped_class': '0', 'nms_suppressed': '0', 'dropped_bounds': '0', 'truncated': '0'}"
+    },
+    {
+      "ok": true,
+      "name": "T3l_mismatch_badcount_exact_err",
+      "detail": "MODEL_MISMATCH: tensor count=12 expected=13"
+    },
+    {
+      "ok": true,
+      "name": "T3l_mismatch_badsegshape_exact_err",
+      "detail": "MODEL_MISMATCH: branch[0].seg channels=16 expected=32"
+    },
+    {
+      "ok": true,
+      "name": "T3l_mismatch_badproto_exact_err",
+      "detail": "MODEL_MISMATCH: proto shape 32x80x160 expected 32x160x160"
+    },
+    {
+      "ok": true,
+      "name": "T3l_mismatch_badfmt_exact_err",
+      "detail": "MODEL_MISMATCH: branch[0].unsupported fmt (expect nchw)"
+    },
+    {
+      "ok": true,
+      "name": "T3m_box63_mismatch_in_selftest",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "name": "T3n_int8_0.1_scale_quant_path",
+      "detail": "{'boxes': '1', 'masks': '1', 'mask': '1280x720', 'stride': '1280', 'size': '921600', 'positive': '7040', 'px(600,240)': '1'}"
+    },
+    {
+      "ok": true,
+      "name": "T3n1_float32_0.9_representable",
+      "detail": "0.8999999761581421"
+    },
+    {
+      "ok": true,
+      "name": "T4_config_thresholds_from_yaml_source",
+      "detail": "type=config dir=./config confidence_min=0.500000 score_used=0.500000 mask_threshold=0.000000 (from thresholds.confidence"
+    },
+    {
+      "ok": "<re.Match object; span=(123, 142), match='confidence_min: 0.5'>",
+      "name": "T4b_thresholds_yaml_value_source",
+      "detail": "# railhmi 阈值配置（多帧确认/危险区/抑制/冻结重连/录像片段）\nthresholds:\n  confirm_frames: 3\n  confirm_window_ms: 500\n  danger_proximity_m: 5.0\n  confidence_min: 0.5\n  suppress_window_ms: 3000\n  first_frame_timeout_ms: 5000"
+    },
+    {
+      "ok": true,
+      "name": "T5_junit_tests_1059_failures_0",
+      "detail": "tests=\"1059\" failures=\"0\""
+    },
+    {
+      "ok": true,
+      "name": "T5_junit_names_extracted_nonempty",
+      "detail": "fresh_names=1059"
+    },
+    {
+      "ok": true,
+      "name": "T5_junit_name_multiset_identical_fresh_vs_impl",
+      "detail": "fresh=1059 impl=1059 only_fresh=[] only_impl=[]"
+    },
+    {
+      "ok": true,
+      "name": "T5_seg_case_names_present_in_junit",
+      "detail": "missing=[] count_src=24"
+    },
+    {
+      "ok": true,
+      "name": "T6_no_credential_leak",
+      "detail": "[]"
+    }
+  ]
+}

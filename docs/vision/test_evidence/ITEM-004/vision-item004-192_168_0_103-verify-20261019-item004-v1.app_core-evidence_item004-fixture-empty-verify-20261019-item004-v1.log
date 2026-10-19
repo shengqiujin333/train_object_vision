@@ -1,0 +1,4 @@
+type=config score_threshold=0.250000 nms_iou=0.450000 mask_threshold=0.000000 crop_to_box=1 whitelist=[0]
+type=decoder ok=1 reason=SEG_EMPTY detail=no candidate above threshold
+type=seg ok=1 reason=SEG_EMPTY boxes=0 masks=0 candidates=0 dropped_score=8400 dropped_class=0 nms_suppressed=0 dropped_bounds=0 truncated=0
+RESULT: PASS
