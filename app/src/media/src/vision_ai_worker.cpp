@@ -234,6 +234,8 @@ int VisionAiWorker::step() {
         d.camera_id = lane->camera_id;
         d.profile = lane->profile;
         d.has_frame = router_.depth(lane->camera_id) > 0;
+        // ITEM-010：职责未就绪（无核验模型）的路不占路数预算，但仍以“不可用”语义消费/发布。
+        d.duty_ready = detector_ ? detector_->ready(lane->profile) : false;
         demand.push_back(d);
     }
 
@@ -242,17 +244,16 @@ int VisionAiWorker::step() {
 
     // 4) 推理（锁外）。每路每轮最多一次。
     int ran = 0;
-    for (const auto& cam : round.run) {
+    auto process_lane = [&](const std::string& cam) -> bool {
         Lane* lane = nullptr;
         for (auto& l : lanes_)
             if (l->camera_id == cam) lane = l.get();
-        if (!lane) continue;
+        if (!lane) return false;
         AiFrame frame;
-        if (!router_.pop(cam, &frame)) continue;
-        if (!frame.lease.valid()) continue;
+        if (!router_.pop(cam, &frame)) return false;
+        if (!frame.lease.valid()) return false;
 
         VisionInferOutcome out = detector_->infer(frame, lane->profile);  // 不持 mu_
-        ++ran;
 
         // 4a) 跟踪（工作线程独占；不可用帧只推进 misses，不伪造 id）。
         const long long ts_ms = mono_us() / 1000;
@@ -307,7 +308,16 @@ int VisionAiWorker::step() {
             if (!out.available) ++infer_errors_;
             (void)drained_n;
         }
-    }
+        return true;
+    };
+
+    // 4d) 预算内路：正常推理。
+    for (const auto& cam : round.run)
+        if (process_lane(cam)) ++ran;
+
+    // 4e) 职责不可用路（ITEM-010）：不占路数预算，仍消费一帧以保持
+    //     “unavailable + reason + 空框”语义与队列有界（这些路不触发 NPU 计算）。
+    for (const auto& cam : round.unavailable) process_lane(cam);
 
     // 5) 本轮决策与温度入账。
     {

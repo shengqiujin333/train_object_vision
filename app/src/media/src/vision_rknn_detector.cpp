@@ -66,6 +66,17 @@ std::string dtype_name(railhmi::core::TensorType t) {
 
 }  // namespace
 
+struct RknnVisionDetector::DutyRuntime {
+    railhmi::core::DutyKind kind = railhmi::core::DutyKind::Pantograph;
+    std::unique_ptr<railhmi::core::DutyAdapter> adapter;
+    railhmi::core::DutyDeclaration decl;
+    std::unique_ptr<RknnSession> session;
+    std::unique_ptr<FramePreprocessor> pre;
+    uint32_t input_type = 0;
+    std::string path;
+    bool io_ready = false;
+};
+
 struct RknnVisionDetector::Model {
     railhmi::core::VisionModelKind kind = railhmi::core::VisionModelKind::Unknown;
     railhmi::core::DeclaredModel decl;
@@ -141,8 +152,130 @@ bool RknnVisionDetector::load(std::string* err) {
     } else {
         load_error_ += "seg:no declared yolov8-seg model in config;";
     }
+    load_duties();   // ITEM-010：三职责可用性语义（unknown 为缺省）
     if (err) *err = load_error_;
     return ready(railhmi::core::AiProfile::Front);
+}
+
+
+// 职责可用性（ITEM-010）：无声明 -> PROFILE_UNSUPPORTED；声明 + 专用模型描述核验通过 -> READY。
+// 配置登记只记录为身份，不参与 available 判定；不可用时状态恒为 unknown。
+void RknnVisionDetector::load_duties() {
+    const railhmi::core::DutyKind all[] = {railhmi::core::DutyKind::Pantograph,
+                                          railhmi::core::DutyKind::WheelRail,
+                                          railhmi::core::DutyKind::CabDoor};
+    for (auto kind : all) {
+        auto rt = std::unique_ptr<DutyRuntime>(new DutyRuntime());
+        rt->kind = kind;
+        rt->adapter.reset(new railhmi::core::DutyAdapter(kind));
+
+        // 1) 配置登记（仅身份记录；配置登记不是能力证据）。
+        const railhmi::core::AiProfile prof = railhmi::core::profile_of_duty(kind);
+        for (const auto& d : cfg_.declared) {
+            if (d.profile == prof) {
+                rt->adapter->set_config_registration(true, d.name);
+                break;
+            }
+        }
+
+        // 2) 能力声明（来自配置/CLI）。
+        for (const auto& decl : cfg_.duty_declarations) {
+            if (decl.duty == kind) {
+                rt->decl = decl;
+                rt->adapter->set_declaration(decl);
+                break;
+            }
+        }
+
+        // 3) 专用模型（可选）：打开取描述，交 core 逐项核验。
+        for (const auto& kv : cfg_.duty_model_paths) {
+            if (kv.first != kind) continue;   // 每个职责只认自己的模型路径
+            rt->path = kv.second;
+            rt->session.reset(new RknnSession());
+            railhmi::core::ModelDescriptor desc;
+            std::string err;
+            if (!rt->session->open(rt->path, &desc, &err)) {
+                if (desc.load_status.empty()) desc.load_status = "MODEL_LOAD_FAILED";
+                rt->adapter->set_descriptor(desc);
+                break;
+            }
+            rt->adapter->set_descriptor(desc);
+            // 类分数模型的输入规格（与检测/分割同一预处理链路）。
+            if (!desc.inputs.empty()) {
+                int c = 0, h = 0, w = 0;
+                if (chw_of(desc.inputs[0], &c, &h, &w) && c == 3) {
+                    railhmi::core::PreprocessConfig pc;
+                    railhmi::core::InputTensorSpec is;
+                    is.dtype = desc.inputs[0].type;
+                    is.zero_point = desc.inputs[0].zp;
+                    is.scale = desc.inputs[0].scale;
+                    is.quantized = (desc.inputs[0].type == railhmi::core::TensorType::Int8 ||
+                                    desc.inputs[0].type == railhmi::core::TensorType::Uint8);
+                    railhmi::core::normalize_input_spec(&is);
+                    pc.input = is;
+                    pc.target_w = w;
+                    pc.target_h = h;
+                    pc.mean = 0.0;
+                    pc.std = 255.0;
+                    pc.convert_to_rgb = true;
+                    pc.pad_value = 114;
+                    FramePreprocessConfig pcfg;
+                    pcfg.core = pc;
+                    pcfg.prefer_rga_for_nv12 = cfg_.prefer_rga_for_nv12;
+                    rt->pre.reset(new FramePreprocessor(pcfg));
+                    rt->input_type = input_type_of(desc.inputs[0].type);
+                    rt->io_ready = (rt->input_type != 0xFFFFFFFFu);
+                }
+            }
+            break;
+        }
+
+        rt->adapter->evaluate();
+        duty_rt_[static_cast<int>(kind)] = std::move(rt);
+    }
+}
+
+// 类分数解码：第 i 个输出 -> 声明标签表中的第 i 个标签（顺序由声明固定）。
+bool RknnVisionDetector::run_duty(DutyRuntime& rt, const FrameLease& lease,
+                                  railhmi::core::DutyState* state, std::string* reason,
+                                  std::string* detail) {
+    auto fail = [&](const std::string& r, const std::string& d) {
+        if (reason) *reason = r;
+        if (detail) *detail = d;
+        return false;
+    };
+    if (!rt.adapter || !rt.adapter->availability().available) {
+        return fail(rt.adapter ? rt.adapter->availability().reason
+                               : railhmi::core::duty_reason::kProfileUnsupported(),
+                    rt.adapter ? rt.adapter->availability().detail : "no duty adapter");
+    }
+    if (!rt.pre || !rt.session || !rt.io_ready)
+        return fail(infer_reason::kInputMismatch(), "duty model has no usable input spec");
+    const LeasePreprocessResult pre = rt.pre->prepare(lease);
+    if (!pre.ok) {
+        ++counters_.preprocess_failed;
+        return fail(infer_reason::kPreprocessFailed(), pre.reason + " " + pre.detail);
+    }
+    std::vector<RknnOutputTensor> outs;
+    std::string err;
+    if (!rt.session->set_input(pre.input.data.data(), pre.input.data.size(), rt.input_type, &err) ||
+        !rt.session->run(&err) || !rt.session->get_outputs_float(&outs, &err)) {
+        ++counters_.infer_failed;
+        return fail(infer_reason::kInferFailed(), err);
+    }
+    std::vector<railhmi::core::DutyPrediction> preds;
+    preds.reserve(outs.size());
+    for (std::size_t i = 0; i < outs.size(); ++i) {
+        railhmi::core::DutyPrediction pr;
+        if (i < rt.decl.labels.size()) pr.label = rt.decl.labels[i].label;
+        pr.score = outs[i].buf ? *static_cast<const float*>(outs[i].buf) : 0.0f;
+        preds.push_back(pr);
+    }
+    const railhmi::core::DutyAvailability a = rt.adapter->apply(preds);
+    if (state) *state = a.state;
+    if (reason) *reason = railhmi::core::duty_reason::kReady();
+    if (detail) *detail = std::string("duty state=") + railhmi::core::to_string(a.state);
+    return true;
 }
 
 bool RknnVisionDetector::load_kind(railhmi::core::VisionModelKind kind,
@@ -235,6 +368,15 @@ const RknnVisionDetector::Model* RknnVisionDetector::model_for(
 }
 
 std::string RknnVisionDetector::model_version(railhmi::core::AiProfile p) const {
+    railhmi::core::DutyKind dk = railhmi::core::DutyKind::Pantograph;
+    if (railhmi::core::duty_of_profile(p, &dk)) {
+        auto it = duty_rt_.find(static_cast<int>(dk));
+        if (it == duty_rt_.end()) return std::string();
+        // 职责模型版本仅在“已声明并可核验”时展示；不可用时不高调宣称模型能力。
+        return it->second->adapter && it->second->adapter->availability().available
+                   ? it->second->decl.declared_model_name
+                   : std::string();
+    }
     const Model* det = model_for(railhmi::core::VisionModelKind::YoloV5Detect);
     const Model* seg = model_for(railhmi::core::VisionModelKind::YoloV8Seg);
     if (p == railhmi::core::AiProfile::Front) {
@@ -247,9 +389,12 @@ std::string RknnVisionDetector::model_version(railhmi::core::AiProfile p) const 
 }
 
 bool RknnVisionDetector::ready(railhmi::core::AiProfile p) const {
-    if (!railhmi::core::profile_accepts_kind(p, railhmi::core::VisionModelKind::YoloV5Detect) &&
-        !railhmi::core::profile_accepts_kind(p, railhmi::core::VisionModelKind::YoloV8Seg)) {
-        return false;  // 本轮无专用模型证据（wheel_rail/pantograph/cab_door）
+    // 职责（pantograph/wheel_rail/cab_door）：只有“声明能力 + 描述核验通过”才 ready（ITEM-010）。
+    railhmi::core::DutyKind dk = railhmi::core::DutyKind::Pantograph;
+    if (railhmi::core::duty_of_profile(p, &dk)) {
+        auto it = duty_rt_.find(static_cast<int>(dk));
+        if (it == duty_rt_.end() || !it->second->adapter) return false;
+        return it->second->adapter->availability().available && it->second->io_ready;
     }
     if (p != railhmi::core::AiProfile::Front) return false;
     const railhmi::core::ProfileRequirement req = railhmi::core::requirement_for_profile(p);
@@ -261,10 +406,17 @@ bool RknnVisionDetector::ready(railhmi::core::AiProfile p) const {
 }
 
 std::string RknnVisionDetector::unavailable_reason(railhmi::core::AiProfile p) const {
-    if (p != railhmi::core::AiProfile::Front) {
-        // 无专用模型证据：显式 UNSUPPORTED，不因配置登记了模型名就宣称具备能力。
-        return railhmi::core::vision_reason::kProfileUnsupported();
+    railhmi::core::DutyKind dk = railhmi::core::DutyKind::Pantograph;
+    if (railhmi::core::duty_of_profile(p, &dk)) {
+        auto it = duty_rt_.find(static_cast<int>(dk));
+        if (it == duty_rt_.end() || !it->second->adapter)
+            return railhmi::core::duty_reason::kProfileUnsupported();
+        const railhmi::core::DutyAvailability& a = it->second->adapter->availability();
+        if (a.available && !it->second->io_ready) return infer_reason::kInputMismatch();
+        return a.reason;
     }
+    if (p != railhmi::core::AiProfile::Front)
+        return railhmi::core::duty_reason::kProfileUnsupported();
     const railhmi::core::ProfileRequirement req = railhmi::core::requirement_for_profile(p);
     for (auto kind : req.required_kinds) {
         const Model* m = model_for(kind);
@@ -272,6 +424,27 @@ std::string RknnVisionDetector::unavailable_reason(railhmi::core::AiProfile p) c
         if (!m->ready) return m->reason.empty() ? railhmi::core::vision_reason::kNotReady() : m->reason;
     }
     return railhmi::core::vision_reason::kReady();
+}
+
+std::vector<railhmi::core::DutyStatusItem> RknnVisionDetector::duties() const {
+    std::vector<railhmi::core::DutyStatusItem> out;
+    const railhmi::core::DutyKind all[] = {railhmi::core::DutyKind::Pantograph,
+                                           railhmi::core::DutyKind::WheelRail,
+                                           railhmi::core::DutyKind::CabDoor};
+    for (auto kind : all) {
+        railhmi::core::DutyStatusItem it;
+        it.duty = kind;
+        it.profile = railhmi::core::profile_of_duty(kind);
+        auto found = duty_rt_.find(static_cast<int>(kind));
+        if (found != duty_rt_.end() && found->second->adapter) {
+            it.availability = found->second->adapter->availability();
+            it.stats = found->second->adapter->stats();
+        } else {
+            it.availability.duty = kind;
+        }
+        out.push_back(std::move(it));
+    }
+    return out;
 }
 
 bool RknnVisionDetector::run_model(Model& m, const FrameLease& lease,
@@ -464,6 +637,42 @@ VisionInferOutcome RknnVisionDetector::infer(const AiFrame& frame, railhmi::core
 
     if (!frame.lease.valid())
         return unavailable(railhmi::core::vision_reason::kNotReady(), "empty frame lease");
+
+    // 职责（pantograph/wheel_rail/cab_door，ITEM-010）：类分数解码 -> 声明标签 -> 状态。
+    // 职责状态不是检测框：envelope 仅表达可用性（ready + 空框），状态经 detector->duties() 发布；
+    // 不可用时恒 unknown 且不产生任何判定。
+    railhmi::core::DutyKind dk = railhmi::core::DutyKind::Pantograph;
+    if (railhmi::core::duty_of_profile(p, &dk)) {
+        auto it = duty_rt_.find(static_cast<int>(dk));
+        if (it == duty_rt_.end() || !it->second->adapter)
+            return unavailable(railhmi::core::duty_reason::kProfileUnsupported(),
+                               "no duty adapter");
+        if (!ready(p))
+            return unavailable(unavailable_reason(p),
+                               it->second->adapter->availability().detail);
+        railhmi::core::DutyState state = railhmi::core::DutyState::Unknown;
+        std::string reason;
+        std::string detail;
+        if (!run_duty(*it->second, frame.lease, &state, &reason, &detail))
+            return unavailable(reason, detail);
+        railhmi::core::EnvelopeBuildInput bin;
+        bin.frame = out.envelope.frame;
+        bin.profile = p;
+        bin.model_version = it->second->decl.declared_model_name;
+        bin.capture_mono_us = frame.capture_mono_us;
+        bin.result_mono_us = mono_us();
+        bin.detect_ready = true;
+        bin.requires_segmentation = false;
+        out.envelope = railhmi::core::build_envelope(bin);
+        out.available = out.envelope.ready();
+        out.reason = out.envelope.reason;
+        out.detail = detail;
+        out.infer_us = out.envelope.result_mono_us - t_start;
+        if (out.available) ++counters_.infer_ok;
+        else ++counters_.infer_unavailable;
+        return out;
+    }
+
     if (!ready(p))
         return unavailable(unavailable_reason(p), "profile has no verified model capability");
 
@@ -680,6 +889,8 @@ std::string RknnVisionDetector::status_json() const {
     o << ",\"last_det_us\":" << counters_.last_det_us;
     o << ",\"last_seg_us\":" << counters_.last_seg_us;
     o << "},\"danger_zone\":\"" << json_escape(two_stage_cfg_.danger_zone_source) << "\"";
+    // ITEM-010：三职责可用性语义（available/reason/state=unknown/evidence）与统计。
+    o << ",\"duty_status\":" << railhmi::core::duty_status_json(duties());
     o << "}";
     return o.str();
 }

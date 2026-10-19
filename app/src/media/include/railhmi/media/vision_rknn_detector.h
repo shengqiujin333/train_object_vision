@@ -22,6 +22,7 @@
 #include "railhmi/core/rules.h"                       // RoiConfig
 #include "railhmi/core/vision_detect_postprocess.h"   // DetectConfig/DetectResult
 #include "railhmi/core/vision_model_capability.h"     // DeclaredModel/CapabilityCheck
+#include "railhmi/core/vision_duty_capability.h"     // ITEM-010 职责可用性语义
 #include "railhmi/core/vision_seg_postprocess.h"      // SegConfig/SegResult
 #include "railhmi/core/vision_two_stage.h"            // TwoStageConfig/Result
 #include "railhmi/media/frame_preprocess.h"
@@ -50,6 +51,10 @@ struct RknnDetectorConfig {
     bool enable_danger_zone = true;
     bool prefer_rga_for_nv12 = true;
     railhmi::core::TwoStageCacheConfig two_stage_cache;   // 默认关闭（实时报警不用跨帧缓存）
+    // 职责专用模型声明（可选；由配置/CLI 提供，**不由文件名推断**）。
+    // 只有“声明能力 + 对应 .rknn 描述逐项核验通过”后该职责才 ready（视觉 ITEM-010）。
+    std::vector<railhmi::core::DutyDeclaration> duty_declarations;
+    std::vector<std::pair<railhmi::core::DutyKind, std::string>> duty_model_paths;
 };
 
 class RknnVisionDetector : public VisionDetector {
@@ -100,6 +105,8 @@ public:
 
     std::vector<ModelStatus> models() const;
     std::vector<ProfileStatus> profiles() const;
+    // 三职责可用性语义（pantograph/wheel_rail/cab_door；ITEM-010）。
+    std::vector<railhmi::core::DutyStatusItem> duties() const;
     std::string status_json() const;
 
     // 证据：最近一次推理的统计（每实例单线程使用）。
@@ -121,7 +128,11 @@ public:
 
 private:
     struct Model;
+    struct DutyRuntime;
 
+    void load_duties();
+    bool run_duty(DutyRuntime& d, const FrameLease& lease, railhmi::core::DutyState* state,
+                  std::string* reason, std::string* detail);
     bool load_kind(railhmi::core::VisionModelKind kind, const railhmi::core::DeclaredModel& decl,
                    std::string* err);
     Model* model_for(railhmi::core::VisionModelKind kind);
@@ -135,6 +146,7 @@ private:
 
     RknnDetectorConfig cfg_;
     std::map<railhmi::core::VisionModelKind, std::unique_ptr<Model>> models_;
+    std::map<int, std::unique_ptr<DutyRuntime>> duty_rt_;   // key = DutyKind 整数值
     std::string load_error_;
     bool loaded_ = false;
     Counters counters_;

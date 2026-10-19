@@ -1,0 +1,2 @@
+type=scenario name=config_only json={"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+RESULT: PASS failures=0

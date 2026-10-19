@@ -1,0 +1,5 @@
+type=declared duty=cab_door outputs=2 hw=640x640 labels=door_closed=closed,door_ajar=ajar
+type=evaluation json={"duty":"cab_door","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"yolov5s.rknn","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized"],"mismatched":["output_count3!=2"]}
+type=descriptor api=2.3.2 (429f97ae6b@2025-04-09T09:09:27) drv=0.9.8 in=1 out=3
+type=expect ok expect=unavailable available=false
+RESULT: PASS failures=0

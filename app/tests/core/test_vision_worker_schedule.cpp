@@ -239,6 +239,34 @@ void run_vision_worker_schedule_tests() {
               "sched_budget_zero_all_skipped", "budget=0 -> run=0 skipped=4");
     }
 
+    // ---- 职责不可用路不占预算（ITEM-010 对 ITEM-009 交接项的落地） ----
+    {
+        auto lanes = four_lanes();
+        lanes[1].duty_ready = false;   // wheel_rail：无核验模型
+        lanes[2].duty_ready = false;   // pantograph
+        lanes[3].duty_ready = false;   // cab_door
+        AiLaneScheduler sch(cfg_budget(1));
+        AiScheduleRound r = sch.plan(lanes, measured(50.0));
+        check(r.run.size() == 1 && r.run[0] == "CAM-01", "sched_unavailable_not_budgeted",
+              "budget=1 全用于就绪的 front");
+        check(r.unavailable.size() == 3 && count_in(r.unavailable, "CAM-05") == 1,
+              "sched_unavailable_listed", "三路不可用单独列出");
+        check(r.skipped.empty(), "sched_unavailable_not_skipped", "不可用不计入预算跳过");
+        check(sch.wait_rounds("CAM-05") == 0, "sched_unavailable_no_wait",
+              "不可用路不参与等待统计");
+        AiScheduleRound r2 = sch.plan(lanes, measured(50.0));
+        check(r2.run.size() == 1 && r2.run[0] == "CAM-01", "sched_unavailable_budget_stable",
+              "连续两轮都保持 front 独占预算");
+        check(schedule_round_json(r2).find("\"unavailable\":[\"CAM-05\"") != std::string::npos,
+              "sched_json_unavailable", "决策 JSON 含 unavailable");
+    }
+    {
+        AiLaneScheduler sch(cfg_budget(2));
+        AiScheduleRound r = sch.plan(four_lanes(), measured(50.0));
+        check(r.unavailable.empty() && r.run.size() == 2, "sched_all_ready_regression",
+              "duty_ready 缺省 true 时行为不变");
+    }
+
     // ---- 确定性：同输入序列 -> 同输出 ----
     {
         AiLaneScheduler a(cfg_budget(2));

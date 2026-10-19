@@ -81,6 +81,9 @@ struct AiLaneDemand {
     AiProfile profile = AiProfile::None;
     bool has_frame = false;      // 该路有界队列中有可推理帧
     std::uint64_t seq = 0;       // 将被消费的帧序号（证据用；0 = 无）
+    // 职责能力是否就绪（视觉 ITEM-010）：未就绪的职责不占用路数预算，
+    // 但仍会被工作线程以“不可用”语义消费/发布（不占 NPU）。
+    bool duty_ready = true;
 };
 
 // 一轮调度决策（可归档）。
@@ -89,6 +92,8 @@ struct AiScheduleRound {
     std::vector<std::string> run;        // 本轮推理的路（按公平顺序）
     std::vector<std::string> skipped;    // 有帧但本轮被预算/温度跳过
     std::vector<std::string> idle;       // 无帧或非 AI 职责
+    // 有帧但职责不可用（无核验模型）：不占预算，由工作线程以不可用语义消费（ITEM-010）。
+    std::vector<std::string> unavailable;
     std::vector<std::string> priority_order;  // plan_inference 的优先顺序（预算来源）
     bool temperature_guard = false;
     bool thermal_known = false;          // 温度未知时为 false（不得当作“凉”宣称）

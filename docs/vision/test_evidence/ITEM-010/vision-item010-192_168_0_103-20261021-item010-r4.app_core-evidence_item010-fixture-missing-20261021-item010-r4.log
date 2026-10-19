@@ -1,0 +1,2 @@
+type=scenario name=missing json={"duty":"wheel_rail","available":false,"reason":"MODEL_MISSING","detail":"declared duty model has no verified tensor descriptor","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"wheel-rail-2state","declared_model_name":"wheel-rail-2state","evidence_source":"declaration+descriptor","matched":["declaration"],"mismatched":[]}
+RESULT: PASS failures=0

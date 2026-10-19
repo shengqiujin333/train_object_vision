@@ -22,6 +22,7 @@ add_executable(railhmi-core-tests
     test_vision_semantic_adapter.cpp
     test_vision_tracker.cpp
     test_vision_worker_schedule.cpp
+    test_vision_duty_capability.cpp
     test_frame_identity.cpp
     test_frame_layout.cpp
     test_bounded_queue.cpp

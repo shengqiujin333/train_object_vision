@@ -1,0 +1,2230 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+remote_dir: /tmp/railhmi_vision_item010_20261021-item010-r4
+
+===== [env] exit=0 =====
+Linux 6.1.141 aarch64
+8
+g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+-rw-r--r-- 1 1007 1007 7726232 Feb 10  2026 /usr/lib/librknnrt.so
+
+
+===== [mkdir] exit=0 =====
+ok
+
+
+===== [upload-app] exit=0 =====
+uploaded 325 files
+
+===== [upload-model] exit=0 =====
+yolov8s-seg.rknn
+
+===== [upload-model] exit=0 =====
+yolov5s.rknn
+
+===== [build-core] exit=0 =====
+[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_vision_item010_20261021-item010-r4/app' -B '/tmp/railhmi_vision_item010_20261021-item010-r4/app/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = CoreTests
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_vision_item010_20261021-item010-r4/app/build-core
+[build.sh] building: cmake --build '/tmp/railhmi_vision_item010_20261021-item010-r4/app/build-core' -j8
+[  1%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[  1%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  1%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/video_diagnostics.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/compressed_ring.cpp.o
+[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_source.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_model_capability.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_preprocess.cpp.o
+[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_detect_postprocess.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_seg_postprocess.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_two_stage.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_inference_envelope.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_semantic_adapter.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_tracker.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_worker_schedule.cpp.o
+[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_duty_capability.cpp.o
+[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip_request.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_provider.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay_sync.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/maintenance.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/metrics.cpp.o
+[ 30%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o
+[ 31%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o
+[ 31%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery.cpp.o
+[ 32%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery_policy.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o
+[ 34%] Linking CXX static library librailhmi_core.a
+[ 34%] Built target railhmi_core
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-vision-seg.dir/tools/seg_probe.cpp.o
+[ 36%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-vision-detect.dir/tools/detect_probe.cpp.o
+[ 38%] Building CXX object src/core/CMakeFiles/railhmi-model-probe.dir/tools/model_probe.cpp.o
+[ 38%] Building CXX object src/core/CMakeFiles/railhmi-timebase-sync.dir/tools/timebase_sync_probe.cpp.o
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 40%] Linking CXX executable ../../tools/railhmi-config-check
+[ 40%] Built target railhmi-config-check
+[ 41%] Building CXX object src/core/CMakeFiles/railhmi-vision-twostage.dir/tools/two_stage_probe.cpp.o
+[ 42%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 42%] Built target railhmi-sim-inject
+[ 43%] Building CXX object src/core/CMakeFiles/railhmi-vision-envelope.dir/tools/envelope_probe.cpp.o
+[ 44%] Linking CXX executable ../../tools/railhmi-timebase-sync
+[ 44%] Built target railhmi-timebase-sync
+[ 45%] Building CXX object src/core/CMakeFiles/railhmi-vision-semantic.dir/tools/semantic_probe.cpp.o
+[ 45%] Linking CXX executable ../../tools/railhmi-model-probe
+[ 46%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 46%] Built target railhmi-model-probe
+[ 46%] Built target railhmi-status-probe
+[ 46%] Building CXX object src/core/CMakeFiles/railhmi-vision-duty.dir/tools/duty_probe.cpp.o
+[ 46%] Building CXX object src/core/CMakeFiles/railhmi-vision-tracking.dir/tools/tracking_probe.cpp.o
+[ 47%] Linking CXX executable ../../tools/railhmi-vision-detect
+[ 47%] Built target railhmi-vision-detect
+[ 48%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
+[ 49%] Linking CXX executable ../../tools/railhmi-vision-seg
+[ 50%] Linking CXX executable ../../tools/railhmi-ai-probe
+[ 50%] Built target railhmi-vision-seg
+[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 50%] Built target railhmi-ai-probe
+[ 51%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o
+[ 52%] Linking CXX executable ../../tools/railhmi-alarm-probe
+[ 53%] Linking CXX executable ../../tools/railhmi-vision-envelope
+[ 54%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 54%] Built target railhmi-alarm-probe
+[ 54%] Built target railhmi-vision-envelope
+[ 55%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 56%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o
+[ 57%] Linking CXX executable ../../tools/railhmi-vision-twostage
+[ 58%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 58%] Built target railhmi-vision-twostage
+[ 59%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
+[ 60%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
+[ 61%] Linking CXX executable ../../tools/railhmi-permissions-probe
+[ 61%] Built target railhmi-permissions-probe
+[ 62%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
+[ 62%] Linking CXX executable ../../tools/railhmi-health-probe
+[ 63%] Linking CXX executable ../../tools/railhmi-maintenance-probe
+[ 63%] Built target railhmi-health-probe
+[ 64%] Linking CXX executable ../../tools/railhmi-fault-probe
+[ 64%] Built target railhmi-fault-probe
+[ 64%] Built target railhmi-maintenance-probe
+[ 65%] Linking CXX executable ../../tools/railhmi-vision-duty
+[ 65%] Linking CXX executable ../../tools/railhmi-replay-probe
+[ 65%] Built target railhmi-vision-duty
+[ 65%] Built target railhmi-replay-probe
+[ 66%] Linking CXX static library librailhmi_platform.a
+[ 66%] Built target railhmi_platform
+[ 66%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+[ 67%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o
+[ 67%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o
+[ 68%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o
+[ 69%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_config.cpp.o
+[ 69%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_stream.cpp.o
+[ 70%] Linking CXX executable ../../tools/railhmi-vision-tracking
+[ 71%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_rules.cpp.o
+[ 72%] Linking CXX executable ../../tools/railhmi-vision-semantic
+[ 72%] Built target railhmi-vision-tracking
+[ 73%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_persistence.cpp.o
+[ 73%] Built target railhmi-vision-semantic
+[ 74%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_simulation.cpp.o
+[ 74%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_navigation.cpp.o
+[ 75%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_registry.cpp.o
+[ 76%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_layout.cpp.o
+[ 77%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_grid.cpp.o
+[ 77%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_status.cpp.o
+[ 78%] Linking CXX executable ../../tools/railhmi-clip-probe
+[ 78%] Built target railhmi-clip-probe
+[ 79%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_inference.cpp.o
+[ 80%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_model_capability.cpp.o
+[ 81%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_preprocess.cpp.o
+[ 81%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_detect_postprocess.cpp.o
+[ 82%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_seg_postprocess.cpp.o
+[ 83%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_two_stage.cpp.o
+[ 84%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_inference_envelope.cpp.o
+[ 84%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_semantic_adapter.cpp.o
+[ 85%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_tracker.cpp.o
+[ 86%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_worker_schedule.cpp.o
+[ 87%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_duty_capability.cpp.o
+[ 88%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_frame_identity.cpp.o
+[ 88%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_frame_layout.cpp.o
+[ 89%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_bounded_queue.cpp.o
+[ 90%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_compressed_ring.cpp.o
+[ 91%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_recording_source.cpp.o
+[ 91%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_clip_request.cpp.o
+[ 92%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_recording_provider.cpp.o
+[ 93%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_recovery_policy.cpp.o
+[ 94%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_replay_sync.cpp.o
+[ 94%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_video_diagnostics.cpp.o
+[ 95%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_metrics.cpp.o
+[ 96%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_alarm_center.cpp.o
+[ 97%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_clip.cpp.o
+[ 97%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_replay.cpp.o
+[ 98%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_maintenance.cpp.o
+[ 99%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_permissions.cpp.o
+[100%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_health.cpp.o
+[100%] Linking CXX executable ../railhmi-core-tests
+[100%] Built target railhmi-core-tests
+[build.sh] build OK (mode=core-tests); artifacts under /tmp/railhmi_vision_item010_20261021-item010-r4/app/build-core
+[build.sh] run: /tmp/railhmi_vision_item010_20261021-item010-r4/app/build-core/tests/railhmi-core-tests
+BUILD_CORE_EXIT=0
+
+
+===== [build-media] exit=0 =====
+[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_vision_item010_20261021-item010-r4/app' -B '/tmp/railhmi_vision_item010_20261021-item010-r4/app/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = MediaCheck
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'
+--   Found gstreamer-1.0, version 1.20.3
+--   Found gstreamer-app-1.0, version 1.20.1
+--   Found gstreamer-video-1.0, version 1.20.1
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_vision_item010_20261021-item010-r4/app/build-media
+[build.sh] building: cmake --build '/tmp/railhmi_vision_item010_20261021-item010-r4/app/build-media' -j8
+[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/video_diagnostics.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/compressed_ring.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_source.cpp.o
+[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_model_capability.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_preprocess.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_detect_postprocess.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_seg_postprocess.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_two_stage.cpp.o
+[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_inference_envelope.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_semantic_adapter.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_tracker.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_worker_schedule.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_duty_capability.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o
+[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip_request.cpp.o
+[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_provider.cpp.o
+[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay_sync.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/maintenance.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/metrics.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery_policy.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o
+[ 30%] Linking CXX static library librailhmi_core.a
+[ 30%] Built target railhmi_core
+[ 30%] Building CXX object src/core/CMakeFiles/railhmi-timebase-sync.dir/tools/timebase_sync_probe.cpp.o
+[ 31%] Building CXX object src/core/CMakeFiles/railhmi-vision-detect.dir/tools/detect_probe.cpp.o
+[ 32%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi-vision-seg.dir/tools/seg_probe.cpp.o
+[ 34%] Building CXX object src/core/CMakeFiles/railhmi-model-probe.dir/tools/model_probe.cpp.o
+[ 34%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 35%] Linking CXX executable ../../tools/railhmi-config-check
+[ 35%] Built target railhmi-config-check
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-vision-twostage.dir/tools/two_stage_probe.cpp.o
+[ 36%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 36%] Built target railhmi-sim-inject
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-vision-envelope.dir/tools/envelope_probe.cpp.o
+[ 37%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 38%] Linking CXX executable ../../tools/railhmi-timebase-sync
+[ 38%] Built target railhmi-timebase-sync
+[ 38%] Built target railhmi-status-probe
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-vision-semantic.dir/tools/semantic_probe.cpp.o
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-vision-duty.dir/tools/duty_probe.cpp.o
+[ 39%] Linking CXX executable ../../tools/railhmi-vision-seg
+[ 39%] Built target railhmi-vision-seg
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-vision-tracking.dir/tools/tracking_probe.cpp.o
+[ 39%] Linking CXX executable ../../tools/railhmi-model-probe
+[ 39%] Built target railhmi-model-probe
+[ 40%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
+[ 41%] Linking CXX executable ../../tools/railhmi-vision-twostage
+[ 41%] Built target railhmi-vision-twostage
+[ 42%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 43%] Linking CXX executable ../../tools/railhmi-ai-probe
+[ 44%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 44%] Linking CXX executable ../../tools/railhmi-vision-envelope
+[ 44%] Built target railhmi-ai-probe
+[ 44%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o
+[ 44%] Built target railhmi-vision-envelope
+[ 45%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o
+[ 45%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 46%] Linking CXX executable ../../tools/railhmi-alarm-probe
+[ 46%] Built target railhmi-alarm-probe
+[ 46%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
+[ 47%] Linking CXX executable ../../tools/railhmi-vision-detect
+[ 47%] Built target railhmi-vision-detect
+[ 47%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
+[ 48%] Linking CXX executable ../../tools/railhmi-permissions-probe
+[ 49%] Linking CXX executable ../../tools/railhmi-vision-duty
+[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 50%] Built target railhmi-permissions-probe
+[ 51%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
+[ 51%] Built target railhmi-vision-duty
+[ 51%] Linking CXX executable ../../tools/railhmi-maintenance-probe
+[ 51%] Built target railhmi-maintenance-probe
+[ 51%] Linking CXX executable ../../tools/railhmi-fault-probe
+[ 52%] Linking CXX executable ../../tools/railhmi-health-probe
+[ 52%] Built target railhmi-fault-probe
+[ 53%] Linking CXX executable ../../tools/railhmi-vision-semantic
+[ 53%] Built target railhmi-health-probe
+[ 54%] Linking CXX executable ../../tools/railhmi-vision-tracking
+[ 54%] Built target railhmi-vision-semantic
+[ 54%] Built target railhmi-vision-tracking
+[ 55%] Linking CXX static library librailhmi_platform.a
+[ 55%] Built target railhmi_platform
+[ 57%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o
+[ 57%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o
+[ 58%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_lease.cpp.o
+[ 58%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o
+[ 58%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/video_capability.cpp.o
+[ 59%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o
+[ 60%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+[ 61%] Linking CXX executable ../../tools/railhmi-replay-probe
+[ 61%] Built target railhmi-replay-probe
+[ 62%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rga_convert.cpp.o
+[ 62%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_worker.cpp.o
+[ 63%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_dispatcher.cpp.o
+[ 64%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/display_distributor.cpp.o
+[ 64%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/display_registry.cpp.o
+[ 65%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_dispatcher.cpp.o
+[ 66%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/recording_tap.cpp.o
+[ 66%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/clip_writer.cpp.o
+[ 67%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/media_provider.cpp.o
+[ 68%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/recovery_controller.cpp.o
+[ 68%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rknn_model_probe.cpp.o
+[ 69%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_preprocess.cpp.o
+[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/thermal_sensor.cpp.o
+[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rknn_session.cpp.o
+[ 71%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/vision_ai_worker.cpp.o
+[ 72%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/vision_rknn_detector.cpp.o
+[ 73%] Linking CXX executable ../../tools/railhmi-clip-probe
+[ 73%] Built target railhmi-clip-probe
+[ 73%] Linking CXX static library librailhmi_media.a
+[ 73%] Built target railhmi_media
+[ 74%] Building CXX object src/media/CMakeFiles/railhmi-video-capability.dir/tools/video_capability_tool.cpp.o
+[ 75%] Building CXX object src/media/CMakeFiles/railhmi-vision-pipeline.dir/tools/vision_pipeline_probe.cpp.o
+[ 75%] Building CXX object src/media/CMakeFiles/railhmi-vision-preprocess.dir/tools/preprocess_probe.cpp.o
+[ 77%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o
+[ 77%] Building CXX object src/media/CMakeFiles/railhmi-frame-lease.dir/tools/frame_lease_probe.cpp.o
+[ 79%] Building CXX object src/media/CMakeFiles/railhmi-rknn-probe.dir/tools/rknn_probe.cpp.o
+[ 79%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o
+[ 80%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o
+[ 81%] Linking CXX executable ../../tools/railhmi-rknn-probe
+[ 81%] Built target railhmi-rknn-probe
+[ 82%] Building CXX object src/media/CMakeFiles/railhmi-rga-convert.dir/tools/rga_convert_probe.cpp.o
+[ 82%] Linking CXX executable ../../tools/railhmi-video-capability
+[ 83%] Linking CXX executable ../../tools/railhmi-frame-lease
+[ 83%] Built target railhmi-video-capability
+[ 84%] Building CXX object src/media/CMakeFiles/railhmi-camera-worker.dir/tools/camera_worker_probe.cpp.o
+[ 84%] Built target railhmi-frame-lease
+[ 84%] Building CXX object src/media/CMakeFiles/railhmi-backpressure.dir/tools/backpressure_probe.cpp.o
+[ 84%] Linking CXX executable ../../tools/railhmi-ai-runner
+[ 84%] Built target railhmi-ai-runner
+[ 84%] Building CXX object src/media/CMakeFiles/railhmi-display.dir/tools/display_probe.cpp.o
+[ 84%] Linking CXX executable ../../tools/railhmi-camera-worker
+[ 84%] Built target railhmi-camera-worker
+[ 84%] Building CXX object src/media/CMakeFiles/railhmi-ai-dispatch.dir/tools/ai_dispatch_probe.cpp.o
+[ 84%] Linking CXX executable ../../tools/railhmi-rga-convert
+[ 84%] Built target railhmi-rga-convert
+[ 85%] Building CXX object src/media/CMakeFiles/railhmi-recording-tap.dir/tools/recording_tap_probe.cpp.o
+[ 86%] Linking CXX executable ../../tools/railhmi-vision-preprocess
+[ 87%] Linking CXX executable ../../tools/railhmi-backpressure
+[ 87%] Built target railhmi-backpressure
+[ 87%] Building CXX object src/media/CMakeFiles/railhmi-clip-solidify.dir/tools/clip_solidify_probe.cpp.o
+[ 88%] Linking CXX executable ../../tools/railhmi-stream-probe
+[ 88%] Built target railhmi-stream-probe
+[ 88%] Building CXX object src/media/CMakeFiles/railhmi-media-provider.dir/tools/media_provider_probe.cpp.o
+[ 88%] Built target railhmi-vision-preprocess
+[ 89%] Building CXX object src/media/CMakeFiles/railhmi-recovery.dir/tools/recovery_probe.cpp.o
+[ 89%] Linking CXX executable ../../tools/railhmi-recording-tap
+[ 89%] Built target railhmi-recording-tap
+[ 90%] Building CXX object src/media/CMakeFiles/railhmi-diagnostics.dir/tools/diagnostics_probe.cpp.o
+[ 91%] Linking CXX executable ../../tools/railhmi-recovery
+[ 91%] Built target railhmi-recovery
+[ 92%] Building CXX object src/media/CMakeFiles/railhmi-measure.dir/tools/measure_probe.cpp.o
+[ 93%] Linking CXX executable ../../tools/railhmi-multi-probe
+[ 93%] Built target railhmi-multi-probe
+[ 94%] Linking CXX executable ../../tools/railhmi-clip-solidify
+[ 95%] Linking CXX executable ../../tools/railhmi-display
+[ 95%] Built target railhmi-clip-solidify
+[ 96%] Linking CXX executable ../../tools/railhmi-media-provider
+[ 96%] Built target railhmi-display
+[ 96%] Built target railhmi-media-provider
+[ 97%] Linking CXX executable ../../tools/railhmi-ai-dispatch
+[ 98%] Linking CXX executable ../../tools/railhmi-measure
+[ 98%] Built target railhmi-ai-dispatch
+[ 98%] Built target railhmi-measure
+[ 99%] Linking CXX executable ../../tools/railhmi-vision-pipeline
+[100%] Linking CXX executable ../../tools/railhmi-diagnostics
+[100%] Built target railhmi-vision-pipeline
+[100%] Built target railhmi-diagnostics
+[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_vision_item010_20261021-item010-r4/app/build-media
+[build.sh] media layer: /tmp/railhmi_vision_item010_20261021-item010-r4/app/build-media/src/media/librailhmi_media.a
+BUILD_MEDIA_EXIT=0
+
+
+===== [core-tests] exit=0 =====
+== railhmi-core tests (railhmi 0.1.0 [mode=CoreTests, simulation=off]) ==
+[PASS] version_string == 0.1.0
+[PASS] build_mode is a known mode
+[PASS] build_description contains railhmi
+[PASS] redact_url hides credentials
+[PASS] redact_url leaves credential-free url unchanged
+[PASS] FileStore::write_atomic
+[PASS] FileStore::read_all round-trip
+[PASS] FileStore::exists after write
+[PASS] FileStore::exists false for missing
+[PASS] SqliteStore::open
+[PASS] SqliteStore::exec create table
+[PASS] SqliteStore::exec insert
+[PASS] SqliteStore::query_int
+[PASS] SqliteStore row count == 1
+[PASS] SqliteStore::open (reopen)
+[PASS] SqliteStore persistence across reopen
+[PASS] baseline config loads without errors
+[PASS] baseline has 6 cameras
+[PASS] CAM-01 id/position=primary
+[PASS] CAM-01 ai_enabled=true, ai_profile=front
+[PASS] CAM-02 ai_enabled=false, ai_profile=none
+[PASS] CAM-03 ai_enabled=false, ai_profile=none
+[PASS] CAM-04 ai_profile=pantograph
+[PASS] CAM-05 ai_profile=wheel_rail
+[PASS] CAM-06 ai_profile=cab_door
+[PASS] app.render_path=cpu
+[PASS] app.mode=visible
+[PASS] IR is not connected this phase
+[PASS] app.recording_source=both
+[PASS] app.resolution=1920x1080
+[PASS] thresholds values parsed
+[PASS] stream timing thresholds parsed
+[PASS] clip + replay sync thresholds parsed
+[PASS] baseline has 4 roi entries
+[PASS] one integration (NVR)
+[PASS] NVR registered
+[PASS] NVR initial integration_state=unconfigured
+[PASS] integration_state string is 'unconfigured'
+[PASS] missing optional tile_aspect recorded in applied_defaults
+[PASS] missing required field reports cameras[0].username
+[PASS] invalid transport reports cameras[0].transport
+[PASS] invalid ai_profile reports cameras[0].ai_profile
+[PASS] ai_enabled/profile mismatch reports cameras[0].ai_profile
+[PASS] missing thresholds field reports thresholds.confirm_frames
+[PASS] invalid render_path reports app.render_path
+[PASS] invalid mode reports app.mode
+[PASS] unknown roi camera reports roi[0].camera
+[PASS] out-of-range roi w reports roi[0].w
+[PASS] missing config file reports file name
+[PASS] --config <dir> is parsed
+[PASS] --config=<dir> form is parsed
+[PASS] absent --config falls back to compile-time default
+[PASS] --config without value falls back (never empty path)
+[PASS] --config with empty value falls back
+[PASS] deployment unit argument is honoured
+[PASS] no argv falls back safely
+[PASS] initial state = offline
+[PASS] offline cannot present as live
+[PASS] start -> connecting
+[PASS] connecting cannot present as live
+[PASS] first frame -> live
+[PASS] Started event emitted
+[PASS] FirstFrame event emitted
+[PASS] live presents fresh frame as live
+[PASS] no new frame -> frozen
+[PASS] frozen cannot present old frame as live
+[PASS] Freeze event emitted
+[PASS] frozen -> reconnecting
+[PASS] reconnect count = 1
+[PASS] reconnecting -> connecting (retry)
+[PASS] retry timeout -> reconnecting count 2
+[PASS] retry again -> connecting
+[PASS] threshold reached -> offline
+[PASS] reconnect count = 3 (threshold)
+[PASS] Escalated device event emitted at threshold
+[PASS] offline cannot present as live
+[PASS] recover from offline -> live
+[PASS] reconnect count reset on recovery
+[PASS] Recovered event emitted
+[PASS] source-error test live
+[PASS] source error -> reconnecting count 1
+[PASS] second source error -> offline (threshold 2)
+[PASS] source-error escalation event emitted
+[PASS] SourceError event emitted
+[PASS] quality flag -> degraded
+[PASS] degraded counts as streaming (degraded available)
+[PASS] degraded may present fresh frame
+[PASS] QualityDegraded event emitted
+[PASS] classify: low mean -> too_dark
+[PASS] classify: high mean -> too_bright
+[PASS] classify: near-uniform -> occluded
+[PASS] classify: low lapvar -> blurred
+[PASS] classify: normal frame -> no flags
+[PASS] classify: invalid stats -> no flags
+[PASS] person_on_rail=L1
+[PASS] front_obstacle=L1
+[PASS] wheel_derail=L1
+[PASS] pantograph_abnormal=L2
+[PASS] door_ajar=L2
+[PASS] front_camera_device=L2
+[PASS] side_camera_device=L3
+[PASS] device front primary=L2
+[PASS] device side=L3
+[PASS] front person: event after confirm_frames
+[PASS] front person level = L1
+[PASS] front person type
+[PASS] new event unacked
+[PASS] front obstacle -> L1 FrontObstacle
+[PASS] front outside ROI -> no event
+[PASS] front low confidence -> no event
+[PASS] front frames beyond confirm window -> no event
+[PASS] suppression: first event created
+[PASS] same track within suppress window -> no new event
+[PASS] events size still 1 under suppression
+[PASS] suppressed event distance updated
+[PASS] different track -> new event
+[PASS] events size 2 after second track
+[PASS] same track after suppress window -> new event
+[PASS] events size 3 after suppress window
+[PASS] pantograph normal -> no event
+[PASS] pantograph abnormal -> L2
+[PASS] wheel_rail abnormal -> L1
+[PASS] cab_door ajar -> L2
+[PASS] ai_profile=none -> no event
+[PASS] front primary device event -> L2
+[PASS] side device event -> L3
+[PASS] duplicate device event suppressed
+[PASS] single-frame confirm event created
+[PASS] unacked count 1
+[PASS] ack returns true for existing event
+[PASS] ack does NOT delete event
+[PASS] ack_state becomes acked
+[PASS] unacked count 0 after ack
+[PASS] ack unknown id returns false
+[PASS] roi contains center point
+[PASS] roi rejects outside point
+[PASS] roi rejects beyond x+w
+[PASS] find_roi finds entry
+[PASS] find_roi miss
+[PASS] to_string(Device)
+[PASS] to_string(SideCameraDevice)
+[PASS] to_string(Acked)
+[PASS] to_string(Unacked)
+[PASS] to_string(PantographState::Abnormal)
+[PASS] to_string(DoorState::Ajar)
+[PASS] to_string(DeviceCategory::Side)
+[PASS] map_level(Device)=L2
+[PASS] position primary -> FrontPrimary
+[PASS] position left/right -> Side
+[PASS] position roof/underfloor/cab -> Other
+[PASS] device other -> L2 (explicit)
+[PASS] roi includes top-left corner
+[PASS] roi includes bottom-right corner
+[PASS] roi rejects x-epsilon
+[PASS] roi rejects y+h+epsilon
+[PASS] wheel event independent
+[PASS] front key isolated from wheel (same cam/track, different type)
+[PASS] cross-type events independent
+[PASS] device channel event 1
+[PASS] detection channel independent of device suppression
+[PASS] device event after window
+[PASS] device event after second window
+[PASS] device(3)+detection(1)=4
+[PASS] no event with two single-frame counts
+[PASS] non-candidate frame resets all camera confirms
+[PASS] reset cleared cross-type confirms (need full cycle)
+[PASS] full cycle after reset emits
+[PASS] emit resets cycle: first event
+[PASS] suppressed updates do not emit
+[PASS] boundary frame alone not enough
+[PASS] second frame not enough
+[PASS] full new cycle emits
+[PASS] emit resets cycle: second event
+[PASS] boundary: first event
+[PASS] 999ms still suppressed
+[PASS] exactly suppress_window not suppressed (new event)
+[PASS] 1999ms still suppressed
+[PASS] 2000ms not suppressed
+[PASS] boundary events count 3
+[PASS] update test: first event
+[PASS] update within window no new event
+[PASS] update refreshes last_update_ms
+[PASS] update refreshes distance
+[PASS] new event after window from original emit
+[PASS] update test: two events
+[PASS] two tracks -> two events
+[PASS] ack id1
+[PASS] ack id1 is idempotent
+[PASS] id1 acked
+[PASS] id2 unaffected
+[PASS] ack isolation: unacked 1
+[PASS] timebase starts uncalibrated
+[PASS] timebase calibrated
+[PASS] to_wall_ms at reference
+[PASS] to_wall_ms +2s
+[PASS] to_mono_us round-trip
+[PASS] to_wall_ms truncates to ms
+[PASS] wall/mono round-trip identity (ms-aligned)
+[PASS] system_now_ms is UTC epoch ms
+[PASS] steady_now_us positive
+[PASS] age: only expired continuous evicted
+[PASS] age: retained bytes 20
+[PASS] age: critical not evicted
+[PASS] age: one continuous evicted
+[PASS] capacity: oldest continuous evicted first
+[PASS] capacity: keep critical, retained 30
+[PASS] capacity: continuous(11,12) then oldest critical(13)
+[PASS] capacity: eviction counts
+[PASS] capacity: retained 10
+[PASS] gap merge: adjacent/overlap merged to one
+[PASS] gap merge bounds 100..300
+[PASS] gap merge: keeps first existing reason
+[PASS] gap merge: different camera separate
+[PASS] bridge merge: single gap, no residual overlap
+[PASS] bridge merge bounds 0..30
+[PASS] bridge merge: first existing reason 'a'
+[PASS] verify sequence: single merged gap
+[PASS] verify sequence bounds 50..300
+[PASS] verify sequence reason drop (first existing)
+[PASS] separate gaps (1ms apart) stay distinct
+[PASS] contiguous gaps merge
+[PASS] repo.open
+[PASS] repo.init_schema
+[PASS] repo journal_mode == wal
+[PASS] insert_event returns id
+[PASS] insert_event_target
+[PASS] insert_maintenance
+[PASS] insert_health
+[PASS] insert_stream_event
+[PASS] upsert_integration
+[PASS] set_config
+[PASS] get_config round-trip
+[PASS] insert_segment x2
+[PASS] insert_gap
+[PASS] 9 tables populated (segments=2)
+[PASS] copy db for WAL replay
+[PASS] open WAL copy
+[PASS] WAL replay: event recovered from -wal
+[PASS] WAL replay: gap recovered
+[PASS] reopen after restart
+[PASS] write-restart-read consistent
+[PASS] gap persisted across restart
+[PASS] gaps queryable by camera
+[PASS] segments read back with kind
+[PASS] repo retention evicts continuous first
+[PASS] repo retention: one segment left
+[PASS] repo retention keeps critical segment
+[PASS] crash: reopen after SIGKILL
+[PASS] crash: journal_mode still wal
+[PASS] crash: uncommitted transaction discarded
+[PASS] crash: committed row intact
+[PASS] FI-01 id
+[PASS] FI-10 id
+[PASS] fault to_string
+[PASS] parse '01'
+[PASS] parse 'fi-10'
+[PASS] parse 'freeze'
+[PASS] parse invalid fault rejected
+[PASS] injection params logged
+[PASS] injection camera logged
+[PASS] format_observation non-empty
+[PASS] FI-01 -> reconnecting
+[PASS] FI-01 -> offline escalation
+[PASS] FI-01 recovers to live
+[PASS] FI-01 final state live
+[PASS] FI-02 -> frozen
+[PASS] FI-02 recovers to live
+[PASS] FI-03 -> ai unavailable
+[PASS] FI-03 no detections -> no alarms
+[PASS] FI-03 summary alarms=0
+[PASS] FI-04 -> storage low
+[PASS] FI-04 record_available=false
+[PASS] FI-04 recovers (low=false after)
+[PASS] FI-05 -> ptz tolerance fail
+[PASS] FI-05 recovers tolerance
+[PASS] FI-10 -> recording gap logged
+[PASS] FI-10 summary has gaps
+[PASS] no fault -> front alarm produced
+[PASS] no fault summary alarms=1
+[PASS] simulation is deterministic/resettable
+[PASS] pantograph injection -> L2 alarm
+[PASS] none profile -> no alarms
+[PASS] to_string(AiDebug)
+[PASS] page_title(Maintenance)
+[PASS] parse_page(all_cameras)
+[PASS] parse_page rejects unknown
+[PASS] six fixed pages
+[PASS] fixed page order
+[PASS] driver can realtime
+[PASS] driver can alarm center
+[PASS] driver can replay
+[PASS] driver cannot all cameras
+[PASS] driver cannot AI debug
+[PASS] driver cannot maintenance
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] maintainer/developer/admin can all pages
+[PASS] driver sees 3 nav entries
+[PASS] driver nav = realtime/alarm/replay
+[PASS] driver nav excludes AI debug/maintenance/all cameras
+[PASS] maintainer sees all 6 nav entries
+[PASS] developer/admin see all 6 nav entries
+[PASS] driver lands on realtime
+[PASS] maintainer lands on all cameras
+[PASS] developer lands on AI debug
+[PASS] admin lands on maintenance
+[PASS] driver realtime allowed
+[PASS] driver direct AI debug -> denied (show no-permission + return)
+[PASS] maintainer maintenance allowed
+[PASS] mode primary = visible
+[PASS] mode secondary = IR not connected
+[PASS] mode has no interactive toggle
+[PASS] baseline config loads
+[PASS] registry has 6 slots
+[PASS] registry order = CAM-01..06
+[PASS] registry order field
+[PASS] registry positions
+[PASS] CAM-01 ai front
+[PASS] CAM-02 no ai
+[PASS] badge front
+[PASS] badge none (side)
+[PASS] badge pantograph
+[PASS] badge wheel rail
+[PASS] badge cab door
+[PASS] badge hidden on P1 (driver realtime)
+[PASS] badge visible on P4
+[PASS] badge visible on P6
+[PASS] badge hidden on P2/P3/P5
+[PASS] one integration (NVR)
+[PASS] NVR id/address
+[PASS] NVR registered
+[PASS] NVR state = unconfigured
+[PASS] NVR channel mapping = 未配置
+[PASS] NVR protocol placeholder —
+[PASS] rename reflected in registry
+[PASS] remove camera -> 5 slots
+[PASS] removed camera absent
+[PASS] add camera -> 7 slots
+[PASS] two-camera config loads
+[PASS] registry order follows config order
+[PASS] missing required field reports cameras[0].rtsp_url
+[PASS] 1920x1080 three-panel order left-front-right
+[PASS] 1920x1080 front largest (>=0.34 width)
+[PASS] 1920x1080 front wider than both sides
+[PASS] 1920x1080 P0 elements fit without scroll
+[PASS] 1920x1080 L1 alarm banner does not cover front center
+[PASS] 1920x1080 left/front adjacent
+[PASS] 1920x1080 front/right adjacent
+[PASS] 1920x1080 right flush to row edge
+[PASS] 1920x1080 front center inside front panel
+[PASS] 1920x1080 top bar at top
+[PASS] 1920x1080 status strip below row
+[PASS] 1920x1080 alarm bar flush bottom
+[PASS] 1280x720 three-panel order left-front-right
+[PASS] 1280x720 front largest (>=0.34 width)
+[PASS] 1280x720 front wider than both sides
+[PASS] 1280x720 P0 elements fit without scroll
+[PASS] 1280x720 L1 alarm banner does not cover front center
+[PASS] 1280x720 left/front adjacent
+[PASS] 1280x720 front/right adjacent
+[PASS] 1280x720 right flush to row edge
+[PASS] 1280x720 front center inside front panel
+[PASS] 1280x720 top bar at top
+[PASS] 1280x720 status strip below row
+[PASS] 1280x720 alarm bar flush bottom
+[PASS] 16:9 1920x1080 vs 1280x720 ratios preserved
+[PASS] 16:9 1920x1080 vs 960x540 ratios preserved
+[PASS] resized layouts keep left-front-right order
+[PASS] front area ratio >= 0.34
+[PASS] side ratio within [0.22,0.30]
+[PASS] landsacpe -> 3x2
+[PASS] 1280x720 -> 3x2
+[PASS] portrait -> 2x3
+[PASS] 3x2 dims
+[PASS] 2x3 dims
+[PASS] 6 slots
+[PASS] slots identical across calls (state-independent)
+[PASS] 3x2 slot mapping (row = i/3, col = i%3)
+[PASS] 2x3 slot mapping (row = i/2, col = i%2)
+[PASS] 3x2 cells do not overlap
+[PASS] 3x2 cells within area
+[PASS] unstarted: still 6 cells (no cell dropped)
+[PASS] unstarted: order equals registry order
+[PASS] unstarted token/label
+[PASS] unstarted: fps/last = —
+[PASS] unstarted: placeholder
+[PASS] badge carried from registry
+[PASS] live label
+[PASS] live fps text
+[PASS] live last-frame text
+[PASS] live presentable, no placeholder
+[PASS] live no reconnect text
+[PASS] cut: grid size unchanged
+[PASS] cut: slots do not reorder (grid does not jump)
+[PASS] cut: channel 4 reconnecting
+[PASS] cut: channel 4 placeholder
+[PASS] cut: reconnect count text
+[PASS] cut: frozen last-frame time shown
+[PASS] cut: the other five cells keep refreshing
+[PASS] frozen label
+[PASS] unknown token passthrough
+[PASS] fps 0 -> —
+[PASS] no-frame text set
+[PASS] minutes format
+[PASS] 5 levels have 5 distinct shapes
+[PASS] 5 levels have 5 distinct glyphs (B&W distinguishable)
+[PASS] 5 levels have 5 distinct labels
+[PASS] 5 levels have 5 distinct color tokens
+[PASS] warning/alarm are abnormal
+[PASS] ok/unavailable are not abnormal
+[PASS] key status has 7 items
+[PASS] 7 items in fixed order
+[PASS] default snapshot -> all 未接入, not abnormal, not clickable
+[PASS] item labels
+[PASS] all-ok strip: nothing abnormal/clickable
+[PASS] all-ok uses ok color + dot shape (简单)
+[PASS] camera warning prominent (triangle/degraded)
+[PASS] ai alarm prominent (square/error)
+[PASS] pantograph stays simple
+[PASS] pantograph -> P4
+[PASS] wheel_rail -> P4
+[PASS] door -> P4
+[PASS] camera -> P6
+[PASS] ai -> P5
+[PASS] recording -> P3
+[PASS] driver clicking AI alarm -> no permission (提示无权限)
+[PASS] maintainer clicking AI alarm -> allowed to P5
+[PASS] normal item is not clickable
+[PASS] top bar has 7 items
+[PASS] top bar fixed order
+[PASS] top bar shows time
+[PASS] mode bit: visible + IR not connected, neutral, no alarm color
+[PASS] mode bit has no toggle/click
+[PASS] vehicle speed / door sensor shown as 未接入
+[PASS] AI warning in top bar clickable
+[PASS] driver clicking AI warning -> no permission
+[PASS] first push no drop
+[PASS] second push no drop
+[PASS] third push drops oldest
+[PASS] queue depth 2, dropped 1
+[PASS] oldest kept is seq 1
+[PASS] newest is seq 2
+[PASS] queue drained
+[PASS] front > wheel_rail
+[PASS] wheel_rail > pantograph
+[PASS] pantograph > cab_door
+[PASS] none not eligible (两侧广角不入队)
+[PASS] frame interval gating
+[PASS] budget 4 -> 4 cameras run
+[PASS] priority order front>wheel_rail>pantograph>cab_door
+[PASS] no skip under budget
+[PASS] wide-angle cameras not queued
+[PASS] budget 2 -> top 2 priority
+[PASS] rest skipped
+[PASS] over-temp triggers guard
+[PASS] over-temp degrades but does not silently stop
+[PASS] budget halved to 2
+[PASS] worker stopped -> nothing scheduled
+[PASS] worker down -> AI Unavailable
+[PASS] AI text = AI 不可用
+[PASS] detection alarms annotated AI 不可用
+[PASS] alive but no result -> warning(降级)
+[PASS] fresh results -> ok
+[PASS] no annotation when AI available
+[PASS] AI debug shows only ai_enabled cameras (4)
+[PASS] CAM-01 available
+[PASS] CAM-01 shows box in ROI
+[PASS] CAM-01 confidence
+[PASS] model version reported
+[PASS] latency from latest result
+[PASS] last result age
+[PASS] profile label
+[PASS] debug distance from box (ITEM-021)
+[PASS] worker stopped -> every AI channel marked unavailable (not silent)
+[PASS] driver cannot see AI debug/overlay (ITEM-021)
+[PASS] maintainer/developer/admin can see AI debug
+[PASS] spec yolov8s-seg -> seg
+[PASS] seg expects 13 + proto
+[PASS] spec yolov5s -> detect
+[PASS] detect expects 3 scales/80 cls
+[PASS] unknown declared -> unknown kind
+[PASS] identify seg
+[PASS] identify detect
+[PASS] identify empty -> unknown
+[PASS] seg ready
+[PASS] seg reason READY
+[PASS] detect ready
+[PASS] detect reason READY
+[PASS] FI-AI-01 MODEL_MISSING
+[PASS] runtime unavailable reason
+[PASS] FI-AI-02 output count mismatch
+[PASS] FI-AI-03 unquantized input -> mismatch
+[PASS] TC-T-CAP-03 declared vs structure mismatch
+[PASS] detect channel mismatch
+[PASS] seg proto missing
+[PASS] seg input size mismatch
+[PASS] front accepts seg
+[PASS] front accepts detect
+[PASS] pantograph no model evidence
+[PASS] wheel_rail no model evidence
+[PASS] cab_door no model evidence
+[PASS] none never accepts
+[PASS] front requires 2 kinds
+[PASS] cab_door no evidence
+[PASS] declared_models from app.ai.models
+[PASS] declared version preserved
+[PASS] resolve path appends .rknn
+[PASS] resolve path keeps extension
+[PASS] descriptor text parses
+[PASS] roundtrip tensor counts
+[PASS] roundtrip proto dims
+[PASS] roundtrip dtype/quant
+[PASS] roundtripped descriptor verifies ready
+[PASS] check json has reason
+[PASS] check json has ready
+[PASS] unknown declared name -> MODEL_MISMATCH
+[PASS] lb 1280x720 ok
+[PASS] lb scale/resized
+[PASS] lb centered pad
+[PASS] lb same size
+[PASS] lb 1280x1024
+[PASS] lb invalid dims rejected
+[PASS] lb zero target rejected
+[PASS] quant v0
+[PASS] quant v255
+[PASS] quant mid
+[PASS] dequant low
+[PASS] dequant high
+[PASS] quant high clamp
+[PASS] quant low clamp
+[PASS] uint8 clamp
+[PASS] packed red ok
+[PASS] packed tensor bytes
+[PASS] rgb order R>B
+[PASS] int8 output range
+[PASS] packed shape
+[PASS] tight stride ok
+[PASS] padded stride ok
+[PASS] stride padding not read as pixels
+[PASS] stride too small rejected
+[PASS] invalid dims rejected
+[PASS] null buffer rejected
+[PASS] bad config rejected
+[PASS] zero quant scale rejected
+[PASS] failed prepare leaves no partial data
+[PASS] nv12 padded reference ok
+[PASS] nv12 tensor shape
+[PASS] nv12 rgb order R>B
+[PASS] nv12 odd dims rejected
+[PASS] nv12 small y stride rejected
+[PASS] nv12 null plane rejected
+[PASS] letterbox red prepare ok
+[PASS] pad pixel equals pad_value
+[PASS] letterbox output shape
+[PASS] float32 prepare ok
+[PASS] float32 tensor bytes
+[PASS] float32 normalized range
+[PASS] uint8 prepare ok
+[PASS] uint8 range
+[PASS] rgb source no-convert ok
+[PASS] rgb source preserves order
+[PASS] decode ok
+[PASS] one person box
+[PASS] x inverse letterbox
+[PASS] y inverse letterbox
+[PASS] w normalized
+[PASS] h normalized
+[PASS] score=obj*cls
+[PASS] class whitelist person
+[PASS] scale/anchor index
+[PASS] bounds invariant
+[PASS] nonperson ok
+[PASS] nonperson dropped+counted
+[PASS] whitelist configurable
+[PASS] empty image -> ok empty
+[PASS] score threshold filters candidate
+[PASS] nms suppresses overlap
+[PASS] nms iou threshold configurable
+[PASS] pad-region box dropped+counted
+[PASS] bad channels -> DET_BAD_TENSOR
+[PASS] null data -> DET_BAD_TENSOR
+[PASS] bad config -> DET_BAD_CONFIG
+[PASS] max_detections truncates
+[PASS] boxes sorted by score desc
+[PASS] iou identical
+[PASS] iou disjoint
+[PASS] inverse ok
+[PASS] inverse full-width
+[PASS] inverse pad-only rejected
+[PASS] inverse clamps to frame
+[PASS] int8 decode one box
+[PASS] int8 x within quant tol
+[PASS] int8 score within quant tol
+[PASS] decode ok
+[PASS] box/mask one-to-one
+[PASS] box coords
+[PASS] score/class/label
+[PASS] mask box_index links box
+[PASS] mask dims/stride/size = original
+[PASS] binary + positives
+[PASS] positive inside box left
+[PASS] zero inside box right
+[PASS] zero outside box
+[PASS] zero coeff -> all-zero mask
+[PASS] mask_threshold filters
+[PASS] crop_to_box=false keeps outside positives
+[PASS] empty -> SEG_EMPTY
+[PASS] nms keeps 1, mask follows
+[PASS] 12 tensors -> MODEL_MISMATCH
+[PASS] bad seg channels -> MODEL_MISMATCH
+[PASS] bad proto shape -> MODEL_MISMATCH
+[PASS] non-NCHW -> MODEL_MISMATCH
+[PASS] box channels not 4*dfl -> MODEL_MISMATCH
+[PASS] bad config -> SEG_BAD_CONFIG
+[PASS] int8 decode one box + one mask
+[PASS] int8 box within quant tol
+[PASS] int8 mask aligned + binary
+[PASS] same_frame same
+[PASS] same_frame seq differ
+[PASS] same_frame gen differ
+[PASS] same_frame session differ
+[PASS] center in mask -> alarm
+[PASS] center out of mask -> no alarm
+[PASS] no person -> NO_PERSON
+[PASS] cross-frame -> FRAME_MISMATCH
+[PASS] seg unavailable -> no safe conclusion
+[PASS] empty mask -> unavailable
+[PASS] detect unavailable -> unavailable
+[PASS] misaligned mask -> unavailable
+[PASS] danger_zone hit -> alarm
+[PASS] danger_zone miss -> no alarm
+[PASS] gate first accepted
+[PASS] duplicate seq rejected
+[PASS] out-of-order rejected
+[PASS] stale generation rejected
+[PASS] cache disabled -> no reuse
+[PASS] cache reuse same generation within age
+[PASS] cache expired rejected
+[PASS] cache generation change rejected
+[PASS] cache default off with zero age
+[PASS] multi person counts
+[PASS] out-of-bounds center dropped
+[PASS] latency 25ms
+[PASS] latency 0
+[PASS] latency negative clamped
+[PASS] ready envelope
+[PASS] identity key
+[PASS] capture/result/latency
+[PASS] model_version + track_id
+[PASS] mask ref (zero-copy)
+[PASS] track_id null default
+[PASS] track_id never fabricated 0
+[PASS] ready + empty boxes
+[PASS] unavailable + reason + empty boxes
+[PASS] unavailable vs empty distinguishable
+[PASS] detect not ready -> AI_UNAVAILABLE
+[PASS] seg not ready -> SEG_UNAVAILABLE
+[PASS] distance/in_roi overrides
+[PASS] accepted
+[PASS] duplicate rejected
+[PASS] out-of-order rejected
+[PASS] stale generation rejected
+[PASS] stale session rejected
+[PASS] submit counts
+[PASS] per-class counts independent
+[PASS] queue bounded
+[PASS] drop-oldest counted
+[PASS] keeps newest
+[PASS] empty pop false
+[PASS] popped count
+[PASS] drop counter consistent
+[PASS] unavailable/empty/non-empty counts
+[PASS] ready json fields
+[PASS] unavailable json fields
+[PASS] empty vs unavailable json differs
+[PASS] stats json fields
+[PASS] person on rail -> 1 event
+[PASS] person_on_rail L1
+[PASS] unknown label blocked, no alarm
+[PASS] no event for unknown label
+[PASS] multi target -> 2 events (one per track)
+[PASS] same track aggregated
+[PASS] sorted by track_id
+[PASS] keeps highest confidence
+[PASS] off-rail target does not clear other target's confirm
+[PASS] generation change resets confirm
+[PASS] generation reset keys observable
+[PASS] new generation confirms from scratch
+[PASS] invalidate_track clears keys
+[PASS] invalidate_track does not clear unrelated track
+[PASS] invalidate_camera returns key count
+[PASS] invalidate_camera clears both tracks
+[PASS] cleanup never deletes events
+[PASS] null track not emitted as track 0
+[PASS] null track not emitted as track 0
+[PASS] null track not emitted as track 0
+[PASS] null track dropped + counted
+[PASS] low confidence not dispatched
+[PASS] obstacle -> FrontObstacle
+[PASS] unavailable -> no detections/alarms
+[PASS] new track id 1
+[PASS] same target same id
+[PASS] new target new id
+[PASS] ids never 0
+[PASS] label change -> new id
+[PASS] missed track dropped
+[PASS] reappear -> new id (not reused)
+[PASS] reset clears tracks
+[PASS] post-reset id continues (no reuse)
+[PASS] stale gap -> new id
+[PASS] max_tracks -> untracked (-1)
+[PASS] lightweight: same target -> 1 event
+[PASS] two targets independent
+[PASS] generation change: no alarm on first new frame
+[PASS] generation resets tracker + rule keys
+[PASS] new generation new id
+[PASS] new generation re-confirms
+[PASS] camera-level: one event, null track (-1)
+[PASS] envelope_only: null track dropped
+[PASS] thermal_parse_millicelsius
+[PASS] thermal_parse_trim
+[PASS] thermal_parse_negative
+[PASS] thermal_parse_zero
+[PASS] thermal_parse_empty_malformed
+[PASS] thermal_parse_text_malformed
+[PASS] thermal_parse_decimal_rejected
+[PASS] thermal_parse_high_out_of_range
+[PASS] thermal_parse_low_out_of_range
+[PASS] thermal_pick_max_zone
+[PASS] thermal_pick_all_invalid
+[PASS] thermal_pick_empty_reason
+[PASS] thermal_injected_marked
+[PASS] thermal_state_injected
+[PASS] thermal_state_measured
+[PASS] thermal_json_injected_not_measured
+[PASS] thermal_fresh_within_age
+[PASS] thermal_stale_age
+[PASS] thermal_fresh_unknown_invalid
+[PASS] sched_budget_4_runs_all
+[PASS] sched_priority_order_front_wheel_panto_cab
+[PASS] sched_no_contention_keeps_priority
+[PASS] sched_round_fields
+[PASS] sched_budget_2_halves
+[PASS] sched_budget_2_keeps_top_priority
+[PASS] sched_no_duplicate_lane
+[PASS] sched_budget_1_one_lane_round0
+[PASS] sched_budget_1_one_lane_round1
+[PASS] sched_budget_1_one_lane_round2
+[PASS] sched_budget_1_one_lane_round3
+[PASS] sched_budget_1_one_lane_round4
+[PASS] sched_budget_1_one_lane_round5
+[PASS] sched_budget_1_one_lane_round6
+[PASS] sched_budget_1_one_lane_round7
+[PASS] sched_no_starvation_all_lanes_ran
+[PASS] sched_no_starvation_balanced
+[PASS] sched_max_wait_bounded
+[PASS] sched_rounds_counted
+[PASS] sched_wait_zero_after_run
+[PASS] sched_wait_one_after_skip
+[PASS] sched_wait_unknown_lane
+[PASS] sched_temp_guard_halves_budget
+[PASS] sched_guard_uses_sample_state
+[PASS] sched_temp_guard_strict_gt
+[PASS] sched_temp_guard_above_limit
+[PASS] sched_temp_unknown_not_claimed
+[PASS] sched_guard_no_starvation
+[PASS] sched_guard_balanced
+[PASS] sched_idle_does_not_consume_budget
+[PASS] sched_none_profile_idle
+[PASS] sched_none_not_counted_wait
+[PASS] sched_budget_zero_all_skipped
+[PASS] sched_unavailable_not_budgeted
+[PASS] sched_unavailable_listed
+[PASS] sched_unavailable_not_skipped
+[PASS] sched_unavailable_no_wait
+[PASS] sched_unavailable_budget_stable
+[PASS] sched_json_unavailable
+[PASS] sched_all_ready_regression
+[PASS] sched_deterministic
+[PASS] sched_json_keys
+[PASS] duty_kind_tokens
+[PASS] duty_parse_kind
+[PASS] duty_parse_kind_reject_front
+[PASS] duty_state_unknown_token
+[PASS] duty_unknown_display_not_normal
+[PASS] duty_normal_display
+[PASS] duty_state_parse_strict
+[PASS] duty_of_profile_pantograph
+[PASS] duty_of_profile_wheel
+[PASS] duty_of_profile_door
+[PASS] duty_of_profile_excludes_front_none
+[PASS] profile_of_duty_door
+[PASS] duty_pantograph_states
+[PASS] duty_pantograph_rejects_door_states
+[PASS] duty_door_states
+[PASS] duty_door_rejects_pantograph_state
+[PASS] duty_wheel_states
+[PASS] duty_unknown_always_allowed
+[PASS] duty_to_pantograph_state
+[PASS] duty_to_pantograph_rejects_ajar
+[PASS] duty_to_door_state
+[PASS] duty_to_door_rejects_normal
+[PASS] duty_declaration_complete
+[PASS] duty_declaration_requires_model_name
+[PASS] duty_declaration_requires_input_shape
+[PASS] duty_declaration_requires_labels
+[PASS] duty_declaration_rejects_unknown_mapping
+[PASS] duty_declaration_rejects_cross_duty_state
+[PASS] duty_declaration_rejects_negative_outputs
+[PASS] duty_declaration_outputs_must_match_labels
+[PASS] duty_no_model_unavailable_unknown
+[PASS] duty_no_model_evidence_source_none
+[PASS] duty_no_model_detail
+[PASS] duty_config_registration_not_capability
+[PASS] duty_config_registration_recorded
+[PASS] duty_config_registration_detail
+[PASS] duty_incomplete_declaration_mismatch
+[PASS] duty_declaration_without_descriptor_missing
+[PASS] duty_descriptor_load_failed
+[PASS] duty_registered_yolov5s_is_mismatch
+[PASS] duty_mismatch_reports_decode_layout
+[PASS] duty_mismatch_reports_output_count
+[PASS] duty_mismatch_input_shape
+[PASS] duty_mismatch_not_quantized
+[PASS] duty_mismatch_input_count
+[PASS] duty_declared_verified_ready
+[PASS] duty_ready_is_not_normal
+[PASS] duty_ready_evidence_source
+[PASS] duty_ready_reports_matched_items
+[PASS] duty_map_declared_label
+[PASS] duty_map_unknown_label_blocked
+[PASS] duty_map_below_threshold_unknown
+[PASS] duty_map_empty_unknown
+[PASS] duty_map_highest_score_wins
+[PASS] duty_map_threshold_override
+[PASS] duty_map_door_ajar_not_abnormal
+[PASS] duty_map_wheel_abnormal
+[PASS] duty_adapter_unavailable
+[PASS] duty_adapter_rejects_prediction_when_unavailable
+[PASS] duty_adapter_no_detection_when_unavailable
+[PASS] duty_adapter_semantics_unknown
+[PASS] duty_adapter_ready_unknown
+[PASS] duty_adapter_low_score_stays_unknown
+[PASS] duty_adapter_abnormal
+[PASS] duty_adapter_detection_pantograph
+[PASS] duty_adapter_door_shape_mismatch
+[PASS] duty_adapter_door_ready
+[PASS] duty_adapter_detection_door
+[PASS] duty_adapter_wheel_ready
+[PASS] duty_adapter_detection_wheel
+[PASS] duty_adapter_wheel_normal
+[PASS] duty_registered_pantograph_unknown
+[PASS] duty_registered_wheel_rail_unknown
+[PASS] duty_registered_cab_door_unknown
+[PASS] duty_all_three_unavailable_unknown
+[PASS] duty_json_unknown_fields
+[PASS] duty_json_display_unknown_not_normal
+[PASS] duty_status_json_shape
+[PASS] seq starts at 1 and strictly increases
+[PASS] first generation is 1
+[PASS] mono us increasing
+[PASS] capture_wall_ms/pts_ns carried
+[PASS] unavailable wall/pts are -1 (not fake values)
+[PASS] camera/session carried
+[PASS] same_stream ignores seq but not generation
+[PASS] gen1 seq=2 before rebuild
+[PASS] begin_generation increments to 2
+[PASS] rebuild resets seq to 1 in new generation
+[PASS] in-order first accepted
+[PASS] in-order next accepted
+[PASS] duplicate seq rejected
+[PASS] out-of-order seq rejected
+[PASS] gate state unchanged by rejects
+[PASS] gen1 accepted
+[PASS] new generation accepted
+[PASS] gen2 seq2 accepted
+[PASS] old generation rejected after rebuild
+[PASS] different session rejected
+[PASS] gate reflects newest generation
+[PASS] adopt first session
+[PASS] session adopted
+[PASS] same session continues
+[PASS] switch session rejected
+[PASS] is_current respects session
+[PASS] make_session_id is non-empty and unique per call
+[PASS] admission tokens stable
+[PASS] nv12 contiguous ok
+[PASS] nv12 has two planes
+[PASS] nv12 Y plane stride/size
+[PASS] nv12 UV plane offset/size
+[PASS] nv12 buffer bytes
+[PASS] nv12 padded stride ok
+[PASS] nv12 padded Y size uses stride*height
+[PASS] nv12 padded UV size
+[PASS] nv12 odd width rejected
+[PASS] nv12 odd height rejected
+[PASS] nv12 Y stride < width rejected
+[PASS] nv12 UV stride < width rejected
+[PASS] nv12 uv offset inside Y rejected
+[PASS] nv12 zero width rejected
+[PASS] bgr888 contiguous ok
+[PASS] bgr888 single plane stride/size
+[PASS] rgb888 padded stride ok
+[PASS] packed stride < width*3 rejected
+[PASS] packed factory rejects NV12
+[PASS] validate: overlapping planes rejected
+[PASS] validate: plane beyond buffer rejected
+[PASS] validate: zero stride rejected
+[PASS] validate: >2 planes rejected
+[PASS] validate: nv12 requires two planes
+[PASS] parse/format NV12
+[PASS] parse BGR888
+[PASS] parse RGB888
+[PASS] parse rejects I420
+[PASS] cap1 size=1
+[PASS] cap1 latest=3
+[PASS] cap1 dropped=2
+[PASS] cap1 pushed=3
+[PASS] cap1 pop=3
+[PASS] cap1 empty pop=false
+[PASS] cap2 size=2
+[PASS] cap2 dropped=1
+[PASS] cap2 FIFO first=b
+[PASS] cap2 FIFO second=c
+[PASS] cap2 popped=2
+[PASS] byte budget 80
+[PASS] byte budget evicts to 80
+[PASS] byte budget dropped=1
+[PASS] byte budget first=2
+[PASS] count+byte bounded
+[PASS] empty pop/latest/empty
+[PASS] empty counters zero
+[PASS] duration span<=1000
+[PASS] duration window [1000,2000]
+[PASS] duration evicted=10 no bytes
+[PASS] duration keeps 11
+[PASS] bytes <=250
+[PASS] bytes keeps 2
+[PASS] bytes evicted=8
+[PASS] dual bytes <=1000
+[PASS] dual span<=500
+[PASS] dual duration binds first
+[PASS] oversize packet evicted
+[PASS] oversize evicted counted
+[PASS] collect [200,700] size=6
+[PASS] collect order
+[PASS] kf at 0
+[PASS] kf at/after 300 -> 500
+[PASS] no kf after 800 -> -1
+[PASS] keyframes=2
+[PASS] before shrink size=10
+[PASS] shrink span<=300
+[PASS] shrink evicted
+[PASS] clear empties
+[PASS] empty stats
+[PASS] empty collect
+[PASS] empty no keyframe
+[PASS] nvr unconfigured
+[PASS] nvr proto only
+[PASS] nvr configured
+[PASS] local effective
+[PASS] local flags
+[PASS] both unconfigured -> fallback
+[PASS] fallback local enabled
+[PASS] fallback reason explicit
+[PASS] nvr unconfigured -> fallback
+[PASS] nvr fallback reason
+[PASS] both configured
+[PASS] nvr configured -> nvr only
+[PASS] describe reason
+[PASS] describe effective
+[PASS] t0 = trigger-30s
+[PASS] t1 = trigger+60s
+[PASS] duration = pre+post
+[PASS] zero window
+[PASS] same params
+[PASS] different post -> not same
+[PASS] first added
+[PASS] repeat duplicate
+[PASS] different -> conflict
+[PASS] conflict does not overwrite job
+[PASS] known
+[PASS] unknown
+[PASS] find returns original
+[PASS] availability roundtrip
+[PASS] availability roundtrip
+[PASS] availability roundtrip
+[PASS] availability reject unknown
+[PASS] default unavailable
+[PASS] default flags
+[PASS] status roundtrip
+[PASS] status roundtrip
+[PASS] status roundtrip
+[PASS] status roundtrip
+[PASS] status reject unknown
+[PASS] reason token
+[PASS] before deadline
+[PASS] after deadline
+[PASS] no deadline never expires
+[PASS] overlap union
+[PASS] gap between segments
+[PASS] unusable not counted
+[PASS] coverage ignores camera (filtered by classify)
+[PASS] unconfigured
+[PASS] ok empty not playable
+[PASS] complete
+[PASS] partial
+[PASS] all unusable -> not_found
+[PASS] camera filter
+[PASS] gap overlap filter
+[PASS] classify auth 401
+[PASS] classify authentication
+[PASS] classify credential
+[PASS] classify unsupported
+[PASS] classify format
+[PASS] classify network
+[PASS] classify cut
+[PASS] classify timeout
+[PASS] classify empty
+[PASS] classify other
+[PASS] net wait backoff
+[PASS] net chain/backoff
+[PASS] before due none
+[PASS] due rebuild
+[PASS] attempt counted once
+[PASS] no double count same due
+[PASS] second backoff doubled
+[PASS] second not due
+[PASS] second due
+[PASS] attempts cumulative
+[PASS] max chain retained
+[PASS] auth stop
+[PASS] auth no attempt
+[PASS] auth never rebuilds
+[PASS] auth still 0 attempts
+[PASS] cred stop
+[PASS] format waits capability
+[PASS] format no rebuild
+[PASS] format no attempt
+[PASS] rebuild after capability change
+[PASS] capability attempt counted
+[PASS] max attempts stop
+[PASS] stopped at max attempts
+[PASS] recovered resets chain/schedule
+[PASS] attempts retained after recovery
+[PASS] uncalibrated guard
+[PASS] try_to_wall_ms false when uncalibrated
+[PASS] calibrated
+[PASS] mono->wall
+[PASS] wall->mono roundtrip
+[PASS] sync uncalibrated
+[PASS] sync missing clock
+[PASS] sync in_sync <=300
+[PASS] sync out prompt
+[PASS] sync single available
+[PASS] configurable threshold
+[PASS] seek1 locating
+[PASS] stale gen0 discarded
+[PASS] stale no position update
+[PASS] gen1 accepted
+[PASS] not reached yet
+[PASS] gen increments
+[PASS] gen1 now stale
+[PASS] stale does not update
+[PASS] gen2 accepted
+[PASS] reached within tolerance
+[PASS] reset
+[PASS] presence online
+[PASS] presence gap_count
+[PASS] presence frozen
+[PASS] presence unverified
+[PASS] presence labels
+[PASS] presence token
+[PASS] attempt id
+[PASS] attempt id none
+[PASS] userinfo detected
+[PASS] userinfo redacted
+[PASS] kv redacted
+[PASS] location redacted
+[PASS] pipeline detected
+[PASS] pipeline whole redacted
+[PASS] benign untouched
+[PASS] json camera
+[PASS] json presence
+[PASS] json fields
+[PASS] json last_error redacted
+[PASS] count
+[PASS] min/max
+[PASS] bounds
+[PASS] p50/p90/p99
+[PASS] mean
+[PASS] empty
+[PASS] bounded window
+[PASS] bounded keeps newest
+[PASS] source rtsp
+[PASS] source file
+[PASS] source sim
+[PASS] status recorded
+[PASS] status to_be_executed
+[PASS] json class
+[PASS] json status
+[PASS] json latency percentiles
+[PASS] json storage
+[PASS] json recovery
+[PASS] json npu note
+[PASS] archive json
+[PASS] level/type derived
+[PASS] type label
+[PASS] ack label
+[PASS] record label available
+[PASS] snapshot available flag
+[PASS] time text date
+[PASS] recording unavailable labeled (PLY-008)
+[PASS] L1 first, time desc within level
+[PASS] then L2
+[PASS] then L3
+[PASS] filter by level L1 -> 2
+[PASS] filter by camera
+[PASS] filter unacked -> 3
+[PASS] filter by type
+[PASS] filter by time window
+[PASS] combined filter with no match -> empty state
+[PASS] combined filter hit
+[PASS] batch ack changed 3
+[PASS] acked ids returned
+[PASS] 3 newly acked + 1 pre-acked = 4 (events not deleted)
+[PASS] ack does not delete rows
+[PASS] already-acked not recounted
+[PASS] log action
+[PASS] log target ids
+[PASS] log detail count
+[PASS] log user
+[PASS] 4 cameras in options
+[PASS] 4 types in options
+[PASS] 3 levels sorted L1 first
+[PASS] date round trip
+[PASS] day start
+[PASS] bad date rejected
+[PASS] buffer bounded to capacity
+[PASS] oldest dropped
+[PASS] drop_before trims
+[PASS] count_in window
+[PASS] clip range = trigger-pre .. trigger+post
+[PASS] clip duration = (pre+post) seconds
+[PASS] clip pending before post window
+[PASS] not finalized before t1
+[PASS] finalized at t1
+[PASS] clip complete after post window
+[PASS] frame_count from rolling buffer
+[PASS] manifest has duration
+[PASS] manifest has camera
+[PASS] manifest complete
+[PASS] overlapping gaps merged
+[PASS] merged range
+[PASS] gap reason kept
+[PASS] different camera separate gap
+[PASS] normal evicted first, protected retained
+[PASS] protected clip id not evicted
+[PASS] protected evicted only when still over capacity
+[PASS] ensure clip dir
+[PASS] atomic write clip
+[PASS] clip content round trip
+[PASS] clip file exists
+[PASS] timeline only CAM-01 segments
+[PASS] continuous segment
+[PASS] critical/alarm segment prominent
+[PASS] alarm segment carries real level (D-04)
+[PASS] gap per camera
+[PASS] has_gap
+[PASS] two alarm markers
+[PASS] alarm markers carry level (D-04)
+[PASS] keyframe markers present
+[PASS] keyframe carries thumbnail ref (D-01)
+[PASS] day window duration
+[PASS] jump -30s
+[PASS] jump alarm moment
+[PASS] jump +30s
+[PASS] jump +60s
+[PASS] seek within window
+[PASS] seek clamps low
+[PASS] seek clamps high
+[PASS] jump_to sets position
+[PASS] sync group left/front/right
+[PASS] in sync within threshold
+[PASS] deviation over threshold -> prompt
+[PASS] prompt text
+[PASS] front alarm locks left/front/right
+[PASS] non-front alarm locks only its camera
+[PASS] empty camera -> no lock
+[PASS] no clocks -> sync unavailable
+[PASS] missing a locked camera clock -> unavailable
+[PASS] all clocks within threshold -> in sync
+[PASS] deviation over threshold -> prompt (reachable)
+[PASS] nvr available
+[PASS] nvr unavailable -> local clips with explicit note
+[PASS] no source unavailable
+[PASS] detail type
+[PASS] detail level
+[PASS] detail distance
+[PASS] detail confidence
+[PASS] detail ack
+[PASS] detail record status (D-07)
+[PASS] detail note independent from record status (D-07)
+[PASS] detail time
+[PASS] marks from rows carry real level (v2 D-01)
+[PASS] camera filter + level
+[PASS] critical segment level == real alarm level (v2 D-01)
+[PASS] alarm marker level == real alarm level
+[PASS] within tolerance -> ok
+[PASS] pan delta computed
+[PASS] ok text
+[PASS] over tolerance -> out
+[PASS] out text
+[PASS] unreadable -> unverified
+[PASS] home requires confirm then applied
+[PASS] home check ok
+[PASS] preset check ok
+[PASS] ptz log action/user
+[PASS] ptz log result ok
+[PASS] ptz log detail
+[PASS] over-tolerance action not ok
+[PASS] failed action logged as out_of_tolerance
+[PASS] ptz ok + ai ok -> ready
+[PASS] ptz over-tolerance -> front AI NOT ready
+[PASS] ai down -> front AI NOT ready
+[PASS] two maintenance rows
+[PASS] live camera row
+[PASS] live last frame/reconnect
+[PASS] frozen + quality flags
+[PASS] quality normal
+[PASS] recording used pct
+[PASS] recording text
+[PASS] stopped recording
+[PASS] health text
+[PASS] log day key (D-02)
+[PASS] roll keeps latest 2 days (D-02)
+[PASS] rolled entries are the most recent days
+[PASS] max_days=0 keeps all
+[PASS] generic maintenance log (reconnect)
+[PASS] all roles view realtime/alarm/replay + ack
+[PASS] all roles view realtime/alarm/replay + ack
+[PASS] all roles view realtime/alarm/replay + ack
+[PASS] all roles view realtime/alarm/replay + ack
+[PASS] driver denied all-cameras/ai-debug/maintenance/export
+[PASS] ops roles see all-cameras/ai-debug/maintenance
+[PASS] matrix has all permissions
+[PASS] admin export allowed by default
+[PASS] ops export denied when config off
+[PASS] ops export allowed when config on (受配置)
+[PASS] driver export still denied when config on
+[PASS] export/config require secondary confirm
+[PASS] view/ack do not require confirm
+[PASS] driver export gate denied
+[PASS] admin export needs confirm
+[PASS] admin export confirmed
+[PASS] driver export denied/not executed
+[PASS] admin export unconfirmed -> cancelled
+[PASS] admin export confirmed -> ok
+[PASS] export writes maintenance log
+[PASS] maintainer device config ok
+[PASS] maintainer system config denied
+[PASS] admin system config ok
+[PASS] config unconfirmed -> cancelled
+[PASS] healthy -> ok, no alerts
+[PASS] health text
+[PASS] temp+net warn
+[PASS] very high temp -> error
+[PASS] low disk -> warn
+[PASS] log json with fields
+[PASS] query by source
+[PASS] query by min severity
+[PASS] query by keyword
+[PASS] query by time window
+[PASS] log day key
+[PASS] day-rolling keeps latest day
+[PASS] recovery has 8 steps
+[PASS] all ok -> completed
+[PASS] step label
+[PASS] single non-critical camera failure does not exit app
+[PASS] degraded camera counted
+[PASS] streaming step degraded, rest continue
+[PASS] recovery still completes
+[PASS] critical step failure -> app not alive
+[PASS] config step failed recorded
+[PASS] progress reflects terminal steps
+== 1300 passed, 0 failed ==
+RESULT: PASS passed=1300 failed=0
+[junit] wrote core-evidence/item010-core-tests-20261021-item010-r4.xml
+TEST_EXIT=0
+
+
+===== [duty-selftest] exit=0 =====
+type=selftest note=纯逻辑夹具；不加载 RKNN/不连相机
+type=scenario name=no_model_pantograph json={"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared for this duty","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+[PASS] no_model_pantograph_unavailable_unknown :: PROFILE_UNSUPPORTED
+type=scenario name=no_model_wheel_rail json={"duty":"wheel_rail","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared for this duty","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+[PASS] no_model_wheel_rail_unavailable_unknown :: PROFILE_UNSUPPORTED
+type=scenario name=no_model_cab_door json={"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared for this duty","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+[PASS] no_model_cab_door_unavailable_unknown :: PROFILE_UNSUPPORTED
+type=scenario name=config_only json={"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+[PASS] config_registration_not_capability :: config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence
+[PASS] config_only_detail :: config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence
+type=scenario name=missing json={"duty":"pantograph","available":false,"reason":"MODEL_MISSING","detail":"declared duty model has no verified tensor descriptor","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"pantograph-3state","declared_model_name":"pantograph-3state","evidence_source":"declaration+descriptor","matched":["declaration"],"mismatched":[]}
+[PASS] declaration_without_descriptor_missing :: MODEL_MISSING
+type=scenario name=mismatch_real_yolov5s_shape json={"duty":"pantograph","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"yolov5s","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count"],"mismatched":["unsupported_decode_layout"]}
+[PASS] yolov5s_shape_is_mismatch :: descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)
+[PASS] mismatch_reports_decode_layout :: 无解码器布局 -> MODEL_MISMATCH
+type=scenario name=mismatch_output_count json={"duty":"cab_door","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"cab-door-2state","declared_model_name":"cab-door-2state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized"],"mismatched":["output_count3!=2"]}
+[PASS] mismatch_reports_output_count :: 输出个数不匹配逐项可见
+type=scenario name=ready json={"duty":"pantograph","available":true,"reason":"READY","detail":"declared capability verified structurally (detected=yolov5_detect); semantic state stays unknown until a declared label passes threshold","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"pantograph-3state","declared_model_name":"pantograph-3state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count","class_score_layout"],"mismatched":[]}
+[PASS] declared_verified_ready_but_unknown :: READY != normal
+type=scenario name=prediction_unknown json={"duty":"pantograph","available":true,"reason":"READY","detail":"no declared label passed threshold; state stays unknown","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"pantograph-3state","declared_model_name":"pantograph-3state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count","class_score_layout"],"mismatched":[]}
+[PASS] undetermined_prediction_stays_unknown :: 未声明/低分不产生 normal
+type=scenario name=prediction_normal json={"duty":"pantograph","available":true,"reason":"READY","detail":"state from declared label 'pantograph_normal' score=0.930000","state":"normal","state_display":"正常","semantics_unknown":false,"config_registered":true,"registered_model_name":"pantograph-3state","declared_model_name":"pantograph-3state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count","class_score_layout"],"mismatched":[]}
+[PASS] declared_label_sets_normal :: normal 只能来自已声明标签
+type=scenario name=prediction_abnormal_door json={"duty":"cab_door","available":true,"reason":"READY","detail":"state from declared label 'door_ajar' score=0.880000","state":"ajar","state_display":"异常开启","semantics_unknown":false,"config_registered":true,"registered_model_name":"cab-door-2state","declared_model_name":"cab-door-2state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count","class_score_layout"],"mismatched":[]}
+[PASS] declared_door_label_sets_ajar :: ajar
+[PASS] unavailable_rejects_prediction :: unknown 保持、不产判定
+[PASS] unavailable_no_detection :: 无判定输出
+[PASS] json_unknown_not_normal :: {"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared f
+[PASS] duty_status_json_three_duties :: 三职责齐全
+RESULT: PASS failures=0
+DUTY_SELFTEST_EXIT=0
+
+
+===== [duty-config] exit=0 =====
+type=config dir=./config
+type=duty name=pantograph registered=yolov5s available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知
+type=duty name=wheel_rail registered=yolov8s-seg available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知
+type=duty name=cab_door registered=yolov5s available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知
+type=duty_status json={"duties":[{"profile":"pantograph","camera_id":"","availability":{"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"wheel_rail","camera_id":"","availability":{"duty":"wheel_rail","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov8s-seg' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov8s-seg","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"cab_door","camera_id":"","availability":{"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}}]}
+[PASS] config_three_duties_unavailable_unknown :: unavailable=3 unknown=3
+RESULT: PASS failures=0
+DUTY_CONFIG_EXIT=0
+
+
+===== [fixture-no_model] exit=0 =====
+type=scenario name=no_model json={"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared for this duty","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+RESULT: PASS failures=0
+FIXTURE_EXIT=0
+
+
+===== [fixture-config_only] exit=0 =====
+type=scenario name=config_only json={"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+RESULT: PASS failures=0
+FIXTURE_EXIT=0
+
+
+===== [fixture-missing] exit=0 =====
+type=scenario name=missing json={"duty":"wheel_rail","available":false,"reason":"MODEL_MISSING","detail":"declared duty model has no verified tensor descriptor","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"wheel-rail-2state","declared_model_name":"wheel-rail-2state","evidence_source":"declaration+descriptor","matched":["declaration"],"mismatched":[]}
+RESULT: PASS failures=0
+FIXTURE_EXIT=0
+
+
+===== [fixture-mismatch] exit=0 =====
+type=scenario name=mismatch json={"duty":"pantograph","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"yolov5s","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count"],"mismatched":["unsupported_decode_layout"]}
+RESULT: PASS failures=0
+FIXTURE_EXIT=0
+
+
+===== [fixture-ready] exit=0 =====
+type=scenario name=ready json={"duty":"pantograph","available":true,"reason":"READY","detail":"declared capability verified structurally (detected=yolov5_detect); semantic state stays unknown until a declared label passes threshold","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"pantograph-3state","declared_model_name":"pantograph-3state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count","class_score_layout"],"mismatched":[]}
+RESULT: PASS failures=0
+FIXTURE_EXIT=0
+
+
+===== [rknn-probe-yolov8s-seg] exit=0 =====
+descriptor_version=1
+model.path=/tmp/railhmi_vision_item010_20261021-item010-r4/model-assets/yolov8s-seg.rknn
+model.file=yolov8s-seg.rknn
+model.file_present=1
+model.load_status=ok
+model.runtime.api_version=2.3.2 (429f97ae6b@2025-04-09T09:09:27)
+model.runtime.drv_version=0.9.8
+input.count=1
+output.count=13
+tensor.dir=input
+tensor.index=0
+tensor.name=images
+tensor.n_dims=4
+tensor.dims=1,640,640,3
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nhwc
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00392157
+tensor.n_elems=1228800
+tensor.size=1228800
+
+tensor.dir=output
+tensor.index=0
+tensor.name=789
+tensor.n_dims=4
+tensor.dims=1,64,80,80
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=51
+tensor.scale=0.193457
+tensor.n_elems=409600
+tensor.size=409600
+
+tensor.dir=output
+tensor.index=1
+tensor.name=onnx::ReduceSum_799
+tensor.n_dims=4
+tensor.dims=1,1,80,80
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00302526
+tensor.n_elems=6400
+tensor.size=6400
+
+tensor.dir=output
+tensor.index=2
+tensor.name=804
+tensor.n_dims=4
+tensor.dims=1,1,80,80
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00302526
+tensor.n_elems=6400
+tensor.size=6400
+
+tensor.dir=output
+tensor.index=3
+tensor.name=762
+tensor.n_dims=4
+tensor.dims=1,32,80,80
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=60
+tensor.scale=0.0308758
+tensor.n_elems=204800
+tensor.size=204800
+
+tensor.dir=output
+tensor.index=4
+tensor.name=813
+tensor.n_dims=4
+tensor.dims=1,64,40,40
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=46
+tensor.scale=0.129618
+tensor.n_elems=102400
+tensor.size=102400
+
+tensor.dir=output
+tensor.index=5
+tensor.name=onnx::ReduceSum_823
+tensor.n_dims=4
+tensor.dims=1,1,40,40
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00364647
+tensor.n_elems=1600
+tensor.size=1600
+
+tensor.dir=output
+tensor.index=6
+tensor.name=827
+tensor.n_dims=4
+tensor.dims=1,1,40,40
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00364647
+tensor.n_elems=1600
+tensor.size=1600
+
+tensor.dir=output
+tensor.index=7
+tensor.name=771
+tensor.n_dims=4
+tensor.dims=1,32,40,40
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=48
+tensor.scale=0.0328631
+tensor.n_elems=51200
+tensor.size=51200
+
+tensor.dir=output
+tensor.index=8
+tensor.name=836
+tensor.n_dims=4
+tensor.dims=1,64,20,20
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=62
+tensor.scale=0.189591
+tensor.n_elems=25600
+tensor.size=25600
+
+tensor.dir=output
+tensor.index=9
+tensor.name=onnx::ReduceSum_846
+tensor.n_dims=4
+tensor.dims=1,1,20,20
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00385611
+tensor.n_elems=400
+tensor.size=400
+
+tensor.dir=output
+tensor.index=10
+tensor.name=850
+tensor.n_dims=4
+tensor.dims=1,1,20,20
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00385611
+tensor.n_elems=400
+tensor.size=400
+
+tensor.dir=output
+tensor.index=11
+tensor.name=780
+tensor.n_dims=4
+tensor.dims=1,32,20,20
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=28
+tensor.scale=0.0348764
+tensor.n_elems=12800
+tensor.size=12800
+
+tensor.dir=output
+tensor.index=12
+tensor.name=753
+tensor.n_dims=4
+tensor.dims=1,32,160,160
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-119
+tensor.scale=0.0300399
+tensor.n_elems=819200
+tensor.size=819200
+
+
+RKNN_EXIT=0
+
+
+===== [rknn-probe-yolov5s] exit=0 =====
+descriptor_version=1
+model.path=/tmp/railhmi_vision_item010_20261021-item010-r4/model-assets/yolov5s.rknn
+model.file=yolov5s.rknn
+model.file_present=1
+model.load_status=ok
+model.runtime.api_version=2.3.2 (429f97ae6b@2025-04-09T09:09:27)
+model.runtime.drv_version=0.9.8
+input.count=1
+output.count=3
+tensor.dir=input
+tensor.index=0
+tensor.name=images
+tensor.n_dims=4
+tensor.dims=1,640,640,3
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nhwc
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00392157
+tensor.n_elems=1228800
+tensor.size=1228800
+
+tensor.dir=output
+tensor.index=0
+tensor.name=output
+tensor.n_dims=4
+tensor.dims=1,255,80,80
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.0038597
+tensor.n_elems=1632000
+tensor.size=1632000
+
+tensor.dir=output
+tensor.index=1
+tensor.name=283
+tensor.n_dims=4
+tensor.dims=1,255,40,40
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00392157
+tensor.n_elems=408000
+tensor.size=408000
+
+tensor.dir=output
+tensor.index=2
+tensor.name=285
+tensor.n_dims=4
+tensor.dims=1,255,20,20
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00391501
+tensor.n_elems=102000
+tensor.size=102000
+
+
+RKNN_EXIT=0
+
+
+===== [duty-real-descriptor-seg] exit=0 =====
+type=declared duty=pantograph outputs=3 hw=640x640 labels=pantograph_not_raised=not_raised,pantograph_normal=normal,pantograph_abnormal=abnormal
+type=evaluation json={"duty":"pantograph","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov8_seg;13 outputs with 1 proto(32x160x160))","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"yolov8s-seg.rknn","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized"],"mismatched":["output_count13!=3"]}
+type=descriptor api=2.3.2 (429f97ae6b@2025-04-09T09:09:27) drv=0.9.8 in=1 out=13
+type=expect ok expect=unavailable available=false
+RESULT: PASS failures=0
+DESC_SEG_EXIT=0
+
+
+===== [duty-real-descriptor-det] exit=0 =====
+type=declared duty=cab_door outputs=2 hw=640x640 labels=door_closed=closed,door_ajar=ajar
+type=evaluation json={"duty":"cab_door","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"yolov5s.rknn","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized"],"mismatched":["output_count3!=2"]}
+type=descriptor api=2.3.2 (429f97ae6b@2025-04-09T09:09:27) drv=0.9.8 in=1 out=3
+type=expect ok expect=unavailable available=false
+RESULT: PASS failures=0
+DESC_DET_EXIT=0
+
+
+===== [duty-media-no-model] exit=0 =====
+type=config dir=./config models_dir=/tmp/railhmi_vision_item010_20261021-item010-r4/model-assets duty_declarations=0 duty_models=0
+type=duty_status json={"duties":[{"profile":"pantograph","camera_id":"","availability":{"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"wheel_rail","camera_id":"","availability":{"duty":"wheel_rail","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov8s-seg' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov8s-seg","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"cab_door","camera_id":"","availability":{"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}}]}
+type=duty name=pantograph available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知 registered=yolov5s declared= evidence=none
+[PASS] duty_pantograph_no_model :: reason=PROFILE_UNSUPPORTED state=unknown
+type=duty name=wheel_rail available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知 registered=yolov8s-seg declared= evidence=none
+[PASS] duty_wheel_rail_no_model :: reason=PROFILE_UNSUPPORTED state=unknown
+type=duty name=cab_door available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知 registered=yolov5s declared= evidence=none
+[PASS] duty_cab_door_no_model :: reason=PROFILE_UNSUPPORTED state=unknown
+RESULT: PASS failures=0
+MEDIA_NOMODEL_EXIT=0
+
+
+===== [duty-media-declared-mismatch] exit=0 =====
+type=config dir=./config models_dir=/tmp/railhmi_vision_item010_20261021-item010-r4/model-assets duty_declarations=2 duty_models=2
+type=duty_status json={"duties":[{"profile":"pantograph","camera_id":"","availability":{"duty":"pantograph","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"yolov5s","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count"],"mismatched":["unsupported_decode_layout"]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"wheel_rail","camera_id":"","availability":{"duty":"wheel_rail","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov8s-seg' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov8s-seg","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"cab_door","camera_id":"","availability":{"duty":"cab_door","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov8_seg;13 outputs with 1 proto(32x160x160))","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"yolov8s-seg","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized"],"mismatched":["output_count13!=2"]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}}]}
+type=duty name=pantograph available=false reason=MODEL_MISMATCH state=unknown display=未知 registered=yolov5s declared=yolov5s evidence=declaration+descriptor
+[PASS] duty_pantograph_declared :: reason=MODEL_MISMATCH state=unknown
+type=duty name=wheel_rail available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知 registered=yolov8s-seg declared= evidence=none
+[PASS] duty_wheel_rail_no_model :: reason=PROFILE_UNSUPPORTED state=unknown
+type=duty name=cab_door available=false reason=MODEL_MISMATCH state=unknown display=未知 registered=yolov5s declared=yolov8s-seg evidence=declaration+descriptor
+[PASS] duty_cab_door_declared :: reason=MODEL_MISMATCH state=unknown
+RESULT: PASS failures=0
+MEDIA_MISMATCH_EXIT=0
+
+
+===== [chain4] exit=0 =====
+type=config dir=./config models_dir=/tmp/railhmi_vision_item010_20261021-item010-r4/model-assets interval=5 depth=2 npu_budget=1(cli-override) temp_limit_c=85.000000 confirm_frames=3 confidence_min=0.500000
+type=models {"engine":"rknn","models_dir":"/tmp/railhmi_vision_item010_20261021-item010-r4/model-assets","models":[{"kind":"yolov5_detect","declared":"yolov5s","version":"rknn-2.3.2/yolov5s","present":true,"ready":true,"reason":"READY","detail":"capability verified","input_dtype":"int8","input_h":640,"input_w":640,"input_scale":0.00392157,"input_zp":-128,"output_count":3,"runtime_api":"2.3.2 (429f97ae6b@2025-04-09T09:09:27)","runtime_drv":"0.9.8"},{"kind":"yolov8_seg","declared":"yolov8s-seg","version":"rknn-2.3.2/yolov8s-seg","present":true,"ready":true,"reason":"READY","detail":"capability verified","input_dtype":"int8","input_h":640,"input_w":640,"input_scale":0.00392157,"input_zp":-128,"output_count":13,"runtime_api":"2.3.2 (429f97ae6b@2025-04-09T09:09:27)","runtime_drv":"0.9.8"}],"profiles":[{"profile":"front","ready":true,"reason":"READY","model_version":"rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg"},{"profile":"wheel_rail","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""},{"profile":"pantograph","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""},{"profile":"cab_door","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""}],"counters":{"infer_calls":0,"infer_ok":0,"infer_unavailable":0,"det_boxes":0,"seg_boxes":0,"mask_positive":0,"preprocess_failed":0,"infer_failed":0,"decode_failed":0,"last_pre_us":0,"last_det_us":0,"last_seg_us":0},"danger_zone":"CAM-01/danger_zone","duty_status":{"duties":[{"profile":"pantograph","camera_id":"","availability":{"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"wheel_rail","camera_id":"","availability":{"duty":"wheel_rail","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov8s-seg' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov8s-seg","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"cab_door","camera_id":"","availability":{"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}}]}}
+type=profile name=front ready=true reason=READY model=rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg
+type=profile name=wheel_rail ready=false reason=PROFILE_UNSUPPORTED model=
+type=profile name=pantograph ready=false reason=PROFILE_UNSUPPORTED model=
+type=profile name=cab_door ready=false reason=PROFILE_UNSUPPORTED model=
+type=source lane=CAM-01 source=test profile=front
+type=source lane=CAM-04 source=test profile=pantograph
+type=source lane=CAM-05 source=test profile=wheel_rail
+type=source lane=CAM-06 source=test profile=cab_door
+rga_api version 1.10.1_[0]
+type=trace t_ms=1016 submitted=104 steps=74 infer_calls=17 events=0 thermal=MEASURED temp_c=43.461000 guard=false
+type=trace t_ms=2016 submitted=204 steps=123 infer_calls=37 events=0 thermal=MEASURED temp_c=44.384000 guard=false
+type=trace t_ms=3016 submitted=305 steps=179 infer_calls=56 events=0 thermal=MEASURED temp_c=43.461000 guard=false
+type=trace t_ms=4016 submitted=404 steps=238 infer_calls=77 events=0 thermal=MEASURED temp_c=44.384000 guard=false
+type=trace t_ms=5025 submitted=505 steps=295 infer_calls=96 events=0 thermal=MEASURED temp_c=44.384000 guard=false
+type=ai-status running=运行 worker_alive=true
+type=stop request_stop_us=0 status=AI 不可用
+type=lane camera=CAM-01 profile=front ready=true reason= model=rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg consumed=30 inferred=30 unavailable=4 unavailable_by_reason=TWO_STAGE_UNAVAILABLE:4 last_unavailable_reason=TWO_STAGE_UNAVAILABLE last_unavailable_detail=rail mask empty published=30 dropped=0 skipped_interval=120 queue_depth=0 last_infer_us=152180 latency_ms=155 fps=5.032975 tracks=0 events=0 env_ready=30 env_unavailable=4 env_queue_dropped=0
+type=envelope camera=CAM-01 json={"session_id":"s1a15416ad8b-fcb96f-0","camera_id":"CAM-01","generation":1,"seq":150,"profile":"front","capture_mono_us":541037448325,"result_mono_us":541037603708,"latency_ms":155,"model_version":"rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg","availability":"ready","reason":"READY","box_count":0,"boxes":[],"masks":[{"box_index":-1,"width":1280,"height":720,"stride_bytes":1280,"kind":"rail","plane_present":true}]}
+type=lane camera=CAM-04 profile=pantograph ready=false reason=PROFILE_UNSUPPORTED model= consumed=30 inferred=30 unavailable=30 unavailable_by_reason=PROFILE_UNSUPPORTED:30 last_unavailable_reason=PROFILE_UNSUPPORTED last_unavailable_detail=config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence published=30 dropped=0 skipped_interval=120 queue_depth=0 last_infer_us=3 latency_ms=155 fps=5.032975 tracks=0 events=0 env_ready=30 env_unavailable=30 env_queue_dropped=0
+type=envelope camera=CAM-04 json={"session_id":"s1a15416ad8b-fcb96f-0","camera_id":"CAM-04","generation":1,"seq":150,"profile":"pantograph","capture_mono_us":541037448523,"result_mono_us":541037603742,"latency_ms":155,"model_version":"","availability":"unavailable","reason":"PROFILE_UNSUPPORTED","box_count":0,"boxes":[],"masks":[]}
+type=lane camera=CAM-05 profile=wheel_rail ready=false reason=PROFILE_UNSUPPORTED model= consumed=30 inferred=30 unavailable=30 unavailable_by_reason=PROFILE_UNSUPPORTED:30 last_unavailable_reason=PROFILE_UNSUPPORTED last_unavailable_detail=config registers 'yolov8s-seg' but no duty capability is declared/verified; registration is not evidence published=30 dropped=0 skipped_interval=121 queue_depth=0 last_infer_us=2 latency_ms=3 fps=5.178571 tracks=0 events=0 env_ready=30 env_unavailable=30 env_queue_dropped=0
+type=envelope camera=CAM-05 json={"session_id":"s1a15416ad8b-fcb96f-0","camera_id":"CAM-05","generation":1,"seq":150,"profile":"wheel_rail","capture_mono_us":541037437967,"result_mono_us":541037441129,"latency_ms":3,"model_version":"","availability":"unavailable","reason":"PROFILE_UNSUPPORTED","box_count":0,"boxes":[],"masks":[]}
+type=lane camera=CAM-06 profile=cab_door ready=false reason=PROFILE_UNSUPPORTED model= consumed=29 inferred=29 unavailable=29 unavailable_by_reason=PROFILE_UNSUPPORTED:29 last_unavailable_reason=PROFILE_UNSUPPORTED last_unavailable_detail=config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence published=29 dropped=0 skipped_interval=121 queue_depth=1 last_infer_us=1 latency_ms=136 fps=5.042319 tracks=0 events=0 env_ready=29 env_unavailable=29 env_queue_dropped=0
+type=envelope camera=CAM-06 json={"session_id":"s1a15416ad8b-fcb96f-0","camera_id":"CAM-06","generation":1,"seq":145,"profile":"cab_door","capture_mono_us":541037258269,"result_mono_us":541037394697,"latency_ms":136,"model_version":"","availability":"unavailable","reason":"PROFILE_UNSUPPORTED","box_count":0,"boxes":[],"masks":[]}
+type=rule events_total=0 events_new=0
+type=summary submitted=602 consumed=119 published=119 unavailable=93 round=353 budget=1 thermal_guard_rounds=0 thermal_unknown_rounds=0 thermal={"valid":true,"state":"MEASURED","measured":true,"injected":false,"celsius":44.384,"source":"thermal_zone0","reason":"THERMAL_OK","zone_index":0,"read_mono_ms":541037451}
+[PASS] chain_models_ready
+[PASS] chain_frames_dispatched_and_consumed :: submitted=602 consumed=119
+[PASS] chain_envelopes_published :: 119
+[PASS] chain_stop_ai_unavailable :: AI 不可用
+[PASS] chain_scheduler_rounds :: rounds=353
+[PASS] chain_budget_respected :: 1<=1
+[PASS] chain_thermal_reported :: {"valid":true,"state":"MEASURED","measured":true,"injected":false,"celsius":44.384,"source":"thermal_zone0","reason":"THERMAL_OK","zone_index":0,"read_mono_ms":541037451}
+[PASS] chain_guard_matches_measured_temp :: measured=44.384000 limit=85.000000 guard=false
+[PASS] chain_lease_available :: missing_polls=0
+RESULT: PASS failures=0
+CHAIN4_EXIT=0
+
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-core-tests-20261021-item010-r4.xml
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-duty-selftest-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-duty-selftest-20261021-item010-r4.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-duty-config-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-duty-config-20261021-item010-r4.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-fixture-no_model-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-fixture-config_only-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-fixture-missing-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-fixture-mismatch-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-fixture-ready-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-rknn-yolov8s-seg-20261021-item010-r4.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-rknn-yolov5s-20261021-item010-r4.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-descriptor-seg-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-descriptor-det-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-media-no-model-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-media-no-model-20261021-item010-r4.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-media-mismatch-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-media-mismatch-20261021-item010-r4.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-chain4-20261021-item010-r4.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r4.app_core-evidence_item010-chain4-20261021-item010-r4.json
+
+===== [cleanup] exit=0 =====
+cleaned
+

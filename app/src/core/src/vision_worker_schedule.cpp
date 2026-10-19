@@ -191,10 +191,15 @@ AiScheduleRound AiLaneScheduler::plan(const std::vector<AiLaneDemand>& demand,
     r.budget_effective = budget;
 
     // 2) 候选 = 有帧且 AI 职责有效；其余为 idle（不参与等待计算）。
+    //    职责不可用（无核验模型，ITEM-010）的路不占预算，单独归入 unavailable。
     std::vector<const AiLaneDemand*> hungry;
     for (const auto& d : demand) {
         if (!ai_eligible(d.profile) || !d.has_frame) {
             r.idle.push_back(d.camera_id);
+            continue;
+        }
+        if (!d.duty_ready) {
+            r.unavailable.push_back(d.camera_id);
             continue;
         }
         hungry.push_back(&d);
@@ -260,6 +265,7 @@ std::string schedule_round_json(const AiScheduleRound& r) {
     o << "\"round\":" << r.round;
     o << ",\"run\":" << arr(r.run);
     o << ",\"skipped\":" << arr(r.skipped);
+    o << ",\"unavailable\":" << arr(r.unavailable);
     o << ",\"idle\":" << arr(r.idle);
     o << ",\"priority_order\":" << arr(r.priority_order);
     o << ",\"temperature_guard\":" << (r.temperature_guard ? "true" : "false");

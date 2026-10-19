@@ -1,0 +1,5 @@
+type=declared duty=pantograph outputs=3 hw=640x640 labels=pantograph_not_raised=not_raised,pantograph_normal=normal,pantograph_abnormal=abnormal
+type=evaluation json={"duty":"pantograph","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov8_seg;13 outputs with 1 proto(32x160x160))","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"yolov8s-seg.rknn","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized"],"mismatched":["output_count13!=3"]}
+type=descriptor api=2.3.2 (429f97ae6b@2025-04-09T09:09:27) drv=0.9.8 in=1 out=13
+type=expect ok expect=unavailable available=false
+RESULT: PASS failures=0

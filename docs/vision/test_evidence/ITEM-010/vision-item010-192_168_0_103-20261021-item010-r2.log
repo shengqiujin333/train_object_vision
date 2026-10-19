@@ -1,0 +1,917 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+remote_dir: /tmp/railhmi_vision_item010_20261021-item010-r2
+
+===== [env] exit=0 =====
+Linux 6.1.141 aarch64
+8
+g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+-rw-r--r-- 1 1007 1007 7726232 Feb 10  2026 /usr/lib/librknnrt.so
+
+
+===== [mkdir] exit=0 =====
+ok
+
+
+===== [upload-app] exit=0 =====
+uploaded 325 files
+
+===== [upload-model] exit=0 =====
+yolov8s-seg.rknn
+
+===== [upload-model] exit=0 =====
+yolov5s.rknn
+
+===== [build-core] exit=0 =====
+[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_vision_item010_20261021-item010-r2/app' -B '/tmp/railhmi_vision_item010_20261021-item010-r2/app/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = CoreTests
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_vision_item010_20261021-item010-r2/app/build-core
+[build.sh] building: cmake --build '/tmp/railhmi_vision_item010_20261021-item010-r2/app/build-core' -j8
+[  1%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  1%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  1%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/video_diagnostics.cpp.o
+[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/compressed_ring.cpp.o
+[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_source.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_model_capability.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_preprocess.cpp.o
+[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_detect_postprocess.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_seg_postprocess.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_two_stage.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_inference_envelope.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_semantic_adapter.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_tracker.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_worker_schedule.cpp.o
+[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_duty_capability.cpp.o
+[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip_request.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_provider.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay_sync.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/maintenance.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/metrics.cpp.o
+[ 30%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o
+[ 31%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o
+[ 31%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery.cpp.o
+[ 32%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery_policy.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o
+[ 34%] Linking CXX static library librailhmi_core.a
+[ 34%] Built target railhmi_core
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-model-probe.dir/tools/model_probe.cpp.o
+[ 36%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 36%] Building CXX object src/core/CMakeFiles/railhmi-vision-seg.dir/tools/seg_probe.cpp.o
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-vision-detect.dir/tools/detect_probe.cpp.o
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-timebase-sync.dir/tools/timebase_sync_probe.cpp.o
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
+[ 38%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 40%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 40%] Built target railhmi-sim-inject
+[ 41%] Building CXX object src/core/CMakeFiles/railhmi-vision-twostage.dir/tools/two_stage_probe.cpp.o
+[ 42%] Linking CXX executable ../../tools/railhmi-config-check
+[ 42%] Built target railhmi-config-check
+[ 43%] Building CXX object src/core/CMakeFiles/railhmi-vision-envelope.dir/tools/envelope_probe.cpp.o
+[ 44%] Linking CXX executable ../../tools/railhmi-vision-detect
+[ 45%] Linking CXX executable ../../tools/railhmi-timebase-sync
+[ 45%] Built target railhmi-vision-detect
+[ 45%] Built target railhmi-timebase-sync
+[ 46%] Building CXX object src/core/CMakeFiles/railhmi-vision-semantic.dir/tools/semantic_probe.cpp.o
+[ 46%] Building CXX object src/core/CMakeFiles/railhmi-vision-duty.dir/tools/duty_probe.cpp.o
+[ 47%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 47%] Built target railhmi-status-probe
+[ 47%] Building CXX object src/core/CMakeFiles/railhmi-vision-tracking.dir/tools/tracking_probe.cpp.o
+[ 48%] Linking CXX executable ../../tools/railhmi-vision-seg
+[ 48%] Linking CXX executable ../../tools/railhmi-model-probe
+[ 48%] Built target railhmi-vision-seg
+[ 49%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
+[ 49%] Built target railhmi-model-probe
+[ 49%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 50%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 51%] Linking CXX executable ../../tools/railhmi-ai-probe
+[ 51%] Built target railhmi-ai-probe
+[ 52%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o
+[ 53%] Linking CXX executable ../../tools/railhmi-vision-twostage
+[ 54%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 54%] Built target railhmi-vision-twostage
+[ 55%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o
+[ 56%] Linking CXX executable ../../tools/railhmi-alarm-probe
+[ 56%] Built target railhmi-alarm-probe
+[ 57%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
+[ 58%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 59%] Linking CXX executable ../../tools/railhmi-vision-envelope
+[ 59%] Built target railhmi-vision-envelope
+[ 60%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
+[ 61%] Linking CXX executable ../../tools/railhmi-permissions-probe
+[ 61%] Built target railhmi-permissions-probe
+[ 62%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
+[ 63%] Linking CXX executable ../../tools/railhmi-maintenance-probe
+[ 64%] Linking CXX executable ../../tools/railhmi-vision-semantic
+[ 64%] Built target railhmi-vision-semantic
+[ 64%] Built target railhmi-maintenance-probe
+[ 65%] Linking CXX executable ../../tools/railhmi-fault-probe
+[ 65%] Built target railhmi-fault-probe
+[ 65%] Linking CXX executable ../../tools/railhmi-health-probe
+[ 65%] Built target railhmi-health-probe
+[ 65%] Linking CXX executable ../../tools/railhmi-replay-probe
+[ 66%] Linking CXX executable ../../tools/railhmi-vision-duty
+[ 67%] Linking CXX executable ../../tools/railhmi-vision-tracking
+[ 67%] Built target railhmi-replay-probe
+[ 67%] Built target railhmi-vision-duty
+[ 67%] Built target railhmi-vision-tracking
+[ 68%] Linking CXX static library librailhmi_platform.a
+[ 68%] Built target railhmi_platform
+[ 68%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/main.cpp.o
+[ 68%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_stream.cpp.o
+[ 69%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_rules.cpp.o
+[ 70%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_persistence.cpp.o
+[ 70%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+[ 71%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_util.cpp.o
+[ 73%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_platform.cpp.o
+[ 73%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_config.cpp.o
+[ 74%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_simulation.cpp.o
+[ 74%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_navigation.cpp.o
+[ 75%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_registry.cpp.o
+[ 76%] Linking CXX executable ../../tools/railhmi-clip-probe
+[ 77%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_layout.cpp.o
+[ 77%] Built target railhmi-clip-probe
+[ 78%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_grid.cpp.o
+[ 78%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_status.cpp.o
+[ 79%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_inference.cpp.o
+[ 80%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_model_capability.cpp.o
+[ 81%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_preprocess.cpp.o
+[ 81%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_detect_postprocess.cpp.o
+[ 82%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_seg_postprocess.cpp.o
+[ 83%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_two_stage.cpp.o
+[ 84%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_inference_envelope.cpp.o
+[ 84%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_semantic_adapter.cpp.o
+[ 85%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_tracker.cpp.o
+[ 86%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_worker_schedule.cpp.o
+[ 87%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_duty_capability.cpp.o
+[ 88%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_frame_identity.cpp.o
+[ 88%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_frame_layout.cpp.o
+[ 89%] Building CXX object tests/core/CMakeFiles/railhmi-core-tests.dir/test_bounded_queue.cpp.o
+BUILD_CORE_EXIT=3
+/tmp/railhmi_vision_item010_20261021-item010-r2/app/tests/core/test_vision_worker_schedule.cpp: In function ‘void run_vision_worker_schedule_tests()’:
+/tmp/railhmi_vision_item010_20261021-item010-r2/app/tests/core/test_vision_worker_schedule.cpp:260:57: error: inconsistent user-defined literal suffixes ‘unavailable’ and ‘CAM’ in string literal
+  260 |         check(schedule_round_json(r2).find(""unavailable":["CAM-05"") != std::string::npos,
+      |                                                         ^~~~~~~
+/tmp/railhmi_vision_item010_20261021-item010-r2/app/tests/core/test_vision_worker_schedule.cpp:260:57: error: unable to find string literal operator ‘operator""unavailable’ with ‘const char [3]’, ‘long unsigned int’ arguments
+gmake[2]: *** [tests/core/CMakeFiles/railhmi-core-tests.dir/build.make:384: tests/core/CMakeFiles/railhmi-core-tests.dir/test_vision_worker_schedule.cpp.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:748: tests/core/CMakeFiles/railhmi-core-tests.dir/all] Error 2
+gmake: *** [Makefile:101: all] Error 2
+[build.sh] build failed (mode=core-tests)
+
+
+===== [build-media] exit=0 =====
+[build.sh] mode=media-check host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_vision_item010_20261021-item010-r2/app' -B '/tmp/railhmi_vision_item010_20261021-item010-r2/app/build-media' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_MEDIA=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = MediaCheck
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+-- Checking for modules 'gstreamer-1.0;gstreamer-app-1.0;gstreamer-video-1.0'
+--   Found gstreamer-1.0, version 1.20.3
+--   Found gstreamer-app-1.0, version 1.20.1
+--   Found gstreamer-video-1.0, version 1.20.1
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_vision_item010_20261021-item010-r2/app/build-media
+[build.sh] building: cmake --build '/tmp/railhmi_vision_item010_20261021-item010-r2/app/build-media' -j8
+[  1%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  1%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  2%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/video_diagnostics.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/compressed_ring.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_source.cpp.o
+[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_model_capability.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_preprocess.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_detect_postprocess.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_seg_postprocess.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_two_stage.cpp.o
+[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_inference_envelope.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_semantic_adapter.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_tracker.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_worker_schedule.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_duty_capability.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip.cpp.o
+[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/clip_request.cpp.o
+[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_provider.cpp.o
+[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/replay_sync.cpp.o
+[ 25%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/maintenance.cpp.o
+[ 26%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/metrics.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/permissions.cpp.o
+[ 27%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/health.cpp.o
+[ 28%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recovery_policy.cpp.o
+[ 29%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/fault_catalog.cpp.o
+[ 30%] Linking CXX static library librailhmi_core.a
+[ 30%] Built target railhmi_core
+[ 30%] Building CXX object src/core/CMakeFiles/railhmi-timebase-sync.dir/tools/timebase_sync_probe.cpp.o
+[ 30%] Building CXX object src/core/CMakeFiles/railhmi-ai-probe.dir/tools/ai_probe.cpp.o
+[ 31%] Building CXX object src/core/CMakeFiles/railhmi-vision-seg.dir/tools/seg_probe.cpp.o
+[ 32%] Building CXX object src/core/CMakeFiles/railhmi-vision-detect.dir/tools/detect_probe.cpp.o
+[ 33%] Building CXX object src/core/CMakeFiles/railhmi-config-check.dir/tools/config_check.cpp.o
+[ 34%] Building CXX object src/core/CMakeFiles/railhmi-sim-inject.dir/tools/sim_inject.cpp.o
+[ 34%] Building CXX object src/core/CMakeFiles/railhmi-model-probe.dir/tools/model_probe.cpp.o
+[ 35%] Building CXX object src/core/CMakeFiles/railhmi-status-probe.dir/tools/status_probe.cpp.o
+[ 36%] Linking CXX executable ../../tools/railhmi-sim-inject
+[ 36%] Built target railhmi-sim-inject
+[ 36%] Building CXX object src/core/CMakeFiles/railhmi-vision-twostage.dir/tools/two_stage_probe.cpp.o
+[ 36%] Linking CXX executable ../../tools/railhmi-config-check
+[ 36%] Built target railhmi-config-check
+[ 37%] Building CXX object src/core/CMakeFiles/railhmi-vision-envelope.dir/tools/envelope_probe.cpp.o
+[ 38%] Linking CXX executable ../../tools/railhmi-timebase-sync
+[ 38%] Linking CXX executable ../../tools/railhmi-status-probe
+[ 38%] Built target railhmi-status-probe
+[ 38%] Built target railhmi-timebase-sync
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-vision-semantic.dir/tools/semantic_probe.cpp.o
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-vision-duty.dir/tools/duty_probe.cpp.o
+[ 39%] Linking CXX executable ../../tools/railhmi-model-probe
+[ 39%] Built target railhmi-model-probe
+[ 39%] Building CXX object src/core/CMakeFiles/railhmi-vision-tracking.dir/tools/tracking_probe.cpp.o
+[ 40%] Linking CXX executable ../../tools/railhmi-vision-detect
+[ 40%] Built target railhmi-vision-detect
+[ 41%] Building CXX object src/core/CMakeFiles/railhmi-alarm-probe.dir/tools/alarm_probe.cpp.o
+[ 42%] Linking CXX executable ../../tools/railhmi-vision-twostage
+[ 42%] Built target railhmi-vision-twostage
+[ 43%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/log.cpp.o
+[ 43%] Linking CXX executable ../../tools/railhmi-vision-seg
+[ 44%] Linking CXX executable ../../tools/railhmi-alarm-probe
+[ 44%] Built target railhmi-vision-seg
+[ 44%] Building CXX object src/core/CMakeFiles/railhmi-replay-probe.dir/tools/replay_probe.cpp.o
+[ 45%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/file_store.cpp.o
+[ 45%] Built target railhmi-alarm-probe
+[ 46%] Building CXX object src/core/CMakeFiles/railhmi-maintenance-probe.dir/tools/maintenance_probe.cpp.o
+[ 46%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/sqlite_store.cpp.o
+[ 47%] Linking CXX executable ../../tools/railhmi-ai-probe
+[ 47%] Built target railhmi-ai-probe
+[ 47%] Linking CXX executable ../../tools/railhmi-vision-envelope
+[ 48%] Building CXX object src/platform/CMakeFiles/railhmi_platform.dir/src/repository.cpp.o
+[ 48%] Building CXX object src/core/CMakeFiles/railhmi-permissions-probe.dir/tools/permissions_probe.cpp.o
+[ 48%] Built target railhmi-vision-envelope
+[ 48%] Building CXX object src/core/CMakeFiles/railhmi-health-probe.dir/tools/health_probe.cpp.o
+[ 49%] Linking CXX executable ../../tools/railhmi-permissions-probe
+[ 50%] Linking CXX executable ../../tools/railhmi-vision-duty
+[ 50%] Built target railhmi-permissions-probe
+[ 51%] Building CXX object src/core/CMakeFiles/railhmi-fault-probe.dir/tools/fault_probe.cpp.o
+[ 51%] Built target railhmi-vision-duty
+[ 52%] Linking CXX executable ../../tools/railhmi-replay-probe
+[ 53%] Linking CXX executable ../../tools/railhmi-vision-tracking
+[ 53%] Built target railhmi-replay-probe
+[ 53%] Built target railhmi-vision-tracking
+[ 53%] Linking CXX executable ../../tools/railhmi-fault-probe
+[ 53%] Built target railhmi-fault-probe
+[ 53%] Linking CXX executable ../../tools/railhmi-maintenance-probe
+[ 53%] Built target railhmi-maintenance-probe
+[ 54%] Linking CXX executable ../../tools/railhmi-health-probe
+[ 54%] Built target railhmi-health-probe
+[ 55%] Linking CXX executable ../../tools/railhmi-vision-semantic
+[ 55%] Built target railhmi-vision-semantic
+[ 56%] Linking CXX static library librailhmi_platform.a
+[ 56%] Built target railhmi_platform
+[ 57%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_worker.cpp.o
+[ 57%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/video_capability.cpp.o
+[ 58%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/multi_stream.cpp.o
+[ 59%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rga_convert.cpp.o
+[ 60%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/pipeline_factory.cpp.o
+[ 60%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_stream.cpp.o
+[ 61%] Building CXX object src/core/CMakeFiles/railhmi-clip-probe.dir/tools/clip_probe.cpp.o
+[ 62%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_lease.cpp.o
+[ 62%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/camera_worker.cpp.o
+[ 63%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_dispatcher.cpp.o
+[ 64%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/display_distributor.cpp.o
+[ 64%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/display_registry.cpp.o
+[ 65%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/ai_dispatcher.cpp.o
+[ 66%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/recording_tap.cpp.o
+[ 67%] Linking CXX executable ../../tools/railhmi-clip-probe
+[ 67%] Built target railhmi-clip-probe
+[ 67%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/clip_writer.cpp.o
+[ 68%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/media_provider.cpp.o
+[ 69%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/recovery_controller.cpp.o
+[ 69%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rknn_model_probe.cpp.o
+[ 70%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/frame_preprocess.cpp.o
+[ 71%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/thermal_sensor.cpp.o
+[ 71%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/rknn_session.cpp.o
+[ 72%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/vision_ai_worker.cpp.o
+[ 73%] Building CXX object src/media/CMakeFiles/railhmi_media.dir/src/vision_rknn_detector.cpp.o
+[ 73%] Linking CXX static library librailhmi_media.a
+[ 73%] Built target railhmi_media
+[ 76%] Building CXX object src/media/CMakeFiles/railhmi-ai-runner.dir/tools/ai_runner.cpp.o
+[ 76%] Building CXX object src/media/CMakeFiles/railhmi-rknn-probe.dir/tools/rknn_probe.cpp.o
+[ 76%] Building CXX object src/media/CMakeFiles/railhmi-stream-probe.dir/tools/stream_probe.cpp.o
+[ 77%] Building CXX object src/media/CMakeFiles/railhmi-video-capability.dir/tools/video_capability_tool.cpp.o
+[ 79%] Building CXX object src/media/CMakeFiles/railhmi-frame-lease.dir/tools/frame_lease_probe.cpp.o
+[ 79%] Building CXX object src/media/CMakeFiles/railhmi-multi-probe.dir/tools/multi_probe.cpp.o
+[ 79%] Building CXX object src/media/CMakeFiles/railhmi-vision-preprocess.dir/tools/preprocess_probe.cpp.o
+[ 80%] Building CXX object src/media/CMakeFiles/railhmi-vision-pipeline.dir/tools/vision_pipeline_probe.cpp.o
+[ 81%] Linking CXX executable ../../tools/railhmi-rknn-probe
+[ 81%] Built target railhmi-rknn-probe
+[ 82%] Building CXX object src/media/CMakeFiles/railhmi-rga-convert.dir/tools/rga_convert_probe.cpp.o
+[ 82%] Linking CXX executable ../../tools/railhmi-ai-runner
+[ 82%] Built target railhmi-ai-runner
+[ 83%] Building CXX object src/media/CMakeFiles/railhmi-camera-worker.dir/tools/camera_worker_probe.cpp.o
+[ 83%] Linking CXX executable ../../tools/railhmi-video-capability
+[ 84%] Linking CXX executable ../../tools/railhmi-stream-probe
+[ 84%] Built target railhmi-stream-probe
+[ 84%] Building CXX object src/media/CMakeFiles/railhmi-backpressure.dir/tools/backpressure_probe.cpp.o
+[ 85%] Linking CXX executable ../../tools/railhmi-frame-lease
+[ 85%] Built target railhmi-video-capability
+[ 85%] Building CXX object src/media/CMakeFiles/railhmi-display.dir/tools/display_probe.cpp.o
+[ 85%] Built target railhmi-frame-lease
+[ 85%] Building CXX object src/media/CMakeFiles/railhmi-ai-dispatch.dir/tools/ai_dispatch_probe.cpp.o
+[ 85%] Linking CXX executable ../../tools/railhmi-rga-convert
+[ 85%] Built target railhmi-rga-convert
+[ 86%] Building CXX object src/media/CMakeFiles/railhmi-recording-tap.dir/tools/recording_tap_probe.cpp.o
+[ 87%] Linking CXX executable ../../tools/railhmi-multi-probe
+[ 87%] Built target railhmi-multi-probe
+[ 87%] Building CXX object src/media/CMakeFiles/railhmi-clip-solidify.dir/tools/clip_solidify_probe.cpp.o
+[ 88%] Linking CXX executable ../../tools/railhmi-vision-preprocess
+[ 88%] Linking CXX executable ../../tools/railhmi-camera-worker
+[ 88%] Built target railhmi-camera-worker
+[ 88%] Building CXX object src/media/CMakeFiles/railhmi-media-provider.dir/tools/media_provider_probe.cpp.o
+[ 88%] Built target railhmi-vision-preprocess
+[ 89%] Building CXX object src/media/CMakeFiles/railhmi-recovery.dir/tools/recovery_probe.cpp.o
+[ 89%] Linking CXX executable ../../tools/railhmi-recording-tap
+[ 89%] Built target railhmi-recording-tap
+[ 90%] Building CXX object src/media/CMakeFiles/railhmi-diagnostics.dir/tools/diagnostics_probe.cpp.o
+[ 91%] Linking CXX executable ../../tools/railhmi-display
+[ 92%] Linking CXX executable ../../tools/railhmi-clip-solidify
+[ 92%] Built target railhmi-display
+[ 93%] Building CXX object src/media/CMakeFiles/railhmi-measure.dir/tools/measure_probe.cpp.o
+[ 93%] Built target railhmi-clip-solidify
+[ 94%] Linking CXX executable ../../tools/railhmi-backpressure
+[ 94%] Built target railhmi-backpressure
+[ 95%] Linking CXX executable ../../tools/railhmi-ai-dispatch
+[ 96%] Linking CXX executable ../../tools/railhmi-recovery
+[ 96%] Built target railhmi-ai-dispatch
+[ 96%] Built target railhmi-recovery
+[ 97%] Linking CXX executable ../../tools/railhmi-measure
+[ 97%] Built target railhmi-measure
+[ 98%] Linking CXX executable ../../tools/railhmi-diagnostics
+[ 98%] Built target railhmi-diagnostics
+[ 99%] Linking CXX executable ../../tools/railhmi-media-provider
+[ 99%] Built target railhmi-media-provider
+[100%] Linking CXX executable ../../tools/railhmi-vision-pipeline
+[100%] Built target railhmi-vision-pipeline
+[build.sh] build OK (mode=media-check); artifacts under /tmp/railhmi_vision_item010_20261021-item010-r2/app/build-media
+[build.sh] media layer: /tmp/railhmi_vision_item010_20261021-item010-r2/app/build-media/src/media/librailhmi_media.a
+BUILD_MEDIA_EXIT=0
+
+
+===== [core-tests] exit=0 =====
+TEST_EXIT=127
+bash: line 1: ./build-core/tests/railhmi-core-tests: No such file or directory
+
+
+===== [duty-selftest] exit=0 =====
+type=selftest note=纯逻辑夹具；不加载 RKNN/不连相机
+type=scenario name=no_model_pantograph json={"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared for this duty","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+[PASS] no_model_pantograph_unavailable_unknown :: PROFILE_UNSUPPORTED
+type=scenario name=no_model_wheel_rail json={"duty":"wheel_rail","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared for this duty","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+[PASS] no_model_wheel_rail_unavailable_unknown :: PROFILE_UNSUPPORTED
+type=scenario name=no_model_cab_door json={"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared for this duty","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+[PASS] no_model_cab_door_unavailable_unknown :: PROFILE_UNSUPPORTED
+type=scenario name=config_only json={"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+[PASS] config_registration_not_capability :: config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence
+[PASS] config_only_detail :: config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence
+type=scenario name=missing json={"duty":"pantograph","available":false,"reason":"MODEL_MISSING","detail":"declared duty model has no verified tensor descriptor","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"pantograph-3state","declared_model_name":"pantograph-3state","evidence_source":"declaration+descriptor","matched":["declaration"],"mismatched":[]}
+[PASS] declaration_without_descriptor_missing :: MODEL_MISSING
+type=scenario name=mismatch_real_yolov5s_shape json={"duty":"pantograph","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"yolov5s","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count"],"mismatched":["unsupported_decode_layout"]}
+[PASS] yolov5s_shape_is_mismatch :: descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)
+[FAIL] mismatch_reports_output_count :: 结构不匹配逐项可见
+type=scenario name=ready json={"duty":"pantograph","available":true,"reason":"READY","detail":"declared capability verified structurally (detected=yolov5_detect); semantic state stays unknown until a declared label passes threshold","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"pantograph-3state","declared_model_name":"pantograph-3state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count","class_score_layout"],"mismatched":[]}
+[PASS] declared_verified_ready_but_unknown :: READY != normal
+type=scenario name=prediction_unknown json={"duty":"pantograph","available":true,"reason":"READY","detail":"no declared label passed threshold; state stays unknown","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"pantograph-3state","declared_model_name":"pantograph-3state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count","class_score_layout"],"mismatched":[]}
+[PASS] undetermined_prediction_stays_unknown :: 未声明/低分不产生 normal
+type=scenario name=prediction_normal json={"duty":"pantograph","available":true,"reason":"READY","detail":"state from declared label 'pantograph_normal' score=0.930000","state":"normal","state_display":"正常","semantics_unknown":false,"config_registered":true,"registered_model_name":"pantograph-3state","declared_model_name":"pantograph-3state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count","class_score_layout"],"mismatched":[]}
+[PASS] declared_label_sets_normal :: normal 只能来自已声明标签
+type=scenario name=prediction_abnormal_door json={"duty":"cab_door","available":true,"reason":"READY","detail":"state from declared label 'door_ajar' score=0.880000","state":"ajar","state_display":"异常开启","semantics_unknown":false,"config_registered":true,"registered_model_name":"cab-door-2state","declared_model_name":"cab-door-2state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count","class_score_layout"],"mismatched":[]}
+[PASS] declared_door_label_sets_ajar :: ajar
+[PASS] unavailable_rejects_prediction :: unknown 保持、不产判定
+[PASS] unavailable_no_detection :: 无判定输出
+[PASS] json_unknown_not_normal :: {"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared f
+[PASS] duty_status_json_three_duties :: 三职责齐全
+RESULT: FAIL failures=1
+DUTY_SELFTEST_EXIT=1
+
+
+===== [duty-config] exit=0 =====
+type=config dir=./config
+type=duty name=pantograph registered=yolov5s available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知
+type=duty name=wheel_rail registered=yolov8s-seg available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知
+type=duty name=cab_door registered=yolov5s available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知
+type=duty_status json={"duties":[{"profile":"pantograph","camera_id":"","availability":{"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"wheel_rail","camera_id":"","availability":{"duty":"wheel_rail","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov8s-seg' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov8s-seg","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"cab_door","camera_id":"","availability":{"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}}]}
+[PASS] config_three_duties_unavailable_unknown :: unavailable=3 unknown=3
+RESULT: PASS failures=0
+DUTY_CONFIG_EXIT=0
+
+
+===== [fixture-no_model] exit=0 =====
+type=scenario name=no_model json={"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"no dedicated model capability declared for this duty","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+RESULT: PASS failures=0
+FIXTURE_EXIT=0
+
+
+===== [fixture-config_only] exit=0 =====
+type=scenario name=config_only json={"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]}
+RESULT: PASS failures=0
+FIXTURE_EXIT=0
+
+
+===== [fixture-missing] exit=0 =====
+type=scenario name=missing json={"duty":"wheel_rail","available":false,"reason":"MODEL_MISSING","detail":"declared duty model has no verified tensor descriptor","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"wheel-rail-2state","declared_model_name":"wheel-rail-2state","evidence_source":"declaration+descriptor","matched":["declaration"],"mismatched":[]}
+RESULT: PASS failures=0
+FIXTURE_EXIT=0
+
+
+===== [fixture-mismatch] exit=0 =====
+type=scenario name=mismatch json={"duty":"pantograph","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"yolov5s","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count"],"mismatched":["unsupported_decode_layout"]}
+RESULT: PASS failures=0
+FIXTURE_EXIT=0
+
+
+===== [fixture-ready] exit=0 =====
+type=scenario name=ready json={"duty":"pantograph","available":true,"reason":"READY","detail":"declared capability verified structurally (detected=yolov5_detect); semantic state stays unknown until a declared label passes threshold","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"pantograph-3state","declared_model_name":"pantograph-3state","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count","class_score_layout"],"mismatched":[]}
+RESULT: PASS failures=0
+FIXTURE_EXIT=0
+
+
+===== [rknn-probe-yolov8s-seg] exit=0 =====
+descriptor_version=1
+model.path=/tmp/railhmi_vision_item010_20261021-item010-r2/model-assets/yolov8s-seg.rknn
+model.file=yolov8s-seg.rknn
+model.file_present=1
+model.load_status=ok
+model.runtime.api_version=2.3.2 (429f97ae6b@2025-04-09T09:09:27)
+model.runtime.drv_version=0.9.8
+input.count=1
+output.count=13
+tensor.dir=input
+tensor.index=0
+tensor.name=images
+tensor.n_dims=4
+tensor.dims=1,640,640,3
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nhwc
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00392157
+tensor.n_elems=1228800
+tensor.size=1228800
+
+tensor.dir=output
+tensor.index=0
+tensor.name=789
+tensor.n_dims=4
+tensor.dims=1,64,80,80
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=51
+tensor.scale=0.193457
+tensor.n_elems=409600
+tensor.size=409600
+
+tensor.dir=output
+tensor.index=1
+tensor.name=onnx::ReduceSum_799
+tensor.n_dims=4
+tensor.dims=1,1,80,80
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00302526
+tensor.n_elems=6400
+tensor.size=6400
+
+tensor.dir=output
+tensor.index=2
+tensor.name=804
+tensor.n_dims=4
+tensor.dims=1,1,80,80
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00302526
+tensor.n_elems=6400
+tensor.size=6400
+
+tensor.dir=output
+tensor.index=3
+tensor.name=762
+tensor.n_dims=4
+tensor.dims=1,32,80,80
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=60
+tensor.scale=0.0308758
+tensor.n_elems=204800
+tensor.size=204800
+
+tensor.dir=output
+tensor.index=4
+tensor.name=813
+tensor.n_dims=4
+tensor.dims=1,64,40,40
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=46
+tensor.scale=0.129618
+tensor.n_elems=102400
+tensor.size=102400
+
+tensor.dir=output
+tensor.index=5
+tensor.name=onnx::ReduceSum_823
+tensor.n_dims=4
+tensor.dims=1,1,40,40
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00364647
+tensor.n_elems=1600
+tensor.size=1600
+
+tensor.dir=output
+tensor.index=6
+tensor.name=827
+tensor.n_dims=4
+tensor.dims=1,1,40,40
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00364647
+tensor.n_elems=1600
+tensor.size=1600
+
+tensor.dir=output
+tensor.index=7
+tensor.name=771
+tensor.n_dims=4
+tensor.dims=1,32,40,40
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=48
+tensor.scale=0.0328631
+tensor.n_elems=51200
+tensor.size=51200
+
+tensor.dir=output
+tensor.index=8
+tensor.name=836
+tensor.n_dims=4
+tensor.dims=1,64,20,20
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=62
+tensor.scale=0.189591
+tensor.n_elems=25600
+tensor.size=25600
+
+tensor.dir=output
+tensor.index=9
+tensor.name=onnx::ReduceSum_846
+tensor.n_dims=4
+tensor.dims=1,1,20,20
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00385611
+tensor.n_elems=400
+tensor.size=400
+
+tensor.dir=output
+tensor.index=10
+tensor.name=850
+tensor.n_dims=4
+tensor.dims=1,1,20,20
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00385611
+tensor.n_elems=400
+tensor.size=400
+
+tensor.dir=output
+tensor.index=11
+tensor.name=780
+tensor.n_dims=4
+tensor.dims=1,32,20,20
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=28
+tensor.scale=0.0348764
+tensor.n_elems=12800
+tensor.size=12800
+
+tensor.dir=output
+tensor.index=12
+tensor.name=753
+tensor.n_dims=4
+tensor.dims=1,32,160,160
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-119
+tensor.scale=0.0300399
+tensor.n_elems=819200
+tensor.size=819200
+
+
+RKNN_EXIT=0
+
+
+===== [rknn-probe-yolov5s] exit=0 =====
+descriptor_version=1
+model.path=/tmp/railhmi_vision_item010_20261021-item010-r2/model-assets/yolov5s.rknn
+model.file=yolov5s.rknn
+model.file_present=1
+model.load_status=ok
+model.runtime.api_version=2.3.2 (429f97ae6b@2025-04-09T09:09:27)
+model.runtime.drv_version=0.9.8
+input.count=1
+output.count=3
+tensor.dir=input
+tensor.index=0
+tensor.name=images
+tensor.n_dims=4
+tensor.dims=1,640,640,3
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nhwc
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00392157
+tensor.n_elems=1228800
+tensor.size=1228800
+
+tensor.dir=output
+tensor.index=0
+tensor.name=output
+tensor.n_dims=4
+tensor.dims=1,255,80,80
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.0038597
+tensor.n_elems=1632000
+tensor.size=1632000
+
+tensor.dir=output
+tensor.index=1
+tensor.name=283
+tensor.n_dims=4
+tensor.dims=1,255,40,40
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00392157
+tensor.n_elems=408000
+tensor.size=408000
+
+tensor.dir=output
+tensor.index=2
+tensor.name=285
+tensor.n_dims=4
+tensor.dims=1,255,20,20
+tensor.extra_dims=0
+tensor.type=int8
+tensor.fmt=nchw
+tensor.qnt=affine
+tensor.zp=-128
+tensor.scale=0.00391501
+tensor.n_elems=102000
+tensor.size=102000
+
+
+RKNN_EXIT=0
+
+
+===== [duty-real-descriptor-seg] exit=0 =====
+type=declared duty=pantograph outputs=3 hw=640x640 labels=pantograph_not_raised=not_raised,pantograph_normal=normal,pantograph_abnormal=abnormal
+type=evaluation json={"duty":"pantograph","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov8_seg;13 outputs with 1 proto(32x160x160))","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"yolov8s-seg.rknn","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized"],"mismatched":["output_count13!=3"]}
+type=descriptor api=2.3.2 (429f97ae6b@2025-04-09T09:09:27) drv=0.9.8 in=1 out=13
+type=expect ok expect=unavailable available=false
+RESULT: PASS failures=0
+DESC_SEG_EXIT=0
+
+
+===== [duty-real-descriptor-det] exit=0 =====
+type=declared duty=cab_door outputs=2 hw=640x640 labels=door_closed=closed,door_ajar=ajar
+type=evaluation json={"duty":"cab_door","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":false,"registered_model_name":"","declared_model_name":"yolov5s.rknn","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized"],"mismatched":["output_count3!=2"]}
+type=descriptor api=2.3.2 (429f97ae6b@2025-04-09T09:09:27) drv=0.9.8 in=1 out=3
+type=expect ok expect=unavailable available=false
+RESULT: PASS failures=0
+DESC_DET_EXIT=0
+
+
+===== [duty-media-no-model] exit=0 =====
+type=config dir=./config models_dir=/tmp/railhmi_vision_item010_20261021-item010-r2/model-assets duty_declarations=0 duty_models=0
+type=duty_status json={"duties":[{"profile":"pantograph","camera_id":"","availability":{"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"wheel_rail","camera_id":"","availability":{"duty":"wheel_rail","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov8s-seg' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov8s-seg","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"cab_door","camera_id":"","availability":{"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}}]}
+type=duty name=pantograph available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知 registered=yolov5s declared= evidence=none
+[PASS] duty_pantograph_no_model :: reason=PROFILE_UNSUPPORTED state=unknown
+type=duty name=wheel_rail available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知 registered=yolov8s-seg declared= evidence=none
+[PASS] duty_wheel_rail_no_model :: reason=PROFILE_UNSUPPORTED state=unknown
+type=duty name=cab_door available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知 registered=yolov5s declared= evidence=none
+[PASS] duty_cab_door_no_model :: reason=PROFILE_UNSUPPORTED state=unknown
+RESULT: PASS failures=0
+MEDIA_NOMODEL_EXIT=0
+
+
+===== [duty-media-declared-mismatch] exit=0 =====
+type=config dir=./config models_dir=/tmp/railhmi_vision_item010_20261021-item010-r2/model-assets duty_declarations=2 duty_models=2
+type=duty_status json={"duties":[{"profile":"pantograph","camera_id":"","availability":{"duty":"pantograph","available":false,"reason":"MODEL_MISMATCH","detail":"descriptor does not match declared duty capability (detected=yolov5_detect;3 output scales)","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"yolov5s","evidence_source":"declaration+descriptor","matched":["declaration","input_count","input_c","input_hw","input_quantized","output_count"],"mismatched":["unsupported_decode_layout"]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"wheel_rail","camera_id":"","availability":{"duty":"wheel_rail","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov8s-seg' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov8s-seg","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"cab_door","camera_id":"","availability":{"duty":"cab_door","available":false,"reason":"MODEL_MISSING","detail":"declared duty model has no verified tensor descriptor","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"yolov8s-seg","evidence_source":"declaration+descriptor","matched":["declaration"],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}}]}
+type=duty name=pantograph available=false reason=MODEL_MISMATCH state=unknown display=未知 registered=yolov5s declared=yolov5s evidence=declaration+descriptor
+[PASS] duty_pantograph_declared :: reason=MODEL_MISMATCH state=unknown
+type=duty name=wheel_rail available=false reason=PROFILE_UNSUPPORTED state=unknown display=未知 registered=yolov8s-seg declared= evidence=none
+[PASS] duty_wheel_rail_no_model :: reason=PROFILE_UNSUPPORTED state=unknown
+type=duty name=cab_door available=false reason=MODEL_MISSING state=unknown display=未知 registered=yolov5s declared=yolov8s-seg evidence=declaration+descriptor
+[PASS] duty_cab_door_declared :: reason=MODEL_MISSING state=unknown
+RESULT: PASS failures=0
+MEDIA_MISMATCH_EXIT=0
+
+
+===== [chain4] exit=0 =====
+type=config dir=./config models_dir=/tmp/railhmi_vision_item010_20261021-item010-r2/model-assets interval=5 depth=2 npu_budget=1(cli-override) temp_limit_c=85.000000 confirm_frames=3 confidence_min=0.500000
+type=models {"engine":"rknn","models_dir":"/tmp/railhmi_vision_item010_20261021-item010-r2/model-assets","models":[{"kind":"yolov5_detect","declared":"yolov5s","version":"rknn-2.3.2/yolov5s","present":true,"ready":true,"reason":"READY","detail":"capability verified","input_dtype":"int8","input_h":640,"input_w":640,"input_scale":0.00392157,"input_zp":-128,"output_count":3,"runtime_api":"2.3.2 (429f97ae6b@2025-04-09T09:09:27)","runtime_drv":"0.9.8"},{"kind":"yolov8_seg","declared":"yolov8s-seg","version":"rknn-2.3.2/yolov8s-seg","present":true,"ready":true,"reason":"READY","detail":"capability verified","input_dtype":"int8","input_h":640,"input_w":640,"input_scale":0.00392157,"input_zp":-128,"output_count":13,"runtime_api":"2.3.2 (429f97ae6b@2025-04-09T09:09:27)","runtime_drv":"0.9.8"}],"profiles":[{"profile":"front","ready":true,"reason":"READY","model_version":"rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg"},{"profile":"wheel_rail","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""},{"profile":"pantograph","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""},{"profile":"cab_door","ready":false,"reason":"PROFILE_UNSUPPORTED","model_version":""}],"counters":{"infer_calls":0,"infer_ok":0,"infer_unavailable":0,"det_boxes":0,"seg_boxes":0,"mask_positive":0,"preprocess_failed":0,"infer_failed":0,"decode_failed":0,"last_pre_us":0,"last_det_us":0,"last_seg_us":0},"danger_zone":"CAM-01/danger_zone","duty_status":{"duties":[{"profile":"pantograph","camera_id":"","availability":{"duty":"pantograph","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"wheel_rail","camera_id":"","availability":{"duty":"wheel_rail","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov8s-seg' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov8s-seg","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}},{"profile":"cab_door","camera_id":"","availability":{"duty":"cab_door","available":false,"reason":"PROFILE_UNSUPPORTED","detail":"config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence","state":"unknown","state_display":"未知","semantics_unknown":true,"config_registered":true,"registered_model_name":"yolov5s","declared_model_name":"","evidence_source":"none","matched":[],"mismatched":[]},"stats":{"evaluations":1,"predictions":0,"unknown_results":1,"rejected_unavailable":0,"blocked_unknown_label":0,"below_threshold":0}}]}}
+type=profile name=front ready=true reason=READY model=rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg
+type=profile name=wheel_rail ready=false reason=PROFILE_UNSUPPORTED model=
+type=profile name=pantograph ready=false reason=PROFILE_UNSUPPORTED model=
+type=profile name=cab_door ready=false reason=PROFILE_UNSUPPORTED model=
+type=source lane=CAM-01 source=test profile=front
+type=source lane=CAM-04 source=test profile=pantograph
+type=source lane=CAM-05 source=test profile=wheel_rail
+type=source lane=CAM-06 source=test profile=cab_door
+rga_api version 1.10.1_[0]
+type=trace t_ms=1016 submitted=104 steps=71 infer_calls=18 events=0 thermal=MEASURED temp_c=43.461000 guard=false
+type=trace t_ms=2026 submitted=206 steps=119 infer_calls=36 events=0 thermal=MEASURED temp_c=43.461000 guard=false
+type=trace t_ms=3053 submitted=308 steps=176 infer_calls=56 events=0 thermal=MEASURED temp_c=43.461000 guard=false
+type=trace t_ms=4055 submitted=408 steps=235 infer_calls=78 events=0 thermal=MEASURED temp_c=43.461000 guard=false
+type=trace t_ms=5055 submitted=508 steps=289 infer_calls=97 events=0 thermal=MEASURED temp_c=43.461000 guard=false
+type=ai-status running=运行 worker_alive=true
+type=stop request_stop_us=0 status=AI 不可用
+type=lane camera=CAM-01 profile=front ready=true reason= model=rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg consumed=30 inferred=30 unavailable=4 unavailable_by_reason=TWO_STAGE_UNAVAILABLE:4 last_unavailable_reason=TWO_STAGE_UNAVAILABLE last_unavailable_detail=rail mask empty published=30 dropped=0 skipped_interval=120 queue_depth=0 last_infer_us=143057 latency_ms=144 fps=5.039972 tracks=0 events=0 env_ready=30 env_unavailable=4 env_queue_dropped=0
+type=envelope camera=CAM-01 json={"session_id":"s1a1540e7385-da1020-0","camera_id":"CAM-01","generation":1,"seq":150,"profile":"front","capture_mono_us":540498306880,"result_mono_us":540498450909,"latency_ms":144,"model_version":"rknn-2.3.2/yolov5s+rknn-2.3.2/yolov8s-seg","availability":"ready","reason":"READY","box_count":0,"boxes":[],"masks":[{"box_index":-1,"width":1280,"height":720,"stride_bytes":1280,"kind":"rail","plane_present":true}]}
+type=lane camera=CAM-04 profile=pantograph ready=false reason=PROFILE_UNSUPPORTED model= consumed=30 inferred=30 unavailable=30 unavailable_by_reason=PROFILE_UNSUPPORTED:30 last_unavailable_reason=PROFILE_UNSUPPORTED last_unavailable_detail=config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence published=30 dropped=0 skipped_interval=121 queue_depth=0 last_infer_us=2 latency_ms=1 fps=5.177647 tracks=0 events=0 env_ready=30 env_unavailable=30 env_queue_dropped=0
+type=envelope camera=CAM-04 json={"session_id":"s1a1540e7385-da1020-0","camera_id":"CAM-04","generation":1,"seq":150,"profile":"pantograph","capture_mono_us":540498296204,"result_mono_us":540498297488,"latency_ms":1,"model_version":"","availability":"unavailable","reason":"PROFILE_UNSUPPORTED","box_count":0,"boxes":[],"masks":[]}
+type=lane camera=CAM-05 profile=wheel_rail ready=false reason=PROFILE_UNSUPPORTED model= consumed=30 inferred=30 unavailable=30 unavailable_by_reason=PROFILE_UNSUPPORTED:30 last_unavailable_reason=PROFILE_UNSUPPORTED last_unavailable_detail=config registers 'yolov8s-seg' but no duty capability is declared/verified; registration is not evidence published=30 dropped=0 skipped_interval=121 queue_depth=0 last_infer_us=1 latency_ms=1 fps=5.177647 tracks=0 events=0 env_ready=30 env_unavailable=30 env_queue_dropped=0
+type=envelope camera=CAM-05 json={"session_id":"s1a1540e7385-da1020-0","camera_id":"CAM-05","generation":1,"seq":150,"profile":"wheel_rail","capture_mono_us":540498296409,"result_mono_us":540498297507,"latency_ms":1,"model_version":"","availability":"unavailable","reason":"PROFILE_UNSUPPORTED","box_count":0,"boxes":[],"masks":[]}
+type=lane camera=CAM-06 profile=cab_door ready=false reason=PROFILE_UNSUPPORTED model= consumed=29 inferred=29 unavailable=29 unavailable_by_reason=PROFILE_UNSUPPORTED:29 last_unavailable_reason=PROFILE_UNSUPPORTED last_unavailable_detail=config registers 'yolov5s' but no duty capability is declared/verified; registration is not evidence published=29 dropped=0 skipped_interval=121 queue_depth=1 last_infer_us=2 latency_ms=128 fps=5.172732 tracks=0 events=0 env_ready=29 env_unavailable=29 env_queue_dropped=0
+type=envelope camera=CAM-06 json={"session_id":"s1a1540e7385-da1020-0","camera_id":"CAM-06","generation":1,"seq":145,"profile":"cab_door","capture_mono_us":540498127265,"result_mono_us":540498256248,"latency_ms":128,"model_version":"","availability":"unavailable","reason":"PROFILE_UNSUPPORTED","box_count":0,"boxes":[],"masks":[]}
+type=rule events_total=0 events_new=0
+type=summary submitted=603 consumed=119 published=119 unavailable=93 round=345 budget=1 thermal_guard_rounds=0 thermal_unknown_rounds=0 thermal={"valid":true,"state":"MEASURED","measured":true,"injected":false,"celsius":43.461,"source":"thermal_zone0","reason":"THERMAL_OK","zone_index":0,"read_mono_ms":540498307}
+[PASS] chain_models_ready
+[PASS] chain_frames_dispatched_and_consumed :: submitted=603 consumed=119
+[PASS] chain_envelopes_published :: 119
+[PASS] chain_stop_ai_unavailable :: AI 不可用
+[PASS] chain_scheduler_rounds :: rounds=345
+[PASS] chain_budget_respected :: 1<=1
+[PASS] chain_thermal_reported :: {"valid":true,"state":"MEASURED","measured":true,"injected":false,"celsius":43.461,"source":"thermal_zone0","reason":"THERMAL_OK","zone_index":0,"read_mono_ms":540498307}
+[PASS] chain_guard_matches_measured_temp :: measured=43.461000 limit=85.000000 guard=false
+[PASS] chain_lease_available :: missing_polls=0
+RESULT: PASS failures=0
+CHAIN4_EXIT=0
+
+
+===== [download] exit=None =====
+app/core-evidence/item010-core-tests-20261021-item010-r2.xml: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-duty-selftest-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-duty-selftest-20261021-item010-r2.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-duty-config-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-duty-config-20261021-item010-r2.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-fixture-no_model-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-fixture-config_only-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-fixture-missing-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-fixture-mismatch-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-fixture-ready-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-rknn-yolov8s-seg-20261021-item010-r2.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-rknn-yolov5s-20261021-item010-r2.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-descriptor-seg-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-descriptor-det-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-media-no-model-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-media-no-model-20261021-item010-r2.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-media-mismatch-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-media-mismatch-20261021-item010-r2.json
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-chain4-20261021-item010-r2.log
+
+===== [download] exit=0 =====
+vision-item010-192_168_0_103-20261021-item010-r2.app_core-evidence_item010-chain4-20261021-item010-r2.json
+
+===== [cleanup] exit=0 =====
+cleaned
+

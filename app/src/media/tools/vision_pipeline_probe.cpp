@@ -482,8 +482,133 @@ struct ChainOptions {
     double duration_s = 10.0;
     std::vector<std::string> lanes;      // 空 = 配置里所有 ai_enabled 路
     int budget = -1;                     // -1 = 用配置
+    std::vector<std::string> duty_declares;   // ITEM-010：kind:model:label=state,...
+    std::vector<std::string> duty_models;     // ITEM-010：kind:path
     std::string out_json;
 };
+
+// 检测器配置（chain 与 duty 两种模式共用同一构造，避免漂移）。
+media::RknnDetectorConfig make_detector_config(const ChainOptions& opt, const core::AppConfig& app,
+                                              const core::ThresholdsConfig& th,
+                                              const std::vector<core::RoiConfig>& rois) {
+    media::RknnDetectorConfig dcfg;
+    dcfg.models_dir = opt.models_dir;
+    for (const auto& m : app.ai.models) {
+        core::DeclaredModel d;
+        d.profile = m.profile;
+        d.name = m.name;
+        d.version = m.version;
+        dcfg.declared.push_back(d);
+    }
+    dcfg.rois = rois;
+    dcfg.detect.score_threshold = static_cast<float>(th.confidence_min);
+    dcfg.detect.score_threshold_source = "app/config/thresholds.yaml:confidence_min";
+    dcfg.detect.nms_iou = 0.45f;
+    dcfg.detect.nms_iou_source = "detect default (0.45; 配置无独立键)";
+    dcfg.detect.num_classes = 80;
+    dcfg.detect.class_whitelist = {0};
+    dcfg.seg.score_threshold = static_cast<float>(th.confidence_min);
+    dcfg.seg.score_threshold_source = "app/config/thresholds.yaml:confidence_min";
+    dcfg.seg.nms_iou = 0.45f;
+    dcfg.seg.nms_iou_source = "seg default (0.45; 配置无独立键)";
+    dcfg.seg.mask_threshold = 0.0f;
+    dcfg.seg.mask_threshold_source = "historical decoder (>0)";
+    dcfg.seg.crop_to_box = true;
+    dcfg.two_stage_cache.enabled = false;
+    dcfg.two_stage_cache.policy_note = "实时报警禁用跨帧缓存（默认关闭）";
+
+    // ITEM-010：职责能力声明与专用模型（来自 CLI；不写死模型名）。
+    for (const auto& spec : opt.duty_declares) {
+        // kind:model_name:label=state,label=state[,...]
+        const std::size_t c1 = spec.find(':');
+        const std::size_t c2 =
+            c1 == std::string::npos ? std::string::npos : spec.find(':', c1 + 1);
+        if (c1 == std::string::npos || c2 == std::string::npos) continue;
+        core::DutyDeclaration decl;
+        if (!core::parse_duty_kind(spec.substr(0, c1), &decl.duty)) continue;
+        decl.declared_model_name = spec.substr(c1 + 1, c2 - c1 - 1);
+        decl.declared_by = "cli:--duty-declare";
+        decl.input_h = 640;
+        decl.input_w = 640;
+        std::string labels = spec.substr(c2 + 1);
+        std::size_t p0 = 0;
+        while (p0 <= labels.size() && !labels.empty()) {
+            const std::size_t c = labels.find(',', p0);
+            const std::string item =
+                labels.substr(p0, c == std::string::npos ? std::string::npos : c - p0);
+            if (!item.empty()) {
+                const std::size_t eq = item.find('=');
+                core::DutyState st = core::DutyState::Unknown;
+                if (eq != std::string::npos && core::parse_duty_state(item.substr(eq + 1), &st))
+                    decl.labels.push_back({item.substr(0, eq), st});
+            }
+            if (c == std::string::npos) break;
+            p0 = c + 1;
+        }
+        decl.output_count = static_cast<int>(decl.labels.size());
+        dcfg.duty_declarations.push_back(decl);
+    }
+    for (const auto& spec : opt.duty_models) {
+        const std::size_t c = spec.find(':');
+        if (c == std::string::npos) continue;
+        core::DutyKind kind = core::DutyKind::Pantograph;
+        if (!core::parse_duty_kind(spec.substr(0, c), &kind)) continue;
+        dcfg.duty_model_paths.emplace_back(kind, spec.substr(c + 1));
+    }
+    return dcfg;
+}
+
+// duty 模式：验证三职责可用性语义（不取流）。判据来自真实 rknn_query 描述或“无声明”。
+int run_duty_mode(const ChainOptions& opt) {
+    core::ConfigLoadResult loaded = core::load_config_dir(opt.config_dir);
+    if (!loaded.ok) {
+        emit("type=error config invalid: " + opt.config_dir);
+        for (const auto& e : loaded.errors) emit("  " + e.str());
+        return 1;
+    }
+    media::RknnDetectorConfig dcfg = make_detector_config(
+        opt, loaded.settings.app, loaded.settings.thresholds, loaded.settings.roi);
+    emit("type=config dir=" + opt.config_dir + " models_dir=" + opt.models_dir +
+         " duty_declarations=" + std::to_string(dcfg.duty_declarations.size()) +
+         " duty_models=" + std::to_string(dcfg.duty_model_paths.size()));
+    media::RknnVisionDetector detector(dcfg);
+    std::string load_err;
+    detector.load(&load_err);
+    const auto duties = detector.duties();
+    emit("type=duty_status json=" + core::duty_status_json(duties));
+    for (const auto& d : duties) {
+        const auto& a = d.availability;
+        emit("type=duty name=" + std::string(core::to_string(d.duty)) + " available=" +
+             env_bool(a.available) + " reason=" + a.reason + " state=" +
+             core::to_string(a.state) + " display=" + core::duty_state_display_zh(a.state) +
+             " registered=" + a.registered_model_name + " declared=" + a.declared_model_name +
+             " evidence=" + a.evidence_source);
+        const bool declared = !a.declared_model_name.empty();
+        bool ok = true;
+        if (!declared) {
+            // 无声明：必须 unavailable + PROFILE_UNSUPPORTED + unknown（配置登记不构成能力）。
+            ok = !a.available && a.reason == core::duty_reason::kProfileUnsupported() &&
+                 a.state == core::DutyState::Unknown;
+        } else {
+            // 有声明：available 与 reason 必须自洽；不可用时状态必须 unknown。
+            ok = a.available == (a.reason == std::string(core::duty_reason::kReady()));
+            if (!a.available && a.state != core::DutyState::Unknown) ok = false;
+        }
+        const std::string name = std::string("duty_") + core::to_string(d.duty) +
+                                 (declared ? "_declared" : "_no_model");
+        check(ok, name, "reason=" + a.reason + " state=" + core::to_string(a.state));
+    }
+    const bool ok = g_fail == 0;
+    emit(std::string("RESULT: ") + (ok ? "PASS" : "FAIL") + " failures=" + std::to_string(g_fail));
+    if (!opt.out_json.empty()) {
+        std::ofstream j(opt.out_json, std::ios::trunc);
+        if (j) {
+            j << "{\"mode\":\"duty\",\"detector\":" << detector.status_json() << ",\"result\":\""
+              << (ok ? "PASS" : "FAIL") << "\",\"failures\":" << g_fail << "}\n";
+        }
+    }
+    return ok ? 0 : 1;
+}
 
 int run_chain(const ChainOptions& opt) {
     core::ConfigLoadResult loaded = core::load_config_dir(opt.config_dir);
@@ -524,31 +649,8 @@ int run_chain(const ChainOptions& opt) {
          " confidence_min=" + std::to_string(th.confidence_min));
 
     // 真实检测器：模型名称来自配置，路径由 models 目录解析。
-    media::RknnDetectorConfig dcfg;
-    dcfg.models_dir = opt.models_dir;
-    for (const auto& m : app.ai.models) {
-        core::DeclaredModel d;
-        d.profile = m.profile;
-        d.name = m.name;
-        d.version = m.version;
-        dcfg.declared.push_back(d);
-    }
-    dcfg.rois = loaded.settings.roi;
-    dcfg.detect.score_threshold = static_cast<float>(th.confidence_min);
-    dcfg.detect.score_threshold_source = "app/config/thresholds.yaml:confidence_min";
-    dcfg.detect.nms_iou = 0.45f;
-    dcfg.detect.nms_iou_source = "detect default (0.45; 配置无独立键)";
-    dcfg.detect.num_classes = 80;
-    dcfg.detect.class_whitelist = {0};
-    dcfg.seg.score_threshold = static_cast<float>(th.confidence_min);
-    dcfg.seg.score_threshold_source = "app/config/thresholds.yaml:confidence_min";
-    dcfg.seg.nms_iou = 0.45f;
-    dcfg.seg.nms_iou_source = "seg default (0.45; 配置无独立键)";
-    dcfg.seg.mask_threshold = 0.0f;
-    dcfg.seg.mask_threshold_source = "historical decoder (>0)";
-    dcfg.seg.crop_to_box = true;
-    dcfg.two_stage_cache.enabled = false;
-    dcfg.two_stage_cache.policy_note = "实时报警禁用跨帧缓存（默认关闭）";
+    media::RknnDetectorConfig dcfg =
+        make_detector_config(opt, app, th, loaded.settings.roi);
 
     auto detector = std::make_shared<media::RknnVisionDetector>(dcfg);
     std::string load_err;
@@ -813,6 +915,8 @@ int main(int argc, char** argv) {
             }
         }
         else if (a == "--budget") { std::string v; next(&v); chain.budget = std::atoi(v.c_str()); }
+        else if (a == "--duty-declare") { std::string v; next(&v); chain.duty_declares.push_back(v); }
+        else if (a == "--duty-model") { std::string v; next(&v); chain.duty_models.push_back(v); }
         else if (a == "--selftest") selftest = true;
         else if (a == "--out") next(&out);
         else if (a == "--json") next(&json);
@@ -820,7 +924,9 @@ int main(int argc, char** argv) {
             std::printf(
                 "usage: railhmi-vision-pipeline [--selftest] [--mode selftest|chain|all] [--config DIR] "
                 "[--models-dir DIR] [--source test|file] [--file F] [--duration S] "
-                "[--lanes CAM-01,...] [--budget N] [--out LOG] [--json FILE]\n");
+                "[--lanes CAM-01,...] [--budget N] [--out LOG] [--json FILE]\n"
+                "       railhmi-vision-pipeline --mode duty [--duty-declare kind:model:label=state,...] "
+                "[--duty-model kind:path]\n");
             return 0;
         } else {
             std::fprintf(stderr, "unknown arg: %s\n", a.c_str());
@@ -838,7 +944,9 @@ int main(int argc, char** argv) {
         rc = run_selftest(config, json);
         if (rc != 0) return rc;
     }
-    if (!selftest && (mode == "chain" || mode == "all" || mode.empty())) {
+    if (!selftest && mode == "duty") {
+        rc = run_duty_mode(chain);
+    } else if (!selftest && (mode == "chain" || mode == "all" || mode.empty())) {
         rc = run_chain(chain);
     }
     return rc;
