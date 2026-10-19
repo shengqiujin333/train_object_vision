@@ -1,0 +1,2 @@
+type=fixture name=zoom_mismatch json={"valid":false,"distance_m":-1,"text":"—","reason":"ZOOM_MISMATCH","detail":"no calibration for zoom 'Z2'","zoom":"Z2","box_height_px":89,"px_per_m_reference":-1}
+RESULT: PASS failures=0

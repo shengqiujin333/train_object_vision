@@ -1,0 +1,6 @@
+type=calibration json={"camera":"CAM-01","zoom":"Z1","ref_m":500.000000,"ref_h_px":89.000000,"px_per_m_reference":52.352941}
+type=request camera=CAM-01 label=person box_h_px=89.000000 zoom=(unknown)
+type=estimate json={"valid":false,"distance_m":-1,"text":"—","reason":"ZOOM_UNKNOWN","detail":"current zoom level is unknown; calibration exists for 1 zoom level(s)","zoom":"","box_height_px":89,"px_per_m_reference":-1}
+type=debug text=—
+type=expect ok expect=unknown
+RESULT: PASS failures=0

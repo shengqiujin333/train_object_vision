@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cstdio>
 #include <utility>
 
 namespace railhmi {
@@ -42,6 +43,12 @@ struct VisionAiWorker::Lane {
     long long last_result_mono_ms = -1;
     long long first_result_mono_ms = -1;
     long long events = 0;
+    // ITEM-011 距离测量遥测
+    long long distance_valid = 0;
+    long long distance_unknown = 0;
+    std::map<std::string, long long> distance_unknown_by_reason;
+    float last_distance_m = -1.0f;
+    std::string distance_text = "—";
     std::string envelope_summary;
     std::map<std::string, long long> unavailable_by_reason;
     std::string last_reason;
@@ -255,6 +262,35 @@ int VisionAiWorker::step() {
 
         VisionInferOutcome out = detector_->infer(frame, lane->profile);  // 不持 mu_
 
+        // ITEM-011：距离测量（可选后置）。只对人员框、且标定与当前变焦档位匹配时换算；
+        // 否则保持 -1（未知）。不做 clamp、不用框尺寸臆造米值。
+        long long dist_valid = 0;
+        long long dist_unknown = 0;
+        std::map<std::string, long long> dist_reasons;
+        float last_dist = -1.0f;
+        const double image_h_px =
+            static_cast<double>(frame.lease.descriptor().layout.height);
+        auto zoom_it = cfg_.camera_zoom.find(lane->camera_id);
+        for (auto& b : out.envelope.boxes) {
+            if (b.label != "person") continue;   // 其它标签无身高先验
+            core::DistanceRequest dreq;
+            dreq.camera_id = lane->camera_id;
+            dreq.label = b.label;
+            dreq.box_height_px = static_cast<double>(b.h) * image_h_px;
+            dreq.zoom_known = zoom_it != cfg_.camera_zoom.end();
+            if (dreq.zoom_known) dreq.zoom_level = zoom_it->second;
+            const core::DistanceEstimate de = core::estimate_distance(cfg_.calibrations, dreq);
+            if (de.valid) {
+                b.distance_m = static_cast<float>(de.meters);
+                last_dist = b.distance_m;
+                ++dist_valid;
+            } else {
+                b.distance_m = -1.0f;
+                ++dist_unknown;
+                ++dist_reasons[de.reason];
+            }
+        }
+
         // 4a) 跟踪（工作线程独占；不可用帧只推进 misses，不伪造 id）。
         const long long ts_ms = mono_us() / 1000;
         if (out.envelope.availability == core::AiAvailability::Ready) {
@@ -300,6 +336,19 @@ int VisionAiWorker::step() {
             if (lane->first_result_mono_ms < 0) lane->first_result_mono_ms = ts_ms;
             lane->events += static_cast<long long>(events.size());
             events_ += static_cast<long long>(events.size());
+            lane->distance_valid += dist_valid;
+            lane->distance_unknown += dist_unknown;
+            for (const auto& kv : dist_reasons)
+                lane->distance_unknown_by_reason[kv.first] += kv.second;
+            if (last_dist > 0.0f) lane->last_distance_m = last_dist;
+            {
+                char dbuf[32];
+                if (lane->last_distance_m > 0.0f)
+                    std::snprintf(dbuf, sizeof(dbuf), "%.1f m", lane->last_distance_m);
+                else
+                    std::snprintf(dbuf, sizeof(dbuf), "%s", "—");
+                lane->distance_text = dbuf;
+            }
             lane->boxes = out.envelope.boxes;
             lane->envelope_summary = core::envelope_json(out.envelope);
             lane->stats = lane->publisher->stats();
@@ -367,6 +416,11 @@ VisionWorkerSnapshot VisionAiWorker::snapshot() const {
         l.events = lane->events;
         l.tracks = lane->tracker.size();
         l.boxes = lane->boxes;
+        l.distance_valid = lane->distance_valid;
+        l.distance_unknown = lane->distance_unknown;
+        l.distance_unknown_by_reason = lane->distance_unknown_by_reason;
+        l.last_distance_m = lane->last_distance_m;
+        l.distance_text = lane->distance_text;
         l.envelope_summary = lane->envelope_summary;
         l.unavailable_by_reason = lane->unavailable_by_reason;
         l.last_unavailable_reason = lane->last_reason;

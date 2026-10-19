@@ -30,6 +30,7 @@ add_library(railhmi_core STATIC
     src/vision_tracker.cpp
     src/vision_worker_schedule.cpp
     src/vision_duty_capability.cpp
+    src/vision_distance.cpp
     src/alarm_center.cpp
     src/clip.cpp
     src/clip_request.cpp
@@ -123,6 +124,13 @@ set_target_properties(railhmi-vision-envelope PROPERTIES
 add_executable(railhmi-vision-semantic tools/semantic_probe.cpp)
 target_link_libraries(railhmi-vision-semantic PRIVATE railhmi_core)
 set_target_properties(railhmi-vision-semantic PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 距离测量探针（视觉推理 ITEM-011；纯逻辑夹具）
+add_executable(railhmi-vision-distance tools/distance_probe.cpp)
+target_link_libraries(railhmi-vision-distance PRIVATE railhmi_core)
+set_target_properties(railhmi-vision-distance PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
 

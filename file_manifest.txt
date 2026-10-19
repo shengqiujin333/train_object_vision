@@ -19,7 +19,7 @@ app/spikes/render_path/main.cpp | active | 渲染路径 spike 主程序（gl|cpu
 app/spikes/render_path/qml.qrc | active | spike QML 资源清单
 app/spikes/render_path/run_render_spike.sh | active | spike 驱动（构建+两条路径测量+选择；支持 --dry-run）
 app/spikes/render_path/spike_core.c | active | 无 Qt 核心管线测量（GStreamer+librga；Qt 开发包缺失时测解码+RGA 的 fps/CPU/GPU/色彩，写 JSON+BMP）
-app/src/core/CMakeLists.txt | active | railhmi_core 静态库（含帧身份 frame_identity、帧布局 frame_layout、压缩滚动缓冲 compressed_ring、录像来源 recording_source、片段请求 clip_request、录像 provider recording_provider、异常恢复策略 recovery_policy、回放同步 replay_sync、视频诊断 video_diagnostics、预算测量 metrics、视觉模型能力 vision_model_capability、视觉预处理 vision_preprocess、检测后处理 vision_detect_postprocess、分割后处理 vision_seg_postprocess、同帧两阶段 vision_two_stage、结果关联发布 vision_inference_envelope、语义适配 vision_semantic_adapter、轻量跟踪 vision_tracker、工作线程调度 vision_worker_schedule（视觉推理 ITEM-009））+ config-check + sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针 + railhmi-timebase-sync（视频 ITEM-015）+ railhmi-model-probe（视觉推理 ITEM-001）+ railhmi-vision-detect（ITEM-003）+ railhmi-vision-seg（ITEM-004）+ railhmi-vision-twostage（ITEM-005）+ railhmi-vision-envelope（ITEM-006）+ railhmi-vision-semantic（ITEM-007）+ railhmi-vision-tracking（ITEM-008）；视觉推理 ITEM-010 增 vision_duty_capability（职责可用性语义）与 railhmi-vision-duty 探针
+app/src/core/CMakeLists.txt | active | railhmi_core 静态库（含帧身份 frame_identity、帧布局 frame_layout、压缩滚动缓冲 compressed_ring、录像来源 recording_source、片段请求 clip_request、录像 provider recording_provider、异常恢复策略 recovery_policy、回放同步 replay_sync、视频诊断 video_diagnostics、预算测量 metrics、视觉模型能力 vision_model_capability、视觉预处理 vision_preprocess、检测后处理 vision_detect_postprocess、分割后处理 vision_seg_postprocess、同帧两阶段 vision_two_stage、结果关联发布 vision_inference_envelope、语义适配 vision_semantic_adapter、轻量跟踪 vision_tracker、工作线程调度 vision_worker_schedule（视觉推理 ITEM-009））+ config-check + sim-inject + status/ai/alarm/clip/replay/maintenance/permissions/health/fault 探针 + railhmi-timebase-sync（视频 ITEM-015）+ railhmi-model-probe（视觉推理 ITEM-001）+ railhmi-vision-detect（ITEM-003）+ railhmi-vision-seg（ITEM-004）+ railhmi-vision-twostage（ITEM-005）+ railhmi-vision-envelope（ITEM-006）+ railhmi-vision-semantic（ITEM-007）+ railhmi-vision-tracking（ITEM-008）；视觉推理 ITEM-010 增 vision_duty_capability（职责可用性语义）与 railhmi-vision-duty 探针；视觉推理 ITEM-011 增 vision_distance（距离测量）与 railhmi-vision-distance 探针
 app/src/core/include/railhmi/core/alarm_center.h | active | 报警中心模型接口（字段派生/默认排序/六维筛选/确认与维护日志/录像三态；ITEM-018）
 app/src/core/include/railhmi/core/bounded_queue.h | active | 有界丢最旧队列（视频 ITEM-008）：线程安全、非阻塞、条数+字节上限、pushed/dropped/popped 计数；纯标准库模板
 app/src/core/include/railhmi/core/camera_registry.h | active | 配置驱动摄像头注册表/检测职责徽标/NVR 集成项接口
@@ -55,6 +55,7 @@ app/src/core/include/railhmi/core/timebase.h | active | 统一时间基准接口
 app/src/core/include/railhmi/core/version.h | active | 版本/构建档位/模拟开关接口（core 无 Qt/GStreamer/相机/SQLite 依赖）
 app/src/core/include/railhmi/core/video_diagnostics.h | active | 视频每路结构化诊断与整条脱敏接口（视频 ITEM-016）：VideoChannelMetrics/DiagnosticPresence/classify_presence/video_metric_json_line/redact_error；纯标准库
 app/src/core/include/railhmi/core/vision_detect_postprocess.h | active | YOLOv5 人形检测后处理接口（视觉推理 ITEM-003）：RawDetectTensor/DetectConfig/DetectBox/DetectResult/decode_yolov5/逆 letterbox 归一化/+1 IoU/稳定 reason；ITEM-004 增 fmt 与 tensor_dequant/tensor_index_nchw 共用；纯标准库
+app/src/core/include/railhmi/core/vision_distance.h | active | 距离测量接口（视觉推理 ITEM-011）：CameraCalibration（相机+变焦档位+参考距离/像素高/身高+有效范围+来源）、DistanceCalibrationSet、DistanceRequest/DistanceEstimate、estimate_distance（门控顺序固定）、distance_from_box_height_px（公开公式）、parse_calibration_spec、distance_text/json；纯标准库
 app/src/core/include/railhmi/core/vision_duty_capability.h | active | 职责可用性语义接口（视觉推理 ITEM-010）：DutyKind/DutyState（unknown 为缺省、按职责词表校验）、DutyDeclaration（能力声明：输入形状/输出数/标签→状态）、DutyEvidenceInput/DutyAvailability、evaluate_duty（声明+描述逐项核验）、map_duty_prediction（未声明/低分保持 unknown）、DutyAdapter（每职责入口 + 统计 + to_detection）、duty_*_json；纯标准库
 app/src/core/include/railhmi/core/vision_inference_envelope.h | active | 推理结果关联与发布接口（视觉推理 ITEM-006）：InferenceEnvelope/EnvelopeBox(track_id null=-1)/MaskRef(零拷贝)/build_envelope/EnvelopePublisher(FrameGate+有界丢旧队列)/JSON；纯标准库
 app/src/core/include/railhmi/core/vision_model_capability.h | active | 视觉模型能力描述与就绪核验接口（视觉推理 ITEM-001）：TensorDesc/ModelDescriptor/ModelSpec/identify_kind/check_capability/稳定 reason/文本与 JSON 序列化/模型路径解析/profile 证据；纯标准库
@@ -99,6 +100,7 @@ app/src/core/src/timebase.cpp | active | 时间基准实现（ITEM-015 增未校
 app/src/core/src/version.cpp | active | 版本与构建描述实现
 app/src/core/src/video_diagnostics.cpp | active | 视频诊断三态/结构化 JSON/整条脱敏实现（视频 ITEM-016）
 app/src/core/src/vision_detect_postprocess.cpp | active | YOLOv5 检测后处理实现（视觉推理 ITEM-003）：通道优先三尺度解码/置信度过滤/类别白名单/letterbox 逆变换归一化/按类别 NMS（+1 IoU）/截断与统计；ITEM-004 增 tensor_dequant/tensor_index_nchw
+app/src/core/src/vision_distance.cpp | active | 距离测量实现（视觉推理 ITEM-011）：distance = ref_m*ref_px/px；NOT_PERSON/NO_CALIBRATION/ZOOM_UNKNOWN/ZOOM_MISMATCH/BAD_CALIBRATION/INVALID_BOX/OUT_OF_RANGE 一律 -1（不 clamp、不臆造米值）
 app/src/core/src/vision_duty_capability.cpp | active | 职责可用性语义实现（视觉推理 ITEM-010）：无声明→PROFILE_UNSUPPORTED（登记不是能力）、声明不完整/结构或布局不匹配→MODEL_MISMATCH、无描述→MODEL_MISSING、核验通过→READY 且 state=unknown
 app/src/core/src/vision_inference_envelope.cpp | active | 推理结果关联与发布实现（视觉推理 ITEM-006）：envelope 构造/延迟/可用与空框/带 track_id 框与掩码引用/逐类拒绝计数/有界丢旧队列/JSON
 app/src/core/src/vision_model_capability.cpp | active | 视觉模型能力核验实现（视觉推理 ITEM-001）：NHWC/NCHW 归一/结构识别（不看文件名）/输入与检测·分割输出逐项匹配/稳定 reason/文本与 JSON
@@ -114,6 +116,7 @@ app/src/core/tools/alarm_probe.cpp | active | 报警中心模型探针 CLI（rai
 app/src/core/tools/clip_probe.cpp | active | 保护片段/缺口探针 CLI（railhmi-clip-probe；片段时长/原子写盘/保护优先/缺口合并；ITEM-019）
 app/src/core/tools/config_check.cpp | active | 启动配置校验入口 main（railhmi-config-check；合法摘要/非法逐条字段并非零退出）
 app/src/core/tools/detect_probe.cpp | active | YOLOv5 检测后处理探针 CLI（railhmi-vision-detect；视觉推理 ITEM-003）：--selftest 19 判例、fixture person/nonperson/nms/empty/padbox/int8、--config 读 thresholds.confidence_min
+app/src/core/tools/distance_probe.cpp | active | 距离测量探针 CLI（railhmi-vision-distance；视觉推理 ITEM-011）：--selftest 14 判例、6 fixtures、--calib/--zoom/--box-h/--camera/--label/--expect 复算与 --json
 app/src/core/tools/duty_probe.cpp | active | 职责可用性探针 CLI（railhmi-vision-duty；视觉推理 ITEM-010）：--selftest 17 判例、5 fixtures（no_model/config_only/missing/mismatch/ready）、--config 真实配置口径、--descriptor 真实 rknn_query 描述核验（--labels/--predictions/--expect）、--json
 app/src/core/tools/envelope_probe.cpp | active | 推理结果关联与发布探针 CLI（railhmi-vision-envelope；视觉推理 ITEM-006）：--selftest 24 判例、10 fixtures（ready/empty/unavailable/seg_unavailable/no_track/identity/stale/duplicate/out_of_order/queue_overflow）、--config 读 app.ai.queue_depth
 app/src/core/tools/fault_probe.cpp | active | 故障自检目录探针 CLI（railhmi-fault-probe；ITEM-025）
@@ -151,7 +154,7 @@ app/src/media/include/railhmi/media/rknn_model_probe.h | active | 真模型张�
 app/src/media/include/railhmi/media/rknn_session.h | active | 最小 RKNN 推理会话接口（视觉推理 ITEM-009）：dlopen librknnrt，rknn_init/query/inputs_set/run/outputs_get(want_float)/outputs_release；输出描述供后处理取形状
 app/src/media/include/railhmi/media/thermal_sensor.h | active | 温度采样接口（视觉推理 ITEM-009）：只读 sysfs thermal_zone*/temp（≤16 候选），失败给稳定 reason，不伪造温度、不提供注入通道
 app/src/media/include/railhmi/media/video_capability.h | active | 视频源能力探测与配置绑定接口（视频 ITEM-001）：元素探测/库版本/凭据状态/就绪性/协商 caps 记录 + 纯逻辑辅助（可单测）
-app/src/media/include/railhmi/media/vision_ai_worker.h | active | 生产推理工作线程接口（视觉推理 ITEM-009）：VisionDetector/VisionInferOutcome/StubVisionDetector（替代输入，非 RKNN）/VisionAiWorker（消费 ai_dispatcher 带身份有界丢旧队列、infer 锁外、request_stop 立即不可用、每路跟踪/envelope/语义遥测）
+app/src/media/include/railhmi/media/vision_ai_worker.h | active | 生产推理工作线程接口（视觉推理 ITEM-009）：VisionDetector/VisionInferOutcome/StubVisionDetector（替代输入，非 RKNN）/VisionAiWorker（消费 ai_dispatcher 带身份有界丢旧队列、infer 锁外、request_stop 立即不可用、每路跟踪/envelope/语义遥测）；视觉推理 ITEM-011 增 calibrations/camera_zoom 与每路距离遥测（valid/unknown/reason/文本）
 app/src/media/include/railhmi/media/vision_rknn_detector.h | active | 真实 RKNN 检测器接口（视觉推理 ITEM-009）：按 profile 的模型证据（front=det+seg，其余 PROFILE_UNSUPPORTED）、模型名/路径来自配置、infer reason token（INFER_FAILED/PREPROCESS_FAILED/DECODE_FAILED/INPUT_MISMATCH）；视觉推理 ITEM-010 增职责声明/专用模型路径/duties()/职责 infer 语义
 app/src/media/src/ai_dispatcher.cpp | active | AI 帧派发边界实现（视频 ITEM-010）：构造时按 ai_enabled&&ai_profile!=none 建每相机通道；on_frame 复用 core::frame_due(seq,interval) 降频、nonce 拒绝非启用路、BoundedQueue 丢最旧计数；pop/计数线程安全
 app/src/media/src/ai_worker.cpp | active | 推理工作线程实现（std::thread 生命周期/有界队列/帧间隔/遥测；SimDetector 含距离；ITEM-017/021；视觉推理 ITEM-009 起 loop 只在 synthetic_tick=true 时自造帧）
@@ -173,7 +176,7 @@ app/src/media/src/rknn_model_probe.cpp | active | 真模型张量读取实现（
 app/src/media/src/rknn_session.cpp | active | 最小 RKNN 推理会话实现（视觉推理 ITEM-009）：自声明 ABI + 官方头 static_assert 校验、输出 float32 尺寸校验、异常显式失败
 app/src/media/src/thermal_sensor.cpp | active | 温度采样实现（视觉推理 ITEM-009）：有限次打开 zone 文件、多 zone 取最大、脱敏错误说明
 app/src/media/src/video_capability.cpp | active | 能力探测实现：直接 gst-inspect 探测（不用 --exists）、librga/librknnrt 版本、凭据只判存在性、有界 RTSP 协商 caps 探测（含瞬时重试与凭据擦除/脱敏）、JSON/文本输出
-app/src/media/src/vision_ai_worker.cpp | active | 生产推理工作线程实现（视觉推理 ITEM-009）：温度读取→调度→锁外推理→跟踪→envelope 发布→语义/规则→短锁遥测；不可用 reason 分布可观察；视觉推理 ITEM-010 需求带 duty_ready，不可用职责在预算外消费一帧（不占 NPU）
+app/src/media/src/vision_ai_worker.cpp | active | 生产推理工作线程实现（视觉推理 ITEM-009）：温度读取→调度→锁外推理→跟踪→envelope 发布→语义/规则→短锁遥测；不可用 reason 分布可观察；视觉推理 ITEM-010 需求带 duty_ready，不可用职责在预算外消费一帧（不占 NPU）；视觉推理 ITEM-011 对人员框按标定+档位换算 distance_m（否则 -1，不 clamp/不臆造）
 app/src/media/src/vision_rknn_detector.cpp | active | 真实 RKNN 检测器实现（视觉推理 ITEM-009）：FrameLease→预处理→rknn_run→ITEM-003/004 解码→ITEM-005 两阶段→ITEM-006 envelope（含 rail 掩码零拷贝引用与 latency）；视觉推理 ITEM-010 增 load_duties/run_duty（类分数解码→声明标签→状态）、职责 ready/unavailable_reason、status_json 的 duty_status
 app/src/media/tools/ai_dispatch_probe.cpp | active | AI 帧派发边界探针 CLI（railhmi-ai-dispatch；视频 ITEM-010）：--config 读取 cameras/app.ai（不写死设备）、六路 test 源、慢消费者制造溢出、逐路汇总/popped 身份/acceptance、--selftest
 app/src/media/tools/ai_runner.cpp | active | 推理工作线程运行器 CLI（railhmi-ai-runner；替代输入链路显式开启 synthetic_tick 并标注；运行→停止验证 AI 不可用；ITEM-017）
@@ -193,7 +196,7 @@ app/src/media/tools/rga_convert_probe.cpp | active | NV12→BGR 转换探针 CLI
 app/src/media/tools/rknn_probe.cpp | active | 真模型张量描述探针 CLI（railhmi-rknn-probe；视觉推理 ITEM-001）：--model 输出文本/JSON 描述供 railhmi-model-probe 核验
 app/src/media/tools/stream_probe.cpp | active | 单路取流/状态机探针 CLI（railhmi-stream-probe）；ITEM-002 增 --decode/--user/--password-env/--timeout-us 与 --selftest 纯映射核对；ITEM-003 增时间基准校准、身份/接纳上屏与 --rebuild-after 重建演示、身份 selftest
 app/src/media/tools/video_capability_tool.cpp | active | 运行入口 railhmi-video-capability（--config/--json/--out/--probe-caps/--camera/--selftest；缺凭据/缺元素显式报错）
-app/src/media/tools/vision_pipeline_probe.cpp | active | 真实检测器/工作线程/调度探针 CLI（railhmi-vision-pipeline；视觉推理 ITEM-009）：--selftest 19 判例（无造帧/非阻塞/丢旧/预算无饥饿/温度守卫/不可用语义）+ --mode chain（test/file 源全链路）；视觉推理 ITEM-010 增 --mode duty / --duty-declare / --duty-model 与共用检测器配置构造
+app/src/media/tools/vision_pipeline_probe.cpp | active | 真实检测器/工作线程/调度探针 CLI（railhmi-vision-pipeline；视觉推理 ITEM-009）：--selftest 19 判例（无造帧/非阻塞/丢旧/预算无饥饿/温度守卫/不可用语义）+ --mode chain（test/file 源全链路）；视觉推理 ITEM-010 增 --mode duty / --duty-declare / --duty-model 与共用检测器配置构造；视觉推理 ITEM-011 增 --calib/--camera-zoom、worker 距离用例与每路距离统计输出
 app/src/platform/CMakeLists.txt | active | railhmi_platform 静态库；SQLite 优先 dev 包，否则运行时 libsqlite3.so.0 + 项目 shim 头；编译 SqliteStore/Repository
 app/src/platform/include/railhmi/platform/file_store.h | active | 原子文件存储接口（临时文件+rename，断电保护）
 app/src/platform/include/railhmi/platform/log.h | active | 结构化日志与 URL 凭据脱敏接口
@@ -238,8 +241,8 @@ app/src/ui/src/permissions_model.cpp | active | 权限桥接实现（矩阵/门�
 app/src/ui/src/permissions_model.h | active | 权限/二次确认 QML 桥接接口（matrix/can*/exportRecording/modifyConfig/recentLogs 委托 core；ITEM-023）
 app/src/ui/src/replay_model.cpp | active | 历史回放桥接实现（时间轴/跳转/同步/来源/时间格式 + 报警选择动态详情 + 真实时钟偏移同步快照；ITEM-020）
 app/src/ui/src/replay_model.h | active | 历史回放 QML 桥接接口（timeline/jumpTargets/sourceStatus + 选择 selectAlarm/selectedDetail/relatedCameras + syncState + playback/setPlaying/setSpeed；ITEM-020）
-app/tests/core/CMakeLists.txt | active | railhmi-core-tests（多源：.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess/vision_detect_postprocess/vision_seg_postprocess/vision_two_stage/vision_inference_envelope/vision_semantic_adapter/vision_tracker/vision_worker_schedule（视觉推理 ITEM-009）+ 固定输出 <build>/tests + RAILHMI_CONFIG_DIR）；视觉推理 ITEM-010 增 test_vision_duty_capability.cpp
-app/tests/core/main.cpp | active | railhmi-core 单元测试入口（.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess/vision_detect_postprocess/vision_seg_postprocess/vision_two_stage/vision_inference_envelope/vision_semantic_adapter/vision_tracker/vision_worker_schedule（视觉推理 ITEM-009））；视觉推理 ITEM-010 增 run_vision_duty_capability_tests
+app/tests/core/CMakeLists.txt | active | railhmi-core-tests（多源：.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess/vision_detect_postprocess/vision_seg_postprocess/vision_two_stage/vision_inference_envelope/vision_semantic_adapter/vision_tracker/vision_worker_schedule（视觉推理 ITEM-009）+ 固定输出 <build>/tests + RAILHMI_CONFIG_DIR）；视觉推理 ITEM-010 增 test_vision_duty_capability.cpp；视觉推理 ITEM-011 增 test_vision_distance.cpp
+app/tests/core/main.cpp | active | railhmi-core 单元测试入口（.../维护/权限/健康/frame_identity/frame_layout/bounded_queue/compressed_ring/recording_source/clip_request/recording_provider/recovery_policy/replay_sync/video_diagnostics/metrics/vision_model_capability/vision_preprocess/vision_detect_postprocess/vision_seg_postprocess/vision_two_stage/vision_inference_envelope/vision_semantic_adapter/vision_tracker/vision_worker_schedule（视觉推理 ITEM-009））；视觉推理 ITEM-010 增 run_vision_duty_capability_tests；视觉推理 ITEM-011 增 run_vision_distance_tests
 app/tests/core/test_alarm_center.cpp | active | 报警中心测试（ITEM-018：字段派生/默认排序/六维筛选与空态/确认不删事件/维护日志）
 app/tests/core/test_bounded_queue.cpp | active | 有界丢最旧队列测试（视频 ITEM-008：容量 1 latest-only/有界丢旧/字节预算/计数/空语义）
 app/tests/core/test_clip.cpp | active | 保护片段/缺口测试（ITEM-019：滚动缓冲/片段时长/finalize/缺口合并/保留优先/原子写盘）
@@ -272,6 +275,7 @@ app/tests/core/test_util.cpp | active | 测试 harness 实现（pass/fail 计数
 app/tests/core/test_util.h | active | 测试 harness 声明（断言记录与 write_junit）
 app/tests/core/test_video_diagnostics.cpp | active | 视频诊断测试（视频 ITEM-016：三态 online/gap/unverified、attempt_id、整条脱敏 userinfo/kv/location/pipeline、结构化 JSON 字段与 last_error 脱敏）
 app/tests/core/test_vision_detect_postprocess.cpp | active | YOLOv5 检测后处理测试（视觉推理 ITEM-003：解码坐标/分数/白名单/空图/阈值/NMS/越界/截断/IoU/逆变换/int8）
+app/tests/core/test_vision_distance.cpp | active | 距离测量测试（视觉推理 ITEM-011）：标定校验/派生 px/m、公式与线性、六类门控、范围不 clamp、标定集合查询、字符串解析、规则不消费距离、P5 未知占位（47 判例）
 app/tests/core/test_vision_duty_capability.cpp | active | 职责可用性语义测试（视觉推理 ITEM-010）：词表/转换/声明完整性/求值分支/标签映射/适配器/JSON/项目真实登记口径（unknown 永不 normal、登记不是能力）
 app/tests/core/test_vision_inference_envelope.cpp | active | 推理结果关联与发布测试（视觉推理 ITEM-006：延迟/身份/可用与空框/逐类拒绝/有界队列丢旧/分类计数/JSON）
 app/tests/core/test_vision_model_capability.cpp | active | 视觉模型能力核验测试（视觉推理 ITEM-001：规格映射/结构识别/匹配与不匹配/FI-AI-01..03/profile 证据/配置解析/文本往返/JSON）
@@ -307,6 +311,7 @@ app/tools/board_rga_convert_check.py | active | 视频 ITEM-005 板端执行入�
 app/tools/board_timebase_sync_check.py | active | 视频 ITEM-015 板端执行入口（上传→CoreTests+core-tests→railhmi-timebase-sync selftest+真实时钟校准/守卫/同步/seek 运行→取回日志/JSON→清理）
 app/tools/board_video_capability.py | active | 视频 ITEM-001 板端执行入口（上传 app/→build.sh MediaCheck→selftest/可达性/无凭据/有界 caps 探测→取回证据→清理；凭据经 0600 临时 env 文件注入并删除，命令串与日志不含凭据）
 app/tools/board_vision_detect.py | active | 视觉推理 ITEM-003 板端执行入口（上传 app/→CoreTests 单测→selftest→6 fixtures→config 阈值→取回证据→清理）
+app/tools/board_vision_distance.py | active | 视觉推理 ITEM-011 板端执行入口（CoreTests→core-tests→MediaCheck→distance selftest→6 fixtures→四种换算形态→media selftest→带标定链路→取回→清理；只写 /tmp、有限超时）
 app/tools/board_vision_duty.py | active | 视觉推理 ITEM-010 板端执行入口（CoreTests→core-tests→MediaCheck→duty selftest→config→5 fixtures→真实描述 drill→media duty 两情形→4 路预算裁剪链路→取回→清理；只写 /tmp、有限超时）
 app/tools/board_vision_envelope.py | active | 视觉推理 ITEM-006 板端执行入口（上传 app/→CoreTests 单测→selftest→10 fixtures→config（app.ai.queue_depth）→取回证据→清理）
 app/tools/board_vision_model_probe.py | active | 视觉推理 ITEM-001 板端执行入口（上传 app/+models→CoreTests 单测+selftest→MediaCheck 编译 rknn 探针→真实 rknn_query→描述核验（含负例）→配置汇总→取回证据→清理）
@@ -2162,6 +2167,7 @@ docs/vision/implementation/ITEM-007_SEMANTIC_RULES.md | active | 视觉推理 IT
 docs/vision/implementation/ITEM-008_TRACKING.md | active | 视觉推理 ITEM-008 实现说明：轻量跟踪器（IoU/中心距、id 单调不复用、丢失/鸿沟/上限）/三种 TrackPolicy/先 reset 后映射/运行入口/返工记录与观察
 docs/vision/implementation/ITEM-009_DETECTOR_WORKER.md | active | 视觉推理 ITEM-009 实现文档（链路/锁纪律/预算与温度守卫/板端实测/返工记录/观察与移交）
 docs/vision/implementation/ITEM-010_DUTY_AVAILABILITY.md | active | 视觉推理 ITEM-010 实现文档（语义不变量/求值顺序/调度与线程集成/状态发布通道/板端实测/返工记录/观察与移交）
+docs/vision/implementation/ITEM-011_DISTANCE.md | active | 视觉推理 ITEM-011 实现文档（换算模型/门控 reason 表/应用链路/规则与 P5 语义/板端实测/返工记录/观察与移交）
 docs/vision/test_evidence/ITEM-001/ITEM-001-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-001 实际正确性证据（夹具匹配/不匹配 8 用例、真实 rknn_query 两模型、描述核验与负例、配置汇总、core 958/0）与未执行项
 docs/vision/test_evidence/ITEM-001/VERIFY-ITEM-001.md | active | TestEvidence：视觉 ITEM-001 独立验证（VERIFY-20261018-v1 TEST_PASS：交付入口独立复跑 13 产物 + 独立比对 38/38 + vext 板端 28 判例/CLI 负例/确定性/脱敏/清理；O-1 profile_gap 配置事实、O-2 输出量化无门登记）
 docs/vision/test_evidence/ITEM-001/build-CoreTests-192_168_0_103-20261018-item001-r1.log | active | ITEM-001 core 构建/测试人类可读 transcript（r1）
@@ -2823,6 +2829,43 @@ docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-
 docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.descriptors_yolov8s-seg.descriptor.txt | active | ITEM-010 验证轮真实模型描述文本
 docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.log | active | ITEM-010 验证 fresh 轮人类可读日志（16 步全 0 含 duty selftest/config/5 fixtures/drill/media duty/chain4）
 docs/vision/test_evidence/ITEM-010/vision-item010-192_168_0_103-verify-20261019-item010-v1.transcript.json | active | ITEM-010 验证 fresh 轮 transcript（指纹/逐命令退出码/22 份下载/keep-remote）
+docs/vision/test_evidence/ITEM-011/ITEM-011-EVIDENCE.md | active | 视觉推理 ITEM-011 板端证据（core 1347/0、distance selftest 14/14、6 fixtures、锚点 500m 与线性 250m、无标定/未知档位 -1、media 36px→1236.111m、带标定链路 9/9、返工留痕、覆盖边界）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r1.app_core-evidence_item011-distance-selftest-20261021-item011-r1.log | active | ITEM-011 r1 留痕（MediaCheck 编译失败：媒体探针缺 <cmath> 导致 std::fabs 不可用）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r1.log | active | ITEM-011 r1 留痕（MediaCheck 编译失败：媒体探针缺 <cmath> 导致 std::fabs 不可用）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-chain-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-distance-selftest-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-fixture-no_calib-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-fixture-non_person-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-fixture-out_of_range-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-fixture-valid-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-fixture-zoom_mismatch-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-fixture-zoom_unknown-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-form-anchor-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-form-no-calib-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-form-scaling-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-form-zoom-unknown-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.app_core-evidence_item011-media-selftest-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r2.log | active | ITEM-011 r2 留痕（全部判据 PASS；运行入口 form-no-calib 步骤漏传 --calib 而回退 selftest）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-chain-20261021-item011-r3.json | active | ITEM-011 带标定真实链路 JSON（每路 distance_valid/unknown/text）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-chain-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-core-tests-20261021-item011-r3.xml | active | ITEM-011 终轮 JUnit XML（tests=1347 failures=0）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-distance-selftest-20261021-item011-r3.json | active | ITEM-011 距离自检 JSON（failures=0）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-distance-selftest-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-fixture-no_calib-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-fixture-non_person-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-fixture-out_of_range-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-fixture-valid-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-fixture-zoom_mismatch-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-fixture-zoom_unknown-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-form-anchor-20261021-item011-r3.json | active | ITEM-011 锚点换算 JSON（failures=0）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-form-anchor-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-form-no-calib-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-form-scaling-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-form-zoom-unknown-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-media-selftest-20261021-item011-r3.json | active | ITEM-011 media 自检 JSON（failures=0）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.app_core-evidence_item011-media-selftest-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.log | active | ITEM-011 终轮人类可读日志（build/core-tests/selftest/fixtures/forms/media/chain/cleanup）
+docs/vision/test_evidence/ITEM-011/vision-item011-192_168_0_103-20261021-item011-r3.transcript.json | active | ITEM-011 终轮 transcript（指纹/逐命令退出码/上传构建测试取回清理）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

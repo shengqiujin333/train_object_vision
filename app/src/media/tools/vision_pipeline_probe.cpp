@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -36,6 +37,7 @@
 #include "railhmi/core/inference.h"
 #include "railhmi/core/rules.h"
 #include "railhmi/core/timebase.h"
+#include "railhmi/core/vision_distance.h"
 #include "railhmi/core/vision_inference_envelope.h"
 #include "railhmi/core/vision_worker_schedule.h"
 #include "railhmi/media/ai_dispatcher.h"
@@ -412,7 +414,79 @@ int run_selftest(const std::string& config_dir, const std::string& out_json) {
 
     src.stream->stop();
 
-    // 8) 异常路径回归（验证侧 D-01）：模型缺失 / 模型非法时必须优雅降级为不可用 + reason，
+    // 8) 距离测量（ITEM-011）：真实发帧路径 + 人员框像素高 -> distance_m。
+    {
+        const int img_h = 180;                        // 夹具 test 源 320x180
+        const double box_h_px = 0.20 * img_h;         // 替代检测器框高 0.20（归一化）
+        const double expected = 500.0 * 89.0 / box_h_px;
+        std::vector<media::AiCameraSpec> cams = {{"CAM-01", true, "front"}};
+        media::VisionWorkerConfig wc;
+        wc.sched = {1, 2, 4, 85.0};
+        wc.cameras = cams;
+        wc.semantic = semantic_cfg(th);
+        wc.rules = rule_cfg(th);
+        {
+            core::CameraCalibration c;
+            std::string cerr;
+            check(core::parse_calibration_spec(
+                      "camera=CAM-01,zoom=Z1,ref_m=500,ref_h_px=89,obj_m=1.70,"
+                      "source=selftest-anchor",
+                      &c, &cerr),
+                  "distance_calibration_parsed", cerr);
+            wc.calibrations.add(c);
+            wc.camera_zoom["CAM-01"] = "Z1";
+        }
+        media::StubVisionDetector::Config stubc;
+        stubc.sleep_us = 0;
+        auto det = std::make_shared<media::StubVisionDetector>(stubc);
+        media::VisionAiWorker worker(wc, det, nullptr, nullptr);
+        worker.submit(lease);
+        worker.step();
+        media::VisionWorkerSnapshot s = worker.snapshot();
+        bool found = false;
+        for (const auto& l : s.lanes) {
+            if (l.camera_id != "CAM-01" || l.boxes.empty()) continue;
+            found = true;
+            const float got = l.boxes[0].distance_m;
+            check(std::fabs(static_cast<double>(got) - expected) < 0.2,
+                  "distance_with_calibration_matches_formula",
+                  "got=" + std::to_string(got) + " expected=" + std::to_string(expected));
+            check(l.distance_valid == 1 && l.distance_unknown == 0,
+                  "distance_valid_counted", "valid=" + std::to_string(l.distance_valid));
+            char buf[32];
+            std::snprintf(buf, sizeof(buf), "%.1f m", expected);
+            check(l.distance_text == buf, "distance_worker_text", l.distance_text);
+        }
+        check(found, "distance_box_present", "替代检测器人员框在场");
+    }
+    {
+        // 无标定：同一路径必须 -1（未知）且 reason=NO_CALIBRATION。
+        std::vector<media::AiCameraSpec> cams = {{"CAM-01", true, "front"}};
+        media::VisionWorkerConfig wc;
+        wc.sched = {1, 2, 4, 85.0};
+        wc.cameras = cams;
+        wc.semantic = semantic_cfg(th);
+        wc.rules = rule_cfg(th);
+        media::StubVisionDetector::Config stubc;
+        stubc.sleep_us = 0;
+        auto det = std::make_shared<media::StubVisionDetector>(stubc);
+        media::VisionAiWorker worker(wc, det, nullptr, nullptr);
+        // 复用已有的 lease（CAM-01）
+        worker.submit(lease);
+        worker.step();
+        media::VisionWorkerSnapshot s = worker.snapshot();
+        bool ok = false;
+        for (const auto& l : s.lanes) {
+            if (l.camera_id != "CAM-01") continue;
+            ok = !l.boxes.empty() && l.boxes[0].distance_m == -1.0f &&
+                 l.distance_unknown >= 1 && l.distance_text == "—" &&
+                 l.distance_unknown_by_reason.count("NO_CALIBRATION") == 1;
+        }
+        check(ok, "distance_without_calibration_unknown",
+              "distance_m=-1 + NO_CALIBRATION + 文本占位");
+    }
+
+    // 9) 异常路径回归（验证侧 D-01）：模型缺失 / 模型非法时必须优雅降级为不可用 + reason，
     //    不得崩溃（历史上 load_kind 在 move 后解引用空 unique_ptr -> SIGSEGV/exit 139）。
     {
         media::RknnDetectorConfig dcfg;
@@ -484,6 +558,8 @@ struct ChainOptions {
     int budget = -1;                     // -1 = 用配置
     std::vector<std::string> duty_declares;   // ITEM-010：kind:model:label=state,...
     std::vector<std::string> duty_models;     // ITEM-010：kind:path
+    std::vector<std::string> calibs;          // ITEM-011：camera=..,zoom=..,ref_m=..,ref_h_px=..
+    std::vector<std::string> camera_zooms;    // ITEM-011：CAM-01=Z1
     std::string out_json;
 };
 
@@ -671,6 +747,29 @@ int run_chain(const ChainOptions& opt) {
     wc.rules = rule_cfg(th);
     auto rules = std::make_shared<core::RuleEngine>(rule_cfg(th));
     auto thermal = std::make_shared<media::ThermalSensor>();
+
+    // ITEM-011：距离测量仅在“相机标定 + 当前变焦档位”齐全时换算；否则 -1（未知）。
+    for (const auto& spec : opt.calibs) {
+        core::CameraCalibration c;
+        std::string cerr;
+        if (!core::parse_calibration_spec(spec, &c, &cerr)) {
+            emit("type=error bad --calib: " + cerr);
+            return 2;
+        }
+        wc.calibrations.add(c);
+        emit("type=calibration camera=" + c.camera_id + " zoom=" + c.zoom_level +
+             " ref_m=" + std::to_string(c.reference_distance_m) +
+             " ref_h_px=" + std::to_string(c.reference_height_px) +
+             " px_per_m_reference=" + std::to_string(c.px_per_m_at_reference()) +
+             " source=" + c.source);
+    }
+    for (const auto& spec : opt.camera_zooms) {
+        const std::size_t eq = spec.find('=');
+        if (eq == std::string::npos) continue;
+        wc.camera_zoom[spec.substr(0, eq)] = spec.substr(eq + 1);
+        emit("type=camera_zoom camera=" + spec.substr(0, eq) + " zoom=" + spec.substr(eq + 1));
+    }
+    if (wc.calibrations.size() == 0) emit("type=calibration none (distance_m 将恒为 -1/未知)");
     media::VisionAiWorker worker(wc, detector, thermal, rules);
 
     // 取流源（file/test；真实 RTSP 属 ENV-D，不在本轮）。
@@ -787,7 +886,11 @@ int run_chain(const ChainOptions& opt) {
              " events=" + std::to_string(l.events) +
              " env_ready=" + std::to_string(l.envelope_stats.accepted) +
              " env_unavailable=" + std::to_string(l.envelope_stats.unavailable) +
-             " env_queue_dropped=" + std::to_string(l.envelope_stats.queue_dropped));
+             " env_queue_dropped=" + std::to_string(l.envelope_stats.queue_dropped) +
+             " distance_valid=" + std::to_string(l.distance_valid) +
+             " distance_unknown=" + std::to_string(l.distance_unknown) +
+             " distance_text=" + l.distance_text +
+             " last_distance_m=" + std::to_string(l.last_distance_m));
         if (!l.envelope_summary.empty())
             emit("type=envelope camera=" + l.camera_id + " json=" + l.envelope_summary);
     }
@@ -865,6 +968,10 @@ int run_chain(const ChainOptions& opt) {
                   << ",\"published\":" << l.published
                   << ",\"dropped\":" << l.dropped
                   << ",\"last_infer_us\":" << l.last_infer_us
+                  << ",\"distance_valid\":" << l.distance_valid
+                  << ",\"distance_unknown\":" << l.distance_unknown
+                  << ",\"distance_text\":\"" << l.distance_text << "\""
+                  << ",\"last_distance_m\":" << l.last_distance_m
                   << ",\"latency_ms\":" << l.latency_ms
                   << ",\"fps\":" << l.fps
                   << ",\"unavailable_reason\":\"" << l.last_unavailable_reason << "\""
@@ -917,6 +1024,8 @@ int main(int argc, char** argv) {
         else if (a == "--budget") { std::string v; next(&v); chain.budget = std::atoi(v.c_str()); }
         else if (a == "--duty-declare") { std::string v; next(&v); chain.duty_declares.push_back(v); }
         else if (a == "--duty-model") { std::string v; next(&v); chain.duty_models.push_back(v); }
+        else if (a == "--calib") { std::string v; next(&v); chain.calibs.push_back(v); }
+        else if (a == "--camera-zoom") { std::string v; next(&v); chain.camera_zooms.push_back(v); }
         else if (a == "--selftest") selftest = true;
         else if (a == "--out") next(&out);
         else if (a == "--json") next(&json);

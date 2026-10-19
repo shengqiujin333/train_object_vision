@@ -1,0 +1,16 @@
+type=selftest note=纯逻辑夹具（不加载 RKNN/不连相机）；锚点 CAM-01 500m/89px
+[PASS] calib_spec_parsed :: camera=CAM-01,zoom=Z1,ref_m=500,ref_h_px=89,obj_m=1.70,min=5,max=600,source=README:2026-10-13:500m/89px
+[PASS] anchor_89px_is_500m :: 500.000000
+[PASS] half_px_double_distance :: 250.000000
+[PASS] px_per_m_reference :: 52.352941
+[PASS] text_valid :: 500.0 m
+[PASS] no_calibration_unknown :: NO_CALIBRATION
+[PASS] unknown_text_placeholder :: —
+[PASS] zoom_unknown_refused :: ZOOM_UNKNOWN
+[PASS] zoom_mismatch_refused :: ZOOM_MISMATCH
+[PASS] non_person_refused :: NOT_PERSON
+[PASS] zero_box_refused :: INVALID_BOX
+[PASS] out_of_range_unknown_not_clamped :: distance 1112.5 m outside calibrated range [5.0, 600.0]
+[PASS] json_distance_ok :: {"valid":true,"distance_m":500,"text":"500.0 m","reason":"DISTANCE_OK","detail":"distance = ref_m*ref_px/px","zoom":"Z1"
+[PASS] json_unknown_minus_one :: {"valid":false,"distance_m":-1,"text":"—","reason":"NO_CALIBRATION","detail":"camera 'CAM-01' has no calibration","zoo
+RESULT: PASS failures=0

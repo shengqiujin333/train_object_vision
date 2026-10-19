@@ -28,6 +28,7 @@
 
 #include "railhmi/core/inference.h"
 #include "railhmi/core/rules.h"
+#include "railhmi/core/vision_distance.h"        // ITEM-011 距离测量
 #include "railhmi/core/vision_inference_envelope.h"
 #include "railhmi/core/vision_seg_postprocess.h"        // SegResult（掩码所有权）
 #include "railhmi/core/vision_semantic_adapter.h"
@@ -101,6 +102,9 @@ struct VisionWorkerConfig {
     int loop_sleep_ms = 5;
     long long thermal_max_age_ms = 2000;
     int envelope_queue_depth = 2;
+    // ITEM-011：相机标定（含变焦档位）与“当前档位”。未标定/档位未知时距离恒 -1。
+    railhmi::core::DistanceCalibrationSet calibrations;
+    std::map<std::string, std::string> camera_zoom;   // camera_id -> 当前变焦档位（缺省=未知）
 };
 
 // 每路遥测（P5/证据口径；不伪造未测数值）。
@@ -123,6 +127,12 @@ struct VisionLaneSnapshot {
     long long last_result_mono_ms = -1;
     std::size_t queue_depth = 0;
     long long events = 0;          // 规则引擎新开事件数（该路）
+    // ITEM-011 距离测量（-1/未知占位；分类计数可观察）
+    long long distance_valid = 0;
+    long long distance_unknown = 0;
+    std::map<std::string, long long> distance_unknown_by_reason;
+    float last_distance_m = -1.0f;
+    std::string distance_text = "—";
     std::size_t tracks = 0;
     std::string envelope_summary;  // 最近 envelope JSON（boxes 为空时不含路径/凭据）
     std::map<std::string, long long> unavailable_by_reason;  // 不可用原因分布（可观察）

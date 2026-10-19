@@ -1,0 +1,2 @@
+type=fixture name=no_calib json={"valid":false,"distance_m":-1,"text":"—","reason":"NO_CALIBRATION","detail":"camera 'CAM-01' has no calibration","zoom":"Z1","box_height_px":89,"px_per_m_reference":-1}
+RESULT: PASS failures=0

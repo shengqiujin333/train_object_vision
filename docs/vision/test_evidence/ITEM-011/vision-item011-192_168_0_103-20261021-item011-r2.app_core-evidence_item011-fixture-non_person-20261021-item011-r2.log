@@ -1,0 +1,2 @@
+type=fixture name=non_person json={"valid":false,"distance_m":-1,"text":"—","reason":"NOT_PERSON","detail":"only person boxes have a height prior","zoom":"Z1","box_height_px":89,"px_per_m_reference":-1}
+RESULT: PASS failures=0
