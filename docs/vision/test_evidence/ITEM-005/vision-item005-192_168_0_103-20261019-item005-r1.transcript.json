@@ -1,0 +1,387 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "local_app": "E:\\work\\rail_issue\\rk3588_handover\\app",
+    "remote_dir": "",
+    "outdir": "docs/vision/test_evidence/ITEM-005",
+    "stamp": "20261019-item005-r1",
+    "connect_timeout": 10,
+    "build_timeout": 900,
+    "command_timeout": 180,
+    "keep_remote": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "steps": [
+    {
+      "step": "env",
+      "cmd": "uname -smr; nproc; g++ --version | head -1",
+      "exit": 0,
+      "elapsed_s": 0.21,
+      "output": "Linux 6.1.141 aarch64\n8\ng++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\n"
+    },
+    {
+      "step": "mkdir",
+      "cmd": "mkdir -p /tmp/railhmi_vision_item005_20261019-item005-r1/app/core-evidence && echo ok",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "ok\n"
+    },
+    {
+      "step": "upload-app",
+      "exit": 0,
+      "output": "uploaded 292 files"
+    },
+    {
+      "step": "build-core",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && bash build.sh CoreTests; echo BUILD_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 10.94,
+      "output": "[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1\n[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no\n[build.sh] configuring: cmake -S '/tmp/railhmi_vision_item005_20261019-item005-r1/app' -B '/tmp/railhmi_vision_item005_20261019-item005-r1/app/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON\n-- The CXX compiler identification is GNU 11.4.0\n-- Detecting CXX compiler ABI info\n-- Detecting CXX compiler ABI info - done\n-- Check for working CXX compiler: /usr/bin/c++ - skipped\n-- Detecting CXX compile features\n-- Detecting CXX compile features - done\n-- railhmi: build mode = CoreTests\n-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled\n-- Configuring done\n-- Generating done\n-- Build files have been written to: /tmp/railhmi_vision_item005_20261019-item005-r1/app/build-core\n[build.sh] building: cmake --build '/tmp/railhmi_vision_item005_20261019-item005-r1/app/build-core' -j8\n[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o\n[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/video_diagnostics.cpp.o\n[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o\n[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o\n[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o\n[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o\n[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o\n[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o\n[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o\n[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/compressed_ring.cpp.o\n[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_source.cpp.o\n[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o\n[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o\n[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o\n[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o\n[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o\n[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o\n[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o\n[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o\n[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o\n[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o\n[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_model_capability.cpp.o\n[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_preprocess.cpp.o\n[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_detect_postprocess.cpp.o\n[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_seg_postprocess.cpp.o\n[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_two_stage.cpp.o\n[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o\nBUILD_EXIT=3\n/tmp/railhmi_vision_item005_20261019-item005-r1/app/src/core/src/vision_two_stage.cpp:141:1: error: definition of explicitly-defaulted ‘railhmi::core::TwoStageCache::TwoStageCache()’\n  141 | TwoStageCache::TwoStageCache() = default;\n      | ^~~~~~~~~~~~~\nIn file included from /tmp/railhmi_vision_item005_20261019-item005-r1/app/src/core/src/vision_two_stage.cpp:3:\n/tmp/railhmi_vision_item005_20261019-item005-r1/app/src/core/include/railhmi/core/vision_two_stage.h:100:5: note: ‘railhmi::core::TwoStageCache::TwoStageCache()’ explicitly defaulted here\n  100 |     TwoStageCache() = default;\n      |     ^~~~~~~~~~~~~\ngmake[2]: *** [src/core/CMakeFiles/railhmi_core.dir/build.make:426: src/core/CMakeFiles/railhmi_core.dir/src/vision_two_stage.cpp.o] Error 1\ngmake[2]: *** Waiting for unfinished jobs....\ngmake[1]: *** [CMakeFiles/Makefile2:166: src/core/CMakeFiles/railhmi_core.dir/all] Error 2\ngmake: *** [Makefile:101: all] Error 2\n[build.sh] build failed (mode=core-tests)\n"
+    },
+    {
+      "step": "core-tests",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tests/railhmi-core-tests --junit core-evidence/item005-core-tests-20261019-item005-r1.xml; echo TEST_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "TEST_EXIT=127\nbash: line 1: ./build-core/tests/railhmi-core-tests: No such file or directory\n"
+    },
+    {
+      "step": "selftest",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --selftest --out core-evidence/item005-selftest-20261019-item005-r1.log; echo SELFTEST_EXIT=$?; ./build-core/tools/railhmi-vision-twostage --selftest --json core-evidence/item005-selftest-20261019-item005-r1.json >> /dev/null 2>&1; echo SELFTEST_JSON_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.35,
+      "output": "SELFTEST_EXIT=127\nSELFTEST_JSON_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-center_in",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture center_in --out core-evidence/item005-fixture-center_in-20261019-item005-r1.log --json core-evidence/item005-fixture-center_in-20261019-item005-r1.json; echo FIX_CENTER_IN_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "FIX_CENTER_IN_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-center_out",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture center_out --out core-evidence/item005-fixture-center_out-20261019-item005-r1.log --json core-evidence/item005-fixture-center_out-20261019-item005-r1.json; echo FIX_CENTER_OUT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.13,
+      "output": "FIX_CENTER_OUT_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-no_person",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture no_person --out core-evidence/item005-fixture-no_person-20261019-item005-r1.log --json core-evidence/item005-fixture-no_person-20261019-item005-r1.json; echo FIX_NO_PERSON_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "FIX_NO_PERSON_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-seg_unavailable",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture seg_unavailable --out core-evidence/item005-fixture-seg_unavailable-20261019-item005-r1.log --json core-evidence/item005-fixture-seg_unavailable-20261019-item005-r1.json; echo FIX_SEG_UNAVAILABLE_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "FIX_SEG_UNAVAILABLE_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-mask_empty",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture mask_empty --out core-evidence/item005-fixture-mask_empty-20261019-item005-r1.log --json core-evidence/item005-fixture-mask_empty-20261019-item005-r1.json; echo FIX_MASK_EMPTY_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.11,
+      "output": "FIX_MASK_EMPTY_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-detect_unavailable",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture detect_unavailable --out core-evidence/item005-fixture-detect_unavailable-20261019-item005-r1.log --json core-evidence/item005-fixture-detect_unavailable-20261019-item005-r1.json; echo FIX_DETECT_UNAVAILABLE_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "FIX_DETECT_UNAVAILABLE_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-frame_mismatch",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture frame_mismatch --out core-evidence/item005-fixture-frame_mismatch-20261019-item005-r1.log --json core-evidence/item005-fixture-frame_mismatch-20261019-item005-r1.json; echo FIX_FRAME_MISMATCH_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "FIX_FRAME_MISMATCH_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-danger_zone_hit",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture danger_zone_hit --out core-evidence/item005-fixture-danger_zone_hit-20261019-item005-r1.log --json core-evidence/item005-fixture-danger_zone_hit-20261019-item005-r1.json; echo FIX_DANGER_ZONE_HIT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.12,
+      "output": "FIX_DANGER_ZONE_HIT_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-danger_zone_miss",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture danger_zone_miss --out core-evidence/item005-fixture-danger_zone_miss-20261019-item005-r1.log --json core-evidence/item005-fixture-danger_zone_miss-20261019-item005-r1.json; echo FIX_DANGER_ZONE_MISS_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.1,
+      "output": "FIX_DANGER_ZONE_MISS_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-stale",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture stale --out core-evidence/item005-fixture-stale-20261019-item005-r1.log --json core-evidence/item005-fixture-stale-20261019-item005-r1.json; echo FIX_STALE_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.15,
+      "output": "FIX_STALE_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-cache_disabled",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture cache_disabled --out core-evidence/item005-fixture-cache_disabled-20261019-item005-r1.log --json core-evidence/item005-fixture-cache_disabled-20261019-item005-r1.json; echo FIX_CACHE_DISABLED_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.39,
+      "output": "FIX_CACHE_DISABLED_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-cache_hit",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture cache_hit --out core-evidence/item005-fixture-cache_hit-20261019-item005-r1.log --json core-evidence/item005-fixture-cache_hit-20261019-item005-r1.json; echo FIX_CACHE_HIT_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "FIX_CACHE_HIT_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-cache_expired",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture cache_expired --out core-evidence/item005-fixture-cache_expired-20261019-item005-r1.log --json core-evidence/item005-fixture-cache_expired-20261019-item005-r1.json; echo FIX_CACHE_EXPIRED_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "FIX_CACHE_EXPIRED_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-cache_gen_change",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture cache_gen_change --out core-evidence/item005-fixture-cache_gen_change-20261019-item005-r1.log --json core-evidence/item005-fixture-cache_gen_change-20261019-item005-r1.json; echo FIX_CACHE_GEN_CHANGE_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.43,
+      "output": "FIX_CACHE_GEN_CHANGE_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-bounds",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture bounds --out core-evidence/item005-fixture-bounds-20261019-item005-r1.log --json core-evidence/item005-fixture-bounds-20261019-item005-r1.json; echo FIX_BOUNDS_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.09,
+      "output": "FIX_BOUNDS_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-multi",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture multi --out core-evidence/item005-fixture-multi-20261019-item005-r1.log --json core-evidence/item005-fixture-multi-20261019-item005-r1.json; echo FIX_MULTI_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "FIX_MULTI_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "fixture-mask_misaligned",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --fixture mask_misaligned --out core-evidence/item005-fixture-mask_misaligned-20261019-item005-r1.log --json core-evidence/item005-fixture-mask_misaligned-20261019-item005-r1.json; echo FIX_MASK_MISALIGNED_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.38,
+      "output": "FIX_MASK_MISALIGNED_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "config",
+      "cmd": "cd /tmp/railhmi_vision_item005_20261019-item005-r1/app && ./build-core/tools/railhmi-vision-twostage --config ./config --out core-evidence/item005-config-20261019-item005-r1.log --json core-evidence/item005-config-20261019-item005-r1.json; echo CONFIG_EXIT=$?",
+      "exit": 0,
+      "elapsed_s": 0.16,
+      "output": "CONFIG_EXIT=127\nbash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory\n"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-core-tests-20261019-item005-r1.xml: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-selftest-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-selftest-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-config-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-config-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-center_in-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-center_in-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-center_out-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-center_out-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-no_person-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-no_person-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-seg_unavailable-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-seg_unavailable-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-mask_empty-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-mask_empty-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-detect_unavailable-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-detect_unavailable-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-frame_mismatch-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-frame_mismatch-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-danger_zone_hit-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-danger_zone_hit-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-danger_zone_miss-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-danger_zone_miss-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-stale-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-stale-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-cache_disabled-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-cache_disabled-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-cache_hit-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-cache_hit-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-cache_expired-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-cache_expired-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-cache_gen_change-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-cache_gen_change-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-bounds-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-bounds-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-multi-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-multi-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-mask_misaligned-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "download",
+      "exit": null,
+      "output": "app/core-evidence/item005-fixture-mask_misaligned-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')"
+    },
+    {
+      "step": "cleanup",
+      "cmd": "rm -rf /tmp/railhmi_vision_item005_20261019-item005-r1 && echo cleaned",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": "cleaned\n"
+    }
+  ]
+}

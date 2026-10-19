@@ -1,0 +1,1 @@
+{"mode":"fixture","failures":0,"lines":["type=config require_same_frame=1 danger_zone=0 cache_enabled=0","type=two_stage ok=1 available=1 reason=TWO_STAGE_NO_PERSON persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1","RESULT: PASS"]}

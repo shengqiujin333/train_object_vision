@@ -1,0 +1,3 @@
+type=config require_same_frame=1 danger_zone=0 cache_enabled=0
+type=two_stage ok=0 available=0 reason=TWO_STAGE_UNAVAILABLE persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+RESULT: PASS

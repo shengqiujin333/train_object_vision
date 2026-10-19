@@ -1,0 +1,295 @@
+host_key_fingerprint: SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+remote_dir: /tmp/railhmi_vision_item005_20261019-item005-r1
+
+===== [env] exit=0 =====
+Linux 6.1.141 aarch64
+8
+g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+
+
+===== [mkdir] exit=0 =====
+ok
+
+
+===== [upload-app] exit=0 =====
+uploaded 292 files
+
+===== [build-core] exit=0 =====
+[build.sh] mode=core-tests host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/tmp/railhmi_vision_item005_20261019-item005-r1/app' -B '/tmp/railhmi_vision_item005_20261019-item005-r1/app/build-core' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_CORE_TESTS=ON
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- railhmi: build mode = CoreTests
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /tmp/railhmi_vision_item005_20261019-item005-r1/app/build-core
+[build.sh] building: cmake --build '/tmp/railhmi_vision_item005_20261019-item005-r1/app/build-core' -j8
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/yaml.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/video_diagnostics.cpp.o
+[  3%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/version.cpp.o
+[  4%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/rules.cpp.o
+[  5%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/timebase.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/stream_state.cpp.o
+[  6%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/config.cpp.o
+[  7%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_identity.cpp.o
+[  8%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/frame_layout.cpp.o
+[  9%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/compressed_ring.cpp.o
+[ 10%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/recording_source.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/persistence_model.cpp.o
+[ 11%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/retention.cpp.o
+[ 12%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/simulation.cpp.o
+[ 13%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/navigation.cpp.o
+[ 14%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/camera_registry.cpp.o
+[ 15%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/layout.cpp.o
+[ 16%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/grid.cpp.o
+[ 17%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/channel_view.cpp.o
+[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/status.cpp.o
+[ 18%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/inference.cpp.o
+[ 19%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_model_capability.cpp.o
+[ 20%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_preprocess.cpp.o
+[ 21%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_detect_postprocess.cpp.o
+[ 22%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_seg_postprocess.cpp.o
+[ 23%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/vision_two_stage.cpp.o
+[ 24%] Building CXX object src/core/CMakeFiles/railhmi_core.dir/src/alarm_center.cpp.o
+BUILD_EXIT=3
+/tmp/railhmi_vision_item005_20261019-item005-r1/app/src/core/src/vision_two_stage.cpp:141:1: error: definition of explicitly-defaulted ‘railhmi::core::TwoStageCache::TwoStageCache()’
+  141 | TwoStageCache::TwoStageCache() = default;
+      | ^~~~~~~~~~~~~
+In file included from /tmp/railhmi_vision_item005_20261019-item005-r1/app/src/core/src/vision_two_stage.cpp:3:
+/tmp/railhmi_vision_item005_20261019-item005-r1/app/src/core/include/railhmi/core/vision_two_stage.h:100:5: note: ‘railhmi::core::TwoStageCache::TwoStageCache()’ explicitly defaulted here
+  100 |     TwoStageCache() = default;
+      |     ^~~~~~~~~~~~~
+gmake[2]: *** [src/core/CMakeFiles/railhmi_core.dir/build.make:426: src/core/CMakeFiles/railhmi_core.dir/src/vision_two_stage.cpp.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:166: src/core/CMakeFiles/railhmi_core.dir/all] Error 2
+gmake: *** [Makefile:101: all] Error 2
+[build.sh] build failed (mode=core-tests)
+
+
+===== [core-tests] exit=0 =====
+TEST_EXIT=127
+bash: line 1: ./build-core/tests/railhmi-core-tests: No such file or directory
+
+
+===== [selftest] exit=0 =====
+SELFTEST_EXIT=127
+SELFTEST_JSON_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-center_in] exit=0 =====
+FIX_CENTER_IN_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-center_out] exit=0 =====
+FIX_CENTER_OUT_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-no_person] exit=0 =====
+FIX_NO_PERSON_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-seg_unavailable] exit=0 =====
+FIX_SEG_UNAVAILABLE_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-mask_empty] exit=0 =====
+FIX_MASK_EMPTY_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-detect_unavailable] exit=0 =====
+FIX_DETECT_UNAVAILABLE_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-frame_mismatch] exit=0 =====
+FIX_FRAME_MISMATCH_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-danger_zone_hit] exit=0 =====
+FIX_DANGER_ZONE_HIT_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-danger_zone_miss] exit=0 =====
+FIX_DANGER_ZONE_MISS_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-stale] exit=0 =====
+FIX_STALE_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-cache_disabled] exit=0 =====
+FIX_CACHE_DISABLED_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-cache_hit] exit=0 =====
+FIX_CACHE_HIT_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-cache_expired] exit=0 =====
+FIX_CACHE_EXPIRED_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-cache_gen_change] exit=0 =====
+FIX_CACHE_GEN_CHANGE_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-bounds] exit=0 =====
+FIX_BOUNDS_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-multi] exit=0 =====
+FIX_MULTI_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [fixture-mask_misaligned] exit=0 =====
+FIX_MASK_MISALIGNED_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [config] exit=0 =====
+CONFIG_EXIT=127
+bash: line 1: ./build-core/tools/railhmi-vision-twostage: No such file or directory
+
+
+===== [download] exit=None =====
+app/core-evidence/item005-core-tests-20261019-item005-r1.xml: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-selftest-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-selftest-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-config-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-config-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-center_in-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-center_in-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-center_out-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-center_out-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-no_person-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-no_person-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-seg_unavailable-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-seg_unavailable-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-mask_empty-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-mask_empty-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-detect_unavailable-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-detect_unavailable-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-frame_mismatch-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-frame_mismatch-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-danger_zone_hit-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-danger_zone_hit-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-danger_zone_miss-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-danger_zone_miss-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-stale-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-stale-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-cache_disabled-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-cache_disabled-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-cache_hit-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-cache_hit-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-cache_expired-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-cache_expired-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-cache_gen_change-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-cache_gen_change-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-bounds-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-bounds-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-multi-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-multi-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-mask_misaligned-20261019-item005-r1.log: FileNotFoundError(2, 'No such file')
+
+===== [download] exit=None =====
+app/core-evidence/item005-fixture-mask_misaligned-20261019-item005-r1.json: FileNotFoundError(2, 'No such file')
+
+===== [cleanup] exit=0 =====
+cleaned
+

@@ -24,6 +24,7 @@ add_library(railhmi_core STATIC
     src/vision_preprocess.cpp
     src/vision_detect_postprocess.cpp
     src/vision_seg_postprocess.cpp
+    src/vision_two_stage.cpp
     src/alarm_center.cpp
     src/clip.cpp
     src/clip_request.cpp
@@ -96,6 +97,13 @@ set_target_properties(railhmi-vision-detect PROPERTIES
 add_executable(railhmi-vision-seg tools/seg_probe.cpp)
 target_link_libraries(railhmi-vision-seg PRIVATE railhmi_core)
 set_target_properties(railhmi-vision-seg PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 同帧两阶段判定探针（视觉推理 ITEM-005；纯逻辑夹具）
+add_executable(railhmi-vision-twostage tools/two_stage_probe.cpp)
+target_link_libraries(railhmi-vision-twostage PRIVATE railhmi_core)
+set_target_properties(railhmi-vision-twostage PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
 

@@ -1,0 +1,27 @@
+[PASS] same_frame identical
+[PASS] same_frame different seq
+[PASS] same_frame different generation
+[PASS] same_frame different session
+[PASS] center_in ok
+[PASS] center_in alarm :: type=two_stage ok=1 available=1 reason=TWO_STAGE_OK persons=1 mask_hit=1 alarms=1 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[PASS] center_in detection semantics
+[PASS] center_out no alarm :: type=two_stage ok=1 available=1 reason=TWO_STAGE_NO_ALARM persons=1 mask_hit=0 alarms=0 dropped_no_mask=1 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[PASS] no person -> NO_PERSON :: type=two_stage ok=1 available=1 reason=TWO_STAGE_NO_PERSON persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[FAIL] seg unavailable -> UNAVAILABLE (no safe conclusion) :: type=two_stage ok=0 available=0 reason=TWO_STAGE_UNAVAILABLE persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[FAIL] empty mask -> UNAVAILABLE :: type=two_stage ok=0 available=0 reason=TWO_STAGE_UNAVAILABLE persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[FAIL] detect unavailable -> UNAVAILABLE :: type=two_stage ok=0 available=0 reason=TWO_STAGE_UNAVAILABLE persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[FAIL] seg_frame != frame -> FRAME_MISMATCH :: type=two_stage ok=0 available=0 reason=TWO_STAGE_FRAME_MISMATCH persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[FAIL] detect_frame != frame -> FRAME_MISMATCH :: type=two_stage ok=0 available=0 reason=TWO_STAGE_FRAME_MISMATCH persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[PASS] danger_zone hit :: type=two_stage ok=1 available=1 reason=TWO_STAGE_OK persons=1 mask_hit=1 alarms=1 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[PASS] danger_zone miss (on rail but outside zone) :: type=two_stage ok=1 available=1 reason=TWO_STAGE_NO_ALARM persons=1 mask_hit=1 alarms=0 dropped_no_mask=0 dropped_zone=1 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[PASS] duplicate seq rejected :: frame admission=duplicate_seq
+[PASS] out-of-order seq rejected :: frame admission=out_of_order_seq
+[PASS] stale generation rejected :: frame admission=stale_generation
+[PASS] cache disabled -> no reuse :: type=two_stage ok=0 available=0 reason=TWO_STAGE_UNAVAILABLE persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[PASS] cache enabled same generation -> reuse :: type=two_stage ok=1 available=1 reason=TWO_STAGE_OK persons=1 mask_hit=1 alarms=1 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=1 cache_age_ms=100
+[PASS] cache expired -> unavailable :: type=two_stage ok=0 available=0 reason=TWO_STAGE_UNAVAILABLE persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[PASS] cache generation change rejected :: type=two_stage ok=0 available=0 reason=TWO_STAGE_UNAVAILABLE persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[PASS] multi person aggregation :: type=two_stage ok=1 available=1 reason=TWO_STAGE_OK persons=3 mask_hit=2 alarms=2 dropped_no_mask=1 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+[PASS] out-of-bounds center dropped :: type=two_stage ok=1 available=1 reason=TWO_STAGE_NO_ALARM persons=1 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=1 used_cache=0 cache_age_ms=-1
+[FAIL] misaligned mask -> UNAVAILABLE :: type=two_stage ok=0 available=0 reason=TWO_STAGE_UNAVAILABLE persons=0 mask_hit=0 alarms=0 dropped_no_mask=0 dropped_zone=0 dropped_bounds=0 used_cache=0 cache_age_ms=-1
+RESULT: FAIL failures=6
