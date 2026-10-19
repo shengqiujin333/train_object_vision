@@ -1,0 +1,596 @@
+{
+  "stamp": "verify-20261021-item009-v2",
+  "checks": [
+    {
+      "step": "impl_selftest_case_set_22",
+      "ok": true,
+      "detail": "n=22"
+    },
+    {
+      "step": "impl_selftest_pass",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_submit_max_below_50ms",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "step": "impl_snapshot_p95_below_20ms",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "step": "impl_request_stop_zero",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "step": "impl_join_below_400ms",
+      "ok": true,
+      "detail": "32000"
+    },
+    {
+      "step": "impl_blocking_shape",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_prod_no_synthetic",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_thermal_measured",
+      "ok": true,
+      "detail": "type=thermal state=MEASURED celsius=42.538000 source=thermal_zone1 reason=THERMAL_OK zones=7"
+    },
+    {
+      "step": "impl_drop_shape",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_fairness_shape",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_model_missing_graceful",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_model_missing_reason_visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_invalid_model_graceful",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_config_tokens",
+      "ok": true,
+      "detail": "独立重推导 app.yaml/thresholds.yaml 源值"
+    },
+    {
+      "step": "impl_lane_fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_defreq_math",
+      "ok": true,
+      "detail": "submitted=300 consumed=60"
+    },
+    {
+      "step": "impl_skipped_plus_consumed",
+      "ok": true,
+      "detail": "skipped=240 consumed=60"
+    },
+    {
+      "step": "impl_unavailable_family",
+      "ok": true,
+      "detail": "TWO_STAGE_UNAVAILABLE:9"
+    },
+    {
+      "step": "impl_infer_cost_window",
+      "ok": true,
+      "detail": "139976"
+    },
+    {
+      "step": "impl_latency_ge_infer",
+      "ok": true,
+      "detail": "latency=140 infer_ms=139"
+    },
+    {
+      "step": "impl_fps_defreq",
+      "ok": true,
+      "detail": "5.008064"
+    },
+    {
+      "step": "impl_env_counters",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_envelope_single",
+      "ok": true,
+      "detail": "n=1"
+    },
+    {
+      "step": "impl_envelope_identity",
+      "ok": true,
+      "detail": "seq=300 avail=ready"
+    },
+    {
+      "step": "impl_envelope_mask",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_chain_check_set",
+      "ok": true,
+      "detail": "['chain_models_ready', 'chain_frames_dispatched_and_consumed', 'chain_envelopes_published', 'chain_stop_ai_unavailable', 'chain_scheduler_rounds', 'chain_budget_respected', 'chain_thermal_reported', 'chain_guard_matches_measured_temp', 'chain_lease_available']"
+    },
+    {
+      "step": "impl_summary_thermal",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_guard_consistency",
+      "ok": true,
+      "detail": "实测 42.5<=85 -> guard=false"
+    },
+    {
+      "step": "impl_four_lanes",
+      "ok": true,
+      "detail": "['CAM-01', 'CAM-04', 'CAM-05', 'CAM-06']"
+    },
+    {
+      "step": "impl_cli_budget_override",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_budget_effective_1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_consumed_sum",
+      "ok": true,
+      "detail": "{'CAM-01': 50, 'CAM-04': 49, 'CAM-05': 50, 'CAM-06': 49}"
+    },
+    {
+      "step": "impl_published_sum",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_unavailable_sum",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_no_starvation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_no_starvation_balanced",
+      "ok": true,
+      "detail": "base=49.5"
+    },
+    {
+      "step": "impl_profiles_unsupported",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_unsupported_fast",
+      "ok": true,
+      "detail": "{'CAM-04': '2', 'CAM-05': '3', 'CAM-06': '2'}"
+    },
+    {
+      "step": "impl_front_real_infer",
+      "ok": true,
+      "detail": "142603"
+    },
+    {
+      "step": "impl_queue_bounded",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_envelope_count",
+      "ok": true,
+      "detail": "n=4"
+    },
+    {
+      "step": "impl_unavailable_envelope",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_junit_1215_0",
+      "ok": true,
+      "detail": "tests=1215 failures=0"
+    },
+    {
+      "step": "impl_junit_case_count",
+      "ok": true,
+      "detail": "extracted=1215"
+    },
+    {
+      "step": "impl_junit_new54_split",
+      "ok": true,
+      "detail": "sched=35 thermal=19"
+    },
+    {
+      "step": "impl_junit_new_cases_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_r7_synthetic_on",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_r7_channels",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_r7_stop_unavailable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_r7_acceptance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_neg_no_segfault",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_neg_models_json_visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_neg_profiles_front_missing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_neg_chain_models_ready_fail",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_neg_result_fail_1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_neg_envs_unavailable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_neg_stop_unavailable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "impl_neg_lane_model_missing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_selftest_case_set_22",
+      "ok": true,
+      "detail": "n=22"
+    },
+    {
+      "step": "fresh_selftest_pass",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_submit_max_below_50ms",
+      "ok": true,
+      "detail": "1000"
+    },
+    {
+      "step": "fresh_snapshot_p95_below_20ms",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "step": "fresh_request_stop_zero",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "step": "fresh_join_below_400ms",
+      "ok": true,
+      "detail": "29000"
+    },
+    {
+      "step": "fresh_blocking_shape",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_prod_no_synthetic",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_thermal_measured",
+      "ok": true,
+      "detail": "type=thermal state=MEASURED celsius=41.615000 source=thermal_zone0 reason=THERMAL_OK zones=7"
+    },
+    {
+      "step": "fresh_drop_shape",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_fairness_shape",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_model_missing_graceful",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_model_missing_reason_visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_invalid_model_graceful",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_config_tokens",
+      "ok": true,
+      "detail": "独立重推导 app.yaml/thresholds.yaml 源值"
+    },
+    {
+      "step": "fresh_lane_fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_defreq_math",
+      "ok": true,
+      "detail": "submitted=300 consumed=60"
+    },
+    {
+      "step": "fresh_skipped_plus_consumed",
+      "ok": true,
+      "detail": "skipped=240 consumed=60"
+    },
+    {
+      "step": "fresh_unavailable_family",
+      "ok": true,
+      "detail": "TWO_STAGE_UNAVAILABLE:9"
+    },
+    {
+      "step": "fresh_infer_cost_window",
+      "ok": true,
+      "detail": "141623"
+    },
+    {
+      "step": "fresh_latency_ge_infer",
+      "ok": true,
+      "detail": "latency=144 infer_ms=141"
+    },
+    {
+      "step": "fresh_fps_defreq",
+      "ok": true,
+      "detail": "5.022559"
+    },
+    {
+      "step": "fresh_env_counters",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_envelope_single",
+      "ok": true,
+      "detail": "n=1"
+    },
+    {
+      "step": "fresh_envelope_identity",
+      "ok": true,
+      "detail": "seq=300 avail=ready"
+    },
+    {
+      "step": "fresh_envelope_mask",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_chain_check_set",
+      "ok": true,
+      "detail": "['chain_models_ready', 'chain_frames_dispatched_and_consumed', 'chain_envelopes_published', 'chain_stop_ai_unavailable', 'chain_scheduler_rounds', 'chain_budget_respected', 'chain_thermal_reported', 'chain_guard_matches_measured_temp', 'chain_lease_available']"
+    },
+    {
+      "step": "fresh_summary_thermal",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_guard_consistency",
+      "ok": true,
+      "detail": "实测 41.6<=85 -> guard=false"
+    },
+    {
+      "step": "fresh_four_lanes",
+      "ok": true,
+      "detail": "['CAM-01', 'CAM-04', 'CAM-05', 'CAM-06']"
+    },
+    {
+      "step": "fresh_cli_budget_override",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_budget_effective_1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_consumed_sum",
+      "ok": true,
+      "detail": "{'CAM-01': 50, 'CAM-04': 50, 'CAM-05': 50, 'CAM-06': 49}"
+    },
+    {
+      "step": "fresh_published_sum",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_unavailable_sum",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_no_starvation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_no_starvation_balanced",
+      "ok": true,
+      "detail": "base=49.8"
+    },
+    {
+      "step": "fresh_profiles_unsupported",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_unsupported_fast",
+      "ok": true,
+      "detail": "{'CAM-04': '3', 'CAM-05': '2', 'CAM-06': '3'}"
+    },
+    {
+      "step": "fresh_front_real_infer",
+      "ok": true,
+      "detail": "163456"
+    },
+    {
+      "step": "fresh_queue_bounded",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_envelope_count",
+      "ok": true,
+      "detail": "n=4"
+    },
+    {
+      "step": "fresh_unavailable_envelope",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_junit_1215_0",
+      "ok": true,
+      "detail": "tests=1215 failures=0"
+    },
+    {
+      "step": "fresh_junit_case_count",
+      "ok": true,
+      "detail": "extracted=1215"
+    },
+    {
+      "step": "fresh_junit_new54_split",
+      "ok": true,
+      "detail": "sched=35 thermal=19"
+    },
+    {
+      "step": "fresh_junit_new_cases_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_r7_synthetic_on",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_r7_channels",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_r7_stop_unavailable",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "fresh_r7_acceptance",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "X_selftest_case_set_identical",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "X_chain_check_set_identical",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "X_chain4_check_set_identical",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "X_profile_structure_identical",
+      "ok": true,
+      "detail": "profile name/ready/reason 恒等"
+    },
+    {
+      "step": "X_junit_case_names_identical",
+      "ok": true,
+      "detail": "impl=1215 fresh=1215"
+    },
+    {
+      "step": "X_junit_counts_identical",
+      "ok": true,
+      "detail": "tests=1215/1215"
+    },
+    {
+      "step": "X_config_tokens_identical",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "step": "X_neg_vs_fresh_chain_reason_consistent",
+      "ok": true,
+      "detail": "fresh 有效模型链路 + impl neg 缺模型链路互补覆盖两语义域"
+    }
+  ],
+  "all_pass": true
+}

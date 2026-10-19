@@ -1,0 +1,40 @@
+vext PASS A_round_robin_pair_sequence :: CAM-01,CAM-05,CAM-04,CAM-06,CAM-01,CAM-05,CAM-04,CAM-06,CAM-01,CAM-05,CAM-04,CAM-06,
+vext PASS J_skip_mirror_of_run :: r1 skip=04,06 r2 skip=01,05
+vext PASS B_solo_lane_runs
+vext PASS B_new_lane_preempts_by_wait :: wait(07)=2 > wait(01)=1
+vext PASS B_alternates_after_join
+vext PASS B_waits_observable
+vext PASS C_lane_goes_idle
+vext PASS C_wait_preserved_across_idle :: 08 wait=2 (r3-last_run=3-1)
+vext PASS C_waits_after_run :: 01 wait=3-last_run(r2)=1; 08 last_run=r3 -> 0
+vext PASS D_max_wait_bounded_budget1 :: max_wait==3 over 12 rounds, saw 3
+vext PASS D_rounds_counted
+vext PASS E_plus_40C_ok :: +40 在默认界内（min=-40/max=200）
+vext PASS E_minus_40C_inclusive_default :: 恰等于下界：c<min 才拒 -> -40 含端点接受
+vext PASS E_minus_39_999_ok :: 恰在 -40 上方
+vext PASS E_minus_40_inclusive_wide :: 定制界下 -40 恰在界内（c<min 才拒，含端点）
+vext PASS E_200_inclusive_wide :: 定制界下 200 恰在界内（含端点）
+vext PASS E_200_001_rejected :: 默认 max=200 -> 200.001 越界
+vext PASS E_internal_space_malformed :: 内部空格非法（trim 只剥首尾）
+vext PASS E_trailing_junk_malformed :: 尾部非数字非法
+vext PASS F_first_failure_reason_kept :: 首个非法=malformed（zone0 zzz）
+vext PASS F_empty_then_oor_keeps_first_reason :: 首失败 reason=malformed（空串）
+vext PASS G_injected_finite_isfinite_only_gate :: 当前契约锚定：注入不走物理范围门，999C 仍 valid+INJECTED（measured=false）
+vext PASS G_injected_nan_invalid :: NaN 注入: valid=false + kOutOfRange + UNAVAILABLE
+vext PASS G_injected_cold_valid_but_not_measured :: -55C 注入不冒充实测
+vext PASS G_injected_hot_marked :: 90C 注入: valid + INJECTED + measured=false
+vext PASS H_age_equal_max_fresh :: 6000-1000==5000 边界含（> 才 stale）
+vext PASS H_age_max_plus_1_stale
+vext PASS H_zero_age_disables_check :: max_age<=0 不检查年龄
+vext PASS H_invalid_sample_never_fresh :: max_age=0 也不救无效样本
+vext PASS I_guard_odd_budget_floors :: max(1,5/2)=2
+vext PASS I_run_skip_split
+vext PASS I_guard_budget3_floors_to_1 :: max(1,3/2)=1
+vext PASS I_guard_budget1_floors_at_1 :: 降载下限 1
+vext PASS K_registration_order_stable :: CAM-C,CAM-A,
+vext PASS L_json_escapes_quote_backslash :: {"round":1,"run":["CAM\"\\01"],"skipped":[],"idle":[],"priority_order":["CAM\"\\01"],"temperature_guard":false,"thermal_
+vext PASS L_json_braced
+vext PASS M_period3_rotation_exact :: CAM-X,CAM-Y,CAM-Z,CAM-X,CAM-Y,CAM-Z,
+vext PASS M_max_wait_post_run_accounting :: 记账后口径峰值 2（运行前峰值 3 出现在排序内部，不对外暴露）
+vext OK (0 failures)
+VEXT_RUN_EXIT=0

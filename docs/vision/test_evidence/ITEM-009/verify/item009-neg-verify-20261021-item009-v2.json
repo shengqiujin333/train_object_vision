@@ -1,0 +1,31 @@
+{
+  "stamp": "verify-20261021-item009-v2",
+  "checks": [
+    {
+      "step": "S0_tree_present",
+      "ok": true,
+      "detail": "TREE_OK"
+    },
+    {
+      "step": "S1_repro_exit_graceful",
+      "ok": true,
+      "detail": "exit=1 bytes=6231 (v1: exit=139 bytes=0)"
+    },
+    {
+      "step": "S2_unbuffered_complete_run",
+      "ok": true,
+      "detail": "exit=1 models_missing_hits=5 | tail=[PASS] chain_lease_available :: missing_polls=0 ~ RESULT: FAIL failures=1"
+    },
+    {
+      "step": "S3_valid_models_control",
+      "ok": true,
+      "detail": "exit=0 tail=RESULT: PASS failures=0"
+    },
+    {
+      "step": "S4_source_fail_with_coverage",
+      "ok": true,
+      "detail": "fail_with=5 bare_deref=0"
+    }
+  ],
+  "all_pass": true
+}
