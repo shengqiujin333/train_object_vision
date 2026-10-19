@@ -1159,7 +1159,7 @@ docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v5.l
 docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v5.transcript.json | active | ITEM-022 修复复核过程轮 v5 transcript
 docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v6.log | active | ITEM-022 修复复核权威轮 v6 FIXTURES 日志（FIXTURES_RC=0：TestRun 复跑 617/617 逐行一致 + JUnit 617/0 16 判例 + 探针公式/字节一致 + 确定性 + ext 116/116 + 接线扫描 25 项 + D1/D2=True + 清理）
 docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-FIXTURES-VERIFY-20261016-v6.transcript.json | active | ITEM-022 修复复核权威轮 v6 transcript
-docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-ITEM-022.md | active | ITEM-022 软件验证报告（VERIFY-20261016-v6 权威轮 TEST_PASS：v3 两条缺陷 D-01 手动重连入口/D-02 按日滚动日志经实现 fix 轮（commit f6acafb）修复后独立板端复跑 617/617 逐行一致 + JUnit 617/0 16 判例 + 探针公式/字节一致 + 确定性 + ext 116/116（v3 83 项回归 + 33 项修复复核）+ 接线扫描 25 项 mismatch=[] + D1/D2=True；v4/v5 过程轮为验证侧 ext 夹具错（漏 include alarm_center.h、max_days=2 行数 3 误写 4），非产品缺陷）| evidence | TestEvidence
+docs/hmi/test_evidence/ITEM-022-maintenance/VERIFY-ITEM-022.md | active | ITEM-022 软件验证报告（VERIFY-20261016-v6 权威轮 TEST_PASS：v3 两条缺陷 D-01 手动重连入口/D-02 按日滚动日志经实现 fix 轮（commit f6acafb）修复后独立板端复跑 617/617 逐行一致 + JUnit 617/0 16 判例 + 探针公式/字节一致 + 确定性 + ext 116/116（v3 83 项回归 + 33 项修复复核）+ 接线扫描 25 项 mismatch=[] + D1/D2=True；v4/v5 过程轮为验证侧 ext 夹具错（漏 include alarm_center.h、max_days=2 行数 3 误写 4），非产品缺陷）
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_ai-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_alarm-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
 docs/hmi/test_evidence/ITEM-022-maintenance/build-TestRun-192_168_0_103-20261016-ITEM022-fix-r1.core-evidence_clip-probe-20261016-ITEM022-fix-r1.log | active | ITEM-022 修复轮 TestRun 运行日志
@@ -2150,6 +2150,14 @@ docs/vision/test_evidence/ITEM-001/vision-item001-192_168_0_103-verify-20261018-
 docs/vision/test_evidence/ITEM-001/vision-item001-192_168_0_103-verify-20261018-item001-v1.log | active | ITEM-001 验证独立复跑人类可读 transcript（verify-v1）
 docs/vision/test_evidence/ITEM-001/vision-item001-192_168_0_103-verify-20261018-item001-v1.transcript.json | active | ITEM-001 验证独立复跑结构化 transcript（verify-v1；11 步骤退出码/主机指纹）
 docs/vision/test_evidence/ITEM-002/ITEM-002-EVIDENCE.md | active | InferenceEvidence：视觉推理 ITEM-002 实际正确性证据（租约消费+预处理：letterbox 参数、量化范围、RGB 顺序、stride、非法输入拒绝、带 padding NV12、core 1003/0）与未执行项
+docs/vision/test_evidence/ITEM-002/VERIFY-ITEM-002.md | active | TestEvidence：视觉推理 ITEM-002 独立软件验证（VERIFY-20261019-item002-v1，TEST_PASS：交付 runner 独立板端复跑 keep-remote + 独立解析比对 oracle 47/47 + 板端自有扩展夹具 29 判例全 PASS + 凭据语义零泄漏；O-1 selftest 判例数文档口径 24 实测 27、O-2 测试设计 TC-T-PRE-01 pad_y=80 数学勘误 实为 140、O-3 RGA 对 64x64 级小尺寸 blit 拒绝）
+docs/vision/test_evidence/ITEM-002/item002-compare-20261019-item002-r4.json | active | 验证侧比对 oracle 对 impl r4 归档的预演结果（46/47，唯一失败 keep-remote 无 cleanup 属预期差异；零板成本 oracle 修正记录）
+docs/vision/test_evidence/ITEM-002/item002-compare-verify-20261019-item002-v1.json | active | 验证侧比对 oracle 结构化结果（T1..T7 逐项 pass/fail：47/47）
+docs/vision/test_evidence/ITEM-002/verify/_dryrun_on_impl.py | active | 验证侧比对 oracle 对 impl r4 归档的零板成本预演夹具（FRESH→IMPL 别名注入；oracle 构造错误早发现）
+docs/vision/test_evidence/ITEM-002/verify/verify_item002_compare.py | active | 验证侧独立解析比对 oracle（T1..T7：退出码 token 重断言/selftest 语义行与源判例计数/letterbox·BT.601·量化独立数学/租约描述符算术/core JUnit 多重集恒等/凭据语义脱敏扫描；判据不采信交付 acceptance 行）
+docs/vision/test_evidence/ITEM-002/verify/verify_item002_vext.py | active | 验证侧扩展夹具驱动（keep-remote 树 g++ 直编 vext_item002.cpp 链交付三静态库；29 判例计数从夹具源统计；CLI 负例/确定性/板端凭据扫描/通过才清理）
+docs/vision/test_evidence/ITEM-002/verify/vext_item002.cpp | active | 验证侧自有扩展夹具（g01..g28 29 判例：空租约结构性拒绝/真租约 librga 链路量化与 letterbox/旧租约像素不被复用/租约生命周期 unmap/publish 拒绝族/红色 BT.601 标定 RGA vs 参考一致性）
+docs/vision/test_evidence/ITEM-002/vext-item002-verify-20261019-item002-v1.json | active | 验证侧 ext 夹具结构化结果（V0..V6：vext 29 判例/CLI 负例/确定性/泄漏扫描/清理）
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-20261019-item002-r1.app_core-evidence_item002-core-tests-20261019-item002-r1.xml | active | ITEM-002 core 单测 JUnit（r1：1000/3，RGB 顺序与 NV12 判例失败）
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-20261019-item002-r1.log | active | ITEM-002 返工前人类可读 transcript（r1）
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-20261019-item002-r1.transcript.json | active | ITEM-002 返工前 transcript（r1：sum[0] 通道均值缺陷 + media 编译失败）
@@ -2178,6 +2186,17 @@ docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-20261019-item002
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-20261019-item002-r4.app_core-evidence_item002-selftest-20261019-item002-r4.log | active | ITEM-002 夹具自检文本（r4：RESULT PASS failures=0）
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-20261019-item002-r4.log | active | ITEM-002 板端执行人类可读 transcript（r4）
 docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-20261019-item002-r4.transcript.json | active | ITEM-002 板端执行结构化 transcript（r4 权威轮：CoreTests/MediaCheck/selftest/fixture/lease 命令与退出码/主机指纹）
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.app_core-evidence_item002-core-tests-verify-20261019-item002-v1.xml | active | 验证轮 core 单测 JUnit（tests=1003 failures=0，判例名与 r4 多重集恒等）
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.app_core-evidence_item002-fixture-bgr-verify-20261019-item002-v1.json | active | 验证轮 BGR fixture JSON（vs 独立数学逐一核对）
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.app_core-evidence_item002-fixture-bgr-verify-20261019-item002-v1.log | active | 验证轮合成 BGR 1280×720→640×640 文本（pad_y=140，R>B）
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.app_core-evidence_item002-fixture-nv12-verify-20261019-item002-v1.json | active | 验证轮 NV12 fixture JSON（BT.601 重算一致 vmax=126）
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.app_core-evidence_item002-fixture-nv12-verify-20261019-item002-v1.log | active | 验证轮带 padding NV12→640×640 文本
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.app_core-evidence_item002-lease-source-verify-20261019-item002-v1.json | active | 验证轮真实 FrameLease 预处理 JSON
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.app_core-evidence_item002-lease-source-verify-20261019-item002-v1.log | active | 验证轮真实 FrameLease 预处理文本（prepared 101/101、rejected=1、p50≈22.7ms）
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.app_core-evidence_item002-selftest-verify-20261019-item002-v1.json | active | 验证轮夹具自检 JSON
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.app_core-evidence_item002-selftest-verify-20261019-item002-v1.log | active | 验证轮夹具自检文本（27 判例 PASS，与 r4 全文恒等）
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.log | active | 验证轮独立板端执行人类可读 transcript（keep-remote：无 cleanup 步骤）
+docs/vision/test_evidence/ITEM-002/vision-item002-192_168_0_103-verify-20261019-item002-v1.transcript.json | active | 验证轮独立板端执行结构化 transcript（命令+退出 token+指纹 SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

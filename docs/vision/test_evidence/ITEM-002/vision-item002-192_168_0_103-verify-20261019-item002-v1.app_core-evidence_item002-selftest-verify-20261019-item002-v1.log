@@ -1,0 +1,28 @@
+[PASS] lb_1280x720_ok
+[PASS] lb_1280x720_centered_pad :: scale=0.500000 pad_y=140
+[PASS] lb_same_size_no_pad
+[PASS] lb_1280x1024_resized512_pad64
+[PASS] quant_v0_to_-128
+[PASS] quant_v255_to_127
+[PASS] quant_mid_to_0
+[PASS] dequant_bounds
+[PASS] bgr_red_prepare_ok
+[PASS] tensor_size_w*h*3 :: bytes=1228800 shape=640x640
+[PASS] rgb_order_R_gt_B :: R=127.000000 B=-128.000000
+[PASS] quant_range_within_int8
+[PASS] stride_padding_not_read_as_pixels
+[PASS] stride_too_small_rejected :: PRE_STRIDE_TOO_SMALL: stride 95 < width*3 96
+[PASS] invalid_dim_rejected :: PRE_INVALID_DIMENSIONS: non-positive source size
+[PASS] null_buffer_rejected :: PRE_NULL_BUFFER: null source
+[PASS] bad_config_rejected :: PRE_BAD_CONFIG: std must be non-zero
+[PASS] letterbox_red_prepare_ok
+[PASS] pad_pixel_is_pad_value :: byte=242 expect=242
+[PASS] letterbox_output_shape
+[PASS] nv12_padded_reference_ok
+[PASS] nv12_tensor_shape
+[PASS] nv12_rgb_order_R_gt_B
+[PASS] nv12_odd_dim_rejected :: PRE_INVALID_DIMENSIONS: NV12 needs even positive size
+[PASS] float32_prepare_ok
+[PASS] float32_tensor_bytes
+[PASS] float32_normalized_range
+RESULT: PASS failures=0

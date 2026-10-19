@@ -1,0 +1,241 @@
+{
+  "checks": [
+    {
+      "name": "T1_build-core_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_core-tests_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_build-media_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_selftest_exits_00",
+      "ok": true,
+      "detail": "tokens=[0, 0] transcript_exit=0"
+    },
+    {
+      "name": "T1_fixture-bgr_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_fixture-nv12_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_lease-source_exit0",
+      "ok": true,
+      "detail": "token=0 transcript_exit=0"
+    },
+    {
+      "name": "T1_keep_remote_no_cleanup",
+      "ok": false,
+      "detail": "cleanup_steps=1"
+    },
+    {
+      "name": "T1_host_fingerprint_present",
+      "ok": true,
+      "detail": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU"
+    },
+    {
+      "name": "T1_upload_app_reported",
+      "ok": true,
+      "detail": "uploaded 277 files"
+    },
+    {
+      "name": "T1_nine_downloads_ok",
+      "ok": true,
+      "detail": "9"
+    },
+    {
+      "name": "T2_selftest_pass_count_from_source",
+      "ok": true,
+      "detail": "board=27 source_calls=28 selftest_expected=27"
+    },
+    {
+      "name": "T2_selftest_result_line",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T2_selftest_judgement_domains_present",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "T2_selftest_identical_to_impl_r4",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T3a_letterbox_independent_math",
+      "ok": true,
+      "detail": "{'scale': 0.5, 'rw': 640, 'rh': 360, 'pad_x': 0, 'pad_y': 140}"
+    },
+    {
+      "name": "T3a_fixture_bgr_matches_independent_math",
+      "ok": true,
+      "detail": "{\"ok\": \"true\", \"w\": 640, \"h\": 640, \"c\": 3, \"bytes\": 1228800, \"dtype\": \"int8\", \"zp\": -128, \"scale\": 0.0039215689, \"lbscale\": 0.5, \"pad_x\": 0, \"pad_y\": 140, \"rw\": 640, \"rh\": 360, \"vmin\": -128.0, \"vmax\": 127.0, \"m\": [65.312, -78.125, -78.125]}"
+    },
+    {
+      "name": "T3a_fixture_nv12_matches_independent_math",
+      "ok": true,
+      "detail": "{\"ok\": \"true\", \"w\": 640, \"h\": 640, \"c\": 3, \"bytes\": 1228800, \"dtype\": \"int8\", \"zp\": -128, \"scale\": 0.0039215689, \"lbscale\": 0.5, \"pad_x\": 0, \"pad_y\": 140, \"rw\": 640, \"rh\": 360, \"vmin\": -128.0, \"vmax\": 126.0, \"m\": [64.75, -78.125, -78.125]}"
+    },
+    {
+      "name": "T3b_letterbox_odd_remainder_900x500",
+      "ok": true,
+      "detail": "{'scale': 0.7111111111111111, 'rw': 640, 'rh': 356, 'pad_x': 0, 'pad_y': 142}"
+    },
+    {
+      "name": "T3b_letterbox_100x1_corner",
+      "ok": true,
+      "detail": "{'scale': 6.4, 'rw': 640, 'rh': 6, 'pad_x': 0, 'pad_y': 317}"
+    },
+    {
+      "name": "T3b_letterbox_855x480_rh359",
+      "ok": true,
+      "detail": "{'scale': 0.7485380116959064, 'rw': 640, 'rh': 359, 'pad_x': 0, 'pad_y': 140}"
+    },
+    {
+      "name": "T3c_bgr_channel_means_independent",
+      "ok": true,
+      "detail": "measured=[65.312,-78.125,-78.125] expect=[65.312,-78.125,-78.125] d=[0.001,0.000,0.000]"
+    },
+    {
+      "name": "T3c_nv12_channel_means_independent",
+      "ok": true,
+      "detail": "measured=[64.75,-78.125,-78.125] expect=[64.750,-78.125,-78.125] d=[0.000,0.000,0.000]"
+    },
+    {
+      "name": "T3d_bgr_nv12_letterbox_agree",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T3e_bgr_rgb_order_R_gt_B",
+      "ok": true,
+      "detail": "[65.312, -78.125, -78.125]"
+    },
+    {
+      "name": "T3e_nv12_rgb_order_R_gt_B",
+      "ok": true,
+      "detail": "[64.75, -78.125, -78.125]"
+    },
+    {
+      "name": "T4_quant_bounds_independent",
+      "ok": true,
+      "detail": "{'v0': -128, 'v255': 127, 'vmid': -127}"
+    },
+    {
+      "name": "T4_pad114_quant_minus14",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T4_selftest_pad_byte_242",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T4_bgr_vrange",
+      "ok": true,
+      "detail": "(-128.0, 127.0)"
+    },
+    {
+      "name": "T4_nv12_vmax_126_from_bt601",
+      "ok": true,
+      "detail": "(-128.0, 126.0)"
+    },
+    {
+      "name": "T5_lease_line_present",
+      "ok": true,
+      "detail": "type=lease format=nv12 size=1280x720 plane0_stride=1280 plane1_offset=921600 memory_kind=cpu origin=simulation"
+    },
+    {
+      "name": "T5_descriptor_arithmetic_independent",
+      "ok": true,
+      "detail": "offset=921600 expect=921600 stride=1280"
+    },
+    {
+      "name": "T5_empty_lease_not_ready",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T5_stats_line_present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T5_prepared_equals_frames",
+      "ok": true,
+      "detail": "frames=101 prepared=101"
+    },
+    {
+      "name": "T5_reject_counts_prepared_empty_lease",
+      "ok": true,
+      "detail": "rejected=1"
+    },
+    {
+      "name": "T5_timing_plausible",
+      "ok": true,
+      "detail": "p50=22319.3 p95=23857.7"
+    },
+    {
+      "name": "T5_reject_reasons_cross",
+      "ok": true,
+      "detail": "rejected=1"
+    },
+    {
+      "name": "T5_first_frame_tensor_row",
+      "ok": true,
+      "detail": "type=preprocess tensor=640x640x3 bytes=1228800 dtype=int8 zp=-128 scale=0.0039215689 letterbox(scale=0.5 pad_x=0 pad_y=1"
+    },
+    {
+      "name": "T6_junit_1003_0",
+      "ok": true,
+      "detail": "<testsuites tests=\"1003\" failures=\"0\""
+    },
+    {
+      "name": "T6_junit_name_multiset_identical_to_r4",
+      "ok": true,
+      "detail": "fresh=1003 impl=1003"
+    },
+    {
+      "name": "T6_vision_domain_names_present",
+      "ok": true,
+      "detail": "62"
+    },
+    {
+      "name": "T6_has[lb centered pad]",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T6_has[stride padding not read as pixels]",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T6_has[nv12 odd width rejected]",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "T7_no_credential_leak_fresh_products",
+      "ok": true,
+      "detail": "files=11 hits=[]"
+    }
+  ],
+  "passed": 46,
+  "failed": 1
+}

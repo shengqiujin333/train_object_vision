@@ -1,0 +1,7 @@
+[PASS] empty_lease_rejected_not_ready :: NOT_READY lease status=NOT_READY
+type=injection source=test camera=CAM-01 duration_s=4 session_id=s1a1525d0ce4-e12bbd-0 target=640x640 dtype=int8
+type=lease format=nv12 size=1280x720 plane0_stride=1280 plane1_offset=921600 memory_kind=cpu origin=simulation
+type=preprocess tensor=640x640x3 bytes=1228800 dtype=int8 zp=-128 scale=0.0039215689 letterbox(scale=0.5 pad_x=0 pad_y=140 resized=640x360) vmin=-128.0000 vmax=127.0000 means=[-8.374,-9.163,-0.251]
+type=preprocess_stats frames=101 prepared=101 not_ready=0 rejected=1 prep_us_p50=22699.7 prep_us_p95=24745.3 prep_us_max=28293.5
+type=reject_reasons NOT_READY=1
+RESULT: PASS

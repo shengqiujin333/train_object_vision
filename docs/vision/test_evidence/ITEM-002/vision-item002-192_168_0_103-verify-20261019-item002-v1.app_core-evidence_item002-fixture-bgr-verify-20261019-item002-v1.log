@@ -1,0 +1,2 @@
+type=fixture kind=bgr src=1280x720 stride=4000 color=red target=640x640 dtype=int8 scale=0.003922 zp=-128
+type=fixture_result ok=true tensor=640x640x3 bytes=1228800 dtype=int8 zp=-128 scale=0.0039215689 letterbox(scale=0.5 pad_x=0 pad_y=140 resized=640x360) vmin=-128.0000 vmax=127.0000 means=[65.312,-78.125,-78.125]
