@@ -1,0 +1,36 @@
+
+===== [exit=0] rm -rf /tmp/railhmi_verify_p3_n018 && mkdir -p /tmp/railhmi_verify_p3_n018 =====
+
+
+===== [exit=0] cd /tmp/railhmi_build && ls build-core/src/core/librailhmi_core.a 2>/dev/null || ls build-core/src/core/*.a 2>/dev/null || find build-core - =====
+build-core/src/core/librailhmi_core.a
+
+
+===== [exit=0] cd /tmp/railhmi_build && g++ -std=c++17 -O0 -Wall -Isrc/core/include /tmp/railhmi_verify_p3_n018/verify_p3_ext.cpp build-core/src/core/libra =====
+GXX_EXIT=0
+
+
+===== [exit=0] /tmp/railhmi_verify_p3_n018/verify_p3_ext; echo P3EXT_EXIT=$? =====
+[PASS] registry 3 slots from config
+[PASS] F-01 data: registry CAM-01 name=车头前方
+[PASS] F-01 data: registry CAM-02 name=车辆左侧
+[PASS] F-01 data: registry CAM-03 name=车辆右侧
+[PASS] registry order kept (config order -> railhmiCameras index)
+[PASS] timeline keyframes generated
+[PASS] F-02 data: every keyframe carries a thumb reference
+[PASS] F-02 data: no keyframe thumb uses qrc: base (media-layer refs)
+[PASS] thumbSource mirror: media-relative thumb -> placeholder (F-02: 不再报 Image 打不开)
+[PASS] thumbSource mirror: absolute path prefixed file://
+[PASS] thumbSource mirror: image:// provider preserved
+[PASS] thumbSource mirror: page-relative path dropped (qrc:/qml/pages/thumb 不可达基址)
+[PASS] sync snapshot available with all three clocks
+[PASS] sync deviation detected (900 > 300)
+[PASS] sync prompt non-empty on P3 tri-view
+[PASS] sync max deviation = 900
+== 16 passed, 0 failed ==
+P3EXT_EXIT=0
+
+
+===== [exit=0] rm -rf /tmp/railhmi_verify_p3_n018 && echo p3_fixtures_cleaned =====
+p3_fixtures_cleaned
+

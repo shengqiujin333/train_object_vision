@@ -1,0 +1,4 @@
+2026-10-20T07:46:52.944 INFO  railhmi 0.1.0 [mode=Target, simulation=off]
+2026-10-20T07:46:52.944 INFO  config dir: /tmp/railhmi_verify_nav_n018/config
+2026-10-20T07:46:52.945 INFO  configuration OK: 6 cameras
+2026-10-20T07:46:52.945 INFO  render path: cpu

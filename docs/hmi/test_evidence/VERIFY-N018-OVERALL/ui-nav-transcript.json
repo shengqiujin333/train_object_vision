@@ -1,0 +1,57 @@
+{
+  "host": "192.168.0.103",
+  "stamp": "n018-overall-v1",
+  "steps": [
+    {
+      "cmd": "rm -rf /tmp/railhmi_verify_nav_n018 && mkdir -p /tmp/railhmi_verify_nav_n018",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cmd": "command -v Xvfb >/dev/null 2>&1 && echo HAVE_XVFB || echo MISS_XVFB",
+      "exit": 0,
+      "output": "HAVE_XVFB"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_verify_nav_n018/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -25'",
+      "exit": 0,
+      "output": "[ 92%] Built target railhmi-recovery\n[ 92%] Built target railhmi-ai-dispatch\n[ 92%] Built target railhmi_autogen\n[ 92%] Automatic RCC for qml.qrc\n[ 92%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/main.cpp.o\n[ 94%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/alarm_model.cpp.o\n[ 94%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/mocs_compilation.cpp.o\n[ 95%] Linking CXX executable ../../tools/railhmi-clip-solidify\n[ 95%] Built target railhmi-clip-solidify\n[ 95%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/replay_model.cpp.o\n[ 95%] Linking CXX executable ../../tools/railhmi-media-provider\n[ 95%] Built target railhmi-media-provider\n[ 96%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/maintenance_model.cpp.o\n[ 97%] Linking CXX executable ../../tools/railhmi-measure\n[ 97%] Built target railhmi-measure\n[ 98%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/permissions_model.cpp.o\n[ 98%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/health_model.cpp.o\n[ 99%] Linking CXX executable ../../tools/railhmi-diagnostics\n[ 99%] Built target railhmi-diagnostics\n[100%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/EWIEGA46WW/qrc_qml.cpp.o\n[100%] Linking CXX executable ../../tools/railhmi-vision-pipeline\n[100%] Linking CXX executable railhmi\n[100%] Built target railhmi-vision-pipeline\n[100%] Built target railhmi\n[build.sh] build OK (mode=target); artifacts under /tmp/railhmi_verify_nav_n018/app/build-target"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_verify_nav_n018/app && sha256sum build-target/src/ui/railhmi && file build-target/src/ui/railhmi | head -1",
+      "exit": 0,
+      "output": "41772ca76845bd67402991be05ed87026f4ff324f08ef618bceb3ff912070937  build-target/src/ui/railhmi\nbuild-target/src/ui/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=4726a19aaf493ee4a6239da463373eaa0200adf7, for GNU/Linux 3.7.0, not stripped"
+    },
+    {
+      "cmd": "cp -r /tmp/railhmi_verify_nav_n018/app/config /tmp/railhmi_verify_nav_n018/config && sed -i 's/^  simulation: .*/  simulation: true/;s/^  default_role: .*/  default_role: admin/' /tmp/railhmi_verify_nav_n018/config/app.yaml",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cmd": "pkill -x Xvfb 2>/dev/null; rm -f /tmp/.X99-lock; nohup Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp </dev/null >/tmp/railhmi_verify_nav_n018/xvfb.log 2>&1 & echo xvfb_pid=$!",
+      "exit": 0,
+      "output": "xvfb_pid=812229"
+    },
+    {
+      "cmd": "for i in $(seq 1 20); do [ -S /tmp/.X11-unix/X99 ] && { echo XVFB_UP; break; }; sleep 0.5; done",
+      "exit": 0,
+      "output": "XVFB_UP"
+    },
+    {
+      "cmd": "bash /tmp/railhmi_verify_nav_n018/capture.sh",
+      "exit": 0,
+      "output": "WIN_UP=1 app_pid=812236\nCAP p1_realtime size=52401\nCAP p2_alarm_center size=91697\nCAP p3_replay size=86110\nCAP p4_all_cameras size=54542\nCAP p5_ai_debug size=96044\nCAP p6_maintenance size=154030\n=== app.log tail ===\n2026-10-20T07:46:52.944 INFO  railhmi 0.1.0 [mode=Target, simulation=off]\n2026-10-20T07:46:52.944 INFO  config dir: /tmp/railhmi_verify_nav_n018/config\n2026-10-20T07:46:52.945 INFO  configuration OK: 6 cameras\n2026-10-20T07:46:52.945 INFO  render path: cpu\n=== app.log qml-error count ===\n4\nAPPLOG_LINES=4\nCAPTURE_DONE"
+    },
+    {
+      "cmd": "pkill -x railhmi 2>/dev/null; pkill -x Xvfb 2>/dev/null; rm -rf /tmp/railhmi_verify_nav_n018; echo cleaned",
+      "exit": 0,
+      "output": "cleaned"
+    }
+  ],
+  "uploaded": 340,
+  "build_exit": 0,
+  "artifact": "41772ca76845bd67402991be05ed87026f4ff324f08ef618bceb3ff912070937  build-target/src/ui/railhmi\nbuild-target/src/ui/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=4726a19aaf493ee4a6239da463373eaa0200adf7, for GNU/Linux 3.7.0, not stripped",
+  "xvfb_up": true,
+  "capture_output": "WIN_UP=1 app_pid=812236\nCAP p1_realtime size=52401\nCAP p2_alarm_center size=91697\nCAP p3_replay size=86110\nCAP p4_all_cameras size=54542\nCAP p5_ai_debug size=96044\nCAP p6_maintenance size=154030\n=== app.log tail ===\n2026-10-20T07:46:52.944 INFO  railhmi 0.1.0 [mode=Target, simulation=off]\n2026-10-20T07:46:52.944 INFO  config dir: /tmp/railhmi_verify_nav_n018/config\n2026-10-20T07:46:52.945 INFO  configuration OK: 6 cameras\n2026-10-20T07:46:52.945 INFO  render path: cpu\n=== app.log qml-error count ===\n4\nAPPLOG_LINES=4\nCAPTURE_DONE",
+  "done": true
+}

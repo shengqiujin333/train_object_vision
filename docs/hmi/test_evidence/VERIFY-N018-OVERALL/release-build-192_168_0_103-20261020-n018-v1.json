@@ -1,0 +1,71 @@
+{
+  "invocation": {
+    "host": "192.168.0.103",
+    "port": 22,
+    "user": "admin",
+    "credential_env": "TRAIN_RK3588_SSH_CREDENTIAL",
+    "out_dir": "docs/hmi/test_evidence/VERIFY-N018-OVERALL",
+    "stamp": "20261020-n018-v1",
+    "remote_dir": "/tmp/railhmi_release",
+    "connect_timeout": 10,
+    "command_timeout": 120,
+    "apt_timeout": 900,
+    "build_timeout": 900,
+    "no_install_deps": true,
+    "no_bundle": true,
+    "diag_rename_emit": false,
+    "diag_add_pages_import": false
+  },
+  "host_key_fingerprint": "SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU",
+  "connected": true,
+  "steps": [
+    {
+      "cmd": "rm -rf /tmp/railhmi_release && mkdir -p /tmp/railhmi_release",
+      "exit": 0,
+      "elapsed_s": 0.2,
+      "output": ""
+    },
+    {
+      "cmd": "ls /usr/lib/aarch64-linux-gnu/cmake/Qt5Quick/Qt5QuickConfig.cmake 2>/dev/null && echo QT_QML=yes || echo QT_QML=no",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "/usr/lib/aarch64-linux-gnu/cmake/Qt5Quick/Qt5QuickConfig.cmake\nQT_QML=yes"
+    },
+    {
+      "step": "upload",
+      "exit": 0,
+      "output": "uploaded 345 files"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_release/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -60'",
+      "exit": 0,
+      "elapsed_s": 80.65,
+      "output": "[ 80%] Linking CXX executable ../../tools/railhmi-ai-runner\n[ 80%] Built target railhmi-ai-runner\n[ 81%] Building CXX object src/media/CMakeFiles/railhmi-camera-worker.dir/tools/camera_worker_probe.cpp.o\n[ 82%] Linking CXX executable ../../tools/railhmi-frame-lease\n[ 82%] Built target railhmi-frame-lease\n[ 83%] Building CXX object src/media/CMakeFiles/railhmi-backpressure.dir/tools/backpressure_probe.cpp.o\n[ 83%] Linking CXX executable ../../tools/railhmi-video-capability\n[ 83%] Built target railhmi-video-capability\n[ 84%] Building CXX object src/media/CMakeFiles/railhmi-display.dir/tools/display_probe.cpp.o\n[ 84%] Linking CXX executable ../../tools/railhmi-stream-probe\n[ 85%] Linking CXX executable ../../tools/railhmi-multi-probe\n[ 85%] Built target railhmi-stream-probe\n[ 86%] Building CXX object src/media/CMakeFiles/railhmi-ai-dispatch.dir/tools/ai_dispatch_probe.cpp.o\n[ 86%] Built target railhmi-multi-probe\n[ 86%] Building CXX object src/media/CMakeFiles/railhmi-recording-tap.dir/tools/recording_tap_probe.cpp.o\n[ 87%] Linking CXX executable ../../tools/railhmi-vision-preprocess\n[ 87%] Built target railhmi-vision-preprocess\n[ 87%] Building CXX object src/media/CMakeFiles/railhmi-clip-solidify.dir/tools/clip_solidify_probe.cpp.o\n[ 87%] Linking CXX executable ../../tools/railhmi-camera-worker\n[ 87%] Built target railhmi-camera-worker\n[ 88%] Building CXX object src/media/CMakeFiles/railhmi-media-provider.dir/tools/media_provider_probe.cpp.o\n[ 88%] Linking CXX executable ../../tools/railhmi-display\n[ 88%] Built target railhmi-display\n[ 88%] Building CXX object src/media/CMakeFiles/railhmi-recovery.dir/tools/recovery_probe.cpp.o\n[ 88%] Linking CXX executable ../../tools/railhmi-backpressure\n[ 88%] Built target railhmi-backpressure\n[ 88%] Building CXX object src/media/CMakeFiles/railhmi-diagnostics.dir/tools/diagnostics_probe.cpp.o\n[ 89%] Linking CXX executable ../../tools/railhmi-recording-tap\n[ 89%] Built target railhmi-recording-tap\n[ 89%] Building CXX object src/media/CMakeFiles/railhmi-measure.dir/tools/measure_probe.cpp.o\n[ 89%] Linking CXX executable ../../tools/railhmi-rga-convert\n[ 89%] Built target railhmi-rga-convert\n[ 90%] Automatic MOC for target railhmi\n[ 90%] Built target railhmi_autogen\n[ 90%] Automatic RCC for qml.qrc\n[ 91%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/mocs_compilation.cpp.o\n[ 92%] Linking CXX executable ../../tools/railhmi-recovery\n[ 92%] Built target railhmi-recovery\n[ 92%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/main.cpp.o\n[ 93%] Linking CXX executable ../../tools/railhmi-clip-solidify\n[ 94%] Linking CXX executable ../../tools/railhmi-measure\n[ 94%] Built target railhmi-clip-solidify\n[ 95%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/alarm_model.cpp.o\n[ 95%] Built target railhmi-measure\n[ 95%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/replay_model.cpp.o\n[ 96%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/maintenance_model.cpp.o\n[ 96%] Linking CXX executable ../../tools/railhmi-media-provider\n[ 96%] Built target railhmi-media-provider\n[ 97%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/permissions_model.cpp.o\n[ 98%] Linking CXX executable ../../tools/railhmi-ai-dispatch\n[ 98%] Built target railhmi-ai-dispatch\n[ 98%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/health_model.cpp.o\n[ 99%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/EWIEGA46WW/qrc_qml.cpp.o\n[100%] Linking CXX executable ../../tools/railhmi-diagnostics\n[100%] Built target railhmi-diagnostics\n[100%] Linking CXX executable railhmi\n[100%] Built target railhmi\n[100%] Linking CXX executable ../../tools/railhmi-vision-pipeline\n[100%] Built target railhmi-vision-pipeline\n[build.sh] build OK (mode=target); artifacts under /tmp/railhmi_release/app/build-target"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_release/app && for p in build-target/railhmi build-target/src/ui/railhmi; do [ -x \"$p\" ] && { echo BIN:$p; ls -l \"$p\"; file \"$p\" 2>/dev/null || true; sha256sum \"$p\"; }; done",
+      "exit": 0,
+      "elapsed_s": 0.08,
+      "output": "BIN:build-target/src/ui/railhmi\n-rwxrwxr-x 1 admin admin 940520 Oct 20 07:42 build-target/src/ui/railhmi\nbuild-target/src/ui/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=f3f0b867bd37f153ee9cbd18cec4a85d86753f98, for GNU/Linux 3.7.0, not stripped\n6a641ef113ff42d7b2b5bdb147c11fbc89997114a2334e700c466b53bb2ff02f  build-target/src/ui/railhmi"
+    },
+    {
+      "cmd": "cd /tmp/railhmi_release/app && QT_QPA_PLATFORM=offscreen timeout 12 ./build-target/src/ui/railhmi --config /tmp/railhmi_release/app/config > /tmp/railhmi_release/smoke.log 2>&1; echo smoke_exit=$?; tail -25 /tmp/railhmi_release/smoke.log",
+      "exit": 0,
+      "elapsed_s": 12.08,
+      "output": "smoke_exit=124\n2026-10-20T07:42:34.043 INFO  railhmi 0.1.0 [mode=Target, simulation=off]\n2026-10-20T07:42:34.043 INFO  config dir: /tmp/railhmi_release/app/config\n2026-10-20T07:42:34.044 INFO  configuration OK: 6 cameras\n2026-10-20T07:42:34.044 INFO  render path: cpu"
+    },
+    {
+      "cmd": "rm -rf /tmp/railhmi_release",
+      "exit": 0,
+      "elapsed_s": 0.07,
+      "output": ""
+    }
+  ],
+  "repairs": [],
+  "bundle": null,
+  "artifact": {
+    "path": "build-target/src/ui/railhmi",
+    "detail": "BIN:build-target/src/ui/railhmi\n-rwxrwxr-x 1 admin admin 940520 Oct 20 07:42 build-target/src/ui/railhmi\nbuild-target/src/ui/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=f3f0b867bd37f153ee9cbd18cec4a85d86753f98, for GNU/Linux 3.7.0, not stripped\n6a641ef113ff42d7b2b5bdb147c11fbc89997114a2334e700c466b53bb2ff02f  build-target/src/ui/railhmi"
+  },
+  "smoke_exit_parsed": 124
+}

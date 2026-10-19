@@ -1670,6 +1670,44 @@ docs/hmi/test_evidence/REPAIR-n008-release-qt/build-TestRun-192_168_0_103-202610
 docs/hmi/test_evidence/REPAIR-n008-release-qt/negcheck_qml_qt_validity.py | active | 反例自检：证明 check_qml_qt_validity 可检出 B-01/B-03（健康 0 / B01 1 / B03 1）
 docs/hmi/test_evidence/REPAIR-n008-release-qt/ui-capture-20261017-repair-r3.log | active | 修复轮 2 UI 装载/截屏工具运行留痕
 docs/hmi/test_evidence/REPAIR-n008-release-qt/ui-capture-20261017-repair-r3.transcript.json | active | 修复轮 2 UI 装载/截屏工具运行留痕
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/VERIFY-FIXTURES-20261020-n018-p3ext.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/VERIFY-FIXTURES-20261020-n018ext1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/VERIFY-FIXTURES-20261020-n018ext1.transcript.json | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/VERIFY-N018-OVERALL-v1.md | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-CoreTests-192_168_0_103-20261020-n018core.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-CoreTests-192_168_0_103-20261020-n018core.transcript.json | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_ai-probe-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_alarm-probe-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_clip-probe-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_core-tests-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_core-tests-20261020-n018-overall-v1.xml | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_fault-probe-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_health-probe-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_maintenance-probe-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_permissions-probe-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_replay-probe-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_sim-inject-20261020-n018-overall-v1.json | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_sim-inject-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_status-probe-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.core-evidence_status-probe-driver-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/build-TestRun-192_168_0_103-20261020-n018-overall-v1.transcript.json | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/nav-app.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/nav-xvfb.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/p1_realtime.png | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/p2_alarm_center.png | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/p3_replay.png | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/p4_all_cameras.png | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/p5_ai_debug.png | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/p6_maintenance.png | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/release-build-192_168_0_103-20261020-n018-v1.json | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/run_p3_ext_fixtures.py | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/smoke-20261020-n018-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/ui-nav-20261020-n018-v1.log | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/ui-nav-transcript.json | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/verify_nav_capture.py | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/verify_nav_judge.py | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N018-OVERALL/verify_p3_ext.cpp | active | N018 整体交付验证轮证据
 docs/hmi/test_evidence/VERIFY-REPAIR-n008-ui/20261017-uiobs-r2-app.log | active | r2 应用日志（xcb/GLX 断连，空截图轮）
 docs/hmi/test_evidence/VERIFY-REPAIR-n008-ui/20261017-uiobs-r2-p1_realtime.png | active | r2 截图（空，软件场景图缺失）
 docs/hmi/test_evidence/VERIFY-REPAIR-n008-ui/20261017-uiobs-r2-p2_alarm_center.png | active | r2 截图（空）

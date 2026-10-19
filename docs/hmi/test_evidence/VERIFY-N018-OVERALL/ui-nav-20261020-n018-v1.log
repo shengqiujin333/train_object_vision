@@ -1,0 +1,12 @@
+[07:45:10] exit=0 :: rm -rf /tmp/railhmi_verify_nav_n018 && mkdir -p /tmp/railhmi_verify_nav_n018
+[07:45:10] exit=0 :: command -v Xvfb >/dev/null 2>&1 && echo HAVE_XVFB || echo MISS_XVFB
+[07:45:31] uploaded 340 files
+[07:46:51] exit=0 :: cd /tmp/railhmi_verify_nav_n018/app && bash -o pipefail -c 'bash build.sh Release 2>&1 | tail -25'
+[07:46:51] exit=0 :: cd /tmp/railhmi_verify_nav_n018/app && sha256sum build-target/src/ui/railhmi && file build-target/sr
+[07:46:51] build ok
+[07:46:51] exit=0 :: cp -r /tmp/railhmi_verify_nav_n018/app/config /tmp/railhmi_verify_nav_n018/config && sed -i 's/^  si
+[07:46:52] exit=0 :: pkill -x Xvfb 2>/dev/null; rm -f /tmp/.X99-lock; nohup Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp
+[07:46:52] exit=0 :: for i in $(seq 1 20); do [ -S /tmp/.X11-unix/X99 ] && { echo XVFB_UP; break; }; sleep 0.5; done
+[07:47:09] exit=0 :: bash /tmp/railhmi_verify_nav_n018/capture.sh
+[07:47:13] exit=0 :: pkill -x railhmi 2>/dev/null; pkill -x Xvfb 2>/dev/null; rm -rf /tmp/railhmi_verify_nav_n018; echo c
+[07:47:13] done
