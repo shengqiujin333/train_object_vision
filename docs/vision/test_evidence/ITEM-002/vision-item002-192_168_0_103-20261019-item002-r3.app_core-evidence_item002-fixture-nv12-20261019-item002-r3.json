@@ -1,0 +1,1 @@
+{"mode":"fixture","failures":0,"lines":["type=fixture kind=nv12 src=1280x720 y_stride=1296 uv_stride=1296 color=red target=640x640 dtype=int8 scale=0.003922 zp=-128","type=fixture_result ok=true tensor=640x640x3 bytes=1228800 dtype=int8 zp=-128 scale=0.0039215689 letterbox(scale=0.5 pad_x=0 pad_y=140 resized=640x360) vmin=-128.0000 vmax=126.0000 means=[64.750,-78.125,-78.125]"]}

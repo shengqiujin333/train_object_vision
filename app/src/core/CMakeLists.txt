@@ -21,6 +21,7 @@ add_library(railhmi_core STATIC
     src/status.cpp
     src/inference.cpp
     src/vision_model_capability.cpp
+    src/vision_preprocess.cpp
     src/alarm_center.cpp
     src/clip.cpp
     src/clip_request.cpp

@@ -32,6 +32,7 @@ add_library(railhmi_media STATIC
     src/media_provider.cpp
     src/recovery_controller.cpp
     src/rknn_model_probe.cpp
+    src/frame_preprocess.cpp
 )
 target_include_directories(railhmi_media PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -77,6 +78,13 @@ set_target_properties(railhmi-video-capability PROPERTIES
 add_executable(railhmi-rknn-probe tools/rknn_probe.cpp)
 target_link_libraries(railhmi-rknn-probe PRIVATE railhmi_media)
 set_target_properties(railhmi-rknn-probe PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
+)
+
+# 帧租约消费与预处理探针（视觉推理 ITEM-002；librga NV12→BGR + letterbox/量化）
+add_executable(railhmi-vision-preprocess tools/preprocess_probe.cpp)
+target_link_libraries(railhmi-vision-preprocess PRIVATE railhmi_media)
+set_target_properties(railhmi-vision-preprocess PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tools
 )
 

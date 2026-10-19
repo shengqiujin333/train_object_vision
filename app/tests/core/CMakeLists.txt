@@ -14,6 +14,7 @@ add_executable(railhmi-core-tests
     test_status.cpp
     test_inference.cpp
     test_vision_model_capability.cpp
+    test_vision_preprocess.cpp
     test_frame_identity.cpp
     test_frame_layout.cpp
     test_bounded_queue.cpp
