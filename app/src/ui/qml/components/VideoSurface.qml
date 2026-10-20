@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import Railhmi.Video 1.0
 import ".."
 
 // 视频渲染面（ITEM-014）。渲染路径由配置选定并经 railhmiRenderPath 注入（默认 cpu，gl 可开关）。
@@ -8,6 +9,7 @@ Item {
     id: surface
     // 实时可展示标志（= core may_present_as_live：仅 LIVE 且质量可用才为真）
     property bool live: false
+    property var channel: null
     property string stateText: ""
     property string detail: ""
 
@@ -20,11 +22,12 @@ Item {
     }
 
     // 实时画面层：仅 live 时可见。cpu 路径由 librga 输出 BGR 图元；gl 路径由 GstGLVideoItem 承载。
-    Item {
+    VideoFrame {
         id: videoLayer
         objectName: "videoLayer"
         anchors.fill: parent
         visible: surface.live
+        channel: surface.channel
     }
 
     // 非 LIVE 占位层：断连/重连/陈旧时覆盖，避免旧帧冒充实时
@@ -54,13 +57,4 @@ Item {
         }
     }
 
-    Text {
-        objectName: "renderPathLabel"
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.margins: Theme.spacing.s2
-        color: Theme.color.text_muted
-        font.pixelSize: Theme.typography.scale.caption.size
-        text: "render:" + surface.renderPath
-    }
 }

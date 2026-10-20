@@ -21,17 +21,17 @@ Rectangle {
     readonly property int margin: (page.height >= 1080) ? page.layout.marginWide : page.layout.marginNarrow
 
     function camByPosition(pos) {
-        for (var i = 0; i < railhmiCameras.length; ++i)
-            if (railhmiCameras[i].position === pos) return railhmiCameras[i]
+        for (var i = 0; i < railhmiChannels.length; ++i)
+            if (railhmiChannels[i].info.position === pos) return railhmiChannels[i]
         return null
     }
     function camName(pos, fallback) {
         var c = page.camByPosition(pos)
-        return c ? c.name : fallback
+        return c ? c.info.name : fallback
     }
     function camState(pos) {
         var c = page.camByPosition(pos)
-        return c ? c.state : "连接中"
+        return c ? c.info.stateLabel : "未配置"
     }
 
     // ---- 当前报警条（P0，底部固定） ----
@@ -98,7 +98,12 @@ Rectangle {
                 height: row.height
                 title: page.camName("left", "左侧")
                 state: page.camState("left")
-                live: false
+                channel: page.camByPosition("left")
+                live: channel ? channel.info.presentable : false
+                detail: channel ? channel.info.detail : ""
+                fpsText: channel ? channel.info.fpsText : ""
+                lastFrameText: channel ? channel.info.lastFrameText : ""
+                reconnectText: channel ? channel.info.reconnectText : ""
                 showBadge: false
             }
             CameraTile {
@@ -107,7 +112,12 @@ Rectangle {
                 height: row.height
                 title: page.camName("primary", "前方")
                 state: page.camState("primary")
-                live: false
+                channel: page.camByPosition("primary")
+                live: channel ? channel.info.presentable : false
+                detail: channel ? channel.info.detail : ""
+                fpsText: channel ? channel.info.fpsText : ""
+                lastFrameText: channel ? channel.info.lastFrameText : ""
+                reconnectText: channel ? channel.info.reconnectText : ""
                 showBadge: false
             }
             CameraTile {
@@ -116,7 +126,12 @@ Rectangle {
                 height: row.height
                 title: page.camName("right", "右侧")
                 state: page.camState("right")
-                live: false
+                channel: page.camByPosition("right")
+                live: channel ? channel.info.presentable : false
+                detail: channel ? channel.info.detail : ""
+                fpsText: channel ? channel.info.fpsText : ""
+                lastFrameText: channel ? channel.info.lastFrameText : ""
+                reconnectText: channel ? channel.info.reconnectText : ""
                 showBadge: false
             }
         }

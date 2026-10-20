@@ -1,9 +1,10 @@
-// railhmi Qt/QML 应用入口（骨架，ITEM-003）。
-// 真正的页面/状态/取流由后续工作项接入；此处验证工程骨架可构建运行。
+// railhmi Qt/QML 应用入口：配置驱动六路取流与实时视频显示。
 
 #include <QGuiApplication>
 #include <QQmlContext>
 #include <QQuickView>
+#include <QQmlEngine>
+#include <qqml.h>
 #include <QUrl>
 #include <QString>
 #include <QVariantList>
@@ -29,6 +30,7 @@
 #include "maintenance_model.h"
 #include "permissions_model.h"
 #include "health_model.h"
+#include "video_runtime.h"
 
 #ifndef RAILHMI_CONFIG_DIR
 #define RAILHMI_CONFIG_DIR "config"
@@ -107,26 +109,10 @@ int main(int argc, char** argv) {
         camList.append(m);
     }
 
-    // 全摄像头页每格展示视图（ITEM-015）：注册表顺序 + 运行时快照。应用尚未接入媒体
-    // 取流时，各路按“未启动”占位（仍占格，不丢格、不重排）。
-    QVariantList chanList;
-    for (const auto& v : railhmi::core::build_channel_views(registry, {}, 0)) {
-        QVariantMap m;
-        m["id"] = QString::fromStdString(v.id);
-        m["name"] = QString::fromUtf8(v.name.c_str());
-        m["position"] = QString::fromStdString(v.position);
-        m["badge"] = QString::fromUtf8(v.badge.c_str());
-        m["aiEnabled"] = v.ai_enabled;
-        m["slot"] = v.slot;
-        m["state"] = QString::fromStdString(v.state);
-        m["stateLabel"] = QString::fromUtf8(v.state_label.c_str());
-        m["fpsText"] = QString::fromUtf8(v.fps_text.c_str());
-        m["lastFrameText"] = QString::fromUtf8(v.last_frame_text.c_str());
-        m["reconnectText"] = QString::fromUtf8(v.reconnect_text.c_str());
-        m["presentable"] = v.presentable;
-        m["placeholder"] = v.placeholder;
-        chanList.append(m);
-    }
+    // 生命周期覆盖 QQuickView；所有页面共享同一路取流，不随页面切换重建。
+    qmlRegisterUncreatableType<VideoChannel>("Railhmi.Video", 1, 0, "VideoChannel", "Provided by runtime");
+    qmlRegisterType<VideoFrameItem>("Railhmi.Video", 1, 0, "VideoFrame");
+    VideoRuntime videoRuntime(cfg.settings);
 
     // 网格形状（ITEM-015）：宽屏 3x2，竖屏 2x3，随窗口尺寸切换。
     QVariantMap gridMap;
@@ -203,7 +189,7 @@ int main(int argc, char** argv) {
     view.rootContext()->setContextProperty("railhmiModeSecondary", QString::fromUtf8(mode.secondary.c_str()));
     view.rootContext()->setContextProperty("railhmiModeInteractive", mode.interactive);
     view.rootContext()->setContextProperty("railhmiCameras", camList);
-    view.rootContext()->setContextProperty("railhmiChannels", chanList);
+    view.rootContext()->setContextProperty("railhmiChannels", videoRuntime.channels());
     view.rootContext()->setContextProperty("railhmiGrid", gridMap);
     view.rootContext()->setContextProperty("railhmiKeyStatus", keyList);
     view.rootContext()->setContextProperty("railhmiTopBar", topList);
@@ -434,5 +420,7 @@ int main(int argc, char** argv) {
     }
     view.resize(1920, 1080);
     view.show();
+    QTimer::singleShot(0, &videoRuntime, &VideoRuntime::start);
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, &videoRuntime, &VideoRuntime::stop);
     return app.exec();
 }

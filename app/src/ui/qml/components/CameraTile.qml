@@ -14,6 +14,7 @@ Rectangle {
     property bool showBadge: false
     // 实时可展示（= core may_present_as_live）。仅真时渲染面显示实时层。
     property bool live: false
+    property var channel: null
     property string detail: ""
     // 运行时展示字段（ITEM-015）
     property string fpsText: ""
@@ -30,6 +31,7 @@ Rectangle {
         anchors.fill: parent
         anchors.margins: Theme.border.width
         live: tile.live
+        channel: tile.channel
         stateText: tile.state
         detail: tile.detail
     }

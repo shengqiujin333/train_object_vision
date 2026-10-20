@@ -27,19 +27,21 @@ Rectangle {
         Repeater {
             model: railhmiChannels
             CameraTile {
-                objectName: "gridCell-" + modelData.id
+                readonly property var channelInfo: modelData.info
+                channel: modelData
+                objectName: "gridCell-" + channelInfo.id
                 width: (grid.width - (page.cols - 1) * page.gap) / page.cols
                 height: (grid.height - (page.rows - 1) * page.gap) / page.rows
-                title: modelData.name
-                state: modelData.stateLabel
-                badge: modelData.badge
-                aiEnabled: modelData.aiEnabled
+                title: channelInfo.name
+                state: channelInfo.stateLabel
+                badge: channelInfo.badge
+                aiEnabled: channelInfo.aiEnabled
                 showBadge: true
-                live: modelData.presentable
-                detail: modelData.stateLabel
-                fpsText: modelData.fpsText
-                lastFrameText: modelData.lastFrameText
-                reconnectText: modelData.reconnectText
+                live: channelInfo.presentable
+                detail: channelInfo.detail
+                fpsText: channelInfo.fpsText
+                lastFrameText: channelInfo.lastFrameText
+                reconnectText: channelInfo.reconnectText
             }
         }
     }

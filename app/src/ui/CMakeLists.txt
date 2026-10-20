@@ -32,6 +32,8 @@ endif()
 # 版本信息注入 UI 上下文
 add_executable(railhmi
     src/main.cpp
+    src/video_runtime.cpp
+    src/video_runtime.h
     src/alarm_model.cpp
     src/alarm_model.h
     src/replay_model.cpp
@@ -51,8 +53,19 @@ target_link_libraries(railhmi PRIVATE
     railhmi_core railhmi_platform
 )
 if(RAILHMI_BUILD_TARGET)
+    target_compile_definitions(railhmi PRIVATE RAILHMI_HAS_MEDIA=1)
     target_link_libraries(railhmi PRIVATE railhmi_media)
 endif()
 if(TARGET railhmi_tokens)
     add_dependencies(railhmi railhmi_tokens)
+endif()
+
+option(RAILHMI_BUILD_UI_TESTS "Build live video Qt integration test" OFF)
+if(RAILHMI_BUILD_UI_TESTS AND RAILHMI_BUILD_TARGET)
+    add_executable(railhmi-video-test
+        ../../tests/ui/video_test.cpp src/video_runtime.cpp src/video_runtime.h qml.qrc)
+    target_include_directories(railhmi-video-test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+    target_compile_definitions(railhmi-video-test PRIVATE RAILHMI_HAS_MEDIA=1)
+    target_link_libraries(railhmi-video-test PRIVATE Qt5::Core Qt5::Gui Qt5::Quick Qt5::Qml
+        railhmi_core railhmi_platform railhmi_media)
 endif()
