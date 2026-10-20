@@ -2,9 +2,8 @@ import QtQuick 2.15
 import Railhmi.Video 1.0
 import ".."
 
-// 视频渲染面（ITEM-014）。渲染路径由配置选定并经 railhmiRenderPath 注入（默认 cpu，gl 可开关）。
-// 逐帧纹理由 media 层（ITEM-013 CameraStream + librga / GstGLVideoItem）提供；
-// 本组件职责：按所选路径选择渲染实现、非 LIVE 显示占位层、绝不把陈旧帧当实时画面。
+// 视频渲染面：VideoFrame 绘制媒体层经 RGA 转换后的独立像素快照。
+// 断流/冻结时清空画面并展示状态；GL 尚未接入时由运行时明确报不可用。
 Item {
     id: surface
     // 实时可展示标志（= core may_present_as_live：仅 LIVE 且质量可用才为真）
@@ -21,7 +20,7 @@ Item {
         color: Theme.color.bg_sunken
     }
 
-    // 实时画面层：仅 live 时可见。cpu 路径由 librga 输出 BGR 图元；gl 路径由 GstGLVideoItem 承载。
+    // 实时画面层：保持宽高比；仅 live 时可见。
     VideoFrame {
         id: videoLayer
         objectName: "videoLayer"

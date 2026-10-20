@@ -123,23 +123,43 @@ int main(int argc, char** argv) {
 
     // 关键状态区七项（ITEM-016）：颜色+形状字形+文字三重编码；应用未接入 AI/录像/存储采样时
     // 按“未接入”呈现，异常时本色突出；点击异常项按角色解析 allowed。
-    QVariantList keyList;
-    for (const auto& it : railhmi::core::build_key_status(railhmi::core::KeyStatusSnapshot{}, role)) {
-        const railhmi::core::StatusClickResult r = railhmi::core::resolve_status_click(it, role);
-        QVariantMap m;
-        m["key"] = QString::fromStdString(it.key);
-        m["label"] = QString::fromUtf8(it.label.c_str());
-        m["level"] = QString::fromLatin1(railhmi::core::to_string(it.level));
-        m["shape"] = QString::fromStdString(it.shape);
-        m["glyph"] = QString::fromUtf8(it.glyph.c_str());
-        m["color"] = QString::fromStdString(it.color);
-        m["value"] = QString::fromUtf8(it.value.c_str());
-        m["abnormal"] = it.abnormal;
-        m["clickable"] = it.clickable;
-        m["allowed"] = r.allowed;
-        m["target"] = QString::fromLatin1(railhmi::core::to_string(it.target_page));
-        keyList.append(m);
-    }
+    auto buildKeyList = [&]() {
+        railhmi::core::KeyStatusSnapshot snapshot;
+        int live = 0, started = 0, offline = 0;
+        const auto channels = videoRuntime.channels();
+        for (const auto& value : channels) {
+            const auto info = qvariant_cast<VideoChannel*>(value)->info();
+            if (info.value("presentable").toBool()) ++live;
+            const auto state = info.value("state").toString();
+            if (state != "unstarted") ++started;
+            if (state == "offline") ++offline;
+        }
+        if (started > 0) {
+            snapshot.camera.level = live == channels.size() ? railhmi::core::StatusLevel::Ok
+                : offline > 0 ? railhmi::core::StatusLevel::Alarm
+                              : railhmi::core::StatusLevel::Warning;
+            snapshot.camera.value = std::to_string(live) + "/" + std::to_string(channels.size()) + " 路实时";
+        }
+        QVariantList result;
+        for (const auto& it : railhmi::core::build_key_status(snapshot, role)) {
+            const railhmi::core::StatusClickResult r = railhmi::core::resolve_status_click(it, role);
+            QVariantMap m;
+            m["key"] = QString::fromStdString(it.key);
+            m["label"] = QString::fromUtf8(it.label.c_str());
+            m["level"] = QString::fromLatin1(railhmi::core::to_string(it.level));
+            m["shape"] = QString::fromStdString(it.shape);
+            m["glyph"] = QString::fromUtf8(it.glyph.c_str());
+            m["color"] = QString::fromStdString(it.color);
+            m["value"] = QString::fromUtf8(it.value.c_str());
+            m["abnormal"] = it.abnormal;
+            m["clickable"] = it.clickable;
+            m["allowed"] = r.allowed;
+            m["target"] = QString::fromLatin1(railhmi::core::to_string(it.target_page));
+            result.append(m);
+        }
+        return result;
+    };
+    QVariantList keyList = buildKeyList();
 
     // 顶部模式信息条（ITEM-016）：时间（QML 实时时钟）/模式(可见光·红外未接入)/录像/AI/系统健康/未接入项。
     QVariantList topList;
@@ -192,6 +212,14 @@ int main(int argc, char** argv) {
     view.rootContext()->setContextProperty("railhmiChannels", videoRuntime.channels());
     view.rootContext()->setContextProperty("railhmiGrid", gridMap);
     view.rootContext()->setContextProperty("railhmiKeyStatus", keyList);
+    for (const auto& value : videoRuntime.channels()) {
+        QObject::connect(qvariant_cast<VideoChannel*>(value), &VideoChannel::infoChanged, &view, [&]() {
+            const auto updated = buildKeyList();
+            if (updated == keyList) return;
+            keyList = updated;
+            view.rootContext()->setContextProperty("railhmiKeyStatus", keyList);
+        });
+    }
     view.rootContext()->setContextProperty("railhmiTopBar", topList);
 
     // AI 调试页（ITEM-017）：仅 ai_enabled 相机；应用尚未启动推理线程时每路显式“AI 不可用”。

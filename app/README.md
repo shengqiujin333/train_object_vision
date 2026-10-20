@@ -9,6 +9,43 @@
 
 ---
 
+## 实时视频运行（2026-10-20）
+
+主程序现已接入 `VideoRuntime → DisplayRegistry → CameraWorker`：启动六路独立取流，
+经 MPP 解码、应用侧 RGA NV12→BGR 转换，由 Qt `VideoFrame` 绘制拥有像素的快照。
+P1 左/前/右按配置 position 绑定，P4 保持六个固定槽位；帧率、最近帧、重连次数、
+连接状态和主界面摄像头汇总均实时更新。切页不重建取流。
+单次转换失败可沿用新鲜度期限内的上一张成功帧；断流、冻结、跨 generation 或画面过期时清空。
+
+目标板本机构建与运行：
+
+```sh
+bash build.sh Release
+# 按 config/cameras.yaml 的 credential_env 从本机环境提供密码，不写入源码或 Git。
+export TRAIN_FRONT_RTSP_CREDENTIAL='<现场前方相机密码>'
+export TRAIN_SIDE_RTSP_CREDENTIAL='<现场其余相机密码>'
+DISPLAY=:0 ./build-target/railhmi --config ./config
+```
+
+产物统一输出为 `app/build-target/railhmi`，与安装脚本和发布构建器保持一致。
+systemd 可从 `/opt/railhmi/config/camera-credentials.env` 读取上述变量
+（文件按 `NAME=value` 格式配置并限制权限）；缺少凭据时对应路显示离线及缺失变量名。
+`render_path: cpu` 是当前已实现的路径，`gl` 会明确显示不可用；
+目标构建下 `app.simulation: true` 使用六路 GStreamer 测试源，不访问真实摄像头。
+
+视频集成测试（真实 Qt 绘制 + 六路测试源 + 单路冻结/恢复）：
+
+```sh
+cmake -S . -B build-target -DRAILHMI_BUILD_TARGET=ON -DRAILHMI_BUILD_UI_TESTS=ON
+cmake --build build-target --target railhmi railhmi-video-test -j4
+QT_QUICK_BACKEND=software xvfb-run -a -s '-screen 0 1280x720x24' \
+  ./build-target/src/ui/railhmi-video-test ./config /tmp
+```
+
+本轮部署、测试结果和执行路径见 `docs/hmi/test_evidence/LIVE-VIDEO-20261020/README.md`。
+
+---
+
 ## 当前状态（增量）
 
 | 工作项 | 内容 | 状态 |
@@ -47,7 +84,7 @@
 >
 > **修复轮 2（响应 UI 评审 `REVIEW-REPAIR-n008.md` F-01/F-02）**：UI 评审以 Xvfb 实际导航六页，指出 P3 运行期缺陷 —— **F-01** `P3Replay.qml` 调用未定义的 `chipName`（TypeError，三联标题失败）→ 新增配置驱动 `chipName(camId)`（注册表 id→name，未知回退 id）；**F-02** 关键帧缩略图 `Image` 相对路径被解析为 `qrc:/qml/pages/...` 反复报错 → 新增 `thumbSource()`（仅接受绝对/资源基址，缺失时空串+占位方框）。`check_qml_qt_validity.py` 增“根 id 未定义成员调用”检查（反例 `NEG_F01=1`）。目标 Xvfb 六页导航截屏 `app.log` **0 条 QML 错误**（修复前 3×TypeError + 48×Image 错误）；板端 TestRun **670/670**。证据同目录 (§6)。
 
-> 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。UI/取流/页面在后续工作项接入。
+> 本文件是工程构建/运行入口说明；三档构建见 `build.sh`（`Release`/`Preview`/`CoreTests`，另 `MediaCheck` 媒体层检查）。历史增量记录保留；当前视频接入情况以上方“实时视频运行”为准。
 
 ---
 

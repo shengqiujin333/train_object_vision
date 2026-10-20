@@ -11,6 +11,8 @@ User=admin
 # X11 显示（历史记录为 :0；部署时按现场 X 会话核对）
 Environment=DISPLAY=:0
 Environment=QT_QPA_PLATFORM=xcb
+# 本机私有文件，按 cameras.yaml 的 credential_env 提供密码；不提交 Git。
+EnvironmentFile=-/opt/railhmi/config/camera-credentials.env
 WorkingDirectory=/opt/railhmi
 ExecStart=/opt/railhmi/bin/railhmi --config /opt/railhmi/config
 # 崩溃/退出后自动拉起（不阻塞其余服务，不触碰 cpu-performance.service）

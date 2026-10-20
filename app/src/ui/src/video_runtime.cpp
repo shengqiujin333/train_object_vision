@@ -57,7 +57,7 @@ struct VideoRuntime::Impl {
     std::vector<VideoChannel*> channels;
     std::vector<QString> errors;
     std::vector<unsigned long long> generations, sequences;
-    std::vector<long long> next_frame_ms;
+    std::vector<long long> next_frame_ms, image_capture_ms;
     bool running = false;
 #ifdef RAILHMI_HAS_MEDIA
     std::unique_ptr<railhmi::media::DisplayRegistry> display;
@@ -74,6 +74,7 @@ VideoRuntime::VideoRuntime(const railhmi::core::AppSettings& settings, QObject* 
     impl_->generations.resize(impl_->channels.size());
     impl_->sequences.resize(impl_->channels.size());
     impl_->next_frame_ms.resize(impl_->channels.size());
+    impl_->image_capture_ms.resize(impl_->channels.size());
     connect(&timer_, &QTimer::timeout, this, &VideoRuntime::refresh);
     timer_.setInterval(40);
     refresh();
@@ -174,7 +175,7 @@ void VideoRuntime::refresh() {
             auto* channel = impl_->channels[i];
             const bool fresh = s.last_frame_ms > 0 && now - s.last_frame_ms <=
                                impl_->settings.thresholds.freeze_timeout_ms;
-            const bool ready = s.presentable && fresh && impl_->display->presentable(impl_->registry[i].id);
+            const bool ready = s.presentable && fresh;
             if (ready && now >= impl_->next_frame_ms[i]) {
                 media::FrameSnapshot frame;
                 if (impl_->display->snapshot(impl_->registry[i].id, &frame) && frame.presentable &&
@@ -187,10 +188,15 @@ void VideoRuntime::refresh() {
                     channel->setImage(bgr.rgbSwapped()); // Deep copy before snapshot storage goes away.
                     impl_->sequences[i] = frame.seq;
                     impl_->generations[i] = frame.generation;
+                    impl_->image_capture_ms[i] = frame.capture_mono_us / 1000;
                     impl_->next_frame_ms[i] = now + std::max(1, 1000 / impl_->settings.cameras[i].display_fps);
                 }
             }
-            r.presentable = ready && impl_->generations[i] == s.generation && !channel->image().isNull();
+            // A single failed RGA conversion need not flash a blank tile. Keep the last
+            // good image only inside the same strict freshness window as decoded frames.
+            r.presentable = ready && impl_->generations[i] == s.generation &&
+                            now - impl_->image_capture_ms[i] <= impl_->settings.thresholds.freeze_timeout_ms &&
+                            !channel->image().isNull();
             if (!r.presentable && !channel->image().isNull()) channel->setImage(QImage());
         }
     }
@@ -207,6 +213,7 @@ void VideoRuntime::refresh() {
         info["slot"] = v.slot;
         info["state"] = QString::fromStdString(v.state);
         info["stateLabel"] = QString::fromUtf8(v.state_label.c_str());
+        if (v.state == "live" && !v.presentable) info["stateLabel"] = QString::fromUtf8("等待视频帧");
         info["fpsText"] = QString::fromUtf8(v.fps_text.c_str());
         info["lastFrameText"] = QString::fromUtf8(v.last_frame_text.c_str());
         info["reconnectText"] = QString::fromUtf8(v.reconnect_text.c_str());
