@@ -3106,10 +3106,32 @@ docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item01
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r2.json | active | 视觉自检归档 JSON（含 timestamp；16/16 PASS + pending 四项；测试设计 G13 归档位置）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r3.deterministic.json | active | 视觉自检归档 JSON（r3 确定性副本，无 timestamp；同版本跨轮 sha256 比对用）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-20261021-item013-r3.json | active | 视觉自检归档 JSON（r3，含 timestamp；17/17 PASS + FI-AI-12 + pending 四项）
+docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261020-n023-v1.deterministic.json | active | N023 SELFTEST 确定性归档 JSON（与 impl r3 逐字节恒等）
+docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261020-n023-v1.json | active | N023 SELFTEST 归档 JSON（含 timestamp）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261021-item013-v1.deterministic.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261021-item013-v1.json | active | 由 software_tester.software_verification 新增或修改的项目相关文件
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261021-item013-v2.deterministic.json | active | ITEM-013 v2 复核轮 SELFTEST 归档确定性副本（与 impl r3 逐字节恒等）
 docs/vision/test_evidence/SELFTEST/vision-selftest-192_168_0_103-verify-20261021-item013-v2.json | active | ITEM-013 v2 复核轮 SELFTEST 归档 JSON（17/17，G13 要求位置）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/VERIFY-N023-OVERALL-v1.md | active | N023 视觉线整体交付复验轮（ITEM-013 交付整体重验 TEST_PASS 权威报告）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/_driver_console_r2.log | active | N023 整体复验驱动控制台留痕
+docs/vision/test_evidence/VERIFY-N023-OVERALL/_verify_item013_cmp_overall.py | active | N023 整体复验独立比对 oracle（fresh 41/41，dry-run 39/39）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/_verify_item013_run_overall.py | active | N023 整体复验驱动（V-RUN+V-EXT+V-NEG+清理）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/verify-item013-n023-vext-v1-replay.log | active | N023 V-NEG v1 呈证夹具反转取证日志（fail=3 恰好 v01/v02/v03）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/verify-item013-n023-vext-v2.log | active | N023 V-EXT v2 夹具逐字节复用 fresh 日志（18/18 PASS）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.app_core-evidence_item013-core-tests-verify-20261020-n023-v1.xml | active | N023 V-RUN core JUnit（tests=1452 failures=0）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.app_core-evidence_item013-media-selftest-verify-20261020-n023-v1.json | active | N023 V-RUN media 自检 JSON
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.app_core-evidence_item013-media-selftest-verify-20261020-n023-v1.log | active | N023 V-RUN media 自检日志（RESULT: PASS）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.app_core-evidence_item013-selftest-det1-verify-20261020-n023-v1.json | active | N023 V-RUN 确定性 JSON 1（sha256 9bfbd807… 与 impl r3 恒等）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.app_core-evidence_item013-selftest-det1-verify-20261020-n023-v1.log | active | N023 V-RUN 确定性运行 1 日志
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.app_core-evidence_item013-selftest-det2-verify-20261020-n023-v1.json | active | N023 V-RUN 确定性 JSON 2
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.app_core-evidence_item013-selftest-det2-verify-20261020-n023-v1.log | active | N023 V-RUN 确定性运行 2 日志
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.app_core-evidence_item013-selftest-list-verify-20261020-n023-v1.txt | active | N023 V-RUN --list 17 判例 id
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.app_core-evidence_item013-selftest-verify-20261020-n023-v1.json | active | N023 V-RUN selftest 归档 JSON
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.app_core-evidence_item013-selftest-verify-20261020-n023-v1.log | active | N023 V-RUN selftest verbose 日志（17/17 PASS）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.driver.log | active | N023 驱动 V-RUN 段输出留痕
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.driver.transcript.json | active | N023 驱动全步 transcript（含 V-EXT/V-NEG/清理）
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.log | active | N023 V-RUN fresh 主日志
+docs/vision/test_evidence/VERIFY-N023-OVERALL/vision-item013-192_168_0_103-verify-20261020-n023-v1.transcript.json | active | N023 V-RUN fresh transcript（9 步全 0）
 docs/vision/vision_tasks.yaml | active | TaskListArtifact：推理应用实现的有序增量（13 项，模型能力核验/租约预处理/检测与分割后处理/同帧两阶段/结果关联发布/语义规则接入/跟踪协同/线程调度接入/其它职责可用性语义/测距/调试视图/无相机自检）
 file_manifest.txt | existing | 本清单，项目文件用途登记
 models/rail_labels.txt | existing | 轨道分割标签

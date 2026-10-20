@@ -1,0 +1,10 @@
+[driver] credential imported (len 5)
+[driver] V-RUN start (deliverable runner, keep-remote, overall re-run on current tree)
+[driver] V-RUN exit=0 elapsed=237s
+[driver] connected, fingerprint=SHA256:NzHFHZ0Z9qmYDIyiTViAOUQrXQRKa1gNijyPceNZ5qU
+[driver] vext2 build exit=0
+[driver] vext2 run outer=0 token_exit=0
+[driver] vext1 build exit=0
+[driver] vext1 run outer=0 token_exit=1
+[driver] cleanup exit=0
+[driver] driver done
