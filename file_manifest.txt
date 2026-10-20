@@ -1708,6 +1708,16 @@ docs/hmi/test_evidence/VERIFY-N018-OVERALL/ui-nav-transcript.json | active | N01
 docs/hmi/test_evidence/VERIFY-N018-OVERALL/verify_nav_capture.py | active | N018 整体交付验证轮证据
 docs/hmi/test_evidence/VERIFY-N018-OVERALL/verify_nav_judge.py | active | N018 整体交付验证轮证据
 docs/hmi/test_evidence/VERIFY-N018-OVERALL/verify_p3_ext.cpp | active | N018 整体交付验证轮证据
+docs/hmi/test_evidence/VERIFY-N019-UI/20261020-uiobs-n019-app.log | active | n019 完整交付权威轮应用运行日志（4 行 INFO，无 QML 错误关键字）
+docs/hmi/test_evidence/VERIFY-N019-UI/20261020-uiobs-n019-p1_realtime.png | active | n019 截图 P1（1920x1080，非空白）
+docs/hmi/test_evidence/VERIFY-N019-UI/20261020-uiobs-n019-p2_alarm_center.png | active | n019 截图 P2
+docs/hmi/test_evidence/VERIFY-N019-UI/20261020-uiobs-n019-p3_replay.png | active | n019 截图 P3
+docs/hmi/test_evidence/VERIFY-N019-UI/20261020-uiobs-n019-p4_all_cameras.png | active | n019 截图 P4
+docs/hmi/test_evidence/VERIFY-N019-UI/20261020-uiobs-n019-p5_ai_debug.png | active | n019 截图 P5
+docs/hmi/test_evidence/VERIFY-N019-UI/20261020-uiobs-n019-p6_maintenance.png | active | n019 截图 P6
+docs/hmi/test_evidence/VERIFY-N019-UI/20261020-uiobs-n019-xvfb.log | active | n019 Xvfb 日志
+docs/hmi/test_evidence/VERIFY-N019-UI/ui-capture-20261020-uiobs-n019.log | active | n019 UI 截屏工具过程日志
+docs/hmi/test_evidence/VERIFY-N019-UI/ui-capture-20261020-uiobs-n019.transcript.json | active | n019 UI 截屏工具 transcript（构建/产物 sha256/六页截屏）
 docs/hmi/test_evidence/VERIFY-REPAIR-n008-ui/20261017-uiobs-r2-app.log | active | r2 应用日志（xcb/GLX 断连，空截图轮）
 docs/hmi/test_evidence/VERIFY-REPAIR-n008-ui/20261017-uiobs-r2-p1_realtime.png | active | r2 截图（空，软件场景图缺失）
 docs/hmi/test_evidence/VERIFY-REPAIR-n008-ui/20261017-uiobs-r2-p2_alarm_center.png | active | r2 截图（空）
@@ -1842,6 +1852,7 @@ docs/hmi/ui_review/REVIEW-ITEM-023.md | active | UI 实现评审证据（UIImple
 docs/hmi/ui_review/REVIEW-ITEM-024-v2.md | active | UI 实现评审证据 v2（UIImplementationReviewEvidence）：对 commit fd9dde4 的 ITEM-024 D-01..D-04 修复轮逐项复核（不采信验证自述）；D-01（P6 卡片区包 Flickable∓clip/contentHeight，Grid 去锚定）/D-02（RecoveryOverlay 缓存 st+reload+Connections{onChanged}，P6 healthSt/logRows+reloadHealth/reloadLogs+health Connections）/D-03（logSourceInput/logKeywordInput 三参 logs 贯通）/D-04（resetRecovery/advanceRecovery + demo_tracker_ + Timer + recoveryDemo chip）均闭环；core 663/663 未被 UI 修复轮改动；判定 TEST_PASS（范围限 ITEM-024 界面与静态接线；观察 O-1 演示/真实恢复共用 recovery() 出口、O-2 logJson 未上屏、O-3 真实采样/落库 handoff、O-4 运行期待验；无运行期视觉/交互结论）
 docs/hmi/ui_review/REVIEW-ITEM-024.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit 93e625a 的 ITEM-024 健康监控/结构化日志/断电自恢复做 core 健康评估与日志查询按日滚动、8 步恢复序列与非关键相机降级不退出、RecoveryOverlay 与 P6 结构化日志卡/恢复进度卡、main.qml 浮层接线、C++↔QML 装配链路的源码与布局几何/反应性审阅；判定 TEST_FAIL —— D-01 P6 无滚动网格溢出（5 行固定高卡 ≈1232px > 可用 ≈1008px）裁切本项新增的结构化日志/恢复进度卡、D-02 恢复/日志 UI 未接 railhmiHealth.changed() 致进度不刷新且浮层不隐藏；观察 D-03 来源/关键字查询 UI 不可达、D-04 样例恒为已完成恢复、D-05 真实采样/落库 handoff（TEST_FAIL，范围限 ITEM-024 界面与静态接线，无运行期视觉/交互结论）
 docs/hmi/ui_review/REVIEW-ITEM-025.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：对 commit ee0a741 的 ITEM-025 界面侧交付（P6 故障自检卡与 fault_catalog FI-01..05/10 显式提示+恢复路径上屏、self_check_list 含 SC-BOOT 重启自恢复、railhmiFaults 装配、卡片在可滚动区内）与各故障既有页面语义对照的源码审阅；判定 TEST_PASS（范围限 ITEM-025 界面侧；观察 O-1 自检清单注入动作未上屏、O-2 自检卡固定高 320 对 6 行偏紧待运行期确认、O-3 界面无 FI 开关、O-4 packaging/systemd/升级/资源许可属非界面契约由 software_verification 复核；无运行期视觉/交互结论）
+docs/hmi/ui_review/REVIEW-N019-OVERALL.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：桌面应用完整交付（n019 complete_delivery）——当前工作树 HEAD e868b24 在目标板构建 Qt Release、Xvfb 软件场景图实际装载、xdotool 导航 P1..P6、ffmpeg 截屏；app.log 4 行 INFO、错误关键字 0 命中、六页非空白且互不相同；汇总 ITEM-001..025 与 REPAIR-n008 v1/v2 分项结论、跨组件接线（状态导航/报警→回放/角色过滤/权限门控/恢复浮层）；判定 TEST_PASS（边界：媒体/视频/视觉入库入界面、真实取流、真机自启、操作员主观视觉不在本项）
 docs/hmi/ui_review/REVIEW-REPAIR-n008-v2.md | active | UI 实现评审证据 v2（UIImplementationReviewEvidence）：REPAIR-n008 修复轮 2（complete_delivery）——再次在目标板构建 Qt Release 并在 Xvfb（软件场景图）实际装载、xdotool 导航 P1..P6、ffmpeg 截屏；F-01（P3 chipName 未定义 TypeError）与 F-02（缩略图相对基址 Image 打不开）均闭环（应用日志仅 4 行 INFO，错误关键字 0 命中，六页非空白且互不相同）；判定 TEST_PASS（实际运行观察）
 docs/hmi/ui_review/REVIEW-REPAIR-n008.md | active | UI 实现评审证据（UIImplementationReviewEvidence）：REPAIR-n008 完整交付（complete_delivery）——在目标板本机构建 Qt Release 并在虚拟显示 Xvfb（软件场景图）上实际装载、xdotool 逐页导航 P1..P6、ffmpeg x11grab 截屏；确认 B-01/B-02/B-03 已修复且六页均可渲染，但 P3Replay.qml:185 运行期 TypeError（chipName 未定义，三联标题渲染失败）与 P3Replay.qml:308 关键帧 Image 打不开/相对路径基址错误；判定 TEST_FAIL（实际运行观察，非静态推断）
 docs/hmi/ui_review/tools/board_run.py | active | UI 评审工具：目标板受限远程执行（指纹核验，诊断/清理用）
