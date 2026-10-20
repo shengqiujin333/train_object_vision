@@ -1,0 +1,33 @@
+ext17 PASS EX-A run done 
+ext17 PASS EX-A three records parsed 
+ext17 PASS EX-A sim recorded 
+ext17 PASS EX-A file recorded 
+ext17 PASS EX-A rtsp to_be_executed+CREDS 
+ext17 PASS EX-A sim window_s matches injected 
+ext17 PASS EX-A sim source_fps band 
+ext17 PASS EX-A sim display_fps >0 
+ext17 PASS EX-A sim cpu in 0..100 
+ext17 PASS EX-A sim clip 188-granularity positive 
+ext17 PASS EX-A sim bitrate arithmetic 
+ext17 PASS EX-A sim sync available 
+ext17 PASS EX-A sim dev < 300 
+ext17 PASS EX-A sim recovery real 
+ext17 PASS EX-A sim e2e samples 
+ext17 PASS EX-A sim e2e monotonic 
+ext17 PASS EX-A acceptance result=PASS 
+ext17 PASS EX-A clip real MPEG-TS sync 
+ext17 PASS EX-A clip matches JSON clip_bytes 
+ext17 PASS EX-D run2 done 
+ext17 PASS EX-D acceptance keyset identical 
+ext17 PASS EX-D result PASS both 
+ext17 PASS EX-D structural tokens stable 
+ext17 PASS EX-B unknown arg exit2 
+ext17 PASS EX-B help exit0 + usage 
+ext17 PASS EX-C build ok 
+ext17 PASS EX-C vext all pass 
+ext17 PASS EX-C vext PASS line count == check() calls 
+ext17 PASS EX-E credential leak scan clean 
+ext17 PASS EX-E secrets nondegenerate 
+ext17 PASS cleanup tree done 
+
+ext17 summary: checks=31 fails=0

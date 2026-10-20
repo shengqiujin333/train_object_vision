@@ -1,0 +1,96 @@
+cmp17 PASS C1a archives exist 
+cmp17 PASS C1b r3 schema 
+cmp17 PASS C1c r3 records=3 
+cmp17 PASS C1d r3 all values finite (no NaN/Inf) 
+cmp17 PASS C2a r3 three classes present 
+cmp17 PASS C2b r3 simulation recorded 
+cmp17 PASS C2c r3 file recorded 
+cmp17 PASS C2d r3 rtsp to_be_executed 
+cmp17 PASS C2e r3 rtsp reason CREDENTIAL_MISSING 
+cmp17 PASS C2f r3 rtsp zero-domain (no fabricated values) 
+cmp17 PASS C3a r3 sim all four segments 
+cmp17 PASS C3b r3 sim.arrival_decode invariant 
+cmp17 PASS C3b r3 sim.decode_convert invariant 
+cmp17 PASS C3b r3 sim.convert_present invariant 
+cmp17 PASS C3b r3 sim.end_to_end invariant 
+cmp17 PASS C4 r3 sim p99(e2e)<=sum(p99 segs) 
+cmp17 PASS C3a r3 file all four segments 
+cmp17 PASS C3b r3 file.arrival_decode invariant 
+cmp17 PASS C3b r3 file.decode_convert invariant 
+cmp17 PASS C3b r3 file.convert_present invariant 
+cmp17 PASS C3b r3 file.end_to_end invariant 
+cmp17 PASS C4 r3 file p99(e2e)<=sum(p99 segs) 
+cmp17 PASS C5a sim source_fps 20..30 band 
+cmp17 PASS C5b sim display_fps >0 
+cmp17 PASS C5c sim cpu 0..100 
+cmp17 PASS C5d sim rss positive 
+cmp17 PASS C5e sim temp positive 
+cmp17 PASS C5f sim npu explicit -1 + note (no fabricated) 
+cmp17 PASS C5g file source_fps >= sim band lowedge (fast non-realtime) 
+cmp17 PASS C6a sim clip_bytes >0 
+cmp17 PASS C6b sim clip_bytes 188-byte granularity 
+cmp17 PASS C6c sim bitrate matches bytes*8/window within 5pct 
+cmp17 PASS C6d sim free_bytes>0 <= total_bytes 
+cmp17 PASS C6e file clip_bytes == sim clip_bytes (same staged clip reused) 
+cmp17 PASS C7a sim sync available=true 
+cmp17 PASS C7b sim sync max_deviation < 300 threshold 
+cmp17 PASS C7c sim sync in_sync with dev<300 
+cmp17 PASS C7d file sync distinct domain (available=false) 
+cmp17 PASS C8a sim recovery attempts>=1 
+cmp17 PASS C8b sim recovery last_recovery_ms >0 
+cmp17 PASS C8c file recovery untouched domain 
+cmp17 PASS C8d sim recovery plausible window (50..4000ms) 
+cmp17 PASS C1b fresh schema 
+cmp17 PASS C1c fresh records=3 
+cmp17 PASS C1d fresh all values finite (no NaN/Inf) 
+cmp17 PASS C2a fresh three classes present 
+cmp17 PASS C2b fresh simulation recorded 
+cmp17 PASS C2c fresh file recorded 
+cmp17 PASS C2d fresh rtsp to_be_executed 
+cmp17 PASS C2e fresh rtsp reason CREDENTIAL_MISSING 
+cmp17 PASS C2f fresh rtsp zero-domain (no fabricated values) 
+cmp17 PASS C3a fresh sim all four segments 
+cmp17 PASS C3b fresh sim.arrival_decode invariant 
+cmp17 PASS C3b fresh sim.decode_convert invariant 
+cmp17 PASS C3b fresh sim.convert_present invariant 
+cmp17 PASS C3b fresh sim.end_to_end invariant 
+cmp17 PASS C4 fresh sim p99(e2e)<=sum(p99 segs) 
+cmp17 PASS C3a fresh file all four segments 
+cmp17 PASS C3b fresh file.arrival_decode invariant 
+cmp17 PASS C3b fresh file.decode_convert invariant 
+cmp17 PASS C3b fresh file.convert_present invariant 
+cmp17 PASS C3b fresh file.end_to_end invariant 
+cmp17 PASS C4 fresh file p99(e2e)<=sum(p99 segs) 
+cmp17 PASS C5a sim source_fps 20..30 band 
+cmp17 PASS C5b sim display_fps >0 
+cmp17 PASS C5c sim cpu 0..100 
+cmp17 PASS C5d sim rss positive 
+cmp17 PASS C5e sim temp positive 
+cmp17 PASS C5f sim npu explicit -1 + note (no fabricated) 
+cmp17 PASS C5g file source_fps >= sim band lowedge (fast non-realtime) 
+cmp17 PASS C6a sim clip_bytes >0 
+cmp17 PASS C6b sim clip_bytes 188-byte granularity 
+cmp17 PASS C6c sim bitrate matches bytes*8/window within 5pct 
+cmp17 PASS C6d sim free_bytes>0 <= total_bytes 
+cmp17 PASS C6e file clip_bytes == sim clip_bytes (same staged clip reused) 
+cmp17 PASS C7a sim sync available=true 
+cmp17 PASS C7b sim sync max_deviation < 300 threshold 
+cmp17 PASS C7c sim sync in_sync with dev<300 
+cmp17 PASS C7d file sync distinct domain (available=false) 
+cmp17 PASS C8a sim recovery attempts>=1 
+cmp17 PASS C8b sim recovery last_recovery_ms >0 
+cmp17 PASS C8c file recovery untouched domain 
+cmp17 PASS C8d sim recovery plausible window (50..4000ms) 
+cmp17 PASS C9a both acceptance lines exist 
+cmp17 PASS C9b acceptance key sets identical 
+cmp17 PASS C9c fresh acceptance simulation_recorded true 
+cmp17 PASS C9c fresh acceptance file_recorded true 
+cmp17 PASS C9c fresh acceptance rtsp_to_be_executed true 
+cmp17 PASS C9c fresh acceptance three_source_classes true 
+cmp17 PASS C9c fresh acceptance latency_percentiles true 
+cmp17 PASS C9c fresh acceptance storage_measured true 
+cmp17 PASS C9c fresh acceptance recovery_measured true 
+cmp17 PASS C9c fresh acceptance sync_instrument true 
+cmp17 PASS C9d fresh result PASS 
+
+cmp17 summary: fails=0

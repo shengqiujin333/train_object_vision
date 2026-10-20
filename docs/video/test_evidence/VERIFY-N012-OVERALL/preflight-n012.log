@@ -1,0 +1,25 @@
+selfn012 PASS a) _verify_n012_run.py compiles 
+selfn012 PASS a) _verify_n012_ext.py compiles 
+selfn012 PASS a) _verify_n012_compare.py compiles 
+selfn012 PASS b1) r3 three classes 
+selfn012 PASS b2) r3 sim fps in band 
+selfn012 PASS b3) r3 sim cpu plausibility 
+selfn012 PASS b4) r3 clip granular 
+selfn012 PASS b5) r3 bitrate math 
+selfn012 PASS b6) r3 recovery real 
+selfn012 PASS b7) r3 sync available 
+selfn012 PASS b8) r3 arrival_decode monotonic 
+selfn012 PASS b8) r3 decode_convert monotonic 
+selfn012 PASS b8) r3 convert_present monotonic 
+selfn012 PASS b8) r3 end_to_end monotonic 
+selfn012 PASS b9) r3 p99 additivity necessary cond 
+selfn012 PASS b10) r3 rtsp tbe+missing 
+selfn012 PASS b11) r3 npu explicit unavailable 
+selfn012 PASS c1) vext check calls counted 
+selfn012 PASS c2) vext names subset of calls 
+selfn012 PASS c3) vext brace balance 
+selfn012 PASS d1) run stamp = v1 
+selfn012 PASS d2) ext stamp matches run stamp 
+selfn012 PASS d3) compare fresh stamp matches 
+
+self17 summary: fails=0

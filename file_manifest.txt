@@ -2212,6 +2212,24 @@ docs/video/test_evidence/ITEM-017/measure-ext-192_168_0_103-20261018-item017-ver
 docs/video/test_evidence/ITEM-017/measure-ext-192_168_0_103-20261018-item017-verify-v1.log | active | ITEM-017 EXT 全 transcript（EXA/B/C/D/E + vext 40 PASS 留痕 + 指纹）
 docs/video/test_evidence/ITEM-017/measure-ext-192_168_0_103-20261018-item017-verify-v1.transcript.json | active | ITEM-017 EXT 结构化 transcript（指纹/逐命令/退出码）
 docs/video/test_evidence/ITEM-017/verify17-compare-v1.log | active | ITEM-017 验证侧语义预言机 r3+fresh 双归档 79 判例全 PASS 留痕
+docs/video/test_evidence/VERIFY-N012-OVERALL/VERIFY-N012-OVERALL-v1.md | active | N012 视频实现（ITEM-017 测量装置）整体交付验证轮 TestEvidence 主文件（J1..J9 全 PASS）
+docs/video/test_evidence/VERIFY-N012-OVERALL/_selfcheck_n012_preflight.py | active | N012 整体验证轮离线自检脚本（23/23 PASS）
+docs/video/test_evidence/VERIFY-N012-OVERALL/_verify_n012_compare.py | active | N012 整体验证轮语义预言机（r3+fresh 双归档 78 判例）
+docs/video/test_evidence/VERIFY-N012-OVERALL/_verify_n012_ext.py | active | N012 整体验证轮 EXT 夹具驱动（31/31）
+docs/video/test_evidence/VERIFY-N012-OVERALL/_verify_n012_run.py | active | N012 整体验证轮独立复跑驱动（调用 board_measure_check.py）
+docs/video/test_evidence/VERIFY-N012-OVERALL/_verify_n012_vext.cpp | active | N012 整体验证轮 vext 夹具（40 判例，与 ITEM-017 已验证夹具判据一致）
+docs/video/test_evidence/VERIFY-N012-OVERALL/ext-n012-driver.log | active | N012 整体验证 EXT 轮 stdout 汇总
+docs/video/test_evidence/VERIFY-N012-OVERALL/measure-192_168_0_103-20261021-n012-overall-v1.core-evidence_measure-20261021-n012-overall-v1.json | active | N012 整体验证轮结构化 transcript/归档 JSON
+docs/video/test_evidence/VERIFY-N012-OVERALL/measure-192_168_0_103-20261021-n012-overall-v1.core-evidence_measure-20261021-n012-overall-v1.log | active | N012 整体验证轮板端复跑/夹具原始日志
+docs/video/test_evidence/VERIFY-N012-OVERALL/measure-192_168_0_103-20261021-n012-overall-v1.core-evidence_measure_MEASURE_measure-clip.ts | active | N012 整体验证实测 MPEG-TS 片段（2,204,300 B，188 粒度字节面独立复判）
+docs/video/test_evidence/VERIFY-N012-OVERALL/measure-192_168_0_103-20261021-n012-overall-v1.log | active | N012 整体验证轮板端复跑/夹具原始日志
+docs/video/test_evidence/VERIFY-N012-OVERALL/measure-192_168_0_103-20261021-n012-overall-v1.transcript.json | active | N012 整体验证轮结构化 transcripts
+docs/video/test_evidence/VERIFY-N012-OVERALL/measure-ext-192_168_0_103-20261021-n012-overall-v1.checks.json | active | N012 整体验证 EXT 判例列表 JSON
+docs/video/test_evidence/VERIFY-N012-OVERALL/measure-ext-192_168_0_103-20261021-n012-overall-v1.log | active | N012 整体验证轮板端复跑/夹具原始日志
+docs/video/test_evidence/VERIFY-N012-OVERALL/measure-ext-192_168_0_103-20261021-n012-overall-v1.transcript.json | active | N012 整体验证轮结构化 transcripts
+docs/video/test_evidence/VERIFY-N012-OVERALL/preflight-n012.log | active | N012 整体验证离线自检输出
+docs/video/test_evidence/VERIFY-N012-OVERALL/run-n012-driver.log | active | N012 整体验证板端复跑步骤汇总（9 步全 0）
+docs/video/test_evidence/VERIFY-N012-OVERALL/verify-n012-compare-v1.log | active | N012 整体验证 compare 预言机逐判例输出
 docs/video/video_system_tasks.yaml | active | TaskListArtifact：视频实现能力的有序工作项（17 项，接入/帧租约/解码转换/多路隔离/背压/显示分发/AI 派发/压缩录像/片段与缺口/provider 回放/恢复/时间同步/诊断/预算测量）
 docs/vision/VISION_DESIGN.md | active | VisionDesignArtifact：六路可见光视觉任务判定/输入输出与推理接口/标注语义与映射/评价指标与业务错误代价/数据事实与策略/模型复用与量化/预处理后处理规范/职责边界/风险与待确认决策（computer_vision_engineer.vision_design v1）
 docs/vision/VISION_E2E_PLAN.md | active | E2EPlan：视觉/推理端到端旅程 5 条（host selftest 闭环/板端真模型探针/file 源全链路/front 真机确认/不可用语义审核）与升降级门（software_tester.software_test_design v1）
