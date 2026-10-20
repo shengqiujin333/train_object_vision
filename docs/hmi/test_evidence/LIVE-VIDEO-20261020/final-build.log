@@ -1,0 +1,124 @@
+[build.sh] mode=target host=aarch64 compiler=c++ cmake=cmake version 3.22.1
+[build.sh] note: SQLite3 dev not found -> SqliteStore disabled (install libsqlite3-dev to enable)
+[build.sh] dependency check: Qt=yes gstreamer=yes librga=yes sqlite3=no
+[build.sh] configuring: cmake -S '/home/admin/rk3588_handover_live_20261020/app' -B '/home/admin/rk3588_handover_live_20261020/app/build-target' -DCMAKE_BUILD_TYPE=Release -DRAILHMI_BUILD_TARGET=ON
+-- railhmi: build mode = Target
+-- railhmi: SQLite runtime lib /lib/aarch64-linux-gnu/libsqlite3.so.0 + shim header -> persistence enabled
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/admin/rk3588_handover_live_20261020/app/build-target
+[build.sh] building: cmake --build '/home/admin/rk3588_handover_live_20261020/app/build-target' -j8
+[  1%] Generating theme tokens from docs/hmi/design_tokens.yaml
+Consolidate compiler generated dependencies of target railhmi_core
+[ 27%] Built target railhmi_core
+Consolidate compiler generated dependencies of target railhmi-model-probe
+Consolidate compiler generated dependencies of target railhmi-ai-probe
+Consolidate compiler generated dependencies of target railhmi-timebase-sync
+[gen_tokens] wrote /home/admin/rk3588_handover_live_20261020/app/resources/tokens.json and /home/admin/rk3588_handover_live_20261020/app/src/ui/qml/{Theme,Tokens}.qml,qmldir
+Consolidate compiler generated dependencies of target railhmi-vision-detect
+[ 28%] Built target railhmi-model-probe
+Consolidate compiler generated dependencies of target railhmi-config-check
+[ 29%] Built target railhmi-ai-probe
+Consolidate compiler generated dependencies of target railhmi-status-probe
+Consolidate compiler generated dependencies of target railhmi-sim-inject
+[ 30%] Built target railhmi-vision-detect
+Consolidate compiler generated dependencies of target railhmi-vision-seg
+[ 31%] Built target railhmi-timebase-sync
+Consolidate compiler generated dependencies of target railhmi-vision-twostage
+[ 33%] Built target railhmi-sim-inject
+[ 34%] Built target railhmi-vision-twostage
+[ 35%] Built target railhmi-vision-seg
+Consolidate compiler generated dependencies of target railhmi-vision-envelope
+[ 35%] Built target railhmi_tokens
+[ 36%] Built target railhmi-status-probe
+[ 37%] Built target railhmi-config-check
+Consolidate compiler generated dependencies of target railhmi-vision-distance
+Consolidate compiler generated dependencies of target railhmi-vision-selftest
+Consolidate compiler generated dependencies of target railhmi-vision-semantic
+[ 38%] Built target railhmi-vision-envelope
+[ 39%] Built target railhmi-vision-semantic
+[ 40%] Built target railhmi-vision-distance
+[ 41%] Built target railhmi-vision-selftest
+Consolidate compiler generated dependencies of target railhmi-vision-debug
+Consolidate compiler generated dependencies of target railhmi_platform
+Consolidate compiler generated dependencies of target railhmi-alarm-probe
+Consolidate compiler generated dependencies of target railhmi-vision-tracking
+Consolidate compiler generated dependencies of target railhmi-replay-probe
+Consolidate compiler generated dependencies of target railhmi-maintenance-probe
+Consolidate compiler generated dependencies of target railhmi-permissions-probe
+Consolidate compiler generated dependencies of target railhmi-vision-duty
+[ 44%] Built target railhmi_platform
+[ 45%] Built target railhmi-replay-probe
+[ 46%] Built target railhmi-alarm-probe
+[ 47%] Built target railhmi-vision-duty
+[ 48%] Built target railhmi-maintenance-probe
+[ 49%] Built target railhmi-vision-debug
+Consolidate compiler generated dependencies of target railhmi-health-probe
+Consolidate compiler generated dependencies of target railhmi-fault-probe
+[ 50%] Built target railhmi-vision-tracking
+[ 51%] Built target railhmi-permissions-probe
+[ 52%] Built target railhmi-fault-probe
+[ 53%] Built target railhmi-health-probe
+Consolidate compiler generated dependencies of target railhmi-clip-probe
+Consolidate compiler generated dependencies of target railhmi_media
+[ 54%] Built target railhmi-clip-probe
+[ 67%] Built target railhmi_media
+Consolidate compiler generated dependencies of target railhmi-video-capability
+Consolidate compiler generated dependencies of target railhmi-rknn-probe
+Consolidate compiler generated dependencies of target railhmi-vision-pipeline
+Consolidate compiler generated dependencies of target railhmi-frame-lease
+Consolidate compiler generated dependencies of target railhmi-multi-probe
+Consolidate compiler generated dependencies of target railhmi-stream-probe
+Consolidate compiler generated dependencies of target railhmi-ai-runner
+[ 69%] Built target railhmi-video-capability
+[ 69%] Built target railhmi-multi-probe
+[ 70%] Built target railhmi-frame-lease
+Consolidate compiler generated dependencies of target railhmi-vision-preprocess
+[ 71%] Built target railhmi-rknn-probe
+[ 72%] Built target railhmi-ai-runner
+Consolidate compiler generated dependencies of target railhmi-camera-worker
+Consolidate compiler generated dependencies of target railhmi-rga-convert
+Consolidate compiler generated dependencies of target railhmi-display
+[ 74%] Built target railhmi-vision-pipeline
+[ 75%] Built target railhmi-rga-convert
+[ 76%] Built target railhmi-stream-probe
+[ 77%] Built target railhmi-camera-worker
+Consolidate compiler generated dependencies of target railhmi-ai-dispatch
+Consolidate compiler generated dependencies of target railhmi-backpressure
+[ 78%] Built target railhmi-vision-preprocess
+[ 79%] Built target railhmi-display
+Consolidate compiler generated dependencies of target railhmi-recording-tap
+Consolidate compiler generated dependencies of target railhmi-recovery
+Consolidate compiler generated dependencies of target railhmi-clip-solidify
+Consolidate compiler generated dependencies of target railhmi-diagnostics
+[ 84%] Built target railhmi-diagnostics
+[ 84%] Built target railhmi-recovery
+[ 84%] Built target railhmi-recording-tap
+[ 84%] Built target railhmi-clip-solidify
+[ 85%] Built target railhmi-ai-dispatch
+Consolidate compiler generated dependencies of target railhmi-media-provider
+[ 86%] Built target railhmi-backpressure
+Consolidate compiler generated dependencies of target railhmi-measure
+[ 88%] Built target railhmi-media-provider
+[ 90%] Automatic MOC for target railhmi
+[ 90%] Automatic MOC for target railhmi-video-test
+[ 91%] Built target railhmi-measure
+[ 91%] Built target railhmi_autogen
+[ 91%] Built target railhmi-video-test_autogen
+[ 91%] Automatic RCC for qml.qrc
+[ 92%] Automatic RCC for qml.qrc
+Consolidate compiler generated dependencies of target railhmi
+[ 93%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/mocs_compilation.cpp.o
+[ 93%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/EWIEGA46WW/qrc_qml.cpp.o
+[ 93%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/main.cpp.o
+[ 94%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/video_runtime.cpp.o
+Consolidate compiler generated dependencies of target railhmi-video-test
+[ 94%] Building CXX object src/ui/CMakeFiles/railhmi-video-test.dir/railhmi-video-test_autogen/mocs_compilation.cpp.o
+[ 95%] Building CXX object src/ui/CMakeFiles/railhmi-video-test.dir/__/__/tests/ui/video_test.cpp.o
+[ 95%] Building CXX object src/ui/CMakeFiles/railhmi-video-test.dir/src/video_runtime.cpp.o
+[ 96%] Building CXX object src/ui/CMakeFiles/railhmi-video-test.dir/railhmi-video-test_autogen/EWIEGA46WW/qrc_qml.cpp.o
+[ 96%] Linking CXX executable railhmi-video-test
+[ 96%] Built target railhmi-video-test
+[ 97%] Linking CXX executable ../../railhmi
+[100%] Built target railhmi
+[build.sh] build OK (mode=target); artifacts under /home/admin/rk3588_handover_live_20261020/app/build-target

@@ -34,7 +34,7 @@
 
 执行文件：`/home/admin/rk3588_handover_live_20261020/app/build-target/railhmi`
 
-SHA-256：`37daa2a4b663ddf0c025f8873ad8592b640214568d025ac17d306e014862dcd9`
+SHA-256：`628717f5264eb84ed3f3e2839e6f871846a78c1c6555008ab8e61e52ec1f84f4`
 
 已在板上准备启动脚本（自动加载本机私有凭据）：
 
@@ -55,4 +55,4 @@ QT_QUICK_BACKEND=software xvfb-run -a -s '-screen 0 1280x720x24' \
   ./build-target/src/ui/railhmi-video-test config ../evidence
 ```
 
-证据：`build.log`、`video-test.log`、`live-camera-smoke.log`、`artifact.txt`、`video-P1.png`、`video-P4.png`。
+证据：`final-build.log`（最终同步后的构建）、`build.log`、`video-test.log`、`live-camera-smoke.log`、`artifact.txt`、`video-P1.png`、`video-P4.png`。
