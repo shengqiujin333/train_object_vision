@@ -23,12 +23,12 @@ void test_matrix() {
                                 role_has_permission(r, Permission::Acknowledge, cfg),
                             "all roles view realtime/alarm/replay + ack");
     }
-    // 司机受限
-    railhmi_test::check(!role_has_permission(Role::Driver, Permission::ViewAllCameras, cfg) &&
-                            !role_has_permission(Role::Driver, Permission::ViewAiDebug, cfg) &&
-                            !role_has_permission(Role::Driver, Permission::ViewMaintenance, cfg) &&
+    // 所有页面开放；操作权限单独校验
+    railhmi_test::check(role_has_permission(Role::Driver, Permission::ViewAllCameras, cfg) &&
+                            role_has_permission(Role::Driver, Permission::ViewAiDebug, cfg) &&
+                            role_has_permission(Role::Driver, Permission::ViewMaintenance, cfg) &&
                             !role_has_permission(Role::Driver, Permission::ExportRecording, cfg),
-                        "driver denied all-cameras/ai-debug/maintenance/export");
+                        "driver sees all pages; export remains a separate action");
     // 操作角色可见
     railhmi_test::check(role_has_permission(Role::Maintainer, Permission::ViewAllCameras, cfg) &&
                             role_has_permission(Role::Developer, Permission::ViewAiDebug, cfg) &&

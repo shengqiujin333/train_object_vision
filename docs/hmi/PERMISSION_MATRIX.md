@@ -1,8 +1,8 @@
 # railhmi 权限矩阵（ITEM-023）
 
 来源: `docs/hmi/INTERACTION_DESIGN.md` v2 §8（权限与角色交互）。运行时校验实现于
-`railhmi-core::permissions`（`role_has_permission` / `permission_gate`），UI 仅据权限查询渲染
-（受限入口不渲染）。导出为“受配置”项（`app.permissions.export_ops_allowed`，默认 `false`=仅管理员）。
+`railhmi-core::permissions`（`role_has_permission` / `permission_gate`），UI 依据操作权限查询渲染。
+当前默认管理员，启动进入六画面，全部六页对所有角色开放。导出为“受配置”项（`app.permissions.export_ops_allowed`，默认 `false`=仅管理员）。
 
 | 权限（Permission） | 说明 | 司机 | 维护 | 研发/调试 | 管理员 |
 |---|---|:--:|:--:|:--:|:--:|
@@ -10,9 +10,9 @@
 | `view_alarm_center` | P2 报警中心 | ✓ | ✓ | ✓ | ✓ |
 | `view_replay` | P3 历史回放 | ✓ | ✓ | ✓ | ✓ |
 | `acknowledge` | 报警确认 | ✓ | ✓ | ✓ | ✓ |
-| `view_all_cameras` | P4 全摄像头 | ✗ | ✓ | ✓ | ✓ |
-| `view_ai_debug` | P5 AI 调试 | ✗ | ✓ | ✓ | ✓ |
-| `view_maintenance` | P6 设备维护 | ✗ | ✓ | ✓ | ✓ |
+| `view_all_cameras` | P4 全摄像头 | ✓ | ✓ | ✓ | ✓ |
+| `view_ai_debug` | P5 AI 调试 | ✓ | ✓ | ✓ | ✓ |
+| `view_maintenance` | P6 设备维护 | ✓ | ✓ | ✓ | ✓ |
 | `ptz_control` | 云台控制 | ✗ | ✓ | ✓ | ✓ |
 | `reconnect` | 手动重连 | ✗ | ✓ | ✓ | ✓ |
 | `modify_device_config` | 设备配置修改 | ✗ | ✓ | ✓ | ✓ |
@@ -21,7 +21,7 @@
 | `export_snapshot` | 快照导出（受配置） | ✗ | 受配置 | 受配置 | ✓ |
 
 说明：
-- **受限入口不渲染**：无权限的导航项不出现（外壳按角色过滤）；直达受限页显示“无权限 + 返回”。
+- **全部页面显示**：2026-10-20 按用户要求取消页面角色隐藏，所有角色均显示六个导航入口，默认进入全摄像头。默认角色为管理员，操作入口完整显示；其他角色的操作权限仍独立校验。
 - **二次确认**：`modify_device_config` / `modify_system_config` / `export_recording` / `export_snapshot`
   需二次确认（`requires_secondary_confirm`）；确认前不执行（`result=cancelled`），确认后执行并写
   **维护日志**（`build_action_log`，action=`export_recording` / `modify_config`，含 user/result/detail，按日滚动）。

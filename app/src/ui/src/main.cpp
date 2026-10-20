@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
     railhmi::platform::Logger::instance().info(
         "configuration OK: " + std::to_string(cfg.settings.cameras.size()) + " cameras");
 
-    // 角色化导航（ITEM-011）：按角色过滤可见页入口，注入 QML 外壳（受限页由 QML 显示无权限+返回）。
+    // 全部六个功能页均注入导航，不按角色隐藏。
     const railhmi::core::Role role = cfg.settings.app.default_role;
     QVariantList navList;
     QVariantList allList;

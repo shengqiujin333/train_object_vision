@@ -1,0 +1,68 @@
+video channel "CAM-01" "unstarted" presentable= false
+video channel "CAM-02" "unstarted" presentable= false
+video channel "CAM-03" "unstarted" presentable= false
+video channel "CAM-04" "unstarted" presentable= false
+video channel "CAM-05" "unstarted" presentable= false
+video channel "CAM-06" "unstarted" presentable= false
+video workers started: 6 / 6
+video channel "CAM-01" "live" presentable= true
+video channel "CAM-02" "connecting" presentable= false
+video channel "CAM-03" "connecting" presentable= false
+video channel "CAM-04" "connecting" presentable= false
+video channel "CAM-05" "connecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-02" "live" presentable= true
+video channel "CAM-03" "live" presentable= true
+video channel "CAM-04" "live" presentable= true
+video channel "CAM-05" "live" presentable= true
+video channel "CAM-06" "live" presentable= true
+video channel "CAM-01" "live" presentable= false
+video channel "CAM-01" "live" presentable= true
+video channel "CAM-01" "unstarted" presentable= false
+video channel "CAM-02" "unstarted" presentable= false
+video channel "CAM-03" "unstarted" presentable= false
+video channel "CAM-04" "unstarted" presentable= false
+video channel "CAM-05" "unstarted" presentable= false
+video channel "CAM-06" "unstarted" presentable= false
+video channel "CAM-01" "unstarted" presentable= false
+video channel "CAM-02" "unstarted" presentable= false
+video channel "CAM-03" "unstarted" presentable= false
+video channel "CAM-04" "unstarted" presentable= false
+video channel "CAM-05" "unstarted" presentable= false
+video channel "CAM-06" "unstarted" presentable= false
+video workers started: 0 / 6
+video channel "CAM-01" "offline" presentable= false
+video channel "CAM-02" "offline" presentable= false
+video channel "CAM-03" "offline" presentable= false
+video channel "CAM-04" "offline" presentable= false
+video channel "CAM-05" "offline" presentable= false
+video channel "CAM-06" "offline" presentable= false
+video channel "CAM-01" "unstarted" presentable= false
+video channel "CAM-02" "unstarted" presentable= false
+video channel "CAM-03" "unstarted" presentable= false
+video channel "CAM-04" "unstarted" presentable= false
+video channel "CAM-05" "unstarted" presentable= false
+video channel "CAM-06" "unstarted" presentable= false
+rga_api version 1.10.1_[0]
+PASS six_workers_publish_owned_images
+PASS P1_live_bindings
+PASS P1_position_mapping
+PASS P1_actual_video_pixels_rendered
+PASS freeze_clears_old_frame
+PASS P1_freeze_placeholder
+PASS single_channel_failure_isolated
+PASS resume_restores_video
+PASS P4_six_stable_slots
+PASS frames_keep_advancing_after_page_switch
+PASS P4_delegate_retained_during_updates
+PASS application_defaults_to_six_camera_view
+PASS application_shows_all_six_navigation_entries
+PASS application_opens_realtime
+PASS application_opens_alarm_center
+PASS application_opens_replay
+PASS application_opens_all_cameras
+PASS application_opens_ai_debug
+PASS application_opens_maintenance
+PASS stop_clears_video
+PASS missing_credentials_explicit_offline
+VIDEO_TEST failures=0

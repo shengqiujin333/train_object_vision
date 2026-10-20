@@ -136,15 +136,15 @@ void run_vision_debug_view_tests() {
         check(debug_overlay_count() == 4, "debug_overlay_count_four", "四开关");
     }
 
-    // ---- 司机角色不可见（TC-T-DBG-02 隔离要求） ----
+    // ---- 司机同样可查看调试页，显式开关可开启叠加 ----
     {
         OverlaySwitches all;
         all.boxes = all.roi = all.text = all.mask = true;
         DebugViewModel vm = build_debug_view(input_for(Role::Driver, all));
-        check(!vm.visible, "debug_driver_hidden", vm.hidden_reason);
-        check(vm.channels.empty(), "debug_driver_no_channels", "不下发任何 P5 数据");
-        check(!vm.overlays_effective, "debug_driver_no_overlays", "司机即使开关也不产生叠加");
-        check(vm.hidden_reason.find("driver") != std::string::npos, "debug_driver_reason",
+        check(vm.visible, "debug_driver_visible", vm.hidden_reason);
+        check(vm.channels.size() == 2, "debug_driver_channels", "下发真实调试视图数据");
+        check(vm.overlays_effective, "debug_driver_overlays_enabled", "显式开关开启时产生叠加");
+        check(vm.hidden_reason.empty(), "debug_driver_no_hidden_reason",
               vm.hidden_reason);
     }
     {

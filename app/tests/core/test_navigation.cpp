@@ -1,5 +1,5 @@
 // railhmi-core 导航与角色权限测试（ITEM-011 / 交互方案 v2 §8、§11#10、§11#14）。
-// 司机只可见实时/报警/回放；维护/研发/管理员可见全部；受限页返回“无权限”；模式位固定可见光、红外未接入。
+// 所有角色可见六页，默认六画面；模式位固定可见光、红外未接入。
 
 #include "test_util.h"
 
@@ -32,9 +32,9 @@ void test_permission_matrix() {
     railhmi_test::check(role_can_access(Role::Driver, Page::Realtime), "driver can realtime");
     railhmi_test::check(role_can_access(Role::Driver, Page::AlarmCenter), "driver can alarm center");
     railhmi_test::check(role_can_access(Role::Driver, Page::Replay), "driver can replay");
-    railhmi_test::check(!role_can_access(Role::Driver, Page::AllCameras), "driver cannot all cameras");
-    railhmi_test::check(!role_can_access(Role::Driver, Page::AiDebug), "driver cannot AI debug");
-    railhmi_test::check(!role_can_access(Role::Driver, Page::Maintenance), "driver cannot maintenance");
+    railhmi_test::check(role_can_access(Role::Driver, Page::AllCameras), "driver can all cameras");
+    railhmi_test::check(role_can_access(Role::Driver, Page::AiDebug), "driver can AI debug");
+    railhmi_test::check(role_can_access(Role::Driver, Page::Maintenance), "driver can maintenance");
     for (Role r : {Role::Maintainer, Role::Developer, Role::Admin}) {
         for (Page pg : all_pages()) {
             railhmi_test::check(role_can_access(r, pg), "maintainer/developer/admin can all pages");
@@ -44,13 +44,13 @@ void test_permission_matrix() {
 
 void test_visible_pages() {
     auto d = visible_pages(Role::Driver);
-    railhmi_test::check(d.size() == 3, "driver sees 3 nav entries", std::to_string(d.size()));
+    railhmi_test::check(d.size() == 6, "driver sees all 6 nav entries", std::to_string(d.size()));
     railhmi_test::check(contains(d, Page::Realtime) && contains(d, Page::AlarmCenter) &&
                             contains(d, Page::Replay),
                         "driver nav = realtime/alarm/replay");
-    railhmi_test::check(!contains(d, Page::AiDebug) && !contains(d, Page::Maintenance) &&
-                            !contains(d, Page::AllCameras),
-                        "driver nav excludes AI debug/maintenance/all cameras");
+    railhmi_test::check(contains(d, Page::AiDebug) && contains(d, Page::Maintenance) &&
+                            contains(d, Page::AllCameras),
+                        "driver nav includes AI debug/maintenance/all cameras");
     auto m = visible_pages(Role::Maintainer);
     railhmi_test::check(m.size() == 6, "maintainer sees all 6 nav entries", std::to_string(m.size()));
     railhmi_test::check(visible_pages(Role::Developer).size() == 6 &&
@@ -59,18 +59,18 @@ void test_visible_pages() {
 }
 
 void test_default_page() {
-    railhmi_test::check(default_page(Role::Driver) == Page::Realtime, "driver lands on realtime");
+    railhmi_test::check(default_page(Role::Driver) == Page::AllCameras, "driver lands on all cameras");
     railhmi_test::check(default_page(Role::Maintainer) == Page::AllCameras, "maintainer lands on all cameras");
-    railhmi_test::check(default_page(Role::Developer) == Page::AiDebug, "developer lands on AI debug");
-    railhmi_test::check(default_page(Role::Admin) == Page::Maintenance, "admin lands on maintenance");
+    railhmi_test::check(default_page(Role::Developer) == Page::AllCameras, "developer lands on all cameras");
+    railhmi_test::check(default_page(Role::Admin) == Page::AllCameras, "admin lands on all cameras");
 }
 
 void test_navigation_resolution() {
     auto a = resolve_navigation(Role::Driver, Page::Realtime);
     railhmi_test::check(a.allowed && a.requested == Page::Realtime, "driver realtime allowed");
     auto b = resolve_navigation(Role::Driver, Page::AiDebug);
-    railhmi_test::check(!b.allowed && b.requested == Page::AiDebug,
-                        "driver direct AI debug -> denied (show no-permission + return)");
+    railhmi_test::check(b.allowed && b.requested == Page::AiDebug,
+                        "driver direct AI debug allowed");
     auto c = resolve_navigation(Role::Maintainer, Page::Maintenance);
     railhmi_test::check(c.allowed, "maintainer maintenance allowed");
 }

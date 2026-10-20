@@ -3,8 +3,7 @@ import "."
 import "components"
 import "pages"
 
-// 应用外壳（ITEM-011/012）：单窗口 + 顶部全局状态条 + 角色化固定导航 + 页面宿主。
-// 可见导航项（railhmiNav）由 C++ 按角色过滤；受限直达页由 DeniedView 显示“无权限 + 返回”。
+// 应用外壳：单窗口 + 顶部全局状态条 + 全部六个功能入口 + 页面宿主。
 // 页面内容按 id 选择；司机 P1 不显示检测职责徽标（P4/P6 才显示）。颜色/字号均来自 Theme。
 Rectangle {
     id: shell
@@ -80,6 +79,7 @@ Rectangle {
 
                 Loader {
                     id: pageLoader
+                    objectName: "pageLoader"
                     anchors.fill: parent
                     visible: !shell.denied
                     source: shell.pageSource(shell.currentPageId)

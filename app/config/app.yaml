@@ -2,7 +2,7 @@
 # 本期 mode=visible（红外未接入）；render_path 依 ITEM-002 板端实测选定 cpu。
 app:
   language: "zh-CN"
-  default_role: driver
+  default_role: admin
   resolution: [1920, 1080]
   render_path: cpu
   mode: visible

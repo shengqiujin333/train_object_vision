@@ -8,6 +8,7 @@
 #include <qqml.h>
 #include <cstdio>
 #include <functional>
+#include "railhmi/core/navigation.h"
 
 static bool waitFor(const std::function<bool()>& condition, int timeout = 10000) {
     QElapsedTimer timer;
@@ -92,6 +93,56 @@ int main(int argc, char** argv) {
     check(cell && cell == findItem(view.rootObject(), "gridCell-CAM-01") && cell->property("live").toBool(),
           "P4_delegate_retained_during_updates");
     if (argc > 2) view.grabWindow().save(QString::fromLocal8Bit(argv[2]) + "/video-P4.png");
+
+    // Exercise the actual application shell and navigation, including the old driver restriction.
+    QVariantList navigation;
+    for (auto page : railhmi::core::visible_pages(railhmi::core::Role::Driver)) {
+        QVariantMap entry;
+        entry["id"] = QString::fromLatin1(railhmi::core::to_string(page));
+        entry["title"] = QString::fromUtf8(railhmi::core::page_title(page));
+        navigation.append(entry);
+    }
+    auto* context = view.rootContext();
+    context->setContextProperty("railhmiNav", navigation);
+    context->setContextProperty("railhmiAllPages", navigation);
+    context->setContextProperty("railhmiRole", "driver");
+    context->setContextProperty("railhmiDefaultPage", QString::fromLatin1(
+        railhmi::core::to_string(railhmi::core::default_page(railhmi::core::Role::Driver))));
+    context->setContextProperty("railhmiModePrimary", QString::fromUtf8("可见光"));
+    context->setContextProperty("railhmiModeSecondary", QString::fromUtf8("红外未接入"));
+    context->setContextProperty("railhmiTopBar", QVariantList());
+    context->setContextProperty("railhmiAiDebug", QVariantList());
+    context->setContextProperty("railhmiMaintenanceCameras", QVariantList());
+    context->setContextProperty("railhmiIntegrations", QVariantList());
+    context->setContextProperty("railhmiFaults", QVariantList());
+    QVariantList cameras;
+    for (int i = 0; i < list.size(); ++i) cameras.append(channel(i)->info());
+    context->setContextProperty("railhmiCameras", cameras);
+    for (const char* name : {"railhmiAlarms", "railhmiReplay", "railhmiMaintenance",
+                              "railhmiPermissions", "railhmiHealth"})
+        context->setContextProperty(name, static_cast<QObject*>(nullptr));
+    view.setSource(QUrl("qrc:/qml/main.qml"));
+    check(waitFor([&]() { return findItem(view.rootObject(), "gridCell-CAM-06") != nullptr; }),
+          "application_defaults_to_six_camera_view");
+    auto* nav = findItem(view.rootObject(), "navigation");
+    bool sixEntries = true;
+    for (const auto& entry : navigation)
+        sixEntries = sixEntries && findItem(view.rootObject(), "nav-" + entry.toMap()["id"].toString());
+    check(navigation.size() == 6 && sixEntries, "application_shows_all_six_navigation_entries");
+    for (const auto& entry : navigation) {
+        const QString pageId = entry.toMap()["id"].toString();
+        const bool invoked = nav && QMetaObject::invokeMethod(nav, "navigate", Q_ARG(QString, pageId));
+        const bool loaded = waitFor([&]() {
+            auto* loader = findItem(view.rootObject(), "pageLoader");
+            return loader && loader->property("status").toInt() == 1 &&
+                   view.rootObject()->property("currentPageId").toString() == pageId;
+        });
+        check(invoked && loaded && !view.rootObject()->property("denied").toBool(),
+              ("application_opens_" + pageId).toUtf8().constData());
+    }
+    if (nav) QMetaObject::invokeMethod(nav, "navigate", Q_ARG(QString, QString("all_cameras")));
+    QCoreApplication::processEvents();
+    if (argc > 2) view.grabWindow().save(QString::fromLocal8Bit(argv[2]) + "/all-functions.png");
     runtime.stop();
     check(channel(0)->image().isNull() && !channel(0)->info()["presentable"].toBool(), "stop_clears_video");
 

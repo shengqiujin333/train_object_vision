@@ -6,13 +6,13 @@ import "../components"
 // 展示：检测框 / ROI / 置信度 / 距离 / 帧率 / 端到端延迟 / 模型版本 / 最近结果时间。
 // 调试叠加层逐项开关（框/ROI/文字/掩码），**默认全部关闭**；描边用独立高对比色
 // （框 Theme.color.debug_box=#00E5FF，ROI 虚线 Theme.color.debug_roi=#FFD400），避免与报警红混淆。
-// 隔离：司机角色不渲染本页与任何叠加（外壳按角色过滤；此处再加防御性无权限占位）。
+// 所有角色均可查看本页；调试叠加仍由显式开关控制。
 Rectangle {
     id: page
     color: Theme.color.bg_base
 
     readonly property var channels: (typeof railhmiAiDebug !== "undefined") ? railhmiAiDebug : []
-    readonly property bool allowed: (typeof railhmiRole !== "undefined") ? (railhmiRole !== "driver") : false
+    readonly property bool allowed: true
 
     // 调试叠加层：逐项开关，默认全部关闭（交互 §5.5 隔离要求）
     property bool overlayBoxes: false
@@ -21,16 +21,6 @@ Rectangle {
     property bool overlayMasks: false
     readonly property bool overlayAny: overlayBoxes || overlayRoi || overlayLabels || overlayMasks
     function allOff() { overlayBoxes = false; overlayRoi = false; overlayLabels = false; overlayMasks = false }
-
-    // 司机直达：无权限占位（不渲染任何检测框/参数）
-    Text {
-        objectName: "aiDebugDenied"
-        anchors.centerIn: parent
-        visible: !page.allowed
-        color: Theme.color.text_muted
-        font.pixelSize: Theme.typography.scale.body.size
-        text: "无权限：AI 调试仅研发/维护/管理员可见"
-    }
 
     Row {
         anchors.fill: parent

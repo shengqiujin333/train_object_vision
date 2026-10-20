@@ -1,0 +1,25 @@
+838935 /home/admin/rk3588_handover_live_20261020/app/build-target/railhmi --config /home/admin/rk3588_handover_live_20261020/app/config
+/home/admin/rk3588_handover_live_20261020/app/build-target/railhmi
+56623110
+video channel "CAM-01" "unstarted" presentable= false
+video channel "CAM-02" "unstarted" presentable= false
+video channel "CAM-03" "unstarted" presentable= false
+video channel "CAM-04" "unstarted" presentable= false
+video channel "CAM-05" "unstarted" presentable= false
+video channel "CAM-06" "unstarted" presentable= false
+video workers started: 6 / 6
+video channel "CAM-01" "connecting" presentable= false
+video channel "CAM-02" "connecting" presentable= false
+video channel "CAM-03" "connecting" presentable= false
+video channel "CAM-04" "connecting" presentable= false
+video channel "CAM-05" "connecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-01" "live" presentable= false
+video channel "CAM-01" "live" presentable= true
+video channel "CAM-02" "live" presentable= true
+video channel "CAM-03" "live" presentable= true
+video channel "CAM-04" "live" presentable= true
+video channel "CAM-05" "live" presentable= true
+video channel "CAM-06" "live" presentable= true
+ec2173d558f8ef6620a9109cf8b1b00d25ee7a79ae0f5efe90eb397fb54c347f  /home/admin/rk3588_handover_live_20261020/app/build-target/railhmi
+Defaulting to search window name, class, and classname

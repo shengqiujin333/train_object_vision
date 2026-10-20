@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""railhmi AI 调试页/司机隔离静态核对（ITEM-021）
+"""railhmi AI 调试页/全角色可见静态核对（ITEM-021）
 
 源码级核对（无 Qt 环境可运行）：
   - P5 调试叠加层逐项开关（框/ROI/文字/掩码）且**默认全部关闭**。
   - 描边用独立高对比色令牌 debug_box/debug_roi（避免与报警红混淆），且令牌存在。
   - 展示字段：检测框/ROI/置信度/距离/帧率/端到端延迟/模型版本/最近结果时间。
-  - 司机隔离：P5 有司机无权限占位；外壳对受限页显示 DeniedView。
+  - 页面可见性：P5 不再按角色隐藏；所有角色均能进入。
   - UI 源码无硬编码十六进制色值/字号（复用 check_no_hardcoded_ui 口径）。
 
 退出码: 0 通过；1 发现缺陷；2 路径错误。
@@ -72,21 +72,21 @@ def main() -> int:
         if token not in p5:
             fails.append("P5 missing %s (%s)" % (what, token))
 
-    # 司机隔离
-    if "railhmiRole" not in p5 or "aiDebugDenied" not in p5:
-        fails.append("P5 has no driver no-permission guard")
+    # 所有角色均可查看 AI 调试
+    if "railhmiRole" in p5 or "aiDebugDenied" in p5:
+        fails.append("P5 still hides AI debug by role")
     if 'if (id === "ai_debug") return "pages/P5AiDebug.qml"' not in main_qml:
         fails.append("main.qml does not route ai_debug to P5")
     if "DeniedView" not in main_qml:
         fails.append("main.qml has no DeniedView for restricted pages")
 
-    print("[check_ai_debug_wiring] overlay toggles default-off + debug tokens + distance + driver guard checked")
+    print("[check_ai_debug_wiring] overlay toggles default-off + debug tokens + distance + all-role visibility checked")
     if fails:
         for f in fails:
             print("[FAIL] %s" % f)
         print("[check_ai_debug_wiring] FAIL (%d)" % len(fails))
         return 1
-    print("[check_ai_debug_wiring] PASS (ITEM-021 AI debug page + driver isolation wired)")
+    print("[check_ai_debug_wiring] PASS (ITEM-021 AI debug page visible to all roles)")
     return 0
 
 

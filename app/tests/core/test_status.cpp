@@ -106,8 +106,8 @@ void test_click_permission() {
     const std::vector<KeyStatusItem> v = build_key_status(m, Role::Maintainer);
 
     StatusClickResult driver_ai = resolve_status_click(v[4], Role::Driver);
-    railhmi_test::check(driver_ai.clickable && !driver_ai.allowed,
-                        "driver clicking AI alarm -> no permission (提示无权限)");
+    railhmi_test::check(driver_ai.clickable && driver_ai.allowed,
+                        "driver clicking AI alarm opens AI debug");
     StatusClickResult maint_ai = resolve_status_click(v[4], Role::Maintainer);
     railhmi_test::check(maint_ai.clickable && maint_ai.allowed && maint_ai.target == Page::AiDebug,
                         "maintainer clicking AI alarm -> allowed to P5");
@@ -137,7 +137,7 @@ void test_top_bar() {
     railhmi_test::check(t[3].clickable && t[3].shape == "triangle", "AI warning in top bar clickable");
 
     StatusClickResult r = resolve_top_click(t[3], Role::Driver);
-    railhmi_test::check(r.clickable && !r.allowed, "driver clicking AI warning -> no permission");
+    railhmi_test::check(r.clickable && r.allowed, "driver clicking AI warning opens AI debug");
 }
 
 }  // namespace

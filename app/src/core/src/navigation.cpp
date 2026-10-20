@@ -43,14 +43,9 @@ std::vector<Page> all_pages() {
 }
 
 bool role_can_access(Role role, Page page) {
-    switch (role) {
-        case Role::Driver:
-            return page == Page::Realtime || page == Page::AlarmCenter || page == Page::Replay;
-        case Role::Maintainer:
-        case Role::Developer:
-        case Role::Admin:
-            return true;
-    }
+    (void)role;
+    // All implemented pages are visible to every role; reject only unknown page IDs.
+    for (Page known : all_pages()) if (page == known) return true;
     return false;
 }
 
@@ -63,13 +58,8 @@ std::vector<Page> visible_pages(Role role) {
 }
 
 Page default_page(Role role) {
-    switch (role) {
-        case Role::Driver: return Page::Realtime;
-        case Role::Maintainer: return Page::AllCameras;
-        case Role::Developer: return Page::AiDebug;
-        case Role::Admin: return Page::Maintenance;
-    }
-    return Page::Realtime;
+    (void)role;
+    return Page::AllCameras;
 }
 
 NavigationResult resolve_navigation(Role role, Page requested) {

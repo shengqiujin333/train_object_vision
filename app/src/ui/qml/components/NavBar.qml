@@ -1,10 +1,11 @@
 import QtQuick 2.15
 import ".."
 
-// 固定导航（ITEM-011）。只渲染当前角色可见的页面（entries 由 C++ 按角色过滤后注入）。
+// 六个功能页始终显示，entries 由 C++ 注入。
 Item {
     id: nav
-    property var entries: []       // [{ id, title }]，已按角色过滤
+    objectName: "navigation"
+    property var entries: []       // [{ id, title }]
     property string activeId: ""
     signal navigate(string pageId)
 
@@ -19,6 +20,7 @@ Item {
             Repeater {
                 model: nav.entries
                 Rectangle {
+                    objectName: "nav-" + modelData.id
                     width: nav.width
                     height: Theme.size.nav_width
                     color: modelData.id === nav.activeId ? Theme.color.surface_hover : Theme.color.surface

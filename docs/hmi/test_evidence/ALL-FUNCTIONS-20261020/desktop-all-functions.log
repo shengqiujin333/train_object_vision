@@ -1,0 +1,111 @@
+2026-10-20T10:10:17.324 INFO  railhmi 0.1.0 [mode=Target, simulation=off]
+2026-10-20T10:10:17.324 INFO  config dir: /home/admin/rk3588_handover_live_20261020/app/config
+2026-10-20T10:10:17.325 INFO  configuration OK: 6 cameras
+2026-10-20T10:10:17.325 INFO  render path: cpu
+video channel "CAM-01" "unstarted" presentable= false
+video channel "CAM-02" "unstarted" presentable= false
+video channel "CAM-03" "unstarted" presentable= false
+video channel "CAM-04" "unstarted" presentable= false
+video channel "CAM-05" "unstarted" presentable= false
+video channel "CAM-06" "unstarted" presentable= false
+video workers started: 6 / 6
+video channel "CAM-01" "connecting" presentable= false
+video channel "CAM-02" "connecting" presentable= false
+video channel "CAM-03" "connecting" presentable= false
+video channel "CAM-04" "connecting" presentable= false
+video channel "CAM-05" "connecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-01" "live" presentable= false
+video channel "CAM-01" "live" presentable= true
+video channel "CAM-02" "live" presentable= true
+video channel "CAM-03" "live" presentable= true
+video channel "CAM-04" "live" presentable= true
+video channel "CAM-05" "live" presentable= true
+video channel "CAM-06" "live" presentable= true
+rga_api version 1.10.1_[0]
+ RgaBlit(1513) RGA_BLIT fail: Invalid argument
+ RgaBlit(1514) RGA_BLIT fail: Invalid argument
+handl-fd-vir-phy-hnd-format[0, 0, 0x7e44251000, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 2560, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f6054a5d0, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 1792, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+17489 im2d_rga_impl rga_task_submit(2171): Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
+17489 im2d_rga_impl rga_dump_channel_info(1500): src_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, nv12]
+  buffer[handle,fd,va,pa] = [0, 0, 7e44251000, 0]
+  color_space = 0x0, global_alpha = 0xff, rd_mode = 0x1
+
+17489 im2d_rga_impl rga_dump_channel_info(1500): dst_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, bgr888]
+  buffer[handle,fd,va,pa] = [0, 0, 7f6054a5d0, 0]
+  color_space = 0x2, global_alpha = 0xff, rd_mode = 0x1
+
+17489 im2d_rga_impl rga_dump_opt(1550): opt version[0x0]:
+
+17489 im2d_rga_impl rga_dump_opt(1551): set_core[0x0], priority[0]
+
+17489 im2d_rga_impl rga_task_submit(2180): acquir_fence[-1], release_fence_ptr[0x0], usage[0x80000]
+
+ RgaBlit(1513) RGA_BLIT fail: Invalid argument
+ RgaBlit(1514) RGA_BLIT fail: Invalid argument
+handl-fd-vir-phy-hnd-format[0, 0, 0x7e52501000, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 2560, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f382a66f0, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 1792, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+18444 im2d_rga_impl rga_task_submit(2171): Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
+18444 im2d_rga_impl rga_dump_channel_info(1500): src_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, nv12]
+  buffer[handle,fd,va,pa] = [0, 0, 7e52501000, 0]
+  color_space = 0x0, global_alpha = 0xff, rd_mode = 0x1
+
+18444 im2d_rga_impl rga_dump_channel_info(1500): dst_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, bgr888]
+  buffer[handle,fd,va,pa] = [0, 0, 7f382a66f0, 0]
+  color_space = 0x2, global_alpha = 0xff, rd_mode = 0x1
+
+18444 im2d_rga_impl rga_dump_opt(1550): opt version[0x0]:
+
+18444 im2d_rga_impl rga_dump_opt(1551): set_core[0x0], priority[0]
+
+18444 im2d_rga_impl rga_task_submit(2180): acquir_fence[-1], release_fence_ptr[0x0], usage[0x80000]
+
+ RgaBlit(1513) RGA_BLIT fail: Invalid argument
+ RgaBlit(1514) RGA_BLIT fail: Invalid argument
+handl-fd-vir-phy-hnd-format[0, 0, 0x7e5333e000, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 2560, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f602a75c0, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 1792, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+20759 im2d_rga_impl rga_task_submit(2171): Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
+20759 im2d_rga_impl rga_dump_channel_info(1500): src_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, nv12]
+  buffer[handle,fd,va,pa] = [0, 0, 7e5333e000, 0]
+  color_space = 0x0, global_alpha = 0xff, rd_mode = 0x1
+
+20759 im2d_rga_impl rga_dump_channel_info(1500): dst_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, bgr888]
+  buffer[handle,fd,va,pa] = [0, 0, 7f602a75c0, 0]
+  color_space = 0x2, global_alpha = 0xff, rd_mode = 0x1
+
+20759 im2d_rga_impl rga_dump_opt(1550): opt version[0x0]:
+
+20759 im2d_rga_impl rga_dump_opt(1551): set_core[0x0], priority[0]
+
+20759 im2d_rga_impl rga_task_submit(2180): acquir_fence[-1], release_fence_ptr[0x0], usage[0x80000]
+
+ RgaBlit(1513) RGA_BLIT fail: Invalid argument
+ RgaBlit(1514) RGA_BLIT fail: Invalid argument
+handl-fd-vir-phy-hnd-format[0, 0, 0x7e511b7000, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 2560, 0]
+f-blend-size-rotation-col-log-mm

@@ -54,7 +54,7 @@ bool role_has_permission(Role role, Permission p, const PermissionsConfig& cfg) 
         case Permission::Acknowledge: return true;               // 全部角色（含司机）
         case Permission::ViewAllCameras:
         case Permission::ViewAiDebug:
-        case Permission::ViewMaintenance: return ops;            // 司机默认不可见
+        case Permission::ViewMaintenance: return true;
         case Permission::PtzControl:
         case Permission::Reconnect: return ops;
         case Permission::ModifyDeviceConfig: return ops;         // 维护/研发（部分）/管理员

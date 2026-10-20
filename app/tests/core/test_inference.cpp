@@ -174,7 +174,7 @@ void test_ai_debug_view() {
 }
 
 void test_ai_debug_visibility() {
-    railhmi_test::check(!ai_debug_visible(Role::Driver), "driver cannot see AI debug/overlay (ITEM-021)");
+    railhmi_test::check(ai_debug_visible(Role::Driver), "driver can see AI debug");
     railhmi_test::check(ai_debug_visible(Role::Maintainer) && ai_debug_visible(Role::Developer) &&
                             ai_debug_visible(Role::Admin),
                         "maintainer/developer/admin can see AI debug");
