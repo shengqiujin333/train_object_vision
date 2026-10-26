@@ -1,16 +1,19 @@
 [  2%] Generating theme tokens from docs/hmi/design_tokens.yaml
 [ 55%] Built target railhmi_core
-[gen_tokens] wrote /home/admin/rk3588_handover_live_20261020/app/resources/tokens.json and /home/admin/rk3588_handover_live_20261020/app/src/ui/qml/{Theme,Tokens}.qml,qmldir
 [ 60%] Built target railhmi_platform
+[gen_tokens] wrote /home/admin/rk3588_handover_live_20261020/app/resources/tokens.json and /home/admin/rk3588_handover_live_20261020/app/src/ui/qml/{Theme,Tokens}.qml,qmldir
 [ 60%] Built target railhmi_tokens
 [ 86%] Built target railhmi_media
 [ 86%] Automatic MOC for target railhmi
 [ 86%] Built target railhmi_autogen
 [ 86%] Automatic RCC for qml.qrc
 Consolidate compiler generated dependencies of target railhmi
-[ 89%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/EWIEGA46WW/qrc_qml.cpp.o
+[ 89%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/main.cpp.o
+[ 89%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/mocs_compilation.cpp.o
 [ 89%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/nvr_client.cpp.o
-[ 89%] Linking CXX executable ../../railhmi
+[ 89%] Building CXX object src/ui/CMakeFiles/railhmi.dir/src/replay_model.cpp.o
+[ 92%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/EWIEGA46WW/qrc_qml.cpp.o
+[ 92%] Linking CXX executable ../../railhmi
 [100%] Built target railhmi
 [ 55%] Built target railhmi_core
 [ 61%] Built target railhmi_platform
@@ -19,8 +22,10 @@ Consolidate compiler generated dependencies of target railhmi
 [ 88%] Built target railhmi-nvr-test_autogen
 [ 88%] Automatic RCC for qml.qrc
 Consolidate compiler generated dependencies of target railhmi-nvr-test
-[ 88%] Building CXX object src/ui/CMakeFiles/railhmi-nvr-test.dir/__/__/tests/ui/nvr_test.cpp.o
-[ 91%] Building CXX object src/ui/CMakeFiles/railhmi-nvr-test.dir/railhmi-nvr-test_autogen/EWIEGA46WW/qrc_qml.cpp.o
-[ 91%] Building CXX object src/ui/CMakeFiles/railhmi-nvr-test.dir/src/nvr_client.cpp.o
-[ 94%] Linking CXX executable railhmi-nvr-test
+[ 94%] Building CXX object src/ui/CMakeFiles/railhmi-nvr-test.dir/railhmi-nvr-test_autogen/mocs_compilation.cpp.o
+[ 94%] Building CXX object src/ui/CMakeFiles/railhmi-nvr-test.dir/__/__/tests/ui/nvr_test.cpp.o
+[ 94%] Building CXX object src/ui/CMakeFiles/railhmi-nvr-test.dir/src/nvr_client.cpp.o
+[ 94%] Building CXX object src/ui/CMakeFiles/railhmi-nvr-test.dir/src/replay_model.cpp.o
+[ 94%] Building CXX object src/ui/CMakeFiles/railhmi-nvr-test.dir/railhmi-nvr-test_autogen/EWIEGA46WW/qrc_qml.cpp.o
+[ 97%] Linking CXX executable railhmi-nvr-test
 [100%] Built target railhmi-nvr-test

@@ -13,7 +13,7 @@ public:
     explicit ReplayDecoder(QObject* parent = nullptr);
     ~ReplayDecoder() override;
     void start(const QUrl& url, const QString& username, const QString& password,
-               qint64 beginMs, qint64 endMs);
+               qint64 beginMs, qint64 endMs, bool legacyControl = false, bool tcpTransport = false);
     void stop();
     void setPaused(bool paused);
     void setRate(double rate);

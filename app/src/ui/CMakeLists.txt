@@ -64,7 +64,7 @@ endif()
 
 if(RAILHMI_BUILD_TARGET)
     find_package(PkgConfig REQUIRED)
-    pkg_check_modules(RAILHMI_UI_GST REQUIRED IMPORTED_TARGET gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0)
+    pkg_check_modules(RAILHMI_UI_GST REQUIRED IMPORTED_TARGET gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0 gstreamer-sdp-1.0)
     target_link_libraries(railhmi PRIVATE PkgConfig::RAILHMI_UI_GST)
 endif()
 if(TARGET railhmi_tokens)

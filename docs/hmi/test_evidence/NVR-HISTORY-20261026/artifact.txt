@@ -1,2 +1,4 @@
-/home/admin/rk3588_handover_live_20261020/app/build-target/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=da7a2348728628dd507bb6b5de83f02ce65fd40d, for GNU/Linux 3.7.0, not stripped
-3b8556c98fb3a70351b33b8a0e3343be93e036fe1b5b090534f7e8a6845b379f  /home/admin/rk3588_handover_live_20261020/app/build-target/railhmi
+RUNNING True PID 1250760
+/home/admin/rk3588_handover_live_20261020/app/build-target/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=c1da907ad7ec95d27c17a2c90c0a928817a74437, for GNU/Linux 3.7.0, not stripped
+05cc02edf8544cd953d34a9477d65b22cf2e3135059bdf7577fe005e96f17b71  /home/admin/rk3588_handover_live_20261020/app/build-target/railhmi
+MISSING_DEPENDENCIES []

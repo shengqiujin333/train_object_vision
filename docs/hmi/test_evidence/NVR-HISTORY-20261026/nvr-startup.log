@@ -1,7 +1,7 @@
-2026-10-26T13:15:23.581 INFO  railhmi 0.1.0 [mode=Target, simulation=off]
-2026-10-26T13:15:23.581 INFO  config dir: /home/***/rk3588_handover_live_20261020/app/config
-2026-10-26T13:15:23.582 INFO  configuration OK: 6 cameras
-2026-10-26T13:15:23.582 INFO  render path: cpu
+2026-10-26T14:45:43.583 INFO  railhmi 0.1.0 [mode=Target, simulation=off]
+2026-10-26T14:45:43.583 INFO  config dir: /home/***/rk3588_handover_live_20261020/app/config
+2026-10-26T14:45:43.583 INFO  configuration OK: 6 cameras
+2026-10-26T14:45:43.583 INFO  render path: cpu
 video channel "CAM-01" "unstarted" presentable= false
 video channel "CAM-02" "unstarted" presentable= false
 video channel "CAM-03" "unstarted" presentable= false
@@ -16,8 +16,8 @@ video channel "CAM-04" "connecting" presentable= false
 video channel "CAM-05" "connecting" presentable= false
 video channel "CAM-06" "connecting" presentable= false
 video channel "CAM-01" "live" presentable= true
-video channel "CAM-02" "live" presentable= true
 video channel "CAM-06" "live" presentable= true
-video channel "CAM-03" "live" presentable= true
+video channel "CAM-02" "live" presentable= true
 video channel "CAM-04" "live" presentable= true
+video channel "CAM-03" "live" presentable= true
 video channel "CAM-05" "live" presentable= true

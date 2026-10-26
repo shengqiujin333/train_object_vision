@@ -45,9 +45,13 @@ void RailhmiReplayModel::configureNvr(const QString& file) {
     nvr_password_ = QString::fromUtf8(qgetenv(nvr_settings_.credentialEnv.toUtf8().constData()));
     nvr_message_ = "请连接录像机，并选择已核对的 NVR 通道";
     connect(nvr_client_, &NvrClient::channelsReady, this, [this](const QVariantList& channels) {
-        nvr_channels_ = channels; nvr_available_ = true; nvr_busy_ = false;
+        nvr_channels_ = channels; nvr_available_ = true; nvr_busy_ = false; nvr_login_pending_ = false;
         nvr_message_ = "录像机已连接，共 " + QString::number(channels.size()) + " 个通道";
         emit nvrChanged();
+        if (nvr_pending_query_) {
+            nvr_pending_query_ = false;
+            queryNvr(query_camera_, query_date_, query_channel_);
+        }
     });
     connect(nvr_client_, &NvrClient::recordsReady, this,
         [this](const QString& camera, const QString& date, const QVariantList& records, qint64 begin, qint64 end) {
@@ -64,11 +68,13 @@ void RailhmiReplayModel::configureNvr(const QString& file) {
             if (camera != playing_camera_) return;
             nvr_busy_ = false;
             decoder_.start(url, nvr_settings_.username,
-                nvr_password_, begin, end);
+                nvr_password_, begin, end, nvr_settings_.playbackLegacyControl, nvr_settings_.playbackTcp);
         });
     connect(nvr_client_, &NvrClient::failed, this, [this](const QString& operation, const QString& reason) {
         nvr_busy_ = false; nvr_message_ = reason;
-        if (operation == "login" || operation == "channels") nvr_available_ = false;
+        if (operation == "login" || operation == "channels") {
+            nvr_available_ = false; nvr_login_pending_ = false; nvr_pending_query_ = false;
+        }
         if (operation == "records") nvr_records_.clear();
         if (operation == "playback") {
             decoder_.stop(); decoder_state_ = "error"; playback_.playing = false; emit playbackChanged();
@@ -97,17 +103,21 @@ void RailhmiReplayModel::loginNvr(const QString& username, const QString& passwo
     stopHistory(); nvr_records_.clear(); nvr_channels_.clear(); nvr_available_ = false;
     nvr_settings_.username = username.trimmed(); nvr_password_ = password;
     nvr_client_->setCredentials(nvr_settings_.username, password);
+    nvr_login_pending_ = false;
+    nvr_pending_query_ = !query_camera_.isEmpty() && !query_date_.isEmpty();
     refreshNvrChannels();
 }
 
 void RailhmiReplayModel::refreshNvrChannels() {
-    if (!nvr_client_) return;
+    if (!nvr_client_ || nvr_login_pending_) return;
+    nvr_login_pending_ = true; nvr_available_ = false;
     nvr_busy_ = true; nvr_message_ = "正在连接录像机"; emit nvrChanged();
     nvr_client_->fetchChannels();
 }
 
 void RailhmiReplayModel::queryNvr(const QString& camera, const QString& date, int channel) {
     if (!nvr_client_) return;
+    nvr_pending_query_ = false;
     decoder_.stop(); playing_camera_.clear(); decoder_state_ = "stopped"; playback_.playing = false;
     nvr_records_.clear(); query_camera_ = camera; query_date_ = date;
     query_channel_ = channel > 0 ? channel : nvr_mappings_.value(camera, 0);
@@ -115,6 +125,11 @@ void RailhmiReplayModel::queryNvr(const QString& camera, const QString& date, in
     if (!day.isValid() || day.toString(Qt::ISODate) != date || query_channel_ < 1 || query_channel_ > 256) {
         nvr_busy_ = false; nvr_message_ = "请填写有效日期和该摄像头对应的 NVR 通道号";
         emit nvrChanged(); return;
+    }
+    if (!nvr_available_) {
+        nvr_pending_query_ = true;
+        refreshNvrChannels();
+        return;
     }
     if (!nvr_channels_.isEmpty()) {
         bool permitted = false;

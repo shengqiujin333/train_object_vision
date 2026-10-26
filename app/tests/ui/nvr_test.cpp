@@ -18,6 +18,7 @@
 #include <QTimer>
 #include <qqml.h>
 #include <cstdio>
+#include <algorithm>
 #include <functional>
 
 static int failures = 0;
@@ -38,9 +39,11 @@ static QByteArray md5(QByteArray input) { return QCryptographicHash::hash(input,
 
 class MockNvr : public QTcpServer {
 public:
-    int mode = 0, count = 0, recordRequests = 0;
+    int mode = 0, count = 0, recordRequests = 0, channelRequests = 0;
     bool digestValid = true;
     QByteArray scheme = "X-Digest";
+    QByteArray sessionToken;
+    int sessionRequests = 0, digestRequests = 0;
     QJsonObject lastQuery, lastPlayback;
     MockNvr() {
         listen(QHostAddress::LocalHost, 0);
@@ -62,8 +65,15 @@ public:
                     const QByteArray path = head.split(' ')[1];
                     const auto body = QJsonDocument::fromJson(data.mid(split + 4, length)).object();
                     QByteArray auth;
-                    for (const auto& line : head.split('\n')) if (line.toLower().startsWith("authorization:")) auth = line.mid(14).trimmed();
-                    if (auth.isEmpty() || mode == 1) {
+                    QMap<QByteArray, QByteArray> headers;
+                    for (const auto& line : head.split('\n')) {
+                        const auto colon = line.indexOf(':');
+                        if (colon > 0) headers[line.left(colon).toLower()] = line.mid(colon + 1).trimmed();
+                    }
+                    auth = headers["authorization"];
+                    const bool sessionValid = !sessionToken.isEmpty() && headers["s-hash"] == sessionToken + "-s" &&
+                        headers["x-hash"] == sessionToken + "-x" && headers["c-hash"] == sessionToken + "-c";
+                    if ((!sessionValid && auth.isEmpty()) || mode == 1) {
                         respond(socket, 401, {}, "WWW-Authenticate: " + scheme + " realm=\"fixture\", nonce=\"abc\", qop=\"auth\", opaque=\"def\", algorithm=MD5\r\n"); return;
                     }
                     QMap<QByteArray, QByteArray> fields;
@@ -76,15 +86,22 @@ public:
                         QByteArray("http://127.0.0.1:") + QByteArray::number(serverPort()) + path : path;
                     const auto expected = md5(md5("admin:fixture:fixture-password") + ":abc:" + fields["nc"] + ':' +
                         fields["cnonce"] + ":auth:" + md5("POST:" + digestUri));
-                    if (!auth.startsWith(scheme + ' ') || fields["response"] != expected || fields["uri"] != digestUri) {
+                    if (!sessionValid && (!auth.startsWith(scheme + ' ') || fields["response"] != expected || fields["uri"] != digestUri)) {
                         digestValid = false; respond(socket, 401, {}); return;
                     }
+                    if (sessionValid) ++sessionRequests; else ++digestRequests;
+                    if (path.endsWith("frmGetPlaybackInfo") && !sessionValid) { respond(socket, 401, {}); return; }
                     if (mode == 4) return; // Deliberately no response, for timeout coverage.
                     if (mode == 2) { respond(socket, 200, "<html>not JSON</html>"); return; }
                     if (mode == 3) { respond(socket, 200, "{\"Result\":-1,\"ErrorString\":\"denied\"}"); return; }
                     QJsonObject result{{"Result", 0}, {"Data", QJsonObject{}}};
-                    if (path.endsWith("frmGetPlaybackInfo"))
+                    if (path.endsWith("frmGetPlaybackInfo")) {
+                        ++channelRequests;
+                        if (mode == 8 || (mode == 7 && channelRequests == 1)) {
+                            respond(socket, 200, "{}"); return;
+                        }
                         result["Data"] = QJsonObject{{"Channels", QJsonArray{QJsonArray{"front", 1}, QJsonArray{"left", 0}}}};
+                    }
                     if (path.endsWith("frmVideoRecordsQuery")) {
                         lastQuery = body; ++recordRequests;
                         const auto data = body["Data"].toObject();
@@ -103,7 +120,9 @@ public:
                         lastPlayback = body;
                         result["Data"] = QJsonObject{{"RtspUrl", "rtsp://127.0.0.1:554/recording?ch=1"}};
                     }
-                    respond(socket, 200, QJsonDocument(result).toJson(QJsonDocument::Compact));
+                    sessionToken = QByteArray::number(count);
+                    respond(socket, 200, QJsonDocument(result).toJson(QJsonDocument::Compact),
+                        "S-HASH: " + sessionToken + "-s\r\nX-HASH: " + sessionToken + "-x\r\nC-HASH: " + sessionToken + "-c\r\n");
                 });
             }
         });
@@ -128,7 +147,9 @@ int main(int argc, char** argv) {
         if (!loadNvrSettings(QString::fromLocal8Bit(argv[2]), &settings, &error)) {
             std::printf("NVR_PROBE_CONFIG_ERROR %s\n", error.toUtf8().constData()); return 2;
         }
-        NvrClient client(settings); bool done = false; int result = 3;
+        NvrClient client(settings); ReplayDecoder decoder; bool done = false; int result = 3;
+        const bool decode = argc >= 6 && QString::fromLocal8Bit(argv[5]) == "--playback";
+        qint64 requestedBegin = 0; int frameCount = 0;
         QObject::connect(&client, &NvrClient::failed, &app, [&](const QString& operation, const QString& message) {
             std::printf("NVR_PROBE_FAILURE operation=%s reason=%s\n", operation.toUtf8().constData(), message.toUtf8().constData()); done = true;
         });
@@ -139,10 +160,37 @@ int main(int argc, char** argv) {
         });
         QObject::connect(&client, &NvrClient::recordsReady, &app,
             [&](const QString&, const QString&, const QVariantList& records, qint64, qint64) {
-                std::printf("NVR_PROBE_RECORDS count=%d\n", records.size()); result = 0; done = true;
+                std::printf("NVR_PROBE_RECORDS count=%d\n", records.size());
+                if (!decode) { result = 0; done = true; return; }
+                if (records.isEmpty()) { std::printf("NVR_PROBE_NO_RECORDING_TO_PLAY\n"); done = true; return; }
+                const auto record = records.back().toMap();
+                const qint64 end = record["t1"].toLongLong();
+                requestedBegin = std::max(record["t0"].toLongLong(), end - 600000);
+                client.requestPlayback("probe", record["channel"].toInt(), requestedBegin, end);
             });
+        QObject::connect(&client, &NvrClient::playbackReady, &app,
+            [&](const QString&, const QUrl& url, qint64 begin, qint64 end) {
+                decoder.start(url, settings.username,
+                    QString::fromUtf8(qgetenv(settings.credentialEnv.toUtf8().constData())), begin, end,
+                    settings.playbackLegacyControl, settings.playbackTcp);
+            });
+        QObject::connect(&decoder, &ReplayDecoder::frameReady, &app, [&](const QImage& image, qint64 position) {
+            if (image.isNull()) return;
+            if (++frameCount == 1) {
+                std::printf("NVR_PROBE_DECODED width=%d height=%d\n", image.width(), image.height());
+                if (argc >= 7) image.save(QString::fromLocal8Bit(argv[6]));
+            }
+            if (frameCount >= 5 && position > requestedBegin) {
+                std::printf("NVR_PROBE_PLAYBACK_ADVANCED frames=%d elapsed_ms=%lld\n", frameCount,
+                    static_cast<long long>(position - requestedBegin)); result = 0; done = true;
+            }
+        });
+        QObject::connect(&decoder, &ReplayDecoder::stateChanged, &app, [&](const QString& state, const QString& detail) {
+            if (state == "error") { std::printf("NVR_PROBE_DECODE_FAILED %s\n", detail.toUtf8().constData()); done = true; }
+        });
         client.fetchChannels();
-        if (!waitFor([&]() { return done; }, settings.timeoutMs * 4 + 1000)) std::printf("NVR_PROBE_DEADLINE\n");
+        if (!waitFor([&]() { return done; }, settings.timeoutMs * 4 + (decode ? 15000 : 1000))) std::printf("NVR_PROBE_DEADLINE\n");
+        decoder.stop();
         return result;
     }
     qputenv("RAILHMI_TEST_NVR_PASSWORD", "fixture-password");
@@ -166,6 +214,34 @@ int main(int argc, char** argv) {
     check(NvrClient::parseRecords(response, 2, "CAM-02", begin, begin + 86400000, settings, &records, &problem) && records.isEmpty(),
           "never_assign_another_channels_recordings");
     check(!NvrClient::parseRecords({}, 1, "CAM-01", begin, begin + 86400000, settings, &records, &problem), "malformed_records_are_not_empty_success");
+    settings.responseChannelBase = 1;
+    auto oneBasedResponse = response; auto oneBasedData = response["Data"].toObject();
+    auto oneBasedRows = oneBasedData["SearchResults"].toArray(); auto oneBasedRow = oneBasedRows[0].toObject();
+    oneBasedRow["ChannelNo"] = 1; oneBasedRows[0] = oneBasedRow;
+    oneBasedData["SearchResults"] = oneBasedRows; oneBasedResponse["Data"] = oneBasedData;
+    check(NvrClient::parseRecords(response, 1, "CAM-01", begin, begin + 86400000, settings, &records, &problem) && records.isEmpty() &&
+          NvrClient::parseRecords(oneBasedResponse, 1, "CAM-01", begin, begin + 86400000, settings, &records, &problem) && records.size() == 2,
+          "one_based_response_mode_matches_verified_device_channel_numbers");
+    settings.responseChannelBase = 0;
+    {
+        MockNvr server; auto config = server.settings();
+        config.playbackUrlTemplate = "rtsp://127.0.0.1:554/recording?ch={channel}&start={start}&stop={stop}";
+        NvrClient client(config); QUrl playback; int replies = 0;
+        QObject::connect(&client, &NvrClient::playbackReady, &app, [&](const QString&, const QUrl& url, qint64, qint64) { playback = url; ++replies; });
+        client.requestPlayback("CAM-01", 1, begin + 100000, begin + 200000);
+        check(waitFor([&]() { return playback.isValid(); }) && server.count == 0 &&
+              playback.toString().contains("ch=1&start=20261026000140&stop=20261026000320"),
+              "verified_playback_template_preserves_local_time_and_channel");
+        replies = 0; playback = QUrl();
+        client.requestPlayback("old", 1, begin, begin + 1000);
+        client.requestPlayback("new", 2, begin, begin + 1000);
+        check(waitFor([&]() { return playback.isValid(); }) && replies == 1 && playback.toString().contains("ch=2&"),
+              "superseded_template_playback_is_not_delivered");
+        QTemporaryDir dir; QFile file(dir.path() + "/nvr.yaml"); file.open(QIODevice::WriteOnly);
+        file.write("nvr:\n  enabled: true\n  address: http://127.0.0.1\n  playback_url_template: rtsp://other-host/recording?ch={channel}&start={start}&stop={stop}\n"); file.close();
+        NvrSettings loaded; QString error;
+        check(!loadNvrSettings(file.fileName(), &loaded, &error), "playback_template_cannot_send_credentials_to_another_host");
+    }
     {
         MockNvr server; NvrClient client(server.settings());
         QVariantList channels, found; QString error; QUrl playback;
@@ -184,6 +260,8 @@ int main(int argc, char** argv) {
         client.requestPlayback("CAM-01", 1, begin + 100000, begin + 200000);
         check(waitFor([&]() { return playback.isValid() || !error.isEmpty(); }) && playback.scheme() == "rtsp" &&
               server.lastPlayback["Type"].toInt() == 13, "playback_address_is_requested_from_device");
+        check(server.digestRequests == 1 && server.sessionRequests == 3,
+              "login_session_hashes_are_forwarded_and_rotated_for_subsequent_requests");
     }
     {
         MockNvr server; server.scheme = "Digest"; NvrClient client(server.settings()); bool connected = false;
@@ -191,6 +269,15 @@ int main(int argc, char** argv) {
         client.fetchChannels();
         check(waitFor([&]() { return connected; }) && server.digestValid,
               "standard_Digest_uses_request_target_and_standard_scheme");
+    }
+    for (int mode : {7, 8}) {
+        MockNvr server; server.mode = mode; NvrClient client(server.settings()); bool connected = false; QString error;
+        QObject::connect(&client, &NvrClient::channelsReady, &app, [&](const QVariantList&) { connected = true; });
+        QObject::connect(&client, &NvrClient::failed, &app, [&](const QString&, const QString& text) { error = text; });
+        client.fetchChannels();
+        check(waitFor([&]() { return connected || !error.isEmpty(); }) && server.channelRequests == 2 &&
+              (mode == 7 ? connected && error.isEmpty() : !connected && !error.isEmpty()),
+              mode == 7 ? "transient_empty_device_response_retries_once_and_recovers" : "persistent_empty_response_is_bounded_and_never_false_success");
     }
     for (int mode : {1, 2, 3, 4}) {
         MockNvr server; server.mode = mode; NvrClient client(server.settings()); QString error; int successes = 0;
@@ -216,6 +303,9 @@ int main(int argc, char** argv) {
         check(waitFor([&]() { return !error.isEmpty(); }) && !connected, "incorrect_interactive_credentials_do_not_connect");
         client.setCredentials("admin", "fixture-password"); error.clear(); client.fetchChannels();
         check(waitFor([&]() { return connected; }) && error.isEmpty(), "corrected_interactive_credentials_reset_digest_session");
+        connected = false; error.clear(); client.setCredentials("admin", "incorrect-fixture"); client.fetchChannels();
+        check(waitFor([&]() { return !error.isEmpty(); }) && !connected,
+              "changing_credentials_discards_previous_authenticated_session");
     }
     {
         MockNvr server; server.mode = 6; NvrClient client(server.settings()); QString delivered; int replies = 0;
@@ -231,6 +321,9 @@ int main(int argc, char** argv) {
         file.write(("nvr:\n  enabled: true\n  address: http://127.0.0.1:" + QString::number(server.serverPort()) +
             "\n  username: admin\n  credential_env: RAILHMI_TEST_NVR_PASSWORD\n  channels:\n    - camera: CAM-01\n      channel: 1\n").toUtf8()); file.close();
         RailhmiReplayModel model; model.configureNvr(file.fileName());
+        model.queryNvr("CAM-01", day.toString(Qt::ISODate), 1);
+        check(waitFor([&]() { return model.nvrState()["count"].toInt() == 1; }),
+              "cold_history_query_logs_in_and_loads_permissions_before_fetching_records");
         model.loginNvr("admin", "fixture-password");
         check(waitFor([&]() { return model.nvrState()["connected"].toBool(); }), "page_login_loads_actual_channel_list");
         QQuickView view; view.setResizeMode(QQuickView::SizeRootObjectToView);

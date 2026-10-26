@@ -2,6 +2,7 @@
 
 #include <QCryptographicHash>
 #include <QDateTime>
+#include <QDebug>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -13,6 +14,12 @@
 #include <algorithm>
 #include <cmath>
 #include "railhmi/core/yaml.h"
+
+static bool validPlaybackUrl(const QUrl& url, const NvrSettings& settings) {
+    return url.isValid() && (url.scheme() == "rtsp" || url.scheme() == "rtsps") &&
+        !url.host().isEmpty() && url.host().compare(settings.address.host(), Qt::CaseInsensitive) == 0 &&
+        url.userInfo().isEmpty() && !url.hasFragment();
+}
 
 bool loadNvrSettings(const QString& file, NvrSettings* out, QString* error) {
     QFile input(file);
@@ -41,6 +48,15 @@ bool loadNvrSettings(const QString& file, NvrSettings* out, QString* error) {
     bool timeoutOk = false, baseOk = false;
     result.timeoutMs = scalar("timeout_ms", "8000").toInt(&timeoutOk);
     result.responseChannelBase = scalar("response_channel_base", "0").toInt(&baseOk);
+    result.playbackUrlTemplate = scalar("playback_url_template", "");
+    const auto playbackTransport = scalar("playback_transport", "udp");
+    const auto legacyControl = scalar("playback_legacy_control", "false");
+    result.playbackTcp = playbackTransport == "tcp";
+    result.playbackLegacyControl = legacyControl == "true";
+    if ((playbackTransport != "udp" && playbackTransport != "tcp") ||
+        (legacyControl != "true" && legacyControl != "false")) {
+        *error = "NVR 回放传输方式或兼容设置无效"; return false;
+    }
     if (result.enabled && (!result.address.isValid() || result.address.host().isEmpty() ||
         (result.address.scheme() != "http" && result.address.scheme() != "https") ||
         !result.address.userInfo().isEmpty() || result.address.hasQuery() || result.address.hasFragment() ||
@@ -51,6 +67,14 @@ bool loadNvrSettings(const QString& file, NvrSettings* out, QString* error) {
         !timeoutOk || result.timeoutMs < 500 || result.timeoutMs > 60000 || !baseOk ||
         (result.responseChannelBase != 0 && result.responseChannelBase != 1))) {
         *error = "nvr.yaml 地址、时区、时间格式、通道基数或超时设置无效"; return false;
+    }
+    if (!result.playbackUrlTemplate.isEmpty()) {
+        QString sample = result.playbackUrlTemplate;
+        const bool complete = sample.contains("{channel}") && sample.contains("{start}") && sample.contains("{stop}");
+        sample.replace("{channel}", "1").replace("{start}", "20260101000000").replace("{stop}", "20260101000100");
+        if (!complete || sample.contains('{') || sample.contains('}') || !validPlaybackUrl(QUrl(sample), result)) {
+            *error = "NVR 回放地址模板必须包含通道和起止时间，并指向同一录像机且不含凭据"; return false;
+        }
     }
     if (const auto* mappings = node->get("channels")) {
         if (!mappings->is_seq()) { *error = "nvr.channels 必须是列表"; return false; }
@@ -74,7 +98,7 @@ NvrClient::NvrClient(NvrSettings settings, QObject* parent)
 }
 
 void NvrClient::setCredentials(const QString& username, const QString& password) {
-    ++credentialRevision_; requests_.clear(); challenge_.clear(); nonceCount_ = 0;
+    ++credentialRevision_; requests_.clear(); challenge_.clear(); sessionHeaders_.clear(); nonceCount_ = 0;
     settings_.username = username; password_ = password;
     if (active_ && activeReply_) activeReply_->abort();
 }
@@ -155,7 +179,9 @@ void NvrClient::send(Request request) {
     QNetworkRequest net(url);
     net.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     net.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::ManualRedirectPolicy);
-    const auto auth = authorization(url);
+    for (auto it = sessionHeaders_.cbegin(); it != sessionHeaders_.cend(); ++it)
+        net.setRawHeader(it.key(), it.value());
+    const auto auth = sessionHeaders_.isEmpty() ? authorization(url) : QByteArray();
     if (!auth.isEmpty()) net.setRawHeader("Authorization", auth);
     auto* reply = network_.post(net, QJsonDocument(request.body).toJson(QJsonDocument::Compact));
     activeReply_ = reply;
@@ -192,7 +218,7 @@ void NvrClient::send(Request request) {
             if (fields.contains("realm") && !fields.value("nonce").isEmpty() &&
                 (algorithm == "md5" || algorithm == "md5-sess") &&
                 (!fields.contains("qop") || fields["qop"].split(',').contains("auth"))) {
-                challenge_ = fields; nonceCount_ = 0; ++request.attempts;
+                sessionHeaders_.clear(); challenge_ = fields; nonceCount_ = 0; ++request.attempts;
                 reply->deleteLater(); send(std::move(request)); return;
             }
             problem = "录像机认证协议不受支持";
@@ -204,9 +230,37 @@ void NvrClient::send(Request request) {
         if (problem.isEmpty() && (parseError.error != QJsonParseError::NoError || !doc.isObject()))
             problem = "录像机返回的不是有效 JSON";
         const auto object = doc.object();
+        // This IVR occasionally returns HTTP 200 with {} for an authenticated read.
+        // Retry that specific incomplete response once; never interpret it as an empty recording list.
+        if (problem.isEmpty() && object.isEmpty() &&
+            (request.operation == "channels" || request.operation == "records")) {
+            if (request.emptyRetries++ == 0) {
+                reply->deleteLater();
+                QTimer::singleShot(150, this, [this, request, credentialRevision]() mutable {
+                    if (credentialRevision != credentialRevision_ ||
+                        (request.operation == "records" && request.revision != queryRevision_)) {
+                        active_ = false; processNext(); return;
+                    }
+                    send(std::move(request));
+                });
+                return;
+            }
+            problem = "录像机返回了空响应，重试后仍未取得有效数据";
+        }
         const auto result = object.contains("Result") ? object.value("Result") : object.value("result");
+        if (qEnvironmentVariableIsSet("RAILHMI_NVR_TRACE") && !result.isDouble())
+            qWarning() << "NVR response schema" << request.operation << object.keys()
+                       << "resultType" << static_cast<int>(result.type()) << "bytes" << bytes.size();
         if (problem.isEmpty() && (!result.isDouble() || result.toDouble() != 0))
-            problem = "录像机查询失败：" + object.value("ErrorString").toString("返回码无效/非零");
+            problem = "录像机查询失败（返回码 " +
+                (result.isDouble() ? QString::number(result.toDouble()) : QString("无效")) +
+                "）：" + object.value("ErrorString").toString("设备未提供错误说明");
+        // IVR requires all three login/session hashes on subsequent calls and may rotate them.
+        // Only accept a complete set from a successful JSON response of this device.
+        const auto sHash = reply->rawHeader("S-HASH"), xHash = reply->rawHeader("X-HASH"),
+                   cHash = reply->rawHeader("C-HASH");
+        if (problem.isEmpty() && !sHash.isEmpty() && !xHash.isEmpty() && !cHash.isEmpty())
+            sessionHeaders_ = {{"S-HASH", sHash}, {"X-HASH", xHash}, {"C-HASH", cHash}};
         reply->deleteLater(); active_ = false;
         if ((request.operation == "records" && request.revision != queryRevision_) ||
             (request.operation == "playback" && request.revision != playbackRevision_)) {
@@ -219,6 +273,8 @@ void NvrClient::send(Request request) {
 }
 
 void NvrClient::fetchChannels() {
+    // An explicit reconnect must not keep sending an expired device session.
+    sessionHeaders_.clear(); challenge_.clear(); nonceCount_ = 0;
     enqueue({"login", "/frmUserLogin", {{"Type", 0}, {"Ch", 0}, {"Data", QJsonObject{}}},
         [this](const QJsonObject&) {
             enqueue({"channels", "/frmGetPlaybackInfo", {{"Type", 0}, {"Ch", 0}, {"Data", QJsonObject{}}},
@@ -294,14 +350,25 @@ void NvrClient::requestPlayback(const QString& camera, int channel, qint64 start
     if (channel < 1 || channel > 256 || !start.isValid() || endMs <= startMs) {
         emit failed("playback", "回放时间或通道无效"); return;
     }
+    if (!settings_.playbackUrlTemplate.isEmpty()) {
+        QString location = settings_.playbackUrlTemplate;
+        location.replace("{channel}", QString::number(channel))
+            .replace("{start}", start.toString("yyyyMMddHHmmss"))
+            .replace("{stop}", end.toString("yyyyMMddHHmmss"));
+        const QUrl url(location);
+        if (!validPlaybackUrl(url, settings_)) { emit failed("playback", "NVR 回放地址模板无效"); return; }
+        QTimer::singleShot(0, this, [this, camera, url, startMs, endMs, revision]() {
+            if (revision == playbackRevision_) emit playbackReady(camera, url, startMs, endMs);
+        });
+        return;
+    }
     const QJsonObject data{{"Channel", channel}, {"StreamType", 0}, {"StartTime", start.toString("yyyyMMddHHmmss")},
         {"StopTime", end.toString("yyyyMMddHHmmss")}, {"TimeMode", "Local"}};
     enqueue({"playback", "/frmGetRtspUrl", {{"Type", 13}, {"Ch", channel}, {"Data", data}},
         [this, camera, startMs, endMs, revision](const QJsonObject& response) {
             if (revision != playbackRevision_) return;
             const QUrl url(response["Data"].toObject()["RtspUrl"].toString());
-            if (!url.isValid() || (url.scheme() != "rtsp" && url.scheme() != "rtsps") ||
-                url.host().compare(settings_.address.host(), Qt::CaseInsensitive) != 0) {
+            if (!validPlaybackUrl(url, settings_)) {
                 emit failed("playback", "设备未返回可用的本机 RTSP 回放地址"); return;
             }
             emit playbackReady(camera, url, startMs, endMs);

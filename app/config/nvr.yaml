@@ -4,15 +4,27 @@ nvr:
   enabled: true
   address: "http://192.168.1.4"
   api_prefix: "/digest"
-  username: admin
+  username: nvradmin
   credential_env: TRAIN_NVR_CREDENTIAL
   timezone: Asia/Shanghai
   timestamp_mode: local
-  response_channel_base: 0
+  response_channel_base: 1
   timeout_ms: 8000
-  # Do not infer camera-to-NVR channel bindings from camera order.
-  # Example after checking the NVR channel list:
-  # channels:
-  #   - camera: CAM-01
-  #     channel: 1
-  channels: []
+  playback_transport: tcp
+  playback_legacy_control: true
+  # This NVR rejects frmGetRtspUrl Type 13; standard /recording RTSP is verified on site.
+  playback_url_template: "rtsp://192.168.1.4:554/recording?ch={channel}&stream=0&start={start}&stop={stop}&rec_inquiry_type=0"
+  # Verified against frmGetPreviewInfo camera IPs and actual recording queries.
+  channels:
+    - camera: CAM-01
+      channel: 1
+    - camera: CAM-02
+      channel: 8
+    - camera: CAM-03
+      channel: 4
+    - camera: CAM-04
+      channel: 5
+    - camera: CAM-05
+      channel: 6
+    - camera: CAM-06
+      channel: 7

@@ -22,6 +22,9 @@ struct NvrSettings {
     bool localEpoch = true; // API documents timestamps as local time.
     int timeoutMs = 8000;
     int responseChannelBase = 0; // Request Channels are 1-based; ChannelNo is 0-based.
+    QString playbackUrlTemplate; // Optional, explicitly verified device playback path.
+    bool playbackLegacyControl = false;
+    bool playbackTcp = false;
     QMap<QString, int> channels;
 };
 
@@ -51,7 +54,7 @@ signals:
     void failed(const QString& operation, const QString& reason);
 private:
     using Callback = std::function<void(const QJsonObject&)>;
-    struct Request { QString operation, endpoint; QJsonObject body; Callback callback; int attempts = 0; quint64 revision = 0; };
+    struct Request { QString operation, endpoint; QJsonObject body; Callback callback; int attempts = 0; quint64 revision = 0; int emptyRetries = 0; };
     void enqueue(Request request);
     void processNext();
     void send(Request request);
@@ -63,6 +66,7 @@ private:
     bool active_ = false;
     QString password_;
     QMap<QString, QString> challenge_;
+    QMap<QByteArray, QByteArray> sessionHeaders_;
     quint32 nonceCount_ = 0;
     quint64 queryRevision_ = 0;
     quint64 playbackRevision_ = 0;

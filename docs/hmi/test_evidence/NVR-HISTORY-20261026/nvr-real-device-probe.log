@@ -1,1 +1,4 @@
-NVR_PROBE_FAILURE operation=login reason=录像机认证失败，请核对账号、密码及回放权限
+NVR_PROBE_CONNECTED channels=10
+NVR_PROBE_RECORDS count=1
+
+EXIT 0

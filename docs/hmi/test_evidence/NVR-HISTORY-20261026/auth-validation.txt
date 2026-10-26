@@ -1,12 +1,18 @@
 2026-10-26, requests originated from the RK3588 target.
-Account: admin; password: user-confirmed value held in a private environment file.
+Account: nvradmin; password: user-confirmed value held in a private environment file.
 No passwords, Authorization headers, or session tokens are included in this evidence.
 
 Manufacturer web-client format: X-Digest, MD5, absolute request URL, qop=auth.
-Login result: HTTP 401.
+Login result: HTTP 200, Result 0.
+Subsequent requests require all three returned session hashes: S-HASH, X-HASH, C-HASH.
+frmGetPlaybackInfo with those headers: HTTP 200, Result 0, 10 channels with playback permission.
 
-Independent curl client: --digest, User-Agent libcurl/4.7.1, standard Digest challenge.
-Login result after Digest retry: HTTP 401.
+Earlier checks of the previously supplied admin account failed with HTTP 401.
+Those earlier failures do not describe the now-verified nvradmin account.
 
-Rebuilt C++ client using the private environment file: probe exit 3, login authentication failure.
-No actual recording list or playback URL was obtained.
+Rebuilt C++ client using the private environment file: probe exit 0; actual channel list and recording segments obtained.
+Actual response ChannelNo is 1-based. Preview channel IPs map the six cameras to NVR channels 1,8,4,5,6,7.
+frmGetRtspUrl Type 13 is unsupported; Type 3 returns proprietary AntsComb.
+The explicitly configured standard /recording endpoint returns H.265 and PCMA SDP.
+Legacy SDP media-control URL compatibility is required by this NVR with GStreamer 1.20.
+Actual C++ playback decoded 1280x720 pixels and advanced decoded PTS; see nvr-real-playback.log.

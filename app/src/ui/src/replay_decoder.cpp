@@ -8,9 +8,37 @@
 #ifdef RAILHMI_HAS_MEDIA
 #include <gst/gst.h>
 #include <gst/app/gstappsink.h>
+#include <gst/sdp/gstsdpmessage.h>
+#include <gst/rtsp/gstrtsptransport.h>
 #include "railhmi/core/timebase.h"
 #include "railhmi/media/frame_store.h"
 #include "railhmi/media/rga_convert.h"
+#endif
+
+#ifdef RAILHMI_HAS_MEDIA
+// This IVR expects control appended after the complete query string (its Content-Base),
+// whereas GStreamer 1.20 resolves relative control paths before the query. Make only the
+// known IVR media controls absolute, before rtspsrc resolves them. Opt-in per device.
+static void legacyHistorySdp(GstElement*, GstSDPMessage* sdp, gpointer data) {
+    const auto& location = *static_cast<const QByteArray*>(data);
+    for (guint index = 0; index < gst_sdp_message_medias_len(sdp); ++index) {
+        auto* media = const_cast<GstSDPMedia*>(gst_sdp_message_get_media(sdp, index));
+        for (guint i = 0; i < gst_sdp_media_attributes_len(media); ++i) {
+            const auto* attribute = gst_sdp_media_get_attribute(media, i);
+            if (g_strcmp0(attribute->key, "control") != 0 ||
+                (g_strcmp0(attribute->value, "ctype=video") != 0 &&
+                 g_strcmp0(attribute->value, "ctype=audio") != 0)) continue;
+            QByteArray control(location); control.append('/'); control.append(attribute->value);
+            gst_sdp_media_remove_attribute(media, i);
+            gst_sdp_media_add_attribute(media, "control", control.constData());
+            break;
+        }
+    }
+}
+static gboolean historyVideoStream(GstElement*, guint, GstCaps* caps, gpointer) {
+    if (!caps || gst_caps_is_empty(caps)) return FALSE;
+    return g_strcmp0(gst_structure_get_string(gst_caps_get_structure(caps, 0), "media"), "video") == 0;
+}
 #endif
 
 struct ReplayDecoder::Impl {
@@ -43,7 +71,7 @@ void ReplayDecoder::setPaused(bool paused) { impl_->paused = paused; }
 void ReplayDecoder::setRate(double rate) { if (rate >= 0.5 && rate <= 2.0) impl_->rate = rate; }
 
 void ReplayDecoder::start(const QUrl& url, const QString& username, const QString& password,
-                           qint64 beginMs, qint64 endMs) {
+                           qint64 beginMs, qint64 endMs, bool legacyControl, bool tcpTransport) {
     stop();
     {
         QMutexLocker lock(&impl_->mutex);
@@ -54,14 +82,14 @@ void ReplayDecoder::start(const QUrl& url, const QString& username, const QStrin
     impl_->status("connecting", "正在打开录像流");
 #ifdef RAILHMI_HAS_MEDIA
     impl_->running = true;
-    impl_->worker = std::thread([this, url, username, password, beginMs, endMs]() {
+    impl_->worker = std::thread([this, url, username, password, beginMs, endMs, legacyControl, tcpTransport]() {
         gst_init(nullptr, nullptr);
         const bool test = url.scheme() == "test";
         const bool file = url.isLocalFile();
         const char* description = test
             ? "videotestsrc num-buffers=100 ! video/x-raw,format=NV12,width=640,height=360,framerate=25/1 ! appsink name=history_frames sync=true max-buffers=2 drop=true"
             : file ? "filesrc name=history_source ! decodebin ! videoconvert ! video/x-raw,format=NV12 ! appsink name=history_frames sync=true max-buffers=2 drop=true"
-            : "rtspsrc name=history_source protocols=udp latency=500 timeout=5000000 tcp-timeout=5000000 ! application/x-rtp,media=video ! decodebin ! video/x-raw,format=NV12 ! appsink name=history_frames sync=true max-buffers=2 drop=true";
+            : "rtspsrc name=history_source latency=500 timeout=5000000 tcp-timeout=5000000 ! application/x-rtp,media=video ! decodebin ! video/x-raw,format=NV12 ! appsink name=history_frames sync=true max-buffers=2 drop=true";
         GError* error = nullptr;
         GstElement* pipeline = gst_parse_launch(description, &error);
         if (!pipeline || error) {
@@ -70,12 +98,21 @@ void ReplayDecoder::start(const QUrl& url, const QString& username, const QStrin
             impl_->status("error", "录像解码管线创建失败"); impl_->running = false; return;
         }
         GstElement* source = gst_bin_get_by_name(GST_BIN(pipeline), "history_source");
+        QByteArray legacyBase;
         if (source) {
             QUrl safeUrl(url); safeUrl.setUserName({}); safeUrl.setPassword({});
             const QByteArray location = file ? url.toLocalFile().toUtf8() : safeUrl.toEncoded();
             g_object_set(source, "location", location.constData(), nullptr);
-            if (!file) g_object_set(source, "user-id", username.toUtf8().constData(),
-                                    "user-pw", password.toUtf8().constData(), nullptr);
+            if (!file) {
+                g_signal_connect(source, "select-stream", G_CALLBACK(historyVideoStream), nullptr);
+                g_object_set(source, "user-id", username.toUtf8().constData(),
+                    "user-pw", password.toUtf8().constData(),
+                    "protocols", tcpTransport ? GST_RTSP_LOWER_TRANS_TCP : GST_RTSP_LOWER_TRANS_UDP, nullptr);
+                if (legacyControl) {
+                    legacyBase = location;
+                    g_signal_connect(source, "on-sdp", G_CALLBACK(legacyHistorySdp), &legacyBase);
+                }
+            }
             gst_object_unref(source);
         }
         GstElement* sink = gst_bin_get_by_name(GST_BIN(pipeline), "history_frames");

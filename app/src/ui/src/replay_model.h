@@ -95,6 +95,7 @@ private:
     ReplayDecoder decoder_;
     VideoChannel* history_channel_ = nullptr;
     bool nvr_enabled_ = false, nvr_busy_ = false, pause_on_frame_ = false;
+    bool nvr_login_pending_ = false, nvr_pending_query_ = false;
     QString nvr_message_, query_camera_, query_date_, playing_camera_, decoder_state_;
     QString nvr_password_;
     QVariantList nvr_channels_, nvr_records_;
