@@ -40,6 +40,7 @@ class MockNvr : public QTcpServer {
 public:
     int mode = 0, count = 0, recordRequests = 0;
     bool digestValid = true;
+    QByteArray scheme = "X-Digest";
     QJsonObject lastQuery, lastPlayback;
     MockNvr() {
         listen(QHostAddress::LocalHost, 0);
@@ -63,7 +64,7 @@ public:
                     QByteArray auth;
                     for (const auto& line : head.split('\n')) if (line.toLower().startsWith("authorization:")) auth = line.mid(14).trimmed();
                     if (auth.isEmpty() || mode == 1) {
-                        respond(socket, 401, {}, "WWW-Authenticate: X-Digest realm=\"fixture\", nonce=\"abc\", qop=\"auth\", opaque=\"def\", algorithm=MD5\r\n"); return;
+                        respond(socket, 401, {}, "WWW-Authenticate: " + scheme + " realm=\"fixture\", nonce=\"abc\", qop=\"auth\", opaque=\"def\", algorithm=MD5\r\n"); return;
                     }
                     QMap<QByteArray, QByteArray> fields;
                     auto matches = QRegularExpression("([A-Za-z]+)=(?:\"([^\"]*)\"|([^,\\s]+))").globalMatch(QString::fromLatin1(auth));
@@ -71,9 +72,11 @@ public:
                         auto m = matches.next(); fields[m.captured(1).toLatin1()] =
                             (m.capturedStart(2) >= 0 ? m.captured(2) : m.captured(3)).toLatin1();
                     }
+                    const auto digestUri = scheme == "X-Digest" ?
+                        QByteArray("http://127.0.0.1:") + QByteArray::number(serverPort()) + path : path;
                     const auto expected = md5(md5("admin:fixture:fixture-password") + ":abc:" + fields["nc"] + ':' +
-                        fields["cnonce"] + ":auth:" + md5("POST:" + path));
-                    if (!auth.startsWith("Digest ") || fields["response"] != expected || fields["uri"] != path) {
+                        fields["cnonce"] + ":auth:" + md5("POST:" + digestUri));
+                    if (!auth.startsWith(scheme + ' ') || fields["response"] != expected || fields["uri"] != digestUri) {
                         digestValid = false; respond(socket, 401, {}); return;
                     }
                     if (mode == 4) return; // Deliberately no response, for timeout coverage.
@@ -181,6 +184,13 @@ int main(int argc, char** argv) {
         client.requestPlayback("CAM-01", 1, begin + 100000, begin + 200000);
         check(waitFor([&]() { return playback.isValid() || !error.isEmpty(); }) && playback.scheme() == "rtsp" &&
               server.lastPlayback["Type"].toInt() == 13, "playback_address_is_requested_from_device");
+    }
+    {
+        MockNvr server; server.scheme = "Digest"; NvrClient client(server.settings()); bool connected = false;
+        QObject::connect(&client, &NvrClient::channelsReady, &app, [&](const QVariantList&) { connected = true; });
+        client.fetchChannels();
+        check(waitFor([&]() { return connected; }) && server.digestValid,
+              "standard_Digest_uses_request_target_and_standard_scheme");
     }
     for (int mode : {1, 2, 3, 4}) {
         MockNvr server; server.mode = mode; NvrClient client(server.settings()); QString error; int successes = 0;

@@ -1,6 +1,1 @@
-NVR_ADDRESS=http://192.168.1.4
-API_PREFIX=/digest
-REQUEST_AUTH=X-Digest challenge / Digest authorization
 NVR_PROBE_FAILURE operation=login reason=录像机认证失败，请核对账号、密码及回放权限
-
-PROBE_EXIT=3

@@ -1,5 +1,2 @@
-/home/admin/rk3588_handover_live_20261020/app/build-target/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=814f32c22f5c6df64375e06865072e78385b4cb0, for GNU/Linux 3.7.0, not stripped
-c36a6135bbe8c0f12dcec901af4aebd8198ae6a25acb32f63da9e0cb4ffd2723  /home/admin/rk3588_handover_live_20261020/app/build-target/railhmi
-Screen 0: minimum 320 x 200, current 1920 x 1080, maximum 16384 x 16384
-HDMI-1 connected 1920x1080+0+0 (normal left inverted right x axis y axis) 0mm x 0mm
-   1920x1080     60.00*+  60.00    59.94
+/home/admin/rk3588_handover_live_20261020/app/build-target/railhmi: ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=da7a2348728628dd507bb6b5de83f02ce65fd40d, for GNU/Linux 3.7.0, not stripped
+3b8556c98fb3a70351b33b8a0e3343be93e036fe1b5b090534f7e8a6845b379f  /home/admin/rk3588_handover_live_20261020/app/build-target/railhmi

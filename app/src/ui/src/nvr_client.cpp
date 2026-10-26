@@ -110,16 +110,19 @@ QByteArray NvrClient::authorization(const QUrl& url) {
     const QByteArray nonce = challenge_["nonce"].toUtf8();
     const QByteArray cnonce = QUuid::createUuid().toByteArray(QUuid::Id128);
     const QByteArray nc = QByteArray::number(++nonceCount_, 16).rightJustified(8, '0');
-    QByteArray uri = url.path(QUrl::FullyEncoded).toUtf8();
-    if (url.hasQuery()) uri += '?' + url.query(QUrl::FullyEncoded).toUtf8();
+    const bool ivrDigest = challenge_.value("_scheme") == "X-Digest";
+    // IVR's web client signs the absolute URL; standard Digest signs the request target.
+    QByteArray uri = ivrDigest ? url.toEncoded(QUrl::RemoveUserInfo | QUrl::RemoveFragment)
+                               : url.path(QUrl::FullyEncoded).toUtf8();
+    if (!ivrDigest && url.hasQuery()) uri += '?' + url.query(QUrl::FullyEncoded).toUtf8();
     QByteArray first = md5(user + ':' + realm + ':' + password_.toUtf8());
     const QByteArray algorithm = challenge_.value("algorithm", "MD5").toUtf8();
     if (algorithm.toLower() == "md5-sess") first = md5(first + ':' + nonce + ':' + cnonce);
     const bool qop = !challenge_.value("qop").isEmpty();
     const QByteArray response = md5(first + ':' + nonce + ':' +
         (qop ? nc + ':' + cnonce + ":auth:" : QByteArray()) + md5("POST:" + uri));
-    // IVR advertises X-Digest to avoid a browser password popup; wire Authorization is Digest.
-    QByteArray result = "Digest username=" + quoted(user) + ", realm=" + quoted(realm) +
+    QByteArray result = (ivrDigest ? QByteArray("X-Digest") : QByteArray("Digest")) +
+        " username=" + quoted(user) + ", realm=" + quoted(realm) +
         ", nonce=" + quoted(nonce) + ", uri=" + quoted(uri) + ", response=" + quoted(response) +
         ", algorithm=" + algorithm;
     if (qop) result += ", qop=auth, nc=" + nc + ", cnonce=" + quoted(cnonce);
@@ -178,6 +181,7 @@ void NvrClient::send(Request request) {
         else if (status == 401 && request.attempts < 1 &&
                  (challenge.startsWith("Digest ") || challenge.startsWith("X-Digest "))) {
             QMap<QString, QString> fields;
+            fields["_scheme"] = challenge.startsWith("X-Digest ") ? "X-Digest" : "Digest";
             const QRegularExpression field("([A-Za-z]+)=(?:\"([^\"]*)\"|([^,\\s]+))");
             auto matches = field.globalMatch(QString::fromLatin1(challenge));
             while (matches.hasNext()) {
