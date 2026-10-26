@@ -1,0 +1,18 @@
+# IVR Web API: https://www.eolink.com/share/index?shareCode=1da60b6a050be3c4674d10be2a6976c0
+# Password stays in the process environment/private board credential file.
+nvr:
+  enabled: true
+  address: "http://192.168.1.4"
+  api_prefix: "/digest"
+  username: admin
+  credential_env: TRAIN_NVR_CREDENTIAL
+  timezone: Asia/Shanghai
+  timestamp_mode: local
+  response_channel_base: 0
+  timeout_ms: 8000
+  # Do not infer camera-to-NVR channel bindings from camera order.
+  # Example after checking the NVR channel list:
+  # channels:
+  #   - camera: CAM-01
+  #     channel: 1
+  channels: []

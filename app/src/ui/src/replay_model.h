@@ -17,11 +17,25 @@
 #include "railhmi/core/alarm_center.h"
 #include "railhmi/core/persistence_model.h"
 #include "railhmi/core/replay.h"
+#include "nvr_client.h"
+#include "replay_decoder.h"
+#include "video_runtime.h"
 
 class RailhmiReplayModel : public QObject {
     Q_OBJECT
 public:
     explicit RailhmiReplayModel(QObject* parent = nullptr);
+    ~RailhmiReplayModel() override;
+    void configureNvr(const QString& file);
+    Q_INVOKABLE bool nvrEnabled() const { return nvr_enabled_; }
+    Q_INVOKABLE QVariantMap nvrState() const;
+    Q_INVOKABLE int nvrChannel(const QString& camera) const { return nvr_mappings_.value(camera, 0); }
+    Q_INVOKABLE void refreshNvrChannels();
+    Q_INVOKABLE void loginNvr(const QString& username, const QString& password);
+    Q_INVOKABLE void queryNvr(const QString& camera, const QString& date, int channel = 0);
+    Q_INVOKABLE void seekNvr(const QString& camera, double utcMs, bool play = true);
+    Q_INVOKABLE QObject* historyChannel(const QString& camera) const;
+    Q_INVOKABLE void stopHistory();
 
     void seed(const std::vector<railhmi::core::RecordingSegmentRow>& segments,
               const std::vector<railhmi::core::RecordingGapRow>& gaps,
@@ -58,6 +72,7 @@ public:
 signals:
     void selectionChanged();
     void playbackChanged();
+    void nvrChanged();
 
 private:
     const railhmi::core::AlarmRow* find(const std::string& cam, long long ts) const;
@@ -75,4 +90,15 @@ private:
     bool local_available_ = false;
     int sync_threshold_ms_ = 300;
     railhmi::core::PlaybackState playback_;
+    NvrClient* nvr_client_ = nullptr;
+    NvrSettings nvr_settings_;
+    ReplayDecoder decoder_;
+    VideoChannel* history_channel_ = nullptr;
+    bool nvr_enabled_ = false, nvr_busy_ = false, pause_on_frame_ = false;
+    QString nvr_message_, query_camera_, query_date_, playing_camera_, decoder_state_;
+    QString nvr_password_;
+    QVariantList nvr_channels_, nvr_records_;
+    QMap<QString, int> nvr_mappings_;
+    qint64 nvr_day_start_ = 0, nvr_day_end_ = 0;
+    int query_channel_ = 0;
 };

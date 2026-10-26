@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import Railhmi.Video 1.0
 import ".."
 import "../components"
 
@@ -13,7 +14,9 @@ Rectangle {
 
     readonly property var replay: (typeof railhmiReplay !== "undefined") ? railhmiReplay : null
     readonly property var allCams: (typeof railhmiCameras !== "undefined") ? railhmiCameras : []
-    property string date: "2026-10-16"
+    property string date: Qt.formatDate(new Date(), "yyyy-MM-dd")
+    readonly property bool nvrMode: replay ? replay.nvrEnabled() : false
+    property var nvrInfo: ({ busy: false, message: "", channels: [], decoderState: "stopped" })
     property string dateError: ""
     property string activeCam: "CAM-01"
     property bool syncOn: true
@@ -83,6 +86,12 @@ Rectangle {
         if (cam && cam.length > 0) activeCam = cam
         lockedCams = replay.relatedCameras()
         detail = replay.selectedDetail()
+        if (page.nvrMode) {
+            nvrInfo = replay.nvrState()
+            nvrChannelInput.text = replay.nvrChannel(activeCam) > 0 ? "" + replay.nvrChannel(activeCam) : ""
+            queryHistory()
+            return
+        }
         var res = replay.timeline(activeCam, date)
         if (res.valid === false) { dateError = "日期无效（YYYY-MM-DD）"; return }   // D-08：不静默
         dateError = ""
@@ -93,6 +102,11 @@ Rectangle {
     }
     function reloadCam(camId) {
         activeCam = camId
+        if (page.nvrMode) {
+            nvrChannelInput.text = replay.nvrChannel(camId) > 0 ? "" + replay.nvrChannel(camId) : ""
+            queryHistory()
+            return
+        }
         var res = replay.timeline(camId, date)
         if (res.valid === false) { dateError = "日期无效（YYYY-MM-DD）"; return }
         dateError = ""
@@ -109,23 +123,49 @@ Rectangle {
         var base = selectedTs() > 0 ? selectedTs() : cursor
         var j = replay.jumpTargets(base)
         cursor = j[which]
+        if (page.nvrMode) replay.seekNvr(activeCam, cursor, playState.playing)
         refreshSync()
     }
     function togglePlay() { if (replay) replay.setPlaying(!page.playState.playing); }
     function setSpeed(s) { if (replay) replay.setSpeed(s); }
-    function seekTo(ts) { cursor = ts; refreshSync() }
+    function seekTo(ts) {
+        cursor = ts
+        if (page.nvrMode) replay.seekNvr(activeCam, ts, playState.playing)
+        refreshSync()
+    }
+    function queryHistory() {
+        if (!replay || !page.nvrMode) return
+        replay.queryNvr(page.activeCam, page.date, parseInt(nvrChannelInput.text, 10) || 0)
+        tl = replay.timeline(page.activeCam, page.date)
+        thumbs = []
+    }
+    function updateNvr() {
+        if (!replay || !page.nvrMode) return
+        nvrInfo = replay.nvrState()
+        tl = replay.timeline(page.activeCam, page.date)
+    }
     function selectAlarmAt(ts) { if (replay) { replay.selectAlarm(page.activeCam, ts) } }
 
-    Component.onCompleted: { if (replay) playState = replay.playback(); reload() }
+    Component.onCompleted: {
+        if (replay) playState = replay.playback()
+        if (page.nvrMode) { syncOn = false; nvrInfo = replay.nvrState() }
+        reload()
+    }
+    Component.onDestruction: { if (replay && page.nvrMode) replay.stopHistory() }
     Connections {
         target: page.replay
         function onSelectionChanged() { page.reload() }
-        function onPlaybackChanged() { page.playState = page.replay.playback() }
+        function onPlaybackChanged() {
+            page.playState = page.replay.playback()
+            if (page.nvrMode && page.playState.posMs > 0) page.cursor = page.playState.posMs
+        }
+        function onNvrChanged() { page.updateNvr() }
     }
 
     Column {
         anchors.fill: parent
         anchors.margins: Theme.spacing.s3
+        anchors.rightMargin: parent.width * 0.22 + Theme.spacing.s3 * 2
         spacing: Theme.spacing.s2
 
         // ---- 顶部：日期/完整摄像头选择/同步开关 + 来源标注 ----
@@ -157,10 +197,78 @@ Rectangle {
                     onClicked: page.reloadCam(modelData.id)
                 }
             }
-            FilterChip { text: "三联同步"; selected: page.syncOn; onClicked: page.syncOn = !page.syncOn }
+            FilterChip { text: page.nvrMode ? "三联同步未接入" : "三联同步"; enabled: !page.nvrMode
+                         selected: page.syncOn; onClicked: page.syncOn = !page.syncOn }
             // 受限入口不渲染：司机无导出权限时不出现该控件（ITEM-023）
             FilterChip { objectName: "exportRecording"; visible: page.canExport(); text: "导出录像"
+                         enabled: !page.nvrMode
                          onClicked: page.askExport() }
+        }
+        Row {
+            visible: page.nvrMode
+            spacing: Theme.spacing.s2
+            Text { anchors.verticalCenter: parent.verticalCenter; text: "录像机账号"
+                   color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size }
+            Rectangle {
+                width: Theme.size.nav_width * 1.4; height: Theme.size.touch_target_min
+                color: Theme.color.bg_sunken; border.color: Theme.color.border
+                border.width: Theme.border.width; radius: Theme.radius.chip
+                TextInput {
+                    id: nvrUsername
+                    anchors.fill: parent; anchors.leftMargin: Theme.spacing.s2
+                    verticalAlignment: TextInput.AlignVCenter
+                    color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.caption.size
+                    text: page.nvrInfo.username || "admin"
+                }
+            }
+            Text { anchors.verticalCenter: parent.verticalCenter; text: "密码"
+                   color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size }
+            Rectangle {
+                width: Theme.size.nav_width * 1.6; height: Theme.size.touch_target_min
+                color: Theme.color.bg_sunken; border.color: Theme.color.border
+                border.width: Theme.border.width; radius: Theme.radius.chip
+                TextInput {
+                    id: nvrPassword
+                    objectName: "nvrPassword"
+                    anchors.fill: parent; anchors.leftMargin: Theme.spacing.s2
+                    verticalAlignment: TextInput.AlignVCenter
+                    echoMode: TextInput.Password
+                    color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.caption.size
+                }
+            }
+            FilterChip { objectName: "loginNvr"; text: "登录录像机"; enabled: !page.nvrInfo.busy
+                onClicked: {
+                    if (page.replay) page.replay.loginNvr(nvrUsername.text, nvrPassword.text)
+                    nvrPassword.text = ""
+                }
+            }
+        }
+        Row {
+            visible: page.nvrMode
+            spacing: Theme.spacing.s2
+            FilterChip { objectName: "connectNvr"; text: "连接录像机"; enabled: !page.nvrInfo.busy
+                         onClicked: { if (page.replay) page.replay.refreshNvrChannels() } }
+            Text { anchors.verticalCenter: parent.verticalCenter; text: "NVR 通道"
+                   color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size }
+            Rectangle {
+                width: Theme.size.nav_width; height: Theme.size.touch_target_min
+                color: Theme.color.bg_sunken; border.color: Theme.color.border
+                border.width: Theme.border.width; radius: Theme.radius.chip
+                TextInput {
+                    id: nvrChannelInput
+                    objectName: "nvrChannelInput"
+                    anchors.fill: parent; anchors.leftMargin: Theme.spacing.s2
+                    verticalAlignment: TextInput.AlignVCenter
+                    color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.caption.size
+                    validator: IntValidator { bottom: 1; top: 256 }
+                }
+            }
+            FilterChip { objectName: "queryNvrRecordings"; text: "查询录像"; enabled: !page.nvrInfo.busy
+                         onClicked: page.queryHistory() }
+            Text { anchors.verticalCenter: parent.verticalCenter
+                   textFormat: Text.PlainText
+                   text: page.nvrInfo.channelName ? page.nvrInfo.channelName : "请核对摄像头对应的录像机通道"
+                   color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size }
         }
         Row {
             spacing: Theme.spacing.s2
@@ -168,14 +276,15 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 visible: page.replay ? !page.replay.sourceStatus().usable || page.replay.sourceStatus().note.length > 0 : false
                 color: Theme.color.degraded
+                textFormat: Text.PlainText
                 font.pixelSize: Theme.typography.scale.caption.size
-                text: page.replay ? ("来源：" + page.replay.sourceStatus().label +
+                text: page.nvrMode ? ("来源：NVR · " + page.nvrInfo.message) : page.replay ? ("来源：" + page.replay.sourceStatus().label +
                                 (page.replay.sourceStatus().note.length > 0 ? "（" + page.replay.sourceStatus().note + "）" : "")) : ""
             }
             Text {
                 objectName: "syncStatusText"
                 anchors.verticalCenter: parent.verticalCenter
-                visible: page.syncInfo.available === false || page.syncInfo.inSync === false
+                visible: !page.nvrMode && (page.syncInfo.available === false || page.syncInfo.inSync === false)
                 color: page.syncInfo.available === false ? Theme.color.text_muted : Theme.color.error
                 font.pixelSize: Theme.typography.scale.caption.size
                 text: page.syncInfo.available === false ? "同步状态不可用" : page.syncInfo.prompt
@@ -192,16 +301,24 @@ Rectangle {
                 model: page.syncOn ? page.lockedCams : [page.activeCam]
                 Rectangle {
                     objectName: "replayPanel-" + modelData
-                    width: (videoRow.width - 2 * Theme.spacing.s2) / 3
+                    width: page.syncOn ? (videoRow.width - (page.lockedCams.length - 1) * Theme.spacing.s2) / page.lockedCams.length : videoRow.width
                     height: videoRow.height
                     color: Theme.color.bg_sunken
                     border.color: Theme.color.border; border.width: Theme.border.width; radius: Theme.radius.card
+                    VideoFrame {
+                        readonly property var history: page.replay && page.nvrMode && page.nvrInfo.playingCamera === modelData
+                            ? page.replay.historyChannel(modelData) : null
+                        anchors.fill: parent
+                        channel: history
+                        visible: history && history.info.presentable === true
+                    }
                     Text { anchors.top: parent.top; anchors.left: parent.left; anchors.margins: Theme.spacing.s2
                            color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
                            text: page.chipName(modelData) + " (" + modelData + ")" }
                     Text { anchors.centerIn: parent; color: Theme.color.text_muted
                            font.pixelSize: Theme.typography.scale.caption.size
-                           text: "回放画面（媒体层提供）" }
+                           visible: !page.nvrMode || page.nvrInfo.decoderState !== "playing" && page.nvrInfo.decoderState !== "paused" && page.nvrInfo.decoderState !== "ended"
+                           text: page.nvrMode ? page.nvrInfo.message : "回放画面（媒体层提供）" }
                     Text { anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.margins: Theme.spacing.s2
                            color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
                            font.family: Theme.typography.family.mono
@@ -214,7 +331,7 @@ Rectangle {
         Item {
             id: timelineArea
             width: parent.width
-            height: parent.height - videoRow.height - Theme.spacing.s4
+            height: Math.max(Theme.size.touch_target_min * 4, parent.height - y)
 
             // D-09 / v2 D-02：游标顶部等宽时间，随游标 x 移动
             Text {
@@ -338,10 +455,12 @@ Rectangle {
                 FilterChip { objectName: "playbackToggle"; text: page.playState.playing ? "暂停" : "播放"
                              onClicked: page.togglePlay() }
                 FilterChip { objectName: "speed-0.5"; text: "0.5×"; selected: page.playState.speed === 0.5
+                             enabled: !page.nvrMode
                              onClicked: page.setSpeed(0.5) }
                 FilterChip { objectName: "speed-1"; text: "1×"; selected: page.playState.speed === 1.0
                              onClicked: page.setSpeed(1.0) }
                 FilterChip { objectName: "speed-2"; text: "2×"; selected: page.playState.speed === 2.0
+                             enabled: !page.nvrMode
                              onClicked: page.setSpeed(2.0) }
                 FilterChip { text: "-30s"; onClicked: page.doJump("minus30") }
                 FilterChip { text: "报警时刻"; onClicked: page.doJump("alarm") }
@@ -388,7 +507,36 @@ Rectangle {
         border.color: Theme.color.border; border.width: Theme.border.width
         Column {
             anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
-            Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size; text: "事件详情" }
+            Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
+                   text: page.nvrMode ? "录像机通道" : "事件详情" }
+            Item {
+                width: parent.width
+                height: page.nvrMode ? page.height * 0.36 : 0
+                visible: page.nvrMode
+                ListView {
+                    id: nvrChannelList
+                    objectName: "nvrChannelList"
+                    anchors.fill: parent
+                    clip: true
+                    spacing: Theme.spacing.s1
+                    model: page.nvrInfo.channels || []
+                    delegate: FilterChip {
+                        width: nvrChannelList.width
+                        height: Theme.size.touch_target_min
+                        text: "" + modelData.channel + " · " + modelData.name + (modelData.allowed ? "" : "（无回放权限）")
+                        selected: parseInt(nvrChannelInput.text, 10) === modelData.channel
+                        enabled: modelData.allowed && !page.nvrInfo.busy
+                        onClicked: nvrChannelInput.text = "" + modelData.channel
+                    }
+                }
+                Text {
+                    anchors.centerIn: parent
+                    visible: nvrChannelList.count === 0
+                    color: Theme.color.text_muted
+                    font.pixelSize: Theme.typography.scale.caption.size
+                    text: "登录后显示实际通道列表"
+                }
+            }
             // 录像不可用/不完整 -> 显著黄条（PLY-008 / §8.3）
             Rectangle {
                 objectName: "detailRecordBar"

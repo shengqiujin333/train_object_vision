@@ -346,6 +346,7 @@ int main(int argc, char** argv) {
         replayModel.selectAlarm("CAM-01", t0 + 5000);
     } else {
         replayModel.seed({}, {}, {}, false, false);
+        replayModel.configureNvr(QString::fromStdString(configDir) + "/nvr.yaml");
     }
     view.rootContext()->setContextProperty("railhmiReplay", &replayModel);
 

@@ -50,6 +50,12 @@ QT_QUICK_BACKEND=software xvfb-run -a -s '-screen 0 1280x720x24' \
 
 ## 当前状态（增量）
 
+2026-10-26：新增 IVR/NVR 历史录像接口接入，配置见 `config/nvr.yaml`。
+“历史录像”页面支持输入录像机账号密码（仅内存使用）、读取实际通道及回放权限、按日期查询录像时间段、
+从设备请求 RTSP 回放地址并解码显示。环境凭据可使用 `TRAIN_NVR_CREDENTIAL`，不写入源码。
+摄像头和 NVR 通道需在页面明确选择，或在 `nvr.channels` 配置，不能按摄像头顺序猜测。
+详细接口约定、配置和实机认证限制见 `docs/hmi/NVR_HISTORY_INTEGRATION.md`。
+
 | 工作项 | 内容 | 状态 |
 |---|---|---|
 | ITEM-001 | 目标构建/运行依赖基线与授权缺口登记 | **源码 + 板端实测已交付**：`tools/env_probe.py`、`tools/board_env_probe.py`；板端 E-00..E-13 已实际采集（六路相机/NVR 端口可达），三态缺口与替代结论见 `docs/hmi/build_env_check.md` |
