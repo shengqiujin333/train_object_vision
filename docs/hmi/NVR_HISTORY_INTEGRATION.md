@@ -15,7 +15,8 @@
 现场 `192.168.1.4` 的普通 `/frm...` 路径不能直接使用；实际认证入口已探测到 `/digest/`，
 设备返回 `WWW-Authenticate: X-Digest ... algorithm=MD5`。
 客户端支持该挑战格式及标准 Digest/MD5、MD5-sess，单个请求至多重试一次，禁止自动猜密码。
-与设备 20260422 版网页配套的厂家公开播放工具静态资源核对后，X-Digest 保留同名认证头，
+与设备 20260422 版网页配套的[厂家公开播放工具包](https://ie-activex-nvr2x.oss-cn-hangzhou.aliyuncs.com/IvrPoePlugin3.0/IvrPoePluginSetup-3.0.6.4-N20260422-P20260313.exe)
+中的静态资源核对后，X-Digest 保留同名认证头，
 并使用完整 URL 计算摘要；标准 Digest 使用请求路径。两种行为分别测试。
 不自动跟随跳转或将凭据发送到不同主机；错误信息脱敏。密码可由页面输入或环境变量提供。
 

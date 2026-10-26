@@ -1,0 +1,12 @@
+2026-10-26, requests originated from the RK3588 target.
+Account: admin; password: user-confirmed value held in a private environment file.
+No passwords, Authorization headers, or session tokens are included in this evidence.
+
+Manufacturer web-client format: X-Digest, MD5, absolute request URL, qop=auth.
+Login result: HTTP 401.
+
+Independent curl client: --digest, User-Agent libcurl/4.7.1, standard Digest challenge.
+Login result after Digest retry: HTTP 401.
+
+Rebuilt C++ client using the private environment file: probe exit 3, login authentication failure.
+No actual recording list or playback URL was obtained.
