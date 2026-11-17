@@ -1,0 +1,16 @@
+[Unit]
+Description=railhmi NPU 分核负载采样（root 读 debugfs，应用以 admin 读 /run）
+# 内核只允许 root 读 /sys/kernel/debug/rknpu/load，而桌面应用以 admin 运行；
+# 这个极小的采样器把分核负载落到 /run/railhmi/npu-load（0644）供顶栏显示真实分核占用，
+# 避免应用退化成只显示 devfreq 聚合值（那不是利用率，容易被误读成 100%）。
+After=local-fs.target
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c 'mkdir -p /run/railhmi; while true; do if [ -r /sys/kernel/debug/rknpu/load ]; then cat /sys/kernel/debug/rknpu/load > /run/railhmi/npu-load.tmp 2>/dev/null && chmod 0644 /run/railhmi/npu-load.tmp && mv /run/railhmi/npu-load.tmp /run/railhmi/npu-load; fi; sleep 2; done'
+Restart=always
+RestartSec=3
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

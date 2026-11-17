@@ -89,8 +89,12 @@ Item {
                 color: Theme.color.degraded
                 font.pixelSize: Theme.typography.scale.caption.size
                 font.family: Theme.typography.family.mono
+                // devfreq 的 load 不是利用率（板端恒为 100），不能在没拿到分核时拿它冒充百分比；
+                // 此时只如实说明「分核不可读」，避免司机把 100% 当成 NPU 满载。
                 text: meters.m.npuAvailable === true
-                      ? ("聚合 " + meters.pctText(meters.m.npuAggregatePct)) : "未接入"
+                      ? (meters.m.npuNote !== undefined && meters.m.npuNote.length > 0
+                         ? meters.m.npuNote : "分核不可读")
+                      : "未接入"
             }
         }
     }

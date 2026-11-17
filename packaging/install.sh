@@ -32,8 +32,13 @@ install -m 0644 "$SRC/packaging/VERSION" "$PREFIX/VERSION"
 
 # systemd 单元：安装 + 启用（不启动，由现场决定启动时机；不触碰 cpu-performance.service）
 install -m 0644 "$SRC/packaging/$UNIT_NAME" "/etc/systemd/system/$UNIT_NAME"
+# NPU 分核负载采样器（root 读 debugfs -> /run/railhmi/npu-load，供 admin 运行的应用显示）
+install -m 0644 "$SRC/packaging/railhmi-npu-sampler.service" \
+    "/etc/systemd/system/railhmi-npu-sampler.service"
 systemctl daemon-reload
 systemctl enable "$UNIT_NAME" || true
+systemctl enable railhmi-npu-sampler.service || true
+systemctl start railhmi-npu-sampler.service || true
 echo "[railhmi-install] enabled $UNIT_NAME（未修改 cpu-performance.service）"
 echo "[railhmi-install] 启动：systemctl start $UNIT_NAME；状态：systemctl status $UNIT_NAME"
 echo "[railhmi-install] 完成。回滚见 packaging/UPGRADE.md"

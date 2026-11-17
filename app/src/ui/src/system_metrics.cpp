@@ -13,6 +13,8 @@ namespace {
 const char* kProcStat = "/proc/stat";
 const char* kProcMeminfo = "/proc/meminfo";
 const char* kNpuDebugLoad = "/sys/kernel/debug/rknpu/load";
+    // root 采样器落盘的可读副本（见 packaging/railhmi-npu-sampler.service）。
+    const char* kNpuSharedLoad = "/run/railhmi/npu-load";
 const char* kNpuDevfreqLoad = "/sys/class/devfreq/fdab0000.npu/load";
 const int kSampleIntervalMs = 2000;
 
@@ -73,7 +75,9 @@ int memoryUsedPct() {
 // "NPU load:  Core0:  0%, Core1:  0%, Core2:  0%," -> [0, 0, 0]
 QVariantList npuPerCore() {
     QVariantList out;
-    const QString text = readText(kNpuDebugLoad);
+    // 优先读 root 采样器落盘的可读副本（应用以 admin 运行，debugfs 只允许 root 读）。
+    QString text = readText(kNpuSharedLoad);
+    if (text.isEmpty()) text = readText(kNpuDebugLoad);
     if (text.isEmpty()) return out;
     for (const QString& part : text.split(QLatin1Char(','), Qt::SkipEmptyParts)) {
         const int core = part.indexOf(QLatin1String("Core"));
