@@ -74,6 +74,18 @@ Rectangle {
         return parts.join("；")
     }
 
+    // ---- 检测框叠加（2026-11-17）：实时画面上直接画 AI 框 ----
+    // 数据来自 railhmiAiDebug（AiRuntime 每 250ms 发布一次）；归一化坐标交给
+    // VideoFrame 在 QImage 坐标系里绘制，Fit/Cover 都不会错位。
+    readonly property var aiChannels: (typeof railhmiAiDebug !== "undefined") ? railhmiAiDebug : []
+    function aiBoxesFor(pos) {
+        var c = page.camByPosition(pos)
+        if (!c) return []
+        for (var i = 0; i < page.aiChannels.length; ++i)
+            if (page.aiChannels[i].cameraId === c.info.id) return page.aiChannels[i].boxes
+        return []
+    }
+
     // ---- 底部行：受电弓 / 轮轨 两个较小画面 + 其后的「当前报警」框 ----
     Item {
         id: bottomRow
@@ -105,6 +117,7 @@ Rectangle {
             showBadge: false
             fillMode: 1
             alarmActive: page.alarmFor("roof")
+            boxes: page.aiBoxesFor("roof")
             onActivated: page.openZoom("roof", "受电弓")
         }
         CameraTile {
@@ -121,6 +134,7 @@ Rectangle {
             showBadge: false
             fillMode: 1
             alarmActive: page.alarmFor("underfloor")
+            boxes: page.aiBoxesFor("underfloor")
             onActivated: page.openZoom("underfloor", "轮轨")
         }
 
@@ -223,6 +237,7 @@ Rectangle {
                 showBadge: false
                 fillMode: 1
                 alarmActive: page.alarmFor("primary")
+                boxes: page.aiBoxesFor("primary")
                 onActivated: page.openZoom("primary", "前方")
             }
             CameraTile {
@@ -241,6 +256,7 @@ Rectangle {
                 reconnectText: channel ? channel.info.reconnectText : ""
                 showBadge: false
                 fillMode: 1
+                boxes: page.aiBoxesFor("left")
                 onActivated: page.openZoom("left", "左侧")
             }
             CameraTile {
@@ -259,6 +275,7 @@ Rectangle {
                 reconnectText: channel ? channel.info.reconnectText : ""
                 showBadge: false
                 fillMode: 1
+                boxes: page.aiBoxesFor("right")
                 onActivated: page.openZoom("right", "右侧")
             }
         }

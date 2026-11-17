@@ -2,6 +2,10 @@
 
 #include <QMutexLocker>
 #include <QPainter>
+#include <QColor>
+#include <QFont>
+#include <QPen>
+#include <QVariantMap>
 #include <QDebug>
 #include <algorithm>
 #include "railhmi/core/channel_view.h"
@@ -61,6 +65,73 @@ void VideoFrameItem::setFillMode(int mode) {
     emit fillModeChanged();
 }
 
+void VideoFrameItem::setBoxes(const QVariantList& boxes) {
+    if (boxes_ == boxes) return;
+    boxes_ = boxes;
+    update();
+    emit boxesChanged();
+}
+
+void VideoFrameItem::setBoxColor(const QColor& c) {
+    if (!c.isValid() || box_color_ == c) return;
+    box_color_ = c;
+    update();
+    emit boxStyleChanged();
+}
+
+void VideoFrameItem::setDangerBoxColor(const QColor& c) {
+    if (!c.isValid() || danger_box_color_ == c) return;
+    danger_box_color_ = c;
+    update();
+    emit boxStyleChanged();
+}
+
+void VideoFrameItem::setShowLabels(bool on) {
+    if (show_labels_ == on) return;
+    show_labels_ = on;
+    update();
+    emit boxStyleChanged();
+}
+
+void VideoFrameItem::drawBoxes(QPainter* painter, const QRectF& target) const {
+    painter->save();
+    painter->setClipRect(boundingRect());
+    QFont font = painter->font();
+    font.setPixelSize(12);
+    font.setBold(true);
+    painter->setFont(font);
+    for (const QVariant& value : boxes_) {
+        const QVariantMap b = value.toMap();
+        const double nw = b.value("w").toDouble();
+        const double nh = b.value("h").toDouble();
+        if (nw <= 0.0 || nh <= 0.0) continue;
+        const QRectF r(target.x() + b.value("x").toDouble() * target.width(),
+                       target.y() + b.value("y").toDouble() * target.height(),
+                       nw * target.width(), nh * target.height());
+        if (r.width() < 2.0 || r.height() < 2.0) continue;
+        // 轨道内目标（两阶段命中）用告警红，其余用调试青；两色都由 QML 传入 Theme 令牌。
+        const bool danger = b.value("inRoi").toBool();
+        const QColor color = danger ? danger_box_color_ : box_color_;
+        QPen pen(color);
+        pen.setWidthF(danger ? 3.0 : 2.0);
+        painter->setPen(pen);
+        painter->setBrush(Qt::NoBrush);
+        painter->drawRect(r);
+        if (!show_labels_) continue;
+        QString text = b.value("label").toString();
+        if (text.isEmpty()) text = QStringLiteral("target");
+        const double conf = b.value("confidence").toDouble();
+        if (conf > 0.0) text += QStringLiteral(" %1%").arg(static_cast<int>(conf * 100.0));
+        const QRectF tb = painter->fontMetrics().boundingRect(text).adjusted(-4, -2, 4, 2);
+        QRectF bg(r.left(), r.top() - tb.height(), tb.width(), tb.height());
+        if (bg.top() < 0.0) bg.moveTop(r.top());
+        painter->fillRect(bg, QColor(0, 0, 0, 150));
+        painter->setPen(color);
+        painter->drawText(bg, Qt::AlignCenter, text);
+    }
+    painter->restore();
+}
+
 void VideoFrameItem::paint(QPainter* painter) {
     const QImage image = channel_ ? channel_->image() : QImage();
     if (image.isNull()) return;
@@ -79,6 +150,8 @@ void VideoFrameItem::paint(QPainter* painter) {
     } else {
         painter->drawImage(target, image);
     }
+    // 检测框与画面同一坐标基准（QImage 归一化坐标），Cover 裁剪下也不会错位。
+    if (!boxes_.isEmpty()) drawBoxes(painter, target);
 }
 
 struct VideoRuntime::Impl {

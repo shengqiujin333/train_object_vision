@@ -22,6 +22,9 @@ Rectangle {
     property string reconnectText: ""
     // 透传给 VideoSurface：0 = Fit / 1 = Cover（画面铺满格子）
     property int fillMode: 0
+    // 检测框叠加（2026-11-17）：该路 AI 输出的归一化框，P1 直接按相机 id 绑定。
+    property var boxes: []
+    property bool showBoxLabels: true
     // AI 报警（2026-11-17）：true 时整格显示闪烁红框；false 保持常规边框。
     property bool alarmActive: false
 
@@ -43,6 +46,8 @@ Rectangle {
         stateText: tile.state
         detail: tile.detail
         fillMode: tile.fillMode
+        boxes: tile.boxes
+        showBoxLabels: tile.showBoxLabels
     }
 
     Text {

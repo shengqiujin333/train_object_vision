@@ -14,6 +14,12 @@ Item {
     // 0 = Fit（保比例不裁剪）/ 1 = Cover（保比例铺满，居中裁剪）。
     // 默认 Fit，只有明确要求「画面铺满」的页面（P1/P4）才开 Cover。
     property int fillMode: 0
+    // 检测框叠加（2026-11-17）：归一化坐标，由页面按相机 id 从 railhmiAiDebug 取。
+    // 颜色来自 Theme 令牌（普通=调试青，轨道内/危险=告警红），不在 C++ 里硬编码。
+    property var boxes: []
+    property color boxColor: Theme.color.debug_box
+    property color dangerBoxColor: Theme.color.error
+    property bool showBoxLabels: true
 
     readonly property string renderPath: (typeof railhmiRenderPath !== "undefined")
                                          ? railhmiRenderPath : "cpu"
@@ -31,6 +37,10 @@ Item {
         visible: surface.live
         channel: surface.channel
         fillMode: surface.fillMode
+        boxes: surface.boxes
+        boxColor: surface.boxColor
+        dangerBoxColor: surface.dangerBoxColor
+        showLabels: surface.showBoxLabels
     }
 
     // 非 LIVE 占位层：断连/重连/陈旧时覆盖，避免旧帧冒充实时

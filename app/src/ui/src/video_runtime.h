@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QColor>
 #include <QImage>
 #include <QMutex>
 #include <QObject>
@@ -42,19 +43,42 @@ class VideoFrameItem : public QQuickPaintedItem {
     // 0 = Fit（保持比例、不裁剪，比例不符时留黑边）
     // 1 = Cover（保持比例铺满格子，居中裁掉超出部分）
     Q_PROPERTY(int fillMode READ fillMode WRITE setFillMode NOTIFY fillModeChanged)
+    // 检测框叠加（2026-11-17 现场需求）：归一化坐标 [0,1]，与 QImage 同源，
+    // 因此 Fit/Cover 两种铺法都能精确贴合画面（Cover 时由裁剪矩形裁掉框外部分）。
+    // 每项：{x,y,w,h,confidence,label,inRoi}；inRoi=true 用 dangerBoxColor（轨道内目标）。
+    Q_PROPERTY(QVariantList boxes READ boxes WRITE setBoxes NOTIFY boxesChanged)
+    Q_PROPERTY(QColor boxColor READ boxColor WRITE setBoxColor NOTIFY boxStyleChanged)
+    Q_PROPERTY(QColor dangerBoxColor READ dangerBoxColor WRITE setDangerBoxColor
+               NOTIFY boxStyleChanged)
+    Q_PROPERTY(bool showLabels READ showLabels WRITE setShowLabels NOTIFY boxStyleChanged)
 public:
     explicit VideoFrameItem(QQuickItem* parent = nullptr);
     VideoChannel* channel() const { return channel_; }
     void setChannel(VideoChannel* channel);
     int fillMode() const { return fillMode_; }
     void setFillMode(int mode);
+    QVariantList boxes() const { return boxes_; }
+    void setBoxes(const QVariantList& boxes);
+    QColor boxColor() const { return box_color_; }
+    void setBoxColor(const QColor& c);
+    QColor dangerBoxColor() const { return danger_box_color_; }
+    void setDangerBoxColor(const QColor& c);
+    bool showLabels() const { return show_labels_; }
+    void setShowLabels(bool on);
     void paint(QPainter* painter) override;
 signals:
     void channelChanged();
     void fillModeChanged();
+    void boxesChanged();
+    void boxStyleChanged();
 private:
+    void drawBoxes(QPainter* painter, const QRectF& target) const;
     VideoChannel* channel_ = nullptr;
     int fillMode_ = 0;
+    QVariantList boxes_;
+    QColor box_color_ = QColor(0, 229, 255);
+    QColor danger_box_color_ = QColor(255, 60, 60);
+    bool show_labels_ = true;
     QMetaObject::Connection frameConnection_;
 };
 

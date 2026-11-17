@@ -105,6 +105,30 @@ def main() -> int:
     else:
         fails.append("ai_runtime.cpp not found (vision inference not wired)")
 
+    # 2026-11-17 二轮：P1 实时画面必须直接画检测框（不只是 P5 调试页）。
+    p1 = read(os.path.join(args.root, "qml", "pages", "P1Realtime.qml"))
+    for token, what in {
+        "aiBoxesFor": "per-camera box lookup from railhmiAiDebug",
+        "boxes: page.aiBoxesFor(\"primary\")": "front tile box overlay",
+        "boxes: page.aiBoxesFor(\"roof\")": "pantograph tile box overlay",
+        "boxes: page.aiBoxesFor(\"underfloor\")": "wheel_rail tile box overlay",
+    }.items():
+        if token not in p1:
+            fails.append("P1 missing %s (%s)" % (what, token))
+    tile = read(os.path.join(args.root, "qml", "components", "CameraTile.qml"))
+    surface = read(os.path.join(args.root, "qml", "components", "VideoSurface.qml"))
+    for name, src in (("CameraTile", tile), ("VideoSurface", surface)):
+        if "boxes: tile.boxes" not in src and "boxes: surface.boxes" not in src:
+            fails.append("%s does not forward boxes to the frame item" % name)
+    frame = read(os.path.join(args.root, "src", "video_runtime.cpp"))
+    for token, what in {
+        "drawBoxes": "box painting",
+        "danger_box_color_": "in-ROI danger color",
+        "setBoxes": "boxes property setter",
+    }.items():
+        if token not in frame:
+            fails.append("video_runtime.cpp missing %s (%s)" % (what, token))
+
     print("[check_ai_debug_wiring] overlay toggles default-off + debug tokens + distance + all-role visibility checked")
     if fails:
         for f in fails:

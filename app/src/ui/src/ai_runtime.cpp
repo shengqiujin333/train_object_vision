@@ -307,6 +307,12 @@ void AiRuntime::tick() {
             m["fps"] = lane.fps;
             m["lastResultText"] = lane.published > 0 ? QStringLiteral("刚刚") : QStringLiteral("—");
             m["boxCount"] = static_cast<int>(lane.boxes.size());
+            // 验证用注入：RAILHMI_AI_SIM_ALARM 指定的路既参与报警判定，也在 P1/P5 画出框，
+            // 便于在没有真实目标时验证「框 -> 报警 -> 红框」整条链路（日志不称其为真实检测）。
+            static const QString sim_ids = qEnvironmentVariable("RAILHMI_AI_SIM_ALARM");
+            const bool sim_active =
+                !sim_ids.isEmpty() &&
+                sim_ids.split(QLatin1Char(',')).contains(QString::fromStdString(lane.camera_id));
             double max_conf = -1.0;
             QVariantList boxes;
             for (const auto& b : lane.boxes) {
@@ -321,6 +327,19 @@ void AiRuntime::tick() {
                 bm["inRoi"] = b.in_roi;
                 boxes.append(bm);
                 max_conf = std::max(max_conf, static_cast<double>(b.confidence));
+            }
+            if (sim_active) {
+                QVariantMap bm;
+                bm["x"] = 0.38;
+                bm["y"] = 0.42;
+                bm["w"] = 0.22;
+                bm["h"] = 0.26;
+                bm["confidence"] = 0.92;
+                bm["label"] = QStringLiteral("person(模拟)");
+                bm["distanceM"] = -1.0;
+                bm["inRoi"] = true;
+                boxes.append(bm);
+                max_conf = std::max(max_conf, 0.92);
             }
             m["boxes"] = boxes;
             m["confidenceText"] = max_conf >= 0.0
@@ -345,9 +364,7 @@ void AiRuntime::tick() {
             // 用于在没有真实目标的现场/离屏环境验证「红框 + 报警条 + 报警中心」闭环）。
             // 注入的框带 simulation 语义，日志与界面都不声称是真实检测。
             std::vector<railhmi::core::EnvelopeBox> alarm_boxes = lane.boxes;
-            static const QString sim_ids = qEnvironmentVariable("RAILHMI_AI_SIM_ALARM");
-            if (!sim_ids.isEmpty() &&
-                sim_ids.split(QLatin1Char(',')).contains(QString::fromStdString(lane.camera_id))) {
+            if (sim_active) {
                 railhmi::core::EnvelopeBox b;
                 b.x = 0.4f;
                 b.y = 0.4f;
