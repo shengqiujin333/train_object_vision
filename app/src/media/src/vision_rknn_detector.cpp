@@ -553,6 +553,10 @@ bool RknnVisionDetector::run_detect(const FrameLease& lease, railhmi::core::Dete
         return false;
     }
     counters_.det_boxes += static_cast<long long>(out->boxes.size());
+    counters_.last_det_candidates = out->candidates;
+    counters_.last_det_dropped_score = out->dropped_score;
+    counters_.last_det_dropped_class = out->dropped_class;
+    counters_.last_det_nms = out->nms_suppressed;
     return true;
 }
 

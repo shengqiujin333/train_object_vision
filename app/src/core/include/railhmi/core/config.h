@@ -114,6 +114,10 @@ struct AiConfig {
     bool reuse_detect_for_duties = true;
     // 可替换模型清单（P5 选择器）；为空时退回 models 里出现过的名称。
     std::vector<AiModelOption> catalog;
+    // 检测类别白名单（COCO 类号）。默认 {0}=person：铁路异物场景只关心人；
+    // 现场若还想看到车辆/其它目标，可在配置里加 2(car)/5(bus)/7(truck) 等。
+    // 空 = 保持默认 {0}；不提供「全部类别」档，避免把 80 类噪声全画到司机屏上。
+    std::vector<int> detect_classes{0};
 };
 
 // BLE 门磁（USTONE BWD1 / USTONE-HA-BSM1）广播接入配置。

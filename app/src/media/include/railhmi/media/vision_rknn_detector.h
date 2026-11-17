@@ -128,6 +128,11 @@ public:
         long long last_det_us = 0;
         long long last_seg_us = 0;
         long long last_pre_us = 0;
+        // 最近一次检测解码的可观察统计（诊断「没检出」是阈值/类别/确实没有目标）。
+        long long last_det_candidates = 0;
+        long long last_det_dropped_score = 0;
+        long long last_det_dropped_class = 0;
+        long long last_det_nms = 0;
     };
     const Counters& counters() const { return counters_; }
 

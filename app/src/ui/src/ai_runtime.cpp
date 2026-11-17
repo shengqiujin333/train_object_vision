@@ -193,6 +193,9 @@ void AiRuntime::rebuild() {
     dcfg.detect.nms_iou = 0.45f;
     dcfg.detect.num_classes = 80;
     dcfg.detect.class_whitelist = {0};   // person
+    // 类别白名单来自配置（app.ai.detect_classes，缺省 {0}=person）。
+    // 现场想同时看到车辆等目标时，把 2(car)/5(bus)/7(truck) 加进去即可；代码不写死。
+    if (!ai.detect_classes.empty()) dcfg.detect.class_whitelist = ai.detect_classes;
     dcfg.seg.score_threshold = static_cast<float>(th.confidence_min);
     dcfg.seg.nms_iou = 0.45f;
     dcfg.seg.mask_threshold = 0.0f;
@@ -236,6 +239,12 @@ void AiRuntime::rebuild() {
     impl_->worker->start();
     impl_->last_seq.clear();
 
+    // 启动日志把「检测什么类别 / 阈值多少」写清楚：本应用白名单固定 person(0)，
+    // 街上的车辆等非白名单类别一律丢弃（这不是模型能力问题，是产品配置）。
+    std::string classes;
+    for (std::size_t i = 0; i < dcfg.detect.class_whitelist.size(); ++i)
+        classes += (i == 0 ? "" : ",") + std::to_string(dcfg.detect.class_whitelist[i]);
+
     railhmi::platform::Logger::instance().info(
         "ai: worker started lanes=" + std::to_string(impl_->camera_ids.size()) +
         " load_error=" + (load_err.empty() ? std::string("none") : load_err) +
@@ -243,7 +252,9 @@ void AiRuntime::rebuild() {
         " pantograph_ready=" +
         std::string(impl_->detector->ready(AiProfile::Pantograph) ? "true" : "false") +
         " wheel_rail_ready=" +
-        std::string(impl_->detector->ready(AiProfile::WheelRail) ? "true" : "false"));
+        std::string(impl_->detector->ready(AiProfile::WheelRail) ? "true" : "false") +
+        " detect_classes=" + classes +
+        " conf_threshold=" + std::to_string(th.confidence_min));
     emit modelSelectionChanged();
 #endif
 }
@@ -349,12 +360,18 @@ void AiRuntime::tick() {
             }
             m["boxes"] = boxes;
             if (dbg_log) {
+                const auto& dc = impl_->detector->counters();
                 railhmi::platform::Logger::instance().info(
                     "ai-debug: " + lane.camera_id +
                     " profile=" + profile_token(lane.profile) +
                     " boxes=" + std::to_string(lane.boxes.size()) +
                     " published=" + std::to_string(lane.published) +
                     " infer_us=" + std::to_string(lane.last_infer_us) +
+                    " det_cand=" + std::to_string(dc.last_det_candidates) +
+                    " det_low=" + std::to_string(dc.last_det_dropped_score) +
+                    " det_cls=" + std::to_string(dc.last_det_dropped_class) +
+                    " det_nms=" + std::to_string(dc.last_det_nms) +
+                    " det_ok_total=" + std::to_string(dc.det_boxes) +
                     " ready=" + std::string(lane_ready ? "true" : "false") +
                     " reason=" + lane.unavailable_reason);
             }

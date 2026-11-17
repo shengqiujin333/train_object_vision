@@ -368,6 +368,33 @@ void load_app(const Node& root, AppSettings* s, Errors& e) {
                     }
                 }
             }
+            // detect_classes（可选）：检测类别白名单，缺省 {0}=person。
+            const Node* dclasses = child(*ai, "detect_classes");
+            if (dclasses && !dclasses->is_null()) {
+                if (!dclasses->is_seq()) {
+                    err(e, "app.ai.detect_classes", "expected sequence of class ids");
+                } else {
+                    std::vector<int> ids;
+                    bool bad = false;
+                    for (std::size_t i = 0; i < dclasses->seq.size(); ++i) {
+                        long long id = 0;
+                        if (!yaml::to_int(dclasses->seq[i], &id)) {
+                            err(e, "app.ai.detect_classes[" + std::to_string(i) + "]",
+                                "expected integer class id");
+                            bad = true;
+                            continue;
+                        }
+                        if (id < 0 || id > 79) {
+                            err(e, "app.ai.detect_classes[" + std::to_string(i) + "]",
+                                "class id must be in [0,79] (COCO)");
+                            bad = true;
+                            continue;
+                        }
+                        ids.push_back(static_cast<int>(id));
+                    }
+                    if (!bad && !ids.empty()) a.ai.detect_classes = ids;
+                }
+            }
             const Node* models = ai->get("models");
             if (models && !models->is_null()) {
                 if (!models->is_seq()) {

@@ -36,6 +36,10 @@ app:
     temp_limit_c: 85.0
     # 模型目录：相对路径按 --config 目录解析。板端为 rknn_model_zoo 安装目录。
     models_dir: "/home/admin/rknn_model_zoo/install/rk3588_linux_aarch64/rknn_yolov8_seg_demo/model"
+    # 检测类别白名单（COCO 类号）：0=person。铁路异物场景默认只报人；
+    # 现场若要同时看到车辆等目标，可加 2=car、5=bus、7=truck（会一起画框，但仍然
+    # 只有落在轨道区域内的目标才报警）。留空或删掉该键 = 默认 {0}。
+    detect_classes: [0]
     # 临时能力复用：受电弓/轮轨暂无专用模型，先用与车前方相同的检测模型跑通链路。
     # false 时恢复「无专用模型即不可用」的严格语义。
     reuse_detect_for_duties: true
