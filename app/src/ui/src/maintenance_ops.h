@@ -51,6 +51,12 @@ public:
     // 检查：无线网卡是否存在 / 驱动是否绑定且模块已加载 / 是否连上 AP / 信号 / IP / 驱动报错。
     Q_INVOKABLE QString wifiCheckSummary() const;
 
+    // U 盘导出（2026-11-17 现场需求）：报警数据 + 设备维护日志。
+    // 返回检测到的可写挂载点（无则空串）；UI 用它给出明确提示，不假装成功。
+    Q_INVOKABLE QString usbTarget() const;
+    // 导出到 U 盘；alarms 为报警行（键值对）。返回导出目录（失败返回空串，原因写进日志）。
+    Q_INVOKABLE QString exportToUsb(const QVariantList& alarms);
+
 signals:
     void logChanged();
     void busyChanged();

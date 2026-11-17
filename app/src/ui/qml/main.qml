@@ -19,6 +19,62 @@ Rectangle {
     property string currentPageId: railhmiDefaultPage
     property bool denied: false
 
+    // ---- 维护模式（2026-11-17 现场要求）----
+    // 默认只显示 实时监控/报警中心/历史录像/全摄像头 四页；「AI 调试」「设备维护」隐藏。
+    // 左下角有一个**看不见的**热区：连续点 10 次弹出密码框，密码固定 sjztmxny，
+    // 通过后解锁两页并把左下角变成可见的「退出维护」按钮；退出后两页再次隐藏。
+    property bool maintUnlocked: false
+    property int hiddenTapCount: 0
+    property bool passwordDialogVisible: false
+    property string passwordError: ""
+    readonly property string maintenancePassword: "sjztmxny"
+    readonly property var navEntries: {
+        var out = []
+        for (var i = 0; i < railhmiNav.length; ++i) {
+            var id = railhmiNav[i].id
+            if (!maintUnlocked && (id === "ai_debug" || id === "maintenance")) continue
+            out.push(railhmiNav[i])
+        }
+        return out
+    }
+    function hiddenTap() {
+        if (maintUnlocked) { lockMaintenance(); return }
+        hiddenTapCount += 1
+        if (hiddenTapCount >= 10) {
+            hiddenTapCount = 0
+            passwordError = ""
+            passwordDialogVisible = true
+        }
+    }
+    function tryUnlock(text) {
+        if (text === maintenancePassword) {
+            passwordDialogVisible = false
+            passwordError = ""
+            maintenanceKeyboard.close()
+            maintUnlocked = true
+            shell.currentPageId = "maintenance"
+            shell.denied = false
+        } else {
+            passwordError = "密码错误"
+        }
+    }
+    function lockMaintenance() {
+        maintenanceKeyboard.close()
+        passwordDialogVisible = false
+        maintUnlocked = false
+        if (shell.currentPageId === "ai_debug" || shell.currentPageId === "maintenance") {
+            shell.currentPageId = "realtime"
+            shell.denied = false
+        }
+    }
+    Component.onCompleted: {
+        if (!maintUnlocked && (shell.currentPageId === "ai_debug" ||
+                               shell.currentPageId === "maintenance")) {
+            shell.currentPageId = "realtime"
+            shell.denied = false
+        }
+    }
+
     function entryFor(id, list) {
         for (var i = 0; i < list.length; ++i)
             if (list[i].id === id) return list[i]
@@ -29,7 +85,7 @@ Rectangle {
         return e ? e.title : ""
     }
     function allowed(id) {
-        return entryFor(id, railhmiNav) !== null
+        return entryFor(id, shell.navEntries) !== null
     }
     function pageSource(id) {
         if (id === "realtime") return "pages/P1Realtime.qml"
@@ -77,7 +133,7 @@ Rectangle {
             NavBar {
                 width: Theme.size.nav_width
                 height: parent.height
-                entries: railhmiNav
+                entries: shell.navEntries
                 activeId: shell.currentPageId
                 onNavigate: function (pageId) {
                     zoomOverlay.close()
@@ -130,5 +186,142 @@ Rectangle {
     CameraZoomOverlay {
         id: zoomOverlay
         anchors.fill: parent
+    }
+
+    // ---- 左下角隐藏热区（看不见，连续点 10 次进维护模式）----
+    MouseArea {
+        id: maintenanceHotZone
+        objectName: "maintenanceHotZone"
+        width: 72
+        height: 56
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        visible: !shell.maintUnlocked
+        onClicked: {
+            shell.hiddenTap()
+            tapResetTimer.restart()
+        }
+        Timer {
+            id: tapResetTimer
+            interval: 5000
+            repeat: false
+            onTriggered: shell.hiddenTapCount = 0
+        }
+    }
+
+    // 解锁后左下角变成可见的「退出维护」按钮
+    Rectangle {
+        id: exitMaintenanceButton
+        objectName: "exitMaintenanceButton"
+        visible: shell.maintUnlocked
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.margins: Theme.spacing.s2
+        width: 96
+        height: 40
+        radius: Theme.radius.card
+        color: Theme.color.surface_elev
+        border.color: Theme.color.border_strong
+        border.width: Theme.border.width
+        Text {
+            anchors.centerIn: parent
+            color: Theme.color.text_primary
+            font.pixelSize: Theme.typography.scale.label.size
+            text: "退出维护"
+        }
+        MouseArea {
+            anchors.fill: parent
+            onClicked: shell.lockMaintenance()
+        }
+    }
+
+    // 密码框（固定密码 sjztmxny；板端无物理键盘，点输入框弹应用内虚拟键盘）
+    Rectangle {
+        id: passwordDialog
+        objectName: "maintenancePasswordDialog"
+        anchors.fill: parent
+        visible: shell.passwordDialogVisible
+        color: Theme.color.overlay_scrim
+        z: Theme.z_index.modal
+        MouseArea { anchors.fill: parent }   // 吃掉下层点击
+
+        Rectangle {
+            anchors.centerIn: parent
+            width: 420
+            height: 210
+            color: Theme.color.surface_elev
+            radius: Theme.radius.modal
+            border.color: Theme.color.border_strong
+            border.width: Theme.border.width
+
+            Column {
+                anchors.fill: parent
+                anchors.margins: Theme.spacing.s4
+                spacing: Theme.spacing.s2
+
+                Text {
+                    color: Theme.color.text_primary
+                    font.pixelSize: Theme.typography.scale.label.size
+                    text: "维护模式密码"
+                }
+                Rectangle {
+                    width: parent.width
+                    height: 40
+                    radius: Theme.radius.card
+                    color: Theme.color.bg_sunken
+                    border.color: Theme.color.border
+                    border.width: Theme.border.width
+                    TextInput {
+                        id: passwordInput
+                        objectName: "maintenancePasswordInput"
+                        anchors.fill: parent
+                        anchors.margins: Theme.spacing.s2
+                        color: Theme.color.text_primary
+                        font.pixelSize: Theme.typography.scale.body.size
+                        echoMode: TextInput.Password
+                        onActiveFocusChanged: {
+                            if (activeFocus) maintenanceKeyboard.open(passwordInput)
+                        }
+                        onAccepted: shell.tryUnlock(text)
+                    }
+                }
+                Text {
+                    objectName: "maintenancePasswordError"
+                    visible: shell.passwordError.length > 0
+                    color: Theme.color.error
+                    font.pixelSize: Theme.typography.scale.caption.size
+                    text: shell.passwordError
+                }
+                Row {
+                    spacing: Theme.spacing.s2
+                    FilterChip {
+                        objectName: "maintenancePasswordOk"
+                        text: "确定"
+                        onClicked: {
+                            maintenanceKeyboard.close()
+                            shell.tryUnlock(passwordInput.text)
+                        }
+                    }
+                    FilterChip {
+                        objectName: "maintenancePasswordCancel"
+                        text: "取消"
+                        onClicked: {
+                            maintenanceKeyboard.close()
+                            shell.passwordDialogVisible = false
+                            passwordError = ""
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    VirtualKeyboard {
+        id: maintenanceKeyboard
+        anchors.fill: parent
+        onAccepted: {
+            maintenanceKeyboard.close()
+            shell.tryUnlock(passwordInput.text)
+        }
     }
 }

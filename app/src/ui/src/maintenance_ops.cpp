@@ -389,6 +389,98 @@ QString MaintenanceOps::wifiCheckSummary() const {
     return lines.join(QLatin1Char('\n'));
 }
 
+QString MaintenanceOps::usbTarget() const {
+    // 验证/无 U 盘环境：显式指定导出目录（仍需可写），默认不看该变量。
+    const QString override = qEnvironmentVariable("RAILHMI_USB_DIR");
+    if (!override.isEmpty()) {
+        QFileInfo fi(override);
+        return fi.isDir() && fi.isWritable() ? override : QString();
+    }
+    // /proc/mounts：设备名 + 挂载点 + 类型；只认同步/移动盘常见的挂载点。
+    QFile mounts(QStringLiteral("/proc/mounts"));
+    if (!mounts.open(QIODevice::ReadOnly)) return QString();
+    QString best;
+    while (!mounts.atEnd()) {
+        const QString line = QString::fromLatin1(mounts.readLine()).trimmed();
+        const QStringList f = line.split(QLatin1Char(' '));
+        if (f.size() < 2) continue;
+        const QString dev = f[0];
+        QString mnt = f[1];
+        if (!dev.startsWith(QLatin1String("/dev/sd")) &&
+            !dev.startsWith(QLatin1String("/dev/mmcblk")))
+            continue;
+        if (!(mnt.startsWith(QLatin1String("/media/")) ||
+              mnt.startsWith(QLatin1String("/run/media/")) ||
+              mnt.startsWith(QLatin1String("/mnt/"))))
+            continue;
+        // /proc/mounts 里空格以 \040 转义
+        mnt.replace(QLatin1String("\\040"), QLatin1String(" "));
+        const QFileInfo fi(mnt);
+        if (!fi.isDir() || !fi.isWritable()) continue;
+        if (best.isEmpty() || mnt.size() < best.size()) best = mnt;
+    }
+    return best;
+}
+
+QString MaintenanceOps::exportToUsb(const QVariantList& alarms) {
+    const QString target = usbTarget();
+    if (target.isEmpty()) {
+        addLine("U盘导出：未检测到可用 U 盘（支持 /media、/run/media、/mnt 下的移动盘）");
+        return QString();
+    }
+    const QString stamp = QDateTime::currentDateTime().toString(QStringLiteral("yyyyMMdd-HHmmss"));
+    const QString dir = target + QStringLiteral("/railhmi-export-") + stamp;
+    if (!QDir().mkpath(dir)) {
+        addLine("U盘导出失败：无法创建目录 " + dir);
+        return QString();
+    }
+    // 1) 设备维护日志
+    QFile logFile(dir + QStringLiteral("/maintenance-log.txt"));
+    if (logFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        logFile.write(log_.join(QLatin1Char('\n')).toUtf8());
+        logFile.write("\n");
+    }
+    // 2) 报警数据（CSV：表头取首行所有键）
+    QFile csv(dir + QStringLiteral("/alarms.csv"));
+    int rows = 0;
+    if (csv.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        QStringList keys;
+        if (!alarms.isEmpty()) keys = alarms.first().toMap().keys();
+        auto esc = [](const QString& v) {
+            QString s = v;
+            s.replace(QLatin1Char('"'), QLatin1String("\"\""));
+            return s.contains(QLatin1Char(',')) || s.contains(QLatin1Char('"'))
+                       ? QLatin1Char('"') + s + QLatin1Char('"')
+                       : s;
+        };
+        csv.write(keys.join(QLatin1Char(',')).toUtf8());
+        csv.write("\n");
+        for (const QVariant& row : alarms) {
+            const QVariantMap m = row.toMap();
+            QStringList cells;
+            for (const QString& k : keys) cells << esc(m.value(k).toString());
+            csv.write(cells.join(QLatin1Char(',')).toUtf8());
+            csv.write("\n");
+            ++rows;
+        }
+    }
+    // 3) 清单（版本/时间/条数），方便现场核对导出的到底是什么
+    QFile man(dir + QStringLiteral("/manifest.txt"));
+    if (man.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        man.write(QStringLiteral("railhmi %1\n")
+                      .arg(QString::fromStdString(railhmi::core::version_string()))
+                      .toUtf8());
+        man.write(QStringLiteral("exported_at=%1\n")
+                      .arg(QDateTime::currentDateTime().toString(Qt::ISODate))
+                      .toUtf8());
+        man.write(QStringLiteral("maintenance_log_lines=%1\n").arg(log_.size()).toUtf8());
+        man.write(QStringLiteral("alarm_rows=%1\n").arg(rows).toUtf8());
+    }
+    addLine(QStringLiteral("U盘导出：已写入 %1（维护日志 %2 行 / 报警 %3 条）")
+                .arg(dir).arg(log_.size()).arg(rows));
+    return dir;
+}
+
 QVariantList MaintenanceOps::systemInfo() const {
     QVariantList out;
     auto add = [&out](const QString& group, const QString& key, const QString& value) {

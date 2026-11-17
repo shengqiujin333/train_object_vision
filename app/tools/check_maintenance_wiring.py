@@ -50,6 +50,7 @@ def main() -> int:
         "maintOpsBle": "BLE scan operation",
         "maintOpsSelfCheck": "fault self-check operation",
         "maintOpsSystem": "system info operation",
+        "maintOpsUsb": "USB export operation",
     }.items():
         if token not in p6:
             fails.append("P6 missing %s (%s)" % (what, token))
@@ -83,6 +84,8 @@ def main() -> int:
             "checkNvr": "NVR login check implementation",
             "systemInfo": "system info implementation",
             "wifiCheckSummary": "WiFi driver self-check",
+            "exportToUsb": "USB export implementation",
+            "usbTarget": "USB mount detection",
             "exportLog": "log export implementation",
         }.items():
             if token not in ops_src:

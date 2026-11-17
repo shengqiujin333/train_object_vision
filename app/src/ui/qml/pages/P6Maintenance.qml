@@ -88,8 +88,19 @@ Rectangle {
             if (wl[k].length > 0) o.appendLog("故障自检", wl[k])
         o.appendLog("故障自检", "===== 自检结束 =====")
     }
-    function showSystemInfo() {
+    // U 盘导出：报警数据（CSV）+ 设备维护日志（txt）+ 清单；无 U 盘时如实提示。
+    function exportToUsb() {
         var o = page.ops()
+        if (!o) return
+        var rows = []
+        if (typeof railhmiAlarms !== "undefined" && railhmiAlarms)
+            rows = railhmiAlarms.query("", "", "", "", "", "")
+        o.appendLog("U盘导出", "开始导出（报警 " + rows.length + " 条 + 维护日志）…")
+        var dir = o.exportToUsb(rows)
+        if (dir.length === 0)
+            o.appendLog("U盘导出", "未检测到可用 U 盘：请插入 U 盘后重试（支持 /media、/run/media、/mnt）")
+    }
+    function showSystemInfo() {        var o = page.ops()
         if (!o) return
         var info = o.systemInfo()
         o.appendLog("系统信息", "===== 系统信息 =====")
@@ -218,6 +229,11 @@ Rectangle {
                     objectName: "maintOpsSystem"
                     text: "系统信息"
                     onClicked: page.showSystemInfo()
+                }
+                FilterChip {
+                    objectName: "maintOpsUsb"
+                    text: "U盘导出"
+                    onClicked: page.exportToUsb()
                 }
             }
         }
