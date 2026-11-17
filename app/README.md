@@ -42,6 +42,25 @@
 验证用注入（默认关闭）：`RAILHMI_AI_SIM_ALARM=CAM-01,CAM-04,CAM-05` 会在指定路注入一个
 「轨道内人员」框，用于无真实目标时验证红框/报警条/报警中心闭环；日志不声称是真实检测。
 
+### 服务化运行（2026-11-17 板端已安装）
+
+之前是手工 `setsid` 起的进程，**一旦被 pkill 或崩溃就没了，重启也不会自动起来**（现场出现过
+「屏幕上的软件消失了」就是这个原因）。现在按 ITEM-025 装成 systemd 服务：
+
+```sh
+sudo bash packaging/install.sh                       # 安装到 /opt/railhmi（幂等）
+sudo install -m 0600 app/config/camera-credentials.env /opt/railhmi/config/
+sudo install -m 0600 app/config/nvr-credentials.env    /opt/railhmi/config/
+sudo systemctl start railhmi        # 状态：systemctl status railhmi
+sudo systemctl restart railhmi      # 升级后重启；日志：/opt/railhmi/logs/railhmi.out.log
+```
+
+- `Restart=always` + `RestartSec=3`：进程被杀/崩溃后自动拉起（板端实测 `kill -9` 后 5 秒内恢复）；
+- `WantedBy=graphical.target` + 已 `enable`：开机自启；
+- 单元里自带 `setcap cap_net_admin,cap_net_raw`（门磁 HCI 直读需要），升级二进制后不必手工补；
+- **验收/调试脚本请用 `systemctl stop|start railhmi`，不要再用 `pkill -x railhmi`**——那会连 `:0`
+  上的生产实例一起杀掉（这正是本次「软件消失」的成因）。
+
 ---
 
 ## 实时视频运行（2026-10-20）

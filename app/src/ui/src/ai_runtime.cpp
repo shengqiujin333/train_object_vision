@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "railhmi/core/camera_registry.h"
+#include "railhmi/core/frame_layout.h"
 #include "railhmi/core/rules.h"
 #include "railhmi/core/vision_worker_schedule.h"
 #include "railhmi/platform/log.h"
@@ -281,9 +282,19 @@ void AiRuntime::tick() {
         const bool dbg_log =
             qEnvironmentVariableIsSet("RAILHMI_AI_DEBUG") && (tick_seq % 8 == 0);
         // 只提交真实新帧（seq 变化），同一帧不重复入队；租约失效时跳过。
+        static std::map<std::string, bool> frame_logged;
         for (const auto& id : impl_->camera_ids) {
             railhmi::media::FrameLease lease = impl_->video->latestLease(id);
             if (!lease.valid()) continue;
+            if (!frame_logged[id]) {
+                frame_logged[id] = true;
+                const auto& lay = lease.descriptor().layout;
+                railhmi::platform::Logger::instance().info(
+                    "ai: frame " + id + " " + std::to_string(lay.width) + "x" +
+                    std::to_string(lay.height) + " fmt=" +
+                    railhmi::core::to_string(lay.format) +
+                    " (模型输入与屏幕分辨率无关；显示另走 RGA/QImage 路径)");
+            }
             const unsigned long long seq = lease.descriptor().seq;
             auto it = impl_->last_seq.find(id);
             if (it != impl_->last_seq.end() && it->second == seq) continue;
