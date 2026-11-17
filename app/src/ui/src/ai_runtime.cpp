@@ -189,8 +189,14 @@ void AiRuntime::rebuild() {
         dcfg.declared.push_back(d);
     }
     dcfg.rois = impl_->settings.roi;
-    dcfg.detect.score_threshold = static_cast<float>(th.confidence_min);
-    dcfg.detect.score_threshold_source = "app/config/thresholds.yaml:confidence_min";
+    // 检测（画框）阈值：优先用 app.ai.detect_confidence_min，否则跟随 thresholds.confidence_min。
+    // 报警阈值仍由 thresholds.confidence_min 决定（看得到 ≠ 一定报警）。
+    const float det_conf = static_cast<float>(
+        ai.detect_confidence_min > 0.0 ? ai.detect_confidence_min : th.confidence_min);
+    dcfg.detect.score_threshold = det_conf;
+    dcfg.detect.score_threshold_source = ai.detect_confidence_min > 0.0
+                                             ? "app/config/app.yaml:ai.detect_confidence_min"
+                                             : "app/config/thresholds.yaml:confidence_min";
     dcfg.detect.nms_iou = 0.45f;
     dcfg.detect.num_classes = 80;
     dcfg.detect.class_whitelist = {0};   // person
@@ -262,7 +268,8 @@ void AiRuntime::rebuild() {
         " wheel_rail_ready=" +
         std::string(impl_->detector->ready(AiProfile::WheelRail) ? "true" : "false") +
         " detect_classes=" + classes +
-        " conf_threshold=" + std::to_string(th.confidence_min));
+        " detect_threshold=" + std::to_string(det_conf) +
+        " alarm_threshold=" + std::to_string(th.confidence_min));
     emit modelSelectionChanged();
 #endif
 }

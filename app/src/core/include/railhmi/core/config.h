@@ -119,6 +119,10 @@ struct AiConfig {
     // 空 = 保持默认 {0}；不提供「全部类别」档，避免把 80 类噪声全画到司机屏上。
     std::vector<int> detect_classes{0};
 
+    // 检测（画框）阈值；0 = 跟随 thresholds.confidence_min。
+    // 现场标定（rail_seg_train/feasibility_500m_person_detection.md）：500m 站立人 89px、
+    // 模型等效 44px 时实测置信度 0.27~0.61，试验阈值用 0.25；告警仍用 thresholds.confidence_min。
+    double detect_confidence_min = 0.0;
     // 车前方检测裁剪窗（归一化 x,y,w,h）。零尺寸 = 关闭（整帧 letterbox）。
     // 1280x720 整帧到 640 会缩放 0.5；裁成 640x540 后是 1:1 像素，远处小目标不再被缩小。
     // 只影响检测模型；分割始终跑整帧，两阶段判定仍在整帧坐标里做。

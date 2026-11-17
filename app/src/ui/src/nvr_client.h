@@ -54,7 +54,7 @@ signals:
     void failed(const QString& operation, const QString& reason);
 private:
     using Callback = std::function<void(const QJsonObject&)>;
-    struct Request { QString operation, endpoint; QJsonObject body; Callback callback; int attempts = 0; quint64 revision = 0; int emptyRetries = 0; };
+    struct Request { QString operation, endpoint; QJsonObject body; Callback callback; int attempts = 0; quint64 revision = 0; int emptyRetries = 0; int reauth = 0; };
     void enqueue(Request request);
     void processNext();
     void send(Request request);

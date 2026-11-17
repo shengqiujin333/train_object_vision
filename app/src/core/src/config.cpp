@@ -395,6 +395,14 @@ void load_app(const Node& root, AppSettings* s, Errors& e) {
                     if (!bad && !ids.empty()) a.ai.detect_classes = ids;
                 }
             }
+            // detect_confidence_min（可选）：检测(画框)阈值；0/缺省 = 跟随 thresholds.confidence_min。
+            const Node* dconf = child(*ai, "detect_confidence_min");
+            if (dconf && !dconf->is_null()) {
+                double v = 0.0;
+                if (!yaml::to_double(*dconf, &v) || v < 0.0 || v > 1.0)
+                    err(e, "app.ai.detect_confidence_min", "expected number in [0,1]");
+                else a.ai.detect_confidence_min = v;
+            }
             // front_crop（可选）：车前方检测裁剪窗 [x,y,w,h]（归一化）。
             const Node* fcrop = child(*ai, "front_crop");
             if (fcrop && !fcrop->is_null()) {

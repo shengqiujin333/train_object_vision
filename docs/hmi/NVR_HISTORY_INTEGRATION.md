@@ -122,3 +122,50 @@ QT_QPA_PLATFORM=offscreen ./build-target/src/ui/railhmi-nvr-test \
 ```
 
 日志与截图见 `docs/hmi/test_evidence/NVR-HISTORY-20261026/`；截图使用模拟设备响应，不是现场录像。
+
+
+---
+
+## 2026-11-17 排障：偶发「录像机认证失败，请核对账号、密码及回放权限」
+
+### 现象
+历史录像页偶尔弹出「录像机认证失败，请核对账号、密码及回放权限」，但账号密码没有改过，
+点重试/重进页面又正常，属于间歇性。
+
+### 复现与根因
+直接对 NVR（192.168.1.4，`mini_httpd/1.19` + antsvision IVR）发请求：
+
+| 请求 | 响应 |
+|---|---|
+| 无凭据 POST `/digest/frmUserLogin` | `401` + `WWW-Authenticate: Digest realm="antsvision.com", qop="auth", nonce=…, opaque=…, algorithm=MD5, stale="FALSE"` |
+| 带**过期/伪造** `S-HASH/X-HASH/C-HASH` POST `/digest/frmGetPlaybackInfo` | **`403`** + `{"Result":-1,"ErrorString":"Can't find Session Var LoginHandle!"}`，**没有 WWW-Authenticate** |
+
+即：IVR 的登录态不是每次请求都做 Digest，而是登录成功后下发 `S-HASH/X-HASH/C-HASH`
+三个会话头，后续请求只带这三个头。**会话（LoginHandle）失效后设备返回 403 且不再给
+Digest 挑战**，而旧代码把 401/403 一律翻译成「认证失败，请核对账号密码和回放权限」，于是：
+
+- 用户被引导去查一个并没有问题的账号/密码/权限；
+- 客户端也没有任何恢复动作——会话失效后整页就一直失败，直到手动重进（重新登录）。
+
+### 修复
+`NvrClient` 在收到 401/403 时先判断是否为**会话过期**：
+
+```
+status ∈ {401,403} 且 ( body 含 "LoginHandle" 或 (已有会话头 且 无 WWW-Authenticate) )
+```
+
+命中则：清空 `S-/X-/C-HASH` 与 digest challenge → 把 `/frmUserLogin` 插到队首重新登录 →
+原请求（保留原回调与 revision）重新入队重放一次；只有重登后仍失败才报错。
+日志新增 `nvr-session: expired (status 403), re-login and retry "<operation>"`，
+登录成功后打印 `nvr: channels ready N`。
+
+### 验证（板端 RK3588）
+用验证开关 `RAILHMI_NVR_FORCE_STALE_SESSION=1`（把刚拿到的会话强制置为无效，仅一次）：
+
+```
+nvr-session: expired (status 403 ), re-login and retry "channels"
+nvr: channels ready 10
+```
+
+即会话失效 -> 自动重登 -> 通道列表照常拿到 10 路，页面不再报「认证失败」。
+开关默认关闭；生产构建不含任何行为改变。

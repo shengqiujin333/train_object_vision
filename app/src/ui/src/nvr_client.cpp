@@ -202,6 +202,35 @@ void NvrClient::send(Request request) {
         const QByteArray challenge = reply->rawHeader("WWW-Authenticate");
         const QByteArray bytes = reply->isReadable() ? reply->readAll() : QByteArray();
         QString problem;
+        // 会话过期（现场实测）：NVR（mini_httpd + antsvision IVR）在 LoginHandle 失效时返回
+        //   HTTP 403 + body {"Result":-1,"ErrorString":"Can't find Session Var LoginHandle!"}
+        // 且**不带 WWW-Authenticate**。旧代码把它当“账号密码/权限错误”报给用户，也不恢复。
+        // 这里识别为会话过期：清掉 S-/X-/C-HASH，自动重新登录，然后把原请求重放一次。
+        const bool sessionExpired =
+            (status == 401 || status == 403) &&
+            (QString::fromLatin1(bytes).contains("LoginHandle", Qt::CaseInsensitive) ||
+             (!sessionHeaders_.isEmpty() && challenge.isEmpty()));
+        if (problem.isEmpty() && sessionExpired && request.reauth < 1 &&
+            request.operation != QLatin1String("login")) {
+            ++request.reauth;
+            qInfo() << "nvr-session: expired (status" << status << "), re-login and retry"
+                    << request.operation;
+            sessionHeaders_.clear();
+            challenge_.clear();
+            nonceCount_ = 0;
+            reply->deleteLater();
+            active_ = false;
+            // 队列顺序：先登录，再重放原请求（原回调与 revision 保持不变）。
+            requests_.prepend(std::move(request));
+            Request login;
+            login.operation = "login";
+            login.endpoint = "/frmUserLogin";
+            login.body = {{"Type", 0}, {"Ch", 0}, {"Data", QJsonObject{}}};
+            login.callback = [](const QJsonObject&) {};
+            requests_.prepend(std::move(login));
+            QTimer::singleShot(0, this, &NvrClient::processNext);
+            return;
+        }
         if (reply->property("timedOut").toBool()) problem = "录像机请求超时";
         else if (reply->property("tooLarge").toBool()) problem = "录像机响应超过大小限制";
         else if (status == 401 && request.attempts < 1 &&
@@ -259,8 +288,17 @@ void NvrClient::send(Request request) {
         // Only accept a complete set from a successful JSON response of this device.
         const auto sHash = reply->rawHeader("S-HASH"), xHash = reply->rawHeader("X-HASH"),
                    cHash = reply->rawHeader("C-HASH");
-        if (problem.isEmpty() && !sHash.isEmpty() && !xHash.isEmpty() && !cHash.isEmpty())
+        if (problem.isEmpty() && !sHash.isEmpty() && !xHash.isEmpty() && !cHash.isEmpty()) {
             sessionHeaders_ = {{"S-HASH", sHash}, {"X-HASH", xHash}, {"C-HASH", cHash}};
+            // 验证用：把刚拿到的会话强制置为无效，用于复现「会话过期 -> 自动重登」链路。
+            static bool staleForced = false;
+            if (!staleForced && qEnvironmentVariableIsSet("RAILHMI_NVR_FORCE_STALE_SESSION")) {
+                staleForced = true;
+                sessionHeaders_ = {{"S-HASH", "deadbeef"},
+                                   {"X-HASH", "deadbeef"},
+                                   {"C-HASH", "deadbeef"}};
+            }
+        }
         reply->deleteLater(); active_ = false;
         if ((request.operation == "records" && request.revision != queryRevision_) ||
             (request.operation == "playback" && request.revision != playbackRevision_)) {
@@ -289,6 +327,7 @@ void NvrClient::fetchChannels() {
                         channels.append(QVariantMap{{"channel", i + 1}, {"name", row[0].toString()},
                                                      {"allowed", row[1].toInt() == 1}});
                     }
+                    qInfo() << "nvr: channels ready" << channels.size();
                     emit channelsReady(channels);
                 }});
         }});
