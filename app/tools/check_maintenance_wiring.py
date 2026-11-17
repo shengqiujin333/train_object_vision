@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""railhmi 设备维护页静态核对（ITEM-022）
+"""railhmi 设备维护页静态核对（ITEM-022，2026-11-17 现场定稿）
 
 源码级核对（无 Qt 环境可运行）：
-  - P6 分区卡片：摄像头/AI/录像与存储/网络与温度/云台/日志/NVR。
-  - 云台显示 Pan/Tilt/Zoom 目标值 vs 实际值 + 容差校验文本 + 前方 AI 就绪。
-  - [一键归位][重调前方预置位] 控件 + 二次确认模态；操作后刷新。
-  - 维护日志（recentLogs）。
-  - NVR 设备卡（通道映射未配置，无自动修改入口）。
-  - 桥接使用 core（ptzAction/build_ptz_log/front_ai_ready）。
+  - P6 只保留两块并铺满整屏：日志显示 + 功能操作；
+  - 原来的分区卡片（摄像头/AI/录像与存储/网络与温度/云台/维护日志/NVR/BLE 门磁/
+    权限矩阵/结构化日志/启动恢复进度/故障自检）**必须已移除**；
+  - 五个一键操作 + 日志保存/导出/清空控件齐全；
+  - 桥接使用 MaintenanceOps（ping / NVR 登录 / 系统信息 / WiFi 自检 / 导出）；
   - UI 源码无硬编码十六进制色值（复用 check_no_hardcoded_ui 口径）。
 
 退出码: 0 通过；1 发现缺陷；2 路径错误。
@@ -37,42 +36,9 @@ def main() -> int:
         return 2
 
     p6 = read(os.path.join(args.root, "qml", "pages", "P6Maintenance.qml"))
-    bridge = read(os.path.join(args.root, "src", "maintenance_model.cpp"))
     fails = []
 
-    for token, what in {
-        "maintCameraCard": "camera card", "maintAiCard": "AI card",
-        "maintRecordingCard": "recording/storage card", "maintHealthCard": "network/temp card",
-        "maintPtzCard": "PTZ card", "maintLogCard": "maintenance log card", "maintNvrCard": "NVR card",
-        "panTarget": "PTZ target pan", "panActual": "PTZ actual pan",
-        "ptzCheckText": "tolerance check text", "ptzFrontAi": "front AI readiness",
-        "ptzHome": "one-key homing control", "ptzPreset": "front preset control",
-        "ptzConfirmModal": "secondary confirmation modal", "ptzConfirmYes": "confirm action",
-        "logsByDay": "day-rolling log grouping (D-02)",
-        "reconnectNotice": "reconnect feedback (D-01)",
-        "reconnect-": "manual reconnect control (D-01)",
-        "reconnectText": "per-camera reconnect text (D-01)",
-        "channelMapping": "NVR channel mapping (未配置)",
-    }.items():
-        if token not in p6:
-            fails.append("P6 missing %s (%s)" % (what, token))
-    code = "\n".join(line.split("//", 1)[0] for line in p6.splitlines())
-    if "修改" in code or "setChannel" in code or "editNvr" in code:
-        fails.append("P6 appears to expose an NVR auto-modify entry (not allowed)")
-    if any(HEX.search(line.split("//", 1)[0]) for line in p6.splitlines()):
-        fails.append("P6 contains hardcoded hex color")
-
-    for token, what in {
-        "ptzAction": "ptzAction", "build_ptz_log": "maintenance log build",
-        "front_ai_ready": "front AI readiness", "ptz_check": "tolerance check",
-        "reconnect": "manual reconnect action (D-01)",
-        "logsByDay": "day-rolling logs (D-02)",
-        "roll_logs_by_day": "day-rolling roll (D-02)",
-    }.items():
-        if token not in bridge:
-            fails.append("maintenance bridge missing core call %s (%s)" % (what, token))
-
-    # 2026-11-17：维护页改为「日志显示 + 功能操作」两大块，五个一键操作全部落日志。
+    # 1) 必须存在的两块 + 五个操作 + 日志控件
     for token, what in {
         "maintLogPanel": "log display block",
         "maintOpsLog": "log list",
@@ -87,6 +53,28 @@ def main() -> int:
     }.items():
         if token not in p6:
             fails.append("P6 missing %s (%s)" % (what, token))
+
+    # 2) 铺满整屏：两块放在一个 Column 里，日志高度 = 剩余高度
+    if "Column" not in p6 or "height: parent.height - opsBar.height" not in p6:
+        fails.append("P6 does not fill the screen (log block must expand, ops bar fixed)")
+
+    # 3) 业主要求删除的分区卡片不得回潮
+    for token in ("maintCameraCard", "maintAiCard", "maintRecordingCard", "maintHealthCard",
+                  "maintPtzCard", "maintLogCard", "maintNvrCard", "maintDoorCard",
+                  "maintPermMatrixCard", "maintLogQueryCard", "maintRecoveryCard",
+                  "maintSelfCheckCard", "ptzConfirmModal", "logsByDay", "structuredLogRow",
+                  "recoveryStepRow-"):
+        if token in p6:
+            fails.append("P6 still contains removed card/control (%s)" % token)
+
+    # 4) NVR 只读：不得出现自动修改通道映射的入口
+    code = "\n".join(line.split("//", 1)[0] for line in p6.splitlines())
+    if "修改" in code or "setChannel" in code or "editNvr" in code:
+        fails.append("P6 appears to expose an NVR auto-modify entry (not allowed)")
+    if any(HEX.search(line.split("//", 1)[0]) for line in p6.splitlines()):
+        fails.append("P6 contains hardcoded hex color")
+
+    # 5) 桥接实现（MaintenanceOps）
     ops = os.path.join(args.root, "src", "maintenance_ops.cpp")
     if os.path.exists(ops):
         ops_src = read(ops)
@@ -94,6 +82,7 @@ def main() -> int:
             "pingCameras": "camera ping implementation",
             "checkNvr": "NVR login check implementation",
             "systemInfo": "system info implementation",
+            "wifiCheckSummary": "WiFi driver self-check",
             "exportLog": "log export implementation",
         }.items():
             if token not in ops_src:
@@ -101,7 +90,8 @@ def main() -> int:
     else:
         fails.append("maintenance_ops.cpp not found (operations not implemented)")
 
-    print("[check_maintenance_wiring] P6 sections + PTZ tolerance/confirm + log + NVR + bridge checked")
+    print("[check_maintenance_wiring] P6 two blocks fill the screen; legacy cards removed; "
+          "ops + WiFi self-check checked")
     if fails:
         for f in fails:
             print("[FAIL] %s" % f)

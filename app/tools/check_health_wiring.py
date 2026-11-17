@@ -51,18 +51,10 @@ def main() -> int:
             fails.append("RecoveryOverlay missing %s (%s)" % (what, token))
     if "RecoveryOverlay" not in main_qml:
         fails.append("main.qml does not include RecoveryOverlay")
-    for token, what in {
-        "maintLogQueryCard": "structured log card", "structuredLogRow": "structured log rows",
-        "maintRecoveryCard": "recovery progress card", "recoveryStepRow-": "recovery step rows",
-        "Flickable": "scrollable card area (D-01)",
-        "logSourceInput": "source query input (D-03)", "logKeywordInput": "keyword query input (D-03)",
-        "healthSt": "reactive recovery state (D-02)", "logRows": "reactive log rows (D-02)",
-        "recoveryDemo": "recovery progress demo (D-04)",
-    }.items():
-        if token not in p6:
-            fails.append("P6 missing %s (%s)" % (what, token))
-    if "onChanged" not in p6 or "page.reloadHealth" not in p6:
-        fails.append("P6 does not connect railhmiHealth changed() (D-02)")
+    # 2026-11-17 现场定稿：P6 只保留「日志显示 + 功能操作」两块，结构化日志卡与恢复进度卡
+    # 已按业主要求移除；健康/恢复能力仍由启动恢复浮层（RecoveryOverlay）与 core 桥接承载。
+    if "maintLogQueryCard" in p6 or "maintRecoveryCard" in p6:
+        fails.append("P6 still renders removed health cards (log query / recovery)")
     for token, what in {
         "evaluate_health": "health eval", "query_logs": "log query", "log_record_json": "log json",
         "recovery": "recovery state", "resetRecovery": "recovery reset (D-04)", "advanceRecovery": "recovery advance (D-04)",

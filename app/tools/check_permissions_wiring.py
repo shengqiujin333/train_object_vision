@@ -55,8 +55,10 @@ def main() -> int:
     }.items():
         if token in p3:
             fails.append("P3 still contains removed %s (%s); export belongs to NVR" % (what, token))
-    if "maintPermMatrixCard" not in p6 or "railhmiPermissions.matrix()" not in p6:
-        fails.append("P6 missing permission matrix card / matrix() (ITEM-023)")
+    # 2026-11-17 现场定稿：P6 的权限矩阵卡已按业主要求移除，权限矩阵仍由 core 生成并可被
+    # 其它页面/工具消费；此处只断言「不再渲染矩阵卡」，避免把已删除的 UI 又加回来。
+    if "maintPermMatrixCard" in p6:
+        fails.append("P6 still renders the removed permission matrix card")
     for token, what in {
         "role_has_permission": "role check", "permission_matrix": "matrix", "export_recording": "export action",
         "modify_config": "config action", "build_action_log": "action log",
