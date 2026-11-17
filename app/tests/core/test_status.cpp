@@ -118,26 +118,91 @@ void test_click_permission() {
 void test_top_bar() {
     TopBarSnapshot s;
     s.time_text = "12:34:56";
-    s.recording = {StatusLevel::Ok, "录像中"};
-    s.ai = {StatusLevel::Warning, "降级"};
+    s.camera = {StatusLevel::Ok, "6/6 路实时"};
+    s.recording = {StatusLevel::Ok, "NVR正常"};
     s.health = {StatusLevel::Ok, "正常"};
+    s.vehicle_state = {StatusLevel::Ok, "静止"};
+    s.door_sensor = {StatusLevel::Ok, "关门"};
     const std::vector<TopBarItem> t = build_top_bar(s, Role::Maintainer);
-    railhmi_test::check(t.size() == 7, "top bar has 7 items");
-    const char* keys[7] = {"time", "mode", "recording", "ai", "health", "vehicle_speed", "door_sensor"};
+    railhmi_test::check(t.size() == 6, "top bar has 6 items after removing mode/AI");
+    const char* keys[6] = {"time", "camera", "recording", "health", "vehicle_state", "door_sensor"};
     bool order = true;
     for (std::size_t i = 0; i < t.size(); ++i)
         if (t[i].key != keys[i]) order = false;
-    railhmi_test::check(order, "top bar fixed order");
+    railhmi_test::check(order, "top bar fixed order (6 items)");
     railhmi_test::check(t[0].value == "12:34:56", "top bar shows time");
-    railhmi_test::check(t[1].value == "可见光" && t[1].secondary == "红外未接入" && t[1].color == "neutral",
-                        "mode bit: visible + IR not connected, neutral, no alarm color");
-    railhmi_test::check(t[1].clickable == false, "mode bit has no toggle/click");
-    railhmi_test::check(t[5].unavailable && t[5].value == "未接入" && t[6].unavailable && t[6].value == "未接入",
-                        "vehicle speed / door sensor shown as 未接入");
-    railhmi_test::check(t[3].clickable && t[3].shape == "triangle", "AI warning in top bar clickable");
+    railhmi_test::check(t[1].value == "6/6 路实时" && t[1].kind == TopItemKind::Camera,
+                        "camera live/total shown in top bar");
+    railhmi_test::check(t[2].value == "NVR正常" && t[2].kind == TopItemKind::Recording,
+                        "recording shows real NVR connection state");
+    railhmi_test::check(t[4].value == "静止" && t[4].clickable && t[4].secondary == "人工置位",
+                        "vehicle state is manually selectable and labelled as manual");
+    bool no_removed = true;
+    for (const auto& it : t)
+        if (it.key == "mode" || it.key == "ai" || it.key == "vehicle_speed") no_removed = false;
+    railhmi_test::check(no_removed, "mode / AI / vehicle_speed removed from top bar");
 
-    StatusClickResult r = resolve_top_click(t[3], Role::Driver);
-    railhmi_test::check(r.clickable && r.allowed, "driver clicking AI warning opens AI debug");
+    // NVR 断开 -> NVR异常，突出显示且可点击跳回放页。
+    TopBarSnapshot bad = s;
+    bad.recording = {StatusLevel::Alarm, "NVR异常"};
+    const std::vector<TopBarItem> b = build_top_bar(bad, Role::Maintainer);
+    railhmi_test::check(b[2].color == "error" && b[2].shape == "square" && b[2].clickable,
+                        "NVR异常 is prominent (square/error/clickable)");
+    StatusClickResult r = resolve_top_click(b[2], Role::Driver);
+    railhmi_test::check(r.clickable && r.allowed && r.target == Page::Replay,
+                        "clicking NVR异常 opens replay page");
+}
+
+void test_live_door_sensor_in_top_bar() {
+    // 门磁三态：开门/关门/传感器异常。未知或过期绝不显示为关门。
+    TopBarSnapshot s;
+    s.time_text = "12:34:56";
+    s.door_sensor = {StatusLevel::Alarm, "开门"};
+    const std::vector<TopBarItem> t = build_top_bar(s, Role::Maintainer);
+    railhmi_test::check(t.size() == 6 && t[5].key == "door_sensor",
+                        "live door sensor keeps fixed 6-item top bar order");
+    railhmi_test::check(t[5].value == "开门" && !t[5].unavailable &&
+                            t[5].level == StatusLevel::Alarm && t[5].shape == "square" &&
+                            t[5].color == "error" && t[5].clickable,
+                        "door open is prominent (square/error/clickable)");
+    railhmi_test::check(t[4].unavailable && t[4].value == "未接入" &&
+                            t[4].kind == TopItemKind::VehicleState && t[4].clickable &&
+                            t[4].secondary == "点击切换",
+                        "unselected vehicle state stays honestly unconnected but invites manual selection");
+
+    TopBarSnapshot st = s;
+    st.door_sensor = {StatusLevel::Warning, "传感器异常"};
+    const std::vector<TopBarItem> u = build_top_bar(st, Role::Driver);
+    railhmi_test::check(u[5].value == "传感器异常" && u[5].clickable &&
+                            !u[5].unavailable,
+                        "stale/unknown door sensor shown as 传感器异常, not 关门");
+}
+
+void test_top_bar_truth_mappings() {
+    railhmi_test::check(camera_top_status(6, 6).value == "6/6 路实时" &&
+                            camera_top_status(6, 6).level == StatusLevel::Ok,
+                        "all cameras live -> ok");
+    railhmi_test::check(camera_top_status(4, 6).level == StatusLevel::Warning &&
+                            camera_top_status(0, 6).level == StatusLevel::Alarm,
+                        "partial/all-offline camera levels");
+    railhmi_test::check(camera_top_status(0, 0).value == "未接入" &&
+                            camera_top_status(7, 6).value == "未接入",
+                        "invalid camera counts never fabricate a healthy value");
+    railhmi_test::check(nvr_top_status(true).value == "NVR正常" &&
+                            nvr_top_status(false).value == "NVR异常" &&
+                            nvr_top_status(false).level == StatusLevel::Alarm,
+                        "NVR status only from real connection result");
+    railhmi_test::check(door_top_status("ok").value == "关门" &&
+                            door_top_status("alarm").value == "开门" &&
+                            door_top_status("unavailable").value == "传感器异常" &&
+                            door_top_status("warning").value == "传感器异常" &&
+                            door_top_status("").value == "传感器异常",
+                        "door three-state mapping, unknown is never 关门");
+    railhmi_test::check(vehicle_state_top_status(0).value == "未接入" &&
+                            vehicle_state_top_status(1).value == "静止" &&
+                            vehicle_state_top_status(2).value == "运动" &&
+                            vehicle_state_top_status(99).value == "未接入",
+                        "vehicle state manual options");
 }
 
 }  // namespace
@@ -149,4 +214,6 @@ void run_status_tests() {
     test_target_pages();
     test_click_permission();
     test_top_bar();
+    test_live_door_sensor_in_top_bar();
+    test_top_bar_truth_mappings();
 }

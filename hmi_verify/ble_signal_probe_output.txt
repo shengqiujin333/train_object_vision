@@ -1,0 +1,5 @@
+probe: listening 45s for org.bluez signals (match-rule, no eavesdrop)
+=== COUNTS === {'props': 0, 'added': 4, 'props_door': 0, 'added_door': 0, 'removed': 1}
+=== DOOR PROPERTY KEYS === {}
+=== DOOR TIMELINE (t_sec, path, keys) ===
+=== END ===

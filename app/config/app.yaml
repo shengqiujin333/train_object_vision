@@ -3,7 +3,10 @@
 app:
   language: "zh-CN"
   default_role: admin
-  resolution: [1920, 1080]
+  # 设计/回退分辨率：默认运行时跟随物理屏幕全屏自适应，此值在 --windowed /
+  # RAILHMI_WINDOWED=1 或无窗口系统时生效。换屏只需改这里（或保持 auto）。
+  # 当前实机 HDMI 首选模式为 1280x800 @60Hz（10.1" 16:10）。
+  resolution: [1280, 800]
   render_path: cpu
   mode: visible
   recording_source: both
@@ -41,3 +44,27 @@ app:
       - profile: cab_door
         name: yolov5s
         version: "rknn-2.3.2/yolov5s"
+  # BLE 门磁（USTONE BWD1 / USTONE-HA-BSM1，广播方式，无配对/GATT 连接）。
+  # 协议：31 字节广播，byte0=0x07、byte1..4=设备ID(小端)、byte5..30=<Key,Value>；
+  #       Key 0x08 门磁(1B，1=感应不到磁铁→未关严)、Key 0x63 电池百分比(2B 小端)。
+  # 使用说明：nRF Connect 搜到名称 T1 即设备进入工作状态。
+  # 本配置节整体可选：删除即保持 enabled=false，界面如实显示「未接入」。
+  door_sensor:
+    enabled: true
+    auto_discover: true          # 允许按广播名发现；仍受 name_filter 闸门约束
+    name_filter: "T1"            # 仅该名称（或前缀）或已登记 MAC 才会被当作门磁
+    # adapter: hci0              # 缺省自动选第一个 org.bluez.Adapter1
+    # 11-16 现场确认：厂家标称广播 1s 一次；root btmon 关掉控制器去重后
+    # 45s 内实测约 20 个广播事件（1~7s，多数 1~5s）。原「最多每 10s 读一次」
+    # 约束已按业主要求放宽：全量 GetManagedObjects 改为 1s 一次，及时读到
+    # BlueZ 缓存里的最新门状态；PropertiesChanged 事件仍保留更快的即时路径。
+    # 独立 I/O 线程每次轮询同时下发 HCI filter_dup=0，抵消 bluetoothd 约每
+    # 10s 重启扫描时重新打开的内核去重；无 CAP_NET_ADMIN/CAP_NET_RAW 时
+    # 只告警并优雅降级，不假装去重已关闭。配置上限仍为 10000ms（可退回原节奏）。
+    poll_interval_ms: 1000
+    stale_ms: 60000              # 超过该时长未见广播变化→STALE/不可用（厂商未标广播周期）
+    battery_low_pct: 20
+    payload_offset: 0            # 0=自动在前 4 字节内定位 0x07（兼容厂商 ID 前缀）
+    # 已登记 MAC 才是权威来源。现场拿到实际 MAC 后按下面格式填入（说明书截图里的
+    # D1:D9:DE:FE:92:8B 只是示例，未登记为该设备，绝不预置）。
+    devices: []

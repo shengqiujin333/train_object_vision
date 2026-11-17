@@ -11,6 +11,9 @@ Item {
     property var channel: null
     property string stateText: ""
     property string detail: ""
+    // 0 = Fit（保比例不裁剪）/ 1 = Cover（保比例铺满，居中裁剪）。
+    // 默认 Fit，只有明确要求「画面铺满」的页面（P1/P4）才开 Cover。
+    property int fillMode: 0
 
     readonly property string renderPath: (typeof railhmiRenderPath !== "undefined")
                                          ? railhmiRenderPath : "cpu"
@@ -27,6 +30,7 @@ Item {
         anchors.fill: parent
         visible: surface.live
         channel: surface.channel
+        fillMode: surface.fillMode
     }
 
     // 非 LIVE 占位层：断连/重连/陈旧时覆盖，避免旧帧冒充实时

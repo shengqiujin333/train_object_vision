@@ -1,0 +1,32 @@
+===== A. 生产 :0 —— P3 历史录像 =====
+--- P3 查询/NVR 日志（末尾） ---
+2026-11-14T10:48:36.749 INFO  nvr-status: real TCP probe enabled, config=/home/admin/railhmi-ui-fix/app/config/nvr.yaml
+2026-11-14T10:48:38.252 INFO  nvr-status: 192.168.1.4:80 -> NVR正常 (tcp connected)
+===== A. 生产 :0 —— P2 报警中心 =====
+--- QML 运行期错误（应为 0 行） ---
+===== B. Xvfb :97 —— 合成开门报警后验证 P2 互斥单选 =====
+--- 合成开门报警证据 ---
+2026-11-14T10:49:31.852 INFO  door-sensor: SYNTHETIC test frame injected (origin=simulation, NOT a real device): 07785634120801635500
+2026-11-14T10:49:31.855 INFO  door-sensor: L2 door_ajar event appended for SIM-T1
+2026-11-14T10:49:31.855 INFO  door-sensor: snapshot level=alarm value='1 路未关严' total=2 online=2 ajar=1 unknown=0 lowBattery=0 source=bluez reason=
+video workers started: 6 / 6
+2026-11-14T10:49:41.861 INFO  door-sensor: snapshot level=alarm value='1 路未关严' total=2 online=2 ajar=1 unknown=0 lowBattery=0 source=bluez reason=
+2026-11-14T10:49:51.862 INFO  door-sensor: snapshot level=alarm value='1 路未关严' total=2 online=2 ajar=1 unknown=0 lowBattery=0 source=bluez reason=
+--- 合成实例 QML 运行期错误（应为 0 行） ---
+===== C. 截图清单 =====
+-rw-rw-r-- 1 admin admin 48335 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_BASE.png
+-rw-rw-r-- 1 admin admin 54952 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_CHIPS_CAMERA_ONE.png
+-rw-rw-r-- 1 admin admin 55401 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_CHIPS_CAMERA.png
+-rw-rw-r-- 1 admin admin 55524 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_CHIPS_DEFAULT.png
+-rw-rw-r-- 1 admin admin 55124 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_CHIPS_TYPE.png
+-rw-rw-r-- 1 admin admin 48449 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_DISMISSED.png
+-rw-rw-r-- 1 admin admin 64128 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_KEYBOARD.png
+-rw-rw-r-- 1 admin admin 48282 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_QUERY.png
+-rw-rw-r-- 1 admin admin 55124 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_SIM_DISMISSED.png
+-rw-rw-r-- 1 admin admin 72035 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_SIM_KEYBOARD.png
+-rw-rw-r-- 1 admin admin 50002 Nov 14 10:49 /home/admin/round3_verify/R3I_P2_SIM_PROPAGATE.png
+-rw-rw-r-- 1 admin admin 69126 Nov 14 10:49 /home/admin/round3_verify/R3I_P3_BASE.png
+-rw-rw-r-- 1 admin admin 69310 Nov 14 10:49 /home/admin/round3_verify/R3I_P3_DISMISSED.png
+-rw-rw-r-- 1 admin admin 85821 Nov 14 10:49 /home/admin/round3_verify/R3I_P3_KEYBOARD.png
+-rw-rw-r-- 1 admin admin 69248 Nov 14 10:49 /home/admin/round3_verify/R3I_P3_QUERY.png
+===== DONE =====

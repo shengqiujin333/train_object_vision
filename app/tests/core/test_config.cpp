@@ -123,8 +123,12 @@ void test_baseline_ok(const Baseline& b) {
     railhmi_test::check(!mode_ir_connected(), "IR is not connected this phase");
     railhmi_test::check(r.settings.app.recording_source == RecordingSource::Both,
                         "app.recording_source=both");
-    railhmi_test::check(r.settings.app.resolution_w == 1920 && r.settings.app.resolution_h == 1080,
-                        "app.resolution=1920x1080");
+    // 分辨率已改为配置驱动 + 运行时全屏自适应，不再是写死的 1920x1080；
+    // 此处校验解析出的设计/回退分辨率符合基线（10.1" 1280x800）且不低于设计下限。
+    railhmi_test::check(r.settings.app.resolution_w == 1280 && r.settings.app.resolution_h == 800,
+                        "app.resolution=1280x800 (config-driven design fallback)");
+    railhmi_test::check(r.settings.app.resolution_w >= 1280 && r.settings.app.resolution_h >= 720,
+                        "app.resolution meets 1280x720 design minimum");
 
     railhmi_test::check(r.settings.thresholds.confirm_frames == 3 &&
                             r.settings.thresholds.clip_post_seconds == 60,

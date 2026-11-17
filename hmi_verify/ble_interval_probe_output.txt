@@ -1,0 +1,54 @@
+=== btmon capture 35s ===
+--- total lines ---
+1421
+--- HCI event types ---
+      9 HCI Event: Command
+     66 HCI Event: LE
+--- ADV_REPORT / LE Meta count ---
+167
+--- T1 MAC mentions ---
+5
+--- Name T1 mentions ---
+2
+--- first 40 LE meta lines with timestamps ---
+        Address type: 0x06
+        RSSI: invalid (0x7f)
+< HCI Command: LE Set Random Address (0x08|0x0005) plen 6    #1 [hci0] 8.867246
+        Address: 3D:B6:64:AB:EF:DD (Non-Resolvable)
+> HCI Event: Command Complete (0x0e) plen 4                  #2 [hci0] 9.147659
+      LE Set Random Address (0x08|0x0005) ncmd 2
+< HCI Command: LE Set Scan Parameters (0x08|0x000b) plen 7   #3 [hci0] 9.147695
+> HCI Event: Command Complete (0x0e) plen 4                  #4 [hci0] 9.148666
+< HCI Command: LE Set Scan Enable (0x08|0x000c) plen 2       #5 [hci0] 9.148680
+> HCI Event: Command Complete (0x0e) plen 4                  #6 [hci0] 9.149589
+        Address type: 0x06
+        Address type: 0x06
+> HCI Event: LE Meta Event (0x3e) plen 33                    #7 [hci0] 9.160361
+      LE Advertising Report (0x02)
+        Address type: Public (0x00)
+        Address: E8:06:90:21:74:36 (OUI E8-06-90)
+        RSSI: -76 dBm (0xb4)
+> HCI Event: LE Meta Event (0x3e) plen 43                    #8 [hci0] 9.207834
+      LE Advertising Report (0x02)
+        Address type: Random (0x01)
+        Address: 40:97:5E:1D:22:2B (Resolvable)
+        RSSI: -42 dBm (0xd6)
+        LE Address: E8:06:90:21:74:36 (OUI E8-06-90)
+        RSSI: -76 dBm (0xb4)
+        LE Address: 40:97:5E:1D:22:2B (Resolvable)
+        RSSI: -42 dBm (0xd6)
+> HCI Event: LE Meta Event (0x3e) plen 43                    #9 [hci0] 9.235353
+      LE Advertising Report (0x02)
+        Address type: Random (0x01)
+        Address: 0D:F9:DB:82:0F:98 (Non-Resolvable)
+        RSSI: -68 dBm (0xbc)
+        LE Address: 0D:F9:DB:82:0F:98 (Non-Resolvable)
+        RSSI: -68 dBm (0xbc)
+> HCI Event: LE Meta Event (0x3e) plen 29                   #10 [hci0] 9.235971
+      LE Advertising Report (0x02)
+        Address type: Random (0x01)
+        Address: 4F:19:58:8D:69:59 (Resolvable)
+        RSSI: -66 dBm (0xbe)
+> HCI Event: LE Meta Event (0x3e) plen 12                   #11 [hci0] 9.236365
+      LE Advertising Report (0x02)
+=== END ===

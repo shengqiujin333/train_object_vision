@@ -1,0 +1,5 @@
+=== dbus-monitor 40s (bluez PropertiesChanged) ===
+dbus-monitor: unable to enable new-style monitoring: org.freedesktop.DBus.Error.AccessDenied: "Rejected send message, 1 matched rules; type="method_call", sender=":1.238" (uid=1000 pid=16814 comm="dbus-monitor --system sender='org.bluez',interface") interface="org.freedesktop.DBus.Monitoring" member="BecomeMonitor" error name="(unset)" requested_reply="0" destination="org.freedesktop.DBus" (bus)". Falling back to eavesdropping.
+signal time=1794626891.929918 sender=org.freedesktop.DBus -> destination=:1.238 serial=2 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameAcquired
+   string ":1.238"
+=== END ===

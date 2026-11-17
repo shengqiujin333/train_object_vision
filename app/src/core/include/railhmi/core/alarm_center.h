@@ -5,6 +5,7 @@
 // 筛选：时间窗（日期/时间段）、摄像头、类型、级别、确认状态；确认/批量确认只改 ack_state 并
 // 产出维护日志条目；录像不可用时行内显式标注。纯逻辑，无 Qt/SQLite 依赖。
 
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -53,6 +54,14 @@ struct AlarmRow {
     std::string snapshot_ref;
 };
 
+// 现场固定筛选类别（全部类型 / 摄像头 / 门磁 / NVR / 主机）。
+// 类别由事件本身派生，不依赖「当前有没有该类别的历史报警」，所以 chip 永远稳定可见；
+// 目前 NVR / 主机没有事件生产者，选中后如实显示空态，不伪造事件。
+const char* alarm_category(const AlarmRow& r);              // camera/door/nvr/host
+const char* alarm_category_label(const std::string& token); // 摄像头/门磁/NVR/主机
+bool parse_alarm_category(const std::string& s);            // 只接受四个固定 token
+const char* const* alarm_category_tokens(std::size_t* count);
+
 // 由持久化事件行 + 相机名 + 录像可用性派生展示行。
 AlarmRow make_alarm_row(const EventRow& e, const std::string& camera_name, RecordAvailability rec);
 
@@ -68,6 +77,8 @@ struct AlarmFilter {
     AlarmLevel level = AlarmLevel::L3;
     bool has_ack = false;
     AckState ack = AckState::Unacked;
+    bool has_category = false;      // 固定类别筛选（category 必须是四个固定 token 之一）
+    std::string category;
 };
 
 bool alarm_matches(const AlarmRow& r, const AlarmFilter& f);

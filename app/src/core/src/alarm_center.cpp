@@ -50,6 +50,45 @@ const char* alarm_level_label(AlarmLevel l) {
 
 const char* ack_state_label(AckState a) { return a == AckState::Acked ? "已确认" : "未确认"; }
 
+namespace {
+const char* const kAlarmCategories[] = {"camera", "door", "nvr", "host"};
+bool starts_with_nvr(const std::string& s) {
+    return s.size() >= 3 &&
+           (s.compare(0, 3, "NVR") == 0 || s.compare(0, 3, "nvr") == 0);
+}
+}  // namespace
+
+const char* const* alarm_category_tokens(std::size_t* count) {
+    if (count) *count = sizeof(kAlarmCategories) / sizeof(kAlarmCategories[0]);
+    return kAlarmCategories;
+}
+
+bool parse_alarm_category(const std::string& s) {
+    std::size_t n = 0;
+    const char* const* tokens = alarm_category_tokens(&n);
+    for (std::size_t i = 0; i < n; ++i)
+        if (s == tokens[i]) return true;
+    return false;
+}
+
+const char* alarm_category_label(const std::string& token) {
+    if (token == "camera") return "摄像头";
+    if (token == "door") return "门磁";
+    if (token == "nvr") return "NVR";
+    if (token == "host") return "主机";
+    return "全部类型";
+}
+
+const char* alarm_category(const AlarmRow& r) {
+    // 门磁事件（BLE 广播）独立成类，和摄像头取流/AI 事件分开。
+    if (r.type == AlarmType::DoorAjar) return "door";
+    // NVR / 主机事件目前没有生产者；用来源标识预留稳定类别，不用猜类型。
+    if (starts_with_nvr(r.camera_id)) return "nvr";
+    if (r.type == AlarmType::Device) return "host";
+    // 其余（轨道人员/障碍物/轮轨/受电弓/前后摄像头设备）都由摄像头链路产生。
+    return "camera";
+}
+
 AlarmType parse_alarm_type(const std::string& s) {
     const AlarmType all[8] = {AlarmType::PersonOnRail, AlarmType::FrontObstacle, AlarmType::WheelDerail,
                               AlarmType::PantographAbnormal, AlarmType::DoorAjar, AlarmType::FrontCameraDevice,
@@ -161,6 +200,7 @@ bool alarm_matches(const AlarmRow& r, const AlarmFilter& f) {
     if (f.has_type && r.type != f.type) return false;
     if (f.has_level && r.level != f.level) return false;
     if (f.has_ack && r.ack != f.ack) return false;
+    if (f.has_category && f.category != alarm_category(r)) return false;
     return true;
 }
 

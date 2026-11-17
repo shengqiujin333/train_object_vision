@@ -10,13 +10,22 @@ Rectangle {
     id: page
     color: Theme.color.bg_base
 
+    // 每格可点击：把该路 channel 交给外壳的单路放大浮层（60s / 点空白处关闭）。
+    signal zoomRequested(var channel, string name, string stateText, string detailText, bool isLive)
+
+    function openZoom(ch, name, stateText, detailText, isLive) {
+        page.zoomRequested(ch, name, stateText, detailText, isLive)
+    }
+
     readonly property var gridCfg: (typeof railhmiGrid !== "undefined") ? railhmiGrid : ({
             wideColumns: 3, wideRows: 2, tallColumns: 2, tallRows: 3
         })
     readonly property int cols: (width >= height) ? page.gridCfg.wideColumns : page.gridCfg.tallColumns
     readonly property int rows: (width >= height) ? page.gridCfg.wideRows : page.gridCfg.tallRows
     readonly property int gap: Theme.spacing.s3
-
+    // 六宫格保持铺满可用区域（设计基线 3x2 / 2x3）。此页每格比例不可能同时满足
+    // 16:9 与铺满（内容区约 1.6:1），强行改成 16:9 只会把黑边从格内移到网格外，
+    // 画面尺寸并不增加，故此处不套用 P1 的 16:9 方案。
     Grid {
         id: grid
         anchors.fill: parent
@@ -42,6 +51,8 @@ Rectangle {
                 fpsText: channelInfo.fpsText
                 lastFrameText: channelInfo.lastFrameText
                 reconnectText: channelInfo.reconnectText
+                onActivated: page.openZoom(modelData, channelInfo.name, channelInfo.stateLabel,
+                                           channelInfo.detail, channelInfo.presentable)
             }
         }
     }

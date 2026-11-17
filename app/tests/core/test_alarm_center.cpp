@@ -149,6 +149,58 @@ void test_time_helpers() {
     railhmi_test::check(parse_date_utc_ms("bad") == -1, "bad date rejected");
 }
 
+// 现场固定类别：全部类型 / 摄像头 / 门磁 / NVR / 主机。
+// chip 与事件集无关（core 只按事件本身派生类别），筛选必须真的委托 core。
+void test_fixed_categories() {
+    std::vector<AlarmRow> rows = sample_rows();
+    rows.push_back(make_alarm_row(
+        make_event(5, 2, "door_ajar", "DOOR-T1", kT0 + 10000, "unacked", "车门未关严", false),
+        "门磁", RecordAvailability::Unavailable));
+    rows.push_back(make_alarm_row(
+        make_event(6, 2, "device", "NVR-1", kT0 + 11000, "unacked", "录像机异常", false),
+        "录像机", RecordAvailability::Unavailable));
+    rows.push_back(make_alarm_row(
+        make_event(7, 3, "device", "HOST", kT0 + 12000, "unacked", "主机故障", false),
+        "主机", RecordAvailability::Unavailable));
+
+    railhmi_test::check(std::string(alarm_category(rows[0])) == "camera",
+                        "camera-derived alarm -> camera category");
+    railhmi_test::check(std::string(alarm_category(rows[4])) == "door",
+                        "door_ajar -> door category even with camera-ish source id");
+    railhmi_test::check(std::string(alarm_category(rows[5])) == "nvr",
+                        "NVR source -> nvr category");
+    railhmi_test::check(std::string(alarm_category(rows[6])) == "host",
+                        "device fault -> host category");
+
+    std::size_t n = 0;
+    const char* const* tokens = alarm_category_tokens(&n);
+    railhmi_test::check(n == 4 && std::string(tokens[0]) == "camera" &&
+                            std::string(tokens[3]) == "host",
+                        "exactly four fixed category tokens");
+    railhmi_test::check(std::string(alarm_category_label("nvr")) == "NVR" &&
+                            std::string(alarm_category_label("door")) == "门磁" &&
+                            std::string(alarm_category_label("host")) == "主机",
+                        "fixed category labels");
+    railhmi_test::check(!parse_alarm_category("all") && !parse_alarm_category("bogus") &&
+                            parse_alarm_category("camera"),
+                        "unknown category token rejected, all is not a category");
+
+    AlarmFilter f;
+    f.has_category = true;
+    f.category = "door";
+    const std::vector<AlarmRow> door = query_alarms(rows, f);
+    railhmi_test::check(door.size() == 1 && door[0].id == 5, "door category filter hit exactly one row");
+    f.category = "nvr";
+    railhmi_test::check(query_alarms(rows, f).size() == 1, "nvr category filter hit exactly one row");
+    f.category = "host";
+    railhmi_test::check(query_alarms(rows, f).size() == 1, "host category filter hit exactly one row");
+    f.category = "camera";
+    railhmi_test::check(query_alarms(rows, f).size() == 4, "camera category filter hit camera rows");
+    f.has_category = false;
+    railhmi_test::check(query_alarms(rows, f).size() == rows.size(),
+                        "all-types clears category condition");
+}
+
 }  // namespace
 
 void run_alarm_center_tests() {
@@ -158,4 +210,5 @@ void run_alarm_center_tests() {
     test_batch_ack();
     test_filter_options();
     test_time_helpers();
+    test_fixed_categories();
 }

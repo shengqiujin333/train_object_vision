@@ -9,6 +9,7 @@
 //
 // 仅依赖 C++ 标准库；不含 Qt/GStreamer/相机/SQLite。
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -97,6 +98,29 @@ struct AiConfig {
     std::vector<AiModelConfig> models;
 };
 
+// BLE 门磁（USTONE BWD1 / USTONE-HA-BSM1）广播接入配置。
+// 可选配置节 app.door_sensor；缺省记入 applied_defaults，不静默启用设备接入。
+// 协议/硬件事实来自根目录两份厂商 PDF，见 railhmi/core/door_sensor.h。
+struct DoorSensorDeviceConfig {
+    std::string id;
+    std::string name;
+    std::string mac;                 // AA:BB:CC:DD:EE:FF（大小写不敏感）
+    bool has_device_id = false;
+    std::uint32_t device_id = 0;     // 广播帧 byte1..4 小端序设备 ID（可选核验）
+};
+
+struct DoorSensorConfig {
+    bool enabled = false;            // 缺省 false：未配置时保持「未接入」，不虚构设备
+    bool auto_discover = true;       // 允许按广播名发现；仍须通过 name_filter 闸门
+    std::string name_filter = "T1"; // 使用说明：搜到名称 T1 表示设备进入工作状态
+    std::string adapter;             // 空=自动选择第一个 org.bluez.Adapter1
+    int poll_interval_ms = 1000;     // GetManagedObjects 轮询间隔；范围 1000..10000ms（现场 1s 快速读取）
+    int stale_ms = 60000;            // 超过该时长未见广播变化 -> STALE/不可用
+    int battery_low_pct = 20;        // 低电量阈值（百分比）
+    int payload_offset = 0;          // 广播载荷前缀偏移；0=自动在前 4 字节内定位 0x07
+    std::vector<DoorSensorDeviceConfig> devices;   // 已登记 MAC（权威来源）
+};
+
 struct AppConfig {
     std::string language;
     Role default_role = Role::Driver;
@@ -110,6 +134,7 @@ struct AppConfig {
     StorageConfig storage;
     PermissionsConfig permissions;
     AiConfig ai;
+    DoorSensorConfig door_sensor;
     std::vector<IntegrationConfig> integrations;
 };
 

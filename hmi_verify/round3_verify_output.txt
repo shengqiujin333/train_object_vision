@@ -1,0 +1,48 @@
+===== 0. 本机时间 / 私有凭据部署与键名（绝不打印值） =====
+local=2026-11-14 10:48:31 CST
+utc  =2026-11-14 02:48:31 UTC
+/home/admin/railhmi-ui-fix/app/config/camera-credentials.env  perms=600  keys=TRAIN_FRONT_RTSP_CREDENTIAL TRAIN_SIDE_RTSP_CREDENTIAL 
+/home/admin/railhmi-ui-fix/app/config/nvr-credentials.env  perms=600  keys=TRAIN_NVR_CREDENTIAL 
+===== 1. 全部静态守卫 =====
+[check_qml_qt_validity] scanned 23 qml files, 53 headers
+[check_qml_qt_validity] PASS (no upper-case QML property/id, no Qt-keyword identifier in included headers)
+[check_replay_wiring] PASS (D-01..D-09 + v1 D-01/D-02 + F-01..F-04 wired)
+[check_ai_debug_wiring] PASS (ITEM-021 AI debug page visible to all roles)
+[check_maintenance_wiring] PASS (ITEM-022 device maintenance page wired)
+[check_permissions_wiring] PASS (ITEM-023 core gate kept, P3 export UI removed)
+[check_health_wiring] PASS (ITEM-024 health/log/recovery wired)
+[check_alarm_center_wiring] PASS (F-01..F-04 wired)
+[check_stream_recovery_wiring] PASS (F-01..F-07 wired)
+[check_no_hardcoded_ui] PASS (no hardcoded hex color / font size in UI sources)
+[check_packaging] PASS (ITEM-025 packaging + systemd + fault self-check)
+===== 2. CoreTests + 全量 Qt 目标构建 =====
+CORETESTS_BUILD_EXIT=0
+[PASS] progress reflects terminal steps
+== 1504 passed, 0 failed ==
+RESULT: PASS passed=1504 failed=0
+QT_BUILD_EXIT=0
+[ 91%] Automatic RCC for qml.qrc
+Consolidate compiler generated dependencies of target railhmi
+[ 91%] Building CXX object src/ui/CMakeFiles/railhmi.dir/railhmi_autogen/EWIEGA46WW/qrc_qml.cpp.o
+[ 92%] Linking CXX executable ../../railhmi
+[100%] Built target railhmi
+[build.sh] build OK (mode=target); artifacts under /home/admin/railhmi-ui-fix/app/build-target
+===== 3. 重启 :0 实机进程（不带任何模拟/调试变量） =====
+RESTARTED :0 old_pid=6326 new_pid=11890
+--- 进程 ---
+11890 ./build-target/railhmi --config /home/admin/railhmi-ui-fix/app/config
+--- 凭据补齐 / 自动登录 / NVR 状态 ---
+2026-11-14T10:48:36.749 INFO  credentials: 3 private env var(s) loaded from config dir
+2026-11-14T10:48:36.749 INFO  nvr-status: real TCP probe enabled, config=/home/admin/railhmi-ui-fix/app/config/nvr.yaml
+2026-11-14T10:48:38.252 INFO  nvr-status: 192.168.1.4:80 -> NVR正常 (tcp connected)
+--- 视频 / 门磁 ---
+2026-11-14T10:48:36.932 INFO  door-sensor: enabled adapter=auto poll=10000ms stale=60000ms filter=T1 registered=0
+video workers started: 6 / 6
+video watchdog: rebuild "CAM-05" stalled_ms= -1 attempt= 1 backoff_ms= 5000 last_error= "Could not read from resource."
+--- QML 运行期错误（应为 0 行） ---
+===== 4. 基础截图：P3 / P2 / P1 =====
+-rw-rw-r-- 1 admin admin 542531 Nov 14 10:48 /home/admin/round3_verify/R3_P1_DEFAULT.png
+-rw-rw-r-- 1 admin admin 540037 Nov 14 10:37 /home/admin/round3_verify/R3_P1_NOW.png
+-rw-rw-r-- 1 admin admin  48302 Nov 14 10:48 /home/admin/round3_verify/R3_P2_DEFAULT.png
+-rw-rw-r-- 1 admin admin  69177 Nov 14 10:48 /home/admin/round3_verify/R3_P3_DEFAULT.png
+===== DONE =====

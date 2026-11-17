@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""railhmi 权限与二次确认静态核对（ITEM-023）
+"""railhmi 权限与二次确认静态核对（ITEM-023 + 现场定稿 P3 精简）
 
 源码级核对（无 Qt 环境可运行）：
-  - P3 导出入口受权限控制（visible: canExportRecording），司机不渲染；二次确认模态 + 调用桥接。
-  - P6 权限矩阵卡（railhmiPermissions.matrix()）。
-  - 桥接 permissions_model 使用 core（role_has_permission / permission_matrix / export_recording /
-    modify_config / build_action_log）。
+  - 现场定稿：录像导出由 NVR 侧完成，P3 **不得**再保留导出入口、权限门或二次确认模态；
+    误留任何一个都算缺陷（HMI 不提供该动作）。
+  - P6 权限矩阵卡（railhmiPermissions.matrix()）保留。
+  - 桥接 permissions_model 仍使用 core（role_has_permission / permission_matrix / export_recording /
+    modify_config / build_action_log）；core 门禁不因 UI 移除入口而删除，其它受控动作继续复用。
   - main.cpp 注入 railhmiPermissions 并以 config.app.permissions 初始化。
   - 权限矩阵文档存在且含角色列。
   - UI 源码无硬编码十六进制色值。
@@ -43,14 +44,17 @@ def main() -> int:
     main_cpp = read(os.path.join(args.root, "src", "main.cpp"))
     fails = []
 
+    # 导出动作已移交 NVR 侧：P3 里出现任何导出控件/权限门/确认模态都是回归。
     for token, what in {
-        "canExportRecording": "export permission check (P3)",
-        "exportRecording": "export control (P3)",
-        "exportConfirmModal": "export secondary confirmation modal (P3)",
-        "exportConfirmYes": "export confirm action (P3)",
+        "canExportRecording": "export permission check",
+        "exportRecording": "export control",
+        "exportConfirmModal": "export secondary confirmation modal",
+        "exportConfirmYes": "export confirm action",
+        "canExport": "export gate function",
+        "function confirmExport": "export bridge call",
     }.items():
-        if token not in p3:
-            fails.append("P3 missing %s (%s)" % (what, token))
+        if token in p3:
+            fails.append("P3 still contains removed %s (%s); export belongs to NVR" % (what, token))
     if "maintPermMatrixCard" not in p6 or "railhmiPermissions.matrix()" not in p6:
         fails.append("P6 missing permission matrix card / matrix() (ITEM-023)")
     for token, what in {
@@ -71,13 +75,13 @@ def main() -> int:
         if any(HEX.search(line.split("//", 1)[0]) for line in src.splitlines()):
             fails.append("%s contains hardcoded hex color" % name)
 
-    print("[check_permissions_wiring] P3 export gate/confirm + P6 matrix + bridge core + doc checked")
+    print("[check_permissions_wiring] P3 export removed / P6 matrix + bridge core + doc checked")
     if fails:
         for f in fails:
             print("[FAIL] %s" % f)
         print("[check_permissions_wiring] FAIL (%d)" % len(fails))
         return 1
-    print("[check_permissions_wiring] PASS (ITEM-023 permissions + secondary confirmation wired)")
+    print("[check_permissions_wiring] PASS (ITEM-023 core gate kept, P3 export UI removed)")
     return 0
 
 

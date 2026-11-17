@@ -20,6 +20,12 @@ Rectangle {
     property string fpsText: ""
     property string lastFrameText: ""
     property string reconnectText: ""
+    // 透传给 VideoSurface：0 = Fit / 1 = Cover（画面铺满格子）
+    property int fillMode: 0
+
+    // 点击整格放大（P1 实时监控 / P4 全摄像头共用）。
+    // 只发信号、不在此决定放大逻辑，页面持有浮层并负责传入 channel。
+    signal activated()
 
     color: Theme.color.bg_sunken
     border.color: Theme.color.border
@@ -34,6 +40,7 @@ Rectangle {
         channel: tile.channel
         stateText: tile.state
         detail: tile.detail
+        fillMode: tile.fillMode
     }
 
     Text {
@@ -90,5 +97,11 @@ Rectangle {
         visible: tile.showBadge
         text: tile.badge
         detected: tile.aiEnabled
+    }
+    // 整格可点：放在最后，覆盖标题/角标等纯展示元素，点击后由页面弹出单路放大浮层。
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+        onClicked: tile.activated()
     }
 }

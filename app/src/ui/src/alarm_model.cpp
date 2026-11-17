@@ -1,5 +1,9 @@
 #include "alarm_model.h"
 
+#include <QDate>
+#include <QDateTime>
+#include <QTime>
+
 #include "railhmi/core/rules.h"
 
 using railhmi::core::AckState;
@@ -9,6 +13,24 @@ using railhmi::core::AlarmRow;
 using railhmi::core::AlarmType;
 using railhmi::core::EventRow;
 using railhmi::core::RecordAvailability;
+
+namespace {
+// core 的 ts_wall_ms 恒为 UTC epoch 毫秒；按接口契约，时区换算只发生在 UI 边界：
+// 显示时格式化为本机时间，日期过滤时把「本机日界」换算回 UTC epoch 再交给 core。
+QString localTimeText(long long ts_wall_ms) {
+    if (ts_wall_ms <= 0) return QString::fromUtf8("\xE2\x80\x94");
+    return QDateTime::fromMSecsSinceEpoch(static_cast<qint64>(ts_wall_ms), Qt::LocalTime)
+        .toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"));
+}
+
+long long localDayStartUtcMs(const QString& date) {
+    if (date.size() != 10) return -1;
+    const QDate d = QDate::fromString(date, QStringLiteral("yyyy-MM-dd"));
+    if (!d.isValid()) return -1;
+    return static_cast<long long>(
+        QDateTime(d, QTime(0, 0), Qt::LocalTime).toMSecsSinceEpoch());
+}
+}  // namespace
 
 RailhmiAlarmModel::RailhmiAlarmModel(QObject* parent) : QObject(parent) {}
 
@@ -30,6 +52,26 @@ void RailhmiAlarmModel::seedEvents(const std::vector<EventRow>& events,
     emit changed();
 }
 
+void RailhmiAlarmModel::addLiveEvent(const QString& type, int level, const QString& sourceId,
+                                     const QString& sourceName, const QString& description) {
+    EventRow e;
+    // 运行期事件 id 与持久化 id 空间分离；用 UTC 毫秒 + 序号保证进程内唯一。
+    static qlonglong seq = 0;
+    e.id = QDateTime::currentMSecsSinceEpoch() * 1000 + (++seq % 1000);
+    e.level = level;
+    e.type = type.toStdString();
+    e.source_cam = sourceId.toStdString();
+    e.ts_wall_ms = QDateTime::currentMSecsSinceEpoch();
+    e.ack_state = "unacked";
+    e.description = description.toStdString();
+    e.record_available = false;
+    cam_names_[e.source_cam] = sourceName.toStdString();
+    // 无录像绑定证据 -> RecordAvailability::Unavailable，绝不预设「可回放」。
+    rows_.push_back(railhmi::core::make_alarm_row(e, sourceName.toStdString(),
+                                                  RecordAvailability::Unavailable));
+    emit changed();
+}
+
 QVariantMap RailhmiAlarmModel::rowToVariant(const AlarmRow& r) const {
     QVariantMap m;
     m["id"] = static_cast<qlonglong>(r.id);
@@ -37,7 +79,10 @@ QVariantMap RailhmiAlarmModel::rowToVariant(const AlarmRow& r) const {
     m["levelLabel"] = QString::fromUtf8(railhmi::core::alarm_level_label(r.level));
     m["type"] = QString::fromLatin1(railhmi::core::to_string(r.type));
     m["typeLabel"] = QString::fromUtf8(r.type_label.c_str());
-    m["time"] = QString::fromStdString(r.time_text);
+    m["category"] = QString::fromLatin1(railhmi::core::alarm_category(r));
+    m["categoryLabel"] = QString::fromUtf8(railhmi::core::alarm_category_label(
+        railhmi::core::alarm_category(r)));
+    m["time"] = localTimeText(r.ts_wall_ms);
     m["tsWallMs"] = static_cast<qlonglong>(r.ts_wall_ms);
     m["cameraId"] = QString::fromStdString(r.camera_id);
     m["cameraName"] = QString::fromUtf8(r.camera_name.c_str());
@@ -54,7 +99,7 @@ QVariantMap RailhmiAlarmModel::rowToVariant(const AlarmRow& r) const {
 
 QVariantList RailhmiAlarmModel::query(const QString& level, const QString& type, const QString& camera,
                                       const QString& ack, const QString& from_date,
-                                      const QString& to_date) const {
+                                      const QString& to_date, const QString& category) const {
     AlarmFilter f;
     AlarmLevel lv;
     if (!level.isEmpty() && railhmi::core::parse_alarm_level(level.toStdString(), &lv)) {
@@ -74,10 +119,14 @@ QVariantList RailhmiAlarmModel::query(const QString& level, const QString& type,
         f.has_ack = true;
         f.ack = a;
     }
-    const long long from = railhmi::core::parse_date_utc_ms(from_date.toStdString());
+    const long long from = localDayStartUtcMs(from_date);
     if (from >= 0) f.ts_from_ms = from;
-    const long long to0 = railhmi::core::parse_date_utc_ms(to_date.toStdString());
-    if (to0 >= 0) f.ts_to_ms = to0 + 86400000LL;   // 含当日
+    const long long to0 = localDayStartUtcMs(to_date);
+    if (to0 >= 0) f.ts_to_ms = to0 + 86400000LL;   // 含当日（本机时区日界）
+    if (!category.isEmpty() && railhmi::core::parse_alarm_category(category.toStdString())) {
+        f.has_category = true;
+        f.category = category.toStdString();
+    }
 
     QVariantList out;
     for (const auto& r : railhmi::core::query_alarms(rows_, f)) out.append(rowToVariant(r));

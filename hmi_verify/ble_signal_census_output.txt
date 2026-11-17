@@ -1,0 +1,18 @@
+census: listening 35s for ALL BlueZ signals
+=== SIGNAL COUNTS ===
+  org.freedesktop.DBus.NameAcquired                                      1
+  org.freedesktop.DBus.NameOwnerChanged                                  4
+  org.freedesktop.DBus.ObjectManager.InterfacesRemoved                   4
+  org.freedesktop.DBus.Properties.PropertiesChanged                      55
+  org.freedesktop.NetworkManager.CheckPermissions                        6
+  org.freedesktop.PolicyKit1.Authority.Changed                           6
+  org.freedesktop.login1.Manager.SessionNew                              1
+  org.freedesktop.login1.Manager.SessionRemoved                          1
+  org.freedesktop.systemd1.Manager.JobNew                                1
+  org.freedesktop.systemd1.Manager.JobRemoved                            1
+  org.freedesktop.systemd1.Manager.UnitNew                               5
+  org.freedesktop.systemd1.Manager.UnitRemoved                           5
+=== DOOR DEVICE SIGNALS ===
+  12.21  org.freedesktop.DBus.Properties.PropertiesChanged  /org/bluez/hci0/dev_C0_6D_9A_AC_C3_87
+  32.33  org.freedesktop.DBus.Properties.PropertiesChanged  /org/bluez/hci0/dev_C0_6D_9A_AC_C3_87
+=== END ===

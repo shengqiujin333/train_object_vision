@@ -4,10 +4,14 @@ import ".."
 import "../components"
 
 // P3 历史回放（ITEM-020 / 交互 §5.3、视觉 §7.7·§8.3）。
-// D-01 关键帧缩略图条（桥接导出 keyframes + 缩略图引用，按 ts 定位）；D-02 缺口斜纹；
-// D-03 播放/暂停/倍速（PlaybackState）；D-04 报警段/标记按实际级别上色；
-// D-05 段/缺口/标记可点选；D-06 完整摄像头选择；D-07 录像不可用详情黄条 + 独立备注；
-// D-08 非法日期提示 + 控件 44px 可键盘聚焦；D-09 轨道 32px / 关键帧条 64px / 游标顶部等宽时间。
+// 现场定稿：账号/密码/通道固定并自动登录；日期后提供可见「查询」按钮；
+// 去掉未实现的倍速与导出，保留已实现的四跳转。
+// 现场二轮：右侧「时间/类型/级别/距离/置信度/处理状态/备注」等无用字段栏整栏删除，
+// 画面改成可用区域内尽可能大的严格 16:9 + Cover（不再有巨大黑边），
+// 关键帧条只在真有缩略图时出现，底部大片空白压缩掉。
+// D-01 关键帧缩略图条；D-02 缺口斜纹；D-04 报警段/标记按实际级别上色；
+// D-05 段/缺口/标记可点选；D-06 完整摄像头选择；D-07 录像不可用详情黄条；
+// D-08 非法日期提示 + 控件 44px 触控；D-09 轨道 32px / 关键帧条 64px / 游标顶部等宽时间。
 Rectangle {
     id: page
     color: Theme.color.bg_base
@@ -27,19 +31,6 @@ Rectangle {
     property double cursor: 0
     property var syncInfo: ({ available: false, inSync: false, prompt: "同步状态不可用" })
     property var playState: ({ playing: false, speed: 1.0 })
-    property bool exportPending: false
-    property var exportResult: ({})
-
-    function canExport() {
-        return (typeof railhmiPermissions !== "undefined" && railhmiPermissions)
-                ? railhmiPermissions.canExportRecording() : false
-    }
-    function askExport() { page.exportPending = true }
-    function confirmExport() {
-        if (typeof railhmiPermissions !== "undefined" && railhmiPermissions)
-            page.exportResult = railhmiPermissions.exportRecording(page.activeCam, page.cursor, page.cursor + 60000, true)
-        page.exportPending = false
-    }
 
     function dayStart() { return tl.dayStartMs !== undefined ? tl.dayStartMs : 0 }
     function dayMs() { return tl.durationMs !== undefined ? tl.durationMs : 86400000 }
@@ -64,14 +55,13 @@ Rectangle {
         for (var i = 0; i < list.length; i += step) out.push(list[i])
         return out
     }
-    // F-01：三联回放画面标题（配置驱动：摄像头 id → 名称；未知回退 id，绝不产生 TypeError）
+    // 三联回放画面标题（配置驱动：摄像头 id → 名称；未知回退 id，绝不产生 TypeError）
     function chipName(camId) {
         for (var i = 0; i < allCams.length; ++i)
             if (allCams[i].id === camId && allCams[i].name) return allCams[i].name
         return "" + camId
     }
-    // F-02：关键帧缩略图由媒体层生成；缺失或非绝对/资源基址时返回空串，避免相对路径被
-    // 解析为 qrc:/qml/pages/... 而反复报 Image 打不开（缺失时显示占位方框）。
+    // 关键帧缩略图由媒体层生成；缺失或非绝对/资源基址时返回空串。
     function thumbSource(t) {
         if (!t || !t.thumb) return ""
         var s = "" + t.thumb
@@ -88,7 +78,6 @@ Rectangle {
         detail = replay.selectedDetail()
         if (page.nvrMode) {
             nvrInfo = replay.nvrState()
-            nvrChannelInput.text = replay.nvrChannel(activeCam) > 0 ? "" + replay.nvrChannel(activeCam) : ""
             queryHistory()
             return
         }
@@ -103,7 +92,6 @@ Rectangle {
     function reloadCam(camId) {
         activeCam = camId
         if (page.nvrMode) {
-            nvrChannelInput.text = replay.nvrChannel(camId) > 0 ? "" + replay.nvrChannel(camId) : ""
             queryHistory()
             return
         }
@@ -127,17 +115,23 @@ Rectangle {
         refreshSync()
     }
     function togglePlay() { if (replay) replay.setPlaying(!page.playState.playing); }
-    function setSpeed(s) { if (replay) replay.setSpeed(s); }
     function seekTo(ts) {
         cursor = ts
         if (page.nvrMode) replay.seekNvr(activeCam, ts, playState.playing)
         refreshSync()
     }
+    // 通道号由 nvr.yaml 的固定六路映射自动带出（传 0 即回退到映射），页面不再填通道。
     function queryHistory() {
         if (!replay || !page.nvrMode) return
-        replay.queryNvr(page.activeCam, page.date, parseInt(nvrChannelInput.text, 10) || 0)
+        replay.queryNvr(page.activeCam, page.date, 0)
         tl = replay.timeline(page.activeCam, page.date)
         thumbs = []
+    }
+    // 现场无物理键盘：日期由虚拟键盘输入，「查询」按钮 / 键盘「完成」都走这一个入口。
+    function applyDate() {
+        page.date = dateInput.text
+        keyboard.close()
+        page.reload()
     }
     function updateNvr() {
         if (!replay || !page.nvrMode) return
@@ -162,29 +156,50 @@ Rectangle {
         function onNvrChanged() { page.updateNvr() }
     }
 
-    Column {
+    // 「点空白处收起键盘」：放在最底层；键盘本体的全页 scrim（z=modal）负责真正收起。
+    MouseArea {
+        objectName: "replayDismissKeyboard"
+        anchors.fill: parent
+        enabled: keyboard.visible
+        onClicked: keyboard.close()
+    }
+
+    Item {
+        id: content
         anchors.fill: parent
         anchors.margins: Theme.spacing.s3
-        anchors.rightMargin: parent.width * 0.22 + Theme.spacing.s3 * 2
-        spacing: Theme.spacing.s2
 
-        // ---- 顶部：日期/完整摄像头选择/同步开关 + 来源标注 ----
+        // ---- 顶部：日期 + 查询 + 六路摄像头 + 同步开关 ----
         Row {
+            id: toolRow
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            height: Theme.size.touch_target_min
             spacing: Theme.spacing.s2
             Text { anchors.verticalCenter: parent.verticalCenter; color: Theme.color.text_secondary
                    font.pixelSize: Theme.typography.scale.caption.size; text: "日期" }
             Rectangle {
+                objectName: "replayDateInput"
                 width: 120; height: Theme.size.touch_target_min; color: Theme.color.bg_sunken
-                border.color: page.dateError.length > 0 ? Theme.color.error : Theme.color.border
+                border.color: keyboard.target === dateInput ? Theme.color.focus_ring
+                            : (page.dateError.length > 0 ? Theme.color.error : Theme.color.border)
                 border.width: Theme.border.width; radius: Theme.radius.chip
                 TextInput {
                     id: dateInput
                     anchors.fill: parent; anchors.leftMargin: Theme.spacing.s2
                     verticalAlignment: TextInput.AlignVCenter; color: Theme.color.text_primary
                     font.pixelSize: Theme.typography.scale.caption.size; text: page.date
-                    onEditingFinished: { page.date = text; page.reload() }
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: keyboard.open(dateInput)
                 }
             }
+            FilterChip { objectName: "queryHistoryButton"; text: "查询"
+                         enabled: !page.nvrInfo.busy
+                         onClicked: page.applyDate() }
             Text { visible: page.dateError.length > 0; anchors.verticalCenter: parent.verticalCenter
                    color: Theme.color.error; font.pixelSize: Theme.typography.scale.caption.size
                    text: page.dateError }
@@ -199,78 +214,16 @@ Rectangle {
             }
             FilterChip { text: page.nvrMode ? "三联同步未接入" : "三联同步"; enabled: !page.nvrMode
                          selected: page.syncOn; onClicked: page.syncOn = !page.syncOn }
-            // 受限入口不渲染：司机无导出权限时不出现该控件（ITEM-023）
-            FilterChip { objectName: "exportRecording"; visible: page.canExport(); text: "导出录像"
-                         enabled: !page.nvrMode
-                         onClicked: page.askExport() }
         }
+
+        // ---- 来源 / 同步状态 / 录像不可用黄条（右侧事件详情栏已整栏删除） ----
         Row {
-            visible: page.nvrMode
-            spacing: Theme.spacing.s2
-            Text { anchors.verticalCenter: parent.verticalCenter; text: "录像机账号"
-                   color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size }
-            Rectangle {
-                width: Theme.size.nav_width * 1.4; height: Theme.size.touch_target_min
-                color: Theme.color.bg_sunken; border.color: Theme.color.border
-                border.width: Theme.border.width; radius: Theme.radius.chip
-                TextInput {
-                    id: nvrUsername
-                    anchors.fill: parent; anchors.leftMargin: Theme.spacing.s2
-                    verticalAlignment: TextInput.AlignVCenter
-                    color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.caption.size
-                    text: page.nvrInfo.username || "admin"
-                }
-            }
-            Text { anchors.verticalCenter: parent.verticalCenter; text: "密码"
-                   color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size }
-            Rectangle {
-                width: Theme.size.nav_width * 1.6; height: Theme.size.touch_target_min
-                color: Theme.color.bg_sunken; border.color: Theme.color.border
-                border.width: Theme.border.width; radius: Theme.radius.chip
-                TextInput {
-                    id: nvrPassword
-                    objectName: "nvrPassword"
-                    anchors.fill: parent; anchors.leftMargin: Theme.spacing.s2
-                    verticalAlignment: TextInput.AlignVCenter
-                    echoMode: TextInput.Password
-                    color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.caption.size
-                }
-            }
-            FilterChip { objectName: "loginNvr"; text: "登录录像机"; enabled: !page.nvrInfo.busy
-                onClicked: {
-                    if (page.replay) page.replay.loginNvr(nvrUsername.text, nvrPassword.text)
-                    nvrPassword.text = ""
-                }
-            }
-        }
-        Row {
-            visible: page.nvrMode
-            spacing: Theme.spacing.s2
-            FilterChip { objectName: "connectNvr"; text: "连接录像机"; enabled: !page.nvrInfo.busy
-                         onClicked: { if (page.replay) page.replay.refreshNvrChannels() } }
-            Text { anchors.verticalCenter: parent.verticalCenter; text: "NVR 通道"
-                   color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size }
-            Rectangle {
-                width: Theme.size.nav_width; height: Theme.size.touch_target_min
-                color: Theme.color.bg_sunken; border.color: Theme.color.border
-                border.width: Theme.border.width; radius: Theme.radius.chip
-                TextInput {
-                    id: nvrChannelInput
-                    objectName: "nvrChannelInput"
-                    anchors.fill: parent; anchors.leftMargin: Theme.spacing.s2
-                    verticalAlignment: TextInput.AlignVCenter
-                    color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.caption.size
-                    validator: IntValidator { bottom: 1; top: 256 }
-                }
-            }
-            FilterChip { objectName: "queryNvrRecordings"; text: "查询录像"; enabled: !page.nvrInfo.busy
-                         onClicked: page.queryHistory() }
-            Text { anchors.verticalCenter: parent.verticalCenter
-                   textFormat: Text.PlainText
-                   text: page.nvrInfo.channelName ? page.nvrInfo.channelName : "请核对摄像头对应的录像机通道"
-                   color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size }
-        }
-        Row {
+            id: sourceRow
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: toolRow.bottom
+            anchors.topMargin: Theme.spacing.s2
+            height: Theme.size.button.sm
             spacing: Theme.spacing.s2
             Text {
                 anchors.verticalCenter: parent.verticalCenter
@@ -289,49 +242,87 @@ Rectangle {
                 font.pixelSize: Theme.typography.scale.caption.size
                 text: page.syncInfo.available === false ? "同步状态不可用" : page.syncInfo.prompt
             }
+            // D-07：录像不可用/不完整仍显著提示，但不再占一整条右侧详情栏。
+            Rectangle {
+                objectName: "detailRecordBar"
+                visible: page.detail.recordOk === false && page.detail.recordLabel !== undefined
+                width: recordText.width + Theme.spacing.s2 * 2
+                height: Theme.size.button.sm
+                radius: Theme.radius.chip
+                color: Theme.color.degraded_bg
+                border.color: Theme.color.degraded; border.width: Theme.border.width
+                Text { id: recordText; anchors.centerIn: parent; color: Theme.color.degraded
+                       font.pixelSize: Theme.typography.scale.caption.size
+                       text: page.detail.recordLabel !== undefined ? page.detail.recordLabel : "录像不可用" }
+            }
         }
 
-        // ---- 中部：回放画面（三联，锁定相关摄像头） ----
-        Row {
-            id: videoRow
-            width: parent.width
-            height: parent.height * 0.36
-            spacing: Theme.spacing.s2
-            Repeater {
-                model: page.syncOn ? page.lockedCams : [page.activeCam]
-                Rectangle {
-                    objectName: "replayPanel-" + modelData
-                    width: page.syncOn ? (videoRow.width - (page.lockedCams.length - 1) * Theme.spacing.s2) / page.lockedCams.length : videoRow.width
-                    height: videoRow.height
-                    color: Theme.color.bg_sunken
-                    border.color: Theme.color.border; border.width: Theme.border.width; radius: Theme.radius.card
-                    VideoFrame {
-                        readonly property var history: page.replay && page.nvrMode && page.nvrInfo.playingCamera === modelData
-                            ? page.replay.historyChannel(modelData) : null
-                        anchors.fill: parent
-                        channel: history
-                        visible: history && history.info.presentable === true
+        // ---- 回放画面：严格 16:9，按可用高度反推最大宽度，居中；Cover 消除黑边 ----
+        Item {
+            id: videoArea
+            objectName: "replayVideoArea"
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: sourceRow.bottom
+            anchors.topMargin: Theme.spacing.s2
+            anchors.bottom: bottomBar.top
+            anchors.bottomMargin: Theme.spacing.s2
+
+            Row {
+                id: videoRow
+                anchors.centerIn: parent
+                spacing: Theme.spacing.s2
+                readonly property int panelCount: page.syncOn ? page.lockedCams.length : 1
+                readonly property real slotW:
+                    (videoArea.width - (panelCount - 1) * Theme.spacing.s2) / panelCount
+                readonly property real panelH: Math.min(videoArea.height, slotW * 9 / 16)
+                readonly property real panelW: panelH * 16 / 9
+
+                Repeater {
+                    model: page.syncOn ? page.lockedCams : [page.activeCam]
+                    Rectangle {
+                        objectName: "replayPanel-" + modelData
+                        width: videoRow.panelW
+                        height: videoRow.panelH
+                        color: Theme.color.bg_sunken
+                        border.color: Theme.color.border; border.width: Theme.border.width
+                        radius: Theme.radius.card
+                        clip: true
+                        VideoFrame {
+                            readonly property var history: page.replay && page.nvrMode && page.nvrInfo.playingCamera === modelData
+                                ? page.replay.historyChannel(modelData) : null
+                            anchors.fill: parent
+                            channel: history
+                            fillMode: 1                 // 与实时页一致：Cover，16:9 面板内无黑边
+                            visible: history && history.info.presentable === true
+                        }
+                        Text { anchors.top: parent.top; anchors.left: parent.left; anchors.margins: Theme.spacing.s2
+                               color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
+                               text: page.chipName(modelData) + " (" + modelData + ")" }
+                        Text { anchors.centerIn: parent; color: Theme.color.text_muted
+                               font.pixelSize: Theme.typography.scale.caption.size
+                               visible: !page.nvrMode || page.nvrInfo.decoderState !== "playing" && page.nvrInfo.decoderState !== "paused" && page.nvrInfo.decoderState !== "ended"
+                               text: page.nvrMode ? page.nvrInfo.message : "回放画面（媒体层提供）" }
+                        Text { anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.margins: Theme.spacing.s2
+                               color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                               font.family: Theme.typography.family.mono
+                               text: page.replay ? page.replay.formatTime(page.cursor) : "" }
                     }
-                    Text { anchors.top: parent.top; anchors.left: parent.left; anchors.margins: Theme.spacing.s2
-                           color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
-                           text: page.chipName(modelData) + " (" + modelData + ")" }
-                    Text { anchors.centerIn: parent; color: Theme.color.text_muted
-                           font.pixelSize: Theme.typography.scale.caption.size
-                           visible: !page.nvrMode || page.nvrInfo.decoderState !== "playing" && page.nvrInfo.decoderState !== "paused" && page.nvrInfo.decoderState !== "ended"
-                           text: page.nvrMode ? page.nvrInfo.message : "回放画面（媒体层提供）" }
-                    Text { anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.margins: Theme.spacing.s2
-                           color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
-                           font.family: Theme.typography.family.mono
-                           text: page.replay ? page.replay.formatTime(page.cursor) : "" }
                 }
             }
         }
 
-        // ---- 下部：时间轴 + 关键帧 + 播放控制 ----
+        // ---- 底部：游标时间 + 时间轴 + 可点击播放控制（空白区域全部让给画面） ----
         Item {
-            id: timelineArea
-            width: parent.width
-            height: Math.max(Theme.size.touch_target_min * 4, parent.height - y)
+            id: bottomBar
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            readonly property real keyH: page.thumbs.length > 0 ? Theme.size.status_strip_height : 0
+            height: Theme.typography.scale.caption.line + Theme.spacing.s1
+                    + Theme.size.button.sm
+                    + (page.thumbs.length > 0 ? Theme.spacing.s1 + keyH : 0)
+                    + Theme.spacing.s2 + Theme.size.touch_target_min
 
             // D-09 / v2 D-02：游标顶部等宽时间，随游标 x 移动
             Text {
@@ -368,7 +359,7 @@ Rectangle {
                         MouseArea { anchors.fill: parent; onClicked: page.seekTo(modelData.t0) }
                     }
                 }
-                // 缺口（D-02 斜纹留白 + “录像缺失”，可点选）
+                // 缺口（D-02 斜纹留白 + "录像缺失"，可点选）
                 Repeater {
                     model: page.tl.gaps !== undefined ? page.tl.gaps : []
                     Rectangle {
@@ -422,13 +413,16 @@ Rectangle {
                 }
             }
 
-            // 关键帧缩略图条（D-01：64px，高，按 ts 定位，缩略图引用来自媒体层）
+            // D-01 关键帧条：NVR 模式下媒体层不产出缩略图，恒为空 -> 直接不占位；
+            // 只有真有缩略图时才显示，避免「播放按钮上方一整条没用的空框」。
             Rectangle {
                 id: keyStrip
                 objectName: "keyframeStrip"
-                anchors.top: track.bottom; anchors.topMargin: Theme.spacing.s1
+                anchors.top: track.bottom
+                anchors.topMargin: page.thumbs.length > 0 ? Theme.spacing.s1 : 0
                 anchors.left: parent.left; anchors.right: parent.right
-                height: Theme.size.status_strip_height   // §7.7 关键帧条 64px
+                height: bottomBar.keyH
+                visible: page.thumbs.length > 0
                 color: Theme.color.bg_sunken
                 border.color: Theme.color.border; border.width: Theme.border.width
                 Repeater {
@@ -449,121 +443,30 @@ Rectangle {
                 }
             }
 
-            // 播放控制（D-03 播放/暂停 + 倍速 + 四跳；触控 ≥44px）
+            // 播放控制：已实现的播放/暂停与四跳转；未实现的倍速按钮已移除（触控 ≥44px）。
             Row {
-                anchors.top: keyStrip.bottom; anchors.topMargin: Theme.spacing.s2; spacing: Theme.spacing.s2
+                id: controls
+                anchors.top: keyStrip.bottom
+                anchors.topMargin: Theme.spacing.s2
+                spacing: Theme.spacing.s2
                 FilterChip { objectName: "playbackToggle"; text: page.playState.playing ? "暂停" : "播放"
                              onClicked: page.togglePlay() }
-                FilterChip { objectName: "speed-0.5"; text: "0.5×"; selected: page.playState.speed === 0.5
-                             enabled: !page.nvrMode
-                             onClicked: page.setSpeed(0.5) }
-                FilterChip { objectName: "speed-1"; text: "1×"; selected: page.playState.speed === 1.0
-                             onClicked: page.setSpeed(1.0) }
-                FilterChip { objectName: "speed-2"; text: "2×"; selected: page.playState.speed === 2.0
-                             enabled: !page.nvrMode
-                             onClicked: page.setSpeed(2.0) }
-                FilterChip { text: "-30s"; onClicked: page.doJump("minus30") }
-                FilterChip { text: "报警时刻"; onClicked: page.doJump("alarm") }
-                FilterChip { text: "+30s"; onClicked: page.doJump("plus30") }
-                FilterChip { text: "+60s"; onClicked: page.doJump("plus60") }
+                FilterChip { objectName: "jump-minus30"; text: "-30s"; onClicked: page.doJump("minus30") }
+                FilterChip { objectName: "jump-alarm"; text: "报警时刻"; onClicked: page.doJump("alarm") }
+                FilterChip { objectName: "jump-plus30"; text: "+30s"; onClicked: page.doJump("plus30") }
+                FilterChip { objectName: "jump-plus60"; text: "+60s"; onClicked: page.doJump("plus60") }
             }
         }
     }
 
-    // 导出录像二次确认模态（ITEM-023）
-    Rectangle {
-        objectName: "exportConfirmModal"
-        anchors.fill: parent
-        visible: page.exportPending
-        color: Theme.color.overlay_scrim
-        Rectangle {
-            anchors.centerIn: parent
-            width: parent.width * 0.36; height: 180
-            color: Theme.color.surface_elev
-            border.color: Theme.color.border_strong; border.width: Theme.border.width
-            radius: Theme.radius.modal
-            Column {
-                anchors.centerIn: parent; spacing: Theme.spacing.s3
-                Text { anchors.horizontalCenter: parent.horizontalCenter; color: Theme.color.text_primary
-                       font.pixelSize: Theme.typography.scale.body.size
-                       text: "确认导出录像？" + page.activeCam }
-                Row {
-                    anchors.horizontalCenter: parent.horizontalCenter; spacing: Theme.spacing.s3
-                    FilterChip { objectName: "exportConfirmYes"; text: "确认"; onClicked: page.confirmExport() }
-                    FilterChip { objectName: "exportConfirmNo"; text: "取消"; onClicked: page.exportPending = false }
-                }
-            }
-        }
-    }
+    // 右侧事件详情栏已删除：时间/类型/级别/距离/置信度/处理状态/备注等字段现场无用，
+    // 只读通道列表也由 nvr.yaml 固定映射 + 顶部摄像头选择完全替代。
+    // 导出录像入口/二次确认已移除：录像导出由 NVR 侧完成。
 
-    // ---- 右侧：事件详情栏（按选中报警动态生成；D-07 录像黄条 + 独立备注） ----
-    Rectangle {
-        objectName: "replayDetail"
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        width: parent.width * 0.22
-        color: Theme.color.surface
-        border.color: Theme.color.border; border.width: Theme.border.width
-        Column {
-            anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
-            Text { color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
-                   text: page.nvrMode ? "录像机通道" : "事件详情" }
-            Item {
-                width: parent.width
-                height: page.nvrMode ? page.height * 0.36 : 0
-                visible: page.nvrMode
-                ListView {
-                    id: nvrChannelList
-                    objectName: "nvrChannelList"
-                    anchors.fill: parent
-                    clip: true
-                    spacing: Theme.spacing.s1
-                    model: page.nvrInfo.channels || []
-                    delegate: FilterChip {
-                        width: nvrChannelList.width
-                        height: Theme.size.touch_target_min
-                        text: "" + modelData.channel + " · " + modelData.name + (modelData.allowed ? "" : "（无回放权限）")
-                        selected: parseInt(nvrChannelInput.text, 10) === modelData.channel
-                        enabled: modelData.allowed && !page.nvrInfo.busy
-                        onClicked: nvrChannelInput.text = "" + modelData.channel
-                    }
-                }
-                Text {
-                    anchors.centerIn: parent
-                    visible: nvrChannelList.count === 0
-                    color: Theme.color.text_muted
-                    font.pixelSize: Theme.typography.scale.caption.size
-                    text: "登录后显示实际通道列表"
-                }
-            }
-            // 录像不可用/不完整 -> 显著黄条（PLY-008 / §8.3）
-            Rectangle {
-                objectName: "detailRecordBar"
-                visible: page.detail.recordOk === false && page.detail.recordLabel !== undefined
-                width: parent.width
-                height: Theme.size.button.sm
-                radius: Theme.radius.chip
-                color: Theme.color.degraded_bg
-                border.color: Theme.color.degraded; border.width: Theme.border.width
-                Text { anchors.centerIn: parent; color: Theme.color.degraded
-                       font.pixelSize: Theme.typography.scale.caption.size
-                       text: page.detail.recordLabel !== undefined ? page.detail.recordLabel : "录像不可用" }
-            }
-            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
-                   text: "时间：" + (page.detail.timeText !== undefined ? page.detail.timeText : "—") }
-            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
-                   text: "类型：" + (page.detail.typeLabel !== undefined ? page.detail.typeLabel : "—") }
-            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
-                   text: "级别：" + (page.detail.levelLabel !== undefined ? page.detail.levelLabel : "—") }
-            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
-                   text: "距离：" + (page.detail.distanceText !== undefined ? page.detail.distanceText : "—") }
-            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
-                   text: "置信度：" + (page.detail.confidenceText !== undefined ? page.detail.confidenceText : "—") }
-            Text { color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
-                   text: "处理状态：" + (page.detail.ackLabel !== undefined ? page.detail.ackLabel : "—") }
-            Text { color: Theme.color.text_muted; font.pixelSize: Theme.typography.scale.caption.size
-                   text: "备注：" + (page.detail.note !== undefined && page.detail.note.length > 0 ? page.detail.note : "—") }
-        }
+    // 日期字段专用虚拟键盘：点日期框弹出，点页面空白处收起，「完成」等价于按「查询」。
+    VirtualKeyboard {
+        id: keyboard
+        objectName: "replayKeyboard"
+        onAccepted: page.applyDate()
     }
 }

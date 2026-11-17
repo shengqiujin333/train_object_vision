@@ -62,6 +62,15 @@ if [ "$HAVE_QML" = "no" ] && have qmake; then
   QLIB=$(qmake -query QT_INSTALL_LIBS 2>/dev/null || true)
   [ -n "$QLIB" ] && [ -f "$QLIB/cmake/Qt5Quick/Qt5QuickConfig.cmake" ] && HAVE_QML="yes"
 fi
+# BLE 门磁走 org.bluez 的 DBus API（板端无 Qt5Bluetooth cmake 模块）。
+HAVE_DBUS="no"
+for d in /usr/lib/aarch64-linux-gnu/cmake/Qt5DBus /usr/lib/x86_64-linux-gnu/cmake/Qt5DBus /usr/lib/cmake/Qt5DBus; do
+  [ -f "$d/Qt5DBusConfig.cmake" ] && HAVE_DBUS="yes"
+done
+if [ "$HAVE_DBUS" = "no" ] && have qmake; then
+  QLIB=$(qmake -query QT_INSTALL_LIBS 2>/dev/null || true)
+  [ -n "$QLIB" ] && [ -f "$QLIB/cmake/Qt5DBus/Qt5DBusConfig.cmake" ] && HAVE_DBUS="yes"
+fi
 HAVE_GST="no"; if have pkg-config && pkg-config --exists gstreamer-1.0 2>/dev/null; then HAVE_GST="yes"; fi
 HAVE_RGA="no"; if { have pkg-config && pkg-config --exists librga 2>/dev/null; } || [ -f /usr/include/rga/im2d.h ] || [ -f /usr/local/include/rga/im2d.h ]; then HAVE_RGA="yes"; fi
 HAVE_SQLITE="no"; if { have pkg-config && pkg-config --exists sqlite3 2>/dev/null; } || [ -f /usr/include/sqlite3.h ]; then HAVE_SQLITE="yes"; fi
@@ -70,12 +79,14 @@ echo "[build.sh] mode=$NAME host=$(uname -m 2>/dev/null || echo unknown) compile
 
 if [ "$NAME" = "target" ]; then
   [ "$HAVE_QML" = "yes" ]   || MISSING+=("Qt5 Quick/Qml dev (qtbase5-dev qtdeclarative5-dev qml-module-qtquick2)")
+  [ "$HAVE_DBUS" = "yes" ]  || MISSING+=("Qt5 DBus dev (qtbase5-dev: Qt5DBusConfig.cmake) for BLE door-sensor / org.bluez")
   [ "$HAVE_GST" = "yes" ]   || MISSING+=("GStreamer 1.0 dev (gstreamer-1.0/app/video + gst-inspect)")
   [ "$HAVE_RGA" = "yes" ]   || MISSING+=("librga dev (im2d.h + librga; pkg-config librga)")
   [ "$HAVE_SQLITE" = "yes" ] || echo "[build.sh] note: SQLite3 dev not found -> SqliteStore disabled (install libsqlite3-dev to enable)"
 fi
 if [ "$NAME" = "preview" ]; then
-  [ "$HAVE_QML" = "yes" ] || MISSING+=("Qt5 Quick/Qml dev for host preview (qtbase5-dev qtdeclarative5-dev qml-module-qtquick2)")
+  [ "$HAVE_QML" = "yes" ]  || MISSING+=("Qt5 Quick/Qml dev for host preview (qtbase5-dev qtdeclarative5-dev qml-module-qtquick2)")
+  [ "$HAVE_DBUS" = "yes" ] || MISSING+=("Qt5 DBus dev for host preview (qtbase5-dev: Qt5DBusConfig.cmake)")
 fi
 if [ "$NAME" = "media-check" ]; then
   [ "$HAVE_GST" = "yes" ] || MISSING+=("GStreamer 1.0 dev (gstreamer-1.0/app/video)")
@@ -88,7 +99,7 @@ if [ "${#MISSING[@]}" -gt 0 ]; then
   echo "[build.sh] 依赖缺失，未执行构建（非静默失败）。请按上表安装或改用其它档位。" >&2
   exit 1
 fi
-echo "[build.sh] dependency check: Qt=${HAVE_QML} gstreamer=${HAVE_GST} librga=${HAVE_RGA} sqlite3=${HAVE_SQLITE}"
+echo "[build.sh] dependency check: Qt=${HAVE_QML} QtDBus=${HAVE_DBUS} gstreamer=${HAVE_GST} librga=${HAVE_RGA} sqlite3=${HAVE_SQLITE}"
 
 if [ "$NAME" = "check" ]; then
   echo "[build.sh] check complete (no build requested)"

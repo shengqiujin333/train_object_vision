@@ -5,10 +5,16 @@
 #include <QQuickView>
 #include <QQmlEngine>
 #include <qqml.h>
+#include <QQuickItem>
+#include <QRect>
+#include <QScreen>
+#include <QStringList>
+#include <QTimer>
 #include <QUrl>
 #include <QString>
 #include <QVariantList>
 #include <QVariantMap>
+#include <functional>
 #include <map>
 #include <string>
 #include <vector>
@@ -31,6 +37,11 @@
 #include "permissions_model.h"
 #include "health_model.h"
 #include "video_runtime.h"
+#include "door_sensor_runtime.h"
+#include "vehicle_state.h"
+#include "nvr_status.h"
+#include "credential_env.h"
+#include "system_metrics.h"
 
 #ifndef RAILHMI_CONFIG_DIR
 #define RAILHMI_CONFIG_DIR "config"
@@ -61,6 +72,38 @@ int main(int argc, char** argv) {
     railhmi::platform::Logger::instance().info(
         "configuration OK: " + std::to_string(cfg.settings.cameras.size()) + " cameras");
 
+    // 固定凭据在启动阶段从部署私有 0600 文件补齐（systemd EnvironmentFile 之外也生效）。
+    // rtc/NVR 的密码不写入源码，也不再由用户在页面输入；日志只报补齐数量，绝不打印值。
+    const int credentialVars =
+        loadPrivateCredentialFiles(QString::fromStdString(configDir));
+    railhmi::platform::Logger::instance().info(
+        "credentials: " + std::to_string(credentialVars) + " private env var(s) loaded from config dir");
+
+    // 显示尺寸（分辨率配置驱动 + 全屏自适应）：
+    //   - 默认跟随物理屏幕实际尺寸全屏显示，换屏不需要改代码；
+    //   - app.resolution 作为设计/回退分辨率，在无窗口系统、或显式 --windowed /
+    //     RAILHMI_WINDOWED=1（离屏验证、桌面预览）时生效；
+    //   - compute_layout、QML 根尺寸均与运行时尺寸同源，不再固定 1920x1080。
+    bool windowed = qEnvironmentVariableIsSet("RAILHMI_WINDOWED");
+    for (int i = 1; i < argc; ++i) {
+        if (argv[i] && std::string(argv[i]) == "--windowed") windowed = true;
+    }
+    int displayW = cfg.settings.app.resolution_w;
+    int displayH = cfg.settings.app.resolution_h;
+    QScreen* screen = QGuiApplication::primaryScreen();
+    if (!windowed && screen) {
+        const QRect geo = screen->geometry();
+        if (geo.width() >= 640 && geo.height() >= 480) {
+            displayW = geo.width();
+            displayH = geo.height();
+        }
+    }
+    railhmi::platform::Logger::instance().info(
+        "display: config=" + std::to_string(cfg.settings.app.resolution_w) + "x" +
+        std::to_string(cfg.settings.app.resolution_h) +
+        " runtime=" + std::to_string(displayW) + "x" + std::to_string(displayH) +
+        (windowed ? " (windowed)" : " (fullscreen)"));
+
     // 全部六个功能页均注入导航，不按角色隐藏。
     const railhmi::core::Role role = cfg.settings.app.default_role;
     QVariantList navList;
@@ -75,8 +118,8 @@ int main(int argc, char** argv) {
     const railhmi::core::ModeDisplay mode = railhmi::core::mode_display();
 
     // 三联布局比例与高度来自 core compute_layout（单一来源，ITEM-014）。
-    // QML 只消费比例/高度，窗口尺寸变化时比例保持。
-    const railhmi::core::LayoutMetrics lm = railhmi::core::compute_layout(1920, 1080);
+    // 使用运行时显示尺寸，配置/屏幕改变时布局随之改变（ITEM-014 ratios_preserved 仍成立）。
+    const railhmi::core::LayoutMetrics lm = railhmi::core::compute_layout(displayW, displayH);
     QVariantMap layoutMap;
     layoutMap["leftRatio"] = lm.left_ratio;
     layoutMap["frontRatio"] = lm.front_ratio;
@@ -121,10 +164,31 @@ int main(int argc, char** argv) {
     gridMap["tallColumns"] = railhmi::core::grid_columns(railhmi::core::GridShape::TwoByThree);
     gridMap["tallRows"] = railhmi::core::grid_rows(railhmi::core::GridShape::TwoByThree);
 
+    // 顶栏真值来源（现场需求）：全部由运行时真实数据注入，缺省一律未接入/异常，绝不臆测。
+    //   * doorStatus       : 关键状态区「车门」项沿用 BLE 汇总原文（全关/1 路未关严…）
+    //   * doorSummaryLevel : 顶栏「门磁」三态（开门/关门/传感器异常）的映射输入
+    //   * nvrConnected     : 顶栏「录像」位，来自 NvrStatusRuntime 的真实 TCP 连接探测
+    //   * vehicleState     : 顶栏「车辆状态」人工置位（无车速/GPS 数据源，不伪装成传感器真值）
+    railhmi::core::CategoryStatus doorStatus;
+    std::string doorSummaryLevel;
+    bool nvrConnected = false;
+    VehicleStateRuntime vehicleState;
+    NvrStatusRuntime nvrStatus(QString::fromStdString(configDir) + QStringLiteral("/nvr.yaml"));
+
+    // 摄像头实时路数：presentable = core may_present_as_live（LIVE 且质量可用），
+    // 顶栏「摄像头」与关键状态区共用同一口径。
+    auto liveCount = [&]() {
+        int live = 0;
+        for (const auto& value : videoRuntime.channels())
+            if (qvariant_cast<VideoChannel*>(value)->info().value("presentable").toBool()) ++live;
+        return live;
+    };
+
     // 关键状态区七项（ITEM-016）：颜色+形状字形+文字三重编码；应用未接入 AI/录像/存储采样时
     // 按“未接入”呈现，异常时本色突出；点击异常项按角色解析 allowed。
     auto buildKeyList = [&]() {
         railhmi::core::KeyStatusSnapshot snapshot;
+        snapshot.door = doorStatus;      // 车门项由 BLE 门磁广播真值驱动
         int live = 0, started = 0, offline = 0;
         const auto channels = videoRuntime.channels();
         for (const auto& value : channels) {
@@ -161,28 +225,41 @@ int main(int argc, char** argv) {
     };
     QVariantList keyList = buildKeyList();
 
-    // 顶部模式信息条（ITEM-016）：时间（QML 实时时钟）/模式(可见光·红外未接入)/录像/AI/系统健康/未接入项。
-    QVariantList topList;
+    // 顶部状态条（现场需求精简）：时间 / 摄像头 / 录像 / 系统健康 / 车辆状态 / 门磁。
+    // 删除「模式（可见光·红外未接入）」与「AI」；「车速」改为人工可置位的「车辆状态」。
+    // 全部真值由下面的映射函数在 core 侧统一生成，UI 不散落文案；构建逻辑做成可重入 lambda，
+    // 门磁/摄像头/NVR/车辆状态任一变化时重建。
     railhmi::core::TopBarSnapshot topSnap;
     topSnap.time_text = "--:--:--";
-    for (const auto& it : railhmi::core::build_top_bar(topSnap, role)) {
-        const railhmi::core::StatusClickResult r = railhmi::core::resolve_top_click(it, role);
-        QVariantMap m;
-        m["key"] = QString::fromStdString(it.key);
-        m["label"] = QString::fromUtf8(it.label.c_str());
-        m["level"] = QString::fromLatin1(railhmi::core::to_string(it.level));
-        m["shape"] = QString::fromStdString(it.shape);
-        m["glyph"] = QString::fromUtf8(it.glyph.c_str());
-        m["color"] = QString::fromStdString(it.color);
-        m["value"] = QString::fromUtf8(it.value.c_str());
-        m["secondary"] = QString::fromUtf8(it.secondary.c_str());
-        m["unavailable"] = it.unavailable;
-        m["abnormal"] = railhmi::core::status_abnormal(it.level);
-        m["clickable"] = it.clickable;
-        m["allowed"] = r.allowed;
-        m["target"] = QString::fromLatin1(railhmi::core::to_string(it.target_page));
-        topList.append(m);
-    }
+    auto buildTopList = [&]() {
+        topSnap.camera = railhmi::core::camera_top_status(
+            liveCount(), static_cast<int>(videoRuntime.channels().size()));
+        topSnap.recording = railhmi::core::nvr_top_status(nvrConnected);
+        // 系统健康仍无真实采样源接入，保持缺省「未接入」，不伪造正常。
+        topSnap.vehicle_state = railhmi::core::vehicle_state_top_status(vehicleState.mode());
+        topSnap.door_sensor = railhmi::core::door_top_status(doorSummaryLevel);
+        QVariantList out;
+        for (const auto& it : railhmi::core::build_top_bar(topSnap, role)) {
+            const railhmi::core::StatusClickResult r = railhmi::core::resolve_top_click(it, role);
+            QVariantMap m;
+            m["key"] = QString::fromStdString(it.key);
+            m["label"] = QString::fromUtf8(it.label.c_str());
+            m["level"] = QString::fromLatin1(railhmi::core::to_string(it.level));
+            m["shape"] = QString::fromStdString(it.shape);
+            m["glyph"] = QString::fromUtf8(it.glyph.c_str());
+            m["color"] = QString::fromStdString(it.color);
+            m["value"] = QString::fromUtf8(it.value.c_str());
+            m["secondary"] = QString::fromUtf8(it.secondary.c_str());
+            m["unavailable"] = it.unavailable;
+            m["abnormal"] = railhmi::core::status_abnormal(it.level);
+            m["clickable"] = it.clickable;
+            m["allowed"] = r.allowed;
+            m["target"] = QString::fromLatin1(railhmi::core::to_string(it.target_page));
+            out.append(m);
+        }
+        return out;
+    };
+    QVariantList topList = buildTopList();
     QVariantList intList;
     for (const auto& in : railhmi::core::build_integrations(cfg.settings)) {
         QVariantMap m;
@@ -199,6 +276,9 @@ int main(int argc, char** argv) {
     QQuickView view;
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.rootContext()->setContextProperty("railhmiBuildDescription", build_desc);
+    view.rootContext()->setContextProperty("railhmiScreenWidth", displayW);
+    view.rootContext()->setContextProperty("railhmiScreenHeight", displayH);
+    view.rootContext()->setContextProperty("railhmiWindowed", windowed);
     view.rootContext()->setContextProperty("railhmiSimulation",
                                            railhmi::core::simulation_enabled());
     view.rootContext()->setContextProperty("railhmiNav", navList);
@@ -212,15 +292,41 @@ int main(int argc, char** argv) {
     view.rootContext()->setContextProperty("railhmiChannels", videoRuntime.channels());
     view.rootContext()->setContextProperty("railhmiGrid", gridMap);
     view.rootContext()->setContextProperty("railhmiKeyStatus", keyList);
+    view.rootContext()->setContextProperty("railhmiTopBar", topList);
+    view.rootContext()->setContextProperty("railhmiVehicleState", &vehicleState);
+
+    // 顶栏资源读数：内存 / 每个 CPU 核 / 每个 NPU 核，全部来自 /proc、/sys 真实采样。
+    // 每 2s 更新一次；取不到的维度显示「—」或「聚合」，绝不用 0 冒充正常。
+    SystemMetricsRuntime systemMetrics;
+    view.rootContext()->setContextProperty("railhmiSystemMetrics", &systemMetrics);
+
+    // 任一真值源变化时重建顶栏；内容相同则不重设上下文属性，避免无谓的 QML 重绑定。
+    auto republishTop = [&]() {
+        const QVariantList updatedTop = buildTopList();
+        if (updatedTop == topList) return;
+        topList = updatedTop;
+        view.rootContext()->setContextProperty("railhmiTopBar", topList);
+    };
+
     for (const auto& value : videoRuntime.channels()) {
         QObject::connect(qvariant_cast<VideoChannel*>(value), &VideoChannel::infoChanged, &view, [&]() {
             const auto updated = buildKeyList();
-            if (updated == keyList) return;
-            keyList = updated;
-            view.rootContext()->setContextProperty("railhmiKeyStatus", keyList);
+            if (updated != keyList) {
+                keyList = updated;
+                view.rootContext()->setContextProperty("railhmiKeyStatus", keyList);
+            }
+            // 摄像头接入路数变化同步刷新顶栏「x/N 路实时」。
+            republishTop();
         });
     }
-    view.rootContext()->setContextProperty("railhmiTopBar", topList);
+
+    // 车辆状态：顶栏点击 -> cycle() -> 重建顶栏（人工置位，不臆测传感器真值）。
+    QObject::connect(&vehicleState, &VehicleStateRuntime::changed, &view, republishTop);
+    // 录像位：只认 NvrStatusRuntime 的真实 TCP 连接探测结果，探测不到一律 NVR异常。
+    QObject::connect(&nvrStatus, &NvrStatusRuntime::changed, &view, [&](bool connected) {
+        nvrConnected = connected;
+        republishTop();
+    });
 
     // AI 调试页（ITEM-017）：仅 ai_enabled 相机；应用尚未启动推理线程时每路显式“AI 不可用”。
     railhmi::core::AiRuntime aiRt;
@@ -298,6 +404,56 @@ int main(int argc, char** argv) {
         alarmModel.seedEvents(evs, names, rec);
     }
     view.rootContext()->setContextProperty("railhmiAlarms", &alarmModel);
+
+    // ---- BLE 门磁（BlueZ 广播）----
+    // core 只做报文解析/汇总；这里把汇总接到顶栏门磁位、关键状态「车门」项、
+    // P1 当前报警条、P6 维护设备卡，并在「非未关严 -> 未关严」跃迁时追加 L2 报警事件。
+    // 无真实设备/未启用/BlueZ 故障时统一显示不可用，绝不伪装成「门已关」。
+    DoorSensorRuntime doorRuntime(cfg.settings.app.door_sensor);
+    view.rootContext()->setContextProperty("railhmiDoorDevices", QVariantList());
+    view.rootContext()->setContextProperty("railhmiDoorSummary", QVariantMap());
+    view.rootContext()->setContextProperty("railhmiDoorAlarmText", QString());
+
+    auto doorLevel = [](const QString& token) {
+        if (token == QLatin1String("ok")) return railhmi::core::StatusLevel::Ok;
+        if (token == QLatin1String("info")) return railhmi::core::StatusLevel::Info;
+        if (token == QLatin1String("warning")) return railhmi::core::StatusLevel::Warning;
+        if (token == QLatin1String("alarm")) return railhmi::core::StatusLevel::Alarm;
+        return railhmi::core::StatusLevel::Unavailable;
+    };
+    auto publishDoor = [&]() {
+        const QVariantMap sum = doorRuntime.summary();
+        const QString levelToken = sum.value(QStringLiteral("level")).toString();
+        doorSummaryLevel = levelToken.toStdString();   // 顶栏三态映射输入
+        railhmi::core::CategoryStatus d;
+        d.level = doorLevel(levelToken);
+        d.value = sum.value(QStringLiteral("value")).toString().toStdString();
+        if (d.value.empty()) d.value = "未接入";
+        doorStatus = d;
+
+        const QVariantList updatedKey = buildKeyList();
+        if (updatedKey != keyList) {
+            keyList = updatedKey;
+            view.rootContext()->setContextProperty("railhmiKeyStatus", keyList);
+        }
+        republishTop();
+        view.rootContext()->setContextProperty("railhmiDoorDevices", doorRuntime.devices());
+        view.rootContext()->setContextProperty("railhmiDoorSummary", sum);
+        view.rootContext()->setContextProperty("railhmiDoorAlarmText",
+                                              sum.value(QStringLiteral("alarmText")).toString());
+    };
+    QObject::connect(&doorRuntime, &DoorSensorRuntime::changed, &view, publishDoor);
+    QObject::connect(&doorRuntime, &DoorSensorRuntime::doorAjar, &view,
+                     [&](const QString& id, const QString& description) {
+        // map_level(AlarmType::DoorAjar) == L2 -> EventRow.level = 2（test_rules.cpp 已固定）。
+        // 不伪造录像/快照关联：RecordAvailability::Unavailable。
+        alarmModel.addLiveEvent(QStringLiteral("door_ajar"), 2, id,
+                                QString::fromUtf8("门磁"), description);
+        railhmi::platform::Logger::instance().info(
+            "door-sensor: L2 door_ajar event appended for " + id.toStdString());
+    });
+    publishDoor();                                  // 启动即给出真值（通常「未接入」）
+    QTimer::singleShot(0, &doorRuntime, &DoorSensorRuntime::start);
 
     // 历史回放（ITEM-020）：桥接对象（时间轴/跳转/同步/来源/选择委托 core）。模拟开启时灌入样例。
     // 修复 D-01：按选中报警动态生成详情；修复 D-02：同步状态由各路真实时钟偏移构建。
@@ -447,8 +603,44 @@ int main(int argc, char** argv) {
         railhmi::platform::Logger::instance().error("QML load failed (qrc:/qml/main.qml)");
         return 3;
     }
-    view.resize(1920, 1080);
-    view.show();
+    view.resize(displayW, displayH);
+    if (windowed) view.show();
+    else view.showFullScreen();
+
+    // 可选几何自检（RAILHMI_DUMP_LAYOUT=1）：打印关键元素实际宽高，用于板端/离屏验证
+    // 视频格子是否严格 16:9、以及全屏尺寸是否生效。正常运行不产生任何输出。
+    if (qEnvironmentVariableIsSet("RAILHMI_DUMP_LAYOUT")) {
+        // QML 由 Loader/Repeater 动态创建的项不在 QObject 父子链里，须遍历视觉树。
+        auto dump = [&view]() {
+            QQuickItem* root = view.rootObject();
+            if (!root) return;
+            auto& log = railhmi::platform::Logger::instance();
+            log.info("LAYOUT root=" + std::to_string(static_cast<int>(root->width())) + "x" +
+                     std::to_string(static_cast<int>(root->height())));
+            const QStringList watched = {"threePanelRow", "tileFront", "tileLeft", "tileRight",
+                                     "bottomRow", "tilePantograph", "tileWheelRail",
+                                     "alarmBar", "videoLayer",
+                                     "zoomOverlay", "gridCell-CAM-01",
+                                     // 现场定稿 P3：画面区域/单画面几何与关键帧条占位自检
+                                     "replayVideoArea", "replayPanel-CAM-01",
+                                     "keyframeStrip", "detailRecordBar",
+                                     "topResourceMeters"};
+            std::function<void(QQuickItem*)> walk = [&](QQuickItem* item) {
+                if (!item) return;
+                if (watched.contains(item->objectName())) {
+                    log.info("LAYOUT " + item->objectName().toStdString() + "=" +
+                             std::to_string(static_cast<int>(item->width())) + "x" +
+                             std::to_string(static_cast<int>(item->height())));
+                }
+                for (QQuickItem* child : item->childItems()) walk(child);
+            };
+            walk(root);
+        };
+        QTimer::singleShot(1500, &view, dump);   // 默认页（P4）
+        QTimer::singleShot(9000, &view, dump);   // 切到 P1 之后
+        QTimer::singleShot(14000, &view, dump);  // 验收脚本此时切到 P3，读回放画面几何
+    }
+
     QTimer::singleShot(0, &videoRuntime, &VideoRuntime::start);
     QObject::connect(&app, &QCoreApplication::aboutToQuit, &videoRuntime, &VideoRuntime::stop);
     return app.exec();

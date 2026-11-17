@@ -1,0 +1,85 @@
+LOG=/home/admin/hmi_live_round3.log
+===== 0. 前置状态 =====
+2026-11-14 10:28:52 CST
+6326 ./build-target/railhmi --config /home/admin/railhmi-ui-fix/app/config
+2026-11-14T10:27:10.357 INFO  credentials: 3 private env var(s) loaded from config dir
+--- 六路初始状态 ---
+video channel "CAM-01" "connecting" presentable= false
+video channel "CAM-02" "connecting" presentable= false
+video channel "CAM-03" "connecting" presentable= false
+video channel "CAM-04" "connecting" presentable= false
+video channel "CAM-05" "connecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-01" "live" presentable= true
+video channel "CAM-03" "live" presentable= true
+video channel "CAM-02" "live" presentable= true
+video channel "CAM-06" "live" presentable= true
+video channel "CAM-04" "live" presentable= true
+video channel "CAM-05" "live" presentable= true
+===== 1. 屏蔽 CAM-06 (192.168.1.167) 入向包，观察看门狗 =====
+BLOCKED at 10:28:52
+--- 看门狗重建日志 ---
+handvideo watchdog: rebuild "CAM-06" stalled_ms= 8056 attempt= 1 backoff_ms= 5000 last_error= ""
+video watchdog: rebuild "CAM-06" stalled_ms= -1 attempt= 2 backoff_ms= 10000 last_error= ""
+--- CAM-06 状态变化 ---
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "live" presentable= true
+video channel "CAM-06" "live" presentable= false
+video channel "CAM-06" "frozen" presentable= false
+video channel "CAM-06" "reconnecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "reconnecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+121667 im2d_rga_impl rga_task_submit(2171): Failed to call RockChipRga interface, plvideo channel "CAM-06" "reconnecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "reconnecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+--- 其它五路是否被误重建（应为空） ---
+===== 2. 恢复链路，等待自动重连出帧 =====
+UNBLOCKED at 10:29:24
+--- t+10s ---
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "live" presentable= false
+video channel "CAM-06" "live" presentable= true
+video watchdog: rebuild "CAM-06" stalled_ms= -1 attempt= 2 backoff_ms= 10000 last_error= ""
+--- t+20s ---
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "live" presentable= false
+video channel "CAM-06" "live" presentable= true
+video watchdog: rebuild "CAM-06" stalled_ms= -1 attempt= 2 backoff_ms= 10000 last_error= ""
+--- t+30s ---
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "live" presentable= false
+video channel "CAM-06" "live" presentable= true
+video watchdog: rebuild "CAM-06" stalled_ms= -1 attempt= 2 backoff_ms= 10000 last_error= ""
+--- t+40s ---
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "live" presentable= false
+video channel "CAM-06" "live" presentable= true
+video watchdog: rebuild "CAM-06" stalled_ms= -1 attempt= 2 backoff_ms= 10000 last_error= ""
+--- t+50s ---
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "live" presentable= false
+video channel "CAM-06" "live" presentable= true
+video watchdog: rebuild "CAM-06" stalled_ms= -1 attempt= 2 backoff_ms= 10000 last_error= ""
+--- t+60s ---
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "live" presentable= false
+video channel "CAM-06" "live" presentable= true
+video watchdog: rebuild "CAM-06" stalled_ms= -1 attempt= 2 backoff_ms= 10000 last_error= ""
+--- t+70s ---
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "live" presentable= false
+video channel "CAM-06" "live" presentable= true
+video watchdog: rebuild "CAM-06" stalled_ms= -1 attempt= 2 backoff_ms= 10000 last_error= ""
+--- t+80s ---
+video channel "CAM-06" "connecting" presentable= false
+video channel "CAM-06" "live" presentable= false
+video channel "CAM-06" "live" presentable= true
+video watchdog: rebuild "CAM-06" stalled_ms= -1 attempt= 2 backoff_ms= 10000 last_error= ""
+===== 3. 结论线索 =====
+A. 屏蔽期间应看到 video watchdog: rebuild "CAM-06" attempt>=1，backoff_ms 递增
+B. 其它五路不应出现 rebuild（单路隔离）
+C. 恢复后应看到 CAM-06 回到 live presentable=true
+D. QML 运行期错误（应 0 行）:
+===== DONE =====

@@ -5,9 +5,20 @@
 #include <QDebug>
 #include <algorithm>
 #include "railhmi/core/channel_view.h"
+#include "railhmi/core/recovery_policy.h"
 #ifdef RAILHMI_HAS_MEDIA
 #include "railhmi/media/display_registry.h"
 #endif
+
+namespace {
+// 现场六路全是 UDP RTSP，断流常表现为「静默停帧」：rtspsrc 的 timeout=5s 并不保证
+// 一定产生 GST_MESSAGE_ERROR（11-13 长跑日志 6h 内只有 4 条 GStreamer CRITICAL，
+// 却有 35 次 frozen / 25 次 reconnecting / 4 次 offline）。因此生产链路的自动重连
+// 不能只靠 last_error 驱动，必须按「距上一帧时间」逐路独立触发真实 pipeline 重建。
+constexpr long long kRebuildNoFrameMs = 8000;    // 大于 rtspsrc timeout_us(5s)，避免抖动误重建
+constexpr int kRebuildBaseBackoffMs = 5000;      // 连续失败时的首次退避
+constexpr int kRebuildMaxBackoffMs = 60000;      // 退避上限；不设总次数上限，保证无人值守可持续自愈
+}
 
 QImage VideoChannel::image() const {
     QMutexLocker lock(&mutex_);
@@ -42,13 +53,32 @@ void VideoFrameItem::setChannel(VideoChannel* channel) {
     emit channelChanged();
 }
 
+void VideoFrameItem::setFillMode(int mode) {
+    const int normalized = (mode == 1) ? 1 : 0;
+    if (fillMode_ == normalized) return;
+    fillMode_ = normalized;
+    update();
+    emit fillModeChanged();
+}
+
 void VideoFrameItem::paint(QPainter* painter) {
     const QImage image = channel_ ? channel_->image() : QImage();
     if (image.isNull()) return;
-    const QSizeF size = QSizeF(image.size()).scaled(boundingRect().size(), Qt::KeepAspectRatio);
+    // Fit：比例不符时上下/左右留黑边（其它页面保持原行为）。
+    // Cover：铺满整个格子，居中裁掉超出部分；格子本身按 16:9 设计时对 16:9 源零裁剪。
+    const Qt::AspectRatioMode mode = (fillMode_ == 1)
+        ? Qt::KeepAspectRatioByExpanding : Qt::KeepAspectRatio;
+    const QSizeF size = QSizeF(image.size()).scaled(boundingRect().size(), mode);
     const QRectF target((width() - size.width()) / 2, (height() - size.height()) / 2,
                         size.width(), size.height());
-    painter->drawImage(target, image);
+    if (mode == Qt::KeepAspectRatioByExpanding) {
+        painter->save();
+        painter->setClipRect(boundingRect());
+        painter->drawImage(target, image);
+        painter->restore();
+    } else {
+        painter->drawImage(target, image);
+    }
 }
 
 struct VideoRuntime::Impl {
@@ -58,6 +88,11 @@ struct VideoRuntime::Impl {
     std::vector<QString> errors;
     std::vector<unsigned long long> generations, sequences;
     std::vector<long long> next_frame_ms, image_capture_ms;
+    // 每路独立自动重连看门狗状态（主线程 refresh 推进，worker 线程执行真实重建）。
+    std::vector<long long> next_rebuild_ms;       // 下次允许请求重建的时刻（单调 ms）
+    std::vector<long long> last_frame_ms_seen;    // 上次观测到的 CameraStream::last_frame_ms
+    std::vector<int> rebuild_backoff_ms;          // 当前指数退避
+    std::vector<int> rebuild_count;               // 累计重建次数（日志/诊断）
     bool running = false;
 #ifdef RAILHMI_HAS_MEDIA
     std::unique_ptr<railhmi::media::DisplayRegistry> display;
@@ -75,6 +110,10 @@ VideoRuntime::VideoRuntime(const railhmi::core::AppSettings& settings, QObject* 
     impl_->sequences.resize(impl_->channels.size());
     impl_->next_frame_ms.resize(impl_->channels.size());
     impl_->image_capture_ms.resize(impl_->channels.size());
+    impl_->next_rebuild_ms.assign(impl_->channels.size(), 0);
+    impl_->last_frame_ms_seen.assign(impl_->channels.size(), 0);
+    impl_->rebuild_backoff_ms.assign(impl_->channels.size(), kRebuildBaseBackoffMs);
+    impl_->rebuild_count.assign(impl_->channels.size(), 0);
     connect(&timer_, &QTimer::timeout, this, &VideoRuntime::refresh);
     timer_.setInterval(40);
     refresh();
@@ -198,6 +237,46 @@ void VideoRuntime::refresh() {
                             now - impl_->image_capture_ms[i] <= impl_->settings.thresholds.freeze_timeout_ms &&
                             !channel->image().isNull();
             if (!r.presentable && !channel->image().isNull()) channel->setImage(QImage());
+
+            // ---- 单路独立自动重连看门狗 ----
+            // 只有「真实新帧」才刷新截止时间：UDP 静默停帧不带 bus ERROR 也能被发现。
+            // 生产链路此前没有任何 request_restart 调用方，状态机到 Offline 后是吸收态，
+            // 断流只能靠重启进程恢复。这里在主线程按单调时钟推进，实际重建交给 worker。
+            if (s.last_frame_ms > 0 && s.last_frame_ms != impl_->last_frame_ms_seen[i]) {
+                impl_->last_frame_ms_seen[i] = s.last_frame_ms;
+                impl_->next_rebuild_ms[i] = now + kRebuildNoFrameMs;
+                impl_->rebuild_backoff_ms[i] = kRebuildBaseBackoffMs;  // 出帧即复位退避
+            }
+            if (impl_->next_rebuild_ms[i] <= 0)
+                impl_->next_rebuild_ms[i] = now + kRebuildNoFrameMs +
+                                            impl_->settings.thresholds.first_frame_timeout_ms;
+
+            if (now >= impl_->next_rebuild_ms[i] && impl_->display->manager().started(i)) {
+                const auto kind = core::classify_source_error("gst", s.last_error);
+                const bool not_retryable =
+                    kind == core::SourceErrorKind::AuthFailed ||
+                    kind == core::SourceErrorKind::CredentialMissing ||
+                    kind == core::SourceErrorKind::Unsupported ||
+                    kind == core::SourceErrorKind::Format;
+                if (not_retryable) {
+                    // 鉴权/凭据/格式错误按契约 §10 不自动反复重试，只低频复核。
+                    impl_->next_rebuild_ms[i] = now + kRebuildMaxBackoffMs;
+                } else {
+                    ++impl_->rebuild_count[i];
+                    const int backoff = impl_->rebuild_backoff_ms[i];
+                    qInfo() << "video watchdog: rebuild"
+                            << QString::fromStdString(impl_->registry[i].id)
+                            << "stalled_ms=" << (s.last_frame_ms > 0 ? now - s.last_frame_ms : -1)
+                            << "attempt=" << impl_->rebuild_count[i]
+                            << "backoff_ms=" << backoff
+                            << "last_error=" << QString::fromStdString(s.last_error);
+                    impl_->display->manager().request_restart(i);
+                    impl_->rebuild_backoff_ms[i] = std::min(backoff * 2, kRebuildMaxBackoffMs);
+                    // 重建后给足首帧宽限：退避随连续失败指数增长，上限 60s，不设总次数上限。
+                    impl_->next_rebuild_ms[i] = now +
+                        std::max<long long>(kRebuildNoFrameMs, impl_->rebuild_backoff_ms[i]);
+                }
+            }
         }
     }
 #endif

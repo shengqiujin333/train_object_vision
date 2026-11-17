@@ -1,5 +1,6 @@
 #include "railhmi/core/config.h"
 
+#include <cctype>
 #include <fstream>
 #include <set>
 #include <sstream>
@@ -220,6 +221,8 @@ bool require_map(const Node& n, const std::string& path, Errors& e) {
 // ---------------------------------------------------------------------------
 namespace {
 
+void load_door_sensor(const Node& door, AppSettings* s, Errors& e);  // 定义在后
+
 void load_cameras(const Node& root, AppSettings* s, Errors& e) {
     const Node* cams = root.get("cameras");
     if (!cams || cams->is_null()) { err(e, "cameras", "required field missing"); return; }
@@ -381,6 +384,96 @@ void load_app(const Node& root, AppSettings* s, Errors& e) {
         }
     } else {
         s->applied_defaults.push_back("app.integrations");
+    }
+    // door_sensor（可选）：BLE 门磁广播接入。缺省时 enabled=false，界面保持「未接入」，
+    // 且把缺省字段全部记入 applied_defaults，不静默启用设备。
+    const Node* door = app->get("door_sensor");
+    if (door && !door->is_null()) load_door_sensor(*door, s, e);
+    else s->applied_defaults.push_back("app.door_sensor");
+}
+
+void load_door_sensor(const Node& door, AppSettings* s, Errors& e) {
+    if (!require_map(door, "app.door_sensor", e)) return;
+    DoorSensorConfig& d = s->app.door_sensor;
+    const std::string base = "app.door_sensor";
+
+    auto opt_bool_or_default = [&](const char* key, bool* out) {
+        const std::string path = base + "." + key;
+        const Node* n = door.get(key);
+        if (!n || n->is_null()) { s->applied_defaults.push_back(path); return; }
+        bool v = false;
+        if (!yaml::to_bool(*n, &v)) { err(e, path, "expected boolean true/false"); return; }
+        *out = v;
+    };
+    auto opt_string_or_default = [&](const char* key, std::string* out) {
+        const std::string path = base + "." + key;
+        const Node* n = door.get(key);
+        if (!n || n->is_null()) { s->applied_defaults.push_back(path); return; }
+        if (!n->is_scalar()) { err(e, path, "expected scalar string"); return; }
+        *out = n->scalar;
+    };
+    auto opt_int_range = [&](const char* key, int* out, int lo, int hi) {
+        const std::string path = base + "." + key;
+        const Node* n = door.get(key);
+        if (!n || n->is_null()) { s->applied_defaults.push_back(path); return; }
+        long long v = 0;
+        if (!yaml::to_int(*n, &v)) { err(e, path, "expected integer"); return; }
+        if (v < lo || v > hi) {
+            err(e, path, "out of range " + std::to_string(lo) + ".." + std::to_string(hi));
+            return;
+        }
+        *out = static_cast<int>(v);
+    };
+
+    opt_bool_or_default("enabled", &d.enabled);
+    opt_bool_or_default("auto_discover", &d.auto_discover);
+    opt_string_or_default("name_filter", &d.name_filter);
+    opt_string_or_default("adapter", &d.adapter);
+    // 最多每 10s 读一次：上限 10000ms，配置得更频繁/更慢都不接受；
+    // 更快的实时性由 PropertiesChanged 订阅提供，不靠缩短轮询周期。
+    opt_int_range("poll_interval_ms", &d.poll_interval_ms, 1000, 10000);
+    opt_int_range("stale_ms", &d.stale_ms, 1000, 3600000);
+    opt_int_range("battery_low_pct", &d.battery_low_pct, 0, 100);
+    opt_int_range("payload_offset", &d.payload_offset, 0, 8);
+
+    const Node* devs = door.get("devices");
+    if (devs && !devs->is_null()) {
+        if (!devs->is_seq()) {
+            err(e, base + ".devices", "expected sequence");
+        } else {
+            std::set<std::string> macs;
+            for (std::size_t i = 0; i < devs->seq.size(); ++i) {
+                const Node& dn = devs->seq[i];
+                const std::string dbase = base + ".devices[" + std::to_string(i) + "]";
+                if (!require_map(dn, dbase, e)) continue;
+                DoorSensorDeviceConfig dev;
+                req_string(dn, "id", dbase, &dev.id, e);
+                req_string(dn, "mac", dbase, &dev.mac, e);
+                opt_string(dn, "name", dbase, &dev.name, e);
+                long long id = 0;
+                if (dn.get("device_id") && !dn.get("device_id")->is_null()) {
+                    if (req_int(dn, "device_id", dbase, &id, e)) {
+                        if (id < 0 || id > 0xFFFFFFFFLL)
+                            err(e, dbase + ".device_id", "must be an unsigned 32-bit decimal");
+                        else { dev.has_device_id = true; dev.device_id = static_cast<std::uint32_t>(id); }
+                    }
+                }
+                // MAC 形如 AA:BB:CC:DD:EE:FF，大小写不敏感；避免任意字符串被当成登记设备。
+                bool mac_ok = dev.mac.size() == 17;
+                for (std::size_t k = 0; mac_ok && k < dev.mac.size(); ++k) {
+                    const char c = dev.mac[k];
+                    if (k % 3 == 2) mac_ok = (c == ':');
+                    else mac_ok = (std::isxdigit(static_cast<unsigned char>(c)) != 0);
+                }
+                if (!dev.mac.empty() && !mac_ok)
+                    err(e, dbase + ".mac", "expected AA:BB:CC:DD:EE:FF");
+                if (!dev.mac.empty() && !macs.insert(dev.mac).second)
+                    err(e, dbase + ".mac", "duplicate door sensor mac '" + dev.mac + "'");
+                d.devices.push_back(dev);
+            }
+        }
+    } else {
+        s->applied_defaults.push_back(base + ".devices");
     }
 }
 

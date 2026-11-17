@@ -149,6 +149,7 @@ std::vector<KeyStatusItem> build_key_status(const KeyStatusSnapshot& snap, Role 
 
 std::vector<TopBarItem> build_top_bar(const TopBarSnapshot& snap, Role /*role*/) {
     std::vector<TopBarItem> out;
+    out.reserve(6);
 
     TopBarItem time;
     time.kind = TopItemKind::Time;
@@ -162,56 +163,67 @@ std::vector<TopBarItem> build_top_bar(const TopBarSnapshot& snap, Role /*role*/)
     time.clickable = false;
     out.push_back(time);
 
-    TopBarItem mode;
-    mode.kind = TopItemKind::Mode;
-    mode.key = "mode";
-    mode.label = "模式";
-    mode.value = "可见光";
-    mode.secondary = "红外未接入";
-    mode.level = StatusLevel::Unavailable;   // neutral chip，无告警色
-    mode.shape = "dot";
-    mode.glyph = status_glyph(StatusLevel::Ok);
-    mode.color = "neutral";
-    mode.clickable = false;
-    out.push_back(mode);
-
+    // 六项固定顺序：时间/摄像头/录像/系统健康/车辆状态/门磁。
+    // 模式位与 AI 位按现场需求删除；每一项的值由运行时真实注入，缺省一律未接入。
     auto cat = [&](TopItemKind kind, const char* key, const char* label, const CategoryStatus& s,
-                   Page target) {
+                   Page target, const char* secondary = "", bool always_clickable = false) {
         TopBarItem it;
         it.kind = kind;
         it.key = key;
         it.label = label;
         it.value = s.value.empty() ? status_level_label(s.level) : s.value;
+        it.secondary = secondary;
         it.level = s.level;
         it.shape = status_shape(s.level);
         it.glyph = status_glyph(s.level);
         it.color = status_color(s.level);
         it.unavailable = s.level == StatusLevel::Unavailable;
-        it.clickable = status_abnormal(s.level);
+        it.clickable = always_clickable || status_abnormal(s.level);
         it.target_page = target;
         out.push_back(it);
     };
+    cat(TopItemKind::Camera, "camera", "摄像头", snap.camera, Page::AllCameras);
     cat(TopItemKind::Recording, "recording", "录像", snap.recording, Page::Replay);
-    cat(TopItemKind::Ai, "ai", "AI", snap.ai, Page::AiDebug);
     cat(TopItemKind::Health, "health", "系统健康", snap.health, Page::Maintenance);
-
-    auto unconnected = [&](TopItemKind kind, const char* key, const char* label) {
-        TopBarItem it;
-        it.kind = kind;
-        it.key = key;
-        it.label = label;
-        it.value = "未接入";
-        it.level = StatusLevel::Unavailable;
-        it.shape = status_shape(StatusLevel::Unavailable);
-        it.glyph = status_glyph(StatusLevel::Unavailable);
-        it.color = status_color(StatusLevel::Unavailable);
-        it.unavailable = true;
-        it.clickable = false;
-        out.push_back(it);
-    };
-    unconnected(TopItemKind::VehicleSpeed, "vehicle_speed", "车速");
-    unconnected(TopItemKind::DoorSensor, "door_sensor", "门磁");
+    // 车辆状态无车速/GPS 数据源：点击顶栏该项由司机人工在 静止/运动/未接入 间切换。
+    // 未选中时提示「点击切换」，选中后标注「人工置位」，不把人工输入伪装成传感器真值。
+    cat(TopItemKind::VehicleState, "vehicle_state", "车辆状态", snap.vehicle_state,
+        Page::Realtime,
+        snap.vehicle_state.level == StatusLevel::Unavailable ? "点击切换" : "人工置位", true);
+    // 门磁三态由调用方把 BLE 汇总映射为 开门/关门/传感器异常。
+    cat(TopItemKind::DoorSensor, "door_sensor", "门磁", snap.door_sensor, Page::Maintenance);
     return out;
+}
+
+CategoryStatus camera_top_status(int live, int total) {
+    if (total <= 0) return {StatusLevel::Unavailable, "未接入"};
+    if (live < 0 || live > total) return {StatusLevel::Unavailable, "未接入"};
+    const std::string value = std::to_string(live) + "/" + std::to_string(total) + " 路实时";
+    if (live == total) return {StatusLevel::Ok, value};
+    if (live == 0) return {StatusLevel::Alarm, value};
+    return {StatusLevel::Warning, value};
+}
+
+CategoryStatus nvr_top_status(bool connected) {
+    // 只有探测到真实连接才报正常；未配置/超时/网络错误一律 NVR异常。
+    return connected ? CategoryStatus{StatusLevel::Ok, "NVR正常"}
+                     : CategoryStatus{StatusLevel::Alarm, "NVR异常"};
+}
+
+CategoryStatus door_top_status(const std::string& token) {
+    if (token == "alarm") return {StatusLevel::Alarm, "开门"};
+    if (token == "ok") return {StatusLevel::Ok, "关门"};
+    // warning（低电量/未核验）、info、unavailable（未接入/超时/BlueZ 失败）都归为异常：
+    // 这些状态下不能声称门已关，统一显示「传感器异常」并保持可点击查看详情。
+    return {StatusLevel::Warning, "传感器异常"};
+}
+
+CategoryStatus vehicle_state_top_status(int mode) {
+    switch (mode) {
+        case 1: return {StatusLevel::Ok, "静止"};
+        case 2: return {StatusLevel::Info, "运动"};
+        default: return {StatusLevel::Unavailable, "未接入"};
+    }
 }
 
 StatusClickResult resolve_status_click(const KeyStatusItem& item, Role role) {

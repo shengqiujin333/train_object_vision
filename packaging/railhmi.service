@@ -2,8 +2,8 @@
 # 常驻自启、崩溃自动重启；显式提供 DISPLAY；**不修改也不依赖 cpu-performance.service**。
 [Unit]
 Description=railhmi 车载监控桌面应用
-After=network-online.target
-Wants=network-online.target
+After=network-online.target bluetooth.service
+Wants=network-online.target bluetooth.service
 
 [Service]
 Type=simple
@@ -11,9 +11,24 @@ User=admin
 # X11 显示（历史记录为 :0；部署时按现场 X 会话核对）
 Environment=DISPLAY=:0
 Environment=QT_QPA_PLATFORM=xcb
-# 本机私有文件，按 cameras.yaml 的 credential_env 提供密码；不提交 Git。
+# BLE 门磁读取 org.bluez 的**系统总线**（Qt5::DBus），不依赖会话总线、不配对、不连 GATT。
+# admin 用户须被 /etc/dbus-1/system.d/bluetooth.conf 允许 send_destination="org.bluez"；
+# 板端已实测 admin 可直接 GetManagedObjects/StartDiscovery。
+# 本机私有文件（0600），按 cameras.yaml / nvr.yaml 的 credential_env 提供固定密码；不提交 Git。
+# 现场账号与密码固定，页面不再要求用户输入；应用启动时也会自行从 --config 目录补齐这两个文件。
 EnvironmentFile=-/opt/railhmi/config/camera-credentials.env
+EnvironmentFile=-/opt/railhmi/config/nvr-credentials.env
 WorkingDirectory=/opt/railhmi
+# 顶栏 NPU 分核负载读 /sys/kernel/debug/rknpu/load（debugfs 默认仅 root 可读）。
+# 以 + 前缀临时提权放开只读权限；未挂载 debugfs / 文件不存在时 - 前缀忽略失败，
+# 应用会自动退到 devfreq 聚合值并显式标注「聚合」，绝不把单值复制成多个核。
+ExecStartPre=-+/bin/chmod 0444 /sys/kernel/debug/rknpu/load
+# BLE 门磁：控制器/内核默认开启广播去重（Filter duplicates=Enabled），厂家 1s 一次的
+# 广播会被丢成 2~25s 一次。应用每次轮询下发 HCI `LE Set Scan Enable filter_dup=0`
+# 抵消去重，需要 CAP_NET_ADMIN + CAP_NET_RAW（本进程以 admin 运行，用文件能力授予）。
+# 无此能力时应用只告警并优雅降级到较慢的发现路径，绝不假装去重已关闭。
+# 现场手动启动时同样执行一次：sudo setcap cap_net_admin,cap_net_raw+ep ./build-target/railhmi
+ExecStartPre=-+/usr/sbin/setcap cap_net_admin,cap_net_raw+ep /opt/railhmi/bin/railhmi
 ExecStart=/opt/railhmi/bin/railhmi --config /opt/railhmi/config
 # 崩溃/退出后自动拉起（不阻塞其余服务，不触碰 cpu-performance.service）
 Restart=always

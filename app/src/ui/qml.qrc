@@ -12,6 +12,9 @@
         <file>qml/components/RecoveryOverlay.qml</file>
         <file>qml/components/DetectionBadge.qml</file>
         <file>qml/components/CameraTile.qml</file>
+        <file>qml/components/CameraZoomOverlay.qml</file>
+        <file>qml/components/VirtualKeyboard.qml</file>
+        <file>qml/components/ResourceMeters.qml</file>
         <file>qml/components/VideoSurface.qml</file>
         <file>qml/components/DeviceCard.qml</file>
         <file>qml/pages/PageView.qml</file>

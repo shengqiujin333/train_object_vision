@@ -7,8 +7,13 @@ import "pages"
 // 页面内容按 id 选择；司机 P1 不显示检测职责徽标（P4/P6 才显示）。颜色/字号均来自 Theme。
 Rectangle {
     id: shell
-    width: 1920
-    height: 1080
+    // 宽高来自 C++ 注入的运行时显示尺寸（app.resolution 配置驱动 + 物理屏幕全屏自适应）。
+    // QQuickView::SizeRootObjectToView 会在窗口/屏幕尺寸变化时继续同步覆盖根尺寸；
+    // 回退值取设计基准分辨率，不再把 1920x1080 写死在产品界面里。
+    width: (typeof railhmiScreenWidth !== "undefined")
+           ? railhmiScreenWidth : Theme.meta.reference_resolution[0]
+    height: (typeof railhmiScreenHeight !== "undefined")
+            ? railhmiScreenHeight : Theme.meta.reference_resolution[1]
     color: Theme.color.bg_base
 
     property string currentPageId: railhmiDefaultPage
@@ -39,13 +44,20 @@ Rectangle {
     function onReplayRequest(cameraId, tsWallMs) {
         if (typeof railhmiReplay !== "undefined" && railhmiReplay)
             railhmiReplay.selectAlarm(cameraId, tsWallMs)
+        zoomOverlay.close()
         shell.currentPageId = "replay"
         shell.denied = !shell.allowed("replay")
     }
     // 关键状态区/顶部条异常项点击（ITEM-016）：允许则跳详情，不允许则显示无权限+返回。
     function onStatusNavigate(pageId, allowed) {
+        zoomOverlay.close()
         shell.currentPageId = pageId
         shell.denied = !allowed
+    }
+    // P1/P4 摄像头格点击 -> 单路放大浮层（60s 自动消失 / 点空白处关闭）。
+    // 浮层挂在外壳层，遮罩覆盖整个屏幕，空白处点击都能关闭。
+    function openZoom(ch, name, stateText, detailText, isLive) {
+        zoomOverlay.open(ch, name, stateText, detailText, isLive)
     }
 
     Column {
@@ -68,6 +80,7 @@ Rectangle {
                 entries: railhmiNav
                 activeId: shell.currentPageId
                 onNavigate: function (pageId) {
+                    zoomOverlay.close()
                     shell.currentPageId = pageId
                     shell.denied = !shell.allowed(pageId)
                 }
@@ -94,6 +107,8 @@ Rectangle {
                             item.statusNavigate.connect(shell.onStatusNavigate)
                         if (item && item.replayRequested)
                             item.replayRequested.connect(shell.onReplayRequest)
+                        if (item && item.zoomRequested)
+                            item.zoomRequested.connect(shell.openZoom)
                     }
                 }
                 DeniedView {
@@ -108,6 +123,12 @@ Rectangle {
 
     // 启动自恢复进度浮层（ITEM-024）
     RecoveryOverlay {
+        anchors.fill: parent
+    }
+
+    // 单路摄像头放大浮层（P1/P4 共用）；默认隐藏，由页面 zoomRequested 信号唤起。
+    CameraZoomOverlay {
+        id: zoomOverlay
         anchors.fill: parent
     }
 }

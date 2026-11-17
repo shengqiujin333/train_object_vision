@@ -242,6 +242,69 @@ Rectangle {
             }
         }
 
+        // BLE 门磁（BlueZ 广播）：逐设备真值 + 汇总 + 稳定 reason token。
+        // 未配置/未发现/未核验/过期一律呈现不可用，绝不用样例数据填充设备行。
+        Rectangle {
+            id: doorCard
+            objectName: "maintDoorCard"
+            width: (parent.width - Theme.spacing.s3) / 2; height: 220
+            color: Theme.color.surface; border.color: Theme.color.border; border.width: Theme.border.width
+            radius: Theme.radius.card
+            readonly property var doorSummary: (typeof railhmiDoorSummary !== "undefined")
+                                               ? railhmiDoorSummary : ({})
+            readonly property var doorRows: (typeof railhmiDoorDevices !== "undefined")
+                                            ? railhmiDoorDevices : []
+            Column {
+                anchors.fill: parent; anchors.margins: Theme.spacing.s3; spacing: Theme.spacing.s1
+                Text {
+                    objectName: "doorCardTitle"
+                    color: Theme.color.text_primary; font.pixelSize: Theme.typography.scale.label.size
+                    text: "BLE 门磁 · " + (doorCard.doorSummary.value !== undefined
+                                           ? doorCard.doorSummary.value : "未接入")
+                }
+                Text {
+                    objectName: "doorCardSource"
+                    color: Theme.color.text_secondary; font.pixelSize: Theme.typography.scale.caption.size
+                    text: "来源 " + (doorCard.doorSummary.source !== undefined ? doorCard.doorSummary.source : "—") +
+                          " · 适配器 " + (doorCard.doorSummary.adapter !== undefined && doorCard.doorSummary.adapter.length > 0
+                                          ? doorCard.doorSummary.adapter : "—") +
+                          " · 名称过滤 " + (doorCard.doorSummary.nameFilter !== undefined
+                                            ? doorCard.doorSummary.nameFilter : "—") +
+                          " · 接入 " + (doorCard.doorSummary.reasonLabel !== undefined
+                                        ? doorCard.doorSummary.reasonLabel : "—")
+                }
+                Text {
+                    objectName: "doorCardDoorStateHint"
+                    width: parent.width; wrapMode: Text.WordWrap
+                    visible: doorCard.doorSummary.doorUnknown !== undefined &&
+                             doorCard.doorSummary.doorUnknown > 0
+                    color: Theme.color.text_muted; font.pixelSize: Theme.typography.scale.caption.size
+                    text: "门磁状态取自广播帧的布尔字段；未收到可核验广播时显示未知，" +
+                          "不臆测为已关闭"
+                }
+                Text {
+                    objectName: "doorCardEmpty"
+                    visible: doorCard.doorRows.length === 0
+                    color: Theme.color.text_muted; font.pixelSize: Theme.typography.scale.caption.size
+                    text: "未发现门磁设备（需广播名匹配或已登记 MAC）"
+                }
+                Repeater {
+                    model: doorCard.doorRows
+                    Text {
+                        objectName: "doorRow-" + modelData.id
+                        color: modelData.level === "alarm" ? Theme.color.error
+                               : (modelData.level === "ok" ? Theme.color.ok : Theme.color.text_secondary)
+                        font.pixelSize: Theme.typography.scale.caption.size
+                        text: modelData.name + " · " + modelData.mac + " · " + modelData.doorLabel +
+                              " · 电量 " + modelData.batteryText + " · RSSI " + modelData.rssi +
+                              " · " + modelData.lastSeenText + " · " + modelData.source +
+                              " · " + modelData.reasonLabel +
+                              " · ID " + modelData.deviceId
+                    }
+                }
+            }
+        }
+
         // 权限矩阵卡（ITEM-023）：页面/导出/配置权限矩阵；受限入口不渲染由权限查询驱动
         Rectangle {
             objectName: "maintPermMatrixCard"

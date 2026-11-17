@@ -43,7 +43,11 @@ void RailhmiReplayModel::configureNvr(const QString& file) {
     if (!nvr_enabled_) return;
     nvr_client_ = new NvrClient(nvr_settings_, this);
     nvr_password_ = QString::fromUtf8(qgetenv(nvr_settings_.credentialEnv.toUtf8().constData()));
-    nvr_message_ = "请连接录像机，并选择已核对的 NVR 通道";
+    // 账号/通道/密码都是现场固定值：nvr.yaml 给账号与六路通道映射，私有凭据文件给密码。
+    // 页面不再提供输入框，进入应用即自动登录并读取设备实际通道权限。
+    nvr_message_ = nvr_password_.isEmpty()
+        ? "未配置录像机凭据：" + nvr_settings_.credentialEnv + "（请检查部署私有凭据文件）"
+        : "正在用固定账号自动连接录像机";
     connect(nvr_client_, &NvrClient::channelsReady, this, [this](const QVariantList& channels) {
         nvr_channels_ = channels; nvr_available_ = true; nvr_busy_ = false; nvr_login_pending_ = false;
         nvr_message_ = "录像机已连接，共 " + QString::number(channels.size()) + " 个通道";
@@ -81,6 +85,14 @@ void RailhmiReplayModel::configureNvr(const QString& file) {
         }
         emit nvrChanged();
     });
+    // 自动登录：所有信号已接好后再发起，保证通道结果与失败原因都能被 UI 正确接收。
+    // 凭据缺失时保持显式失败文案，不伪装成已连接，也不静默重试。
+    if (!nvr_password_.isEmpty()) {
+        nvr_client_->setCredentials(nvr_settings_.username, nvr_password_);
+        refreshNvrChannels();
+    } else {
+        emit nvrChanged();
+    }
 }
 
 QVariantMap RailhmiReplayModel::nvrState() const {
@@ -92,7 +104,7 @@ QVariantMap RailhmiReplayModel::nvrState() const {
     return {{"enabled", nvr_enabled_}, {"busy", nvr_busy_}, {"connected", nvr_available_},
         {"message", nvr_message_}, {"channels", nvr_channels_}, {"channelName", channelName},
         {"count", nvr_records_.size()}, {"decoderState", decoder_state_}, {"playingCamera", playing_camera_},
-        {"username", nvr_settings_.username}};
+        {"username", nvr_settings_.username}, {"autoLogin", !nvr_password_.isEmpty()}};
 }
 
 void RailhmiReplayModel::loginNvr(const QString& username, const QString& password) {
@@ -409,5 +421,9 @@ QVariantMap RailhmiReplayModel::sourceStatus() const {
 QString RailhmiReplayModel::formatTime(double ts_wall_ms) const {
     if (nvr_enabled_) return ts_wall_ms > 0 ? QDateTime::fromMSecsSinceEpoch(
         static_cast<qint64>(ts_wall_ms), nvr_settings_.timeZone).toString("yyyy-MM-dd HH:mm:ss") : QString("—");
-    return QString::fromStdString(railhmi::core::format_time_text(static_cast<long long>(ts_wall_ms)));
+    // 未配置 NVR 时区时按本机时区显示，与报警中心一致（core 侧仍是 UTC epoch）。
+    return ts_wall_ms > 0
+        ? QDateTime::fromMSecsSinceEpoch(static_cast<qint64>(ts_wall_ms), Qt::LocalTime)
+              .toString(QStringLiteral("yyyy-MM-dd HH:mm:ss"))
+        : QString::fromUtf8("\xE2\x80\x94");
 }

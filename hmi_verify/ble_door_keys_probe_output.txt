@@ -1,0 +1,6 @@
+door-keys: listening 50s on /org/bluez/hci0/dev_C0_6D_9A_AC_C3_87
+=== 3 DOOR PROPERTIESCHANGED EVENTS ===
+  t=  9.25s iface=org.bluez.Device1 keys={'RSSI': '-48', 'ManufacturerData': 'company=0xff07 bytes=ffffff06006361000000000000000000000000000000db'}
+  t= 27.35s iface=org.bluez.Device1 keys={'RSSI': '-50', 'ManufacturerData': 'company=0xff07 bytes=ffffff06006361000000000000000000000000000000dd'}
+  t= 49.47s iface=org.bluez.Device1 keys={'RSSI': '-50', 'ManufacturerData': 'company=0xff07 bytes=ffffff06006361000000000000000000000000000000df'}
+=== END ===

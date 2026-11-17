@@ -36,15 +36,22 @@ private:
 class VideoFrameItem : public QQuickPaintedItem {
     Q_OBJECT
     Q_PROPERTY(VideoChannel* channel READ channel WRITE setChannel NOTIFY channelChanged)
+    // 0 = Fit（保持比例、不裁剪，比例不符时留黑边）
+    // 1 = Cover（保持比例铺满格子，居中裁掉超出部分）
+    Q_PROPERTY(int fillMode READ fillMode WRITE setFillMode NOTIFY fillModeChanged)
 public:
     explicit VideoFrameItem(QQuickItem* parent = nullptr);
     VideoChannel* channel() const { return channel_; }
     void setChannel(VideoChannel* channel);
+    int fillMode() const { return fillMode_; }
+    void setFillMode(int mode);
     void paint(QPainter* painter) override;
 signals:
     void channelChanged();
+    void fillModeChanged();
 private:
     VideoChannel* channel_ = nullptr;
+    int fillMode_ = 0;
     QMetaObject::Connection frameConnection_;
 };
 

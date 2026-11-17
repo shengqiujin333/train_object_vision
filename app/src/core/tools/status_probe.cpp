@@ -92,10 +92,14 @@ int main(int argc, char** argv) {
 
     TopBarSnapshot ts;
     ts.time_text = "12:34:56";
-    ts.recording = snap.recording;
-    ts.ai = snap.ai;
+    // 现场需求定稿后的顶栏：模式位/AI 位已删除，车速改为人工车辆状态。
+    // 四项真值统一走 core 映射函数，探针不另写一套文案。
+    ts.camera = camera_top_status(6, 6);
+    ts.recording = nvr_top_status(scenario != "unavailable");
     ts.health = (scenario == "mixed") ? CategoryStatus{StatusLevel::Warning, "温度偏高"}
                                       : CategoryStatus{StatusLevel::Ok, "正常"};
+    ts.vehicle_state = vehicle_state_top_status(scenario == "mixed" ? 2 : 1);
+    ts.door_sensor = door_top_status(scenario == "mixed" ? "alarm" : "ok");
     const std::vector<TopBarItem> tops = build_top_bar(ts, role);
     emit("type=topbar scenario=" + scenario + " role=" + to_string(role) +
          " items=" + std::to_string(tops.size()));
@@ -124,20 +128,26 @@ int main(int argc, char** argv) {
          " distinct_labels=" + std::to_string(labels.size()) +
          " distinct_colors=" + std::to_string(colors.size()));
 
-    bool mode_ok = false, unconnected_ok = false;
+    // 验收：顶栏固定 6 项、删除的三项不再出现、四项真值映射生效。
+    const char* want[6] = {"time", "camera", "recording", "health", "vehicle_state", "door_sensor"};
+    bool order_ok = tops.size() == 6;
+    for (std::size_t i = 0; i < tops.size() && i < 6; ++i)
+        if (tops[i].key != want[i]) order_ok = false;
+    bool camera_ok = false, recording_ok = false, door_ok = false;
     for (const auto& t : tops) {
-        if (t.key == "mode")
-            mode_ok = (t.value == "可见光" && t.secondary == "红外未接入" && !t.clickable);
-        if (t.key == "vehicle_speed" || t.key == "door_sensor")
-            unconnected_ok = unconnected_ok || (t.unavailable && t.value == "未接入");
+        if (t.key == "mode" || t.key == "ai" || t.key == "vehicle_speed") order_ok = false;
+        if (t.key == "camera") camera_ok = (t.value == "6/6 路实时");
+        if (t.key == "recording") recording_ok = (t.value == "NVR正常" || t.value == "NVR异常");
+        if (t.key == "door_sensor") door_ok = (t.value == "开门" || t.value == "关门");
     }
+    const bool truth_ok = camera_ok && recording_ok && door_ok;
     const bool triple_ok = shapes.size() == 5 && glyphs.size() == 5 && labels.size() == 5 && colors.size() == 5;
-    const bool ok = items.size() == 7 && tops.size() == 7 && triple_ok && mode_ok && unconnected_ok;
+    const bool ok = items.size() == 7 && tops.size() == 6 && triple_ok && order_ok && truth_ok;
     emit("type=acceptance items=" + std::to_string(items.size()) +
          " top_items=" + std::to_string(tops.size()) +
          " triple_encoding_distinct=" + (triple_ok ? "true" : "false") +
-         " mode_bit_ok=" + (mode_ok ? "true" : "false") +
-         " unconnected_shown=" + (unconnected_ok ? "true" : "false") +
+         " top_order_ok=" + (order_ok ? "true" : "false") +
+         " truth_mapping_ok=" + (truth_ok ? "true" : "false") +
          " result=" + (ok ? "PASS" : "FAIL"));
     return ok ? 0 : 1;
 }
