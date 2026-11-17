@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <cstdio>
 #include <sstream>
 #include <utility>
@@ -752,11 +753,22 @@ VisionInferOutcome RknnVisionDetector::infer(const AiFrame& frame, railhmi::core
                                                 : ts.reason,
                                ts_ok ? ts.detail : ts_err);
         }
-        boxes.reserve(ts.detections.size());
-        in_roi.reserve(ts.detections.size());
-        for (const auto& d : ts.detections) {
-            boxes.push_back(d.box);
-            in_roi.push_back(d.on_rail_alarm ? 1 : 0);
+        // 框集合（2026-11-17 现场需求）：检测到的**所有人/物**都进入 envelope，用 in_roi 区分
+        // 「轨道内（红色/报警）」与「轨道外（青色/仅显示）」。报警判定仍只认 in_roi=1，
+        // 因此把轨道外目标也画出来不会增加误报，只是让司机看到模型看见了什么。
+        boxes.reserve(det.boxes.size());
+        in_roi.reserve(det.boxes.size());
+        for (const auto& b : det.boxes) {
+            bool on_rail = false;
+            for (const auto& d : ts.detections) {
+                if (std::fabs(d.box.x - b.x) < 1e-6f && std::fabs(d.box.y - b.y) < 1e-6f &&
+                    std::fabs(d.box.w - b.w) < 1e-6f && std::fabs(d.box.h - b.h) < 1e-6f) {
+                    on_rail = d.on_rail_alarm;
+                    break;
+                }
+            }
+            boxes.push_back(b);
+            in_roi.push_back(on_rail ? 1 : 0);
         }
         // rail 掩码：原图坐标独立二值 plane，零拷贝引用（所有权在 out.seg）。
         // box_index=-1：掩码属于 rail 框集合，不与 person boxes 一一对应（记录于实现文档）。

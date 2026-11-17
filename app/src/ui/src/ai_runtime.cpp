@@ -256,6 +256,12 @@ void AiRuntime::tick() {
 
 #ifdef RAILHMI_HAS_MEDIA
     if (impl_->worker && impl_->video) {
+        // 诊断开关（RAILHMI_AI_DEBUG=1，默认关闭）：每 8 个 tick（约 2s）逐路打印框数与可用性，
+        // 用来区分「模型没检出」与「链路没跑」。生产默认不输出。
+        static long long tick_seq = 0;
+        ++tick_seq;
+        const bool dbg_log =
+            qEnvironmentVariableIsSet("RAILHMI_AI_DEBUG") && (tick_seq % 8 == 0);
         // 只提交真实新帧（seq 变化），同一帧不重复入队；租约失效时跳过。
         for (const auto& id : impl_->camera_ids) {
             railhmi::media::FrameLease lease = impl_->video->latestLease(id);
@@ -342,6 +348,16 @@ void AiRuntime::tick() {
                 max_conf = std::max(max_conf, 0.92);
             }
             m["boxes"] = boxes;
+            if (dbg_log) {
+                railhmi::platform::Logger::instance().info(
+                    "ai-debug: " + lane.camera_id +
+                    " profile=" + profile_token(lane.profile) +
+                    " boxes=" + std::to_string(lane.boxes.size()) +
+                    " published=" + std::to_string(lane.published) +
+                    " infer_us=" + std::to_string(lane.last_infer_us) +
+                    " ready=" + std::string(lane_ready ? "true" : "false") +
+                    " reason=" + lane.unavailable_reason);
+            }
             m["confidenceText"] = max_conf >= 0.0
                                       ? QString::number(max_conf * 100, 'f', 0) + "%"
                                       : QStringLiteral("—");
