@@ -280,10 +280,37 @@ void NvrClient::send(Request request) {
         if (qEnvironmentVariableIsSet("RAILHMI_NVR_TRACE") && !result.isDouble())
             qWarning() << "NVR response schema" << request.operation << object.keys()
                        << "resultType" << static_cast<int>(result.type()) << "bytes" << bytes.size();
-        if (problem.isEmpty() && (!result.isDouble() || result.toDouble() != 0))
+        // 设备用 Result=-1 表示「会话/登录句柄无效」时，有的接口给 403+ErrorString，
+        // 有的接口给 HTTP 200 + {"Result":-1}（没有 ErrorString，正是「设备未提供错误说明」那种）。
+        // 这里统一按会话过期处理：重登一次并重放原请求；仍失败才把真实报文报给用户。
+        if (problem.isEmpty() && result.isDouble() && result.toDouble() == -1.0 &&
+            request.operation != QLatin1String("login") && request.reauth < 1) {
+            ++request.reauth;
+            qInfo() << "nvr-session: device returned Result=-1 for" << request.operation
+                    << "- re-login and retry";
+            sessionHeaders_.clear();
+            challenge_.clear();
+            nonceCount_ = 0;
+            reply->deleteLater();
+            active_ = false;
+            requests_.prepend(std::move(request));
+            Request login;
+            login.operation = "login";
+            login.endpoint = "/frmUserLogin";
+            login.body = {{"Type", 0}, {"Ch", 0}, {"Data", QJsonObject{}}};
+            login.callback = [](const QJsonObject&) {};
+            requests_.prepend(std::move(login));
+            QTimer::singleShot(0, this, &NvrClient::processNext);
+            return;
+        }
+        if (problem.isEmpty() && (!result.isDouble() || result.toDouble() != 0)) {
+            // 记录原始报文（设备常不给 ErrorString），排障时能看到到底返回了什么。
+            qInfo() << "nvr: op" << request.operation << "ch" << request.body.value("Ch").toInt()
+                    << "status" << status << "body" << QString::fromUtf8(bytes.left(300));
             problem = "录像机查询失败（返回码 " +
                 (result.isDouble() ? QString::number(result.toDouble()) : QString("无效")) +
                 "）：" + object.value("ErrorString").toString("设备未提供错误说明");
+        }
         // IVR requires all three login/session hashes on subsequent calls and may rotate them.
         // Only accept a complete set from a successful JSON response of this device.
         const auto sHash = reply->rawHeader("S-HASH"), xHash = reply->rawHeader("X-HASH"),
