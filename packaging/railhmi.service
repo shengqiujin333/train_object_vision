@@ -2,12 +2,20 @@
 # 常驻自启、崩溃自动重启；显式提供 DISPLAY；**不修改也不依赖 cpu-performance.service**。
 [Unit]
 Description=railhmi 车载监控桌面应用
-After=network-online.target bluetooth.service
-Wants=network-online.target bluetooth.service
+After=network-online.target bluetooth.service display-manager.service
+Wants=network-online.target bluetooth.service display-manager.service
+# 开机时与 lightdm 同时拉起，X(:0) 可能还没就绪 -> 首次启动会失败并自动重试。
+# 这里取消启动频率限制，配合 Restart=always 保证「X 起来之后一定会被拉起来」，
+# 不会因为短时间内连续失败而被 systemd 判定 failed 后放弃。
+StartLimitIntervalSec=0
 
 [Service]
 Type=simple
 User=admin
+# 等 X(:0) 真正可连接再启动：开机时 graphical.target 与 lightdm 是并发的，
+# Qt 在 X 就绪前启动会直接 abort（板端实测 17:19:46 首启 ABRT，重试后成功）。
+# 最多等 40s，超时也继续启动，剩余情况交给 Restart=always 兜底。
+ExecStartPre=/bin/sh -c 'for i in $(seq 1 40); do DISPLAY=:0 xdpyinfo >/dev/null 2>&1 && exit 0; sleep 1; done; exit 0'
 # X11 显示（历史记录为 :0；部署时按现场 X 会话核对）
 Environment=DISPLAY=:0
 Environment=QT_QPA_PLATFORM=xcb
@@ -22,7 +30,7 @@ WorkingDirectory=/opt/railhmi
 # 顶栏 NPU 分核负载读 /sys/kernel/debug/rknpu/load（debugfs 默认仅 root 可读）。
 # 以 + 前缀临时提权放开只读权限；未挂载 debugfs / 文件不存在时 - 前缀忽略失败，
 # 应用会自动退到 devfreq 聚合值并显式标注「聚合」，绝不把单值复制成多个核。
-ExecStartPre=-+/bin/chmod 0444 /sys/kernel/debug/rknpu/load
+ExecStartPre=-+/bin/sh -c 'for i in $(seq 1 20); do if [ -d /sys/kernel/debug/rknpu ]; then chmod 0755 /sys/kernel/debug/rknpu; chmod 0444 /sys/kernel/debug/rknpu/load; exit 0; fi; sleep 1; done; exit 0'
 # BLE 门磁：控制器/内核默认开启广播去重（Filter duplicates=Enabled），厂家 1s 一次的
 # 广播会被丢成 2~25s 一次。应用每次轮询下发 HCI `LE Set Scan Enable filter_dup=0`
 # 抵消去重，需要 CAP_NET_ADMIN + CAP_NET_RAW（本进程以 admin 运行，用文件能力授予）。

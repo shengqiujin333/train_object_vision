@@ -56,8 +56,12 @@ sudo systemctl restart railhmi      # 升级后重启；日志：/opt/railhmi/lo
 ```
 
 - `Restart=always` + `RestartSec=3`：进程被杀/崩溃后自动拉起（板端实测 `kill -9` 后 5 秒内恢复）；
-- `WantedBy=graphical.target` + 已 `enable`：开机自启；
+- `WantedBy=graphical.target` + 已 `enable`：开机自启；**两次重启实测**：第一次首启因 X 未就绪
+  ABRT 后自动重试成功，补上 `ExecStartPre` 等 X 就绪后，第二次重启 **`NRestarts=0` 一次启动成功**
+  （17:21:32 Starting → 17:21:35 Started，六路/AI/NVR/门磁全部正常）；
 - 单元里自带 `setcap cap_net_admin,cap_net_raw`（门磁 HCI 直读需要），升级二进制后不必手工补；
+- 顶栏 NPU 分核读数依赖 `/sys/kernel/debug/rknpu/load`；重启后该节点偶尔不存在，此时界面显示
+  「聚合」值而不是伪造分核数字（单元里已加 chmod 等待循环，节点存在时会自动放开只读权限）；
 - **验收/调试脚本请用 `systemctl stop|start railhmi`，不要再用 `pkill -x railhmi`**——那会连 `:0`
   上的生产实例一起杀掉（这正是本次「软件消失」的成因）。
 
