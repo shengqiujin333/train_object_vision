@@ -50,6 +50,10 @@ struct RknnDetectorConfig {
     std::string danger_zone_name = "danger_zone";
     bool enable_danger_zone = true;
     bool prefer_rga_for_nv12 = true;
+    // 车前方检测裁剪窗（归一化）：只把该区域送进检测模型，等效提升分辨率。
+    // 1280x720 整帧 letterbox 到 640 => 缩放 0.5；裁成 640x504 后 1:1 像素，远处小目标不再被缩小。
+    // 零尺寸 = 关闭（整帧，保持既有行为）。分割模型始终跑整帧，两阶段判定在整帧坐标里做。
+    railhmi::core::CropRect detect_crop;
     // 临时能力复用（现场 2026-11-17 需求）：受电弓/轮轨两路当前没有专用模型，
     // 要求先用与车前方相同的检测模型跑通「接入-显示-报警」。true 时这两路沿用
     // YoloV5Detect 模型做检测（不跑分割，envelope 只含框与可用性）；
@@ -133,6 +137,7 @@ public:
         long long last_det_dropped_score = 0;
         long long last_det_dropped_class = 0;
         long long last_det_nms = 0;
+        long long last_det_bounds = 0;
     };
     const Counters& counters() const { return counters_; }
 
@@ -148,8 +153,10 @@ private:
     Model* model_for(railhmi::core::VisionModelKind kind);
     const Model* model_for(railhmi::core::VisionModelKind kind) const;
     bool run_model(Model& m, const FrameLease& lease, std::vector<RknnOutputTensor>* outs,
-                   std::string* reason, std::string* detail);
-    bool run_detect(const FrameLease& lease, railhmi::core::DetectResult* out, std::string* reason,
+                   std::string* reason, std::string* detail,
+                   FramePreprocessor* pre_override = nullptr);
+    bool run_detect(const FrameLease& lease, railhmi::core::AiProfile profile,
+                    railhmi::core::DetectResult* out, std::string* reason,
                     std::string* detail, railhmi::core::LetterboxParams* lb);
     bool run_seg(const FrameLease& lease, railhmi::core::SegResult* out, std::string* reason,
                  std::string* detail, railhmi::core::LetterboxParams* lb);

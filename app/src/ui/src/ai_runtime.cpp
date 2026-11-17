@@ -196,6 +196,13 @@ void AiRuntime::rebuild() {
     // 类别白名单来自配置（app.ai.detect_classes，缺省 {0}=person）。
     // 现场想同时看到车辆等目标时，把 2(car)/5(bus)/7(truck) 加进去即可；代码不写死。
     if (!ai.detect_classes.empty()) dcfg.detect.class_whitelist = ai.detect_classes;
+    // 车前方裁剪窗：只影响 front 的检测模型（1:1 像素，避免整帧缩到 640 后远处目标丢失）。
+    if (ai.front_crop_enabled()) {
+        dcfg.detect_crop.x = ai.front_crop_x;
+        dcfg.detect_crop.y = ai.front_crop_y;
+        dcfg.detect_crop.w = ai.front_crop_w;
+        dcfg.detect_crop.h = ai.front_crop_h;
+    }
     dcfg.seg.score_threshold = static_cast<float>(th.confidence_min);
     dcfg.seg.nms_iou = 0.45f;
     dcfg.seg.mask_threshold = 0.0f;
@@ -371,6 +378,7 @@ void AiRuntime::tick() {
                     " det_low=" + std::to_string(dc.last_det_dropped_score) +
                     " det_cls=" + std::to_string(dc.last_det_dropped_class) +
                     " det_nms=" + std::to_string(dc.last_det_nms) +
+                    " det_bounds=" + std::to_string(dc.last_det_bounds) +
                     " det_ok_total=" + std::to_string(dc.det_boxes) +
                     " ready=" + std::string(lane_ready ? "true" : "false") +
                     " reason=" + lane.unavailable_reason);

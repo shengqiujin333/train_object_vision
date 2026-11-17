@@ -20,6 +20,8 @@ namespace media {
 
 struct FramePreprocessConfig {
     railhmi::core::PreprocessConfig core;
+    // 只把裁剪窗送进模型（等效提升该区域分辨率）。空/零尺寸 = 整帧 letterbox。
+    railhmi::core::CropRect crop;
     // true: NV12 先经 librga 转 BGR 再进 core 预处理（板端主链路）；
     // false: 用 core 的参考 NV12 实现（一致性校验/无 RGA 环境）。
     bool prefer_rga_for_nv12 = true;
@@ -30,6 +32,11 @@ struct LeasePreprocessResult {
     std::string reason;          // preprocess_reason token（含 NOT_READY）
     std::string detail;          // 已脱敏说明
     std::string source_format;   // nv12|bgr888|rgb888|unknown
+    // 实际生效的裁剪窗像素矩形（未裁剪时 w/h = 0）。后处理用它把框坐标换算回整帧。
+    int crop_x = 0;
+    int crop_y = 0;
+    int crop_w = 0;
+    int crop_h = 0;
     railhmi::core::PreprocessedInput input;
 };
 

@@ -395,6 +395,38 @@ void load_app(const Node& root, AppSettings* s, Errors& e) {
                     if (!bad && !ids.empty()) a.ai.detect_classes = ids;
                 }
             }
+            // front_crop（可选）：车前方检测裁剪窗 [x,y,w,h]（归一化）。
+            const Node* fcrop = child(*ai, "front_crop");
+            if (fcrop && !fcrop->is_null()) {
+                if (!fcrop->is_seq() || fcrop->seq.size() != 4) {
+                    err(e, "app.ai.front_crop", "expected sequence [x,y,w,h] of 4 numbers");
+                } else {
+                    double v[4] = {0, 0, 0, 0};
+                    bool okc = true;
+                    for (int i = 0; i < 4; ++i) {
+                        if (!yaml::to_double(fcrop->seq[i], &v[i])) {
+                            err(e, "app.ai.front_crop", "expected numbers");
+                            okc = false;
+                            break;
+                        }
+                        if (v[i] < 0.0 || v[i] > 1.0) {
+                            err(e, "app.ai.front_crop", "values must be in [0,1]");
+                            okc = false;
+                            break;
+                        }
+                    }
+                    if (okc) {
+                        if (v[0] + v[2] > 1.0001 || v[1] + v[3] > 1.0001)
+                            err(e, "app.ai.front_crop", "x+w and y+h must be <= 1");
+                        else if (v[2] > 0.0 && v[3] > 0.0) {
+                            a.ai.front_crop_x = v[0];
+                            a.ai.front_crop_y = v[1];
+                            a.ai.front_crop_w = v[2];
+                            a.ai.front_crop_h = v[3];
+                        }
+                    }
+                }
+            }
             const Node* models = ai->get("models");
             if (models && !models->is_null()) {
                 if (!models->is_seq()) {

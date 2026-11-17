@@ -76,6 +76,22 @@ struct PreprocessConfig {
     InputTensorSpec input;      // dtype/scale/zp
 };
 
+// 推理裁剪窗（归一化 [0,1]）：只把感兴趣区域送进模型，等效提升该区域的分辨率。
+// 例：1280x720 全帧 letterbox 到 640 时缩放 0.5；裁剪成 640x504 后缩放 1.0（1:1 像素），
+// 远处小目标不再被缩小一半。空/零尺寸 = 关闭（整帧 letterbox，保持既有行为）。
+struct CropRect {
+    double x = 0.0;
+    double y = 0.0;
+    double w = 0.0;
+    double h = 0.0;
+    bool enabled() const { return w > 0.0 && h > 0.0; }
+};
+
+// 把归一化裁剪窗换算成像素矩形（偶数对齐，至少 32x32，且不越界）。
+// 预处理与后处理的坐标反算必须用同一份换算，避免两处各自取整导致框偏移。
+bool crop_pixels(const CropRect& crop, int frame_w, int frame_h, int* x, int* y, int* w,
+                 int* h);
+
 // 预处理结果：HWC 三通道张量，通道顺序为转换后的模型输入顺序（默认 RGB）。
 struct PreprocessedInput {
     int width = 0;

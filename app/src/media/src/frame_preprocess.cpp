@@ -75,6 +75,23 @@ LeasePreprocessResult FramePreprocessor::prepare(const FrameLease& lease) {
     std::string err;
     bool ok = false;
 
+    // 裁剪窗：只在“打包像素（RGA 转出来的 BGR）”路径上生效；NV12 直通路径不支持裁剪，
+    // 此时显式回退为整帧（不静默改变语义，调用方可从结果里的 crop_w=0 看出来）。
+    int cx = 0, cy = 0, cw = 0, ch = 0;
+    const bool want_crop = cfg_.crop.enabled();
+    auto apply_crop = [&](const std::uint8_t* base, int bw, int bh, int bstride,
+                          railhmi::core::ChannelOrder order, bool* done) -> const std::uint8_t* {
+        if (!want_crop) return base;
+        if (!railhmi::core::crop_pixels(cfg_.crop, bw, bh, &cx, &cy, &cw, &ch)) return base;
+        const int bpp = 3;
+        *done = true;
+        r.crop_x = cx;
+        r.crop_y = cy;
+        r.crop_w = cw;
+        r.crop_h = ch;
+        return base + static_cast<std::size_t>(cy) * bstride + static_cast<std::size_t>(cx) * bpp;
+    };
+
     if (d.layout.format == PixelFormat::Nv12) {
         if (cfg_.prefer_rga_for_nv12) {
             BgrImage bgr;
@@ -86,9 +103,13 @@ LeasePreprocessResult FramePreprocessor::prepare(const FrameLease& lease) {
                                         : preprocess_reason::kConversionFailed(),
                               cerr);
             }
-            ok = railhmi::core::prepare_from_packed(bgr.data.data(), bgr.width, bgr.height,
-                                                    bgr.width * 3, railhmi::core::ChannelOrder::Bgr,
-                                                    cfg_.core, &r.input, &err);
+            bool cropped = false;
+            const std::uint8_t* base = apply_crop(
+                bgr.data.data(), bgr.width, bgr.height, bgr.width * 3,
+                railhmi::core::ChannelOrder::Bgr, &cropped);
+            ok = railhmi::core::prepare_from_packed(
+                base, cropped ? cw : bgr.width, cropped ? ch : bgr.height, bgr.width * 3,
+                railhmi::core::ChannelOrder::Bgr, cfg_.core, &r.input, &err);
         } else {
             const std::uint8_t* y = lease.plane_data(0);
             const std::uint8_t* uv = lease.plane_data(1);

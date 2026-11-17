@@ -118,6 +118,15 @@ struct AiConfig {
     // 现场若还想看到车辆/其它目标，可在配置里加 2(car)/5(bus)/7(truck) 等。
     // 空 = 保持默认 {0}；不提供「全部类别」档，避免把 80 类噪声全画到司机屏上。
     std::vector<int> detect_classes{0};
+
+    // 车前方检测裁剪窗（归一化 x,y,w,h）。零尺寸 = 关闭（整帧 letterbox）。
+    // 1280x720 整帧到 640 会缩放 0.5；裁成 640x540 后是 1:1 像素，远处小目标不再被缩小。
+    // 只影响检测模型；分割始终跑整帧，两阶段判定仍在整帧坐标里做。
+    double front_crop_x = 0.0;
+    double front_crop_y = 0.0;
+    double front_crop_w = 0.0;
+    double front_crop_h = 0.0;
+    bool front_crop_enabled() const { return front_crop_w > 0.0 && front_crop_h > 0.0; }
 };
 
 // BLE 门磁（USTONE BWD1 / USTONE-HA-BSM1）广播接入配置。

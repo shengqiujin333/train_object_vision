@@ -87,6 +87,8 @@ struct RknnVisionDetector::Model {
     railhmi::core::CapabilityCheck check;
     railhmi::core::PreprocessConfig preprocess;
     std::unique_ptr<FramePreprocessor> pre;
+    // 仅检测模型、仅在车前方使用：把裁剪窗送进模型，等效提升该区域分辨率（见 CropRect）。
+    std::unique_ptr<FramePreprocessor> pre_crop;
     uint32_t input_type = 0;
     bool ready = false;
     std::string reason = "NOT_READY";
@@ -349,6 +351,12 @@ bool RknnVisionDetector::load_kind(railhmi::core::VisionModelKind kind,
     pcfg.core = m->preprocess;
     pcfg.prefer_rga_for_nv12 = cfg_.prefer_rga_for_nv12;
     m->pre.reset(new FramePreprocessor(pcfg));
+    // 检测模型额外准备一份“裁剪窗”预处理器：车前方只跑裁剪区域，等效提升分辨率。
+    if (kind == railhmi::core::VisionModelKind::YoloV5Detect && cfg_.detect_crop.enabled()) {
+        FramePreprocessConfig ccfg = pcfg;
+        ccfg.crop = cfg_.detect_crop;
+        m->pre_crop.reset(new FramePreprocessor(ccfg));
+    }
 
     m->ready = true;
     m->reason = railhmi::core::vision_reason::kReady();
@@ -464,23 +472,25 @@ std::vector<railhmi::core::DutyStatusItem> RknnVisionDetector::duties() const {
 
 bool RknnVisionDetector::run_model(Model& m, const FrameLease& lease,
                                    std::vector<RknnOutputTensor>* outs, std::string* reason,
-                                   std::string* detail) {
+                                   std::string* detail, FramePreprocessor* pre_override) {
     if (!m.pre || !m.session || !m.ready) {
         if (reason) *reason = railhmi::core::vision_reason::kNotReady();
         if (detail) *detail = "model not ready";
         return false;
     }
+    FramePreprocessor* pre = pre_override ? pre_override : m.pre.get();
     const long long t0 = mono_us();
-    const LeasePreprocessResult pre = m.pre->prepare(lease);
+    const LeasePreprocessResult pre_res = pre->prepare(lease);
     counters_.last_pre_us = mono_us() - t0;
-    if (!pre.ok) {
+    if (!pre_res.ok) {
         ++counters_.preprocess_failed;
         if (reason) *reason = infer_reason::kPreprocessFailed();
-        if (detail) *detail = pre.reason + " " + pre.detail;
+        if (detail) *detail = pre_res.reason + " " + pre_res.detail;
         return false;
     }
     std::string err;
-    if (!m.session->set_input(pre.input.data.data(), pre.input.data.size(), m.input_type, &err) ||
+    if (!m.session->set_input(pre_res.input.data.data(), pre_res.input.data.size(), m.input_type,
+                              &err) ||
         !m.session->run(&err) || !m.session->get_outputs_float(outs, &err)) {
         ++counters_.infer_failed;
         if (reason) *reason = infer_reason::kInferFailed();
@@ -490,18 +500,34 @@ bool RknnVisionDetector::run_model(Model& m, const FrameLease& lease,
     return true;
 }
 
-bool RknnVisionDetector::run_detect(const FrameLease& lease, railhmi::core::DetectResult* out,
-                                    std::string* reason, std::string* detail,
-                                    railhmi::core::LetterboxParams* lb) {
+bool RknnVisionDetector::run_detect(const FrameLease& lease, railhmi::core::AiProfile profile,
+                                    railhmi::core::DetectResult* out, std::string* reason,
+                                    std::string* detail, railhmi::core::LetterboxParams* lb) {
     Model* m = model_for(railhmi::core::VisionModelKind::YoloV5Detect);
     if (!m) {
         if (reason) *reason = railhmi::core::vision_reason::kModelMissing();
         if (detail) *detail = "detect model not loaded";
         return false;
     }
+    const railhmi::core::FrameLayout& layout = lease.descriptor().layout;
+    // 车前方可选裁剪窗：只把裁剪区域送进检测模型（1:1 像素，等效提升远处小目标分辨率）。
+    int crop_x = 0, crop_y = 0, crop_w = 0, crop_h = 0;
+    bool cropped = false;
+    FramePreprocessor* pre = nullptr;
+    int src_w = static_cast<int>(layout.width);
+    int src_h = static_cast<int>(layout.height);
+    if (profile == railhmi::core::AiProfile::Front && m->pre_crop &&
+        railhmi::core::crop_pixels(cfg_.detect_crop, static_cast<int>(layout.width),
+                                   static_cast<int>(layout.height), &crop_x, &crop_y, &crop_w,
+                                   &crop_h)) {
+        cropped = true;
+        pre = m->pre_crop.get();
+        src_w = crop_w;
+        src_h = crop_h;
+    }
     std::vector<RknnOutputTensor> outs;
     const long long t0 = mono_us();
-    if (!run_model(*m, lease, &outs, reason, detail)) return false;
+    if (!run_model(*m, lease, &outs, reason, detail, pre)) return false;
     counters_.last_det_us = mono_us() - t0;
 
     std::vector<railhmi::core::RawDetectTensor> tensors;
@@ -526,12 +552,10 @@ bool RknnVisionDetector::run_detect(const FrameLease& lease, railhmi::core::Dete
         tensors.push_back(t);
     }
 
-    // letterbox 参数：与模型输入相同规格（预处理用的同一份配置）。
+    // letterbox 参数：与预处理同一规格。裁剪时用裁剪后的宽高算（这就是“不缩小”的关键）。
     railhmi::core::LetterboxParams params;
     std::string lerr;
-    const railhmi::core::FrameLayout& layout = lease.descriptor().layout;
-    if (!railhmi::core::compute_letterbox(static_cast<int>(layout.width),
-                                         static_cast<int>(layout.height), m->preprocess.target_w,
+    if (!railhmi::core::compute_letterbox(src_w, src_h, m->preprocess.target_w,
                                          m->preprocess.target_h, &params, &lerr)) {
         if (reason) *reason = infer_reason::kPreprocessFailed();
         if (detail) *detail = "letterbox: " + lerr;
@@ -543,20 +567,30 @@ bool RknnVisionDetector::run_detect(const FrameLease& lease, railhmi::core::Dete
     railhmi::core::DetectConfig dcfg = cfg_.detect;
     dcfg.input_w = m->preprocess.target_w;
     dcfg.input_h = m->preprocess.target_h;
-    const bool ok = railhmi::core::decode_yolov5(tensors, dcfg, params,
-                                                 static_cast<int>(layout.width),
-                                                 static_cast<int>(layout.height), out, &derr);
+    const bool ok = railhmi::core::decode_yolov5(tensors, dcfg, params, src_w, src_h, out, &derr);
     if (!ok) {
         ++counters_.decode_failed;
         if (reason) *reason = infer_reason::kDecodeFailed();
         if (detail) *detail = derr;
         return false;
     }
+    // 裁剪坐标 -> 整帧归一化坐标（两阶段判定与 UI 都使用整帧坐标）。
+    if (cropped) {
+        const double fw = static_cast<double>(layout.width);
+        const double fh = static_cast<double>(layout.height);
+        for (auto& b : out->boxes) {
+            b.x = static_cast<float>((crop_x + static_cast<double>(b.x) * crop_w) / fw);
+            b.y = static_cast<float>((crop_y + static_cast<double>(b.y) * crop_h) / fh);
+            b.w = static_cast<float>(static_cast<double>(b.w) * crop_w / fw);
+            b.h = static_cast<float>(static_cast<double>(b.h) * crop_h / fh);
+        }
+    }
     counters_.det_boxes += static_cast<long long>(out->boxes.size());
     counters_.last_det_candidates = out->candidates;
     counters_.last_det_dropped_score = out->dropped_score;
     counters_.last_det_dropped_class = out->dropped_class;
     counters_.last_det_nms = out->nms_suppressed;
+    counters_.last_det_bounds = out->dropped_bounds;
     return true;
 }
 
@@ -702,7 +736,7 @@ VisionInferOutcome RknnVisionDetector::infer(const AiFrame& frame, railhmi::core
     std::string d_reason;
     std::string d_detail;
     railhmi::core::LetterboxParams d_lb;
-    if (!run_detect(frame.lease, &det, &d_reason, &d_detail, &d_lb))
+    if (!run_detect(frame.lease, p, &det, &d_reason, &d_detail, &d_lb))
         return unavailable(d_reason, d_detail);
 
     railhmi::core::SegResult seg;
@@ -720,12 +754,12 @@ VisionInferOutcome RknnVisionDetector::infer(const AiFrame& frame, railhmi::core
     std::vector<railhmi::core::DetectBox> boxes;
     std::vector<char> in_roi;
     std::vector<railhmi::core::MaskRef> masks;
+    bool seg_required_for_envelope = false;
 
     if (p == railhmi::core::AiProfile::Front) {
         std::shared_ptr<railhmi::core::SegResult> segp(
             new railhmi::core::SegResult(std::move(seg)));
         out.seg = segp;
-
         railhmi::core::TwoStageInput in;
         in.frame = out.envelope.frame;
         in.detect_frame = out.envelope.frame;
@@ -751,12 +785,20 @@ VisionInferOutcome RknnVisionDetector::infer(const AiFrame& frame, railhmi::core
         railhmi::core::TwoStageResult ts;
         std::string ts_err;
         const bool ts_ok = railhmi::core::evaluate_two_stage(in, two_stage_cfg_, &ts, &ts_err);
-        if (!ts_ok || !ts.available) {
-            // 分割失败/掩码为空 -> 不可用（reason 取自 ITEM-005 判定，不输出“轨道内安全”）。
+        const bool two_stage_ready = ts_ok && ts.available;
+        // 分割不可用（画面里没有轨道/掩码为空）时，**不再丢弃检测框**：
+        // 仍把检出目标以 in_roi=0 发布，只显示不报警（没有轨道就无法判定“在轨道内”）。
+        // 这样现场「画面里明明有人却什么都不显示」不会发生，同时绝不把无掩码当“安全”。
+        // 仅当检测本身失败时才整帧不可用。
+        if (!two_stage_ready && !det.ok) {
             return unavailable(ts.reason.empty() ? railhmi::core::envelope_reason::kSegUnavailable()
                                                 : ts.reason,
                                ts_ok ? ts.detail : ts_err);
         }
+        if (!two_stage_ready) {
+            out.detail = "rail mask unavailable: boxes published with in_roi=0 (no rail judgement)";
+        }
+        seg_required_for_envelope = two_stage_ready;
         // 框集合（2026-11-17 现场需求）：检测到的**所有人/物**都进入 envelope，用 in_roi 区分
         // 「轨道内（红色/报警）」与「轨道外（青色/仅显示）」。报警判定仍只认 in_roi=1，
         // 因此把轨道外目标也画出来不会增加误报，只是让司机看到模型看见了什么。
@@ -801,7 +843,10 @@ VisionInferOutcome RknnVisionDetector::infer(const AiFrame& frame, railhmi::core
     bin.result_mono_us = mono_us();
     bin.detect_ready = det.ok;
     bin.seg_ready = seg_ok;
-    bin.requires_segmentation = (p == railhmi::core::AiProfile::Front);
+    // 只有两阶段真正可用时才要求分割；掩码不可用时按“检测就绪、仅显示框”发布，
+    // 避免把整帧判成不可用而丢掉框（报警仍需 in_roi=1，不会因此误报）。
+    bin.requires_segmentation =
+        (p == railhmi::core::AiProfile::Front) && seg_required_for_envelope;
     bin.boxes = &boxes;
     bin.masks = &masks;
     bin.in_roi_flags = in_roi;

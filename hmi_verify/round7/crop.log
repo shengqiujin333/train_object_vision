@@ -1,0 +1,97 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-admin'
+2026-11-17T15:28:27.079 INFO  railhmi 0.1.0 [mode=Target, simulation=off]
+2026-11-17T15:28:27.079 INFO  config dir: ./app/config
+2026-11-17T15:28:27.079 INFO  configuration OK: 6 cameras
+2026-11-17T15:28:27.079 INFO  credentials: 3 private env var(s) loaded from config dir
+2026-11-17T15:28:27.079 INFO  display: config=1280x800 runtime=1280x800 (fullscreen)
+2026-11-17T15:28:27.079 INFO  render path: cpu
+2026-11-17T15:28:27.079 INFO  start page overridden: realtime
+video channel "CAM-01" "unstarted" presentable= false
+video channel "CAM-02" "unstarted" presentable= false
+video channel "CAM-03" "unstarted" presentable= false
+video channel "CAM-04" "unstarted" presentable= false
+video channel "CAM-05" "unstarted" presentable= false
+video channel "CAM-06" "unstarted" presentable= false
+2026-11-17T15:28:27.080 INFO  nvr-status: real TCP probe enabled, config=./app/config/nvr.yaml
+2026-11-17T15:28:27.083 INFO  system-metrics: cpu=8 cores, mem=16%, npu=3 cores, perCore=yes, aggregate=100
+2026-11-17T15:28:27.128 INFO  [maint] 维护日志已就绪（最多保留最近 800 行；可保存/导出）
+2026-11-17T15:28:27.323 INFO  door-sensor: enabled adapter=auto poll=1000ms stale=60000ms filter=T1 registered=0 (I/O on dedicated worker thread)
+video workers started: 6 / 6
+video channel "CAM-01" "connecting" presentable= false
+video channel "CAM-02" "connecting" presentable= false
+video channel "CAM-03" "connecting" presentable= false
+video channel "CAM-04" "connecting" presentable= false
+video channel "CAM-05" "connecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+2026-11-17T15:28:27.398 INFO  door-sensor: warning: LE Set Scan Enable(filter_dup=0) failed (rc=-1); falling back to BlueZ discovery
+2026-11-17T15:28:27.398 INFO  door-sensor: PropertiesChanged subscribed on org.freedesktop.DBus.Properties (BlueZ fallback)
+2026-11-17T15:28:27.398 INFO  door-sensor: SetDiscoveryFilter OK (Transport=le, DuplicateData=true) on /org/bluez/hci0
+2026-11-17T15:28:27.398 INFO  door-sensor: StartDiscovery OK on /org/bluez/hci0 (already scanning)
+2026-11-17T15:28:27.398 INFO  door-sensor: I/O mode=bluez-fallback adapter=/org/bluez/hci0
+video channel "CAM-01" "live" presentable= true
+rga_api version 1.10.1_[0]
+2026-11-17T15:28:28.124 INFO  ai: start models_dir=/home/admin/rknn_model_zoo/install/rk3588_linux_aarch64/rknn_yolov8_seg_demo/model detect=yolov5s segment=yolov8s-seg reuse_detect_for_duties=true lanes=3
+2026-11-17T15:28:28.204 INFO  ai: worker started lanes=3 load_error=none detect_ready=true pantograph_ready=true wheel_rail_ready=true detect_classes=0 conf_threshold=0.500000
+video channel "CAM-06" "live" presentable= true
+video channel "CAM-03" "live" presentable= false
+video channel "CAM-03" "live" presentable= true
+video channel "CAM-04" "live" presentable= true
+video channel "CAM-05" "live" presentable= true
+video channel "CAM-02" "live" presentable= true
+2026-11-17T15:28:28.583 INFO  nvr-status: 192.168.1.4:80 -> NVR正常 (tcp connected)
+2026-11-17T15:28:29.394 INFO  ai-alarm: pantograph_abnormal cam=CAM-04 level=2
+2026-11-17T15:28:29.632 INFO  ai-alarm: wheel_derail cam=CAM-05 level=1
+2026-11-17T15:28:29.870 INFO  ai-debug: CAM-01 profile=front boxes=0 published=1 infer_us=148413 det_cand=7 det_low=25193 det_cls=4 det_nms=2 det_ok_total=3 ready=true reason=
+2026-11-17T15:28:29.870 INFO  ai-debug: CAM-04 profile=pantograph boxes=1 published=1 infer_us=102634 det_cand=7 det_low=25193 det_cls=4 det_nms=2 det_ok_total=3 ready=true reason=
+2026-11-17T15:28:29.870 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=1 published=1 infer_us=55004 det_cand=7 det_low=25193 det_cls=4 det_nms=2 det_ok_total=3 ready=true reason=
+2026-11-17T15:28:31.866 INFO  ai-debug: CAM-01 profile=front boxes=0 published=3 infer_us=139602 det_cand=10 det_low=25190 det_cls=0 det_nms=9 det_ok_total=7 ready=true reason=
+2026-11-17T15:28:31.867 INFO  ai-debug: CAM-04 profile=pantograph boxes=1 published=3 infer_us=55575 det_cand=10 det_low=25190 det_cls=0 det_nms=9 det_ok_total=7 ready=true reason=
+2026-11-17T15:28:31.867 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=1 published=3 infer_us=58811 det_cand=10 det_low=25190 det_cls=0 det_nms=9 det_ok_total=7 ready=true reason=
+2026-11-17T15:28:33.860 INFO  ai-debug: CAM-01 profile=front boxes=0 published=5 infer_us=144126 det_cand=4 det_low=25196 det_cls=4 det_nms=0 det_ok_total=9 ready=true reason=
+2026-11-17T15:28:33.860 INFO  ai-debug: CAM-04 profile=pantograph boxes=1 published=4 infer_us=54426 det_cand=4 det_low=25196 det_cls=4 det_nms=0 det_ok_total=9 ready=true reason=
+2026-11-17T15:28:33.861 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=0 published=5 infer_us=64680 det_cand=4 det_low=25196 det_cls=4 det_nms=0 det_ok_total=9 ready=true reason=
+2026-11-17T15:28:34.610 INFO  ai-alarm: cleared cam=CAM-05
+2026-11-17T15:28:35.865 INFO  ai-debug: CAM-01 profile=front boxes=0 published=6 infer_us=144176 det_cand=3 det_low=25197 det_cls=3 det_nms=0 det_ok_total=10 ready=true reason=
+2026-11-17T15:28:35.865 INFO  ai-debug: CAM-04 profile=pantograph boxes=1 published=5 infer_us=97326 det_cand=3 det_low=25197 det_cls=3 det_nms=0 det_ok_total=10 ready=true reason=
+2026-11-17T15:28:35.865 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=0 published=7 infer_us=57837 det_cand=3 det_low=25197 det_cls=3 det_nms=0 det_ok_total=10 ready=true reason=
+2026-11-17T15:28:37.619 INFO  ai-alarm: cleared cam=CAM-04
+2026-11-17T15:28:37.864 INFO  ai-debug: CAM-01 profile=front boxes=0 published=7 infer_us=164883 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=10 ready=true reason=
+2026-11-17T15:28:37.864 INFO  ai-debug: CAM-04 profile=pantograph boxes=0 published=7 infer_us=56606 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=10 ready=true reason=
+2026-11-17T15:28:37.864 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=0 published=9 infer_us=55002 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=10 ready=true reason=
+2026-11-17T15:28:39.863 INFO  ai-debug: CAM-01 profile=front boxes=0 published=9 infer_us=135400 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=10 ready=true reason=
+2026-11-17T15:28:39.864 INFO  ai-debug: CAM-04 profile=pantograph boxes=0 published=8 infer_us=70090 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=10 ready=true reason=
+2026-11-17T15:28:39.864 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=0 published=11 infer_us=55023 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=10 ready=true reason=
+2026-11-17T15:28:40.860 INFO  ai-alarm: wheel_derail cam=CAM-05 level=1
+2026-11-17T15:28:41.867 INFO  ai-debug: CAM-01 profile=front boxes=0 published=11 infer_us=166530 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=11 ready=true reason=
+2026-11-17T15:28:41.867 INFO  ai-debug: CAM-04 profile=pantograph boxes=0 published=10 infer_us=56104 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=11 ready=true reason=
+2026-11-17T15:28:41.867 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=0 published=13 infer_us=54646 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=11 ready=true reason=
+2026-11-17T15:28:42.609 INFO  ai-alarm: cleared cam=CAM-05
+2026-11-17T15:28:43.866 INFO  ai-debug: CAM-01 profile=front boxes=0 published=13 infer_us=168477 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=11 ready=true reason=
+2026-11-17T15:28:43.866 INFO  ai-debug: CAM-04 profile=pantograph boxes=0 published=11 infer_us=97887 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=11 ready=true reason=
+2026-11-17T15:28:43.866 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=0 published=15 infer_us=56486 det_cand=0 det_low=25200 det_cls=0 det_nms=0 det_ok_total=11 ready=true reason=
+2026-11-17T15:28:44.609 INFO  ai-alarm: pantograph_abnormal cam=CAM-04 level=2
+2026-11-17T15:28:44.861 INFO  ai-alarm: wheel_derail cam=CAM-05 level=1
+2026-11-17T15:28:45.866 INFO  ai-debug: CAM-01 profile=front boxes=0 published=15 infer_us=141372 det_cand=7 det_low=25193 det_cls=4 det_nms=2 det_ok_total=15 ready=true reason=
+2026-11-17T15:28:45.867 INFO  ai-debug: CAM-04 profile=pantograph boxes=1 published=13 infer_us=61828 det_cand=7 det_low=25193 det_cls=4 det_nms=2 det_ok_total=15 ready=true reason=
+2026-11-17T15:28:45.867 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=1 published=17 infer_us=67515 det_cand=7 det_low=25193 det_cls=4 det_nms=2 det_ok_total=15 ready=true reason=
+2026-11-17T15:28:47.859 INFO  ai-debug: CAM-01 profile=front boxes=0 published=17 infer_us=148056 det_cand=3 det_low=25197 det_cls=0 det_nms=2 det_ok_total=18 ready=true reason=
+2026-11-17T15:28:47.859 INFO  ai-debug: CAM-04 profile=pantograph boxes=1 published=15 infer_us=61392 det_cand=3 det_low=25197 det_cls=0 det_nms=2 det_ok_total=18 ready=true reason=
+2026-11-17T15:28:47.859 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=1 published=19 infer_us=63591 det_cand=3 det_low=25197 det_cls=0 det_nms=2 det_ok_total=18 ready=true reason=
+2026-11-17T15:28:49.865 INFO  ai-debug: CAM-01 profile=front boxes=0 published=19 infer_us=142186 det_cand=6 det_low=25194 det_cls=0 det_nms=5 det_ok_total=22 ready=true reason=
+2026-11-17T15:28:49.866 INFO  ai-debug: CAM-04 profile=pantograph boxes=1 published=17 infer_us=63106 det_cand=6 det_low=25194 det_cls=0 det_nms=5 det_ok_total=22 ready=true reason=
+2026-11-17T15:28:49.866 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=1 published=21 infer_us=57924 det_cand=6 det_low=25194 det_cls=0 det_nms=5 det_ok_total=22 ready=true reason=
+2026-11-17T15:28:51.863 INFO  ai-debug: CAM-01 profile=front boxes=0 published=22 infer_us=146119 det_cand=86 det_low=25114 det_cls=86 det_nms=0 det_ok_total=26 ready=true reason=
+2026-11-17T15:28:51.863 INFO  ai-debug: CAM-04 profile=pantograph boxes=0 published=19 infer_us=62767 det_cand=86 det_low=25114 det_cls=86 det_nms=0 det_ok_total=26 ready=true reason=
+2026-11-17T15:28:51.863 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=1 published=23 infer_us=63531 det_cand=86 det_low=25114 det_cls=86 det_nms=0 det_ok_total=26 ready=true reason=
+2026-11-17T15:28:52.609 INFO  ai-alarm: cleared cam=CAM-04
+2026-11-17T15:28:53.626 INFO  ai-alarm: pantograph_abnormal cam=CAM-04 level=2
+2026-11-17T15:28:53.864 INFO  ai-debug: CAM-01 profile=front boxes=0 published=24 infer_us=142052 det_cand=55 det_low=25145 det_cls=55 det_nms=0 det_ok_total=28 ready=true reason=
+2026-11-17T15:28:53.864 INFO  ai-debug: CAM-04 profile=pantograph boxes=1 published=21 infer_us=61409 det_cand=55 det_low=25145 det_cls=55 det_nms=0 det_ok_total=28 ready=true reason=
+2026-11-17T15:28:53.864 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=1 published=24 infer_us=56928 det_cand=55 det_low=25145 det_cls=55 det_nms=0 det_ok_total=28 ready=true reason=
+2026-11-17T15:28:55.863 INFO  ai-debug: CAM-01 profile=front boxes=0 published=26 infer_us=134716 det_cand=76 det_low=25124 det_cls=76 det_nms=0 det_ok_total=29 ready=true reason=
+2026-11-17T15:28:55.863 INFO  ai-debug: CAM-04 profile=pantograph boxes=0 published=23 infer_us=62755 det_cand=76 det_low=25124 det_cls=76 det_nms=0 det_ok_total=29 ready=true reason=
+2026-11-17T15:28:55.863 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=1 published=24 infer_us=56928 det_cand=76 det_low=25124 det_cls=76 det_nms=0 det_ok_total=29 ready=true reason=
+2026-11-17T15:28:56.609 INFO  ai-alarm: cleared cam=CAM-04
+2026-11-17T15:28:57.865 INFO  ai-debug: CAM-01 profile=front boxes=0 published=28 infer_us=145601 det_cand=5 det_low=25195 det_cls=2 det_nms=2 det_ok_total=31 ready=true reason=
+2026-11-17T15:28:57.865 INFO  ai-debug: CAM-04 profile=pantograph boxes=0 published=25 infer_us=60632 det_cand=5 det_low=25195 det_cls=2 det_nms=2 det_ok_total=31 ready=true reason=
+2026-11-17T15:28:57.865 INFO  ai-debug: CAM-05 profile=wheel_rail boxes=1 published=26 infer_us=55619 det_cand=5 det_low=25195 det_cls=2 det_nms=2 det_ok_total=31 ready=true reason=

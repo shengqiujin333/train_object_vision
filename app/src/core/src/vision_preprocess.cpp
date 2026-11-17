@@ -74,8 +74,24 @@ void write_pixel(std::vector<std::uint8_t>* data, std::size_t pixel, double s0, 
 
 }  // namespace
 
-bool compute_letterbox(int src_w, int src_h, int dst_w, int dst_h, LetterboxParams* out,
-                       std::string* err) {
+bool crop_pixels(const CropRect& crop, int frame_w, int frame_h, int* x, int* y, int* w,
+                 int* h) {
+    if (!crop.enabled() || frame_w <= 0 || frame_h <= 0) return false;
+    const int ix = static_cast<int>(clamp_d(crop.x, 0.0, 1.0) * frame_w) & ~1;
+    const int iy = static_cast<int>(clamp_d(crop.y, 0.0, 1.0) * frame_h) & ~1;
+    int iw = static_cast<int>(clamp_d(crop.w, 0.0, 1.0) * frame_w) & ~1;
+    int ih = static_cast<int>(clamp_d(crop.h, 0.0, 1.0) * frame_h) & ~1;
+    if (ix + iw > frame_w) iw = (frame_w - ix) & ~1;
+    if (iy + ih > frame_h) ih = (frame_h - iy) & ~1;
+    if (ix < 0 || iy < 0 || iw < 32 || ih < 32) return false;
+    if (x) *x = ix;
+    if (y) *y = iy;
+    if (w) *w = iw;
+    if (h) *h = ih;
+    return true;
+}
+
+bool compute_letterbox(int src_w, int src_h, int dst_w, int dst_h, LetterboxParams* out,                       std::string* err) {
     if (!out) return false;
     if (src_w <= 0 || src_h <= 0 || dst_w <= 0 || dst_h <= 0)
         return fail(err, preprocess_reason::kInvalidDimensions(), "non-positive dimension");
