@@ -1,0 +1,122 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-admin'
+2026-11-17T12:42:24.408 INFO  railhmi 0.1.0 [mode=Target, simulation=off]
+2026-11-17T12:42:24.408 INFO  config dir: ./app/config
+2026-11-17T12:42:24.409 INFO  configuration OK: 6 cameras
+2026-11-17T12:42:24.409 INFO  credentials: 3 private env var(s) loaded from config dir
+2026-11-17T12:42:24.409 INFO  display: config=1280x800 runtime=1280x800 (fullscreen)
+2026-11-17T12:42:24.409 INFO  render path: cpu
+2026-11-17T12:42:24.409 INFO  start page overridden: maintenance
+video channel "CAM-01" "unstarted" presentable= false
+video channel "CAM-02" "unstarted" presentable= false
+video channel "CAM-03" "unstarted" presentable= false
+video channel "CAM-04" "unstarted" presentable= false
+video channel "CAM-05" "unstarted" presentable= false
+video channel "CAM-06" "unstarted" presentable= false
+2026-11-17T12:42:24.409 INFO  nvr-status: real TCP probe enabled, config=./app/config/nvr.yaml
+2026-11-17T12:42:24.412 INFO  system-metrics: cpu=8 cores, mem=16%, npu=3 cores, perCore=yes, aggregate=100
+2026-11-17T12:42:24.443 INFO  [maint] 维护日志已就绪（最多保留最近 800 行；可保存/导出）
+2026-11-17T12:42:24.617 INFO  door-sensor: enabled adapter=auto poll=1000ms stale=60000ms filter=T1 registered=0 (I/O on dedicated worker thread)
+video workers started: 6 / 6
+video channel "CAM-01" "connecting" presentable= false
+video channel "CAM-02" "connecting" presentable= false
+video channel "CAM-03" "connecting" presentable= false
+video channel "CAM-04" "connecting" presentable= false
+video channel "CAM-05" "connecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+2026-11-17T12:42:24.684 INFO  door-sensor: door-sensor raw HCI mode: LE Set Scan Parameters rc=0, filter_dup=0 enabled, 2s refresh (1s advertisements read directly)
+2026-11-17T12:42:24.684 INFO  door-sensor: I/O mode=hci-raw adapter=hci0 (raw)
+video channel "CAM-01" "live" presentable= true
+rga_api version 1.10.1_[0]
+2026-11-17T12:42:24.992 INFO  door-sensor: raw HCI advertisement received mac=C0:6D:9A:AC:C3:87 name=T1 rssi=-52dBm vendorPayload=ffffff0601636200000000000000000000000000000018
+2026-11-17T12:42:24.992 INFO  door-sensor: EVENT push#1 mac=C0:6D:9A:AC:C3:87 (arrived immediately, no poll wait)
+2026-11-17T12:42:24.992 INFO  door-sensor: L2 door_ajar event appended for AUTO-C0:6D:9A:AC:C3:87
+2026-11-17T12:42:25.417 INFO  ai: start models_dir=/home/admin/rknn_model_zoo/install/rk3588_linux_aarch64/rknn_yolov8_seg_demo/model detect=yolov5s segment=yolov8s-seg reuse_detect_for_duties=true lanes=3
+2026-11-17T12:42:25.490 INFO  ai: worker started lanes=3 load_error=none detect_ready=true pantograph_ready=true wheel_rail_ready=true
+video channel "CAM-03" "live" presentable= true
+video channel "CAM-02" "live" presentable= true
+video channel "CAM-05" "live" presentable= true
+video channel "CAM-06" "live" presentable= true
+video channel "CAM-04" "live" presentable= true
+2026-11-17T12:42:25.911 INFO  nvr-status: 192.168.1.4:80 -> NVR正常 (tcp connected)
+2026-11-17T12:42:26.001 INFO  door-sensor: EVENT push#2 mac=C0:6D:9A:AC:C3:87 (arrived immediately, no poll wait)
+2026-11-17T12:42:26.009 INFO  door-sensor: EVENT push#3 mac=C0:6D:9A:AC:C3:87 (arrived immediately, no poll wait)
+2026-11-17T12:42:27.243 INFO  [maint] ===== 摄像头检测开始（6 路，逐个 ping 1 包/1 秒超时）=====
+2026-11-17T12:42:27.245 INFO  [maint] NVR 检测：连接 http://192.168.1.4（账号 nvradmin）…
+2026-11-17T12:42:27.246 INFO  [maint] [系统信息] ===== 系统信息 =====
+2026-11-17T12:42:27.247 INFO  [maint] [系统信息] 系统 · 操作系统：Ubuntu 22.04.5 LTS
+2026-11-17T12:42:27.248 INFO  [maint] [系统信息] 系统 · 内核：linux 6.1.141
+2026-11-17T12:42:27.248 INFO  [maint] [系统信息] 系统 · 架构：arm64
+2026-11-17T12:42:27.249 INFO  [maint] [系统信息] 系统 · 应用版本：0.1.0 railhmi 0.1.0 [mode=Target, simulation=off]
+2026-11-17T12:42:27.250 INFO  [maint] [系统信息] 系统 · Qt 版本：5.15.3
+2026-11-17T12:42:27.251 INFO  [maint] [系统信息] 系统 · GStreamer：GStreamer 1.20.3
+2026-11-17T12:42:27.252 INFO  [maint] [系统信息] 系统 · CPU 核心数：8
+2026-11-17T12:42:27.253 INFO  [maint] [系统信息] 系统 · 负载：1.82 1.57 1.25 1/725 262711
+2026-11-17T12:42:27.254 INFO  [maint] [系统信息] 资源 · 内存：1820 MB / 7915 MB（占用 22%）
+2026-11-17T12:42:27.255 INFO  [maint] [系统信息] 资源 · 磁盘 /：27.7 GB 可用 / 56.9 GB
+2026-11-17T12:42:27.257 INFO  [maint] [系统信息] 资源 · NPU 负载：NPU load:  Core0: 12%, Core1:  0%, Core2:  0%,
+2026-11-17T12:42:27.258 INFO  [maint] [系统信息] 资源 · NPU 驱动：RKNPU driver: v0.9.8
+2026-11-17T12:42:27.260 INFO  [maint] [系统信息] 资源 · NPU 聚合负载：100@1000000000Hz
+2026-11-17T12:42:27.262 INFO  [maint] [系统信息] 库 · librknnrt.so：/usr/lib/librknnrt.so（7545 KB）
+2026-11-17T12:42:27.265 INFO  [maint] [系统信息] 库 · librga.so：/usr/lib/aarch64-linux-gnu/librga.so（196 KB）
+2026-11-17T12:42:27.268 INFO  [maint] [系统信息] 库 · libgstreamer-1.0.so.0：/usr/lib/aarch64-linux-gnu/libgstreamer-1.0.so.0（1358 KB）
+2026-11-17T12:42:27.270 INFO  [maint] [系统信息] AI · 模型目录：/home/admin/rknn_model_zoo/install/rk3588_linux_aarch64/rknn_yolov8_seg_demo/model
+2026-11-17T12:42:27.273 INFO  [maint] [系统信息] AI · 模型配置 front：yolov5s（rknn-2.3.2/yolov5s）
+2026-11-17T12:42:27.276 INFO  [maint] [系统信息] AI · 模型配置 front：yolov8s-seg（rknn-2.3.2/yolov8s-seg）
+2026-11-17T12:42:27.279 INFO  [maint] [系统信息] AI · 模型配置 pantograph：yolov5s（临时复用/rknn-2.3.2/yolov5s）
+2026-11-17T12:42:27.283 INFO  [maint] [系统信息] AI · 模型配置 wheel_rail：yolov5s（临时复用/rknn-2.3.2/yolov5s）
+2026-11-17T12:42:27.286 INFO  [maint] [故障自检] ===== 自检开始 =====
+2026-11-17T12:42:27.289 INFO  [maint] [故障自检] 视频：6 路实时 / 共 6 路
+2026-11-17T12:42:27.293 INFO  [maint] [故障自检] AI：接入 2 路（检测模型 yolov5s）
+2026-11-17T12:42:27.296 INFO  [maint] [故障自检] ===== 自检结束 =====
+2026-11-17T12:42:27.300 INFO  [maint] CAM-01 车头前方 → ping 192.168.1.65 …
+2026-11-17T12:42:27.348 INFO  [maint] CAM-01 车头前方：在线（RTT 1.19）
+2026-11-17T12:42:27.354 INFO  [maint] CAM-02 车辆左侧 → ping 192.168.1.160 …
+2026-11-17T12:42:27.390 INFO  [maint] CAM-02 车辆左侧：在线（RTT 0.441）
+2026-11-17T12:42:27.396 INFO  [maint] CAM-03 车辆右侧 → ping 192.168.1.162 …
+2026-11-17T12:42:27.436 INFO  [maint] CAM-03 车辆右侧：在线（RTT 0.495）
+2026-11-17T12:42:27.442 INFO  [maint] CAM-04 车顶受电弓 → ping 192.168.1.163 …
+2026-11-17T12:42:27.470 INFO  [maint] NVR 检测：在线且登录成功，读取到 10 个通道
+2026-11-17T12:42:27.477 INFO  [maint]   · 通道  Camera
+2026-11-17T12:42:27.483 INFO  [maint]   · 通道  Camera2
+2026-11-17T12:42:27.489 INFO  [maint]   · 通道  Camera3
+2026-11-17T12:42:27.494 INFO  [maint]   · 通道  IP Camera
+2026-11-17T12:42:27.500 INFO  [maint]   · 通道  IP Camera
+2026-11-17T12:42:27.507 INFO  [maint]   · 通道  IP Camera
+2026-11-17T12:42:27.513 INFO  [maint]   · 通道  IP Camera
+2026-11-17T12:42:27.520 INFO  [maint]   · 通道  IP Camera
+2026-11-17T12:42:27.526 INFO  [maint]   · 通道  Camera9
+2026-11-17T12:42:27.531 INFO  [maint]   · 通道  Camera10
+2026-11-17T12:42:27.561 INFO  [maint] CAM-04 车顶受电弓：在线（RTT 0.291）
+2026-11-17T12:42:27.566 INFO  [maint] CAM-05 车底轮轨 → ping 192.168.1.165 …
+2026-11-17T12:42:27.605 INFO  [maint] CAM-05 车底轮轨：在线（RTT 0.448）
+2026-11-17T12:42:27.610 INFO  [maint] CAM-06 司机室车门 → ping 192.168.1.167 …
+2026-11-17T12:42:27.654 INFO  [maint] CAM-06 司机室车门：在线（RTT 0.492）
+2026-11-17T12:42:27.660 INFO  [maint] ===== 摄像头检测结束 =====
+ RgaBlit(1513) RGA_BLIT fail: Invalid argument
+ RgaBlit(1514) RGA_BLIT fail: Invalid argument
+handl-fd-vir-phy-hnd-format[0, 0, 0x7e3e34b000, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 2560, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+handl-fd-vir-phy-hnd-format[0, 0, 0x7f605497d0, (nil), 0, 0]
+rect[0, 0, 1280, 720, 1280, 720, 1792, 0]
+f-blend-size-rotation-col-log-mmu[0, 0, 0, 0, 0, 0, 1]
+5336 im2d_rga_impl rga_task_submit(2171): Failed to call RockChipRga interface, please use 'dmesg' command to view driver error log.
+5336 im2d_rga_impl rga_dump_channel_info(1500): src_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, nv12]
+  buffer[handle,fd,va,pa] = [0, 0, 7e3e34b000, 0]
+  color_space = 0x0, global_alpha = 0xff, rd_mode = 0x1
+
+5336 im2d_rga_impl rga_dump_channel_info(1500): dst_channel: 
+  rect[x,y,w,h] = [0, 0, 0, 0]
+  image[w,h,ws,hs,f] = [1280, 720, 1280, 720, bgr888]
+  buffer[handle,fd,va,pa] = [0, 0, 7f605497d0, 0]
+  color_space = 0x2, global_alpha = 0xff, rd_mode = 0x1
+
+5336 im2d_rga_impl rga_dump_opt(1550): opt version[0x0]:
+
+5336 im2d_rga_impl rga_dump_opt(1551): set_core[0x0], priority[0]
+
+5336 im2d_rga_impl rga_task_submit(2180): acquir_fence[-1], release_fence_ptr[0x0], usage[0x80000]
+
+2026-11-17T12:42:50.170 INFO  door-sensor: EVENT push#20 mac=C0:6D:9A:AC:C3:87 (arrived immediately, no poll wait)

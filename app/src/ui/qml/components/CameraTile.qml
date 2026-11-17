@@ -22,6 +22,8 @@ Rectangle {
     property string reconnectText: ""
     // 透传给 VideoSurface：0 = Fit / 1 = Cover（画面铺满格子）
     property int fillMode: 0
+    // AI 报警（2026-11-17）：true 时整格显示闪烁红框；false 保持常规边框。
+    property bool alarmActive: false
 
     // 点击整格放大（P1 实时监控 / P4 全摄像头共用）。
     // 只发信号、不在此决定放大逻辑，页面持有浮层并负责传入 channel。
@@ -98,6 +100,27 @@ Rectangle {
         text: tile.badge
         detected: tile.aiEnabled
     }
+    // 报警闪烁红框：只在该路 AI 判定为报警时出现；无报警时不显示（保持原边框）。
+    // 闪烁用透明度动画（颜色仍是报警红），低频 900ms 周期，避免驾驶视线被高频闪烁干扰。
+    Rectangle {
+        id: alarmBorder
+        objectName: "alarmBorder"
+        anchors.fill: parent
+        color: "transparent"
+        border.color: Theme.color.error
+        border.width: 4
+        radius: Theme.radius.card
+        visible: tile.alarmActive
+        opacity: 1.0
+
+        SequentialAnimation on opacity {
+            running: tile.alarmActive
+            loops: Animation.Infinite
+            NumberAnimation { from: 1.0; to: 0.2; duration: 450; easing.type: Easing.InOutQuad }
+            NumberAnimation { from: 0.2; to: 1.0; duration: 450; easing.type: Easing.InOutQuad }
+        }
+    }
+
     // 整格可点：放在最后，覆盖标题/角标等纯展示元素，点击后由页面弹出单路放大浮层。
     MouseArea {
         anchors.fill: parent

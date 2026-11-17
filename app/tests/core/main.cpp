@@ -19,6 +19,7 @@ void run_registry_tests();
 void run_layout_tests();
 void run_grid_tests();
 void run_status_tests();
+void run_ai_alarm_tests();
 void run_door_sensor_tests();
 void run_inference_tests();
 void run_vision_model_capability_tests();
@@ -75,6 +76,7 @@ int main(int argc, char** argv) {
     run_layout_tests();
     run_grid_tests();
     run_status_tests();
+    run_ai_alarm_tests();
     run_door_sensor_tests();
     run_inference_tests();
     run_vision_model_capability_tests();

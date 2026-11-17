@@ -218,3 +218,66 @@ P1 布局与摄像头放大交互：P1 在原有「前方大画面 + 左/右侧�
 设计与夹具向量覆盖同 generation 帧、带 padding 的 NV12、重复/旧结果、500ms相邻窗、3000ms抑制边界、UTC与单调换算、缺口/部分回放、NVR未配置和未知模型；三命中是否真正生成报警仍需下游运行 RuleEngine 验证。必须分别取得源码单元验证、板端集成、真实六路负载与人工视觉证据；schema/static PASS 仅证明本契约夹具与已核对基线一致。
 
 验收不变量：INV-01 无凭据泄露；INV-02 旧帧不当实时；INV-03 身份/时钟/单位不混用；INV-04 未支持模型/未知状态不当正常；INV-05 左右不检测且级别保持；INV-06 确认不删除事件且可恢复；INV-07 清单不当视频/缺口不隐藏；INV-08 部分同步不当三路成功；INV-09 GUI无阻塞设备调用；INV-10 一次能力失败不扩入口/权限/产品范围。
+
+
+---
+
+## 12. 2026-11-17 增补：视觉推理接入、AI 报警呈现与维护页操作化
+
+本节记录本轮对既有契约的**增量**（不改变已冻结字段语义，只新增可选字段与运行时行为）。
+
+### 12.1 推理链路（media -> core -> UI）
+
+- 帧来源唯一：`VideoRuntime::latestLease(camera_id)` 返回取流层 `media::FrameLease`（NV12，
+  GstSample 共享所有权）。推理侧只经 `VisionAiWorker::submit(lease)` 入队，**不造帧、不复制像素**；
+  同一 `seq` 不重复入队。
+- 调度沿用 `core::AiLaneScheduler`（`inference_interval` / 有界丢旧帧 `queue_depth` / `npu_budget` /
+  `temp_limit_c`），目标机实测三路：`detect_ready=true pantograph_ready=true wheel_rail_ready=true`。
+- 职责复用（现场要求，`app.ai.reuse_detect_for_duties`）：`pantograph` / `wheel_rail` 在没有专用模型
+  时复用 `YoloV5Detect` 模型执行检测；`envelope.availability` 仍如实表达「可用 + 检测框」，
+  **不宣称**具备受电弓三态/轮轨几何判定能力；设置为 `false` 时恢复 `PROFILE_UNSUPPORTED` 严格语义。
+- `cab_door` 不入推理队列：门态由 BLE 门磁为主判断（PRD DOOR-002），保留职责标注与徽标。
+
+### 12.2 报警判定与呈现
+
+- 判定在 core（`core/ai_alarm.h`）：`front` 只有 `in_roi=1`（轨道掩码 ∩ 人/物，同帧两阶段）才报警，
+  级别按 `map_level`（person_on_rail / front_obstacle / wheel_derail = L1，pantograph_abnormal = L2）。
+- 多帧确认 `confirm_frames`（来自 thresholds）与解除保持 `clear_hold_ms=1500`；跃迁只在状态变化时上报一次。
+- UI：P1 三路（车前方/受电弓/轮轨）在 `railhmiAiAlarms[cameraId].active` 为真时显示**闪烁红框**
+  （报警红，900ms 周期），无报警保持常规边框；「当前报警」条合并 AI 报警与门磁未关严。
+- 顶栏新增 `ai_model` 位：**只有推理线程存活且至少一路模型核验就绪**才显示「接入」，否则「未接入」。
+- 报警中心：跃迁追加 `addLiveEvent`，事件类型 token 与本文 §6 一致；确认只改状态、不删除事件。
+
+### 12.3 P5 模型替换
+
+- `railhmiAi.selectModel("detect"|"segment", name)`：停止工作线程 -> 以新声明重建 `RknnVisionDetector`
+  -> 重新 `load()` -> 重启工作线程；`modelChanged(kind, name, ok, detail)` 回报结果。
+- 模型名/路径全部来自配置（`app.ai.models[].path`、`models_dir`、`catalog`），代码不写死；
+  `catalog` 供 P5 生成候选 chip；当前生效模型与「临时复用」标注逐路显示。
+- 失败即如实报错（`MODEL_LOAD_FAILED` / 能力核验 reason），不保留上一模型的结果当作新模型输出。
+
+### 12.4 P6 维护页（日志 + 功能操作）
+
+- 页面固定两块：`日志显示`（`railhmiMaintOps.logLines`，可保存/导出到
+  `<config>/../logs/maintenance-<ts>.log`，同时写结构化日志）与 `功能操作`。
+- 五个操作的真值口径：摄像头检测=`ping`（1 包/1s 超时/2.5s 看门狗，报 RTT 或不在线）；
+  录像与存储=`NvrClient::fetchChannels` 真实登录（拿到通道即成功）；蓝牙扫描=当前
+  `DoorSensorRuntime` 设备表（名称/MAC/RSSI/门态/电量/最近时间）；故障自检=逐路状态+NVR+门磁+AI+故障目录；
+  系统信息=OS/内核/架构/应用版本/Qt/GStreamer/CPU/NPU/内存/磁盘/模型目录/运行时库。
+- 任何一步失败都写进同一份日志，不显示成功；无设备/未配置时给出明确原因。
+
+### 12.5 验证开关（默认关闭）
+
+- `RAILHMI_START_PAGE=<page_id>`：启动页覆盖（仅接受导航内真实页 id）。
+- `RAILHMI_AI_SIM_ALARM=CAM-01,CAM-04`：向指定路注入一个「轨道内人员」框，用于验证
+  红框/报警条/报警中心闭环；日志与界面不声称是真实检测。
+- `RAILHMI_MAINT_RUN=camera,nvr,system,selfcheck`：启动后自动执行维护操作（与页面按钮同一批方法）。
+
+板端实测（2026-11-17，RK3588 `192.168.0.103`，Xvfb `:96` 1280x800 + 六路真实 RTSP）：
+`CoreTests 1544 passed / 0 failed`；`railhmi-status-probe` 顶栏 7 项 `top_order_ok=true`、
+`ai_model` 位 `未接入`（探针不起线程）→ UI 实例中 `接入`；运行日志
+`ai: start ... detect=yolov5s segment=yolov8s-seg reuse_detect_for_duties=true lanes=3`、
+`ai: worker started lanes=3 load_error=none detect_ready=true pantograph_ready=true wheel_rail_ready=true`；
+`RAILHMI_AI_SIM_ALARM` 下依次产生 `person_on_rail cam=CAM-01 level=1`、
+`pantograph_abnormal cam=CAM-04 level=2`、`wheel_derail cam=CAM-05 level=1`；
+三页 QML 运行期错误 0 行；截图 `hmi_verify/round7/`。

@@ -50,6 +50,11 @@ struct RknnDetectorConfig {
     std::string danger_zone_name = "danger_zone";
     bool enable_danger_zone = true;
     bool prefer_rga_for_nv12 = true;
+    // 临时能力复用（现场 2026-11-17 需求）：受电弓/轮轨两路当前没有专用模型，
+    // 要求先用与车前方相同的检测模型跑通「接入-显示-报警」。true 时这两路沿用
+    // YoloV5Detect 模型做检测（不跑分割，envelope 只含框与可用性）；
+    // 既有「无声明 -> PROFILE_UNSUPPORTED」语义在 false 时保持不变。
+    bool reuse_detect_for_duties = true;
     railhmi::core::TwoStageCacheConfig two_stage_cache;   // 默认关闭（实时报警不用跨帧缓存）
     // 职责专用模型声明（可选；由配置/CLI 提供，**不由文件名推断**）。
     // 只有“声明能力 + 对应 .rknn 描述逐项核验通过”后该职责才 ready（视觉 ITEM-010）。

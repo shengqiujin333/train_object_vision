@@ -340,6 +340,34 @@ void load_app(const Node& root, AppSettings* s, Errors& e) {
             }
             req_double(*ai, "temp_limit_c", "app.ai", &a.ai.temp_limit_c, e);
             if (a.ai.temp_limit_c <= 0) err(e, "app.ai.temp_limit_c", "must be > 0");
+            // models_dir（可选）：相对路径由上层按 --config 目录解析。
+            std::string mdir;
+            if (opt_string(*ai, "models_dir", "app.ai", &mdir, e) && !mdir.empty())
+                a.ai.models_dir = mdir;
+            // reuse_detect_for_duties（可选）：临时三职责复用同一检测模型。
+            const Node* reuse = child(*ai, "reuse_detect_for_duties");
+            if (reuse && !reuse->is_null()) {
+                if (!yaml::to_bool(*reuse, &a.ai.reuse_detect_for_duties))
+                    err(e, "app.ai.reuse_detect_for_duties", "expected boolean true/false");
+            }
+            // catalog（可选）：P5 可替换模型清单。
+            const Node* catalog = child(*ai, "catalog");
+            if (catalog && !catalog->is_null()) {
+                if (!catalog->is_seq()) {
+                    err(e, "app.ai.catalog", "expected sequence");
+                } else {
+                    for (std::size_t i = 0; i < catalog->seq.size(); ++i) {
+                        const Node& cnode = catalog->seq[i];
+                        const std::string cbase = "app.ai.catalog[" + std::to_string(i) + "]";
+                        if (!require_map(cnode, cbase, e)) continue;
+                        AiModelOption opt;
+                        req_string(cnode, "name", cbase, &opt.name, e);
+                        opt_string(cnode, "version", cbase, &opt.version, e);
+                        opt_string(cnode, "path", cbase, &opt.path, e);
+                        a.ai.catalog.push_back(opt);
+                    }
+                }
+            }
             const Node* models = ai->get("models");
             if (models && !models->is_null()) {
                 if (!models->is_seq()) {
@@ -353,6 +381,7 @@ void load_app(const Node& root, AppSettings* s, Errors& e) {
                         req_enum<AiProfile>(mnode, "profile", mbase, parse_ai_profile, &mc.profile, e);
                         req_string(mnode, "name", mbase, &mc.name, e);
                         req_string(mnode, "version", mbase, &mc.version, e);
+                        opt_string(mnode, "path", mbase, &mc.path, e);
                         a.ai.models.push_back(mc);
                     }
                 }

@@ -50,6 +50,30 @@ Rectangle {
                            c.info.detail, c.info.presentable)
     }
 
+    // ---- AI 报警（2026-11-17）----
+    // 车前方 / 受电弓 / 轮轨三路：该路 AI 判定报警时画面显示闪烁红框；无报警恢复常规边框。
+    // 真值来自 C++ AiRuntime（多帧确认 + 解除保持），QML 不做二次判定。
+    readonly property var aiAlarms: (typeof railhmiAiAlarms !== "undefined") ? railhmiAiAlarms : ({})
+    function alarmFor(pos) {
+        var c = page.camByPosition(pos)
+        if (!c) return false
+        var a = page.aiAlarms[c.info.id]
+        return a ? a.active === true : false
+    }
+    // 当前报警条：门磁（真实 L2）与 AI 报警合并展示，互不覆盖。
+    readonly property string aiAlarmText: {
+        var parts = []
+        if (page.aiAlarms) {
+            for (var i = 0; i < railhmiChannels.length; ++i) {
+                var c = railhmiChannels[i]
+                if (!c.info.aiEnabled) continue
+                var a = page.aiAlarms[c.info.id]
+                if (a && a.active === true && a.text) parts.push(c.info.name + "：" + a.text)
+            }
+        }
+        return parts.join("；")
+    }
+
     // ---- 底部行：受电弓 / 轮轨 两个较小画面 + 其后的「当前报警」框 ----
     Item {
         id: bottomRow
@@ -80,6 +104,7 @@ Rectangle {
             detail: channel ? channel.info.detail : ""
             showBadge: false
             fillMode: 1
+            alarmActive: page.alarmFor("roof")
             onActivated: page.openZoom("roof", "受电弓")
         }
         CameraTile {
@@ -95,6 +120,7 @@ Rectangle {
             detail: channel ? channel.info.detail : ""
             showBadge: false
             fillMode: 1
+            alarmActive: page.alarmFor("underfloor")
             onActivated: page.openZoom("underfloor", "轮轨")
         }
 
@@ -114,6 +140,13 @@ Rectangle {
 
             readonly property string doorAlarm: (typeof railhmiDoorAlarmText !== "undefined")
                                                 ? railhmiDoorAlarmText : ""
+            readonly property string aiAlarm: page.aiAlarmText
+            readonly property string currentAlarm: {
+                var parts = []
+                if (aiAlarm && aiAlarm.length > 0) parts.push(aiAlarm)
+                if (doorAlarm && doorAlarm.length > 0) parts.push(doorAlarm)
+                return parts.join("；")
+            }
             Column {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -129,9 +162,12 @@ Rectangle {
                     objectName: "alarmBarText"
                     width: parent.width
                     wrapMode: Text.Wrap
-                    color: alarmBar.doorAlarm.length > 0 ? Theme.color.error : Theme.color.text_primary
+                    maximumLineCount: 3
+                    elide: Text.ElideRight
+                    color: alarmBar.currentAlarm.length > 0 ? Theme.color.error
+                                                            : Theme.color.text_primary
                     font.pixelSize: Theme.typography.scale.body.size
-                    text: alarmBar.doorAlarm.length > 0 ? alarmBar.doorAlarm : "无"
+                    text: alarmBar.currentAlarm.length > 0 ? alarmBar.currentAlarm : "无"
                 }
             }
         }
@@ -186,6 +222,7 @@ Rectangle {
                 reconnectText: channel ? channel.info.reconnectText : ""
                 showBadge: false
                 fillMode: 1
+                alarmActive: page.alarmFor("primary")
                 onActivated: page.openZoom("primary", "前方")
             }
             CameraTile {

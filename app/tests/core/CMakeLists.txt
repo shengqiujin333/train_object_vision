@@ -12,6 +12,7 @@ add_executable(railhmi-core-tests
     test_layout.cpp
     test_grid.cpp
     test_status.cpp
+    test_ai_alarm.cpp
     test_door_sensor.cpp
     test_inference.cpp
     test_vision_model_capability.cpp

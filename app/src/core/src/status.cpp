@@ -149,7 +149,7 @@ std::vector<KeyStatusItem> build_key_status(const KeyStatusSnapshot& snap, Role 
 
 std::vector<TopBarItem> build_top_bar(const TopBarSnapshot& snap, Role /*role*/) {
     std::vector<TopBarItem> out;
-    out.reserve(6);
+    out.reserve(7);
 
     TopBarItem time;
     time.kind = TopItemKind::Time;
@@ -184,6 +184,8 @@ std::vector<TopBarItem> build_top_bar(const TopBarSnapshot& snap, Role /*role*/)
     };
     cat(TopItemKind::Camera, "camera", "摄像头", snap.camera, Page::AllCameras);
     cat(TopItemKind::Recording, "recording", "录像", snap.recording, Page::Replay);
+    // AI 模型位：只报「接入/未接入」这一真实结论；模型名在 P5/P6 展示（顶栏宽度有限）。
+    cat(TopItemKind::AiModel, "ai_model", "AI模型", snap.ai_model, Page::AiDebug);
     cat(TopItemKind::Health, "health", "系统健康", snap.health, Page::Maintenance);
     // 车辆状态无车速/GPS 数据源：点击顶栏该项由司机人工在 静止/运动/未接入 间切换。
     // 未选中时提示「点击切换」，选中后标注「人工置位」，不把人工输入伪装成传感器真值。
@@ -208,6 +210,13 @@ CategoryStatus nvr_top_status(bool connected) {
     // 只有探测到真实连接才报正常；未配置/超时/网络错误一律 NVR异常。
     return connected ? CategoryStatus{StatusLevel::Ok, "NVR正常"}
                      : CategoryStatus{StatusLevel::Alarm, "NVR异常"};
+}
+
+CategoryStatus ai_model_top_status(bool worker_alive, int ready_lanes) {
+    // 「接入」必须同时满足：推理工作线程真实存活 + 至少一路模型核验就绪。
+    // 只加载了模型但线程没起（或反之）都算未接入，绝不因为配置里登记了模型就报接入。
+    if (worker_alive && ready_lanes > 0) return {StatusLevel::Ok, "接入"};
+    return {StatusLevel::Unavailable, "未接入"};
 }
 
 CategoryStatus door_top_status(const std::string& token) {

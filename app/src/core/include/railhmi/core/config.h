@@ -89,13 +89,31 @@ struct AiModelConfig {
     AiProfile profile = AiProfile::None;
     std::string name;
     std::string version;
+    // 可选：显式模型文件路径（绝对路径或相对 models_dir）；缺省按 models_dir/name.rknn 解析。
+    std::string path;
 };
+
+// 可替换模型候选（P5「AI 调试」选择器数据源）。kind 由名称推断（yolov8+seg = 分割）。
+struct AiModelOption {
+    std::string name;
+    std::string version;
+    std::string path;
+};
+
 struct AiConfig {
     int inference_interval = 5;   // 每 N 帧推理一次
     int queue_depth = 2;          // 有界丢旧帧队列深度（1..8）
     int npu_budget = 4;           // 并发推理路数预算
     double temp_limit_c = 85.0;   // 温度守卫阈值（超过则降载，不静默停）
     std::vector<AiModelConfig> models;
+    // 模型目录：相对路径按 --config 目录解析（板端通常是 install/.../model）。
+    std::string models_dir = "models";
+    // 临时能力复用：受电弓/轮轨两路当前**没有专用模型证据**，现场要求先用与
+    // 车前方相同的检测模型跑通「接入-显示-报警」链路。true 时这三路共用检测模型；
+    // 不代表已具备受电弓三态/轮轨几何判定能力（envelope 只表达检测框与可用性）。
+    bool reuse_detect_for_duties = true;
+    // 可替换模型清单（P5 选择器）；为空时退回 models 里出现过的名称。
+    std::vector<AiModelOption> catalog;
 };
 
 // BLE 门磁（USTONE BWD1 / USTONE-HA-BSM1）广播接入配置。

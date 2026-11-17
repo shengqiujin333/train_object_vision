@@ -16,6 +16,7 @@ Rectangle {
     property var ptzResult: ({})
     property string pendingKind: ""
     property string reconnectNotice: ""
+    property string exportPath: ""
     property var rowBg: Theme.color.surface
     // 健康/日志/恢复（ITEM-024，连接 changed() 以便刷新）
     property var healthSt: ({ completed: true, steps: [] })
@@ -56,6 +57,85 @@ Rectangle {
     }
 
     Component.onCompleted: reload()
+
+    // ---- 功能操作（2026-11-17 现场需求）----
+    // 每个操作都把过程信息写进 railhmiMaintOps 的日志；C++ 侧同时写结构化日志。
+    // 失败/未接入一律如实记录，不编造成功。
+    function ops() { return (typeof railhmiMaintOps !== "undefined") ? railhmiMaintOps : null }
+    function runCameraCheck() {
+        var o = page.ops()
+        if (!o) return
+        var cams = (typeof railhmiCameras !== "undefined") ? railhmiCameras : []
+        var list = []
+        for (var i = 0; i < cams.length; ++i)
+            list.push({ id: cams[i].id, name: cams[i].name, url: cams[i].url ? cams[i].url : "" })
+        o.pingCameras(list)
+    }
+    function runNvrCheck() {
+        var o = page.ops()
+        if (!o) return
+        o.appendLog("录像与存储", "开始检测 NVR 在线与登录…")
+        o.checkNvr()
+    }
+    function runBleScan() {
+        var o = page.ops()
+        if (!o) return
+        var devs = (typeof railhmiDoorDevices !== "undefined") ? railhmiDoorDevices : []
+        var sum = (typeof railhmiDoorSummary !== "undefined") ? railhmiDoorSummary : ({})
+        o.appendLog("蓝牙", "扫描结果：范围内门磁设备 " + devs.length + " 个；来源 " +
+                            (sum.source !== undefined ? sum.source : "—"))
+        for (var i = 0; i < devs.length; ++i) {
+            var d = devs[i]
+            o.appendLog("蓝牙", " · " + (d.name ? d.name : "未命名") + "  MAC " + d.mac +
+                                "  RSSI " + d.rssi + " dBm  门态 " + d.doorLabel +
+                                "  电量 " + (d.batteryText ? d.batteryText : "—") +
+                                "  最近 " + (d.lastSeenText ? d.lastSeenText : "—"))
+        }
+        if (devs.length === 0)
+            o.appendLog("蓝牙", "范围内未发现门磁：请确认传感器已上电并在板子附近，或检查 HCI/BlueZ 权限")
+        else
+            o.appendLog("蓝牙", "门磁状态汇总：" + (sum.value !== undefined ? sum.value : "—"))
+    }
+    function runSelfCheck() {
+        var o = page.ops()
+        if (!o) return
+        o.appendLog("故障自检", "===== 自检开始 =====")
+        var cams = (typeof railhmiCameras !== "undefined") ? railhmiCameras : []
+        o.appendLog("故障自检", "配置：相机 " + cams.length + " 路")
+        var live = 0
+        var offline = 0
+        for (var i = 0; i < railhmiChannels.length; ++i) {
+            var info = railhmiChannels[i].info
+            if (info.presentable) live++
+            if (info.state === "offline") offline++
+            o.appendLog("故障自检", info.id + " " + info.name + "：" + info.stateLabel +
+                                    "  fps " + info.fpsText + "  最近帧 " + info.lastFrameText +
+                                    (info.presentable ? "  → 正常" : "  → 异常"))
+        }
+        o.appendLog("故障自检", "视频汇总：" + live + " 路实时 / 离线 " + offline + " 路")
+        var nvr = (typeof railhmiIntegrations !== "undefined") ? railhmiIntegrations : []
+        for (var j = 0; j < nvr.length; ++j)
+            o.appendLog("故障自检", "录像机 " + nvr[j].name + "：" + nvr[j].state +
+                                    "（通道映射 " + nvr[j].channelMapping + "）")
+        var ds = (typeof railhmiDoorSummary !== "undefined") ? railhmiDoorSummary : ({})
+        o.appendLog("故障自检", "门磁：" + (ds.value !== undefined ? ds.value : "未接入") +
+                                "（来源 " + (ds.source !== undefined ? ds.source : "—") + "）")
+        var aiText = (typeof railhmiAi !== "undefined") ? railhmiAi.statusText : "未接入"
+        var aiModel = (typeof railhmiAi !== "undefined") ? railhmiAi.detectModel : "—"
+        o.appendLog("故障自检", "AI 模型：" + aiText + "，检测模型 " + aiModel)
+        var faults = (typeof railhmiFaults !== "undefined") ? railhmiFaults : []
+        o.appendLog("故障自检", "已登记故障场景 " + faults.length + " 项（FI-01..）")
+        o.appendLog("故障自检", "===== 自检结束 =====")
+    }
+    function showSystemInfo() {
+        var o = page.ops()
+        if (!o) return
+        var info = o.systemInfo()
+        o.appendLog("系统信息", "===== 系统信息 =====")
+        for (var i = 0; i < info.length; ++i)
+            o.appendLog("系统信息", info[i].group + " · " + info[i].key + "：" + info[i].value)
+        o.appendLog("系统信息", "===== 结束 =====")
+    }
     Connections { target: page.maint; function onChanged() { page.reload() } }
     // 健康/日志/恢复变更刷新（ITEM-024 D-02）
     Connections {
@@ -63,10 +143,138 @@ Rectangle {
         function onChanged() { page.reloadHealth(); page.reloadLogs() }
     }
 
+    // ---- 两大块（2026-11-17 现场需求）：1) 日志显示  2) 功能操作 ----
+    // 日志显示：所有功能操作的过程信息实时写到这里，可保存/导出（同时进结构化日志）。
+    Rectangle {
+        id: logPanel
+        objectName: "maintLogPanel"
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.margins: Theme.spacing.s3
+        height: Math.floor(page.height * 0.40)
+        color: Theme.color.surface
+        border.color: Theme.color.border
+        border.width: Theme.border.width
+        radius: Theme.radius.card
+
+        readonly property var opsRef: (typeof railhmiMaintOps !== "undefined") ? railhmiMaintOps : null
+        readonly property var logModel: opsRef ? opsRef.logLines : []
+
+        Column {
+            anchors.fill: parent
+            anchors.margins: Theme.spacing.s2
+            spacing: Theme.spacing.s1
+
+            Row {
+                width: parent.width
+                spacing: Theme.spacing.s2
+                Text {
+                    color: Theme.color.text_primary
+                    font.pixelSize: Theme.typography.scale.label.size
+                    text: "日志显示"
+                }
+                FilterChip {
+                    objectName: "maintLogExport"
+                    text: "保存/导出"
+                    onClicked: { if (logPanel.opsRef) page.exportPath = logPanel.opsRef.exportLog() }
+                }
+                FilterChip {
+                    objectName: "maintLogClear"
+                    text: "清空"
+                    onClicked: { if (logPanel.opsRef) { logPanel.opsRef.clearLog(); page.exportPath = "" } }
+                }
+            }
+            Text {
+                objectName: "maintLogExportPath"
+                width: parent.width
+                wrapMode: Text.WrapAnywhere
+                color: Theme.color.text_muted
+                font.pixelSize: Theme.typography.scale.caption.size
+                text: page.exportPath.length > 0
+                      ? ("已保存：" + page.exportPath)
+                      : "功能操作的过程信息会实时写入日志；点「保存/导出」落盘"
+            }
+
+            ListView {
+                objectName: "maintOpsLog"
+                width: parent.width
+                height: parent.height - 52
+                clip: true
+                model: logPanel.logModel
+                boundsBehavior: Flickable.StopAtBounds
+                delegate: Text {
+                    width: ListView.view.width
+                    wrapMode: Text.WrapAnywhere
+                    color: Theme.color.text_secondary
+                    font.pixelSize: Theme.typography.scale.caption.size
+                    text: modelData
+                }
+                onCountChanged: positionViewAtEnd()
+            }
+        }
+    }
+
+    // 功能操作：五个一键操作 + 原有明细卡片（可滚动）。
+    Rectangle {
+        id: opsBar
+        objectName: "maintOpsBar"
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: logPanel.bottom
+        anchors.margins: Theme.spacing.s3
+        height: 56
+        color: Theme.color.surface
+        border.color: Theme.color.border
+        border.width: Theme.border.width
+        radius: Theme.radius.card
+
+        Row {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.margins: Theme.spacing.s2
+            spacing: Theme.spacing.s1
+            Text {
+                color: Theme.color.text_primary
+                font.pixelSize: Theme.typography.scale.label.size
+                text: "功能操作"
+            }
+            FilterChip {
+                objectName: "maintOpsCamera"
+                text: "摄像头检测"
+                onClicked: page.runCameraCheck()
+            }
+            FilterChip {
+                objectName: "maintOpsNvr"
+                text: "录像与存储"
+                onClicked: page.runNvrCheck()
+            }
+            FilterChip {
+                objectName: "maintOpsBle"
+                text: "蓝牙扫描"
+                onClicked: page.runBleScan()
+            }
+            FilterChip {
+                objectName: "maintOpsSelfCheck"
+                text: "故障自检"
+                onClicked: page.runSelfCheck()
+            }
+            FilterChip {
+                objectName: "maintOpsSystem"
+                text: "系统信息"
+                onClicked: page.showSystemInfo()
+            }
+        }
+    }
+
     // 卡片区：可滚动，避免固定高卡片在 1920x1080 下溢出裁切（ITEM-024 D-01）
     Flickable {
         id: flick
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: opsBar.bottom
+        anchors.bottom: parent.bottom
+        anchors.margins: Theme.spacing.s3
         clip: true
         contentWidth: width
         contentHeight: grid.height + 2 * Theme.spacing.s3

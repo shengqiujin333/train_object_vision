@@ -12,6 +12,9 @@
 
 #include "railhmi/core/camera_registry.h"
 #include "railhmi/core/config.h"
+#ifdef RAILHMI_HAS_MEDIA
+#include "railhmi/media/frame_lease.h"
+#endif
 
 // Stable objects keep QML delegates alive while status and frames change.
 class VideoChannel : public QObject {
@@ -65,6 +68,11 @@ public:
     void stop();
     // Used by the integration test; production pages cannot inject faults.
     void freezeForTest(std::size_t index, bool freeze);
+#ifdef RAILHMI_HAS_MEDIA
+    // 推理侧取帧入口（2026-11-17）：返回该路最新 NV12 帧租约（共享所有权、零拷贝）。
+    // 无帧/未启动时返回空租约（status()==NOT_READY），调用方不得当实时帧使用。
+    railhmi::media::FrameLease latestLease(const std::string& camera_id) const;
+#endif
 private:
     void refresh();
     struct Impl;

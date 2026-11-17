@@ -2,7 +2,7 @@
 
 // railhmi-core: 关键状态区与顶部模式信息条（ITEM-016）。
 // 关键状态区七类：受电弓 / 轮轨 / 车门 / 摄像头 / AI / 录像 / 存储。
-// 顶部条（现场需求精简后）：时间 / 摄像头 / 录像 / 系统健康 / 车辆状态 / 门磁。
+// 顶部条（现场需求精简后）：时间 / 摄像头 / 录像 / AI模型 / 系统健康 / 车辆状态 / 门磁。
 //   * 删除「模式（可见光·红外未接入）」与「AI」两项；
 //   * 「车速」->「车辆状态」（静止/运动/未接入，人工可选，无数据源不臆测）；
 //   * 新增「摄像头」（x/N 路实时）；「录像」按真实 NVR 连接显示 NVR正常/NVR异常；
@@ -70,7 +70,9 @@ struct KeyStatusItem {
 std::vector<KeyStatusItem> build_key_status(const KeyStatusSnapshot& snap, Role role);
 
 // 顶部条。
-enum class TopItemKind { Time, Camera, Recording, Health, VehicleState, DoorSensor };
+// 「AI模型」位（2026-11-17 现场需求）：如实显示推理线程是否接入（接入/未接入），
+// 模型名称在 AI 调试页与设备维护页展示；顶栏只给接入结论，避免宽度溢出。
+enum class TopItemKind { Time, Camera, Recording, AiModel, Health, VehicleState, DoorSensor };
 
 struct TopBarItem {
     TopItemKind kind = TopItemKind::Time;
@@ -91,23 +93,26 @@ struct TopBarSnapshot {
     std::string time_text = "--:--:--";         // 由调用方格式化
     CategoryStatus camera;                      // 摄像头接入路数
     CategoryStatus recording;                   // 录像（NVR 连接状态）
+    CategoryStatus ai_model;                    // AI 模型接入（接入/未接入）
     CategoryStatus health;                      // 系统健康
     CategoryStatus vehicle_state;               // 车辆状态（静止/运动/未接入）
     CategoryStatus door_sensor;                 // 门磁（开门/关门/传感器异常）
 };
 
-// 固定顺序：时间/摄像头/录像/系统健康/车辆状态/门磁（6 项）。
+// 固定顺序：时间/摄像头/录像/AI模型/系统健康/车辆状态/门磁（7 项）。
 // 所有类别均由调用方注入真实值；缺省 CategoryStatus{} = 未接入/不可用，
 // 未知状态绝不显示成正常。车辆状态位额外可点击（人工在 静止/运动 间切换）。
 std::vector<TopBarItem> build_top_bar(const TopBarSnapshot& snap, Role role);
 
-// 顶栏四类真值映射（纯逻辑，供 UI 桥接直接调用并单测，避免在 QML/C++ 里散落文案）：
+// 顶栏五类真值映射（纯逻辑，供 UI 桥接直接调用并单测，避免在 QML/C++ 里散落文案）：
 //   * 摄像头：live/total 路实时，全部在线为 ok，部分离线为 warning，全部离线为 alarm；
 //   * 录像：只按**真实 NVR 连接探测**结果给 NVR正常/NVR异常，未连上绝不显示正常；
+//   * AI模型：只有推理工作线程真实启动且至少一路模型就绪才显示「接入」，否则「未接入」；
 //   * 门磁：BLE 汇总 level 映射为 开门/关门/传感器异常 三态；
 //   * 车辆状态：0=未接入、1=静止、2=运动（人工置位，非传感器真值）。
 CategoryStatus camera_top_status(int live, int total);
 CategoryStatus nvr_top_status(bool connected);
+CategoryStatus ai_model_top_status(bool worker_alive, int ready_lanes);
 CategoryStatus door_top_status(const std::string& summary_level_token);
 CategoryStatus vehicle_state_top_status(int mode);
 

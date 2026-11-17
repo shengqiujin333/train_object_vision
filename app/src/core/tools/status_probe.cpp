@@ -96,6 +96,8 @@ int main(int argc, char** argv) {
     // 四项真值统一走 core 映射函数，探针不另写一套文案。
     ts.camera = camera_top_status(6, 6);
     ts.recording = nvr_top_status(scenario != "unavailable");
+    // AI 模型位：mixed 场景模拟「线程活着但无就绪模型」以外的正常接入，其余场景未接入。
+    ts.ai_model = ai_model_top_status(scenario != "unavailable", scenario == "unavailable" ? 0 : 3);
     ts.health = (scenario == "mixed") ? CategoryStatus{StatusLevel::Warning, "温度偏高"}
                                       : CategoryStatus{StatusLevel::Ok, "正常"};
     ts.vehicle_state = vehicle_state_top_status(scenario == "mixed" ? 2 : 1);
@@ -128,21 +130,22 @@ int main(int argc, char** argv) {
          " distinct_labels=" + std::to_string(labels.size()) +
          " distinct_colors=" + std::to_string(colors.size()));
 
-    // 验收：顶栏固定 6 项、删除的三项不再出现、四项真值映射生效。
-    const char* want[6] = {"time", "camera", "recording", "health", "vehicle_state", "door_sensor"};
-    bool order_ok = tops.size() == 6;
-    for (std::size_t i = 0; i < tops.size() && i < 6; ++i)
+    // 验收：顶栏固定 7 项、删除的三项不再出现、五项真值映射生效。
+    const char* want[7] = {"time", "camera", "recording", "ai_model", "health", "vehicle_state", "door_sensor"};
+    bool order_ok = tops.size() == 7;
+    for (std::size_t i = 0; i < tops.size() && i < 7; ++i)
         if (tops[i].key != want[i]) order_ok = false;
-    bool camera_ok = false, recording_ok = false, door_ok = false;
+    bool camera_ok = false, recording_ok = false, door_ok = false, ai_ok = false;
     for (const auto& t : tops) {
         if (t.key == "mode" || t.key == "ai" || t.key == "vehicle_speed") order_ok = false;
         if (t.key == "camera") camera_ok = (t.value == "6/6 路实时");
         if (t.key == "recording") recording_ok = (t.value == "NVR正常" || t.value == "NVR异常");
         if (t.key == "door_sensor") door_ok = (t.value == "开门" || t.value == "关门");
+        if (t.key == "ai_model") ai_ok = (t.value == "接入" || t.value == "未接入");
     }
-    const bool truth_ok = camera_ok && recording_ok && door_ok;
+    const bool truth_ok = camera_ok && recording_ok && door_ok && ai_ok;
     const bool triple_ok = shapes.size() == 5 && glyphs.size() == 5 && labels.size() == 5 && colors.size() == 5;
-    const bool ok = items.size() == 7 && tops.size() == 6 && triple_ok && order_ok && truth_ok;
+    const bool ok = items.size() == 7 && tops.size() == 7 && triple_ok && order_ok && truth_ok;
     emit("type=acceptance items=" + std::to_string(items.size()) +
          " top_items=" + std::to_string(tops.size()) +
          " triple_encoding_distinct=" + (triple_ok ? "true" : "false") +

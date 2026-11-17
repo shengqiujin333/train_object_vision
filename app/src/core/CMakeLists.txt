@@ -19,6 +19,7 @@ add_library(railhmi_core STATIC
     src/grid.cpp
     src/channel_view.cpp
     src/status.cpp
+    src/ai_alarm.cpp
     src/door_sensor.cpp
     src/inference.cpp
     src/vision_model_capability.cpp

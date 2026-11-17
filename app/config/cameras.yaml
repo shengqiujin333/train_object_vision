@@ -65,6 +65,9 @@ cameras:
     username: admin
     credential_env: TRAIN_SIDE_RTSP_CREDENTIAL
     spectrum: visible
+    # 车门状态以 BLE 门磁为主判断（PRD DOOR-002），摄像头用于复核与录像。
+    # 该职责当前没有模型证据：推理侧只接入 车前方/受电弓/轮轨 三路（见 AiRuntime），
+    # 因此本路保留 ai_profile=cab_door 的职责标注但不会入推理队列。
     ai_enabled: true
     ai_profile: cab_door
     display_fps: 15

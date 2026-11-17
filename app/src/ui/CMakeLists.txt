@@ -37,6 +37,8 @@ add_executable(railhmi
     src/main.cpp
     src/video_runtime.cpp
     src/video_runtime.h
+    src/ai_runtime.cpp
+    src/ai_runtime.h
     src/alarm_model.cpp
     src/alarm_model.h
     src/replay_model.cpp
@@ -47,6 +49,8 @@ add_executable(railhmi
     src/replay_decoder.h
     src/maintenance_model.cpp
     src/maintenance_model.h
+    src/maintenance_ops.cpp
+    src/maintenance_ops.h
     src/permissions_model.cpp
     src/permissions_model.h
     src/health_model.cpp

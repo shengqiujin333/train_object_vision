@@ -371,11 +371,15 @@ std::string RknnVisionDetector::model_version(railhmi::core::AiProfile p) const 
     railhmi::core::DutyKind dk = railhmi::core::DutyKind::Pantograph;
     if (railhmi::core::duty_of_profile(p, &dk)) {
         auto it = duty_rt_.find(static_cast<int>(dk));
-        if (it == duty_rt_.end()) return std::string();
-        // 职责模型版本仅在“已声明并可核验”时展示；不可用时不高调宣称模型能力。
-        return it->second->adapter && it->second->adapter->availability().available
-                   ? it->second->decl.declared_model_name
-                   : std::string();
+        if (it != duty_rt_.end() && it->second->adapter &&
+            it->second->adapter->availability().available)
+            return it->second->decl.declared_model_name;
+        // 临时复用：版本取实际执行的检测模型（不能报一个没加载的职责模型）。
+        if (cfg_.reuse_detect_for_duties) {
+            const Model* det = model_for(railhmi::core::VisionModelKind::YoloV5Detect);
+            if (det && det->ready) return det->decl.version;
+        }
+        return std::string();
     }
     const Model* det = model_for(railhmi::core::VisionModelKind::YoloV5Detect);
     const Model* seg = model_for(railhmi::core::VisionModelKind::YoloV8Seg);
@@ -393,8 +397,15 @@ bool RknnVisionDetector::ready(railhmi::core::AiProfile p) const {
     railhmi::core::DutyKind dk = railhmi::core::DutyKind::Pantograph;
     if (railhmi::core::duty_of_profile(p, &dk)) {
         auto it = duty_rt_.find(static_cast<int>(dk));
-        if (it == duty_rt_.end() || !it->second->adapter) return false;
-        return it->second->adapter->availability().available && it->second->io_ready;
+        const bool duty_ready = it != duty_rt_.end() && it->second->adapter &&
+                                it->second->adapter->availability().available && it->second->io_ready;
+        if (duty_ready) return true;
+        // 临时复用：职责模型缺失/未核验时，检测模型就绪即可执行（能力边界见头文件说明）。
+        if (cfg_.reuse_detect_for_duties) {
+            const Model* det = model_for(railhmi::core::VisionModelKind::YoloV5Detect);
+            return det != nullptr && det->ready;
+        }
+        return false;
     }
     if (p != railhmi::core::AiProfile::Front) return false;
     const railhmi::core::ProfileRequirement req = railhmi::core::requirement_for_profile(p);
@@ -408,6 +419,9 @@ bool RknnVisionDetector::ready(railhmi::core::AiProfile p) const {
 std::string RknnVisionDetector::unavailable_reason(railhmi::core::AiProfile p) const {
     railhmi::core::DutyKind dk = railhmi::core::DutyKind::Pantograph;
     if (railhmi::core::duty_of_profile(p, &dk)) {
+        const Model* det = model_for(railhmi::core::VisionModelKind::YoloV5Detect);
+        const bool reuse_ready = cfg_.reuse_detect_for_duties && det && det->ready;
+        if (reuse_ready) return railhmi::core::vision_reason::kReady();
         auto it = duty_rt_.find(static_cast<int>(dk));
         if (it == duty_rt_.end() || !it->second->adapter)
             return railhmi::core::duty_reason::kProfileUnsupported();
@@ -644,33 +658,36 @@ VisionInferOutcome RknnVisionDetector::infer(const AiFrame& frame, railhmi::core
     railhmi::core::DutyKind dk = railhmi::core::DutyKind::Pantograph;
     if (railhmi::core::duty_of_profile(p, &dk)) {
         auto it = duty_rt_.find(static_cast<int>(dk));
-        if (it == duty_rt_.end() || !it->second->adapter)
+        const bool duty_ready = it != duty_rt_.end() && it->second->adapter &&
+                                it->second->adapter->availability().available && it->second->io_ready;
+        if (duty_ready) {
+            railhmi::core::DutyState state = railhmi::core::DutyState::Unknown;
+            std::string reason;
+            std::string detail;
+            if (!run_duty(*it->second, frame.lease, &state, &reason, &detail))
+                return unavailable(reason, detail);
+            railhmi::core::EnvelopeBuildInput bin;
+            bin.frame = out.envelope.frame;
+            bin.profile = p;
+            bin.model_version = it->second->decl.declared_model_name;
+            bin.capture_mono_us = frame.capture_mono_us;
+            bin.result_mono_us = mono_us();
+            bin.detect_ready = true;
+            bin.requires_segmentation = false;
+            out.envelope = railhmi::core::build_envelope(bin);
+            out.available = out.envelope.ready();
+            out.reason = out.envelope.reason;
+            out.detail = detail;
+            out.infer_us = out.envelope.result_mono_us - t_start;
+            if (out.available) ++counters_.infer_ok;
+            else ++counters_.infer_unavailable;
+            return out;
+        }
+        // 职责模型不可用：临时复用检测模型（现场 11-17 需求）时继续走下面的检测分支；
+        // 否则保持既有「无声明即不可用」语义，绝不冒充职责能力。
+        if (!cfg_.reuse_detect_for_duties)
             return unavailable(railhmi::core::duty_reason::kProfileUnsupported(),
                                "no duty adapter");
-        if (!ready(p))
-            return unavailable(unavailable_reason(p),
-                               it->second->adapter->availability().detail);
-        railhmi::core::DutyState state = railhmi::core::DutyState::Unknown;
-        std::string reason;
-        std::string detail;
-        if (!run_duty(*it->second, frame.lease, &state, &reason, &detail))
-            return unavailable(reason, detail);
-        railhmi::core::EnvelopeBuildInput bin;
-        bin.frame = out.envelope.frame;
-        bin.profile = p;
-        bin.model_version = it->second->decl.declared_model_name;
-        bin.capture_mono_us = frame.capture_mono_us;
-        bin.result_mono_us = mono_us();
-        bin.detect_ready = true;
-        bin.requires_segmentation = false;
-        out.envelope = railhmi::core::build_envelope(bin);
-        out.available = out.envelope.ready();
-        out.reason = out.envelope.reason;
-        out.detail = detail;
-        out.infer_us = out.envelope.result_mono_us - t_start;
-        if (out.available) ++counters_.infer_ok;
-        else ++counters_.infer_unavailable;
-        return out;
     }
 
     if (!ready(p))

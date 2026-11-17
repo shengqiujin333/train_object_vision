@@ -67,7 +67,7 @@ def main() -> int:
     for token, what in {
         "aiBox": "detection box", "aiRoi": "ROI", "aiLabel": "confidence/label/distance text",
         "confidenceText": "confidence", "distanceText": "distance", "fpsText": "fps",
-        "latencyMs": "end-to-end latency", "modelVersion": "model version", "lastResultText": "last result time",
+        "latencyMs": "end-to-end latency", "modelText": "model name/version", "lastResultText": "last result time",
     }.items():
         if token not in p5:
             fails.append("P5 missing %s (%s)" % (what, token))
@@ -79,6 +79,31 @@ def main() -> int:
         fails.append("main.qml does not route ai_debug to P5")
     if "DeniedView" not in main_qml:
         fails.append("main.qml has no DeniedView for restricted pages")
+
+    # 2026-11-17：模型接入与现场替换（三职责共用检测模型 + 车前方两阶段分割）。
+    for token, what in {
+        "aiDetectModel": "current detect model line",
+        "aiSegmentModel": "current segment model line",
+        "aiDetectModelChips": "detect model selector",
+        "aiSegmentModelChips": "segment model selector",
+        "selectModel": "model switch entry",
+        "modelText": "per-channel model display",
+    }.items():
+        if token not in p5:
+            fails.append("P5 missing %s (%s)" % (what, token))
+    bridge = os.path.join(args.root, "src", "ai_runtime.cpp")
+    if os.path.exists(bridge):
+        ai_src = read(bridge)
+        for token, what in {
+            "selectModel": "model switch rebuild",
+            "reuse_detect_for_duties": "shared detect model for the three duties",
+            "AiAlarmTracker": "multi-frame alarm confirmation",
+            "latestLease": "frame source from the video runtime",
+        }.items():
+            if token not in ai_src:
+                fails.append("ai_runtime.cpp missing %s (%s)" % (what, token))
+    else:
+        fails.append("ai_runtime.cpp not found (vision inference not wired)")
 
     print("[check_ai_debug_wiring] overlay toggles default-off + debug tokens + distance + all-role visibility checked")
     if fails:

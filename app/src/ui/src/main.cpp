@@ -34,9 +34,11 @@
 #include "alarm_model.h"
 #include "replay_model.h"
 #include "maintenance_model.h"
+#include "maintenance_ops.h"
 #include "permissions_model.h"
 #include "health_model.h"
 #include "video_runtime.h"
+#include "ai_runtime.h"
 #include "door_sensor_runtime.h"
 #include "vehicle_state.h"
 #include "nvr_status.h"
@@ -136,7 +138,22 @@ int main(int argc, char** argv) {
         railhmi::core::to_string(cfg.settings.app.render_path));
     railhmi::platform::Logger::instance().info("render path: " + renderPath.toStdString());
     const QString roleId = QString::fromLatin1(railhmi::core::to_string(role));
-    const QString defaultPage = QString::fromLatin1(railhmi::core::to_string(railhmi::core::default_page(role)));
+    QString defaultPage = QString::fromLatin1(railhmi::core::to_string(railhmi::core::default_page(role)));
+    // 启动页可被环境变量覆盖（RAILHMI_START_PAGE=realtime|alarm_center|replay|all_cameras|ai_debug|maintenance）。
+    // 仅接受导航里真实存在的页 id；用于现场/离屏验收与定制开机页，非法值忽略并保持默认。
+    {
+        const QString want = qEnvironmentVariable("RAILHMI_START_PAGE");
+        if (!want.isEmpty()) {
+            for (const QVariant& v : navList) {
+                if (v.toMap().value("id").toString() == want) {
+                    defaultPage = want;
+                    railhmi::platform::Logger::instance().info(
+                        "start page overridden: " + want.toStdString());
+                    break;
+                }
+            }
+        }
+    }
 
     // 配置驱动摄像头注册表与 NVR 集成项（ITEM-012）：槽位保持 cameras.yaml 顺序；徽标由 ai_profile 决定。
     const std::vector<railhmi::core::CameraSlot> registry = railhmi::core::build_registry(cfg.settings);
@@ -149,6 +166,8 @@ int main(int argc, char** argv) {
         m["badge"] = QString::fromUtf8(c.detection_badge.c_str());
         m["aiEnabled"] = c.ai_enabled;
         m["state"] = QString::fromStdString(c.stream_state);
+        // 维护页「摄像头检测」按 RTSP 地址取主机名做 ping，故一并下发（只读、无凭据）。
+        m["url"] = QString::fromStdString(c.rtsp_url);
         camList.append(m);
     }
 
@@ -172,6 +191,8 @@ int main(int argc, char** argv) {
     railhmi::core::CategoryStatus doorStatus;
     std::string doorSummaryLevel;
     bool nvrConnected = false;
+    // AI 模型接入真值（推理线程存活 + 至少一路模型就绪）；由 AiRuntime::statusChanged 刷新。
+    bool aiReadyFlag = false;
     VehicleStateRuntime vehicleState;
     NvrStatusRuntime nvrStatus(QString::fromStdString(configDir) + QStringLiteral("/nvr.yaml"));
 
@@ -235,6 +256,9 @@ int main(int argc, char** argv) {
         topSnap.camera = railhmi::core::camera_top_status(
             liveCount(), static_cast<int>(videoRuntime.channels().size()));
         topSnap.recording = railhmi::core::nvr_top_status(nvrConnected);
+        // AI 模型接入位（2026-11-17）：只报「接入/未接入」真实结论，模型名在 P5/P6 展示。
+        topSnap.ai_model =
+            railhmi::core::ai_model_top_status(aiReadyFlag, aiReadyFlag ? 1 : 0);
         // 系统健康仍无真实采样源接入，保持缺省「未接入」，不伪造正常。
         topSnap.vehicle_state = railhmi::core::vehicle_state_top_status(vehicleState.mode());
         topSnap.door_sensor = railhmi::core::door_top_status(doorSummaryLevel);
@@ -328,56 +352,28 @@ int main(int argc, char** argv) {
         republishTop();
     });
 
-    // AI 调试页（ITEM-017）：仅 ai_enabled 相机；应用尚未启动推理线程时每路显式“AI 不可用”。
-    railhmi::core::AiRuntime aiRt;
-    aiRt.worker_alive = false;
-    for (const auto& c : registry) {
-        railhmi::core::AiChannelRuntime ch;
-        ch.camera_id = c.id;
-        ch.profile = c.ai_profile;
-        for (const auto& m : cfg.settings.app.ai.models)
-            if (m.profile == c.ai_profile) ch.model_version = m.version;
-        aiRt.channels.push_back(ch);
-    }
-    QVariantList aiList;
-    for (const auto& d : railhmi::core::build_ai_debug(registry, aiRt, {}, 0)) {
-        QVariantMap m;
-        m["cameraId"] = QString::fromStdString(d.camera_id);
-        m["name"] = QString::fromUtf8(d.name.c_str());
-        m["profile"] = QString::fromLatin1(railhmi::core::to_string(d.profile));
-        m["profileLabel"] = QString::fromUtf8(d.profile_label.c_str());
-        m["modelVersion"] = QString::fromStdString(d.model_version);
-        m["available"] = d.available;
-        m["unavailableReason"] = QString::fromUtf8(d.unavailable_reason.c_str());
-        char fpsbuf[32];
-        std::snprintf(fpsbuf, sizeof(fpsbuf), "%.1f", d.fps);
-        m["fpsText"] = QString::fromLatin1(fpsbuf);
-        m["latencyMs"] = d.latency_ms;
-        m["lastResultText"] = QString::fromUtf8(d.last_result_text.c_str());
-        m["confidenceText"] = d.boxes.empty() ? QString::fromUtf8("—")
-                                               : QString::number(d.max_confidence * 100, 'f', 0) + "%";
-        m["distanceText"] = QString::fromUtf8(d.distance_text.c_str());
-        QVariantList boxes;
-        for (const auto& b : d.boxes) {
-            QVariantMap bm;
-            bm["x"] = b.x; bm["y"] = b.y; bm["w"] = b.w; bm["h"] = b.h;
-            bm["confidence"] = b.confidence; bm["label"] = QString::fromStdString(b.label);
-            bm["distanceM"] = static_cast<double>(b.distance_m);
-            boxes.append(bm);
-        }
-        m["boxes"] = boxes;
-        QVariantList roi;
-        for (const auto& r : cfg.settings.roi) {
-            if (r.camera != d.camera_id) continue;
-            QVariantMap rm;
-            rm["name"] = QString::fromUtf8(r.name.c_str());
-            rm["x"] = r.x; rm["y"] = r.y; rm["w"] = r.w; rm["h"] = r.h;
-            roi.append(rm);
-        }
-        m["roi"] = roi;
-        aiList.append(m);
-    }
-    view.rootContext()->setContextProperty("railhmiAiDebug", aiList);
+    // AI 推理接入（2026-11-17）：真实 RKNN 工作线程（media::VisionAiWorker）+ 逐路报警判定。
+    //   * 车前方/受电弓/轮轨三路当前**共用同一个检测模型**（app.ai.reuse_detect_for_duties）；
+    //     车前方另用分割模型做「轨道掩码 ∩ 人/物」两阶段判定，判定结果即 in_roi 标志；
+    //   * 模型名/路径全部来自配置，P5 可现场替换（railhmiAi.selectModel）；
+    //   * 未起线程 / 模型未就绪 / 无帧时如实显示「未接入/不可用」，不伪造检测框与报警。
+    AiRuntime aiRuntime(cfg.settings, QString::fromStdString(configDir), &videoRuntime);
+    view.rootContext()->setContextProperty("railhmiAi", &aiRuntime);
+    view.rootContext()->setContextProperty("railhmiAiDebug", aiRuntime.channels());
+    view.rootContext()->setContextProperty("railhmiAiCatalog", aiRuntime.catalog());
+    view.rootContext()->setContextProperty("railhmiAiAlarms", aiRuntime.alarms());
+    QObject::connect(&aiRuntime, &AiRuntime::channelsChanged, &view, [&]() {
+        view.rootContext()->setContextProperty("railhmiAiDebug", aiRuntime.channels());
+        view.rootContext()->setContextProperty("railhmiAiCatalog", aiRuntime.catalog());
+    });
+    // P1 三画面红框判据：所有受检路都在表里（未报警为 false）。
+    QObject::connect(&aiRuntime, &AiRuntime::alarmsChanged, &view, [&]() {
+        view.rootContext()->setContextProperty("railhmiAiAlarms", aiRuntime.alarms());
+    });
+    QObject::connect(&aiRuntime, &AiRuntime::statusChanged, &view, [&]() {
+        aiReadyFlag = aiRuntime.aiReady();
+        republishTop();
+    });
 
     // 报警中心（ITEM-018）：桥接对象（过滤/排序/确认委托 core）。持久化事件接入前，
     // 仅模拟开启时灌入样例用于页面自检；否则为空 -> 页面显示空态。
@@ -404,6 +400,24 @@ int main(int argc, char** argv) {
         alarmModel.seedEvents(evs, names, rec);
     }
     view.rootContext()->setContextProperty("railhmiAlarms", &alarmModel);
+
+    // AI 报警跃迁 -> 报警中心实时事件（只追加，不删除；确认只改状态）。
+    // 事件类型 token 与契约一致（person_on_rail / front_obstacle / wheel_derail / pantograph_abnormal）。
+    QObject::connect(&aiRuntime, &AiRuntime::alarmRaised, &view,
+                     [&](const QString& cameraId, int level, const QString& type,
+                         const QString& description) {
+        QString sourceName = cameraId;
+        for (const auto& c : registry)
+            if (QString::fromStdString(c.id) == cameraId) sourceName = QString::fromUtf8(c.name.c_str());
+        alarmModel.addLiveEvent(type, level, cameraId, sourceName, description);
+        railhmi::platform::Logger::instance().info(
+            "ai-alarm: " + type.toStdString() + " cam=" + cameraId.toStdString() +
+            " level=" + std::to_string(level));
+    });
+    QObject::connect(&aiRuntime, &AiRuntime::alarmCleared, &view, [&](const QString& cameraId) {
+        railhmi::platform::Logger::instance().info(
+            "ai-alarm: cleared cam=" + cameraId.toStdString());
+    });
 
     // ---- BLE 门磁（BlueZ 广播）----
     // core 只做报文解析/汇总；这里把汇总接到顶栏门磁位、关键状态「车门」项、
@@ -551,6 +565,11 @@ int main(int argc, char** argv) {
     view.rootContext()->setContextProperty("railhmiMaintenance", &maintModel);
     view.rootContext()->setContextProperty("railhmiMaintenanceCameras", maintCams);
 
+    // 设备维护页「日志显示 + 功能操作」（2026-11-17）：ping 摄像头、NVR 登录检测、
+    // 系统信息与日志保存/导出。过程信息统一写进同一份日志（同时进结构化日志）。
+    MaintenanceOps maintOps(cfg.settings, QString::fromStdString(configDir));
+    view.rootContext()->setContextProperty("railhmiMaintOps", &maintOps);
+
     // 权限与二次确认（ITEM-023）：权限矩阵/门控/导出·配置修改写维护日志委托 core。
     RailhmiPermissionsModel permsModel;
     permsModel.seed(role, cfg.settings.app.permissions, QString::fromLatin1(railhmi::core::to_string(role)));
@@ -642,6 +661,59 @@ int main(int argc, char** argv) {
     }
 
     QTimer::singleShot(0, &videoRuntime, &VideoRuntime::start);
+    // 推理在取流之后启动：先有租约再入队，避免空跑与首帧误报。
+    QTimer::singleShot(800, &aiRuntime, &AiRuntime::start);
+
+    // 维护操作的启动脚本（RAILHMI_MAINT_RUN=camera,nvr,system）：只用于现场/离屏验收，
+    // 与 P6 页面上五个按钮调用的是同一批方法；默认不设置 = 什么都不做。
+    {
+        const QString maintRun = qEnvironmentVariable("RAILHMI_MAINT_RUN");
+        if (!maintRun.isEmpty()) {
+            QTimer::singleShot(2500, &view, [&maintOps, &registry, maintRun, &videoRuntime,
+                                             &aiRuntime]() {
+                const QStringList steps = maintRun.split(QLatin1Char(','));
+                for (const QString& step : steps) {
+                    if (step == QLatin1String("camera")) {
+                        QVariantList cams;
+                        for (const auto& c : registry)
+                            cams.append(QVariantMap{{"id", QString::fromStdString(c.id)},
+                                                    {"name", QString::fromStdString(c.name)},
+                                                    {"url", QString::fromStdString(c.rtsp_url)}});
+                        maintOps.pingCameras(cams);
+                    } else if (step == QLatin1String("nvr")) {
+                        maintOps.checkNvr();
+                    } else if (step == QLatin1String("system")) {
+                        const QVariantList info = maintOps.systemInfo();
+                        maintOps.appendLog(QStringLiteral("系统信息"), QStringLiteral("===== 系统信息 ====="));
+                        for (const QVariant& v : info) {
+                            const QVariantMap m = v.toMap();
+                            maintOps.appendLog(QStringLiteral("系统信息"),
+                                               m.value("group").toString() + QStringLiteral(" · ") +
+                                                   m.value("key").toString() + QStringLiteral("：") +
+                                                   m.value("value").toString());
+                        }
+                    } else if (step == QLatin1String("selfcheck")) {
+                        maintOps.appendLog(QStringLiteral("故障自检"), QStringLiteral("===== 自检开始 ====="));
+                        int live = 0;
+                        for (const QVariant& v : videoRuntime.channels()) {
+                            const QVariantMap info = qvariant_cast<VideoChannel*>(v)->info();
+                            if (info.value("presentable").toBool()) ++live;
+                        }
+                        maintOps.appendLog(QStringLiteral("故障自检"),
+                                           QStringLiteral("视频：%1 路实时 / 共 %2 路")
+                                               .arg(live)
+                                               .arg(videoRuntime.channels().size()));
+                        maintOps.appendLog(QStringLiteral("故障自检"),
+                                           QStringLiteral("AI：%1（检测模型 %2）")
+                                               .arg(aiRuntime.statusText(), aiRuntime.detectModel()));
+                        maintOps.appendLog(QStringLiteral("故障自检"), QStringLiteral("===== 自检结束 ====="));
+                    }
+                }
+            });
+        }
+    }
+
     QObject::connect(&app, &QCoreApplication::aboutToQuit, &videoRuntime, &VideoRuntime::stop);
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, &aiRuntime, &AiRuntime::stop);
     return app.exec();
 }

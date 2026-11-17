@@ -1,0 +1,45 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-admin'
+2026-11-17T12:40:46.568 INFO  railhmi 0.1.0 [mode=Target, simulation=off]
+2026-11-17T12:40:46.568 INFO  config dir: ./app/config
+2026-11-17T12:40:46.568 INFO  configuration OK: 6 cameras
+2026-11-17T12:40:46.568 INFO  credentials: 3 private env var(s) loaded from config dir
+2026-11-17T12:40:46.568 INFO  display: config=1280x800 runtime=1280x800 (fullscreen)
+2026-11-17T12:40:46.568 INFO  render path: cpu
+2026-11-17T12:40:46.568 INFO  start page overridden: ai_debug
+video channel "CAM-01" "unstarted" presentable= false
+video channel "CAM-02" "unstarted" presentable= false
+video channel "CAM-03" "unstarted" presentable= false
+video channel "CAM-04" "unstarted" presentable= false
+video channel "CAM-05" "unstarted" presentable= false
+video channel "CAM-06" "unstarted" presentable= false
+2026-11-17T12:40:46.569 INFO  nvr-status: real TCP probe enabled, config=./app/config/nvr.yaml
+2026-11-17T12:40:46.572 INFO  system-metrics: cpu=8 cores, mem=16%, npu=3 cores, perCore=yes, aggregate=100
+2026-11-17T12:40:46.616 INFO  [maint] 维护日志已就绪（最多保留最近 800 行；可保存/导出）
+2026-11-17T12:40:46.798 INFO  door-sensor: enabled adapter=auto poll=1000ms stale=60000ms filter=T1 registered=0 (I/O on dedicated worker thread)
+video workers started: 6 / 6
+video channel "CAM-01" "connecting" presentable= false
+video channel "CAM-02" "connecting" presentable= false
+video channel "CAM-03" "connecting" presentable= false
+video channel "CAM-04" "connecting" presentable= false
+video channel "CAM-05" "connecting" presentable= false
+video channel "CAM-06" "connecting" presentable= false
+2026-11-17T12:40:46.863 INFO  door-sensor: warning: LE Set Scan Enable(filter_dup=0) failed (rc=-1); falling back to BlueZ discovery
+2026-11-17T12:40:46.863 INFO  door-sensor: PropertiesChanged subscribed on org.freedesktop.DBus.Properties (BlueZ fallback)
+2026-11-17T12:40:46.864 INFO  door-sensor: SetDiscoveryFilter OK (Transport=le, DuplicateData=true) on /org/bluez/hci0
+2026-11-17T12:40:47.082 INFO  door-sensor: StartDiscovery OK on /org/bluez/hci0
+2026-11-17T12:40:47.082 INFO  door-sensor: I/O mode=bluez-fallback adapter=/org/bluez/hci0
+video channel "CAM-01" "live" presentable= true
+rga_api version 1.10.1_[0]
+2026-11-17T12:40:47.599 INFO  ai: start models_dir=/home/admin/rknn_model_zoo/install/rk3588_linux_aarch64/rknn_yolov8_seg_demo/model detect=yolov5s segment=yolov8s-seg reuse_detect_for_duties=true lanes=3
+2026-11-17T12:40:47.674 INFO  ai: worker started lanes=3 load_error=none detect_ready=true pantograph_ready=true wheel_rail_ready=true
+video channel "CAM-02" "live" presentable= true
+video channel "CAM-03" "live" presentable= true
+video channel "CAM-04" "live" presentable= true
+video channel "CAM-06" "live" presentable= true
+video channel "CAM-05" "live" presentable= true
+2026-11-17T12:40:48.035 INFO  door-sensor: L2 door_ajar event appended for AUTO-C0:6D:9A:AC:C3:87
+2026-11-17T12:40:48.071 INFO  nvr-status: 192.168.1.4:80 -> NVR正常 (tcp connected)
+2026-11-17T12:40:48.151 INFO  ai-alarm: person_on_rail cam=CAM-01 level=1
+2026-11-17T12:40:48.151 INFO  ai-alarm: pantograph_abnormal cam=CAM-04 level=2
+2026-11-17T12:40:48.151 INFO  ai-alarm: wheel_derail cam=CAM-05 level=1
+2026-11-17T12:41:11.591 INFO  door-sensor: EVENT push#1 mac=C0:6D:9A:AC:C3:87 (arrived immediately, no poll wait)

@@ -120,22 +120,24 @@ void test_top_bar() {
     s.time_text = "12:34:56";
     s.camera = {StatusLevel::Ok, "6/6 路实时"};
     s.recording = {StatusLevel::Ok, "NVR正常"};
+    s.ai_model = {StatusLevel::Ok, "接入"};
     s.health = {StatusLevel::Ok, "正常"};
     s.vehicle_state = {StatusLevel::Ok, "静止"};
     s.door_sensor = {StatusLevel::Ok, "关门"};
     const std::vector<TopBarItem> t = build_top_bar(s, Role::Maintainer);
-    railhmi_test::check(t.size() == 6, "top bar has 6 items after removing mode/AI");
-    const char* keys[6] = {"time", "camera", "recording", "health", "vehicle_state", "door_sensor"};
+    railhmi_test::check(t.size() == 7, "top bar has 7 items (AI model re-added on demand)");
+    const char* keys[7] = {"time", "camera", "recording", "ai_model", "health", "vehicle_state",
+                          "door_sensor"};
     bool order = true;
     for (std::size_t i = 0; i < t.size(); ++i)
         if (t[i].key != keys[i]) order = false;
-    railhmi_test::check(order, "top bar fixed order (6 items)");
+    railhmi_test::check(order, "top bar fixed order (7 items)");
     railhmi_test::check(t[0].value == "12:34:56", "top bar shows time");
     railhmi_test::check(t[1].value == "6/6 路实时" && t[1].kind == TopItemKind::Camera,
                         "camera live/total shown in top bar");
     railhmi_test::check(t[2].value == "NVR正常" && t[2].kind == TopItemKind::Recording,
                         "recording shows real NVR connection state");
-    railhmi_test::check(t[4].value == "静止" && t[4].clickable && t[4].secondary == "人工置位",
+    railhmi_test::check(t[5].value == "静止" && t[5].clickable && t[5].secondary == "人工置位",
                         "vehicle state is manually selectable and labelled as manual");
     bool no_removed = true;
     for (const auto& it : t)
@@ -159,23 +161,39 @@ void test_live_door_sensor_in_top_bar() {
     s.time_text = "12:34:56";
     s.door_sensor = {StatusLevel::Alarm, "开门"};
     const std::vector<TopBarItem> t = build_top_bar(s, Role::Maintainer);
-    railhmi_test::check(t.size() == 6 && t[5].key == "door_sensor",
+    railhmi_test::check(t.size() == 7 && t[6].key == "door_sensor",
                         "live door sensor keeps fixed 6-item top bar order");
-    railhmi_test::check(t[5].value == "开门" && !t[5].unavailable &&
-                            t[5].level == StatusLevel::Alarm && t[5].shape == "square" &&
-                            t[5].color == "error" && t[5].clickable,
+    railhmi_test::check(t[6].value == "开门" && !t[6].unavailable &&
+                            t[6].level == StatusLevel::Alarm && t[6].shape == "square" &&
+                            t[6].color == "error" && t[6].clickable,
                         "door open is prominent (square/error/clickable)");
-    railhmi_test::check(t[4].unavailable && t[4].value == "未接入" &&
-                            t[4].kind == TopItemKind::VehicleState && t[4].clickable &&
-                            t[4].secondary == "点击切换",
+    railhmi_test::check(t[5].unavailable && t[5].value == "未接入" &&
+                            t[5].kind == TopItemKind::VehicleState && t[5].clickable &&
+                            t[5].secondary == "点击切换",
                         "unselected vehicle state stays honestly unconnected but invites manual selection");
 
     TopBarSnapshot st = s;
     st.door_sensor = {StatusLevel::Warning, "传感器异常"};
     const std::vector<TopBarItem> u = build_top_bar(st, Role::Driver);
-    railhmi_test::check(u[5].value == "传感器异常" && u[5].clickable &&
-                            !u[5].unavailable,
+    railhmi_test::check(u[6].value == "传感器异常" && u[6].clickable &&
+                            !u[6].unavailable,
                         "stale/unknown door sensor shown as 传感器异常, not 关门");
+}
+
+void test_top_bar_ai_model_item() {
+    // AI 模型位：只有推理线程真实存活且至少一路模型就绪才显示「接入」。
+    TopBarSnapshot s;
+    s.ai_model = ai_model_top_status(true, 3);
+    const std::vector<TopBarItem> t = build_top_bar(s, Role::Driver);
+    railhmi_test::check(t.size() == 7 && t[3].kind == TopItemKind::AiModel &&
+                            t[3].value == "接入" && t[3].level == StatusLevel::Ok,
+                        "AI 模型接入会显示「接入」并可跳 AI 调试页");
+    railhmi_test::check(resolve_top_click(t[3], Role::Developer).target == Page::AiDebug,
+                        "AI 模型位异常时可跳到 AI 调试页");
+    railhmi_test::check(ai_model_top_status(false, 3).value == "未接入" &&
+                            ai_model_top_status(true, 0).value == "未接入" &&
+                            ai_model_top_status(true, 0).level == StatusLevel::Unavailable,
+                        "线程未起或没有就绪模型时如实显示未接入");
 }
 
 void test_top_bar_truth_mappings() {
@@ -215,5 +233,6 @@ void run_status_tests() {
     test_click_permission();
     test_top_bar();
     test_live_door_sensor_in_top_bar();
+    test_top_bar_ai_model_item();
     test_top_bar_truth_mappings();
 }

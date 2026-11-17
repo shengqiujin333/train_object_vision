@@ -194,6 +194,14 @@ void VideoRuntime::freezeForTest(std::size_t index, bool freeze) {
 #endif
 }
 
+#ifdef RAILHMI_HAS_MEDIA
+railhmi::media::FrameLease VideoRuntime::latestLease(const std::string& camera_id) const {
+    // 与显示同源：直接给推理一条 NV12 帧租约（不复制像素、不重建取流会话）。
+    if (!impl_->display) return railhmi::media::FrameLease();
+    return impl_->display->manager().latest_frame(camera_id);
+}
+#endif
+
 void VideoRuntime::refresh() {
     using namespace railhmi;
     std::vector<core::ChannelRuntime> runtime(impl_->channels.size());

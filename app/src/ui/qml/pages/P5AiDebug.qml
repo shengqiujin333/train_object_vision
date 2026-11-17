@@ -14,6 +14,24 @@ Rectangle {
     readonly property var channels: (typeof railhmiAiDebug !== "undefined") ? railhmiAiDebug : []
     readonly property bool allowed: true
 
+    // ---- AI 模型接入与现场替换（2026-11-17）----
+    // 车前方/受电弓/轮轨当前共用同一个检测模型；车前方另用分割模型做两阶段判定。
+    // 候选来自配置 app.ai.catalog；点选后 C++ 侧重建检测器与推理线程（立即生效）。
+    readonly property var catalog: (typeof railhmiAiCatalog !== "undefined") ? railhmiAiCatalog : []
+    readonly property string detectModel: (typeof railhmiAi !== "undefined") ? railhmiAi.detectModel : ""
+    readonly property string segmentModel: (typeof railhmiAi !== "undefined") ? railhmiAi.segmentModel : ""
+    readonly property string modelsDir: (typeof railhmiAi !== "undefined") ? railhmiAi.modelsDir : ""
+    function modelsOf(kind) {
+        var out = []
+        for (var i = 0; i < page.catalog.length; ++i)
+            if (page.catalog[i].kind === kind) out.push(page.catalog[i])
+        return out
+    }
+    function selectModel(kind, name) {
+        if (typeof railhmiAi === "undefined") return
+        railhmiAi.selectModel(kind, name)
+    }
+
     // 调试叠加层：逐项开关，默认全部关闭（交互 §5.5 隔离要求）
     property bool overlayBoxes: false
     property bool overlayRoi: false
@@ -179,6 +197,65 @@ Rectangle {
                                  onClicked: page.allOff() }
                 }
 
+                // ---- AI 模型（当前接入 + 现场替换）----
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: Theme.color.border
+                }
+                Text {
+                    color: Theme.color.text_primary
+                    font.pixelSize: Theme.typography.scale.label.size
+                    text: "AI 模型（点击即替换并重载）"
+                }
+                Text {
+                    objectName: "aiDetectModel"
+                    color: Theme.color.text_secondary
+                    font.pixelSize: Theme.typography.scale.caption.size
+                    text: "检测模型：" + (page.detectModel.length > 0 ? page.detectModel : "—") +
+                          "（车前方/受电弓/轮轨共用）"
+                }
+                Flow {
+                    objectName: "aiDetectModelChips"
+                    width: parent.width
+                    spacing: Theme.spacing.s1
+                    Repeater {
+                        model: page.modelsOf("detect")
+                        FilterChip {
+                            text: modelData.name
+                            selected: modelData.name === page.detectModel
+                            onClicked: page.selectModel("detect", modelData.name)
+                        }
+                    }
+                }
+                Text {
+                    objectName: "aiSegmentModel"
+                    color: Theme.color.text_secondary
+                    font.pixelSize: Theme.typography.scale.caption.size
+                    text: "分割模型：" + (page.segmentModel.length > 0 ? page.segmentModel : "—") +
+                          "（仅车前方两阶段）"
+                }
+                Flow {
+                    objectName: "aiSegmentModelChips"
+                    width: parent.width
+                    spacing: Theme.spacing.s1
+                    Repeater {
+                        model: page.modelsOf("segment")
+                        FilterChip {
+                            text: modelData.name
+                            selected: modelData.name === page.segmentModel
+                            onClicked: page.selectModel("segment", modelData.name)
+                        }
+                    }
+                }
+                Text {
+                    color: Theme.color.text_muted
+                    font.pixelSize: Theme.typography.scale.caption.size
+                    width: parent.width
+                    wrapMode: Text.Wrap
+                    text: "模型目录：" + (page.modelsDir.length > 0 ? page.modelsDir : "—")
+                }
+
                 Repeater {
                     model: page.channels
                     Column {
@@ -192,7 +269,8 @@ Rectangle {
                         Text {
                             color: Theme.color.text_secondary
                             font.pixelSize: Theme.typography.scale.caption.size
-                            text: "模型：" + (modelData.modelVersion.length > 0 ? modelData.modelVersion : "—")
+                            text: "模型：" + (modelData.modelText !== undefined && modelData.modelText.length > 0
+                                             ? modelData.modelText : "—")
                         }
                         Text {
                             color: Theme.color.text_secondary

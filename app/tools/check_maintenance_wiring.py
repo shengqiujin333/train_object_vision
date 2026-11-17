@@ -72,6 +72,35 @@ def main() -> int:
         if token not in bridge:
             fails.append("maintenance bridge missing core call %s (%s)" % (what, token))
 
+    # 2026-11-17：维护页改为「日志显示 + 功能操作」两大块，五个一键操作全部落日志。
+    for token, what in {
+        "maintLogPanel": "log display block",
+        "maintOpsLog": "log list",
+        "maintLogExport": "log save/export control",
+        "maintLogClear": "log clear control",
+        "maintOpsBar": "operation block",
+        "maintOpsCamera": "camera ping operation",
+        "maintOpsNvr": "NVR online/login check",
+        "maintOpsBle": "BLE scan operation",
+        "maintOpsSelfCheck": "fault self-check operation",
+        "maintOpsSystem": "system info operation",
+    }.items():
+        if token not in p6:
+            fails.append("P6 missing %s (%s)" % (what, token))
+    ops = os.path.join(args.root, "src", "maintenance_ops.cpp")
+    if os.path.exists(ops):
+        ops_src = read(ops)
+        for token, what in {
+            "pingCameras": "camera ping implementation",
+            "checkNvr": "NVR login check implementation",
+            "systemInfo": "system info implementation",
+            "exportLog": "log export implementation",
+        }.items():
+            if token not in ops_src:
+                fails.append("maintenance_ops.cpp missing %s (%s)" % (what, token))
+    else:
+        fails.append("maintenance_ops.cpp not found (operations not implemented)")
+
     print("[check_maintenance_wiring] P6 sections + PTZ tolerance/confirm + log + NVR + bridge checked")
     if fails:
         for f in fails:
