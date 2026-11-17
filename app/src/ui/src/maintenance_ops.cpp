@@ -3,6 +3,8 @@
 #include <QDateTime>
 #include <QDir>
 #include <QFile>
+#include <QHash>
+#include <QProcess>
 #include <QFileInfo>
 #include <QProcess>
 #include <QSysInfo>
@@ -254,6 +256,137 @@ void MaintenanceOps::checkNvr() {
     });
     nvr_->setCredentials(settings.username, credential);
     nvr_->fetchChannels();
+}
+
+QString MaintenanceOps::wifiCheckSummary() const {
+    QStringList lines;
+    auto runCmd = [](const QString& program, const QStringList& args) {
+        QProcess p;
+        p.setProcessChannelMode(QProcess::MergedChannels);
+        p.start(program, args);
+        if (!p.waitForStarted(1200)) return QString();
+        if (!p.waitForFinished(2500)) {
+            p.kill();
+            return QString();
+        }
+        return QString::fromLocal8Bit(p.readAll()).trimmed();
+    };
+
+    // 无线网卡 = /sys/class/net/<if>/wireless 存在。
+    QStringList wifi;
+    const QDir netDir(QStringLiteral("/sys/class/net"));
+    for (const QString& name : netDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+        if (QFileInfo::exists(QStringLiteral("/sys/class/net/%1/wireless").arg(name)))
+            wifi << name;
+    }
+    if (wifi.isEmpty()) {
+        lines << QStringLiteral("WiFi：未发现无线网卡（/sys/class/net/*/wireless 为空）→ 驱动未加载或硬件缺失");
+        return lines.join(QLatin1Char('\n'));
+    }
+
+    // /proc/net/wireless：iface: status link_quality level noise ...
+    QHash<QString, QString> quality;
+    QFile wireless(QStringLiteral("/proc/net/wireless"));
+    if (wireless.open(QIODevice::ReadOnly)) {
+        while (!wireless.atEnd()) {
+            const QString line = QString::fromLatin1(wireless.readLine()).trimmed();
+            const int colon = line.indexOf(QLatin1Char(':'));
+            if (colon <= 0) continue;
+            const QString name = line.left(colon).trimmed();
+            const QStringList f = line.mid(colon + 1).simplified().split(QLatin1Char(' '),
+                                                                        Qt::SkipEmptyParts);
+            if (f.size() >= 3) quality[name] = QStringLiteral("质量 %1/70，电平 %2 dBm")
+                                                  .arg(f[1]).arg(f[2]);
+        }
+    }
+    const QString nmcli = runCmd(QStringLiteral("nmcli"),
+                                 {QStringLiteral("-t"), QStringLiteral("-f"),
+                                  QStringLiteral("DEVICE,TYPE,STATE,CONNECTION"),
+                                  QStringLiteral("device")});
+    // 当前连接 AP 的信号强度（nmcli 的 wifi 列表里 IN-USE 为 * 的那一行）。
+    QString signalText;
+    const QString wifiList = runCmd(QStringLiteral("nmcli"),
+                                    {QStringLiteral("-t"), QStringLiteral("-f"),
+                                     QStringLiteral("IN-USE,SIGNAL,SSID"),
+                                     QStringLiteral("device"), QStringLiteral("wifi")});
+    for (const QString& row : wifiList.split(QLatin1Char('\n'))) {
+        if (!row.startsWith(QLatin1Char('*'))) continue;
+        const QStringList f = row.split(QLatin1Char(':'));
+        if (f.size() >= 3)
+            signalText = QStringLiteral("信号 %1% / %2").arg(f.value(1), f.value(2));
+        break;
+    }
+
+    for (const QString& name : wifi) {
+        const QString base = QStringLiteral("/sys/class/net/%1").arg(name);
+        const QFileInfo link(base + QStringLiteral("/device/driver"));
+        const QString driver = link.symLinkTarget().section(QLatin1Char('/'), -1);
+        const QString oper = readFirstLine(base + QStringLiteral("/operstate"));
+        const bool moduleLoaded =
+            !driver.isEmpty() && QFileInfo::exists(QStringLiteral("/sys/module/%1").arg(driver));
+        QString state;
+        QString connection;
+        for (const QString& row : nmcli.split(QLatin1Char('\n'))) {
+            const QStringList f = row.split(QLatin1Char(':'));
+            if (f.value(0) == name) {
+                state = f.value(2);
+                connection = f.value(3);
+                break;
+            }
+        }
+        QString ip;
+        const QString addr = runCmd(QStringLiteral("ip"),
+                                    {QStringLiteral("-4"), QStringLiteral("-o"),
+                                     QStringLiteral("addr"), QStringLiteral("show"), name});
+        for (const QString& row : addr.split(QLatin1Char('\n'))) {
+            const int at = row.indexOf(QStringLiteral(" inet "));
+            if (at >= 0) {
+                ip = row.mid(at + 6).section(QLatin1Char(' '), 0, 0);
+                break;
+            }
+        }
+        const bool connected = (state == QLatin1String("connected")) ||
+                               (oper == QLatin1String("up") && !ip.isEmpty());
+        QString verdict;
+        if (driver.isEmpty() || !moduleLoaded)
+            verdict = QStringLiteral("驱动未正常加载");
+        else if (!connected)
+            verdict = QStringLiteral("驱动正常但未连接");
+        else
+            verdict = QStringLiteral("驱动正常、已连接");
+
+        QString line = QStringLiteral("WiFi %1：%2｜驱动 %3%4｜状态 %5%6")
+                           .arg(name, verdict,
+                                driver.isEmpty() ? QStringLiteral("未绑定") : driver,
+                                moduleLoaded ? QStringLiteral("（模块已加载）")
+                                             : QStringLiteral("（模块未加载）"),
+                                state.isEmpty() ? QStringLiteral("未知") : state,
+                                connection.isEmpty() ? QString() : QStringLiteral(" / ") + connection);
+        if (!ip.isEmpty()) line += QStringLiteral("｜IP ") + ip;
+        if (!signalText.isEmpty()) line += QStringLiteral("｜") + signalText;
+        else if (quality.contains(name)) line += QStringLiteral("｜") + quality.value(name);
+        lines << line;
+
+        // 驱动报错（dmesg 可能因权限受限读不到，如实标注，不当作“无错误”）。
+        const QString kernel = runCmd(QStringLiteral("dmesg"), {});
+        if (kernel.isEmpty()) {
+            lines << QStringLiteral("  · 驱动日志：dmesg 不可读（权限限制），未判定为无错误");
+        } else {
+            QStringList hits;
+            for (const QString& row : kernel.split(QLatin1Char('\n'))) {
+                const QString low = row.toLower();
+                if (!driver.isEmpty() && low.contains(driver.toLower()) &&
+                    (low.contains(QStringLiteral("error")) || low.contains(QStringLiteral("fail")) ||
+                     low.contains(QStringLiteral("timeout"))))
+                    hits << row.trimmed();
+            }
+            if (hits.isEmpty())
+                lines << QStringLiteral("  · 驱动日志：近期无 %1 的 error/fail/timeout").arg(driver);
+            else
+                lines << QStringLiteral("  · 驱动日志：%1 条异常，最近：%2").arg(hits.size()).arg(hits.last());
+        }
+    }
+    return lines.join(QLatin1Char('\n'));
 }
 
 QVariantList MaintenanceOps::systemInfo() const {

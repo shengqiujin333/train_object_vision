@@ -47,6 +47,9 @@ public:
     Q_INVOKABLE void checkNvr();
     // 系统信息：[{group,key,value}]
     Q_INVOKABLE QVariantList systemInfo() const;
+    // WiFi 驱动与链路自检（多行文本，供「故障自检」写进日志）。
+    // 检查：无线网卡是否存在 / 驱动是否绑定且模块已加载 / 是否连上 AP / 信号 / IP / 驱动报错。
+    Q_INVOKABLE QString wifiCheckSummary() const;
 
 signals:
     void logChanged();

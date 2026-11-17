@@ -706,6 +706,9 @@ int main(int argc, char** argv) {
                         maintOps.appendLog(QStringLiteral("故障自检"),
                                            QStringLiteral("AI：%1（检测模型 %2）")
                                                .arg(aiRuntime.statusText(), aiRuntime.detectModel()));
+                        // WiFi 驱动/链路（与页面「故障自检」同一实现）
+                        for (const QString& line : maintOps.wifiCheckSummary().split(QLatin1Char('\n')))
+                            if (!line.isEmpty()) maintOps.appendLog(QStringLiteral("故障自检"), line);
                         maintOps.appendLog(QStringLiteral("故障自检"), QStringLiteral("===== 自检结束 ====="));
                     }
                 }

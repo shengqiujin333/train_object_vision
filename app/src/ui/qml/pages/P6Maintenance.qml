@@ -125,6 +125,11 @@ Rectangle {
         o.appendLog("故障自检", "AI 模型：" + aiText + "，检测模型 " + aiModel)
         var faults = (typeof railhmiFaults !== "undefined") ? railhmiFaults : []
         o.appendLog("故障自检", "已登记故障场景 " + faults.length + " 项（FI-01..）")
+        // WiFi 驱动/链路：明确给出「驱动是否正常」，而不是只报“有网”。
+        var wifi = o.wifiCheckSummary()
+        var wl = wifi.split("\n")
+        for (var k = 0; k < wl.length; ++k)
+            if (wl[k].length > 0) o.appendLog("故障自检", wl[k])
         o.appendLog("故障自检", "===== 自检结束 =====")
     }
     function showSystemInfo() {
