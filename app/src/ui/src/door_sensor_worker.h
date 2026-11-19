@@ -81,6 +81,11 @@ private:
     void parseManagedObjects(const QDBusMessage& reply);
     void startRawHci();
     void startBluezFallback();
+    // 开机时 hci0 往往比应用晚就绪（hciattach 约 10s）：降级到 BlueZ 后每 5s 重试一次
+    // HCI 原始通道，成功即自动切回（否则会一直停在慢速路径，直到人工重启）。
+    void tryUpgradeToRaw();
+    bool setupRawChannel(int fd, int* failRc = nullptr);
+    void stopBluezSide();
     void parseAdvReports(const unsigned char* data, int len);
     QVariantMap makeRawFrame(const QString& mac, const QString& name, int rssi,
                              const QByteArray& vendorValue) const;
@@ -89,6 +94,7 @@ private:
     QDBusConnection bus_;
     QTimer* timer_ = nullptr;
     QTimer* rawScanTimer_ = nullptr;
+    QTimer* rawRetryTimer_ = nullptr;
     QSocketNotifier* advNotifier_ = nullptr;
     int advFd_ = -1;
     bool rawMode_ = false;
@@ -97,6 +103,7 @@ private:
     bool filterApplied_ = false;
     bool filterLogged_ = false;
     bool discoveryLogged_ = false;
+    bool rawRetryLogged_ = false;
     bool subscribed_ = false;
     QElapsedTimer clock_;
     long long lastDiscoveryMs_ = -60000;

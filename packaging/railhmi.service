@@ -2,8 +2,8 @@
 # 常驻自启、崩溃自动重启；显式提供 DISPLAY；**不修改也不依赖 cpu-performance.service**。
 [Unit]
 Description=railhmi 车载监控桌面应用
-After=network-online.target bluetooth.service display-manager.service
-Wants=network-online.target bluetooth.service display-manager.service
+After=network-online.target bluetooth.service hciattach.service display-manager.service
+Wants=network-online.target bluetooth.service hciattach.service display-manager.service
 # 开机时与 lightdm 同时拉起，X(:0) 可能还没就绪 -> 首次启动会失败并自动重试。
 # 这里取消启动频率限制，配合 Restart=always 保证「X 起来之后一定会被拉起来」，
 # 不会因为短时间内连续失败而被 systemd 判定 failed 后放弃。
@@ -16,6 +16,9 @@ User=admin
 # Qt 在 X 就绪前启动会直接 abort（板端实测 17:19:46 首启 ABRT，重试后成功）。
 # 最多等 40s，超时也继续启动，剩余情况交给 Restart=always 兜底。
 ExecStartPre=/bin/sh -c 'for i in $(seq 1 40); do DISPLAY=:0 xdpyinfo >/dev/null 2>&1 && exit 0; sleep 1; done; exit 0'
+# 等蓝牙适配器就绪：hci0 由 SDIO 驱动/hciattach 在开机后 ~10s 才出现。
+# 应用若抢在它前面启动，HCI raw 会失败并降级到 BlueZ（门磁变慢 7~25s）。
+ExecStartPre=/bin/sh -c 'for i in $(seq 1 30); do [ -e /sys/class/bluetooth/hci0 ] && exit 0; sleep 1; done; exit 0'
 # X11 显示（历史记录为 :0；部署时按现场 X 会话核对）
 Environment=DISPLAY=:0
 Environment=QT_QPA_PLATFORM=xcb

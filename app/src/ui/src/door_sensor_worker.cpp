@@ -188,29 +188,20 @@ void DoorSensorWorker::init() {
     startRawHci();
 }
 
-void DoorSensorWorker::startRawHci() {
-    advFd_ = railhmi::openBleAdvSocket();
-    if (advFd_ < 0) {
-        emit info(QStringLiteral("warning: raw HCI advertisement channel unavailable (rc=%1, "
-                                 "need CAP_NET_ADMIN+CAP_NET_RAW); falling back to BlueZ discovery")
-                      .arg(advFd_));
-        startBluezFallback();
-        return;
-    }
-    const int paramsRc = railhmi::configureBleScan(advFd_);
-    const int enableRc = railhmi::enableBleScanNoDup(advFd_);
+bool DoorSensorWorker::setupRawChannel(int fd, int* failRc) {
+    const int paramsRc = railhmi::configureBleScan(fd);
+    const int enableRc = railhmi::enableBleScanNoDup(fd);
     if (enableRc != 0) {
-        emit info(QStringLiteral("warning: LE Set Scan Enable(filter_dup=0) failed (rc=%1); "
-                                 "falling back to BlueZ discovery").arg(enableRc));
-        railhmi::closeBleAdvSocket(advFd_);
-        advFd_ = -1;
-        startBluezFallback();
-        return;
+        if (failRc) *failRc = enableRc;
+        emit info(QStringLiteral("warning: LE Set Scan Enable(filter_dup=0) failed (rc=%1)")
+                      .arg(enableRc));
+        railhmi::closeBleAdvSocket(fd);
+        return false;
     }
+    advFd_ = fd;
     rawMode_ = true;
-    clock_.start();
 
-    advNotifier_ = new QSocketNotifier(advFd_, QSocketNotifier::Read, this);
+    advNotifier_ = new QSocketNotifier(fd, QSocketNotifier::Read, this);
     connect(advNotifier_, &QSocketNotifier::activated, this, &DoorSensorWorker::onAdvData);
 
     // bluetoothd 约每 10s 重新下发 LE Set Scan Enable 并重新打开去重，
@@ -223,7 +214,92 @@ void DoorSensorWorker::startRawHci() {
     emit info(QStringLiteral("door-sensor raw HCI mode: LE Set Scan Parameters rc=%1, "
                              "filter_dup=0 enabled, 2s refresh (1s advertisements read directly)")
                   .arg(paramsRc));
+    return true;
+}
+
+void DoorSensorWorker::startRawHci() {
+    // 验证用：强制先走 BlueZ 兜底，用于验证「适配器晚就绪 -> 自动升级回 raw」的链路。
+    // 默认关闭；生产不受影响。
+    if (qEnvironmentVariableIsSet("RAILHMI_DOOR_FORCE_FALLBACK")) {
+        emit info(QStringLiteral("door-sensor: RAILHMI_DOOR_FORCE_FALLBACK set, starting in BlueZ "
+                                 "fallback (verification only)"));
+        startBluezFallback();
+        return;
+    }
+    const int fd = railhmi::openBleAdvSocket();
+    if (fd < 0) {
+        emit info(QStringLiteral("warning: raw HCI advertisement channel unavailable (rc=%1, "
+                                 "need CAP_NET_ADMIN+CAP_NET_RAW); falling back to BlueZ discovery")
+                      .arg(fd));
+        startBluezFallback();
+        return;
+    }
+    if (!setupRawChannel(fd)) {
+        startBluezFallback();
+        return;
+    }
+    clock_.start();
     emit ioMode(QStringLiteral("hci-raw"), QStringLiteral("hci0 (raw)"));
+}
+
+void DoorSensorWorker::tryUpgradeToRaw() {
+    if (rawMode_) {
+        if (rawRetryTimer_) rawRetryTimer_->stop();
+        return;
+    }
+    // 裸 HCI 与 BlueZ discovery 互斥：先停发现，再开 raw；失败要把发现恢复回去，
+    // 否则兜底路径也拿不到新设备（这正是开机抢跑时最容易踩的坑）。
+    const QString adapter =
+        adapterPath_.isEmpty() ? QStringLiteral("/org/bluez/hci0") : adapterPath_;
+    if (bus_.isConnected()) {
+        QDBusMessage stop = QDBusMessage::createMethodCall(
+            QStringLiteral("org.bluez"), adapter, QStringLiteral("org.bluez.Adapter1"),
+            QStringLiteral("StopDiscovery"));
+        bus_.call(stop, QDBus::Block, 1200);
+    }
+    const int fd = railhmi::openBleAdvSocket();
+    int failRc = fd;
+    const bool ok = fd >= 0 && setupRawChannel(fd, &failRc);
+    if (!ok) {
+        if (fd >= 0) railhmi::closeBleAdvSocket(fd);
+        if (!rawRetryLogged_) {
+            rawRetryLogged_ = true;
+            emit info(QStringLiteral("door-sensor: raw HCI still unavailable (open=%1, scanEnable=%2); "
+                                     "keeping BlueZ fallback and retrying every 5s")
+                          .arg(fd).arg(failRc));
+        }
+        if (bus_.isConnected() && filterApplied_) applyDiscovery(adapter);
+        return;
+    }
+    if (rawRetryTimer_) rawRetryTimer_->stop();
+    stopBluezSide();
+    clock_.start();
+    emit ioMode(QStringLiteral("hci-raw"), QStringLiteral("hci0 (raw)"));
+    emit info(QStringLiteral("door-sensor: upgraded to raw HCI (adapter became ready after boot)"));
+}
+
+void DoorSensorWorker::stopBluezSide() {
+    if (timer_) {
+        timer_->stop();
+        timer_->deleteLater();
+        timer_ = nullptr;
+    }
+    if (bus_.isConnected()) {
+        // 裸 HCI 与 BlueZ discovery 互斥：切回 raw 前先停掉发现，避免两边互相覆盖扫描参数。
+        const QString path =
+            adapterPath_.isEmpty() ? QStringLiteral("/org/bluez/hci0") : adapterPath_;
+        QDBusMessage stop = QDBusMessage::createMethodCall(
+            QStringLiteral("org.bluez"), path, QStringLiteral("org.bluez.Adapter1"),
+            QStringLiteral("StopDiscovery"));
+        bus_.call(stop, QDBus::Block, 1500);
+    }
+    if (subscribed_) {
+        bus_.disconnect(QStringLiteral("org.bluez"), QString(),
+                        QStringLiteral("org.freedesktop.DBus.Properties"),
+                        QStringLiteral("PropertiesChanged"), this,
+                        SLOT(onPropertiesChanged(QString,QVariantMap,QStringList,QDBusMessage)));
+        subscribed_ = false;
+    }
 }
 
 void DoorSensorWorker::refreshRawScan() {
@@ -324,6 +400,15 @@ void DoorSensorWorker::startBluezFallback() {
     poll();                        // 立即取一次，界面启动即给出真值
     timer_->start();
     emit ioMode(QStringLiteral("bluez-fallback"), adapterPath_);
+
+    // 开机时 hci0 可能比应用晚就绪（hciattach ~10s）：保留 BlueZ 兜底，同时每 5s
+    // 重试 HCI 原始通道；一旦适配器就绪就自动切回 1~2s 的快路径，不必人工重启。
+    if (!rawRetryTimer_) {
+        rawRetryTimer_ = new QTimer(this);
+        rawRetryTimer_->setInterval(5000);
+        connect(rawRetryTimer_, &QTimer::timeout, this, &DoorSensorWorker::tryUpgradeToRaw);
+    }
+    rawRetryTimer_->start();
 }
 
 void DoorSensorWorker::onPropertiesChanged(const QString& interfaceName,
