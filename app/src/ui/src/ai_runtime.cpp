@@ -399,7 +399,8 @@ void AiRuntime::tick() {
                     " det_bounds=" + std::to_string(dc.last_det_bounds) +
                     " det_ok_total=" + std::to_string(dc.det_boxes) +
                     " ready=" + std::string(lane_ready ? "true" : "false") +
-                    " reason=" + lane.unavailable_reason);
+                    " reason=" + lane.unavailable_reason +
+                    " env=" + lane.envelope_summary.substr(0, 200));
             }
             m["confidenceText"] = max_conf >= 0.0
                                       ? QString::number(max_conf * 100, 'f', 0) + "%"
